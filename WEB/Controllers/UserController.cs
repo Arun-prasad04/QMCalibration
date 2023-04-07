@@ -7,6 +7,8 @@ using WEB.Services.Interface;
 using System.DirectoryServices;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
+using WEB.Services;
+
 namespace WEB.Controllers;
 
 public class UserController : BaseController
@@ -125,8 +127,14 @@ public class UserController : BaseController
         }
     }
 
+    public IActionResult SetLanguage(string lang)
+    {
+        HttpContext.Session.SetString("Language", lang);
+        return Json("Success");
+    }
 
-    public IActionResult PasswordUpdate(UserViewModel user)
+
+	public IActionResult PasswordUpdate(UserViewModel user)
     {
         ResponseViewModel<UserViewModel> response;
 

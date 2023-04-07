@@ -601,6 +601,23 @@
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
+				console.log(selected);
+				
+				$.ajax({
+					type: "POST",
+					url: "../User/SetLanguage",
+					data: { lang: selected },
+					dataType: "json",
+					success: function (data) {
+						console.log("Language changed successfully!!");
+					},
+					failure: function (response) {
+						console.log(response.responseText);
+					},
+					error: function (response) {
+						console.log(response.responseText);
+					}
+				});
 
 				if (selected == "en") {
 					var translator = $('body').translate({ lang: "en", t: dict });
@@ -609,6 +626,7 @@
 				else {
 					var translator = $('body').translate({ lang: "jp", t: dict });
 				}
+
 			});
 
 			function diction() {
