@@ -14,7 +14,7 @@
 
             <div class="row">
               <div class="col-md-6">
-                <h3 class="card-title">Master History Creation</h3>
+                <h3 class="card-title trn">Master History Creation</h3>
               </div>
               <div class="col-md-6 text-right">
                 <a href='@Url.Action("MasterHistory","Master",new {MasterId=@Model.MasterId})'><input type="button" class="btn btn-sm btn-default"
@@ -26,7 +26,7 @@
 
           <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title">Master History - Breakdown Details</h3>
+              <h3 class="card-title trn">Master History - Breakdown Details</h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -44,14 +44,14 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label class="required">Date</label>
+                    <label class="required trn">Date</label>
                     <input type="text" id="Date" name="Date" value="@Model.Date"
                       class="form-control" placeholder="" readonly>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Category</label>                    
+                    <label class="required trn">Category</label>                    
                     <input type="text" id="Category" name="Category" value="@Model.Category" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -59,7 +59,7 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Description</label>
+                    <label class="required trn">Description</label>
                     <textarea id="Description" name="Description" value="@Model.Description" class="form-control"></textarea>
 
                   </div>
@@ -67,7 +67,7 @@
                  <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label class="required">Actions Taken/Calibration Results</label>
+                    <label class="required trn">Actions Taken / Calibration Results</label>
                     <textarea id="Actions_Taken" name="Actions_Taken" value="@Model.Actions_Taken" class="form-control"></textarea>
 
                   </div>
@@ -76,7 +76,7 @@
               <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>From Date</label>
+                                        <label class="trn">From Date</label>
                        <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#FromDate').attr('value',$('#FromDate').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                             id="FromDate" name="FromDate" value="@Model.FromDate" />
@@ -89,7 +89,7 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>To Date</label>
+                                        <label class="trn">To Date</label>
                       <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#ToDate').attr('value',$('#ToDate').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"
                             id="ToDate" name="ToDate" value="@Model.ToDate" />
@@ -103,7 +103,7 @@
             <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Date of Completion</label>
+                                        <label class="trn">Date of Completion</label>
                        <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#Date_of_Completion').attr('value',$('#Date_of_Completion').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
                             id="Date_of_Completion" name="Date_of_Completion" value="@Model.Date_of_Completion" />
@@ -116,23 +116,23 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="required">Breakdown Hrs/Days</label>                    
-                        <input type="text" id="Breakdown_hrs_days" name="Breakdown_hrs_days" value="@Model.Breakdown_hrs_days" class="form-control" placeholder="">
+                                        <label class="required trn">Breakdown Hrs/Days</label>
+                                        <input type="text" id="Breakdown_hrs_days" name="Breakdown_hrs_days" value="@Model.Breakdown_hrs_days" class="form-control" placeholder="">
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Status </label>                    
-                    <input type="text" id="Status" name="Status" value="@Model.Status" class="form-control" placeholder="">
+                                        <label class="required trn">Status </label>
+                                        <input type="text" id="Status" name="Status" value="@Model.Status" class="form-control" placeholder="">
                   </div>
                   </div>
 
                   <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Maintainence/Supplier Representative </label>                    
-                    <input type="text" id="Maintainence" name="Maintainence" value="@Model.Maintainence" class="form-control" placeholder="">
+                                        <label class="required trn">Maintainence / Supplier Representative </label>
+                                        <input type="text" id="Maintainence" name="Maintainence" value="@Model.Maintainence" class="form-control" placeholder="">
                   </div>
                   </div>
                 </div>
@@ -141,7 +141,7 @@
                 <div class="row">
                   <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Updated By </label>                    
+                    <label class="required trn">Updated By </label>                    
                     <input type="text" id="CreatedBy" name="CreatedBy" value="@Model.CreatedBy" class="form-control" readonly placeholder="">
                   </div>
                   </div>                 
@@ -149,7 +149,7 @@
                 }
             </div>
             <div class="card-footer">
-              <center><button type="submit" class="btn btn-primary">Submit</button></center>
+                            <center><button type="submit" class="btn btn-primary trn">Submit</button></center>
             </div>
             <!-- /.card-body -->
           </div>

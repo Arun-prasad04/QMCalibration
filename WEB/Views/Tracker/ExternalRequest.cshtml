@@ -11,7 +11,7 @@
                     <div class="card-header">
                         <div class="row">
                        <div class="col-md-6">
-                            <h3 class="card-title">Tracker List</h3>
+                            <h3 class="card-title trn">Tracker List</h3>
                     </div>
                     <div class="col-md-6 text-right">
  
@@ -25,14 +25,14 @@
                             <thead>
                                 <tr>
                                    
-                                    <th>Request No</th>
-                                    <th>Request Date</th>
-                                    <th>Master Name</th>
-                                    <th>Master Serial</th>
-                                    <th>Calibration Date</th>
-                                    <th>Due Date</th>
-                                    <th>Status</th>
-                                    <th>View</th>
+                                    <th class="trn">Request No</th>
+                                    <th class="trn">Request Date</th>
+                                    <th class="trn">Master Name</th>
+                                    <th class="trn">Master Serial</th>
+                                    <th class="trn">Calibration Date</th>
+                                    <th class="trn">Due Date</th>
+                                    <th class="trn">Status</th>
+                                    <th class="trn">View</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,7 +98,7 @@ $("#example1").DataTable({
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">
+                <h5 class="modal-title trn" id="staticBackdropLabel">
             External Calibration Request
         </h5>
         <button type="button" class="close" id="closePopup" onclick="CloseTrackerPopup()" aria-label="Close">
@@ -109,13 +109,13 @@ $("#example1").DataTable({
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Request Number</label>
+                            <label class="trn">Request Number</label>
                             <input type="text" class="form-control" id="ReqNo" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Requested Date</label>
+                            <label class="trn">Requested Date</label>
                             <input type="text" class="form-control" id="RequestDate" disabled>
                         </div>
                     </div>
@@ -125,13 +125,13 @@ $("#example1").DataTable({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Master Name</label>
+                            <label class="trn">Master Name</label>
                             <input type="text" class="form-control" id="MasterName" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Master Serial Number</label>
+                            <label class="trn">Master Serial Number</label>
                             <input type="text" class="form-control" id="MasterSerialNo" disabled>
                         </div>
                     </div>
@@ -141,13 +141,13 @@ $("#example1").DataTable({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Master Id Number</label>
+                            <label class="trn">Master Id Number</label>
                             <input type="text" class="form-control" id="MasterIdNo" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Calibration Date</label>
+                            <label class="trn">Calibration Date</label>
                             <input type="text" class="form-control" id="CalibrationDate" disabled>
                         </div>
                     </div>
@@ -156,13 +156,13 @@ $("#example1").DataTable({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Due Date</label>
+                            <label class="trn">Due Date</label>
                             <input type="text" class="form-control" id="NextDue" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Certificate Number</label>
+                            <label class="trn">Certificate Number</label>
                             <input type="text" class="form-control" id="CertificateNo" disabled>
                         </div>
                     </div>
@@ -172,13 +172,13 @@ $("#example1").DataTable({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Traceability</label>
+                            <label class="trn">Traceability</label>
                             <input type="text" class="form-control" id="Traceability" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Status</label>
+                            <label class="trn">Status</label>
                             <input type="text" class="form-control" id="status_rejected" value="Rejected" disabled style="display: none;">
                             <input type="text" class="form-control" id="status_waitingFM"value="Requeted , Waiting for FM" disabled style="display: none;">
                             <input type="text" class="form-control" id="status_accepted"value="Accepted by FM , Waiting for Visual Check Update" disabled style="display: none;">
@@ -195,14 +195,14 @@ $("#example1").DataTable({
                             <div class="col-sm-3">
                                 <!-- text input -->
                                 <div class="form-group">
-                                <label>Accept</label>
+                                <label class="trn">Accept</label>
                                 <input type="radio" name="AcceptReject" value="Accept" onclick="EnableReason()">
                                 
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                 <label>Reject</label>
+                                <label class="trn">Reject</label>
                                 <input type="radio" name="AcceptReject" value="Reject" onclick="EnableReason()">
                                 </div>
                             </div>
@@ -224,8 +224,8 @@ $("#example1").DataTable({
                          <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                <label>Rejection Reason</label>                        
-                                <textarea id="reason" style="width: 100%;"></textarea>
+                                    <label class="trn">Rejection Reason</label>
+                                    <textarea id="reason" style="width: 100%;"></textarea>
                                 </div>
                              </div>
                         </div> 
@@ -237,7 +237,7 @@ $("#example1").DataTable({
                                 <div class="col-sm-12">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label>Submitted On</label>
+                                <label class="trn">Submitted On</label>
                                         <input type="text" class="form-control" id="SubmittedOn" disabled>
                                     </div>
                                 </div>
@@ -249,14 +249,14 @@ $("#example1").DataTable({
                                     <div class="col-sm-6">
                                         <!-- text input -->
                                         <div class="form-group">
-                                            <label>Rejected On</label>
+                                <label class="trn">Rejected On</label>
                                             <input type="text" class="form-control" id="rejectedOn" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <!-- text input -->
                                         <div class="form-group">
-                                            <label>Rejected Reason</label>
+                                <label class="trn">Rejected Reason</label>
                                             <input type="text" class="form-control" id="rejectedReason" disabled>
                                         </div>
                                     </div>
@@ -268,14 +268,14 @@ $("#example1").DataTable({
                                         <div class="col-sm-6">
                                             <!-- text input -->
                                             <div class="form-group">
-                                                <label>Record By</label>
+                                <label class="trn">Record By</label>
                                                 <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                                 <!-- text input -->
                                                 <div class="form-group">
-                                                    <label>ClosedDate</label>
+                                <label class="trn">ClosedDate</label>
                                                     <input type="text" id="ClosedDate" name="ClosedDate" value="@DateTime.Now" class="form-control"   />
                                                 </div>
                                         </div>
@@ -285,7 +285,7 @@ $("#example1").DataTable({
                                             <div class="col-sm-12">
                                                 <!-- text input -->
                                                 <div class="form-group">
-                                                    <label>Result</label>
+                                <label class="trn">Result</label>
                                                     <input type="text" class="form-control" id="ResultFM" >
                                                 </div>
                                             </div>
@@ -312,7 +312,7 @@ $("#example1").DataTable({
  <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <label>Return Date</label>
+                                <label class="trn">Return Date</label>
                 <div class="input-group date" id="ReturnDatePicker" data-target-input="nearest" onchange="$('#ReturnDate').attr('value',$('#ReturnDate').val());">
                                     <input type="text" id="ReturnDate" name="newReturnDate" value="@DateTime.Now"
                                         class="form-control datetimepicker-input" data-target="#ReturnDatePicker" />
@@ -325,7 +325,7 @@ $("#example1").DataTable({
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                    <label>Verified By</label>
+                                <label class="trn">Verified By</label>
                     <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
             </div>
         </div>
@@ -333,7 +333,7 @@ $("#example1").DataTable({
 <div class="row">
         <div class="col-sm-12">
             <div class="form-group">
-                    <label>LABResult</label>
+                    <label class="trn">LABResult</label>
                     <input type="text" class="form-control" id="ResultLAB" >
             </div>
         </div>

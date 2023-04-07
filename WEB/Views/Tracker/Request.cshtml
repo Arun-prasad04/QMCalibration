@@ -28,7 +28,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="card-title">Tracker List</h3>
+                            <h3 class="card-title trn">Tracker List</h3>
                         </div>
                         <div class="col-md-6 text-right">
 
@@ -42,7 +42,7 @@
                         <div class="col-sm-3">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>OverAll</label>
+                                <label class="trn">OverAll</label>
                                 @if(ViewBag.reqType==4)
                                 {
                                 <input type="radio" name="ReqTracker" value="OverAll" onclick="getrequest(5)" checked="true">
@@ -56,7 +56,7 @@
                         <div class="col-sm-3">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>New Request</label>
+                                <label class="trn">New Request</label>
                                 @if(ViewBag.reqType==1)
                                 {
                                 <input type="radio" name="ReqTracker" value="New" onclick="getrequest(1)" checked="true">
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>Regular Request</label>
+                                <label class="trn">Regular Request</label>
                                 @if(ViewBag.reqType==2)
                                 {
                                 <input type="radio" name="ReqTracker" value="Regular" onclick="getrequest(2)" checked="true">
@@ -82,7 +82,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>ReCalibration Request</label>
+                                <label class="trn">ReCalibration Request</label>
                                 @if(ViewBag.reqType==3)
                                 {
                                 <input type="radio" name="ReqTracker" value="ReCalibration" onclick="getrequest(3)" checked="true">
@@ -98,16 +98,16 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Request No</th>
-                                <th>Request Date</th>
-                                <th>Instrument Name</th>
-                                <th>Instrument Id</th>
-                                <th>Range</th>
-                                <th>Request Type</th>
-                                <th>Status</th>
-                                <th>View</th>
-                                <th>Test</th>
-                                <th>Certificate</th>                                
+                                <th class="trn">Request No</th>
+                                <th class="trn">Request Date</th>
+                                <th class="trn">Instrument Name</th>
+                                <th class="trn">Instrument Id</th>
+                                <th class="trn">Range</th>
+                                <th class="trn">Request Type</th>
+                                <th class="trn">Status</th>
+                                <th class="trn">View</th>
+                                <th class="trn">Test</th>
+                                <th class="trn">Certificate</th>
                             </tr>
                         </thead>
                         <tbody>

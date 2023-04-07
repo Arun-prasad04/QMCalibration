@@ -19,7 +19,7 @@ $('#ReturnDatePicker').datetimepicker({
           <div class="card-header">
             <div class="row">
               <div class="col-md-6">
-                <h3 class="card-title">External Request Details</h3>
+                <h3 class="card-title trn">External Request Details</h3>
               </div>
               <div class="col-md-6 text-right">
                   <input type="hidden" id="ExternalCalibId" value="@Model.Id">
@@ -31,13 +31,13 @@ $('#ReturnDatePicker').datetimepicker({
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Request Number</label>
+                                <label class="trn">Request Number</label>
                             <input type="text" class="form-control" id="ReqNo" value="@Model.ReqNo" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Requested Date</label>
+                                <label class="trn">Requested Date</label>
                             <input type="text" class="form-control" id="RequestDate" value="@Model.RequestDate.ToShortDateString()" disabled>
                         </div>
                     </div>
@@ -45,13 +45,13 @@ $('#ReturnDatePicker').datetimepicker({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Master Name</label>
+                                <label class="trn">Master Name</label>
                             <input type="text" class="form-control" id="MasterName" value="@Model.MasterName" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Master Serial Number</label>
+                                <label class="trn">Master Serial Number</label>
                             <input type="text" class="form-control" id="MasterSerialNo" value="@Model.MasterSerialNo" disabled>
                         </div>
                     </div>
@@ -61,13 +61,13 @@ $('#ReturnDatePicker').datetimepicker({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Master Id Number</label>
+                                <label class="trn">Master Id Number</label>
                             <input type="text" class="form-control" id="MasterIdNo" value="@Model.MasterIdNo" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Calibration Date</label>
+                                <label class="trn">Calibration Date</label>
                             <input type="text" class="form-control" id="CalibrationDate" value="@Model.CalibrationDate.ToShortDateString()" disabled>
                         </div>
                     </div>
@@ -76,13 +76,13 @@ $('#ReturnDatePicker').datetimepicker({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Due Date</label>
+                                <label class="trn">Due Date</label>
                             <input type="text" class="form-control" id="NextDue" value="@Model.NextDue.ToShortDateString()" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Certificate Number</label>
+                                <label class="trn">Certificate Number</label>
                             <input type="text" class="form-control" id="CertificateNo" value="@Model.CertificateNo" disabled>
                         </div>
                     </div>
@@ -92,13 +92,13 @@ $('#ReturnDatePicker').datetimepicker({
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Traceability</label>
+                                <label class="trn">Traceability</label>
                             <input type="text" class="form-control" id="Traceability" value="@Model.Traceability" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Status</label>
+                                <label class="trn">Status</label>
                             @if(Model.Status==28)
                             {
                             <input type="text" class="form-control" id="status_rejected" value="Rejected" disabled>
@@ -129,14 +129,14 @@ $('#ReturnDatePicker').datetimepicker({
                             <div class="col-sm-3">
                                 <!-- text input -->
                                 <div class="form-group">
-                                <label>Accept</label>
+                                        <label class="trn">Accept</label>
                                 <input type="radio" name="AcceptReject" value="Accept" checked onclick="EnableReason()">
                                 
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                 <label>Reject</label>
+                                        <label class="trn">Reject</label>
                                 <input type="radio" name="AcceptReject" value="Reject" onclick="EnableReason()">
                                 </div>
                             </div>
@@ -145,8 +145,8 @@ $('#ReturnDatePicker').datetimepicker({
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                    <label>Rejection Reason</label>                        
-                                    <textarea id="reason" style="width: 100%;"></textarea>
+                                            <label class="trn">Rejection Reason</label>
+                                            <textarea id="reason" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
                             </div> 
@@ -168,7 +168,7 @@ $('#ReturnDatePicker').datetimepicker({
                             <div class="col-sm-6">
                                 <!-- text input -->
                                 <div class="form-group">
-                                <label>Accept</label>
+                                        <label class="trn">Accept</label>
                                 @if(Model.Status==27)
                                 {
                                 <input type="radio" name="AcceptReject" value="Accept" checked onclick="EnableReason()" disabled>
@@ -180,7 +180,7 @@ $('#ReturnDatePicker').datetimepicker({
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                 <label>Reject</label>
+                                        <label class="trn">Reject</label>
                                 @if(Model.Status==28)
                                 {
                                 <input type="radio" name="AcceptReject" value="Reject" checked onclick="EnableReason()" disabled>
@@ -197,7 +197,7 @@ $('#ReturnDatePicker').datetimepicker({
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label>Submitted On</label>
+                                            <label class="trn">Submitted On</label>
                                         <input type="text" class="form-control" id="SubmittedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
                                     </div>
                                 </div>
@@ -209,14 +209,14 @@ $('#ReturnDatePicker').datetimepicker({
                                     <div class="col-sm-6">
                                         <!-- text input -->
                                         <div class="form-group">
-                                            <label>Rejected On</label>
+                                            <label class="trn">Rejected On</label>
                                             <input type="text" class="form-control" id="rejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <!-- text input -->
                                         <div class="form-group">
-                                            <label>Rejected Reason</label>
+                                            <label class="trn">Rejected Reason</label>
                                             <input type="text" class="form-control" id="rejectedReason" value="@Model.RejectReason" disabled>
                                         </div>
                                     </div>
@@ -229,13 +229,13 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
     <div class="col-sm-6">
             <div class="form-group">
-                    <label>Record By</label>
+                                    <label class="trn">Record By</label>
                     <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
             </div>
     </div>
     <div class="col-sm-6">
             <div class="form-group">
-                    <label>ClosedDate</label>
+                                    <label class="trn">ClosedDate</label>
                     <input type="text" id="ClosedDate" name="ClosedDate" value="@DateTime.Now" class="form-control"   />
             </div>
     </div>
@@ -243,7 +243,7 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
     <div class="col-sm-12">
             <div class="form-group">
-                    <label>Result</label>
+                                    <label class="trn">Result</label>
                     <input type="text" class="form-control" id="ResultFM" >
             </div>
     </div>
@@ -264,13 +264,13 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
     <div class="col-sm-6">
             <div class="form-group">
-                    <label>Record By</label>
+                                    <label class="trn">Record By</label>
                     <input type="text" class="form-control" id="RecordBy" value="@Model.RecordBy" disabled>
             </div>
     </div>
     <div class="col-sm-6">
             <div class="form-group">
-                    <label>ClosedDate</label>
+                                    <label class="trn">ClosedDate</label>
                     <input type="text" id="ClosedDate" name="ClosedDate" value="@Model.ClosedDate.ToShortDateString()" class="form-control" disabled   />
             </div>
     </div>
@@ -278,7 +278,7 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
     <div class="col-sm-12">
             <div class="form-group">
-                    <label>Result</label>
+                                    <label class="trn">Result</label>
                     <input type="text" class="form-control" id="ResultFM" value="@Model.ResultFM" disabled >
             </div>
     </div>
@@ -289,7 +289,7 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Return Date</label>
+                                    <label class="trn">Return Date</label>
                     <div class="input-group date" id="ReturnDatePicker" data-target-input="nearest" onchange="$('#ReturnDate').attr('value',$('#ReturnDate').val());">
                                         <input type="text" id="ReturnDate" name="newReturnDate" value="@DateTime.Now"
                                             class="form-control datetimepicker-input" data-target="#ReturnDatePicker" />
@@ -302,7 +302,7 @@ $('#ReturnDatePicker').datetimepicker({
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                        <label>Verified By</label>
+                                    <label class="trn">Verified By</label>
                         <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
                 </div>
             </div>
@@ -310,7 +310,7 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                        <label>LABResult</label>
+                                    <label class="trn">LABResult</label>
                         <input type="text" class="form-control" id="ResultLAB" >
                 </div>
             </div>
@@ -328,13 +328,13 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Return Date</label>
+                                    <label class="trn">Return Date</label>
                     <input type="text" id="ReturnDate" name="ReturnDate" value="@Model.ReturnDate.ToShortDateString()" disabled class="form-control"   />                                                
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                        <label>Verified By</label>
+                                    <label class="trn">Verified By</label>
                         <input type="text" class="form-control" id="RecordBy" value="@Model.RecodedByLAB" disabled>
                 </div>
             </div>
@@ -342,7 +342,7 @@ $('#ReturnDatePicker').datetimepicker({
 <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                        <label>LABResult</label>
+                                    <label class="trn">LABResult</label>
                         <input type="text" class="form-control" id="ResultLAB" value="@Model.ResultLAB" disabled >
                 </div>
             </div>

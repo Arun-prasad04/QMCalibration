@@ -11,10 +11,10 @@
                   <div class="card-header"> 
                                          <div class="row"> 
                        <div class="col-md-6">
-                            <h3 class="card-title">New Department</h3>
+                            <h3 class="card-title trn">New Department</h3>
                     </div>
                     <div class="col-md-6 text-right">
-                    <a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default trn" value="Department List" ></a>
+                              <a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default" value="Department List" ></a>                             
                     </div>
 
                        </div>
@@ -26,12 +26,12 @@
                <input type="hidden" name="Id" value="@Model.Id">
                   <div class="card-body">
                       <div class="form-group">
-                      <label for="Name" class="required">Department Name</label>
-                      <input type="text" class="form-control" id="Name" placeholder="Department Name" name="Name" value="@Model.Name">
+                      <label for="Name" class="required trn">Department Name</label>
+                            <input type="text" class="form-control" id="Name" placeholder="Department Name" name="Name" value="@Model.Name">
                     </div>
                     <div class="form-group">
-                      <label for="Description" class="required">Department Description</label>
-                      <input type="text" class="form-control" id="Description" placeholder="Description" name="Description" value="@Model.Description">
+                      <label for="Description" class="required trn">Department Description</label>
+                            <input type="text" class="form-control" id="Description" placeholder="Description" name="Description" value="@Model.Description">
                     </div>
                     </div>
                   <!-- /.card-body -->
@@ -39,7 +39,7 @@
                    
                   
                    <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary trn">Submit</button>
                   </div>
                   </form>
   </div>
@@ -70,8 +70,8 @@
       },
       errorElement: 'span',
       errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
+         error.addClass('invalid-feedback');
+         element.closest('.form-group').append(error);
       },
       highlight: function (element, errorClass, validClass) {
       $(element).addClass('is-invalid');

@@ -81,35 +81,35 @@
    
                 <table class="TableWidth">
                     <tr>
-                        <th rowspan="2">Daimler</th>
-                        <th rowspan="2">Feedback Form</th>
-                        <th>Format No.</th>
+                        <th rowspan="2" class="trn">Daimler</th>
+                        <th rowspan="2" class="trn">Feedback Form</th>
+                        <th class="trn">Format No.</th>
                         <td  ><input type="text" name="FormatNo"  value="@Model.FormatNo" class="Border0px" style="background-color: rgb(240, 240, 240);" readonly></td>
                     </tr>
                     <tr>
-                        <th style="word-break: break-all;">Rev.No & Date</th>
+                        <th style="word-break: break-all;" class="trn">Rev.No & Date</th>
                         <td><input type="text" name="RevNo" value="@Model.RevNo" class="Border0px" style="background-color: rgb(240, 240, 240);" readonly></td>
                     </tr>
                 </table>
                 <br>
                 <table class="TableWidth">
                     <tr>
-                        <th>Name</th>
+                        <th class="trn">Name</th>
                         <td><input type="text" name="CustomerName" value="@Model.CustomerName" class="Border0px"
                               style="background-color: rgb(240, 240, 240);"  readonly>
                         </td>
-                        <th style="word-break: break-all;">Designation:</th>
+                        <th style="word-break: break-all;" class="trn">Designation:</th>
                         <td><input type="text" name="Designation" value="@Model.Designation" class="Border0px"
                               style="background-color: rgb(240, 240, 240);"  readonly></td>
                     </tr>
                     <tr>
-                        <th style="word-break: break-all;">Section/Dept</th>
+                        <th style="word-break: break-all;" class="trn">Section/Dept</th>
                         <td colspan="3"><input type="text" name="DepartmentName" id="DepartmentName" value="@Model.DepartmentName"
                               style="background-color: rgb(240, 240, 240);"  class="Border0px" readonly>
                         </td>
                     </tr>
                     <tr>
-                        <th>Laboratory Name</th>
+                        <th class="trn">Laboratory Name</th>
                         <td> @if (@Model.LabName == "Materials Lab")
                             {
                                 <input type="radio" name="OptionLabName" id="OptionLabName" checked="checked" onclick="setLabName('Materials Lab')" disabled>
@@ -153,41 +153,41 @@
 
                 <table class="TableWidth">
                     <tr>
-                        <th colspan="5">Rating scale</th>
+                        <th colspan="5" class="trn">Rating scale</th>
                     </tr>
                     <tr>
-                        <th>Rating (Please ✓ the appropriate box)</th>
-                        <th style="word-break: break-all;">Excellent</th>
-                        <th style="word-break: break-all;">Good</th>
-                        <th style="word-break: break-all;">Satisfactory</th>
-                        <th style="word-break: break-all;">Poor</th>
+                        <th class="trn">Rating (Please ✓ the appropriate box)</th>
+                        <th style="word-break: break-all;" class="trn">Excellent</th>
+                        <th style="word-break: break-all;" class="trn">Good</th>
+                        <th style="word-break: break-all;" class="trn">Satisfactory</th>
+                        <th style="word-break: break-all;" class="trn">Poor</th>
                     </tr>
                     <tr>
-                        <th>Score</th>
-                        <th>10</th>
-                        <th>9</th>
-                        <th>8</th>
-                        <th>7</th>
+                        <th class="trn">Score</th>
+                        <th class="trn">10</th>
+                        <th class="trn">9</th>
+                        <th class="trn">8</th>
+                        <th class="trn">7</th>
                     </tr>
                 </table>
                 <br>
 
                 <table class="TableWidth">
                     <tr>
-                        <th rowspan="2" colspan="2" style="word-break: break-all;">Evaluation Criteria</th>
-                        <th colspan="4" style="word-break: break-all;">Rating</th>
-                        <th rowspan="2" class="RatingScoreColumnWidth" style="word-break: break-all;">Score</th>
+                        <th rowspan="2" colspan="2" style="word-break: break-all;" class="trn">Evaluation Criteria</th>
+                        <th colspan="4" style="word-break: break-all;" class="trn">Rating</th>
+                        <th rowspan="2" class="RatingScoreColumnWidth trn" style="word-break: break-all;">Score</th>
                     </tr>
                     <tr>
-                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Excellent</th>
-                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Good</th>
-                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Satisfactory</th>
-                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Poor</th>
+                        <th class="RatingScoreColumnWidth trn" style="word-break: break-all;">Excellent</th>
+                        <th class="RatingScoreColumnWidth trn" style="word-break: break-all;">Good</th>
+                        <th class="RatingScoreColumnWidth trn" style="word-break: break-all;">Satisfactory</th>
+                        <th class="RatingScoreColumnWidth trn" style="word-break: break-all;">Poor</th>
                     </tr>
 
                     <tr>
-                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment">Quality</td>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Quality of Services offered (Test / Calibration)</td>
+                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment trn">Quality</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Quality of Services offered (Test / Calibration)</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -207,7 +207,7 @@
                     </tr>
 
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Reliability of test / calibration results</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Reliability of test / calibration results</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -228,7 +228,7 @@
 
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Personnel competency</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Personnel competency</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -247,7 +247,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Technical capability & support</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Technical capability & support</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -265,7 +265,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Test / Calibration report accuracy</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Test / Calibration report accuracy</td>
 
                          @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -284,7 +284,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Safeguarding of customer data / drawing</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Safeguarding of customer data / drawing</td>
 
                          @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -303,8 +303,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment">Delivery</td>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">On-time delivery of test / calibration reports</td>
+                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment trn">Delivery</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">On-time delivery of test / calibration reports</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -322,7 +322,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Response to customer request / complaint</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Response to customer request / complaint</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -341,7 +341,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Complaint resolution</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Complaint resolution</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -360,7 +360,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Emergency support</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Emergency support</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -378,7 +378,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Handling of Test / calibration items</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Handling of Test / calibration items</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -398,7 +398,7 @@
                     </tr>
 
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Commitment</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Commitment</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -418,8 +418,8 @@
                     </tr>
 
                     <tr>
-                        <td rowspan="5" class="EvalutionCriteriaVerticalAlignment">Management</td>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Communication & accessibility</td>
+                        <td rowspan="5" class="EvalutionCriteriaVerticalAlignment trn">Management</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Communication & accessibility</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -438,7 +438,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Documentation & Reporting system</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Documentation & Reporting system</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -457,7 +457,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Facilities and Environment conditions</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Facilities and Environment conditions</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -476,7 +476,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">5S management</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">5S management</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -496,7 +496,7 @@
                     </tr>
 
                     <tr>
-                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Impartiality & confidentiality</td>
+                        <td class="EvalutionCriteriaQualityWidth trn" style="word-break: break-all;">Impartiality & confidentiality</td>
 
                         @for(int value =10, i = 1 ; i<=4; i++,value--)
                         {
@@ -520,12 +520,12 @@
                 <br>
                 <table class="TableWidth">
                     <tr>
-                        <th class="OverallScorePercentageComments">Overall score obtained</th>
+                        <th class="OverallScorePercentageComments trn">Overall score obtained</th>
                         <td><input type="text" name="OverallScore" id="OverallScore" value="@Model.OverallScore" class="Border0px numberalign"
                               style="background-color: rgb(240, 240, 240);"  placeholder="@Model.OverallScore" readonly></td>
                     </tr>
                     <tr>
-                        <th class="OverallScorePercentageComments">Overall percentage (%)</th>
+                        <th class="OverallScorePercentageComments trn">Overall percentage (%)</th>
                         <td><input type="text" name="OverallPercentage" id="OverallPercentage" value="@Model.OverallPercentage"
                               style="background-color: rgb(240, 240, 240);"  placeholder="@Model.OverallPercentage" class="Border0px numberalign" readonly></td>
                     </tr>
@@ -553,14 +553,14 @@
                 <br>
                 <table class="TableWidth">
                     <tr>
-                        <th class="TableWidth2">Customer Name</th>
+                        <th class="TableWidth2 trn">Customer Name</th>
                         <td class="Tablewidth3">
                             <input type="text" name="CustomerName" Id="CustomerName" value="@Model.CustomerName"
                               style="background-color: rgb(240, 240, 240);"  class="Border0px" readonly>
                         </td>
                     </tr>
                     <tr>
-                        <th class="TableWidth2"> Date:</th>
+                        <th class="TableWidth2 trn">Date:</th>
                         <td class="Tablewidth3">
                             <input type="text" name="UserSubmitedOn" Id="UserSubmitedOn" value="@Model.UserSubmitedOn" class="Border0px" style="background-color: rgb(240, 240, 240);"  readonly></td>
                     </tr>
@@ -569,7 +569,7 @@
                 @if (@Model.FeedbackStatus == 0) 
                 {
                     <div class="card-footer">
-                        <center><button type="submit" class="btn btn-primary">Submit</button>
+                        <center><button type="submit" class="btn btn-primary trn">Submit</button>
                         <a href='@Url.Action("Index","Home")'><button type="button" class="btn btn-primary">Cancel</button></a></center>
                         
                     </div>
@@ -578,7 +578,7 @@
                 {
                         <div class="card-footer">
                             <center>
-                            <a href='@Url.Action("Index","Home")'><button type="button" class="btn btn-primary">Cancel</button>
+                            <a href='@Url.Action("Index","Home")'><button type="button" class="btn btn-primary trn">Cancel</button>
                             </a></center>       
                         </div>
                 }
@@ -588,10 +588,10 @@
                 {
                     <table class="TableWidth">
                         <tr>
-                            <th colspan="2">Laboratory Use</th>
+                            <th colspan="2" class="trn">Laboratory Use</th>
                         </tr>
                         <tr>
-                            <th class="TableWidth2" rowspan="2">Remarks</th>
+                            <th class="TableWidth2 trn" rowspan="2">Remarks</th>
                             <td class="Tablewidth3" rowspan="2">
                                 @if (@Model.FeedbackStatus==1 && @Model.LoginUserRoleId==2) 
                                 {
@@ -609,35 +609,35 @@
                     <br>
                     <table class="TableWidth">
                         <tr>
-                            <th>Reviewed By: </th>
+                            <th class="trn">Reviewed By: </th>
                         </tr>
                         <tr>
-                            <th class="TableWidth2">Name</th>
+                            <th class="TableWidth2 trn">Name</th>
                             <td class="Tablewidth3">
                                 <input type="text" style="background-color: rgb(240, 240, 240);"  name="ReviewedByName" Id="ReviewedByName" value="@Model.ReviewedByName" class="Border0px" readonly>
      
                             </td>
                         </tr>
                         <tr>
-                            <th class="TableWidth2">Date</th>
+                            <th class="TableWidth2 trn">Date</th>
                             <td class="Tablewidth3">
                                 <input class="Border0px" style="background-color: rgb(240, 240, 240);"  name="ReviewedOn" Id="ReviewedOn" readonly value="@Model.ReviewedOn"></td>
                         </tr>
                         <tr>
-                            <th>Action Required</th>
+                            <th class="trn">Action Required</th>
                             <td>
                                 <div class="statusalign">
-                                    <label>Yes</label>
+                                    <label class="trn">Yes</label>
                                     @if (@Model.FeedbackStatus > 1)
                                     {
                                         <input type="radio" name="Yes" id="Yes" disabled>
-                                        <label>No</label>
+                                        <label class="trn">No</label>
                                         <input type="radio" name="Yes" id="No" disabled>
                                     }
                                     else
                                     {
                                         <input type="radio" name="Yes" id="Yes">
-                                        <label>No</label>
+                                        <label class="trn">No</label>
                                         <input type="radio" name="Yes" id="No">
                                     }
                                 </div>
@@ -647,13 +647,13 @@
                    
                     <table id="#tableActionDetails" class="ActionRequiredTable">
                             <tr>
-                                <th class="TableWidth2">Proposed Actions</th>
+                                <th class="TableWidth2 trn">Proposed Actions</th>
                                 <td class="Tablewidth3">
                                     <textarea name="ProposedActions" Id="ProposedActions"  class="Border0px" style="width: 100%; height:70px;" maxlength="1000">@Model.ProposedActions</textarea>
                                 </td>
                             </tr>
                             <tr>
-                                <th class="TableWidth2">Target Date</th>
+                                <th class="TableWidth2 trn">Target Date</th>
                                 <td class="TableWidth2">
                                     <div class="input-group date" id="actionTargetDate" data-target-input="nearest">
                                         <input type="text" id="TargetDate" name="TargetDate" value="@Model.TargetDate"
@@ -665,17 +665,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="TableWidth2">Responsibility</th>
+                                <th class="TableWidth2 trn">Responsibility</th>
                                 <td class="Tablewidth3">
                                     <input maxlength="100" class="Border0px" name="Responsibility" Id="Responsibility"  value="@Model.Responsibility"></td>
                             </tr>
                             <tr>
-                                <th class="TableWidth2">Status</th>
+                                <th class="TableWidth2 trn">Status</th>
                                 <td class="Tablewidth3">
                                     <input maxlength="50" class="Border0px" name="UpdateStatus" Id="UpdateStatus"  value="@Model.UpdateStatus"></td>
                             </tr>
                             <tr>
-                                <th class="TableWidth2">Closed Date</th>
+                                <th class="TableWidth2 trn">Closed Date</th>
                                 <td class="TableWidth2">
                                     <div class="input-group date" id="actionClosedDate" data-target-input="nearest">
                                             <input type="text" id="ClosedDate" name="ClosedDate" value="@Model.ClosedDate"
@@ -687,7 +687,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="TableWidth2">File Attachment</th>
+                                <th class="TableWidth2 trn">File Attachment</th>
                                 <td class="Tablewidth3">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input"
@@ -708,15 +708,15 @@
                     @if (@Model.FeedbackStatus == 1 && @Model.LoginUserRoleId == 2 ) 
                     {
                         <div class="card-footer">
-                            <center><button type="submit" class="btn btn-primary">Review</button>
-                            <a href='@Url.Action("SubmittedList","Feedback")'><button type="button" class="btn btn-primary">Cancel</button></a></center>       
+                            <center><button type="submit" class="btn btn-primary trn">Review</button>
+                            <a href='@Url.Action("SubmittedList","Feedback")'><button type="button" class="btn btn-primary trn">Cancel</button></a></center>       
                         </div>
                     }
                     else  if (@Model.FeedbackStatus > 1)
                     {
                         <div class="card-footer">
                             <center>
-                                <a href='@Url.Action("ReviewedList","Feedback")'><button type="button" class="btn btn-primary">Cancel</button></a>
+                                <a href='@Url.Action("ReviewedList","Feedback")'><button type="button" class="btn btn-primary trn">Cancel</button></a>
                             </center>
                         </div>
                     }

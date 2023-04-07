@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col-sm-3">
               <!-- text input -->
-              <label>Department</label>
+                                <label class="trn">Department</label>
               <select class="form-control" name="DepartmentId" id="DepartmentId">
                 @foreach (var department in @Model.DepartmentList)
                 {
@@ -38,7 +38,7 @@
               </select>
             </div>
             <div class="col-sm-3">
-              <label>Instrument Type</label>
+              <label class="trn">Instrument Type</label>
               <select class="form-control" name="InstrumentType" id="InstrumentType">
                 <option value="1">Active</option>
                 <option value="2">Quarantine</option>
@@ -46,7 +46,7 @@
             </div>          
             <div class="col-sm-3">
               <br>
-              <button onclick="generateChart()" class="btn btn-primary">Generate Chart</button>
+              <button onclick="generateChart()" class="btn btn-primary trn">Generate Chart</button>
             </div>
           </div> 
         </div>

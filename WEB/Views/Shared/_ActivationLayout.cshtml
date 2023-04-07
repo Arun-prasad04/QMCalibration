@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
@@ -152,6 +152,46 @@
 <script src="~/js/daimler.js"></script>
 <script src="~/js/jquery.validate.min.js"></script>
 <script src="~/js/additional-methods.min.js"></script>
+		<script src="~/js/jquery.translate.js"></script>
+
+
+
+		<script type="text/javascript">
+			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
+			showPopup('@ViewBag.ResponseCode', '@ViewBag.ResponseMessage');
+
+			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
+			$('.Languagepicker').selectpicker();
+			$('.Languagepicker').selectpicker('val', language);
+
+			var dict = diction();
+			var translator = $('body').translate({ lang: language, t: dict });
+
+			$('.Languagepicker').on('change', function () {
+				var selected = $(this).find("option:selected").val();
+				var dict = diction();
+
+				if (selected == "en") {
+					var translator = $('body').translate({ lang: "en", t: dict });
+
+				}
+				else {
+					var translator = $('body').translate({ lang: "jp", t: dict });
+				}
+			});
+
+			function diction() {
+				var dict = {
+                    "User Authentication": { jp: "ユーザ認証", en: "User Authentication" },
+                    "Confirm Password": { jp: "パスワードを認証する", en: "Confirm Password" },
+                    "Activate Account": { jp: "アカウントを有効にする", en: "Activate Account" },
+                    "Password": { jp: "パスワード", en: "Password" }
+
+				}
+				return dict;
+			}
+
+		</script>
 </div>
 
 </body>

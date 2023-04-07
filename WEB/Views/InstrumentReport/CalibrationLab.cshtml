@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
-                            <label>Year</label>
+                            <label class="trn">Year</label>
                             <select class="form-control" name="Year" id="Year">
                                 @foreach (var year in @ViewBag.yearsList)
                                 {
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label>Month</label>
+                                <label class="trn">Month</label>
                                 <select class="form-control" name="DDMonth" id="DDMonth">
                                     <option value="0" selected>All</option>
                                     <option value="1">January</option>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label>Request</label>
+                                <label class="trn">Request</label>
                                 <select class="form-control" name="Request" id="Request">
                                     <option value="0" selected>All</option>
                                     <option value="1">New</option>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-sm-1">
                             <div class="form-group">
-                                <label>Target%</label>
+                                <label class="trn">Target%</label>
                                 <input id="TargetValue" name="TargetValue" value="100" class="form-control"
                                     width="40%"></input>
                             </div>
@@ -63,8 +63,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label></label>
-                                <center><button class="btn btn-primary" onclick="BarUpdateChart()">Generate
-                                        Chart</button></center>
+                                <center><button class="btn btn-primary trn" onclick="BarUpdateChart()">Generate Chart</button></center>
                             </div>
                         </div>
                     </div>
@@ -79,15 +78,15 @@
     <table id="tblFeedbackList" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Month</th>
-                <th>Type of Request</th>
-                <th>No of requests received</th>
-                <th>Completed on same day</th>
-                <th>Within 1 day</th>
-                <th>Within 2 days</th>
-                <th>Within 3 days</th>
-                <th>More than 3 days</th>
-                <th>KPI% Calculation(Within 2 days)</th>
+                <th class="trn">Month</th>
+                <th class="trn">Type of Request</th>
+                <th class="trn">No of requests received</th>
+                <th class="trn">Completed on same day</th>
+                <th class="trn">Within 1 day</th>
+                <th class="trn">Within 2 days</th>
+                <th class="trn">Within 3 days</th>
+                <th class="trn">More than 3 days</th>
+                <th class="trn">KPI% Calculation(Within 2 days)</th>
             </tr>
         </thead>
         <tbody id="tblchartdata">

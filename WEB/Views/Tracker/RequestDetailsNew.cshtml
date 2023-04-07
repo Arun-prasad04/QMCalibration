@@ -44,7 +44,7 @@
           <div class="card-header">
             <div class="row">
               <div class="col-md-6">
-                <h3 class="card-title">Request Details</h3>
+                <h3 class="card-title trn">Request Details</h3>
               </div>
               <div class="col-md-6 text-right">
                   <input type="hidden" id="RequestCalibId" value="@Model.Id">
@@ -61,13 +61,13 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Request Number</label>
+                            <label class="trn">Request Number</label>
                             <input type="text" class="form-control" id="NewReqestNo" value="@Model.ReqestNo" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Requested Date</label>
+                            <label class="trn">Requested Date</label>
                             <input type="text" class="form-control" id="NewRequestDate" value="@Model.RequestDate.ToShortDateString()"  disabled>
                         </div>
                     </div>
@@ -77,14 +77,14 @@
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Instrument Name</label>
+                            <label class="trn">Instrument Name</label>
                             <input type="text" class="form-control" id="NewInstrumentName" value="@Model.InstrumentName" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Instrument Serial Number</label>
+                                <label class="trn">Instrument Serial Number</label>
                             <input type="text" class="form-control" id="NewInstrumentSerialNumber" value="@Model.InstrumentSerialNumber" disabled>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Type Of Request</label>
+                            <label class="trn">Type Of Request</label>
                             @if(Model.TypeOfRequest==1)
                             {
                                 <input type="text" class="form-control" id="NewTypeOfRequest" value="New"  disabled>
@@ -116,7 +116,7 @@
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Request By</label>
+                                <label class="trn">Request By</label>
                             <input type="text" class="form-control" id="NewReqestBy" value="@Model.ReqestBy" disabled>
                         </div>
                     </div>                    
@@ -124,14 +124,14 @@
                 <div class="row">                    
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Range</label>
+                                <label class="trn">Range</label>
                             <input type="text" class="form-control" id="NewRange" value="@Model.Range" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Unit</label>
+                            <label class="trn">Unit</label>
                             <input type="text" class="form-control" id="NewUnit1" value="@Model.Unit1" disabled>
                         </div>
                     </div>
@@ -139,14 +139,14 @@
                 <div class="row">                    
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>LC</label>
+                            <label class="trn">LC</label>
                             <input type="text" class="form-control" id="NewLC" value="@Model.LC" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Unit</label>
+                            <label class="trn">Unit</label>
                             <input type="text" class="form-control" id="NewUnit2" value="@Model.Unit2" disabled>
                         </div>
                     </div>
@@ -154,14 +154,14 @@
                 <div class="row">                    
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Set Value for TW</label>
+                            <label class="trn">Set Value for TW</label>
                             <input type="text" class="form-control" id="NewTW_Type" value="@Model.TW" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Unit</label>
+                            <label class="trn">Unit</label>
                             <input type="text" class="form-control" id="NewUnit3" value="@Model.Unit3" disabled>
                         </div>
                     </div>
@@ -170,13 +170,13 @@
                     <div class="col-sm-6">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Make</label>
+                            <label class="trn">Make</label>
                             <input type="text" class="form-control" id="NewMake" value="@Model.Make" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Status</label>
+                                <label class="trn">Status</label>
                             @if(Model.Status==26)
                             {
                             <input type="text" class="form-control" id="status_newrejected" value="Awaiting for review" disabled>
@@ -196,13 +196,13 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Ref Standard/Calibration Method</label>
+                    <label class="trn">Ref Standard/Calibration Method</label>
                     <input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.StandardReffered1" class="form-control" placeholder="" disabled>
                   </div>
                 </div>
                 <div class="col-sm-6">
                    <div class="form-group">
-                      <label>Calibration Frequency</label>
+                      <label class="trn">Calibration Frequency</label>
                       <select id="CalibFreq" name="CalibFreq" class="form-control" disabled>
                         @foreach (var freq in @Model.CalibFreqList)
                         {
@@ -223,7 +223,7 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Type of Instrument</label>
+                    <label class="trn">Type of Instrument</label>
                     <select id="Instrument_Type" name="Instrument_Type" class="form-control" disabled>                        
                         @if (Model.Instrument_Type==1)
                         {
@@ -251,7 +251,7 @@
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Drawing is attached</label>
+                    <label class="required trn">Drawing is attached</label>
                     <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
                         @if (Model.Drawing_Attached=="Yes")
                         {
@@ -274,7 +274,7 @@
               <div class="row">                
                 <div class="col-sm-6">
                    <div class="form-group">
-                      <label>Decision rule for statement of Confirmity</label>
+                                <label class="trn">Decision rule for statement of Confirmity</label>
                       <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
                         @if (Model.Rule_Confirmity=="Include MU")
                         {
@@ -299,13 +299,13 @@
                   <div class="row">
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received By</label>
+                                <label class="trn">Received By</label>
                                 <input type"text" id="ReceivedBy" class="form-control" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName") @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received Date</label>
+                                <label class="trn">Received Date</label>
                         <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                           id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
@@ -320,13 +320,13 @@
                             <div class="col-sm-3" style="top: 15px;" id="AcceptSection">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Accept</label>
+                                <label class="trn">Accept</label>
                                 <input type="radio" name="NewAcceptReject" value="Accept">
                             </div>
                         </div>
                         <div class="col-sm-3" style="top: 15px;" id="RejectSection">
                             <div class="form-group">
-                                <label>Reject</label>
+                                    <label class="trn">Reject</label>
                                 <input type="radio" name="NewAcceptReject" value="Reject">
                             </div>
                         </div>
@@ -344,13 +344,13 @@
                 <div class="row">
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received By</label>
+                                <label class="trn">Received By</label>
                                 <input type"text" id="ReceivedBy" class="form-control" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName") @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received Date</label>
+                                <label class="trn">Received Date</label>
                         <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                           id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
@@ -362,13 +362,13 @@
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Instrument Condition</label>
+                                <label class="trn">Instrument Condition</label>
                                 <input type"text" id="InstrumentCondition" class="form-control" value="">
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Feasiblity</label>
+                                <label class="trn">Feasiblity</label>
                                 <select id="Feasiblity" class="form-control">
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -378,7 +378,7 @@
                       
                   <div class="col-sm-6">
                    <div class="form-group">
-                    <label class="required">Standard Reffered/Calibration Method</label>
+                    <label class="required trn">Standard Reffered/Calibration Method</label>
                     <input type="text" id="StandardReffered" name="StandardReffered" value=""
                       class="form-control" placeholder="">
                   </div>
@@ -386,7 +386,7 @@
                  <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>NABL</label>
+                                <label class="trn">NABL</label>
                                 <select id="NewNABL" name="NewNABL" class="form-control" onchange="getNABLValue(this)">
                                 @if(Model.IsNABL == false)
                                 {
@@ -403,7 +403,7 @@
                 </div>
                 <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Tentative Closing Date</label>
+                                <label class="trn">Tentative Closing Date</label>
                                 <div class="input-group date" id="reservationdate7" data-target-input="nearest"onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());" >
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
                           id="TentativeCompletionDate" name="TentativeCompletionDate" value="">
@@ -416,7 +416,7 @@
                             <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Accept</label>
+                                <label class="trn">Accept</label>
                                 <input type="radio" name="NewAcceptReject" value="Accept"
                                     onclick="NewReqEnableReason()">
 
@@ -424,7 +424,7 @@
                         </div>
                         <div class="col-sm-3" style="top: 35px;" id="RejectSection">
                             <div class="form-group">
-                                <label>Reject</label>
+                                    <label class="trn">Reject</label>
                                 <input type="radio" name="NewAcceptReject" value="Reject"
                                     onclick="NewReqEnableReason()">
                             </div>
@@ -436,13 +436,13 @@
                 <div class="row">
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received By</label>
+                                <label class="trn">Received By</label>
                                 <input type"text" id="ReceivedBy" class="form-control" value="@Model.ReceivedByName" disabled>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Received Date</label>
+                                <label class="trn">Received Date</label>
                         <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                           id="ReceivedDate" name="ReceivedDate" value='@Model.ReceivedDate' disabled />
@@ -454,13 +454,13 @@
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Instrument Condition</label>
+                                <label class="trn">Instrument Condition</label>
                                 <input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Feasiblity</label>
+                                    <label class="trn">Feasiblity</label>
                                 <select id="Feasiblity" class="form-control" disabled>
                                     @if(Model.Feasiblity=="Yes")
                                     {
@@ -482,7 +482,7 @@
                       
                   <div class="col-sm-6">
                    <div class="form-group">
-                    <label class="required">Standard Reffered/Calibration Method</label>
+                    <label class="required trn">Standard Reffered/Calibration Method</label>
                     <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
                       class="form-control" placeholder="" disabled>
                   </div>
@@ -490,7 +490,7 @@
                  <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>NABL</label>                                
+                                    <label class="trn">NABL</label>
                                 <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
                                 @if(Model.IsNABL == false)
                                 {
@@ -507,7 +507,7 @@
                 </div>
                 <div class="col-sm-6" >
                             <div class="form-group">
-                                <label>Tentative Closing Date</label>
+                                <label class="trn">Tentative Closing Date</label>
                                 <div class="input-group date" id="reservationdate7" data-target-input="nearest"onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());" >
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
                           id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate" disabled>
@@ -520,7 +520,7 @@
                             <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Accept</label>
+                                    <label class="trn">Accept</label>
                                 @if(Model.Status==27 || Model.Status==29)
                                 {
                                 <input type="radio" name="NewAcceptReject" value="Accept" checked=true
@@ -534,7 +534,7 @@
                         </div>
                         <div class="col-sm-3" style="top: 35px;" id="RejectSection">
                             <div class="form-group">
-                                <label>Reject</label>
+                                <label class="trn">Reject</label>
                                 
                                 @if(Model.Status==28)
                                 {
@@ -556,7 +556,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Rejection Reason</label>
+                                    <label class="trn">Rejection Reason</label>
                                     <textarea id="Newreason" style="width: 100%;"></textarea>
                                 </div>
                             </div>
@@ -576,7 +576,7 @@
                     <div class="row">
                     <div class="col-sm-4">
                     <div class="form-group">
-                        <label>Master Instrument Name</label>
+                        <label class="trn">Master Instrument Name</label>
                         <select id="MasterInstrument" name="MasterInstrument" class="form-control">
                         <option>--Select Master--</option>
                         @if(@ViewBag.MasterData!=null)
@@ -605,7 +605,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Observation Template</label>
+                                        <label class="trn">Observation Template</label>
                                 <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control"> 
                                     @foreach (var freq in @Model.ObservationTemplateList)
                                     {   
@@ -624,7 +624,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Observation Template Type</label>
+                                <label class="trn">Observation Template Type</label>
                                 <select id="NewObservationType" class="form-control">
                                     
                                 </select>
@@ -636,7 +636,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>MU Template</label>
+                                <label class="trn">MU Template</label>
                                 <select id="NewMU" class="form-control">
                                     @foreach (var freq in @Model.MUTemplateList)
                                     {   
@@ -656,7 +656,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Certification Tmeplate</label>
+                                <label class="trn">Certification Tmeplate</label>
                                 <select id="NewCertification" class="form-control">
                                     @foreach (var freq in @Model.CertificationTemplateList)
                                     {   
@@ -692,7 +692,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Observation Template</label>
+                                <label class="trn">Observation Template</label>
                                 <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control" disabled> 
                                     @foreach (var freq in @Model.ObservationTemplateList)
                                     {   
@@ -711,7 +711,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Observation Template Type</label>
+                                <label class="trn">Observation Template Type</label>
                                 <select id="NewObservationType" class="form-control" disabled>                                    
                                 </select>
                             </div>
@@ -722,7 +722,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>MU Template</label>
+                                <label class="trn">MU Template</label>
                                 <select id="NewMU" class="form-control" disabled>
                                     @foreach (var freq in @Model.MUTemplateList)
                                     {   
@@ -741,7 +741,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Certification Tmeplate</label>
+                                <label class="trn">Certification Tmeplate</label>
                                 <select id="NewCertification" class="form-control" disabled>
                                     @foreach (var freq in @Model.CertificationTemplateList)
                                     {   
@@ -843,14 +843,14 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Rejected On</label>
+                                <label class="trn">Rejected On</label>
                                 <input type="text" class="form-control" id="NewrejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Rejected Reason</label>
+                                <label class="trn">Rejected Reason</label>
                                 <input type="text" class="form-control" id="NewrejectedReason" value="@Model.RejectReason" disabled>
                             </div>
                         </div>
@@ -863,7 +863,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Closed Date</label>
+                                <label class="trn">Closed Date</label>
                                 <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
                                     <input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
                                         class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
@@ -876,7 +876,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Record By</label>
+                                <label class="trn">Record By</label>
                                 <input type="text" class="form-control" id="RecordBy"
                                     value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")'
                                     disabled>
@@ -890,7 +890,7 @@
                 <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label for="exampleInputFile">MU Template</label>
+                    <label for="exampleInputFile" class="trn">MU Template</label>
                     <div class="input-group">
                       <div class="custom-file">
                         <input type="file" class="custom-file-input"
@@ -915,7 +915,7 @@
               <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Calibration Date</label>
+                                    <label class="trn">Calibration Date</label>
                       <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                           id="CalibDate" name="CalibDate" onloadeddata="" value=""  />
@@ -927,7 +927,7 @@
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Due Date</label>
+                      <label class="trn">Due Date</label>
                        <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                             id="DueDate" name="DueDate" value="" />
@@ -944,13 +944,13 @@
                     <div class="col-sm-6">
                   <!-- text input -->
                             <div class="form-group">
-                                <label>Instrument Id Number</label>                   
+                                <label class="trn">Instrument Id Number</label>                   
                                 <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">                    
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Result</label>
+                                <label class="trn">Result</label>
                                 <select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()">
                                         <option value="0">Select</option>                                                                    
                                         <option value="Accepted">Accepted</option>
@@ -962,7 +962,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Remarks</label>
+                                <label class="trn">Remarks</label>
                                 <input type="text" class="form-control" id="newRemarks" value=''>
                             </div>
                         </div>
@@ -972,7 +972,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Instument Returned On</label>
+                                <label class="trn">Instument Returned On</label>
                                 <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                         class="form-control datetimepicker-input" data-target="#reservationdate3" />
@@ -985,7 +985,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Collected By</label>
+                                <label class="trn">Collected By</label>
                                 <input type="text" class="form-control" id="CollectedBy">
                             </div>
                         </div>
@@ -995,7 +995,7 @@
                     <div class="row">                        
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Reason for Rejection</label>
+                                <label class="trn">Reason for Rejection</label>
                                 <input type="text" class="form-control" id="newReasonRejection" value=''>
                             </div>
                         </div>
@@ -1003,7 +1003,7 @@
                         {
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Feasible to Service</label>
+                                            <label class="trn">Feasible to Service</label>
                                 <select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()">
                                         <option value="0">Select</option>                                                                    
                                         <option value="Yes">Yes</option>
@@ -1017,7 +1017,7 @@
                     <div class="row"> 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>If Feasible service, Yes </label>
+                                <label class="trn">If Feasible service, Yes </label>
                                 <select id="newIsFeasibleService" class="form-control">
                                         <option value="Internal">Internal</option> 
                                         <option value="External">External</option>                                       
@@ -1026,7 +1026,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Service Responsibility</label>
+                                <label class="trn">Service Responsibility</label>
                                 <input type="text" class="form-control" id="newServiceResponsibility" value=''>
                             </div>
                         </div>
@@ -1036,7 +1036,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Instument Returned On</label>
+                                <label class="trn">Instument Returned On</label>
                                 <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                         class="form-control datetimepicker-input" data-target="#reservationdate3" />
@@ -1049,7 +1049,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Collected By</label>
+                                <label class="trn">Collected By</label>
                                 <input type="text" class="form-control" id="CollectedBy">
                             </div>
                         </div>
@@ -1058,7 +1058,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Remarks</label>
+                                <label class="trn">Remarks</label>
                                 <input type="text" class="form-control" id="newRejectionRemarks" value=''>
                             </div>
                         </div>
@@ -1104,7 +1104,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Closed Date</label>
+                                <label class="trn">Closed Date</label>
                                 <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
                                     <input type="text" id="newClosedDate" name="newClosedDate" value="@Model.ClosedDate.ToShortDateString()"
                                         class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
@@ -1117,7 +1117,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Record By</label>
+                                <label class="trn">Record By</label>
                                 <input type="text" class="form-control" id="RecordBy"
                                     value="@Model.RecordBy"
                                     disabled>
@@ -1127,7 +1127,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>MU Template</label>
+                                <label class="trn">MU Template</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -1142,7 +1142,7 @@
                     <div class="row">
                     <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Calibration Date</label>
+                      <label class="trn">Calibration Date</label>
                       <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                           id="CalibDate" name="CalibDate" onloadeddata="" value="@Model.CalibDate" disabled />
@@ -1154,7 +1154,7 @@
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Due Date</label>
+                      <label class="trn">Due Date</label>
                        <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                             id="DueDate" name="DueDate" value="@Model.DueDate" disabled />
@@ -1169,13 +1169,13 @@
                         <div class="col-sm-6">
                   <!-- text input -->
                             <div class="form-group">
-                                <label>Instrument Id Number</label>                   
+                                <label class="trn">Instrument Id Number</label>                   
                                 <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>                    
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Result</label>
+                                <label class="trn">Result</label>
                                 <select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()" disabled>
                                         <option value="0">Select</option> 
                                         @if(Model.LabResult=="Accepted")
@@ -1211,7 +1211,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Remarks</label>
+                                <label class="trn">Remarks</label>
                                 <input type="text" class="form-control" id="newRemarks" value="@Model.Result" disabled>
                             </div>
                         </div>
@@ -1222,7 +1222,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Instument Returned On</label>
+                                <label class="trn">Instument Returned On</label>
                                 <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@Model.InstrumentReturnedOn.ToShortDateString()"
                                         class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
@@ -1235,7 +1235,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Collected By</label>
+                                <label class="trn">Collected By</label>
                                 @if(Model.Status==30)
                                 {
                                 <input type="text" class="form-control" id="CollectedBy" value="@Model.CollectedBy" disabled>
@@ -1252,7 +1252,7 @@
                     <div class="row">                        
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Reason for Rejection</label>
+                                <label class="trn">Reason for Rejection</label>
                                 <input type="text" class="form-control" id="newReasonRejection" value="@Model.ReasonforRejection" disabled>
                             </div>
                         </div>
@@ -1260,7 +1260,7 @@
                         {
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Feasible to Service</label>
+                                <label class="trn">Feasible to Service</label>
                                 <select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()" disabled>
                                         <option value="0">Select</option>
                                         @if(Model.IsFeasibleService=="Yes")
@@ -1288,7 +1288,7 @@
                     <div class="row"> 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>If Feasible service, Yes </label>
+                                <label class="trn">If Feasible service, Yes </label>
                                 <select id="newIsFeasibleService" class="form-control" disabled>
                                         @if(Model.IsFeasibleYes=="Internal")
                                         {
@@ -1309,7 +1309,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Service Responsibility</label>
+                                <label class="trn">Service Responsibility</label>
                                 <input type="text" class="form-control" id="newServiceResponsibility" value="@Model.ServiceResponsibility">
                             </div>
                         </div>
@@ -1320,7 +1320,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Instument Returned On</label>
+                                <label class="trn">Instument Returned On</label>
                                 <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                         class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
@@ -1333,7 +1333,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Collected By</label>
+                                <label class="trn">Collected By</label>
                                 <input type="text" class="form-control" id="CollectedBy">
                             </div>
                         </div>
@@ -1342,7 +1342,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Remarks</label>
+                                <label class="trn">Remarks</label>
                                 <input type="text" class="form-control" id="newRejectionRemarks" value=''>
                             </div>
                         </div>
@@ -1357,7 +1357,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Return Date</label>
+                                <label class="trn">Return Date</label>
 
                                 <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
                                     <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now"
@@ -1372,7 +1372,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label>Result</label>
+                                    <label class="trn">Result</label>
                                     <input type="text" class="form-control" id="newResultDEP" value=''>
                                 </div>
                             </div>

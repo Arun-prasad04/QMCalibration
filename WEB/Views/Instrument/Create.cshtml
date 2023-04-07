@@ -16,18 +16,18 @@
           <div class="card-header">
             <div class="row">
               <div class="col-md-6">
-                <h3 class="card-title">New Instrument</h3>
+                <h3 class="card-title trn">New Instrument</h3>
               </div>
               <div class="col-md-6 text-right">
-                <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default"
-                    value="Instrument List"></a>
+                <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default trn" value="Instrument List">                                   
+                </a>
               </div>
             </div>
           </div>
 
           <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title">Instrument Details</h3>
+              <h3 class="card-title trn">Instrument Details</h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -45,14 +45,14 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label class="required">Instrument Name</label>
+                    <label class="required trn">Instrument Name</label>
                     <input type="text" id="InstrumentName" name="InstrumentName" value="@Model.InstrumentName"
                       class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Instrument Serial Number</label>
+                    <label class="required trn">Instrument Serial Number</label>
                     <input type="text" id="SlNo" name="SlNo" value="@Model.SlNo" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -62,13 +62,13 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Range</label>
+                    <label class="required trn">Range</label>
                     <input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Unit</label>
+                    <label class="required trn">Unit</label>
                     <input type="text" id="Unit1" name="Unit1" value="@Model.Unit1" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -78,13 +78,13 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Least Count</label>
+                                        <label class="trn">Least Count</label>
                     <input type="text" id="LC" name="LC" value="@Model.LC" class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Unit</label>
+                    <label class="required trn">Unit</label>
                     <input type="text" id="Unit2" name="Unit2" value="@Model.Unit2" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -93,14 +93,14 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Set Value for TW</label>
+                    <label class="trn">Set Value for TW</label>
                     <input type="text" id="TW_Type" name="TW_Type" value="@Model.TW_Type" class="form-control"
                       placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <div class="form-group">
-                    <label class="required">Unit</label>
+                  <div class="form-group"> 
+                    <label class="required trn">Unit</label>
                     <input type="text" id="Unit3" name="Unit3" value="@Model.Unit3" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -110,7 +110,7 @@
                   @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                   {
                     <div class="form-group">
-                      <label class="required">User Department</label>
+                      <label class="required trn">User Department</label>
                       <select class="form-control" name="UserDept" id="UserDept">
                         @foreach (var department in @Model.Departments)
                         {
@@ -150,7 +150,7 @@
                   @if (@Model.Id != 0 && @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
                   {
                     <div class="form-group">
-                      <label class="required">User Department</label>
+                      <label class="required trn">User Department</label>
                       <input type="text" id="UserDept" name="UserDept" value='@Model.DepartmentName' class="form-control"
                       placeholder="" disabled>
                     </div>
@@ -159,7 +159,7 @@
                   @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
                   {
                     <div class="form-group">
-                      <label class="required">User Department</label>
+                      <label class="required trn">User Department</label>
                       <input type="text" id="UserDept" name="UserDept"
                       value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentName")' class="form-control"
                       placeholder="" disabled>
@@ -173,7 +173,7 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label class="required">Make</label>
+                    <label class="required trn">Make</label>
                     <input type="text" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="">
                   </div>
                 </div>
@@ -182,14 +182,14 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Ref Standard/Calibration Method</label>
+                    <label class="trn">Ref Standard/Calibration Method</label>
                     <input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.StandardReffered1"
                       class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label>Calibration Frequency</label>
+                                        <label class="trn">Calibration Frequency</label>
                     <select id="CalibFreq" name="CalibFreq" class="form-control">
                       @foreach (var freq in @Model.CalibFreqList)
                       {
@@ -210,7 +210,7 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Type of Instrument</label>
+                                        <label class="trn">Type of Instrument</label>
                     <select id="Instrument_Type" name="Instrument_Type" class="form-control">
                       @if (Model.Instrument_Type == 1)
                       {
@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label class="required">Drawing is attached</label>
+                    <label class="required trn">Drawing is attached</label>
                     <select id="Drawing_Attached" name="Drawing_Attached" class="form-control">
                       @if (Model.Drawing_Attached == "Yes")
                       {
@@ -267,7 +267,7 @@
 
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label>Decision rule for statement of Confirmity</label>
+                                        <label class="trn">Decision rule for statement of Confirmity</label>
                     <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control">
                       @if (Model.Rule_Confirmity == "Include MU")
                       {
@@ -291,7 +291,7 @@
                 <div class="col-sm-6">
                   <!-- text input -->
                   <div class="form-group">
-                    <label>Remarks</label>
+                                        <label class="trn">Remarks</label>
                     <input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
                       placeholder="">
                   </div>
@@ -301,7 +301,7 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label for="exampleInputFile">If yes provision for standard/drawing attachment</label>
+                                        <label for="exampleInputFile" class="trn">If yes provision for standard/drawing attachment</label>
                     <div class="input-group">
                       <div class="custom-file">
                         <input type="file" class="custom-file-input"
@@ -367,7 +367,7 @@
             {
               <div class="card card-default">
                 <div class="card-header">
-                  <h3 class="card-title">Calibration Details</h3>
+                  <h3 class="card-title trn">Calibration Details</h3>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -383,7 +383,7 @@
                   <div class="row">
                     <div class="col-sm-3">
                       <div class="form-group">
-                        <label>Master Instrument Name</label>
+                                                <label class="trn">Master Instrument Name</label>
                         <select id="MasterInstrument" name="MasterInstrument" class="form-control" @Model.IsDisabled>
                           <option>--Select Master--</option>
                           @foreach (var master in @Model.MasterData)
@@ -424,7 +424,7 @@
                     <div class="col-sm-6">
                       <!-- text input -->
                     <div class="form-group">
-                        <label>Instrument Id Number</label>
+                                                <label class="trn">Instrument Id Number</label>
                         @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                         {
                           <input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder=""
@@ -442,14 +442,14 @@
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="required">Standard Reffered</label>
+                        <label class="required trn">Standard Reffered</label>
                         <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
                         class="form-control" placeholder="" @Model.IsDisabled>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Calibration Date</label>
+                                                <label class="trn">Calibration Date</label>
                         <div class="input-group date" id="reservationdate" data-target-input="nearest"
                         onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
@@ -464,7 +464,7 @@
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Due Date</label>
+                                                <label class="trn">Due Date</label>
                         <div class="input-group date" id="reservationdate1" data-target-input="nearest"
                         onchange="$('#DueDate').attr('value',$('#DueDate').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
@@ -478,7 +478,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Date Of Receipt</label>
+                        <label class="trn">Date Of Receipt</label>
                         <div class="input-group date" id="reservationdate2" data-target-input="nearest"
                         onchange="$('#DateOfReceipt').attr('value',$('#DateOfReceipt').val());">
                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"
@@ -495,14 +495,14 @@
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="required">Calibration Source</label>
+                                                <label class="required trn">Calibration Source</label>
                         <input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
                         class="form-control" placeholder="" @Model.IsDisabled>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label for="exampleSelectRounded0">Calibration Status</label>
+                                                <label for="exampleSelectRounded0" class="trn">Calibration Status</label>
                         <select id="CalibrationStatus" name="CalibrationStatus" class="form-control" @Model.IsDisabled>
                           @foreach (var calibrationstatus in @Model.CalibrationStatusList)
                           {
@@ -526,7 +526,7 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label class="required">Is NABL</label>
+                                                    <label class="required trn">Is NABL</label>
                           <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)">
                             @if (Model.IsNABL == false)
                             {
@@ -543,7 +543,7 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label class="required">Observation Template</label>
+                                                    <label class="required trn">Observation Template</label>
                           <select id="ObservationTemplate" name="ObservationTemplate" class="form-control"
                         onchange="LoadObservationType()" @Model.IsDisabled>
                             @foreach (var observation in @Model.ObservationTemplateList)
@@ -566,7 +566,7 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label class="required">Observation Type </label>
+                          <label class="required trn">Observation Type</label>
                           <select id="ObservationType" name="ObservationType" class="form-control" @Model.IsDisabled>
 
                           </select>
@@ -575,7 +575,7 @@
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label class="required">MU Template</label>
+                          <label class="required trn">MU Template</label>
 
                           <select id="MUTemplate" name="MUTemplate" class="form-control" @Model.IsDisabled>
                             @foreach (var mu in @Model.MUTemplateList)
@@ -599,7 +599,7 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label class="required">Certification Template</label>
+                                                    <label class="required trn">Certification Template</label>
                           <select id="CertificationTemplate" name="CertificationTemplate" class="form-control"
                         @Model.IsDisabled>
                             @foreach (var certificate in @Model.CertificationTemplateList)
@@ -628,7 +628,7 @@
               </div>
             }
             <div class="card-footer">
-              <center><button type="submit" class="btn btn-primary">Submit</button></center>
+              <center><button type="submit" class="btn btn-primary trn">Submit</button></center>
             </div>
             <!-- /.card-body -->
           </div>
