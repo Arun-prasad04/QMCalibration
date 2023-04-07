@@ -1,0 +1,362 @@
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+
+
+    }
+
+    .Tables-AndTableTextBox {
+        width: 100%;
+    }
+
+    .row {
+        display: flex;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .column {
+        flex: 50%;
+
+    }
+</style>
+
+
+
+
+
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Observation Sheet Vernier Caliper</th>
+        <th>Format No.</th>
+        <td><input type="text" value="@Model.FormatNo" class="Tables-AndTableTextBox" id="FormatNo"></td>
+    </tr>
+    <tr>
+        <th>Rev.No & Date</th>
+        <td><input type="text" value="@Model.RevNo" class="Tables-AndTableTextBox" id="RevNoAndDate"></td>
+    </tr>
+</table>
+<br>
+
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th>Name:</th>
+        <td><input type="text" value="@Model.Name" class="Tables-AndTableTextBox" id="Name"></td>
+        <th>Range/LC: </th>
+        <td> <input type="text" value="@Model.Range" class="Tables-AndTableTextBox" id="Range"></td>
+        <th>Make:</th>
+        <td><input type="text" value="@Model.Make" class="Tables-AndTableTextBox" id="Make"></td>
+    </tr>
+    <tr>
+        <th>Serial No:</th>
+        <td><input type="text" value="@Model.SerialNo" class="Tables-AndTableTextBox" id="SerialNo."></td>
+        <th>Id No:</th>
+        <td><input type="text" value="@Model.IdNo" class="Tables-AndTableTextBox" id="IdNO."></td>
+        <th>Ref Std.</th>
+        <td><input type="text" value="@Model.RefStd" class="Tables-AndTableTextBox" id="RefStd"></td>
+    </tr>
+    <tr>
+        <th>Temp@Start <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempAtStart" class="Tables-AndTableTextBox" id="Temp@Start"></td>
+        <th>Temp@End <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempAtEnd" class="Tables-AndTableTextBox" id="Temp@End"></td>
+        <th>Humidity %RH</th>
+        <td><input type="text" value="@Model.Humidity" class="Tables-AndTableTextBox" id="Humidity"></td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="4" class="text-left">Condition of the Parameter</td>
+        <th>RefWi:</th>
+        <td><input type="text" class="Tables-AndTableTextBox" value="@Model.RefWi" id="RefWi"></td>
+    </tr>
+    <tr>
+        <th>All Values Are In </th>
+        <td><input type="text" value="@Model.AllValuesAreIn" class="Tables-AndTableTextBox" id="AllValuesAreIn"></td>
+    </tr>
+</table>
+<br>
+<div class="row">
+
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="5">ExternalJaw</th>
+            </tr>
+            <tr>
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+                <th rowspan="2">Avg.</th>
+            </tr>
+            <tr>
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.ExternalJawLmeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="ExternalJawLMeasured">
+                    </td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="ExternalJawLActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="ExternalJawLActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="ExternalJawLActualsTrail3"></td>
+                    <td><input type="text" value="@item1.Avg" class="Tables-AndTableTextBox" id="ExternalJawLAvg"></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="5">ExternalJaw</th>
+            </tr>
+            <tr>
+
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+                <th rowspan="2">Avg.</th>
+
+            </tr>
+            <tr>
+
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.ExternalJawRmeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="ExternalJawRMeasured">
+                    </td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail3"></td>
+                    <td><input type="text" value="@item1.Avg" class="Tables-AndTableTextBox" id="ExternalJawRAvg"></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<br>
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th>Parallelism Details :</th>
+        <td><input type="text" value="@Model.ExternalParallelismDetails" class="Tables-AndTableTextBox"
+                id="ExternaljawParallelismDetails"></td>
+    </tr>
+</table>
+
+<hr>
+
+<div class="row">
+
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="5">InternalJaw</th>
+            </tr>
+            <tr>
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+                <th rowspan="2">Avg.</th>
+            </tr>
+            <tr>
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.InternalJawLmeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="InternalJawLMeasured">
+                    </td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="InternalJawLActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="InternalJawLActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="InternalJawLActualsTrail3"></td>
+                    <td><input type="text" value="@item1.Avg" class="Tables-AndTableTextBox" id="InternalJawLAvg"></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="5">InternalJaw</th>
+            </tr>
+            <tr>
+
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+                <th rowspan="2">Avg.</th>
+
+            </tr>
+            <tr>
+
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.InternalJawRmeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="ExternalJawRMeasured">
+                    </td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="ExternalJawRActualsTrail3"></td>
+                    <td><input type="text" value="@item1.Avg" class="Tables-AndTableTextBox" id="ExternalJawRAvg"></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<br>
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th>Parallelism Details :</th>
+        <td><input type="text" value="@Model.InternalParallelismDetails" class="Tables-AndTableTextBox"
+                id="InternaljawParallelismDetails"></td>
+    </tr>
+</table>
+
+
+<hr>
+
+<div class="row">
+
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="4">Depth</th>
+            </tr>
+            <tr>
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+
+            </tr>
+            <tr>
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.DepthLMeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="DepthLMeasured"></td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="DepthLActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="DepthLActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="DepthLActualsTrail3"></td>
+
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="column">
+        <table>
+            <tr>
+                <th colspan="4">Depth</th>
+            </tr>
+            <tr>
+
+                <th rowspan="2">Measured</th>
+                <th colspan="3">Actual</th>
+
+
+            </tr>
+            <tr>
+
+                <th>trail1</th>
+                <th>trail2</th>
+                <th>trail3</th>
+            </tr>
+            @foreach (var item1 in @Model.DepthRMeasurement)
+            {
+                <tr>
+                    <td><input type="text" value="@item1.Measured" class="Tables-AndTableTextBox" id="DepthRMeasured"></td>
+                    <td><input type="text" value="@item1.Actuals_T_1" class="Tables-AndTableTextBox"
+                        id="DepthRActualsTrail1"></td>
+                    <td><input type="text" value="@item1.Actuals_T_2" class="Tables-AndTableTextBox"
+                        id="DepthRActualsTrail2"></td>
+                    <td><input type="text" value="@item1.Actuals_T_3" class="Tables-AndTableTextBox"
+                        id="DepthRActualsTrail3"></td>
+
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<br>
+
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th>Parallelism Details :</th>
+        <td><input type="text" value="@Model.DepthParallelismDetails" class="Tables-AndTableTextBox"
+                id="DepthParallelismDetails"></td>
+    </tr>
+</table>
+
+
+<hr>
+<br>
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th colspan="2">For MUcalculation</th>
+    </tr>
+    <tr>
+        <th>Interval</th>
+        <td><input type="text" value="@Model.Interval" class="Tables-AndTableTextBox" id="MUcalculationInterval"></td>
+    </tr>
+    @foreach (var item in @Model.MuCalculationValues)
+    {
+
+
+        <tr>
+            <td><input type="text" value="@item.MuLeftValue" class="Tables-AndTableTextBox" id="MuLeftValues"></td>
+            <td><input type="text" value="@item.MuRightValue" class="Tables-AndTableTextBox" id="MuRightValues"></td>
+        </tr>
+    }
+</table>
+<br>
+<table class="Tables-AndTableTextBox">
+    <tr>
+        <th>Calibration Performed By</th>
+        <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTableTextBox"
+                id="CalibrationPerformedBy"></td>
+        <th>Reveiwed By</th>
+        <td><input type="text" value="@Model.ReviewedBy" class="Tables-AndTableTextBox" id="ReveiwedBy"></td>
+    </tr>
+    <tr>
+        <th>Date:</th>
+        @if( true)
+        {
+            var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+            <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                    class="Tables-AndTableTextBox" disabled>
+            </td>
+        } 
+
+        <th>Date:</th>
+        <td><input type="text" value="@Model.ReviewedDate" class="Tables-AndTableTextBox" id="ReveiwedByDate"></td>
+
+    </tr>
+</table>

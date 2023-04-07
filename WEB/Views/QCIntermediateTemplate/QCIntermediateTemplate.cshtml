@@ -1,0 +1,1749 @@
+@{
+    ViewData["Title"] = "Intermediate Template";
+}
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    th{
+        text-align: center;
+    }
+
+    td{
+        text-align: left;
+    }
+
+    .Border0px {
+        border: 0px;
+        width: 100%;
+    }
+
+    .Tables-AndItsTextBox {
+        width: 100%;
+    }
+
+    .SINo-Yes-No-NA_columns {
+        width: 5%;
+    }
+
+    .Comments {
+        width: 30%;
+    }
+
+    .CheckPoints {
+        width: 50%;
+    }
+
+    .childTableTextBox {
+        height: 20px;
+        width: 100%;
+    }
+
+     .MasterEquipmentTextBox {
+        height: 70px;
+        width: 100%;
+        border: 0px;
+    }
+
+    .wd100 {
+        width: 100%;
+    }
+
+    .wd100ht40 {
+        width: 100%;
+        height: 40px;
+    }
+
+    .ht40 {
+        height: 40px;
+    }
+
+    .ht80 {
+        height: 80px;
+    }
+
+    .wd100ht80 {
+        width: 100%;
+        height: 80px;
+    }
+
+    .row {
+        display: flex;
+
+        margin-left: 2px;
+
+        margin-right: 2px;
+    }
+
+    .column {
+
+        flex: 50%;
+    }
+
+    .wd100ht35 {
+        width: 100%;
+        height: 32px;
+        text-align: right;
+    }
+
+    .outline {
+        outline: none;
+        border: none;
+    }
+
+    .wd100textalign {
+        width: 100%;
+        text-align: right;
+        outline: none;
+        border: none;
+    }
+    .ReadOnly {
+        background-color: #ADD8E6;
+    }
+
+    .statusalign{
+        text-align: left;
+    }
+    .daimlerboxwidthInt{
+        width: 180px;
+    }
+    .formatboxwidthInt{
+        width: 50px;
+        text-align: left;
+    }
+    .formatboxvaluewidthInt{
+        width: 60px;
+        text-align: left;
+    }
+    .revisiondatewidthInt{
+        width: 20px;
+        text-align: left;
+    }
+
+</style>
+
+<form role="form" id="QCIntermediateForm" method="post" action='@Url.Action("SaveData", "QCIntermediateTemplate")'>
+    <input type="hidden" name="Id" id="Id" value="@Model.Id">
+    <input type="hidden" name="MasterEquipmentId2" id="MasterEquipmentId2" value="@Model.MasterEquipmentId2">
+    <input type="hidden" id="DocumentStatus" name="DocumentStatus" value="@Model.DocumentStatus">
+    <input type="hidden" id="StudyPerformedBy" name="StudyPerformedBy" value="@Model.StudyPerformedBy">
+    <input type="hidden" id="TechnicalManager" name="TechnicalManager" value="@Model.TechnicalManager">
+    <input type="hidden" id="DamageDent" name="DamageDent" value="@Model.DamageDent">
+    <input type="hidden" id="RustAndOxidation" name="RustAndOxidation" value="@Model.RustAndOxidation">
+    <input type="hidden" id="Accessories" name="Accessories" value="@Model.Accessories">
+    <input type="hidden" id="PhysicalAbnormalities" name="PhysicalAbnormalities" value="@Model.PhysicalAbnormalities">
+    <input type="hidden" id="PoweringIssue" name="PoweringIssue" value="@Model.PoweringIssue">
+    <input type="hidden" id="SmoothMovement" name="SmoothMovement" value="@Model.SmoothMovement">
+    <input type="hidden" id="NoiseObserved" name="NoiseObserved" value="@Model.NoiseObserved">
+    <input type="hidden" id="SoftwareFaults" name="SoftwareFaults" value="@Model.SoftwareFaults">
+    <input type="hidden" id="OtherAbnormalities" name="OtherAbnormalities" value="@Model.OtherAbnormalities">
+    <input type="hidden" id="RevisionNo" name="RevisionNo" value="@Model.RevisionNo">
+    <input type="hidden" id="RevisionDate" name="RevisionDate" value="@Model.RevisionDate">
+    <input type="hidden" id="MasterEquipmentId1" name="MasterEquipmentId1"  value="@Model.MasterEquipmentId1">
+    <input type="hidden" id="MasterEquipmentId2" name="MasterEquipmentId2" value="@Model.MasterEquipmentId2">
+    <input type="hidden" id="MasterEquipmentId3" name="MasterEquipmentId3" value="@Model.MasterEquipmentId3">
+    <input type="hidden" id="EquipmentName2" name="EquipmentName2" value="@Model.EquipmentName2">
+
+    <table class="Tables-AndItsTextBox">
+        <tr>
+            <th rowspan="2" class="daimlerboxwidthInt headingtextalign">Daimler</th>
+            <th rowspan="2" class="headingtextalign" style="500px">Intermediate Check Evaluation Mechanical Calibration</th>
+            <td rowspan="2" >
+                <div style="width: 100%;">
+                    <table class="wd100">
+                        <tr>
+                            <th class="formatboxwidth">Format No.</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.FormatNo" id="FormatNo" name="FormatNo" class="wd100 outline ReadOnly"
+                                    readonly></td>
+                        </tr> 
+                         <tr>
+                            <th class="formatboxwidth">Rev.No & Date</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.RevisionNoAndDate" id="RevisionNoAndDate" name="RevisionNoAndDate"
+                                    class="wd100 outline ReadOnly" readonly>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="Tables-AndItsTextBox">
+        <tr>
+            <td rowspan="2" class="daimlerboxwidth">Device Name</td>
+            <td rowspan="2"><input type="text" class="MasterEquipmentTextBox wd100 outline ReadOnly" value="@Model.EquipmentName1"
+                    name="EquipmentName1" id="EquipmentName1" readonly>
+            </td>
+            <td>Master Equipment Id</td>
+            <td colspan="2"><input type="text" name="Master1LabId" value="@Model.Master1LabId"
+                    id="Master1LabId" class="wd100 outline"   onkeypress="updateMasterList()">
+            </td>
+        </tr>
+        <tr>
+            <td>Range /Size & Least Count</td>
+            <td><input type="text" name="RangeOrSize1" value="@Model.RangeOrSize1" id="RangeOrSize1"
+                    class="wd100 outline ReadOnly" readonly>
+            </td>
+            <td><input type="text" name="LeastCount1" value="@Model.LeastCount1" id="LeastCount1"
+                    class="wd100 outline ReadOnly" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Master Equipment used to calibrate</td>
+            <td colspan="4"><input type="text" name="Master2LabId" value="@Model.Master2LabId"
+                    class="Border0px" id="Master2LabId" onkeypress="updateMasterList2()">
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="Tables-AndItsTextBox">
+        <tr>
+            <th class="SINo-Yes-No-NA_columns">Sl No.</th>
+            <th class="CheckPoints">Check Points</th>
+            <th class="SINo-Yes-No-NA_columns">Yes</th>
+            <th class="SINo-Yes-No-NA_columns">No</th>
+            <th class="SINo-Yes-No-NA_columns">NA</th>
+            <th class="Comments">Comments</th>
+        </tr>
+        <tr>
+            <th colspan="6">Physical Conditions</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Any Damages, Dent & Scratches ?</td>
+            <td>@if (@Model.DamageDent == "Y")
+                {
+                    <input type="radio" name="DamageDentYes" value="Y" checked="checked" id="DamageDentYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="DamageDentYes" value="Y" id="DamageDentYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.DamageDent == "N")
+                {
+                    <input type="radio" name="DamageDentNo" value="N" checked="checked" id="DamageDentNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="DamageDentNo" value="N"  id="DamageDentNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.DamageDent == "O")
+                {
+                    <input type="radio" name="DamageDentNA" value="O" checked="checked" id="DamageDentNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="DamageDentNA" value="O" id="DamageDentNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfDamageDent" class="Border0px" name="CommentsOfDamageDent"
+                    id="CommentsOfDamageDent"></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Rust/ Oxidation observed on the surfaces ?</td>
+            <td>@if (@Model.RustAndOxidation == "Y")
+                {
+                    <input type="radio" name="RustAndOxidationYes" value="Y" checked="checked" id="RustAndOxidationYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="RustAndOxidationYes" value="Y" id="RustAndOxidationYes"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.RustAndOxidation == "N")
+                {
+                    <input type="radio" name="RustAndOxidationNo" value="N" checked="checked" id="RustAndOxidationNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="RustAndOxidationNo" value="N" id="RustAndOxidationNo"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.RustAndOxidation == "O")
+                {
+                    <input type="radio" name="RustAndOxidationNA" value="O" checked="checked" id="RustAndOxidationNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="RustAndOxidationNA" value="O" id="RustAndOxidationNA"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfRustAndOxidation" class="Border0px"
+                    id="CommentsOfRustAndOxidation" name="CommentsOfRustAndOxidation"></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Accessories, Fixtures & any other attachments Present?</td>
+            <td>@if (@Model.Accessories == "Y")
+                {
+                    <input type="radio" name="AccessoriesYes" value="Y" checked="checked" id="AccessoriesYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="AccessoriesYes" value="Y" id="AccessoriesYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.Accessories == "N")
+                {
+                    <input type="radio" name="AccessoriesNo" value="N" checked="checked" id="AccessoriesNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="AccessoriesNo" value="N" id="AccessoriesNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.Accessories == "O")
+                {
+                    <input type="radio" name="AccessoriesNA" value="O" checked="checked" id="AccessoriesNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="AccessoriesNA" value="O" id="AccessoriesNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfAccessories" class="Border0px" id="CommentsOfAccessories"
+                    name="CommentsOfAccessories"></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Any abnormalities found?</td>
+            <td>@if (@Model.PhysicalAbnormalities == "Y")
+                {
+                    <input type="radio" name="PhysicalAbnormalitiesYes" value="Y" checked="checked" id="PhysicalAbnormalitiesYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PhysicalAbnormalitiesYes" value="Y" id="PhysicalAbnormalitiesYes"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.PhysicalAbnormalities == "N")
+                {
+                    <input type="radio" name="PhysicalAbnormalitiesNo" value="N" checked="checked" id="PhysicalAbnormalitiesNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PhysicalAbnormalitiesNo" value="N" id="PhysicalAbnormalitiesNo"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.PhysicalAbnormalities == "O")
+                {
+                    <input type="radio" name="PhysicalAbnormalitiesNA" value="O" checked="checked" id="PhysicalAbnormalitiesNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PhysicalAbnormalitiesNA" value="O" id="PhysicalAbnormalitiesNA"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfPhysicalAbnormalities" class="Border0px"
+                    id="CommentsOfPhysicalAbnormalities" name="CommentsOfPhysicalAbnormalities">
+            </td>
+        </tr>
+        <tr>
+            <th colspan="6">Function Check</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Any Powering issue?</td>
+            <td>@if (@Model.PoweringIssue == "Y")
+                {
+                    <input type="radio" name="PoweringIssueYes" value="Y" checked="checked" id="PoweringIssueYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PoweringIssueYes" value="Y" id="PoweringIssueYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.PoweringIssue == "N")
+                {
+                    <input type="radio" name="PoweringIssueNo" value="N" checked="checked" id="PoweringIssueNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PoweringIssueNo" value="N" id="PoweringIssueNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.PoweringIssue == "O")
+                {
+                    <input type="radio" name="PoweringIssueNA" value="O" checked="checked" id="PoweringIssueNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="PoweringIssueNA" value="O" id="PoweringIssueNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfPoweringIssue" class="Border0px" id="CommentsOfPoweringIssue"
+                    name="CommentsOfPoweringIssue"></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Smooth movement for its entire range</td>
+            <td>@if (@Model.SmoothMovement == "Y")
+                {
+                    <input type="radio" name="SmoothMovementYes" value="Y" checked="checked" id="SmoothMovementYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SmoothMovementYes" value="Y" id="SmoothMovementYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.SmoothMovement == "N")
+                {
+                    <input type="radio" name="SmoothMovementNo" value="N" checked="checked" id="SmoothMovementNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SmoothMovementNo" value="N" id="SmoothMovementNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.SmoothMovement == "O")
+                {
+                    <input type="radio" name="SmoothMovementNA" value="O" checked="checked" id="SmoothMovementNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SmoothMovementNA" value="O" id="SmoothMovementNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfSmoothMovement" class="Border0px"
+                    id="CommentsOfSmoothMovement" name="CommentsOfSmoothMovement"></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Any noise observed while functioning of the equipment?</td>
+            <td>@if (@Model.NoiseObserved == "Y")
+                {
+                    <input type="radio" name="NoiseObservedYes" value="Y" checked="checked" id="NoiseObservedYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="NoiseObservedYes" value="Y" id="NoiseObservedYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.NoiseObserved == "N")
+                {
+                    <input type="radio" name="NoiseObservedNo" value="N" checked="checked" id="NoiseObservedNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="NoiseObservedNo" value="N" id="NoiseObservedNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.NoiseObserved == "O")
+                {
+                    <input type="radio" name="NoiseObservedNA" value="O" checked="checked" id="NoiseObservedNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="NoiseObservedNA" value="O" id="NoiseObservedNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfNoiseObserved" class="Border0px" id="CommentsOfNoiseObserved"
+                    name="CommentsOfNoiseObserved"></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Any faults with functioning of software?</td>
+            <td>@if (@Model.SoftwareFaults == "Y")
+                {
+                    <input type="radio" name="SoftwareFaultsYes" value="Y" checked="checked" id="SoftwareFaultsYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SoftwareFaultsYes" value="Y" id="SoftwareFaultsYes" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.SoftwareFaults == "N")
+                {
+                    <input type="radio" name="SoftwareFaultsNo" value="N" checked="checked" id="SoftwareFaultsNo"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SoftwareFaultsNo" value="N" id="SoftwareFaultsNo" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.SoftwareFaults == "O")
+                {
+                    <input type="radio" name="SoftwareFaultsNA" value="O" checked="checked" id="SoftwareFaultsNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="SoftwareFaultsNA" value="O" id="SoftwareFaultsNA" class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfSoftwareFaults" class="Border0px"
+                    id="CommentsOfSoftwareFaults" name="CommentsOfSoftwareFaults">
+            </td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Any other abnormalities ?</td>
+            <td>@if (@Model.OtherAbnormalities == "Y")
+                {
+                    <input type="radio" name="OtherAbnormalitiesYes" value="Y" checked="checked" id="OtherAbnormalitiesYes"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="OtherAbnormalitiesYes" value="Y" id="OtherAbnormalitiesYes"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.OtherAbnormalities == "N")
+                {
+                    <input type="radio" name="OtherAbnormalitiesNo" value="N" checked="checked" id="OtherAbnormalities"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="OtherAbnormalitiesNo" value="N" id="OtherAbnormalitiesNo"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td>@if (@Model.OtherAbnormalities == "O")
+                {
+                    <input type="radio" name="OtherAbnormalitiesNA" value="O" checked="checked" id="OtherAbnormalitiesNA"
+                    class="Tables-AndItsTextBox">
+                }
+                else
+                {
+
+                    <input type="radio" name="OtherAbnormalitiesNA" value="O" id="OtherAbnormalitiesNA"
+                    class="Tables-AndItsTextBox">
+                }
+            </td>
+            <td><input type="text" value="@Model.CommentsOfOtherAbnormalities" class="Border0px"
+                    id="CommentsOfOtherAbnormalities" name="CommentsOfOtherAbnormalities"></td>
+        </tr>
+    </table>
+    <br>
+    <table class="Tables-AndItsTextBox">
+        <tr>
+            <th colspan="6">Accuracy Check</th>
+        </tr>
+        <tr>
+            <td colspan="3">Equipment used to Check the Master Equipment</td>
+
+            <td><input type="text" name="EquipmentName3" value="@Model.EquipmentName3" class="wd100 outline ReadOnly" readonly
+                    id="EquipmentName3" ></td>
+            <td>Equipment Id</td>
+            <td><input type="text" name="Master3LabId" value="@Model.Master3LabId" id="Master3LabId"
+                    class="wd100 outline" onkeypress="updateMasterList3()" >
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3">Range / Size</td>
+            <td><input type="text" name="RangeOrSize3" value="@Model.RangeOrSize3" id="RangeOrSize3"
+                    class="wd100 outline ReadOnly" readonly>
+            </td>
+            <td>Least Count</td>
+            <td><input type="text" name="LeastCount3" value="@Model.LeastCount3" id="LeastCount3"
+                    class="wd100 outline ReadOnly" readonly>
+            </td>
+        </tr>
+
+    </table>
+    <br>
+    @if (@Model.DocumentStatus == 0)
+    {
+        <p align="right">
+            <button style="align-content: right: ;;" id="add" name="add" type="button" class="btn btn-primary">Add New Row</button>
+        </p>
+    }
+    <div class="Tables-AndItsTextBox">
+        <table id="intermediateChildTable" class="Tables-AndItsTextBox">       
+                <thead>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td>All values are in</td>
+                        <td><input type="text" name="DataUnit" value="@Model.DataUnit" id="DataUnit">
+                        </td>
+                    </tr>
+                <tr>
+                    <td style="word-break: break-all;">Master Equipment <br>
+                        Calibration Results</td>
+                    <td style="word-break: break-all;">Current Internal <br>
+                             Check</td>
+                    <td style="word-break: break-all;">Difference</td>
+                    <td style="word-break: break-all;">Acceptance Criteria</td>
+                    <td style="word-break: break-all;">Decision</td>
+                     @if (@Model.DocumentStatus == 0)
+                     {
+                        <td style="word-break: break-all;">Delete</td>
+                     }
+                </tr>
+                </thead>
+               <tbody>
+                @foreach (var item in Model.QCIntermediateResultViewModelList)
+                {
+                    <tr id="tablerow0">
+                        <td>
+                            <input name="CalibrationResult" id="CalibrationResult" type="text"
+                            value="@item.CalibrationResult" onkeyup="GetValue('0');" required="required" style="width: 100%;" />
+                        </td>
+                        <td>
+                            <input name="CurrentInternalCheck" id="CurrentInternalCheck" type="text"
+                            value="@item.CurrentInternalCheck" onkeyup="GetValue('0');" required="required" style="width: 100%;"  />
+                        </td>
+                        <td>
+                            <input name="DifferenceResult" id="DifferenceResult" type="text" value="@item.DifferenceResult"
+                            required="required" style="width: 100%;" readonly />
+                        </td>
+                        <td>
+                            <input name="AcceptanceCriteria" id="AcceptanceCriteria" type="text"
+                            value="@item.AcceptanceCriteria" required="required" style="width: 100%;" />
+                        </td>
+                        <td>
+                            <input name="Decision" id="Decision" type="text" value="@item.Decision" required="required" style="width: 100%;" />
+                        </td>
+
+                        @if (@Model.DocumentStatus == 0)
+                        {
+                            <td>
+                                <i class="fa fa-fw fa-trash" onclick="removeTr(0);"></i>
+                            </td>
+                        }
+                    </tr>
+                }
+        </tbody>
+        </table>
+    </div>
+   
+    <table class="Tables-AndItsTextBox">
+        <tr>
+            <th colspan="6">Conclusions & Actions</th>
+        </tr>
+        <tr>
+            <td colspan="2">Any doubts on Performance / Accuracy</td>
+            <td colspan="4" ><input type="text" name="DoubtsOfPerformance" class="Border0px" value="@Model.DoubtsOfPerformance"
+                    id="DoubtsOfPerformance"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Comments on Acceptance</td>
+            <td  colspan="4"><input type="text" name="CommentsOfAcceptance" class="Border0px" value="@Model.CommentsOfAcceptance"
+                    id="CommentsOfAcceptance"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Any other comments</td>
+            <td  colspan="4"><input type="text" name="OtherComments" class="Border0px" value="@Model.OtherComments"
+                    id="OtherComments"></td>
+        </tr>
+        <tr>     
+            @if (@Model.DocumentStatus >= 1)
+            {                   
+                <td colspan="2">Study Performed by</td>
+                <td><input type="text" name="StudyPerformedByName" value="@Model.StudyPerformedByName"
+                        id="StudyPerformedByName" class="wd100 outline ReadOnly" readonly>
+                </td>
+                    <td colspan="2">Technical Manager</td>
+                    <td><input type="text" name="TechnicalManagerName" value="@Model.TechnicalManagerName"
+                        id="TechnicalManagerName" class="wd100 outline ReadOnly" readonly>
+                    </td>
+            } 
+            else
+            {
+                <td colspan="2">Study Performed by</td>
+                <td colspan="4"><input type="text" name="StudyPerformedByName" value="@Model.StudyPerformedByName"
+                        id="StudyPerformedByName" class="wd100 outline ReadOnly" readonly>
+                </td>
+            }
+        </tr>
+        <tr>     
+            @if (@Model.DocumentStatus >= 1)
+            {
+                <td colspan="2">Date</td>
+                <td><input type="text" name="SignDate" id="SignDate" value="@Model.SignDate" class="wd100 outline ReadOnly"
+                        readonly>
+                </td>
+
+                <td  colspan="2">Date</td>
+                <td><input type="text" name="TMSignDate" value="@Model.TMSignDate" id="TMSignDate"
+                    class="wd100 outline ReadOnly" readonly>
+                </td>
+            }
+            else
+            {      
+                <td colspan="2">Date</td>
+                <td colspan="4"><input type="text" name="SignDate" id="SignDate" value="@Model.SignDate" class="wd100 outline ReadOnly"
+                        readonly>
+                </td>
+            }
+        </tr>
+
+        @if (@Model.DocumentStatus == 0)
+        {
+             <tr>
+                 <td colspan="6">
+                    <div class="card-footer">
+                        <center>
+                            <button style="align-content: right: ;;" id="save" name="save" type="button"
+                            class="btn btn-primary">Save</button>
+
+                            <a href='@Url.Action("IntermediateGridPage","QCIntermediateTemplate")'>
+                                <button type="button" class="btn btn-primary">Cancel</button>
+                            </a>
+                        </center>
+
+                    </div>
+                 </td>
+             </tr>
+         }
+        @if (@Model.DocumentStatus >= 1)
+        {
+            <tr>
+                <td colspan="2">Reviewer Remarks</td>
+                <td colspan="4"><input type="text" name="TMRemarks" id="TMRemarks" class="Border0px"
+                    value="@Model.TMRemarks">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Status</td>
+                <td colspan="4">
+                    <div class="statusalign">
+                        <label>Approve</label>
+                        <input type="radio" name="Approve" id="Approve">
+                        <label>Reject</label>
+                        <input type="radio" name="Approve" id="Reject">
+                    </div>
+                </td>
+            </tr>
+        }
+   
+        @if (@Model.DocumentStatus == 1)
+        {
+            <tr>
+                <td colspan="6">
+                    <div class="card-footer">
+                        <center>
+                            <button type="submit" class="btn btn-primary">Review</button>
+                            <a href='@Url.Action("IntermediateGridPage","QCIntermediateTemplate")'><button type="button"
+                                class="btn btn-primary">Cancel</button></a>
+                        </center>
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (@Model.DocumentStatus > 1)
+        {
+            <tr>
+                <td colspan="6">
+                    <div class="card-footer">
+                        <center>
+                            <a href='@Url.Action("IntermediateGridPage","QCIntermediateTemplate")'><button type="button"
+                                class="btn btn-primary">Cancel</button></a>
+                        </center>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</form>
+<script>
+    var masterList = "";
+    var masterList2 = "";
+    var masterList3 = "";
+
+    function updateMasterList() {
+        var UniqueName = $('#Master1LabId').val();
+        if (UniqueName == null || UniqueName == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QCIntermediateTemplate/GetMasterListByLabId",
+            data: { labId: UniqueName },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList = data;
+                    $("#Master1LabId").autocomplete({
+                        source: array,
+                        select: showOut
+                    });
+                }
+            }
+        });
+        $("#Master1LabId").keyup(function () {
+            if (!this.value) {
+                $('#EquipmentName1').val('');
+                $('#MasterEquipmentId1').val('');
+                $('#RangeOrSize1').val('');
+
+            }
+        });
+    }
+    function updateMasterList2() {
+        var UniqueName2 = $('#Master2LabId').val();
+        if (UniqueName2 == null || UniqueName2 == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QCIntermediateTemplate/GetMasterListByLabId",
+            data: { labId: UniqueName2 },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList2 = data;
+                    $("#Master2LabId").autocomplete({
+                        source: array,
+                        select: showOut2
+                    });
+                }
+            }
+        });
+        $("#Master2LabId").keyup(function () {
+            if (!this.value) {
+                $('#EquipmentName2').val('');
+                $('#MasterEquipmentId1').val('');
+                $('#RangeOrSize2').val('');
+            }
+        });
+    }
+    function updateMasterList3() {
+        var UniqueName3 = $('#Master3LabId').val();
+        if (UniqueName3 == null || UniqueName3 == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QCIntermediateTemplate/GetMasterListByLabId",
+            data: { labId: UniqueName3 },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList3 = data;
+                    $("#Master3LabId").autocomplete({
+                        source: array,
+                        select: showOut3
+                    });
+                }
+            }
+        });
+        $("#Master3LabId").keyup(function () {
+            if (!this.value) {
+                $('#EquipmentName3').val('');
+                $('#MasterEquipmentId3').val('');
+                $('#RangeOrSize3').val('');
+            }
+        });
+    }
+    function showOut(event, ui) {
+        var master = masterList.find(x => x.labId == ui.item.value)
+        $('#EquipmentName1').val(master.equipmentName);
+        $('#MasterEquipmentId1').val(master.masterId);
+        $('#RangeOrSize1').val(master.range);
+
+    }
+    function showOut2(event, ui) {
+        var master = masterList2.find(x => x.labId == ui.item.value)
+        $('#EquipmentName2').val(master.equipmentName);
+        $('#MasterEquipmentId2').val(master.masterId);
+        $('#RangeOrSize2').val(master.range);
+
+    }
+    function showOut3(event, ui) {
+        var master = masterList3.find(x => x.labId == ui.item.value)
+        $('#EquipmentName3').val(master.equipmentName);
+        $('#MasterEquipmentId3').val(master.masterId);
+        $('#RangeOrSize3').val(master.range);
+    }
+  
+  
+</script>
+
+<script>
+
+    var counter = 1;
+    $(function () {
+        $('#add').click(function () {
+            $('<tr id="tablerow' + counter + '"><td>' +
+                '<input type="text" class="childTableTextBox" id="item.CalibrationResult"  name="item.CalibrationResult" onkeyup="GetValue('+counter+');" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="childTableTextBox" id="item.CurrentInternalCheck"  name="item.CurrentInternalCheck" onkeyup="GetValue('+counter+');" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="childTableTextBox" id="item.DifferenceResult" name="item.DifferenceResult" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="childTableTextBox" id="item.AcceptanceCriteria" name="item.AcceptanceCriteria" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="childTableTextBox" id="item.Decision" name="item.Decision" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<i class="fa fa-fw fa-trash" onclick="removeTr(' + counter + ');"></i>' +
+                '</td>' +
+                '</tr>').appendTo('#intermediateChildTable');
+            counter++;
+            return false;
+        });
+    });
+
+    function removeTr(index) {
+        if (counter > 1) {
+            $('#tablerow' + index).remove();
+            counter--;
+        }
+        return false;
+    }
+    function GetValue(Id)
+    {
+        $('#tablerow'+Id+'').each(function() {
+            debugger;
+            var col1=$(this).find("td:eq(0) input[type='text']").val(); // get current row 1st TD value
+            var col2=$(this).find("td:eq(1) input[type='text']").val(); // get current row 2nd TD
+            var col3=$(this).find("td:eq(2) input[type='text']").val(); // get current row 3rd TD 
+            var Total=col1-col2;
+            $(this).find("td:eq(2) input[type='text']").val(Total);              
+        });
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#DocumentStatus').val(2);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#DocumentStatus').val(3);
+            }
+
+        });
+
+        var documentStatus = $('#DocumentStatus').val();
+        if (documentStatus == 2) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (documentStatus == 3) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+</script>
+
+<script>
+    $(function () {
+        $('#save').click(function () {
+
+            //get child data
+            var intermediateResult = new Array();
+            $('#intermediateChildTable tbody tr').each(function (row, tr) {
+
+                var resultData = {
+                    CalibrationResult: $(tr).find("td:eq(0) input[type='text']").val(),
+                    CurrentInternalCheck: $(tr).find("td:eq(1) input[type='text']").val(),
+                    DifferenceResult: $(tr).find("td:eq(2) input[type='text']").val(),
+                    AcceptanceCriteria: $(tr).find("td:eq(3) input[type='text']").val(),
+                    Decision: $(tr).find("td:eq(4) input[type='text']").val()
+                }
+                intermediateResult.push(resultData);
+            });
+
+            //get parent data
+            var intermediateData = {
+                FormatNo: $("#FormatNo").val(),
+                RevisionNo: $("#RevisionNo").val(),
+                RevisionDate: $("#RevisionDate").val(),
+                MasterEquipmentId1: $("#MasterEquipmentId1").val(),
+                EquipmentName1: $("#EquipmentName1").val(),
+                RangeOrSize1: $("#RangeOrSize1").val(),
+                LeastCount1: $("#LeastCount1").val(),
+                MasterEquipmentId2: $("#MasterEquipmentId2").val(),
+                EquipmentName2: $("#EquipmentName2").val(),
+                MasterEquipmentId3: $("#MasterEquipmentId3").val(),
+                EquipmentName3: $("#EquipmentName3").val(),
+                RangeOrSize3: $("#RangeOrSize3").val(),
+                LeastCount3: $("#LeastCount3").val(),
+                DamageDent: $("#DamageDent").val(),
+                RustAndOxidation: $("#RustAndOxidation").val(),
+                Accessories: $("#Accessories").val(),
+                PhysicalAbnormalities: $("#PhysicalAbnormalities").val(),
+                PoweringIssue: $("#PoweringIssue").val(),
+                SmoothMovement: $("#SmoothMovement").val(),
+                NoiseObserved: $("#NoiseObserved").val(),
+                SoftwareFaults: $("#SoftwareFaults").val(),
+                OtherAbnormalities: $("#OtherAbnormalities").val(),
+                CommentsOfDamageDent: $("#CommentsOfDamageDent").val(),
+                CommentsOfRustAndOxidation: $("#CommentsOfRustAndOxidation").val(),
+                CommentsOfAccessories: $("#CommentsOfAccessories").val(),
+                CommentsOfPhysicalAbnormalities: $("#CommentsOfPhysicalAbnormalities").val(),
+                CommentsOfPoweringIssue: $("#CommentsOfPoweringIssue").val(),
+                CommentsOfSmoothMovement: $("#CommentsOfSmoothMovement").val(),
+                CommentsOfNoiseObserved: $("#CommentsOfNoiseObserved").val(),
+                CommentsOfSoftwareFaults: $("#CommentsOfSoftwareFaults").val(),
+                CommentsOfOtherAbnormalities: $("#CommentsOfOtherAbnormalities").val(),             
+                DoubtsOfPerformance: $("#DoubtsOfPerformance").val(),
+                CommentsOfAcceptance: $("#CommentsOfAcceptance").val(),
+                OtherComments: $("#OtherComments").val(),
+                StudyPerformedBy: $("#StudyPerformedBy").val(),
+                SignDate: $("#SignDate").val(),
+                DocumentStatus: $("#DocumentStatus").val(),
+                DataUnit: $("#DataUnit").val(),
+                Master1LabId : $("#Master1LabId").val(),
+                Master2LabId : $("#Master2LabId").val(),
+                Master3LabId : $("#Master3LabId").val(),
+                QCIntermediateResultViewModelList: intermediateResult
+            }
+
+            console.log(intermediateResult);
+            console.log(intermediateData);
+
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                url: "../QCIntermediateTemplate/SaveData",
+                data: { qcIntermediateTemplateViewModel: intermediateData },
+                dataType: "json",
+                success: function (data) {
+                  $("#save").css('display','none');
+                  alert("Sucessfully Submited...");
+                  return true;
+                }
+            });
+        });
+    });
+
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#DamageDentYes').on('change', function () {
+            if ($('#DamageDentYes').not(this).prop('checked', false)) {
+
+                $('#DamageDentNo').prop('checked', false);
+                $('#DamageDentNA').prop('checked', false);
+                $('#DamageDent').val('Y');
+            }
+        });
+
+        $('#DamageDentNo').on('change', function () {
+            if ($('#DamageDentNo').not(this).prop('checked', false)) {
+
+                $('#DamageDentYes').prop('checked', false);
+                $('#DamageDentNA').prop('checked', false);
+                $('#DamageDent').val('N');
+            }
+        });
+
+        $('#DamageDentNA').on('change', function () {
+            if ($('#DamageDentNA').not(this).prop('checked', false)) {
+                
+                $('#DamageDentYes').prop('checked', false);
+                $('#DamageDentNo').prop('checked', false);
+                $('#DamageDent').val('O');
+            }
+        });
+
+        $('#RustAndOxidationYes').on('change', function () {
+            if ($('#RustAndOxidationYes').not(this).prop('checked', false)) {
+                
+                $('#RustAndOxidationNo').prop('checked', false);
+                $('#RustAndOxidationNA').prop('checked', false);
+                $('#RustAndOxidation').val('Y');
+            }
+        });
+
+        $('#RustAndOxidationNo').on('change', function () {
+            if ($('#RustAndOxidationNo').not(this).prop('checked', false)) {
+
+                $('#RustAndOxidationYes').prop('checked', false);
+                $('#RustAndOxidationNA').prop('checked', false);
+                $('#RustAndOxidation').val('N');
+            }
+        });
+
+        $('#RustAndOxidationNA').on('change', function () {
+            if ($('#RustAndOxidationNA').not(this).prop('checked', false)) {
+                
+                $('#RustAndOxidationYes').prop('checked', false);
+                $('#RustAndOxidationNo').prop('checked', false);
+                $('#RustAndOxidation').val('O');
+            }
+        });
+
+
+        $('#AccessoriesYes').on('change', function () {
+            if ($('#AccessoriesYes').not(this).prop('checked', false)) {
+                
+                $('#AccessoriesNo').prop('checked', false);
+                $('#AccessoriesNA').prop('checked', false);
+                $('#Accessories').val('Y');
+            }
+        });
+
+        $('#AccessoriesNo').on('change', function () {
+            if ($('#AccessoriesNo').not(this).prop('checked', false)) {
+
+                $('#AccessoriesYes').prop('checked', false);
+                $('#AccessoriesNA').prop('checked', false);
+                $('#Accessories').val('N');
+            }
+        });
+
+        $('#AccessoriesNA').on('change', function () {
+            if ($('#AccessoriesNA').not(this).prop('checked', false)) {
+                
+                $('#AccessoriesYes').prop('checked', false);
+                $('#AccessoriesNo').prop('checked', false);
+                $('#Accessories').val('O');
+            }
+        });
+
+
+            $('#PhysicalAbnormalitiesYes').on('change', function () {
+            if ($('#PhysicalAbnormalitiesYes').not(this).prop('checked', false)) {
+                
+                $('#PhysicalAbnormalitiesNo').prop('checked', false);
+                $('#PhysicalAbnormalitiesNA').prop('checked', false);
+                $('#PhysicalAbnormalities').val('Y');
+            }
+        });
+
+        $('#PhysicalAbnormalitiesNo').on('change', function () {
+            if ($('#PhysicalAbnormalitiesNo').not(this).prop('checked', false)) {
+
+                $('#PhysicalAbnormalitiesYes').prop('checked', false);
+                $('#PhysicalAbnormalitiesNA').prop('checked', false);
+                $('#PhysicalAbnormalities').val('N');
+            }
+        });
+
+        $('#PhysicalAbnormalitiesNA').on('change', function () {
+            if ($('#PhysicalAbnormalitiesNA').not(this).prop('checked', false)) {
+                
+                $('#PhysicalAbnormalitiesYes').prop('checked', false);
+                $('#PhysicalAbnormalitiesNo').prop('checked', false);
+                $('#PhysicalAbnormalities').val('O');
+            }
+        });
+
+
+                $('#PoweringIssueYes').on('change', function () {
+            if ($('#PoweringIssueYes').not(this).prop('checked', false)) {
+                
+                $('#PoweringIssueNo').prop('checked', false);
+                $('#PoweringIssueNA').prop('checked', false);
+                $('#PoweringIssue').val('Y');
+            }
+        });
+
+        $('#PoweringIssueNo').on('change', function () {
+            if ($('#PoweringIssueNo').not(this).prop('checked', false)) {
+
+                $('#PoweringIssueYes').prop('checked', false);
+                $('#PoweringIssueNA').prop('checked', false);
+                $('#PoweringIssue').val('N');
+            }
+        });
+
+        $('#PoweringIssueNA').on('change', function () {
+            if ($('#PoweringIssueNA').not(this).prop('checked', false)) {
+                
+                $('#PoweringIssueYes').prop('checked', false);
+                $('#PoweringIssueNo').prop('checked', false);
+                $('#PoweringIssue').val('O');
+            }
+        });
+
+                $('#SmoothMovementYes').on('change', function () {
+            if ($('#SmoothMovementYes').not(this).prop('checked', false)) {
+                
+                $('#SmoothMovementNo').prop('checked', false);
+                $('#SmoothMovementNA').prop('checked', false);
+                $('#SmoothMovement').val('Y');
+            }
+        });
+
+        $('#SmoothMovementNo').on('change', function () {
+            if ($('#SmoothMovementNo').not(this).prop('checked', false)) {
+
+                $('#SmoothMovementYes').prop('checked', false);
+                $('#SmoothMovementNA').prop('checked', false);
+                $('#SmoothMovement').val('N');
+            }
+        });
+
+        $('#SmoothMovementNA').on('change', function () {
+            if ($('#SmoothMovementNA').not(this).prop('checked', false)) {
+                
+                $('#SmoothMovementYes').prop('checked', false);
+                $('#SmoothMovementNo').prop('checked', false);
+                $('#SmoothMovement').val('O');
+            }
+        });
+
+
+                $('#NoiseObservedYes').on('change', function () {
+            if ($('#NoiseObservedYes').not(this).prop('checked', false)) {
+                
+                $('#NoiseObservedNo').prop('checked', false);
+                $('#NoiseObservedNA').prop('checked', false);
+                $('#NoiseObserved').val('Y');
+            }
+        });
+
+        $('#NoiseObservedNo').on('change', function () {
+            if ($('#NoiseObservedNo').not(this).prop('checked', false)) {
+
+                $('#NoiseObservedYes').prop('checked', false);
+                $('#NoiseObservedNA').prop('checked', false);
+                $('#NoiseObserved').val('N');
+            }
+        });
+
+        $('#NoiseObservedNA').on('change', function () {
+            if ($('#NoiseObservedNA').not(this).prop('checked', false)) {
+                
+                $('#NoiseObservedYes').prop('checked', false);
+                $('#NoiseObservedNo').prop('checked', false);
+                $('#NoiseObserved').val('O');
+            }
+        });
+
+                $('#SoftwareFaultsYes').on('change', function () {
+            if ($('#SoftwareFaultsYes').not(this).prop('checked', false)) {
+                
+                $('#SoftwareFaultsNo').prop('checked', false);
+                $('#SoftwareFaultsNA').prop('checked', false);
+                $('#SoftwareFaults').val('Y');
+            }
+        });
+
+        $('#SoftwareFaultsNo').on('change', function () {
+            if ($('#SoftwareFaultsNo').not(this).prop('checked', false)) {
+
+                $('#SoftwareFaultsYes').prop('checked', false);
+                $('#SoftwareFaultsNA').prop('checked', false);
+                $('#SoftwareFaults').val('N');
+            }
+        });
+
+        $('#SoftwareFaultsNA').on('change', function () {
+            if ($('#SoftwareFaultsNA').not(this).prop('checked', false)) {
+                
+                $('#SoftwareFaultsYes').prop('checked', false);
+                $('#SoftwareFaultsNo').prop('checked', false);
+                $('#SoftwareFaults').val('O');
+            }
+        });
+
+
+                $('#OtherAbnormalitiesYes').on('change', function () {
+            if ($('#OtherAbnormalitiesYes').not(this).prop('checked', false)) {
+                
+                $('#OtherAbnormalitiesNo').prop('checked', false);
+                $('#OtherAbnormalitiesNA').prop('checked', false);
+                $('#OtherAbnormalities').val('Y');
+            }
+        });
+
+        $('#OtherAbnormalitiesNo').on('change', function () {
+            if ($('#OtherAbnormalitiesNo').not(this).prop('checked', false)) {
+
+                $('#OtherAbnormalitiesYes').prop('checked', false);
+                $('#OtherAbnormalitiesNA').prop('checked', false);
+                $('#OtherAbnormalities').val('N');
+            }
+        });
+
+        $('#OtherAbnormalitiesNA').on('change', function () {
+            if ($('#OtherAbnormalitiesNA').not(this).prop('checked', false)) {                
+                $('#OtherAbnormalitiesYes').prop('checked', false);
+                $('#OtherAbnormalitiesNo').prop('checked', false);
+                $('#OtherAbnormalities').val('O');
+            }
+        });
+
+    });
+</script>
+
+@* ************************************************************************* *@
+
+<html>
+<body>
+  <div id="QualityCheckpdf" style="display: none;">
+     
+<table style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+        <tr>
+            <td style="text-align: center;width: 100px;border: 0.5px solid black;border-collapse: collapse" height="30" rowspan="2"><b>Daimler</b></td>
+            <td style="text-align: center;width: 400px;border: 0.5px solid black;border-collapse: collapse" rowspan="2"><b>Intermediate Check Evaluation Mechanical Calibration</b></td>
+            <td rowspan="2">
+                <div style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Format No.</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse" >@Model.FormatNo</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Rev.No & Date</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RevisionNoAndDate</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="60" rowspan="2">Device Name</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" rowspan="2">@Model.EquipmentName1</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Master Equipment Id</td>
+            <td style="width: 100px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Master1LabId</td>
+        </tr>
+         <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Range /Size & Least Count</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RangeOrSize1</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.LeastCount1</td>
+        </tr>
+        <tr>
+            <td style="width: 60px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">Master Equipment used to calibrate</td>
+            <td style="width: 140px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3">@Model.Master1LabId</td>
+        </tr>
+    </table>
+     <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Sl No.</b></td>
+            <td style="width: 80px;text-align: center;border: 0.5px solid black;border-collapse: collapse"><b>Check Points</b></td>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse"><b>Yes</b></td>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse"><b>No</b></td>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse"><b>NA</b></td>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse"><b>Comments</b></td>
+        </tr>
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="6"><b>Physical Conditions</b></td>
+        </tr>
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">1</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any Damages, Dent & Scratches ?</td>
+            @if (@Model.DamageDent == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.DamageDent == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.DamageDent == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfDamageDent</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">2</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Rust/ Oxidation observed on the surfaces ?</td>
+            @if (@Model.RustAndOxidation == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.RustAndOxidation == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.RustAndOxidation == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfRustAndOxidation </td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">3</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Accessories, Fixtures & any other attachments Present?</td>
+            @if (@Model.Accessories == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.Accessories == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.Accessories == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfAccessories</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">4</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any abnormalities found?</td>
+            @if (@Model.PhysicalAbnormalities == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.PhysicalAbnormalities == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.PhysicalAbnormalities == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfPhysicalAbnormalities</td>
+        </tr>
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="6"><b>Physical Conditions</b></td>
+        </tr>
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">1</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any Powering issue?</td>
+            @if (@Model.PoweringIssue == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.PoweringIssue == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.PoweringIssue == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfPoweringIssue</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">2</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Smooth movement for its entire range</td>
+            @if (@Model.SmoothMovement == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.SmoothMovement == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.SmoothMovement == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfSmoothMovement</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">3</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any noise observed while functioning of the equipment?</td>
+            @if (@Model.NoiseObserved == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.NoiseObserved == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.NoiseObserved == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfNoiseObserved</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">4</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any faults with functioning of software?</td>
+            @if (@Model.SoftwareFaults == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.SoftwareFaults == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.SoftwareFaults == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfSoftwareFaults</td>
+        </tr>
+
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30">5</td>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Any other abnormalities ?</td>
+            @if (@Model.OtherAbnormalities == "Y") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Yes</td>
+            }
+            @if (@Model.OtherAbnormalities == "N") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">No</td>
+            }
+            @if (@Model.OtherAbnormalities == "O") {
+            <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            else{
+                <td style="width: 20px;text-align: left;border: 0.5px solid black;border-collapse: collapse">NA</td>
+            }
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.CommentsOfOtherAbnormalities</td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 200px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="6"><b>Accuracy Check</b></td>
+        </tr>
+        <tr>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3" height="30">Equipment used to Check the Master Equipment</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.EquipmentName3</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Equipment Id</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.MasterEquipmentId3</td>
+        </tr>
+        <tr>
+            <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3" height="30">Range / Size</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RangeOrSize3</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Least Count</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.LeastCount3</td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+    </table>
+     <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 160px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4"></td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">All values are in</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.DataUnit</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="40">Master Equipment Calibration Results</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Current Internal Check</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Difference</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Acceptance Criteria</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">Decision</td>
+        </tr>
+         @foreach (var item in Model.QCIntermediateResultViewModelList) {
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">@item.CalibrationResult</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@item.CurrentInternalCheck</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@item.DifferenceResult</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@item.AcceptanceCriteria</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@item.Decision</td>
+        </tr>
+         }
+    </table>
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 20px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="6"><b>Conclusions & Actions</b></td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">Any doubts on Performance / Accuracy</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.DoubtsOfPerformance</td>
+        </tr>
+                <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">Comments on Acceptance</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.CommentsOfAcceptance</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">Any other comments</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.OtherComments</td>
+        </tr>
+        <tr>
+            @if (@Model.DocumentStatus >= 1) {
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">Study Performed by</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.StudyPerformedByName</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">Technical Manager</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.TechnicalManagerName</td>
+            }
+            else{
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">Study Performed by</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.StudyPerformedByName</td>
+            }
+        </tr>
+        <tr>
+            @if (@Model.DocumentStatus >= 1) {
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">Date</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.SignDate</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">Date</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.TMSignDate</td>
+            }
+            else{
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">Date</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.SignDate</td>
+            }
+        </tr>
+    </table>
+    
+</div>
+<!-- ************************************************************************** -->
+
+</body>
+
+</html>
+
+@using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))
+{
+    @if (@Model.DocumentStatus == 2) {
+    <input type="hidden" name="ExportData" />
+    <input type="submit" class="btn btn-primary" id="btnSubmit" value="Export" />
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("input[name='ExportData']").val($("#QualityCheckpdf").html());
+    }); 
+</script>

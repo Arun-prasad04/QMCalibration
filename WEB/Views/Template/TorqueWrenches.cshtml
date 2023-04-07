@@ -1,0 +1,184 @@
+<style>
+    table,
+    th,
+    td {
+        border: 0.5px solid black;
+        text-align: center;
+        border-collapse: collapse;
+    }
+    .wd100{
+        width: 100%;
+    }
+    .wd25{
+        width: 25%;
+    }
+    .wd5{
+        width: 5%;
+    }
+    .wd20{
+        width: 20%;
+    }
+    .wd100ht60{
+        width: 100%;
+        height: 60px;
+    }
+    .wd100ht150{
+        width: 100%;
+        height: 150px;
+    }
+    .ht150{
+        height: 150px;
+    }
+</style>
+<section>
+    <table class="wd100">
+        <tr>
+            <th rowspan="2">Daimler</th>
+            <th rowspan="2">Observation Sheet Thread Gauges</th>
+            <th>Format No.</th>
+            <td><input type="text" value="@Model.FormatNo" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Rev.No & Date</th>
+            <td><input type="text" value="@Model.RevNoAndDate" class="wd100"></td>
+        </tr>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <th>Type/Model</th>
+            <td><input type="text" value="@Model.Type" class="wd100"></td>
+            <th>Range/LC</th>
+            <td> <input type="text" value="@Model.LC" class="wd100"></td>
+            <th>Make</th>
+            <td><input type="text" value="@Model.Make" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Serial No.</th>
+            <td><input type="text" value="@Model.SerialNo" class="wd100"></td>
+            <th>ID No.</th>
+            <td><input type="text" value="@Model.IdNo" class="wd100"></td>
+            <th>Ref Std</th>
+            <td><input type="text" value="@Model.RefStd" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Temp@Start <sup>o</sup>C</th>
+            <td><input type="text" value="@Model.TempStart" class="wd100"></td>
+            <th>Temp@End <sup>o</sup>C</th>
+            <td><input type="text" value="@Model.TempEnd" class="wd100"></td>
+            <th>Humidity %RH</th>
+            <td><input type="text" value="@Model.Humidity" class="wd100"></td>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="text" value="@Model.ConditionOfTW" class="wd100"></td>
+            <td colspan="2"><input type="text" value="@Model.WIno" class="wd100"></td>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="text" value="@Model.MasterUsed" class="wd100"></td>
+            <td colspan="2"><input type="text" value="@Model.Allvalues" class="wd100"></td>
+        </tr>
+        <tr>
+           <th colspan="6">Fixed Type Wrenches</th> 
+        </tr>
+    </table>
+    <table class="wd100">
+        <tr>
+            <th rowspan="2" class="wd25">Nominal Set Value</th>
+            <td rowspan="2" class="wd25"></td>
+            <th>Si No</th>
+            <th colspan="3">Actual In Nm</th>
+        </tr>
+        <tr>
+            <th class="wd5">1</th>
+            <td class="wd20"><input type="text" value="@Model.FixedTypeOne" class="wd100"></td>
+            <th class="wd5">6</th>
+            <td class="wd20"><input type="text" value="@Model.FixedTypeSix" class="wd100"></td>
+        </tr>
+        <tr>
+            <th rowspan="2" class="wd25">Spec Max(include MU)</th>
+            <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMax"  class="wd100ht60"></td>
+            <th>2</th>
+            <td><input type="text" value="@Model.FixedTypeTwo" class="wd100"></td>
+            <th>7</th>
+            <td><input type="text" value="@Model.FixedTypeSeven" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td><input type="text" value="@Model.FixedTypeThree" class="wd100"></td>
+            <th>8</th>
+            <td><input type="text" value="@Model.FixedTypeEight" class="wd100"></td>
+        </tr>
+        <tr>
+            <th rowspan="2" class="wd25">Spec Min(include MU)</th>
+            <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMin" class="wd100ht60"></td>
+            <th>4</th>
+            <td><input type="text" value="@Model.FixedTypeFour" class="wd100"></td>
+            <th>9</th>
+            <td><input type="text" value="@Model.FixedTypeNine" class="wd100"></td>
+        </tr>
+        <tr>
+             <th>5</th>
+            <td><input type="text" value="@Model.FixedTypeFive" class="wd100"></td>
+            <th>10</th>
+            <td><input type="text" value="@Model.FixedTypeTen" class="wd100"></td>
+        </tr>
+    </table>
+    <table class="wd100">
+        <tr>
+            <th colspan="4">Adjustable Torque Wrenches</th>
+        </tr>
+        <tr>
+            <th>Measuring Interval</th>
+            <th>20%</th>
+            <th>60%</th>
+            <th>100%</th>
+        </tr>
+        <tr>
+            <th>Nominal Value</th>
+            <td><input type="text" value="@Model.Nominal_20" class="wd100"></td>
+            <td><input type="text" value="@Model.Nominal_60" class="wd100"></td>
+            <td><input type="text" value="@Model.Nominal_100" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Spec (Include MU)</th>
+            <td><input type="text" value="@Model.Spec_20" class="wd100"></td>
+            <td><input type="text" value="@Model.Spec_60" class="wd100"></td>
+            <td><input type="text" value="@Model.Spec_100" class="wd100"></td>
+        </tr>
+        <tr>
+            <th colspan="4">Actual In NM</th>
+        </tr>
+        <tr>
+            <th>SI No</th>
+            <th colspan="3">Values</th>
+        </tr>
+        @foreach (var item in @Model.Nm)
+        {
+        <tr>
+            <td><input type="text" value="@item.SIno" class="wd100"></td>
+            <td><input type="text" value="@item.NmOne" class="wd100"></td>
+            <td><input type="text" value="@item.NmTwo" class="wd100"></td>
+            <td><input type="text" value="@item.NmThree" class="wd100"></td>
+        </tr>
+        }
+        <tr>
+            <th colspan="4">Any Other Comments</th>
+        </tr>
+        <tr>
+            <td colspan="4" class="wd100ht150"><textarea  class="wd100ht150"></textarea></td>
+        </tr>
+    </table> <br>
+     <table class="wd100">
+        <tr>
+            <th>Calibration Performed BY</th>
+            <td><input type="text" value="@Model.CalibBy" class="wd100"></td>
+            <th>Reviewed By</th>
+            <td><input type="text" value="@Model.Reviewed_By" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td><input type="text" value="@Model.Calib_Date" class="wd100"></td>
+            <th>Date</th>
+            <td><input type="text" value="@Model.Review_Date" class="wd100"></td>
+        </tr>
+    </table>

@@ -1,0 +1,150 @@
+<style>
+    .border{
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .textcenter{
+         text-align: center;
+    }
+    .textleft{
+        text-align: left;
+    }
+    .textleftborder{
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .textcenterborder{
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .size{
+        width: 100%;
+    }
+    .sizeborder{
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+</style>
+<form name="frm" id="LeverTypeDialform"   action='@Url.Action("InsertData","Observation")'>
+    <input type="hidden" name="Id" value="@Model.Id">
+<table class="sizeborder">
+    <tr class="sizeborder">
+        <th class="textcenterborder" rowspan="2">Daimler</th>
+        <th class="textcenterborder" rowspan="2">Observation Sheet Lever Type Dial</th>
+        <th class="textleftborder">Format No.</th>
+        <td><input type="text" id="FormatNo" value="@Model.FormatNo" class="sizeborder"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">RevNo.</th>
+        <td><input type="text" id="RevNo" value="@Model.RevNo"  style="width:100%"></td>
+    </tr>
+</table>
+<br>
+<table class="sizeborder">
+    <tr>
+        <th class="textleftborder">Name</th>
+        <td><input type="text" id="Name" value="@Model.Name"class="size"></td>
+        <th class="textleftborder">Range/LC</th>
+        <td > <input type="text" id="Range" value="@Model.Range" class="size"></td>
+        <th class="textleftborder">Make</th>
+        <td><input type="text" id="Make" value="@Model.Make"class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">Serial No.</th>
+        <td><input type="text" id="SerialNo" value="@Model.SerialNo"class="size"></td>
+        <th class="textleftborder">ID No.</th>
+        <td><input type="text" id="IDNo" value="@Model.IDNo" class="size"></td>
+        <th class="textleftborder">Ref Std</th>
+        <td><input type="text" id="RefStd" value="@Model.RefStd" class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">Temp@Start <sup>o</sup>C</th>
+        <td><input type="text" id="TempStart" value="@Model.TempStart" class="size"></td>
+        <th class="textleftborder">Temp@End  <sup>o</sup>C</th>
+        <td><input type="text" id="TempEnd" value="@Model.TempEnd"class="size"></td>
+        <th class="textleftborder">Humidity %RH</th>
+        <td><input type="text" id="Humidity" value="@Model.Humidity"class="size"></td>
+    </tr>
+    <tr>
+        <th rowspan="2" colspan="4" class="textleftborder">Condition of the Dial Indicator</th>
+        <th class="textleftborder">Ref WI:</th>
+        <td><input type="text" id="RefWI" value="@Model.RefWi" class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">All Values Are In mm</th>
+        <td><input type="text" id="Allvalues" value="@Model.Allvalues"class="size"></td>
+    </tr>
+</table>
+<table class="sizeborder">
+   
+    <tr>
+        <th class="textcenterborder" rowspan="2">Sl No.</th>
+        <th class="textcenterborder"rowspan="2" colspan="2">Parameter</th>
+        <th class="textcenterborder" rowspan="2">Spec.</th>
+        <th class="textcenterborder" colspan="2">Actual</th>
+    </tr>
+    <tr>
+        <th class="textcenterborder">DirectionA</th>
+        <th class="textcenterborder">DirectionB</th>
+    </tr>
+   
+    <tr>
+        <th class="textleftborder">1</th>
+        <th class="textcenterborder" rowspan="4">IndicatorError</th>
+        <th class="textleftborder">Measuring Range</th>
+        <td><input type="text" id="MeasuringRange" value="@Model.MeasuringRangeSpec" class="size" ></td>
+        <td><input type="text" id="MeasuringRangeDirectionA" value="@Model.MeasuringRangeDirectionA"class="size"></td>
+        <td><input type="text" id="MeasuringRangeDirectionB" value="@Model.MeasuringRangeDirectionB"class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">2</th>
+        <th class="textleftborder">10 Scale Division</th>
+        <td><input type="text" id="ScaleDivisionSpec" value="@Model.ScaleDivisionSpec"class="size"></td>
+        <td><input type="text" id="ScaleDivisionDirectionA" value="@Model.ScaleDivisionDirectionA"class="size"></td>
+        <td><input type="text" id="ScaleDivisionDirectionB" value="@Model.ScaleDivisionDirectionB"class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">3</th>
+        <th class="textleftborder">Hysteresis</th>
+        <td><input type="text" id="HysteresisSpec" value="@Model.HysteresisSpec"class="size"></td>
+        <td><input type="text" id="HysteresisDirectionA" value="@Model.HysteresisDirectionA"class="size"></td>
+        <td><input type="text" id="HysteresisDirectionB" value="@Model.HysteresisDirectionB"class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">4</th>
+        <th class="textleftborder">Repeatability</th>
+        <td><input type="text" id="RepeatabilitySpec" value="@Model.RepeatabilitySpec" class="size"></td>
+        <td><input type="text" id="RepeatabilityDirectionA" value="@Model.RepeatabilityDirectionA" class="size"></td>
+        <td><input type="text" id="RepeatabilityDirectionB" value="@Model.RepeatabilityDirectionB" class="size"></td>
+    </tr>
+</table>
+<br>
+<table class="sizeborder">
+    <tr>
+        <th class="textleftborder">Calibration Performed By</th>
+        <td><input type="text" id="CalibrationPerformedBy" value="@Model.CalibrationPerformedBy"class="size"></td>
+        <th class="textleftborder">Reveiwed By</th>
+        <td><input type="text"id="ReviewedBy" name="ReviewedBy" value="@Model.ReviewedBy"class="size"></td>
+    </tr>
+    <tr>
+        <th class="textleftborder">Date:</th>
+        @if( true)
+        {
+            var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+            <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                    class="textleftborder" disabled>
+            </td>
+        } 
+        <th class="textleftborder">Date:</th>
+        <td><input type="text" id="CalibrationReviewedDate" value="@Model.CalibrationReviewedDate"class="size"></td>
+    </tr>
+</table>
+<br>
+ <button type="submit">Submit</button>
+</form>
+
+

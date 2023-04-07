@@ -1,0 +1,72 @@
+ <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                       <div class="col-md-6"> 
+                            <h3 class="card-title">Replicate Test</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                    <a href='@Url.Action("ReplicateTest","QualityCheck")'><input type="button" class="btn btn-sm btn-default" value="Add New" ></a>
+                    </div>
+
+                       </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body"> 
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Instrument Name</th>
+                                    <th>Equipment Name</th>
+                                    <th>Range or Size</th>
+                                    <th>LC</th>                                    
+                                    <th>EnValue</th>
+                                    <th>Evaluated By</th>
+                                    <th>Status</th>
+                                    <th>View</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.InstrumentName</td>
+                                        <td>@item.MasterEquipmentName</td>
+                                        <td>@item.RangeOrSize</td>
+                                        <td>@item.LC</td>                                        
+                                        <td>@item.EnValue</td>
+                                        <td>@item.ReviewedBy</td>
+                                        <td>@item.DocumentStatusName </td>
+                                        <td><a href='@Url.Action("ReplicateTest","QualityCheck", new { ReplicateId = @item.Id } )'><i class="fas fa-eye" style="cursor:pointer"></i></a></td>
+                                    </tr>
+                                }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+<script>
+     setTimeout(function(){ 
+
+      $("#example1").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+    });
+     }, 500);
+    </script>

@@ -1,0 +1,171 @@
+<style>
+    table,
+    th,
+    tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .Border0px{
+        border: 0px;
+        width: 100%;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+    .TableDataCenter {
+        width: 100%;
+        text-align: center;
+    
+    }
+    .MeasuredRow {
+        margin-left:-5px;
+        margin-right:-5px;
+}
+  
+    .Measuredcolumn {
+        float: left;
+        width: 50%;
+  
+}
+
+</style>
+
+<table class="TableWidth">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Observation Sheet General</th>
+        <th>Format No.</th>
+        <th>365.QM.D.824</th>
+    </tr>
+    <tr>
+        <th>Rev.No & Date</th>
+        <th>01/ 14.11.2018</th>
+    </tr>
+</table>
+<br>
+
+<table class="TableWidth">
+    <tr>
+        <th>Name</th>
+        <td><input type="text" value="@Model.Name" class="Border0px"></td>
+        <th>Range</th>
+        <td> <input type="text" value="@Model.Range" class="Border0px"></td>
+        <th>Make</th>
+        <td><input type="text" value="@Model.Make" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>Serial No.</th>
+        <td><input type="text" value="@Model.SerialNumber" class="Border0px"></td>
+        <th>ID No.</th>
+        <td><input type="text" value="@Model.IdNumber" class="Border0px"></td>
+        <th>Ref Std</th>
+        <td><input type="text" value="@Model.ReferenceStandard" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>Temp@Start <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempreatureAtStart" id="Temp@Start" class="Border0px"></td>
+        <th>Temp@End <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempreatureAtEnd" id="Temp@End" class="Border0px"></td>
+        <th>Humidity %RH</th>
+        <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="4" class="text-left">Condition of the Parameter</td>
+        <th>RefWi:</th>
+        <td><input type="text" value="@Model.ReferenceWI" id="RefWi" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>All Values Are In</th>
+        <td><input type="text" value="@Model.AllValuesIn" id="AllValuesAreIn" class="Border0px"></td>
+    </tr>
+</table>
+<br>
+<div class="MeasuredRow">
+    <div class="Measuredcolumn">
+        <table >
+        <tr >
+            <th style="word-break: break-all;">Measured</th>
+            <th style="word-break: break-all;">Trial-1</th>
+            <th style="word-break: break-all;">Trial-2</th>
+            <th style="word-break: break-all;">Trial-3</th>
+        </tr>
+        @foreach (var List in @Model.LeftMeasurement)
+    {
+        
+        <tr>
+            <td><input value="@List.LMeasured" id="LMeasured" type="text" class="TableWidth"></td>
+            <td><input value="@List.LTrial1" id="LTrial1" type="text" class="TableWidth"></td>
+            <td><input value="@List.LTrial2" id="LTrial2" type="text" class="TableWidth"></td>
+            <td><input value="@List.LTrial3" id="LTrial3" type="text" class="TableWidth"></td>
+        </tr>
+        
+    }
+    </table>
+    </div>
+    <div class="Measuredcolumn">
+        <table >
+        <tr>
+            <th style="word-break: break-all;">Measured</th>
+            <th style="word-break: break-all;">Trial-1</th>
+            <th style="word-break: break-all;">Trial-2</th>
+            <th style="word-break: break-all;">Trial-3</th>
+        </tr>
+        @foreach (var List1 in @Model.RightMeasurement)
+    {
+        <tr>
+            <td><input value="@List1.RMeasured" id="RMeasured" type="text" class="TableWidth"></td>
+            <td><input value="@List1.RTrial1" id="RTrial1" type="text" class="TableWidth"></td>
+            <td><input value="@List1.RTrial2" id="RTrail2" type="text" class="TableWidth"></td>
+            <td><input value="@List1.RTrial3" id="RTrial3" type="text" class="TableWidth"></td>
+            
+           </tr>
+    }
+    </table>
+    </div>
+</div>
+
+
+<br>
+<div>
+<table class="TableWidth">
+    <TR>
+        <TH COLSPAN="5" class="TableWidth" style="text-align: left;">Repeatability</TH>
+    </TR>
+    @foreach (var List in @Model.Repeat)
+    {
+    <tr>
+        <TH><input type="text" value="@List.Repeatability1" id="Repeatability1" class="Border0px"></TH>
+        <TH><input type="text" value="@List.Repeatability2" id="Repeatability2" class="Border0px"></TH>
+        <TH><input type="text" value="@List.Repeatability3" id="Repeatability3" class="Border0px"></TH>
+        <TH><input type="text" value="@List.Repeatability4" id="Repeatability4" class="Border0px"></TH>
+        <TH><input type="text" value="@List.Repeatability5" id="Repeatability5" class="Border0px"></TH>
+    </tr>
+    }
+</table>
+</div>
+<table>
+    <br>
+</table>
+<br>
+<table class="TableWidth">
+    <tr>
+        <th>Calibration Performed By</th>
+        <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" class="Border0px">
+        </td>
+
+        <th>Reviewed By</th>
+        <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px">
+        </td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <td><input type="text" value="@Model.CalibrationDoneDate" id="CalibrationPerformedDate" class="Border0px">
+        </td>
+
+        <th>Date</th>
+        <td><input type="text" value="@Model.CalibrationReviewedDate" id="ReviewedDate" class="Border0px">
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,207 @@
+@{
+    ViewData["Title"] = "Request";
+}
+
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script>
+     setTimeout(function(){
+      $("#example1").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+    });
+     }, 500);
+</script>
+
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="card-title">Tracker List</h3>
+                        </div>
+                        <div class="col-md-6 text-right">
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>OverAll</label>
+                                @if(ViewBag.reqType==4)
+                                {
+                                <input type="radio" name="ReqTracker" value="OverAll" onclick="getrequest(5)" checked="true">
+                                }
+                                else{
+                                <input type="radio" name="ReqTracker" value="OverAll" onclick="getrequest(5)">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>New Request</label>
+                                @if(ViewBag.reqType==1)
+                                {
+                                <input type="radio" name="ReqTracker" value="New" onclick="getrequest(1)" checked="true">
+                                }
+                                else
+                                {
+                                <input type="radio" name="ReqTracker" value="New" onclick="getrequest(1)">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Regular Request</label>
+                                @if(ViewBag.reqType==2)
+                                {
+                                <input type="radio" name="ReqTracker" value="Regular" onclick="getrequest(2)" checked="true">
+                                }
+                                else{
+                                <input type="radio" name="ReqTracker" value="Regular" onclick="getrequest(2)">
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>ReCalibration Request</label>
+                                @if(ViewBag.reqType==3)
+                                {
+                                <input type="radio" name="ReqTracker" value="ReCalibration" onclick="getrequest(3)" checked="true">
+                                }
+                                else
+                                {
+                                <input type="radio" name="ReqTracker" value="ReCalibration" onclick="getrequest(3)"> 
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Request No</th>
+                                <th>Request Date</th>
+                                <th>Instrument Name</th>
+                                <th>Instrument Id</th>
+                                <th>Range</th>
+                                <th>Request Type</th>
+                                <th>Status</th>
+                                <th>View</th>
+                                <th>Test</th>
+                                <th>Certificate</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td>@item.ReqestNo</td>
+                                    <td>@item.RequestDate.ToString("dd-MM-yyyy")</td>
+                                    <td>@item.InstrumentName</td>
+                                    <td>@item.InstrumentIdNo</td>
+                                    <td>@item.Range</td>
+                                    @if (@item.TypeOfRequest == 1)
+                                    {
+                                        <td>New</td>
+                                    }
+                                    else if (@item.TypeOfRequest == 2)
+                                    {
+                                        <td>Regular</td>
+                                    }
+                                    else if (@item.TypeOfRequest == 3)
+                                    {
+                                        <td>Recalibration</td>
+                                    }
+                                    else if (@item.TypeOfRequest == 4)
+                                    {
+                                        <td>UnQuarantine</td>
+                                    }
+
+                                    @if (@item.Status == (int)EnumRequestStatus.Requested)
+                                    {
+                                        <td>Requested</td>
+                                    }
+                                    else if (@item.Status == (int)EnumRequestStatus.Approved)
+                                    {
+                                        <td>Approved</td>
+                                    }
+                                    else if (@item.Status == (int)EnumRequestStatus.Rejected)
+                                    {
+                                        <td>Request Rejected</td>
+                                    }
+                                    else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult=="Rejected")
+                                    {
+                                        <td>Calibration Rejected</td>
+                                    }
+                                    else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult!="Rejected")
+                                    {
+                                        <td>Calibration done</td>
+                                    }
+                                    else if (@item.Status == (int)EnumRequestStatus.Closed)
+                                    {
+                                        <td>Closed</td>
+                                    }
+
+                                    <td><i class="fas fa-eye" style="cursor:pointer" id='@item.Id'
+                                        onclick="GetRequestDetails(this)"></i></td>
+                                 @if(Model!=null && Model.Count>0){
+                                 @if(( (@item.UserRoleId==2 || @item.UserRoleId==4)  && (@item.Status == (int)EnumRequestStatus.Approved ||@item.Status == (int)EnumRequestStatus.Sent||@item.Status == (int)EnumRequestStatus.Closed))){ //|| (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
+                                    <td><a href='@Url.Action("ViewObservation","Observation",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-check-circle" style="cursor:pointer"></i></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                @if(Model!=null && Model.Count>0){
+                                //@if((@item.UserRoleId==2 && (@item.Status == (int)EnumRequestStatus.Approved ||@item.Status == (int)EnumRequestStatus.Sent||@item.Status == (int)EnumRequestStatus.Closed)) || (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
+                                 @if(@item.TemplateReviewStatus == 1){
+                                <td><a href='@Url.Action("ViewCertification","Certification",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-user-graduate" style="cursor:pointer"></i></td>
+                                }
+                                else{
+                                    <td></td>
+                                }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

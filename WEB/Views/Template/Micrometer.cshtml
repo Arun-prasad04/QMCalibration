@@ -1,0 +1,185 @@
+
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+
+    }
+
+    .Tables-AndTablesTextBox {
+        width: 100%;
+    }
+
+    .FlatNess1and2-TextBox {
+        width: 50%;
+    }
+
+    .ParallelismSpec-Actual-AndItstextBox {
+        width: 25%;
+    }
+</style>
+
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+<div class="col-md-8">
+<form name="frm" id="Micrometerform"   action='@Url.Action("InsertMicrometer","ObservationTemplate")'>
+    <input type="hidden" name="Id" value="@Model.Id">
+<table class="Tables-AndTablesTextBox">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Observation Sheet Micrometer</th>
+        <th>Format No.</th>
+        <td><input value="" type="text" class="Tables-AndTablesTextBox" id="FormatNo"></td>
+    </tr>
+    <tr>
+        <th>Rev.No & Date</th>
+        <td><input value="" type="text" class="Tables-AndTablesTextBox" id="RevNoAndDate"></td>
+    </tr>
+</table>
+<br>
+
+<table class="Tables-AndTablesTextBox">
+    <tr>
+        <th>Name:</th>
+        <td><input type="text" value="@Model.Name" class="Tables-AndTablesTextBox" id="Name"></td>
+        <th>Range/LC:</th>
+        <td> <input type="text" value="@Model.Range" class="Tables-AndTablesTextBox" id="Range"></td>
+        <th>Make:</th>
+        <td><input type="text" value="@Model.Make" class="Tables-AndTablesTextBox" id="Make"></td>
+    </tr>
+    <tr>
+        <th>Serial No:</th>
+        <td><input type="text" value="@Model.SerialNo" class="Tables-AndTablesTextBox" id="SerialNo"></td>
+        <th>Id No:</th>
+        <td><input type="text" value="@Model.IdNo" class="Tables-AndTablesTextBox" id="IdNo"></td>
+        <th>Ref Std.</th>
+        <td><input type="text" value="@Model.RefStd" class="Tables-AndTablesTextBox" id="RefStd"></td>
+    </tr>
+    <tr>
+        <th>Temp@Start <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempStart" class="Tables-AndTablesTextBox" id="TempStart"></td>
+        <th>Temp@End <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempEnd" class="Tables-AndTablesTextBox" id="TempEnd"></td>
+        <th>Humidity %RH</th>
+        <td><input type="text" value="@Model.Humidity" class="Tables-AndTablesTextBox" id="Humidity"></td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="4" value="@Model.ConditionOfParameter" class="text-left" id="ConditionOfParameter">
+            Condition of the Parameter</td>
+        <th>RefWi:</th>
+        <td><input type="text" value="@Model.RefWi" class="Tables-AndTablesTextBox" id="RefWi"></td>
+    </tr>
+    <tr>
+        <th>All Values Are In</th>
+        <td><input type="text" value="@Model.AllValueAreIn" class="Tables-AndTablesTextBox" id="AllValuesAreIn"></td>
+    </tr>
+
+    <tr>
+        <th>Linear Accuracy</th>
+        <td colspan="5"><input type="text" value="@Model.LinearAccuracy" class="Tables-AndTablesTextBox" id="LinearAccuracy">
+        </td>
+    </tr>
+</table>
+<br>
+<table class="Tables-AndTablesTextBox">
+    <tr>
+        <th rowspan="2">Measured</th>
+        <th colspan="3">Actuals</th>
+        <th rowspan="2">Avg.</th>
+        <th colspan="2">MU</th>
+    </tr>
+    <tr>
+        <th>trail1</th>
+        <th>trail2</th>
+        <th>trail3</th>
+        <th>Interval</th>
+        <td><input type="text" value="@Model.IntervalMain" class="Tables-AndTablesTextBox"></td>
+
+    </tr>
+    @foreach (var List in @Model.Measurement)
+    {
+        <tr>
+
+
+
+            <td><input value="@List.Measurement" type="text" class="Tables-AndTablesTextBox" id="Measurement"></td>
+            <td><input value="@List.ActualsT1" type="text" class="Tables-AndTablesTextBox" id="Actuals1"></td>
+            <td><input value="@List.ActualsT2" type="text" class="Tables-AndTablesTextBox" id="Actuals2"></td>
+            <td><input value="@List.ActualsT3" type="text" class="Tables-AndTablesTextBox" id="Actuals3"></td>
+            <td><input value="@List.Avg" type="text" class="Tables-AndTablesTextBox" id="Avg"></td>
+            <td><input value="@List.MuInterval" type="text" class="Tables-AndTablesTextBox" id="MuInterval"></td>
+            <td><input value="@List.IntervalMainValues" type="text" class="Tables-AndTablesTextBox" id="IntervalMain"></td>
+
+
+        </tr>
+
+    }
+
+
+</table>
+<br>
+<table class="Tables-AndTablesTextBox">
+    <tr>
+        <th colspan="4" class="Tables-AndTablesTextBox">FlatNess</th>
+    </tr>
+    <tr>
+        <th colspan="2">FlatNess1</th>
+
+        <th colspan="2">FlatNess2</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="FlatNess1and2-TextBox"><input type="text" value="@Model.Flatness1" class="Tables-AndTablesTextBox"
+                id="FlatNess1"></td>
+        <td colspan="2" class="FlatNess1and2-TextBox"><input type="text" value="@Model.Flatness2" class="Tables-AndTablesTextBox"
+                id="FlatNess2"></td>
+    </tr>
+    <tr>
+        <th class="ParallelismSpec-Actual-AndItstextBox">Parallelism Spec:</th>
+        <td class="ParallelismSpec-Actual-AndItstextBox"><input type="text" value="@Model.ParallelismSpec"
+                class="Tables-AndTablesTextBox" id="ParallelismSpec"></td>
+        <th class="ParallelismSpec-Actual-AndItstextBox">Actual :</th>
+        <td class="ParallelismSpec-Actual-AndItstextBox"><input type="text" value="@Model.Actuals"
+                class="Tables-AndTablesTextBox" id="Actual"></td>
+    </tr>
+
+
+
+</table>
+<br>
+<table class="Tables-AndTablesTextBox">
+    <tr>
+        <th>Calibration Performed By</th>
+        <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
+                id="CalibrationPerformedBy"></td>
+        <th>Reveiwed By</th>
+        <td><input type="text" value="@Model.ReviewedBy" class="Tables-AndTablesTextBox" id="ReveiwedBy"></td>
+    </tr>
+    <tr>
+        <th>Date:</th>
+        @if( true)
+        {
+            var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+            <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                    class="Tables-AndTablesTextBox" disabled>
+            </td>
+        } 
+      
+        <th>Date:</th>
+        <td><input type="text" value="@Model.ReviewedDate" class="Tables-AndTablesTextBox" id="ReveiwedByDate"></td>
+
+    </tr>
+</table>
+<br>
+
+ <button type="submit">Submit</button>
+
+</form>
+</div>
+    <div class="col-md-2"></div>
+</div>

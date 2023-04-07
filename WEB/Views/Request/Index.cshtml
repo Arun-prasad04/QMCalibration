@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Request List";
+}
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                       <div class="col-md-6">
+                            <h3 class="card-title">Request List</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+<a href='@Url.Action("Create","Request")'><input type="button" class="btn btn-sm btn-default" value="Add New Request" ></a>
+                    </div>
+
+                       </div>
+                    </div>
+                    <!-- /.card-header --> 
+                    <div class="card-body"> 
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                   
+                                    <th>SerialNo</th>
+                                    <th>Group Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@item.SerialNo</td>
+                                        <td>@item.GroupName</td>
+                                        <td><i class="fas fa-edit"></i></td>
+                                        <td><i class="fas fa-archive"></i></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+<script>
+     setTimeout(function(){ 
+
+      $("#example1").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+    });
+     }, 500);
+    </script>

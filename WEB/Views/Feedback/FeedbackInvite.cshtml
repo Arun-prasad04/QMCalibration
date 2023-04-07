@@ -1,0 +1,156 @@
+@{
+    ViewData["Title"] = "FeedBack Invite";
+}
+
+<section class="content">
+    <form name="feedbackInviteForm" id="feedbackInviteForm" action='@Url.Action("SendInvite","Feedback")' method="post"
+        enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title">Feedback User List</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" >
+                        <div>
+                            <label for="LocationId" class="required" style="margin-left: 25px;">Laboratory</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" style="margin-left: 8px;">
+                                <select id="ddlLabSelection" style="height: 35px;" name="ddlLabSelection"
+                                    class="form-control input-sm">
+                                    <option id="1">Materials Lab</option>
+                                    <option id="2">Polymer Lab</option>
+                                    <option id="3">Calibration Lab</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="tblUserList" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="chkSelectAll" name="chkSelectAll"
+                                            class="input-filter" /></th>
+                                    <th style="display:none;"><input id="Id" type="hidden" value="Id"></th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Phone No</th>
+                                    <th>Department</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" id="chkBox" name="chkBox" class="chkBox" /></td>
+                                        <td style="display:none;"><input id="Id" name="Id" type="hidden"
+                                            value="@Model[i].Id"></td>
+                                        <td>@Model[i].FirstName </td>
+                                        <td>@Model[i].LastName</td>
+                                        <td>@Model[i].Email</td>
+                                        <td>@Model[i].MobileNo</td>
+                                        <td>@Model[i].DepartmentName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- <textarea name="Comments" id="Comments" placeholder="Enter Your Comments Here"
+            style="width: 100%; height:70px;"></textarea> -->
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6 text-right">
+                <input type="button" value="SendInvite" id="btnSave" onclick="SendInvite()" class="btn btn-primary">
+            </div>
+        </div>
+        </div>
+    </form>
+</section>
+
+<script>
+    setTimeout(function () {
+
+        $("#tblUserList").DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+    }, 500);
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function SendInvite() {
+
+        //Loop through the Table rows and build a JSON array.
+        var InviteUserData = new Array();
+
+        $("#tblUserList TBODY TR").each(function () {
+            var row = $(this);
+            var ck = row.find("TD").eq(0);
+            var ckval = ck[0].firstChild.checked;
+
+            if (ckval) {
+
+                var userId = row.find("input[name='Id']").val();
+                var e = document.getElementById("ddlLabSelection");
+                var selectedLabValue = e.options[e.selectedIndex].text;
+
+                var UserView = {
+                    id: userId,
+                    email: row.find("TD").eq(4).html().trim(),
+                    firstName: row.find("TD").eq(2).html().trim(),
+                    lastName: row.find("TD").eq(3).html().trim(),
+                    mobileNumber: row.find("TD").eq(5).html().trim(),
+                    department: row.find("TD").eq(6).html().trim(),
+                    labname: selectedLabValue
+                }
+                InviteUserData.push(UserView);
+            }
+
+        });
+        //var data = JSON.stringify(InviteUserData);
+        console.log(InviteUserData);
+
+
+        //Send the JSON array to Controller using AJAX.
+        $.ajax({
+            type: "POST",
+            url: "../FeedBack/SendInvite",
+            data: { userViewModelList: InviteUserData },
+            dataType: "json",
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#chkSelectAll').click(function () {
+            $('.chkBox').prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>

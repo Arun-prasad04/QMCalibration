@@ -1,0 +1,507 @@
+   @{
+    ViewData["Title"] = "User Create";
+}
+
+ <!-- Content Header (Page header) -->
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          
+              <!-- general form elements -->
+              <div class="card card-primary"> 
+                <div class="card-header">
+                        <div class="row">
+                       <div class="col-md-6">
+                            <h3 class="card-title">User Creation</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                    <a href='@Url.Action("Index","User")'><input type="button" class="btn btn-sm btn-default trn" value="User List" ></a>
+                    </div>
+
+                       </div> 
+
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post"  enctype="multipart/form-data">
+                  <div class="card-body">
+                     <input type="hidden" name="Id" value="@Model.Id">
+                     <div class="row">
+                      <div class="col-md-4">
+                     <div class="form-group">
+                      <label for="ShortId" class="required">User Name</label>
+                      <input type="text" class="form-control" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()" >
+                      </div> 
+                      </div>
+                      <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="FirstName" class="required">First Name</label>
+                      <input type="text" class="form-control" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
+                      </div>                
+                      </div>
+                      <div class="col-md-4">                    
+                    <div class="form-group">
+                      <label for="LastName" class="required">Last Name</label>
+                      <input type="text" class="form-control" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName" >
+                      </div>  
+                      </div>
+                     </div>
+                <div class="row">
+                <div class="col-md-4">                       
+                <div class="form-group">
+                  <label class="required">Role</label>
+                  <select class="form-control" name="UserRoleId" id="UserRoleId"> 
+                    @if(Model.UserRoleId==1)
+                    {
+                    <option value="1" selected="true">Department User</option>  
+                    }
+                    else{
+                    <option value="1">Department User</option>
+                    }
+                    @if(Model.UserRoleId==2)
+                    {
+                    <option value="2" selected="true">LAB Admin</option>  
+                    }
+                    else{
+                    <option value="2">LAB Admin</option>
+                    }
+                    @if(Model.UserRoleId==3)
+                    {
+                      <option value="3" selected="true">Facility Manager</option> 
+                    }
+                    else{
+                    <option value="3">Facility Manager</option> 
+                    }
+                    @if(Model.UserRoleId==4)
+                    {
+                      <option value="4" selected="true">LAB Technical Manager</option>
+                    }
+                    else{
+                    <option value="4">LAB Technical Manager</option>
+                    }
+                  </select>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label class="required">Email Id</label>
+                  <input type="email" class="form-control" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
+                </div>
+                </div>
+                      <div class="col-md-4">
+                   <div class="form-group">
+                  <label class="required">Mobile No</label>
+                  <input type="text" class="form-control" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label class="required">Department Name</label>
+                  <select class="form-control" name="DepartmentId" id="DepartmentId" > 
+                    @foreach(var department in @Model.DepartmentList){
+                      if(department.Id==Model.DepartmentId){
+                      <option value="@department.Id" selected="selected">@department.Name</option>
+                      }else{
+                      <option value="@department.Id" >@department.Name</option>
+                      }
+                    }
+                  </select>
+                </div>
+                </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label class="required">Designation</label>
+                  <select class="form-control" name="Designation" id="Designation" > 
+                    @foreach(var designation in @Model.DesignationList){
+                      if(designation.Id==Model.Designation){
+                      <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                      }else{
+                      <option value="@designation.Id" >@designation.AttrValue</option>
+                      }
+                    }
+                  </select>
+                </div>
+                </div>
+                <div class="col-md-4">                       
+                <div class="form-group">
+                  <label class="required">Level</label>
+                  <select class="form-control" name="Level" id="Level">
+                    @if(Model.Level=="L7")
+                    { 
+                      <option value="L7" selected="true">L7</option>
+                    }
+                    else{
+                      <option value="L7">L7</option>
+                    }
+                    @if(Model.Level=="L6")
+                    { 
+                      <option value="L6" selected="true">L6</option>
+                    }
+                    else{
+                      <option value="L6">L6</option>
+                    }
+                    @if(Model.Level=="L5")
+                    { 
+                    <option value="L5" selected="true">L5</option>
+                    }
+                    else{
+                      <option value="L5">L5</option>
+                    }
+                    @if(Model.Level=="L4")
+                    { 
+                    <option value="L4" selected="true">L4</option> 
+                    }
+                    else{
+                      <option value="L4">L4</option>
+                    }
+                    @if(Model.Level=="L3")
+                    { 
+                    <option value="L3" selected="true">L3</option>
+                    }
+                    else{
+                      <option value="L3">L3</option>
+                    }
+                  </select>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L3ShortId" >Level 3 ShortID</label>
+                      <input type="text" class="form-control" id="L3ShortId" placeholder="ShortID" name="L3ShortId" value="@Model.L3ShortId" maxlength="7" onblur="GetUserDetailsData('L3')" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L3Name" >Level 3 Name</label>
+                      <input type="text" class="form-control" id="L3Name" placeholder="Name" name="L3Name" value="@Model.L3Name" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L3Email" >Level 3 Email</label>
+                      <input type="text" class="form-control" id="L3Email" placeholder="L3 Manager Email" name="L3Email" value="@Model.L3Email" >
+                      </div>
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L4ShortId" >Level 4 ShortID</label>
+                      <input type="text" class="form-control" id="L4ShortId" placeholder="ShortID" name="L4ShortId" value="@Model.L4ShortId" maxlength="7" onblur="GetUserDetailsData('L4')" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L4Name" >Level 4 Name</label>
+                      <input type="text" class="form-control" id="L4Name" placeholder="Name" name="L4Name" value="@Model.L4Name" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">  
+                     <div class="form-group">
+                      <label for="L4Email" >Level 4 Email</label>
+                      <input type="text" class="form-control" id="L4Email" placeholder="L4 Manager Email" name="L4Email" value="@Model.L4Email" >
+                      </div>
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L5ShortId" >Level 5 ShortID</label>
+                      <input type="text" class="form-control" id="L5ShortId" placeholder="ShortID" name="L5ShortId" value="@Model.L5ShortId" maxlength="7" onblur="GetUserDetailsData('L5')" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L5Name" >Level 5 Name</label>
+                      <input type="text" class="form-control" id="L5Name" placeholder="Name" name="L5Name" value="@Model.L5Name" >
+                      </div>  
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L5Email" >Level 5 Email</label>
+                      <input type="text" class="form-control" id="L5Email" placeholder="L5 Manager Email" name="L5Email" value="@Model.L5Email" >
+                      </div>
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L6ShortId" >Level 6 ShortID</label>
+                      <input type="text" class="form-control" id="L6ShortId" placeholder="ShortID" name="L6ShortId" value="@Model.L6ShortId"  maxlength="7" onblur="GetUserDetailsData('L6')" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                      <label for="L6Name" >Level 6 Name</label>
+                      <input type="text" class="form-control" id="L6Name" placeholder="Name" name="L6Name" value="@Model.L6Name" >
+                      </div>
+                      </div>
+                      <div class="col-md-4">  
+                      <div class="form-group">
+                      <label for="L6Email" >Level 6 Email</label>
+                      <input type="text" class="form-control" id="L6Email" placeholder="L6 Manager Email" name="L6Email" value="@Model.L6Email" >
+                      </div>  
+                      </div>
+                  </div>
+                   <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <div class="custom-file">
+                            <label class="custom-file-label" for="exampleInputFile" >Choose Signature</label>
+                            <input type="file" class="custom-file-input"
+                              accept="image/png, image/gif, image/jpeg"
+                              onchange="checkFileSize(this,4,event)" value="@Model.SignImageName" name="ImageUpload"
+                              id="ImageUpload" />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="L6Email">Signature Image</label>
+                          <p id="SignImageName"></p>
+                          @if (@Model.SignImageName != null)
+                          {
+                            <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                          }
+                        </div>
+                      </div>
+                     </div>
+               </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+           </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+    <script>
+       setTimeout(function(){ 
+  $(function () {
+    $('#userform').validate({
+      rules: {
+      FirstName: {
+      required: true,
+      },
+      LastName: {
+      required: true,
+      },
+      UserRoleId: {
+      required: true,
+      },
+      Email: {
+      required: true,
+      },
+      MobileNo: {
+      required: true,
+      },
+      DepartmentId: {
+      required: true,
+      },
+      
+      },
+      messages: {
+        FirstName: {
+      required: "Please Your First Name",
+      },
+      LastName: {
+      required: "Please Enter Your Last Name",
+      },
+      UserRoleId: {
+      required: "Please provide User Role",
+      },
+      Email: {
+      required: "Please provide The Email Id",
+      },
+      MobileNo: {
+      required: "Please Provide The Mobile No",
+      },
+      DepartmentId: {
+      required: "Please provide The Department Name",
+      },
+      L3Email: {
+      required: "Please provide The L3 Email Id",
+      },
+      L4Email: {
+      required: "Please provide The L4 Email Id",
+      },
+      L5Email: {
+      required: "Please provide The L5 Email Id",
+      },
+      L6Email: {
+      required: "Please provide The L6 Email Id",
+      },
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+      }
+      });
+  });
+   },1000);
+</script>
+<script>
+    var instList = "";
+    function GetUserDetails() {
+      debugger;
+        var ShortId = $('#ShortId').val();
+        if ((ShortId == null || ShortId == '') && ShortId.length>6)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../User/GetUserInfoFromLDAP",
+            data: { ShortId: ShortId },
+            dataType: "json",
+            success: function (data) {
+              debugger;
+                // Transform JS object to an array                
+                if (data != null) {
+                  if(data.length==0)
+                  {
+                    $('#FirstName').val('');
+                    $('#LastName').val('');
+                    $('#Email').val('');
+                    $('#MobileNo').val('');
+                    @* $('#FirstName').removeAttr('disabled');
+                    $('#LastName').removeAttr('disabled');
+                    $('#Email').removeAttr('disabled');
+                    $('#MobileNo').removeAttr('disabled'); *@
+                  }
+                  else{
+                    instList = data;
+                    $('#FirstName').val(instList.firstName);
+                    $('#LastName').val(instList.lastName);
+                    $('#Email').val(instList.emailId);
+                    $('#MobileNo').val(instList.mobile);
+                    @* $('#FirstName').attr('disabled','disabled');
+                    $('#LastName').attr('disabled','disabled');
+                    $('#Email').attr('disabled','disabled');
+                    $('#MobileNo').attr('disabled','disabled'); *@
+                  }
+                }                
+            }
+        });        
+    }
+    function GetUserDetailsData(Level) {
+      debugger;
+        var ShortId;
+        if(Level=="L6")
+        {
+          ShortId=$('#L6ShortId').val();
+        }
+        else if(Level=="L5")
+        {
+          ShortId=$('#L5ShortId').val();
+        }
+        else if(Level=="L4")
+        {
+          ShortId=$('#L4ShortId').val();
+        }
+        else if(Level=="L3")
+        {
+          ShortId=$('#L3ShortId').val();
+        }
+        if ((ShortId == null || ShortId == ''))
+        {
+            return;
+        }
+        else
+        {
+        $.ajax({
+            type: "POST",
+            url: "../User/GetUserInfoFromLDAPData",
+            data: { ShortId: ShortId,Level:Level },
+            dataType: "json",
+            success: function (data) {
+              debugger;
+                // Transform JS object to an array                
+                if (data != null) {
+                  if(Level=="L3")
+                  {                  
+                    $('#L3Name').val(data.firstName);
+                    $('#L3Email').val(data.email);                    
+                  }                  
+                  else if(Level=="L4")
+                  {                  
+                    $('#L4Name').val(data.firstName);
+                    $('#L4Email').val(data.email);
+                    
+                  } 
+                  else if(Level=="L5")
+                  {                  
+                    $('#L5Name').val(data.firstName);
+                    $('#L5Email').val(data.email);
+                    
+                  } 
+                  else if(Level=="L6")
+                  {                  
+                    $('#L6Name').val(data.firstName);
+                    $('#L6Email').val(data.email);
+                    
+                  }                     
+                }
+                else{
+                  if(Level=="L3")
+                  {                  
+                    $('#L3ShortId').val('');                    
+                  }                  
+                  else if(Level=="L4")
+                  {                  
+                    $('#L4ShortId').val('');                    
+                  } 
+                  else if(Level=="L5")
+                  {                  
+                    $('#L5ShortId').val('');                    
+                  } 
+                  else if(Level=="L6")
+                  {                  
+                    $('#L6ShortId').val('');                                       
+                  }
+                    alert("Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.");
+                    return;
+                }                
+            }
+        });
+        }        
+    }
+</script>
+
+<script>
+    function checkFileSize(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload").val("");
+        }
+        var input = document.getElementById('ImageUpload')
+        var output = document.getElementById('SignImageName')
+        var result = "";
+        result += input.files.item(0).name;
+        output.innerHTML = result;
+    }
+</script>
+
+  

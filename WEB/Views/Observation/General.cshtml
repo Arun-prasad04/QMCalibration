@@ -1,0 +1,481 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+        `
+    }
+
+    .Border0px {
+        width: 100%;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+
+    .TableDataCenter {
+        width: 100%;
+        text-align: center;
+
+    }
+
+    .MeasuredRow {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .Measuredcolumn {
+        float: left;
+        width: 100%;
+
+    }
+
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="TableWidth">
+            <tr class="sizeborder">
+                <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px"
+                    height="60">
+                    <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" />
+                </td>
+                <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">Observation Sheet
+                    </br> General</td>
+                <td class="textleftborder" height="30">Format No.</td>
+                <td class="textcenterborder">365.QM.D.824</td>
+            </tr>
+            <tr>
+                <td class="textleftborder" height="30">RevNo & </br> Date
+                </td>
+                <td class="textcenterborder">01/ 14.11.2018</td>
+            </tr>
+        </table>
+        <br>
+
+        <table class="TableWidth">
+            <tr>
+                <td class="textleftborder">Name</td>
+                <td>@Model.Name</td>
+                <td class="textleftborder">Range</td>
+                <td>@Model.Range</td>
+                <td class="textleftborder">Make</td>
+                <td>@Model.Make</td>
+            </tr>
+            <tr>
+                <td class="textleftborder">Serial No.</td>
+                <td>@Model.SerialNo</td>
+                <td class="textleftborder">ID No.</td>
+                <td>@Model.IdNo</td>
+                <td class="textleftborder">Ref Std</td>
+                <td>@Model.RefStd</td>
+            </tr>
+            <tr>
+                <td>Temp@Start <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
+                <td>Temp@End <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
+                <td>Humidity %RH</td>
+                <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+            </tr>
+
+            <tr>
+                <td rowspan="2" colspan="4" class="textleftborder">Condition of the Instrument</br>
+                    <textarea name="DialIndicatiorCondition" id="DialIndicatiorCondition"
+                        style="height: 50px;width: 400px;">@Model.DialIndicatiorCondition</textarea>
+                </td>
+                <td class="textleftborder" colspan="2">Ref WI: <input type="text" name="RefWi" id="RefWi"
+                        value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+            </tr>
+            <tr>
+                <td class="textleftborder" colspan="2">All Values Are In<input type="text" style="width: 60px;"
+                        name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size"
+                        @Model.IsDisabled></td>
+            </tr>
+        </table>
+        <br>
+        <tr>
+            <p align="right">
+                <button style="align-content: right: ;;" id="add" name="add" type="button" class="btn btn-primary">Add
+                    New Row</button>
+            </p>
+        </tr>
+
+        <div class="TableWidth">
+            <table id="Generaladd">
+                <thead>
+                    <tr>
+                        <td style="word-break: break-all;">Measured</td>
+                        <td style="word-break: break-all;">Trial-1</td>
+                        <td style="word-break: break-all;">Trial-2</td>
+                        <td style="word-break: break-all;">Trial-3</td>
+                        <td style="word-break: break-all;">Average</td>
+                        <td style="width: 40px;">Delete</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in @Model.GeneralAddResultViewModelList)
+                    {
+                        <tr id="tablerow0">
+                            <td><input value="@item.MeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+                                required="required" class="TableWidth"></td>
+                            <td><input value="@item.Trial1" id="Trial1" name="Trial1" type="text" class="TableWidth"
+                                required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="@item.Trial2" id="Trial2" name="Trial2" type="text" class="TableWidth"
+                                required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="@item.Trial3" id="Trial3" name="Trial3" type="text" class="TableWidth"
+                                required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="@item.Average" id="Average" name="Average" type="text" required="required"
+                                class="TableWidth"></td>
+                            <td>
+                                <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(0);"></i>
+                            </td>
+                             <td><input value="@item.Id" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                             <td><input value="@item.ParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <tr>
+            <p align="right">
+                <button style="align-content: right: ;;" id="addManual" name="addManual" type="button"
+                    class="btn btn-primary">Add New Row</button>
+            </p>
+        </tr>
+        <div class="TableWidth">
+            <div class="TableWidth">
+                <table id="Manualadd">
+                    <thead>
+                        <tr>
+                            <td style="word-break: break-all;width: 100%;" colspan="6"></td>
+                            <td style="width: 40px;">Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in @Model.GeneralManualAddResultViewModelList)
+                        {
+                            <tr>
+                                <td><input value="@item.Column1" id="Column1" name="Column1" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td><input value="@item.Column2" id="Column2" name="Column2" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td><input value="@item.Column3" id="Column3" name="Column3" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td><input value="@item.Column4" id="Column4" name="Column4" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td><input value="@item.Column5" id="Column5" name="Column5" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td><input value="@item.Column6" id="Column6" name="Column6" type="text" required="required"
+                                    class="TableWidth"></td>
+                                <td>
+                                    <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(0);"></i>
+                                </td>
+                                 <td><input value="@item.Id" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                                 <td><input value="@item.ParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <table>
+            <br>
+
+        </table>
+        <br>
+        <table class="TableWidth">
+            <tr>
+                <td>Calibration Performed By</td>
+                <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy"
+                        class="Border0px" disabled>
+                </td>
+
+                <td>Reviewed By</td>
+                <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="textleftborder">Date:</td>
+                @if(true)
+                {
+                    var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+                    <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                            class="Border0px" disabled>
+                    </td>
+                }
+
+                <td class="textleftborder">Date:</td>  
+                       
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
+                || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                    <td><input type="text" name="Review_Date" id="Review_Date"
+                        value="@Model.Review_Date" class="size" disabled></td>
+                }
+                else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+                {
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                                id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate"  @Model.IsDisabled>
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
+            {
+                    <tr>
+                            <td class="textleftborder">Status</td>
+                            <td class="textleftborder" colspan="3">
+                                <div style="text-align: left;">
+                                    <label>Approve</label>
+                                    <input type="radio" name="Approve" id="Approve">
+                                    <label>Reject</label>
+                                    <input type="radio" name="Approve" id="Reject">
+                                </div>
+                            </td>
+
+                    </tr>
+            }
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4"){
+                <tr>
+                    <td colspan="4">
+                        @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                        {
+                            <input type="button" class="btn btn-primary" value="Save" name="Save" id="General" onclick="SaveGeneral()">
+                        }
+                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                    </td>
+                </tr>
+            }
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+            {
+                    <tr>
+                        <td colspan="4" style="text-align:center;">
+                            @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                            {
+                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                            }
+                            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                        </td>
+                    </tr>
+            }
+
+</table>  
+
+        <input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+        <input type="hidden" id="requestId" value="@Model.RequestId">
+        <input type="hidden" name="Id" Id="Id" value="@Model.Id">
+        <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+        <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.Id">
+        
+        
+
+</div>
+<div class="col-md-2"></div>
+</div>
+
+ <script>
+    setTimeout(function () {
+
+    $('#reservationdate').datetimepicker({
+     format: 'DD/MM/YYYY'
+    });
+    }, 1000);
+
+    </script> 
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+</script>
+
+
+
+
+
+<script>
+    debugger
+    var counter = 1;
+    $(function () {
+        $('#add').click(function () {
+            $('<tr id="tablerow' + counter + '"><td>' +
+                '<input id="MeasuedValue" name="MeasuedValue" type="text" class="TableWidth"  value=""  required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Trial1" name="Trial1" type="text" class="TableWidth"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Trial2" name="Trial2" type="text" class="TableWidth" onkeyup="GetValue(' + counter + ');" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Trial3" name="Trial3" type="text" class="TableWidth" onkeyup="GetValue(' + counter + ');" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Average" name="Average" type="text" class="TableWidth" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTr(' + counter + ');"></i>' +
+                '</td>' +
+                '<td>' +
+                '<input id="Id" name="Id" type="hidden" class="TableWidth"  value="" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="ParentId" name="ParentId" type="hidden" class="TableWidth"  value="" />' +
+                '</td>' +
+                '</tr>').appendTo('#Generaladd');
+            counter++;
+            return false;
+        });
+    });
+
+    function removeTr(index) {
+        if (counter > 1) {
+            $('#tablerow' + index).remove();
+            counter--;
+        }
+        return false;
+    }
+    function GetValue(Id) {
+        $('#tablerow' + Id + '').each(function () {
+            debugger;
+            var ActualsT1 = $(this).find("td:eq(1) input[type='text']").val();
+            var ActualsT2 = $(this).find("td:eq(2) input[type='text']").val();
+            var ActualsT3 = $(this).find("td:eq(3) input[type='text']").val();
+
+            
+
+            ActualsT1 = isNaN(ActualsT1) || !ActualsT1.trim() ? 0 : parseFloat(ActualsT1);
+            ActualsT2 = isNaN(ActualsT2) || !ActualsT2.trim() ? 0 : parseFloat(ActualsT2);
+            ActualsT3 = isNaN(ActualsT3) || !ActualsT3.trim() ? 0 : parseFloat(ActualsT3);
+
+            count = 3;
+            arrayvalues1 = [ActualsT1, ActualsT2, ActualsT3];
+            for (let i = 0; i < arrayvalues1.length; i++) {
+                if (arrayvalues1[i] == null || arrayvalues1[i] == 0) {
+                    count = count - 1;
+                }
+            }
+
+            var sumofarray = (ActualsT1 + ActualsT2 + ActualsT3);
+
+            var averagevalue = getaverages(sumofarray, count);
+
+            $(this).find("td:eq(4) input[type='text']").val(averagevalue);
+        });
+    }
+    function getaverages(sum, avg) {
+    sum = isNaN(sum) ? 0 : sum;
+    avg = isNaN(avg) ? 0 : avg;
+    Average = sum / avg;
+    Average=isNaN(Average)? 0 : Average;
+    return Average.toFixed(6);
+
+
+}
+</script>
+<script>
+    debugger
+    var counter = 1;
+    $(function () {
+        $('#addManual').click(function () {
+            $('<tr id="tablerow' + counter + '"><td>' +
+                '<input id="Column1" name="Column1" type="text" class="TableWidth"  value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Column2" name="Column2" type="text" class="TableWidth"  value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Column3" name="Column3" type="text" class="TableWidth" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Column4" name="Column4" type="text" class="TableWidth" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Column5" name="Column5" type="text" class="TableWidth" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="Column6" name="Column6" type="text" class="TableWidth" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(' + counter + ');"></i>' +
+                '</td>'+
+                '<td>' +
+                '<input id="Id" name="Id" type="hidden" class="TableWidth"  value="" />' +
+                '</td>' +
+                '<td>' +
+                '<input id="ParentId" name="ParentId" type="hidden" class="TableWidth"  value="" />' +
+                '</td>' +
+                '</tr>').appendTo('#Manualadd');
+            counter++;
+            return false;
+        });
+    });
+
+    function removeMu(index) {
+        if (counter > 1) {
+            $('#tablerow' + index).remove();
+            counter--;
+        }
+        return false;
+    }
+
+</script>

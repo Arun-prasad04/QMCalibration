@@ -1,0 +1,75 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+		<!-- Small boxes (Stat box) -->
+		<div class="row">
+			@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2)
+			{
+				<div class="col-lg-4 col-6">
+					<!-- small box -->
+					<div class="small-box bg-info">
+						<div class="inner">
+							<h3>@ViewBag.MasterCount</h3>
+
+							<p class="trn">Master</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-bag"></i>
+						</div>
+						<a href="../Master/Index" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			}
+			<!-- ./col -->
+			@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 || Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 1)
+			{
+				<div class="col-lg-4 col-6">
+					<!-- small box -->
+					<div class="small-box bg-success">
+						<div class="inner">
+							<h3>@ViewBag.InstrumentCount<sup style="font-size: 20px"></sup></h3>
+
+							<p class="trn">Instruments</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-stats-bars"></i>
+						</div>
+						<a href="../Instrument/Index" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			}
+			<!-- ./col -->
+			<div class="col-lg-4 col-6">
+				<!-- small box -->
+				<div class="small-box bg-warning">
+					<div class="inner">
+						<h3>@ViewBag.RequestCount</h3>
+
+						<p class="trn">Request</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 3)
+					{
+						<a href="../Tracker/ExternalRequest" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+					}
+					else
+					{
+						<a href="../Tracker/Request" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+					}
+				</div>
+			</div>
+
+			<!-- ./col -->
+			<!-- ./col -->
+		</div>
+		<!-- /.row -->
+		<!-- /.row (main row) -->
+	</div><!-- /.container-fluid -->
+</section>

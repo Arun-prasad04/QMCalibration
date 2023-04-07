@@ -1,0 +1,379 @@
+@{
+    ViewData["Title"] = "External Request";
+}
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                       <div class="col-md-6">
+                            <h3 class="card-title">Tracker List</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+ 
+                    </div> 
+
+                       </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                   
+                                    <th>Request No</th>
+                                    <th>Request Date</th>
+                                    <th>Master Name</th>
+                                    <th>Master Serial</th>
+                                    <th>Calibration Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@item.ReqNo</td>
+                                        <td>@item.RequestDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.MasterName</td>
+                                        <td>@item.MasterSerialNo</td>
+                                        <td>@item.CalibrationDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.NextDue.ToString("dd-MM-yyyy")</td>
+                                        @if(@item.Status==(int)EnumRequestStatus.Requested)
+                                        {
+                                            <td>Requested</td>
+                                        }
+                                        else if(@item.Status==(int)EnumRequestStatus.Approved){
+                                            <td>Approved</td>
+                                        }else if(@item.Status==(int)EnumRequestStatus.Rejected){
+                                            <td>Rejected</td>
+                                        }else if(@item.Status==(int)EnumRequestStatus.Sent){
+                                            <td>Sent</td>
+                                        }else if(@item.Status==(int)EnumRequestStatus.Closed){
+                                            <td>Closed</td>
+                                        }
+                                        <td><i class="fas fa-eye" style="cursor:pointer" id='@item.Id' onclick="GetExternalRequestDetails(this)"></i></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+<script>
+setTimeout(function(){ 
+
+$('#ReturnDatePicker').datetimepicker({
+      format: 'DD/MM/YYYY'
+});
+    
+
+$("#example1").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+});
+}, 500);
+</script>
+
+<div class="modal fade" id="trackerViewModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">
+            External Calibration Request
+        </h5>
+        <button type="button" class="close" id="closePopup" onclick="CloseTrackerPopup()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modelBody" >
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Request Number</label>
+                            <input type="text" class="form-control" id="ReqNo" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Requested Date</label>
+                            <input type="text" class="form-control" id="RequestDate" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Master Name</label>
+                            <input type="text" class="form-control" id="MasterName" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Master Serial Number</label>
+                            <input type="text" class="form-control" id="MasterSerialNo" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Master Id Number</label>
+                            <input type="text" class="form-control" id="MasterIdNo" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Calibration Date</label>
+                            <input type="text" class="form-control" id="CalibrationDate" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="text" class="form-control" id="NextDue" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Certificate Number</label>
+                            <input type="text" class="form-control" id="CertificateNo" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Traceability</label>
+                            <input type="text" class="form-control" id="Traceability" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <input type="text" class="form-control" id="status_rejected" value="Rejected" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_waitingFM"value="Requeted , Waiting for FM" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_accepted"value="Accepted by FM , Waiting for Visual Check Update" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_FMVisusalChk"value="FM Check Completed,Returned to LAB" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_LabVisusalChk"value="Waiting for LAB check" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_RequestCompleted"value="Waiting for LAB check" disabled style="display: none;">
+                            
+                        </div>
+                    </div>
+                </div> 
+
+                <div id="requestSection" style="display: none;">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <!-- text input -->
+                                <div class="form-group">
+                                <label>Accept</label>
+                                <input type="radio" name="AcceptReject" value="Accept" onclick="EnableReason()">
+                                
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                 <label>Reject</label>
+                                <input type="radio" name="AcceptReject" value="Reject" onclick="EnableReason()">
+                                </div>
+                            </div>
+                                                       <div class="col-sm-6" style="text-align:right;">
+                                <!-- text input -->
+                                <div class="form-group">
+                                <input type="button" id="submitReason" value="Submit" name="Submit" class="btn btn-primary" onclick="submitAcceptReject()">
+                                
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                
+                                </div>
+                            </div>
+ 
+                        </div>
+ <div id="rejectionReasonSection" style="display:none;">
+                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                <label>Rejection Reason</label>                        
+                                <textarea id="reason" style="width: 100%;"></textarea>
+                                </div>
+                             </div>
+                        </div> 
+</div>
+                </div>  
+
+                <div id="acceptSection" style="display: none;">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Submitted On</label>
+                                        <input type="text" class="form-control" id="SubmittedOn" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                </div> 
+
+                    <div id="rejectSection" style="display: none;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Rejected On</label>
+                                            <input type="text" class="form-control" id="rejectedOn" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Rejected Reason</label>
+                                            <input type="text" class="form-control" id="rejectedReason" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                            <div id="fmVisualCheckSection" style="display: none;">
+                                       <div class="row">
+                                        <div class="col-sm-6">
+                                            <!-- text input -->
+                                            <div class="form-group">
+                                                <label>Record By</label>
+                                                <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                                <!-- text input -->
+                                                <div class="form-group">
+                                                    <label>ClosedDate</label>
+                                                    <input type="text" id="ClosedDate" name="ClosedDate" value="@DateTime.Now" class="form-control"   />
+                                                </div>
+                                        </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <!-- text input -->
+                                                <div class="form-group">
+                                                    <label>Result</label>
+                                                    <input type="text" class="form-control" id="ResultFM" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <!-- text input -->
+                                              
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <!-- text input -->
+                                                <div class="form-group">
+                                                    <input type="button" class="btn btn-primary" name="SubmitFMVisual" id="SubmitFMVisual" value="Submit Visual Check" onclick="SubmitFMVisual()">
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+
+
+
+
+<div id="labVisualCheckSection" style="display: none;">
+   
+ <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Return Date</label>
+                <div class="input-group date" id="ReturnDatePicker" data-target-input="nearest" onchange="$('#ReturnDate').attr('value',$('#ReturnDate').val());">
+                                    <input type="text" id="ReturnDate" name="newReturnDate" value="@DateTime.Now"
+                                        class="form-control datetimepicker-input" data-target="#ReturnDatePicker" />
+                                    <div class="input-group-append" data-target="#ReturnDatePicker"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                </div>                                                
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                    <label>Verified By</label>
+                    <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
+            </div>
+        </div>
+ </div>
+<div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                    <label>LABResult</label>
+                    <input type="text" class="form-control" id="ResultLAB" >
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-sm-6">
+                <div class="form-group">
+                <input  style="margin-top: 32px;" type="button" class="btn btn-primary" name="SubmitLABVisual" id="SubmitLABVisual" value="Submit Visual Check" onclick="SubmitLABVisual()">
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+      <div class="modal-footer">
+<input type="hidden" id="ExternalCalibId">        
+</div>
+</div>
+      </div>
+<input type="hidden" id="userRoleId" value='@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'>
+
+
+
+<style>
+    .modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 80vh;
+    overflow-y: auto;
+}
+</style>
+
+
+<script>
+  var loadFile = function(event) {
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById('output');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+</script>

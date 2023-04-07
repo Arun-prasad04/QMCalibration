@@ -1,0 +1,58 @@
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Profile Update</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="frm" action='@Url.Action("InsertUser","User")'>
+                  <div class="card-body">
+                     <input type="hidden" name="Id" value="@Model.Id">
+                    <div class="form-group">
+                      <label for="ShortId">User Name</label>
+                      <input type="text" class="form-control" id="ShortId" placeholder="" value="@Model.ShortId" name="ShortId" disabled>
+                      </div>
+                    <div class="form-group">
+                      <label for="FirstName">First Name</label>
+                      <input type="text" class="form-control" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
+                      </div>                                    
+                    <div class="form-group">
+                      <label for="LastName">Last Name</label>
+                      <input type="text" class="form-control" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName" >
+                      </div>  
+                <div class="form-group">
+                  <label>Email Id</label>
+                  <input type="email" class="form-control" placeholder="Email Address" name="Email" value="@Model.Email">
+                </div>
+                   <div class="form-group">
+                  <label>Mobile No</label>
+                  <input type="Number" class="form-control" placeholder="Mobile Number" name="MobileNo" value="@Model.MobileNo">
+                </div>
+                     <div class="form-group">
+                  <label>Password</label>
+                  <input type="text" class="form-control" placeholder="Password" name="Password" value="@Model.Password">
+                </div>
+               </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Profile Update</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+           </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  

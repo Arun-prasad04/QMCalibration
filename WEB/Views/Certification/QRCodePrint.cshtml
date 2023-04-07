@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <title>QR Code Print page</title>
+</head>
+<body style="font-family: Calibri;">
+     <div style="padding-left: 5%; padding-right: 5%; padding-top: 15%;">
+        <table  style="width: 100%;font-size:x-small">
+            <tbody>
+                <tr>
+                  <td style="text-align: center; width:100px">
+                           <img id="imgQRCodeHtml" src="@ViewBag.QRCodeImage"   alt="logo" />
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $('.main-footer').css('display','none');
+        window.print();
+    });
+</script>
+

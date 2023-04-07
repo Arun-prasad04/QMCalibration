@@ -1,0 +1,185 @@
+
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 0.5px solid black;
+        text-align: center;
+        border-collapse: collapse;
+    }
+    .wd100{
+        width: 100%;
+    }
+    .wd100ht40{
+        width: 100%;
+        height: 40px;
+    }
+    .wd25ht40{
+        width: 25%;
+        height: 40px;
+    }
+    .ht40{
+        height: 40px;
+    }
+</style>
+<table class="wd100">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Quality Assurance: Re-Calibration on Calibrated Items</th>
+        <th>Format No.</th>
+        <td><input type="text" value="@Model.FormatNo" class="wd100"></td>
+    </tr>
+    <tr>
+        <th>RevNo & Date</th>
+        <td><input type="text" value="@Model.RevNo" class="wd100"></td>
+    </tr>
+</table >
+<br>
+<table class="wd100">
+    <tr >
+        <th >DeviceName/Gauge</th>
+        <td><input type="text" class="wd100" value="@Model.DeviceName"></td>
+    </tr>
+    <tr >
+        <th>Device/Gauge Identification No.</th>
+        <td><input type="text" value="@Model.Device" class="wd100"></td>
+    </tr>
+</table >
+<table class="wd100" >
+    <tr >
+        <th >Range / Size</th>
+        <td><input type="text" value="@Model.Range" class="wd100"></td>
+        <th>Least Count / Resolution</th>
+        <td><input type="text" value="@Model.LeastCount" class="wd100"></td>
+    </tr>
+    <tr class="wd100">
+        <th>Master Equipment Used:</th>
+        <td colspan="4"><input type="text" value="@Model.MasterEquipmentUsed" class="wd100"></td>
+    </tr>
+    <tr class="wd100">
+        <th>Master Equipment ID No.</th>
+        <td colspan="4"><input type="text" value="@Model.MasterEquipmentIdNo" class="wd100"></td>
+    </tr>
+</table>
+<br>
+<table class="wd100">
+    <tr>
+        <th colspan="3">Re-Result</th>
+    </tr>
+    <tr>
+        <th>
+            Date
+        </th>
+        <td>
+            <input type="text" value="@Model.Date1" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@Model.Date2" class="wd100">
+        </td>
+    </tr>
+    @foreach (var item in @Model.ObsValue)
+    {
+    <tr>
+        <th rowspan="5">Obesrvation</th>
+        <td>
+            <input type="text" value="@item.Obs1" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@item.Obs2" class="wd100">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" value="@item.Obs3" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@item.Obs4" class="wd100">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" value="@item.Obs5" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@item.Obs6" class="wd100">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" value="@item.Obs7" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@item.Obs8" class="wd100">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" value="@item.Obs9" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@item.Obs10" class="wd100">
+        </td>
+    </tr>
+    }
+    <tr>
+        <th rowspan="2">Average</th>
+        <th>
+            "x"
+        </th>
+        <th>
+            "X"
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" value="@Model.Averagex" class="wd100">
+        </td>
+        <td>
+            <input type="text" value="@Model.AverageX" class="wd100">
+        </td>
+    </tr>
+    <tr>
+        <th class="ht40">Mu</th>
+        <td class="ht40"><input type="text" value="@Model.MUx" class="wd100ht40"></td>
+        <td class="ht40"><input type="text" value="@Model.MUX" class="wd100ht40"></td>
+    </tr>
+    </table>
+    <table class="wd100">
+     <tr>
+        <th class="wd25ht40">U21</th>
+        <td class="wd25ht40"><input type="text" value="@Model.U21" class="wd100ht40"></td>
+        <th class="wd25ht40">U22</th>
+        <td class="wd25ht40"><input type="text" value="@Model.U22" class="wd100ht40"></td>
+    </tr>
+</table>
+<table class="wd100">
+    <tr>
+        <th class="ht40">En Value</th>
+        <td colspan="2" class="ht">
+            <input type="text" value="@Model.EnValue" class="wd100ht40">
+        </td>
+    </tr>
+    <tr>
+        <th class="ht40">Study Performed By</th>
+        <td class="ht40"><input type="text" value="@Model.StudyPerformedBy1" class="wd100ht40"></td>
+        <td class="ht40"><input type="text" value="@Model.StudyPerformedBy2" class="wd100ht40"></td>
+    </tr>
+    <tr>
+        <th class="ht40">Date</th>
+        <td class="ht40"><input type="text" value="@Model.Date3" class="wd100ht40"></td>
+        <td class="ht40"><input type="text" value="@Model.Date4" class="wd100ht40"></td>
+    </tr>
+    <tr>
+        <th class="ht40">Conclusion</th>
+        <td colspan="2" class="ht">
+            <input  type="text" value="@Model.Conclusion" class="wd100ht40">
+        </td>
+    </tr>
+     <tr>
+        <th>Approved By</th>
+        <td colspan="2">
+            <input  type="text" value="@Model.ApprovedBy" class="wd100">
+        </td>
+    </tr>
+</table>

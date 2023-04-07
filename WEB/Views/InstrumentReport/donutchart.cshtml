@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department Report</title>
+</head>
+<style>
+  .canvas-wrapper{
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+</style>
+<body>
+  <section class="content">
+  <div class="row">
+    <div class="col-12">
+      <!-- general form elements disabled -->
+
+      <div class="card card-default">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <!-- text input -->
+              <label>Department</label>
+              <select class="form-control" name="DepartmentId" id="DepartmentId">
+                @foreach (var department in @Model.DepartmentList)
+                {
+                  if (department.Id == Model.DepartmentId)
+                  {
+                    <option value="@department.Id" selected="selected">@department.Name</option>
+                  }
+                  else
+                  {
+                    <option value="@department.Id">@department.Name</option>
+                  }
+                }
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label>Instrument Type</label>
+              <select class="form-control" name="InstrumentType" id="InstrumentType">
+                <option value="1">Active</option>
+                <option value="2">Quarantine</option>
+              </select>
+            </div>          
+            <div class="col-sm-3">
+              <br>
+              <button onclick="generateChart()" class="btn btn-primary">Generate Chart</button>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="canvas-wrapper">
+  <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 500px; max-width: 100%;"></canvas>
+</div>
+<br>
+
+</body>
+</html>
+

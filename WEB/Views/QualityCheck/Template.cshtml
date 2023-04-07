@@ -1,0 +1,25 @@
+<section class="content">
+    <div class="row">
+        <h3>Templates</h3>
+        <div class="col-3 col-sm-3">
+            <div class="form-group">
+                <select class="form-control select2 select2-danger" id="select-id"
+                    data-dropdown-css-class="select2-danger" style="width: 100%;">
+                    <option value='@Url.Action("QCAlternateMethodTemplate","QualityCheck")' selected="">Alternative Method Of
+                        Calibration</option>
+                    <option value='@Url.Action("ReplicateTest","Template")'>Replicate Test</option>
+                    <option value='@Url.Action("Recalibration","Template")'>Re-Calibration On Calibrated items</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" onclick="siteRedirect()" class="btn btn-primary" style="height: 37px;">Add</button>
+    </div>
+    <script>
+        function siteRedirect() {
+            var selectbox = document.getElementById("select-id");
+            var selectedValue = selectbox.options[selectbox.selectedIndex].value;
+            window.location.href = selectedValue;
+        }
+
+    </script>
+</section>

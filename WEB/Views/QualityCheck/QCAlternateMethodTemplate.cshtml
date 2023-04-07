@@ -1,0 +1,1029 @@
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 0.5px solid black;
+        border-collapse: collapse;
+    }
+
+    .wd100 {
+        width: 100%;
+    }
+
+    .wd100ht40 {
+        width: 100%;
+        height: 40px;
+    }
+
+    .ht40 {
+        height: 40px;
+    }
+
+    .ht80 {
+        height: 80px;
+    }
+
+    .wd100ht80 {
+        width: 100%;
+        height: 80px;
+    }
+
+    .row {
+        display: flex;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .column {
+
+        flex: 50%;
+    }
+
+    .wd100ht35 {
+        width: 100%;
+        height: 32px;
+        text-align: right;
+    }
+
+    .outline {
+        outline: none;
+        border: none;
+    }
+
+    .wd100textalign {
+        width: 100%;
+        text-align: right;
+        outline: none;
+        border: none;
+    }
+
+    .ReadOnly {
+        background-color: #ADD8E6;
+    }
+    .textdefaultalign{
+        text-align: left;
+    }
+    .headingtextalign{
+        text-align: center;
+    }
+    .daimlerboxwidth{
+        width: 202px;
+    }
+    .formatboxwidth{
+        width: 45px;
+        text-align: left;
+    }
+     .formatboxvaluewidth{
+        width: 75px;
+        text-align: left;
+    }
+</style>
+
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
+
+<script>
+
+    var instList = "";
+
+    function updateInstrumentIdList() {
+        var likeId = $('#InstrumentLabId').val();
+        if (likeId == null || likeId == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetInstrumentsListByIdNo",
+            data: { idNo: likeId },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["idNo"]];
+                    return a;
+                });
+                if (array != null) {
+                    instList = data;
+                    $("#InstrumentLabId").autocomplete({
+                        source: array,
+                        select: showResultIdNo
+                    });
+                }
+            }
+        });
+        $("#InstrumentLabId").keyup(function () {
+            if (!this.value) {
+                $('#InstrumentId').val('');
+                $('#InstrumentName').val('');
+                $('#RangeOrSize').val('');
+                $('#LC').val('');
+            }
+        });
+    }
+
+    function showResultIdNo(event, ui) {
+        var instrument = instList.find(x => x.idNo == ui.item.value)
+         $('#InstrumentId').val(instrument.instrumentId);
+        $('#InstrumentName').val(instrument.instrumentName);
+        $('#RangeOrSize').val(instrument.rangeOrSize);
+        $('#LC').val(instrument.leastCount);
+    }
+
+</script>
+
+<script>
+    var masterList = "";
+    var masterList2 = "";
+
+    function updateMasterLabIdList() {
+        var UniqueName = $('#Master1LabId').val();
+        if (UniqueName == null || UniqueName == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetMasterListByLabId",
+            data: { labId: UniqueName },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList = data;
+                    $("#Master1LabId").autocomplete({
+                        source: array,
+                        select: showOutLabId
+                    });
+                }
+            }
+        });
+        $("#Master1Name").keyup(function () {
+            if (!this.value) {
+                $('#MasterId1').val('');
+                $('#Master1Name').val('');
+                $('#Master1DateOfCalibration').val('');
+            }
+        });
+    }
+
+    function updateMasterLabIdList2() {
+        var UniqueName2 = $('#Master2LabId').val();
+        if (UniqueName2 == null || UniqueName2 == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetMasterListByLabId",
+            data: { labId: UniqueName2 },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList2 = data;
+                    $("#Master2LabId").autocomplete({
+                        source: array,
+                        select: showOut2LabId
+                    });
+                }
+            }
+        });
+        $("#Master2LabId").keyup(function () {
+            if (!this.value) {
+                $('#Master2Name').val('');
+                  $('#MasterId2').val('');
+                $('#Master2DateOfCalibration').val('');
+            }
+        });
+    }
+
+    function showOutLabId(event, ui) {
+        var master = masterList.find(x => x.labId == ui.item.value)
+        $('#Master1Name').val(master.equipmentName);
+        $('#MasterId1').val(master.masterId);
+        var str = master.calibDate;
+        var date = new Date(str);
+        var month = date.getMonth() + 1;
+        var calibrationDate = date.getDate() + "/" + month + "/" + date.getFullYear();
+        $('#Master1DateOfCalibration').val(calibrationDate);
+    }
+
+    function showOut2LabId(event, ui) {
+        var master = masterList2.find(x => x.labId == ui.item.value)
+        $('#Master2Name').val(master.equipmentName);
+        $('#MasterId2').val(master.masterId);
+        var str = master.calibDate;
+        var date = new Date(str);
+        var month = date.getMonth() + 1;
+        var calibrationDate = date.getDate() + "/" + month + "/" + date.getFullYear();
+        $('#Master2DateOfCalibration').val(calibrationDate);
+    }
+</script>
+
+
+
+
+<script>
+
+    var instList = "";
+
+    function updateInstrumentList() {
+        var likeName = $('#InstrumentName').val();
+        if (likeName == null || likeName == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetInstrumentsListByName",
+            data: { instrumentName: likeName },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["instrumentName"]];
+                    return a;
+                });
+                if (array != null) {
+                    instList = data;
+                    $("#InstrumentName").autocomplete({
+                        source: array,
+                        select: showResult
+                    });
+                }
+            }
+        });
+        $("#InstrumentName").keyup(function () {
+            if (!this.value) {
+                $('#InstrumentId').val('');
+                $('#RangeOrSize').val('');
+                $('#LC').val('');
+            }
+        });
+    }
+
+    function showResult(event, ui) {
+        var instrument = instList.find(x => x.instrumentName == ui.item.value)
+        $('#InstrumentId').val(instrument.instrumentId);
+        $('#RangeOrSize').val(instrument.rangeOrSize);
+        $('#LC').val(instrument.leastCount);
+    }
+
+</script>
+
+<script>
+    var masterList = "";
+    var masterList2 = "";
+
+    function updateMasterList() {
+        var UniqueName = $('#Master1Name').val();
+        if (UniqueName == null || UniqueName == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetMasterListByName",
+            data: { equipmentName: UniqueName },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["equipmentName"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList = data;
+                    $("#Master1Name").autocomplete({
+                        source: array,
+                        select: showOut
+                    });
+                }
+            }
+        });
+        $("#Master1Name").keyup(function () {
+            if (!this.value) {
+                $('#MasterId1').val('');
+                $('#Master1DateOfCalibration').val('');
+            }
+        });
+    }
+
+    function updateMasterList2() {
+        var UniqueName2 = $('#Master2Name').val();
+        if (UniqueName2 == null || UniqueName2 == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetMasterListByName",
+            data: { equipmentName: UniqueName2 },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["equipmentName"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList2 = data;
+                    $("#Master2Name").autocomplete({
+                        source: array,
+                        select: showOut2
+                    });
+                }
+            }
+        });
+        $("#Master2Name").keyup(function () {
+            if (!this.value) {
+                $('#MasterId2').val('');
+                $('#Master2DateOfCalibration').val('');
+            }
+        });
+    }
+
+    function showOut(event, ui) {
+        var master = masterList.find(x => x.equipmentName == ui.item.value)
+        $('#MasterId1').val(master.masterId);
+        var str = master.calibDate;
+        var date = new Date(str);
+        var month = date.getMonth() + 1;
+        var calibrationDate = date.getDate() + "/" + month + "/" + date.getFullYear();
+        $('#Master1DateOfCalibration').val(calibrationDate);
+    }
+
+    function showOut2(event, ui) {
+        var master = masterList2.find(x => x.equipmentName == ui.item.value)
+        $('#MasterId2').val(master.masterId);
+        var str = master.calibDate;
+        var date = new Date(str);
+        var month = date.getMonth() + 1;
+        var calibrationDate = date.getDate() + "/" + month + "/" + date.getFullYear();
+        $('#Master2DateOfCalibration').val(calibrationDate);
+    }
+</script>
+
+
+<form role="form" id="QCForm" method="post" action='@Url.Action("SaveData", "QualityCheck")' method="post"
+    enctype="multipart/form-data">
+    <input type="hidden" name="Id" id="Id" value="@Model.Id">
+    <input type="hidden" name="RevisionDate" id="RevisionDate" value="@Model.RevisionDate">
+    <input type="hidden" name="EvaluatedBy" id="EvaluatedBy" value="@Model.EvaluatedBy">
+    <input type="hidden" name="TemplateStatus" id="TemplateStatus" value="@Model.TemplateStatus">
+    <input type="hidden" id="LoginUserRoleId" name="LoginUserRoleId" value="@Model.LoginUserRoleId">
+    <input type="hidden" id="ReviewedBy" name="ReviewedBy" value="@Model.ReviewedBy">
+    <input type="hidden" id="RevisionNo" name="RevisionNo" value="@Model.RevisionNo">
+    <input type="hidden" id="RevisionDate" name="RevisionDate" value="@Model.RevisionDate">
+    <input type="hidden" id="MasterId1" name="MasterId1"  value="@Model.MasterId1">
+    <input type="hidden" id="MasterId2" name="MasterId2" value="@Model.MasterId2">
+    <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.InstrumentId">
+
+    <table class="wd100">
+        <tr>
+            <th class="headingtextalign daimlerboxwidth" rowspan="2">Daimler</th>
+            <th class="headingtextalign" rowspan="3">Alternative Method Of Calibration</th>
+            <td rowspan="2" >
+                <div style="width: 100%;">
+                    <table class="wd100">
+                        <tr>
+                            <th class="formatboxwidth">Format No.</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.FormatNo" id="FormatNo" name="FormatNo" class="wd100 outline ReadOnly"
+                                    readonly></td>
+                        </tr> 
+                         <tr>
+                            <th class="formatboxwidth">Rev.No & Date</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.RevisionNoAndDate" id="RevisionNoAndDate" name="RevisionNoAndDate"
+                                    class="wd100 outline ReadOnly" readonly>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <td class="textdefaultalign">Instrument/Gauge</td>
+            <td>
+                <input type="text" value="@Model.InstrumentName" id="InstrumentName" name="InstrumentName"
+                    class="wd100 outline ReadOnly" readonly >
+            </td>
+             <td class="textdefaultalign">Instrument/Gauge ID</td>
+            <td><input type="text" value="@Model.InstrumentLabId" name="InstrumentLabId" id="InstrumentLabId"
+                    class="wd100 outline" onkeypress="updateInstrumentIdList()"></td>
+        </tr>
+        <tr>
+             <td class="textdefaultalign">Range/size</td>
+            <td><input type="text" value="@Model.RangeOrSize" id="RangeOrSize" name="RangeOrSize"
+                    class="wd100 outline ReadOnly" readonly>
+            </td>
+             <td class="textdefaultalign">Least Count</td>
+            <td><input type="text" value="@Model.LC" id="LC" name="LC" class="wd100 outline ReadOnly" readonly></td>
+        </tr>
+        <tr>
+            <th class="headingtextalign" colspan="4" class="ht40">Master Equipment Details</th>
+        </tr>
+        <tr>
+            <th class="headingtextalign" colspan="2" class="ht40" id="">Equipment-1</th>
+            <th class="headingtextalign" colspan="2" class="ht40" id="">Equipment-2</th>
+        </tr>
+        <tr>
+             <td class="textdefaultalign">Name</td>
+            <td><input type="text" value="@Model.Master1Name" id="Master1Name" name="Master1Name"
+                    class="wd100 outline ReadOnly" readonly></td>
+             <td class="textdefaultalign">Name</td>
+            <td><input type="text" value="@Model.Master2Name" id="Master2Name" name="Master2Name"
+                   class="wd100 outline ReadOnly" readonly></td>
+        </tr>
+        <tr>
+             <td class="textdefaultalign">Equipment ID</td>
+            <td><input type="text" value="@Model.Master1LabId" id="Master1LabId" name="Master1LabId"
+                    class="wd100 outline" onkeypress="updateMasterLabIdList()" autofocus></td>
+             <td class="textdefaultalign">Equipment ID</td>
+            <td><input type="text" value="@Model.Master2LabId" id="Master2LabId" name="Master2LabId"
+                    class="wd100 outline" onkeypress="updateMasterLabIdList2()"></td>
+        </tr>
+        <tr>
+            <td class="textdefaultalign">Date Of Calibration</td>
+            <td><input type="text" value="@Model.Master1DateOfCalibration" id="Master1DateOfCalibration"
+                    name="Master1DateOfCalibration" class="wd100 outline ReadOnly"></td>
+            <td class="textdefaultalign">Date Of Calibration </td>
+            <td><input type="text" value="@Model.Master2DateOfCalibration" id="Master2DateOfCalibration"
+                    name="Master2DateOfCalibration" class="wd100 outline ReadOnly"></td>
+        </tr>
+         <tr>
+            <td colspan="2"></td>
+            <td>All values are in</td>
+            <td><input type="text" name="DataUnit" value="@Model.DataUnit" id="DataUnit" class="wd100">
+            </td>
+        </tr>
+        <tr>
+            <th class="headingtextalign" class="ht40">Measurement Values</th>
+            <th class="headingtextalign" class="ht40">MUx</th>
+            <th class="headingtextalign" class="ht40">Measurement Values</th>
+            <th class="headingtextalign" class="ht40">MUx</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="QCEquipmentOneMeasuredValues.Val1"
+                    name="QCEquipmentOneMeasuredValues.Val1" onkeyup="averagevaluecalculation()"
+                    value="@Model.QCEquipmentOneMeasuredValues.Val1" class="wd100textalign" tabindex="1">
+            </td>
+            <td>
+                <input type="text" name="Mux1" id="Mux1" onkeyup="squarecalculation()" value="@Model.Mux1"
+                    class="wd100ht35">                     
+            </td>
+             <td><input type="text" value="@Model.QCEquipmentTwoMeasuredValues.Val1"
+                            onkeyup="averagevaluecalculation()" id="QCEquipmentTwoMeasuredValues.Val1"
+                            name="QCEquipmentTwoMeasuredValues.Val1" class="wd100textalign" tabindex="11">
+                    </td>
+             <td><input type="text" id="Mux2" name="Mux2" onkeyup="squarecalculation()"
+                            value="@Model.Mux2" class="wd100ht35">
+             </td>
+        </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val2"
+                            name="QCEquipmentOneMeasuredValues.Val2" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val2" class="wd100textalign" tabindex="2">
+                    </td>
+                    <td rowspan="3">
+                         <div class="custom-file">
+                            <input type="file" class="custom-file-input"
+                                accept=" .doc,.docx,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                onchange="checkFileSize1(this,4,event)" value="@Model.MUx1FileName" name="ImageUpload1"
+                                id="ImageUpload1" />
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <p id="MUx1FileName"></p>
+                        </div>
+                        <div id="imageSection">
+                            @if (@Model.MUx1FileName != null)
+                            {
+                                <a href='~/QCAlternateMethodFiles/@Model.MUx1FileName' target="_blank">@Model.MUx1FileName</a>
+                            }
+                        </div>
+                    </td>
+                     <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val2"
+                            name="QCEquipmentTwoMeasuredValues.Val2" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val2" class="wd100textalign" tabindex="12">
+                    </td>
+                    <td rowspan="3">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input"
+                                accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                onchange="checkFileSize2(this,MaxSize=4,event)" value="@Model.MUx2FileName"
+                                name="ImageUpload2" id="ImageUpload2" />
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <p id="MUx2FileName"></p>
+                        </div>
+                        <div id="imageSection">
+                            @if (@Model.MUx2FileName != null)
+                            {
+                                <a href='~/QCAlternateMethodFiles/@Model.MUx2FileName' target="_blank">@Model.MUx2FileName</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val3"
+                            name="QCEquipmentOneMeasuredValues.Val3" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val3" class="wd100textalign" tabindex="3">
+                    </td>
+                    <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val3"
+                            name="QCEquipmentTwoMeasuredValues.Val3" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val3" class="wd100textalign" tabindex="13">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val4"
+                            name="QCEquipmentOneMeasuredValues.Val4" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val4" class="wd100textalign" tabindex="4">
+                    </td>
+                     <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val4"
+                            name="QCEquipmentTwoMeasuredValues.Val4" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val4" class="wd100textalign" tabindex="14">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val5"
+                            name="QCEquipmentOneMeasuredValues.Val5" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val5" class="wd100textalign" tabindex="5">
+                    </td>
+                    <td rowspan="6"></td>
+                    <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val5"
+                            name="QCEquipmentTwoMeasuredValues.Val5" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val5" class="wd100textalign" tabindex="15">
+                    </td>
+                     <td rowspan="6"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val6"
+                            name="QCEquipmentOneMeasuredValues.Val6" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val6" class="wd100textalign" tabindex="6">
+                    </td>
+
+                     <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val6"
+                            name="QCEquipmentTwoMeasuredValues.Val6" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val6" class="wd100textalign" tabindex="16">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val7"
+                            name="QCEquipmentOneMeasuredValues.Val7" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val7" class="wd100textalign" tabindex="7">
+                    </td>
+                     <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val7"
+                            name="QCEquipmentTwoMeasuredValues.Val7" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val7" class="wd100textalign" tabindex="17">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val8"
+                            name="QCEquipmentOneMeasuredValues.Val8" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val8" class="wd100textalign" tabindex="8">
+                    </td>
+                     <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val8"
+                            name="QCEquipmentTwoMeasuredValues.Val8" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val8" class="wd100textalign" tabindex="18">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val9"
+                            name="QCEquipmentOneMeasuredValues.Val9" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val9" class="wd100textalign" tabindex="9">
+                    </td>
+                    <td><input type="text" id="QCEquipmentTwoMeasuredValues.Val9"
+                            name="QCEquipmentTwoMeasuredValues.Val9" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val9" class="wd100textalign" tabindex="19">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="QCEquipmentOneMeasuredValues.Val10"
+                            name="QCEquipmentOneMeasuredValues.Val10" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentOneMeasuredValues.Val10" class="wd100textalign" tabindex="10">
+                    </td>
+                      <td><input type="int" id="QCEquipmentTwoMeasuredValues.Val10"
+                            name="QCEquipmentTwoMeasuredValues.Val10" onkeyup="averagevaluecalculation()"
+                            value="@Model.QCEquipmentTwoMeasuredValues.Val10" class="wd100textalign" tabindex="20">
+                    </td>
+                </tr>
+        <tr>
+            <td class="textdefsultalign">“x” (Equipment 1) Value AVg</td>
+            <td><input type="text" id="Mux1AvgValue" value="@Model.Mux1AvgValue" name="Mux1AvgValue"
+                    class="wd100textalign ReadOnly" readonly></td>
+            <td class="textdefsultalign">“X” (Equipment 2) Value Avg</td>
+            <td><input type="text" id="Mux2AvgValue" value="@Model.Mux2AvgValue" name="Mux2AvgValue"
+                    class="wd100textalign ReadOnly" readonly></td>
+        </tr>
+        <tr>
+            <td class="textdefsultalign">U Lab (Eq 1) - <br>
+                        Measurement Uncertainty</td>
+            <td><input type="text" onkeyup="squarecalculation()" id="MesuredValuexOne" name="MesuredValuexOne"
+                    value="@Model.MesuredValuexOne" class="wd100textalign">
+            </td>
+           
+            <td class="textdefaultalign">U<sup>2</sup> Lab (Eq 1)</td>
+            <td><input type="text" id="Mux1SqrValue" value="@Model.Mux1SqrValue" name="Mux1SqrValue"
+                    class="wd100textalign ReadOnly" readonly></td>
+        </tr>
+        <tr>
+            <td class="textdefaultalign cell-breakWord">U Lab (Eq 2) - <br>
+                             Measurement Uncertainty</td>
+            <td><input type="text" onkeyup="squarecalculation()" id="MesuredValueXTwo" name="MesuredValueXTwo"
+                    value="@Model.MesuredValueXTwo" class="wd100textalign">
+            </td>
+            <td class="textdefaultalign">U<sup>2</sup> Lab (Eq 2)</td>
+            <td><input type="text" id="Mux2SqrValue" value="@Model.Mux2SqrValue" name="Mux2SqrValue"
+                    class="wd100textalign ReadOnly" readonly></td>
+        </tr>
+        <tr>
+            <td class="textdefaultalign">
+                <img id="imgEnFormula" height="100px" width="100px" src="~/image/EnFormula.png"/><br>
+                Acceptance Criteria :<=1 </td>
+            <td class="ht80" colspan="3"><input type="text" id="EnValue" name="EnValue" value="@Model.EnValue"
+                    class="wd100ht40 outline ReadOnly" readonly></td>
+        </tr>
+        <tr>
+            <td class="textdefaultalign">Conclusion</td>
+            <td class="ht40" colspan="3"><input type="text" name="Conclusion" value="@Model.Conclusion" id="Conclusion"
+                    class="wd100ht40 outline"></td>
+        </tr>
+  
+        <tr>
+            <td class="textdefaultalign">Evaluated By</td>
+            <td colspan="3" class="ht40"><input type="text" value="@Model.EvaluatedByName" name="EvaluatedByName"
+                    id="EvaluatedByName" class="wd100ht40 outline ReadOnly" readonly>
+            </td>
+        </tr>
+        <tr>
+           <td class="textdefaultalign">Date</td>
+            <td colspan="3" class="ht40"><input type="text" value="@Model.EvaluationOn" name="EvaluationOn" id="EvaluationOn"
+                    class="wd100ht40 outline ReadOnly" readonly>
+            </td>
+        </tr>
+   
+    @if (@Model.TemplateStatus == 0)
+    {
+         <tr>
+             <td colspan="4">
+                <div class="card-footer">
+                    <center>
+                        <input type="submit" value="Save" class="btn btn-primary">
+                        <a href='@Url.Action("AlternateTemplateGrid","QualityCheck")'>
+                            <button type="button" class="btn btn-primary">Cancel</button>
+                        </a>
+                    </center>
+                </div>
+             </td>
+         </tr>
+    }
+
+    @if (@Model.TemplateStatus >= 1 )
+    {
+            <tr>
+                <th colspan="4">Laboratory Use</th>
+            </tr>
+        @if (@Model.TemplateStatus == 1 )
+        {
+            <tr>
+                <td class="textdefaultalign">Remarks</td>
+                <td colspan="3" class="ht40"><textarea name="ReviewerRemarks" id="ReviewerRemarks"
+                    style="width: 100%; height:70px;" class="wd100ht40 outline">@Model.ReviewerRemarks</textarea>
+                </td>
+            </tr>
+        }
+        else if (@Model.TemplateStatus > 1 )
+        {
+            <tr>
+                <td class="textdefaultalign">Remarks</td>
+                <td colspan="3" class="ht40"><textarea name="ReviewerRemarks" id="ReviewerRemarks"
+                    style="width: 100%; height:70px;" class="wd100ht40 outline ReadOnly" readonly>@Model.ReviewerRemarks</textarea>
+                </td>
+            </tr>
+        }
+          
+        <tr>
+            <td class="textdefaultalign">ReviewedBy</td>
+            <td colspan="3" class="ht40"><input type="text" value="@Model.ReviewedByName" name="ReviewedByName" id="ReviewedByName"
+                class="wd100ht40 outline ReadOnly" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td class="textdefaultalign">ReviewedOn</td>
+            <td colspan="3" class="ht40"><input type="text" value="@Model.ReviewedOn" name="ReviewedOn" id="ReviewedOn"
+                    class="wd100ht40 outline ReadOnly" readonly>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="textdefaultalign">Status</td>
+            <td colspan="3">
+                <div class="textdefaultalign">
+                        <label>Approve</label>
+                        <input type="radio" name="Approve" id="Approve">
+
+                        <label>Reject</label>
+                        <input type="radio" name="Approve" id="Reject">
+                </div>
+            </td>             
+            </tr>
+    }
+      </table>
+        <br>
+        @if (@Model.TemplateStatus == 1)
+        {
+            <div class="card-footer">
+                <center>
+                    <input type="submit" value="Review" class="btn btn-primary">
+                    <a href='@Url.Action("AlternateTemplateGrid","QualityCheck")'>
+                            <button type="button" class="btn btn-primary">Cancel</button>
+                    </a>
+                </center>
+            </div>
+        }
+        else if (@Model.TemplateStatus > 1)
+        {
+            <div class="card-footer">
+                <center>
+                    <a href='@Url.Action("AlternateTemplateGrid","QualityCheck")'>
+                            <button type="button" class="btn btn-primary">Cancel</button>
+                    </a>
+                </center>
+            </div>
+        }
+</form>
+
+<script>
+    function checkFileSize1(element, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > 5) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload1").val("");
+        }
+        var input = document.getElementById('ImageUpload1')
+        var output = document.getElementById('MUx1FileName')
+
+        var result = "";
+
+        result += input.files.item(0).name + '<br />';
+
+        output.innerHTML = result;
+
+    }
+</script>
+
+<script>
+    function checkFileSize2(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload2").val("");
+        }
+        var input = document.getElementById('ImageUpload2')
+        var output2 = document.getElementById('MUx2FileName')
+        var result2 = "";
+        result2 += input.files.item(0).name;
+        output2.innerHTML = result2;
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#TemplateStatus').val(2);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#TemplateStatus').val(3);
+            }
+
+        });
+
+        var templateStatus = $('#TemplateStatus').val();
+        if(templateStatus == 2){
+            $('#Approve').prop('checked',true);
+            $('#Reject').prop('checked',false);
+        }
+        else if(templateStatus == 3){
+             $('#Approve').prop('checked',false);
+            $('#Reject').prop('checked',true);
+        }
+    });
+
+</script>
+
+@* ************************************************************************* *@
+
+<html>
+<body>
+  <div id="QualityCheckpdf" style="display: none;">
+     
+<table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+        <tr>
+             <td style="text-align: center;width: 100px;border: 0.5px solid black;border-collapse: collapse" height="30" rowspan="2"><b>Daimler</b></td> 
+            <td style="text-align: center;width: 400px;border: 0.5px solid black;border-collapse: collapse" rowspan="2"><b>Alternative Method Of Calibration</b></td>
+            <td rowspan="2">
+                <div style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Format No.</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse" >@Model.FormatNo</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Rev.No & Date</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RevisionNoAndDate</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+        @* <tr style="border: 0.5px solid white" height="30"></tr>
+        <tr style="border: 0.5px solid white" height="30"></tr> *@
+    </table>
+    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Instrument/Gauge</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.InstrumentName</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Instrument/Gauge ID</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.InstrumentLabId</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Range/size</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RangeOrSize</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Least Count</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.LC</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4" class="ht40"><b>Master Equipment Details</b></td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2" class="ht40" id=""><b>Equipment-1</b></td>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse" colspan="2" class="ht40" id=""><b>Equipment-2</b></td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Name</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master1Name</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Name</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master2Name</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Equipment ID</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master1LabId</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Equipment ID</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master2LabId</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Date Of Calibration</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master1DateOfCalibration</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Date Of Calibration </td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Master2DateOfCalibration</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2"></td>
+            <td style="width: 60px;text-align: left;border: 0.5px solid black;border-collapse: collapse">All values are in</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.DataUnit</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Measurement Values</b></td>
+            <td style="width: 50px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30"><b>MUx</b></td>
+            <td style="width: 40px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Measurement Values</b></td>
+            <td style="width: 50px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30"><b>MUx</b></td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val1</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux1</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val1</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux2</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val2</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse" rowspan="3">Files Name</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val2</td>
+            <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse" rowspan="3">Files Name</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val3</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val3</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val4</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val4</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val5</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" rowspan="6"></td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val5</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" rowspan="6"></td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val6</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val6</td>
+
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val7</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val7</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val8</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val8</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val9</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val9</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30">@Model.QCEquipmentOneMeasuredValues.Val10</td>
+            <td style="width: 40px;text-align: right;border: 0.5px solid black;border-collapse: collapse">@Model.QCEquipmentTwoMeasuredValues.Val10</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50">“x” (Equipment 1) Value AVg</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux1AvgValue</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">“X” (Equipment 2) Value Avg</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux2AvgValue</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50">U Lab (Eq 1) - Measurement Uncertainty</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.MesuredValuexOne</td>
+
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50">U<sup>2</sup> Lab (Eq 1)</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux1SqrValue</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50">U Lab (Eq 2) - Measurement Uncertainty</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.MesuredValueXTwo</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">U<sup>2</sup> Lab (Eq 2)</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Mux2SqrValue</td>
+        </tr>
+         <tr>
+             <td>
+                      @* <img id="imgEnFormula" height="100px" width="100px" src="./wwwroot/image/EnFormula.png"/> *@
+                      <img id="imgQRCodeHtml" src="./wwwroot/image/EnFormula.png" style="width: 85%; height:75%"  alt="logo" /><p>
+                        Acceptance Criteria :<=1</p>
+             </td>
+               
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3">@Model.EnValue</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Conclusion</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3">@Model.Conclusion</td>
+        </tr>
+
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Evaluated By</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3">@Model.EvaluatedByName</td>
+        </tr>
+        <tr>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Date</td>
+            <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="3">@Model.EvaluationOn</td>
+        </tr>
+    </table>
+</div>
+<!-- ************************************************************************** -->
+
+</body>
+
+</html>
+
+@using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))
+{
+    @if (@Model.TemplateStatus == 2)
+        {
+    <input type="hidden" name="ExportData" />
+    <input type="submit" id="btnSubmit" class="btn btn-primary" value="Export" />
+        }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("input[name='ExportData']").val($("#QualityCheckpdf").html());
+    }); 
+</script>

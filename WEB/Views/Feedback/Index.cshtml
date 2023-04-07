@@ -1,0 +1,945 @@
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .OverallScorePercentageComments {
+        text-align: left;
+        width: 87%;
+    }
+    .Border0px{
+        border: 0px;
+        width: 100%;
+    }
+
+
+    .Tablewidth3 {
+        width: 80%;
+    }
+
+    .TableWidth2 {
+        width: 20%;
+    }
+
+    .EvalutionCriteriaVerticalAlignment {
+
+        text-transform: uppercase;
+        text-align: center;
+        transform: rotate(270deg);
+        width: 10%;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+
+    .ActionRequiredTable {
+        width: 100%;
+    }
+    .EvalutionCriteriaQualityWidth {
+        width: 40%;
+        text-align: left;
+
+    }
+
+    .RatingScoreColumnWidth {
+        width: 10%;
+
+    }
+    .numberalign{
+        text-align: right;
+    }
+
+    .statusalign{
+        text-align: left;
+    }
+</style>
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+
+            <!-- form start -->
+            <form name="frm" id="feedbackForm" onsubmit="return !!(validateLab() & validateRatting())" action='@Url.Action("InsertFeedback","Feedback")' 
+                    method="post"  enctype="multipart/form-data">
+                <input type="hidden" id="Id" name="Id" value="@Model.Id">
+                <input type="hidden" id="LabId" name="Id" value="@Model.LabId">
+                <input type="hidden" id="LabName" name="LabName" value="@Model.LabName">
+                <input type="hidden" id="DepartmentId" name="DepartmentId" value="@Model.DepartmentId">
+                <input type="hidden" id="ReviewedBy" name="ReviewedBy" value="@Model.ReviewedBy">
+                <input type="hidden" id="LoginUserRoleId" name="LoginUserRoleId" value="@Model.LoginUserRoleId">
+                <input type="hidden" id="FeedbackStatus" name="FeedbackStatus" value="@Model.FeedbackStatus">
+                <input type="hidden" id="FeedbackInviteId" name="FeedbackInviteId" value="@Model.FeedbackInviteId">
+                <input type="hidden" id="DepartmentId" name="DepartmentId" value="@Model.DepartmentId">
+                <input type="hidden" id="ActionRequired" name="ActionRequired" value="@Model.ActionRequired">
+   
+                <table class="TableWidth">
+                    <tr>
+                        <th rowspan="2">Daimler</th>
+                        <th rowspan="2">Feedback Form</th>
+                        <th>Format No.</th>
+                        <td  ><input type="text" name="FormatNo"  value="@Model.FormatNo" class="Border0px" style="background-color: rgb(240, 240, 240);" readonly></td>
+                    </tr>
+                    <tr>
+                        <th style="word-break: break-all;">Rev.No & Date</th>
+                        <td><input type="text" name="RevNo" value="@Model.RevNo" class="Border0px" style="background-color: rgb(240, 240, 240);" readonly></td>
+                    </tr>
+                </table>
+                <br>
+                <table class="TableWidth">
+                    <tr>
+                        <th>Name</th>
+                        <td><input type="text" name="CustomerName" value="@Model.CustomerName" class="Border0px"
+                              style="background-color: rgb(240, 240, 240);"  readonly>
+                        </td>
+                        <th style="word-break: break-all;">Designation:</th>
+                        <td><input type="text" name="Designation" value="@Model.Designation" class="Border0px"
+                              style="background-color: rgb(240, 240, 240);"  readonly></td>
+                    </tr>
+                    <tr>
+                        <th style="word-break: break-all;">Section/Dept</th>
+                        <td colspan="3"><input type="text" name="DepartmentName" id="DepartmentName" value="@Model.DepartmentName"
+                              style="background-color: rgb(240, 240, 240);"  class="Border0px" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Laboratory Name</th>
+                        <td> @if (@Model.LabName == "Materials Lab")
+                            {
+                                <input type="radio" name="OptionLabName" id="OptionLabName" checked="checked" onclick="setLabName('Materials Lab')" disabled>
+                            }
+                            else
+                            {
+                                <input type="radio" name="OptionLabName" Id="OptionLabName" onclick="setLabName('Materials Lab')" disabled>
+
+                            }
+                            Materials Lab
+                        </td>
+
+                        <td> @if (@Model.LabName == "Polymer Lab")
+                            {
+                                <input type="radio" name="OptionLabName" Id="OptionLabName" checked="checked" onclick="setLabName('Polymer Lab')" disabled>
+                            }
+                            else
+                            {
+                                <input type="radio" name="OptionLabName" Id="OptionLabName"  onclick="setLabName('Polymer Lab')" disabled>
+
+                            }
+                            Polymer Lab
+                        </td>
+
+                        <td> @if (@Model.LabName == "Calibration Lab")
+                            {
+                                <input type="radio" name="OptionLabName" Id="OptionLabName" checked="checked" onclick="setLabName('Calibration Lab')" disabled>
+                            }
+                            else
+                            {
+                                <input type="radio" name="OptionLabName" Id="OptionLabName" onclick="setLabName('Calibration Lab')" disabled>
+
+                            }
+                            Calibration Lab
+                        </td>
+                    </tr>
+                </table>
+                <br>
+
+
+
+                <table class="TableWidth">
+                    <tr>
+                        <th colspan="5">Rating scale</th>
+                    </tr>
+                    <tr>
+                        <th>Rating (Please ✓ the appropriate box)</th>
+                        <th style="word-break: break-all;">Excellent</th>
+                        <th style="word-break: break-all;">Good</th>
+                        <th style="word-break: break-all;">Satisfactory</th>
+                        <th style="word-break: break-all;">Poor</th>
+                    </tr>
+                    <tr>
+                        <th>Score</th>
+                        <th>10</th>
+                        <th>9</th>
+                        <th>8</th>
+                        <th>7</th>
+                    </tr>
+                </table>
+                <br>
+
+                <table class="TableWidth">
+                    <tr>
+                        <th rowspan="2" colspan="2" style="word-break: break-all;">Evaluation Criteria</th>
+                        <th colspan="4" style="word-break: break-all;">Rating</th>
+                        <th rowspan="2" class="RatingScoreColumnWidth" style="word-break: break-all;">Score</th>
+                    </tr>
+                    <tr>
+                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Excellent</th>
+                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Good</th>
+                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Satisfactory</th>
+                        <th class="RatingScoreColumnWidth" style="word-break: break-all;">Poor</th>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment">Quality</td>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Quality of Services offered (Test / Calibration)</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.QualityOfService == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'QualityOfService')" name="QualityOfService"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'QualityOfService')" name="QualityOfService"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="QualityOfService" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.QualityOfService" readonly></td>
+                               
+                    </tr>
+
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Reliability of test / calibration results</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.ReliabilityOfTest == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ReliabilityOfTest')" name="ReliabilityOfTest"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ReliabilityOfTest')" name="ReliabilityOfTest"  id="@i" value="@value"></td>
+                            }
+                        }
+                    
+                       <td><input type="text" id="ReliabilityOfTest" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.ReliabilityOfTest" readonly>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Personnel competency</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.PersonnelCompetency == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'PersonnelCompetency')" name="PersonnelCompetency"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'PersonnelCompetency')" name="PersonnelCompetency"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="PersonnelCompetency" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.PersonnelCompetency" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Technical capability & support</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.TechnicalCapability == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'TechnicalCapability')" name="TechnicalCapability"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'TechnicalCapability')" name="TechnicalCapability"  id="@i" value="@value"></td>
+                            }
+                        }
+                        <td><input type="text" id="TechnicalCapability" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.TechnicalCapability" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Test / Calibration report accuracy</td>
+
+                         @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.TestCalibration == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'TestCalibration')" name="TestCalibration"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'TestCalibration')" name="TestCalibration"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                        <td><input type="text" id="TestCalibration" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.TestCalibration" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Safeguarding of customer data / drawing</td>
+
+                         @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.SafeguardingData == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'SafeguardingData')" name="SafeguardingData"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'SafeguardingData')" name="SafeguardingData"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                        <td><input type="text" id="SafeguardingData" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.SafeguardingData" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="6" class="EvalutionCriteriaVerticalAlignment">Delivery</td>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">On-time delivery of test / calibration reports</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.OnTimeDeliveryTest == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'OnTimeDeliveryTest')" name="OnTimeDeliveryTest"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'OnTimeDeliveryTest')" name="OnTimeDeliveryTest"  id="@i" value="@value"></td>
+                            }
+                        }
+                      <td><input type="text" id="OnTimeDeliveryTest" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.OnTimeDeliveryTest" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Response to customer request / complaint</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.ResponseToCustomer == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ResponseToCustomer')" name="ResponseToCustomer"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ResponseToCustomer')" name="ResponseToCustomer"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                     <td><input type="text" id="ResponseToCustomer" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.ResponseToCustomer" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Complaint resolution</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.ComplaintResolution == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ComplaintResolution')" name="ComplaintResolution"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'ComplaintResolution')" name="ComplaintResolution"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="ComplaintResolution" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.ComplaintResolution" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Emergency support</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.EmergencySupport == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'EmergencySupport')" name="EmergencySupport"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'EmergencySupport')" name="EmergencySupport"  id="@i" value="@value"></td>
+                            }
+                        }
+                        <td><input type="text" id="EmergencySupport" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.EmergencySupport" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Handling of Test / calibration items</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.HandlingOfTest == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'HandlingOfTest')" name="HandlingOfTest"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'HandlingOfTest')" name="HandlingOfTest"  id="@i" value="@value"></td>
+                            }
+                        }
+                      
+                        <td><input type="text" id="HandlingOfTest" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.HandlingOfTest" readonly>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Commitment</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.Commitment == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'Commitment')" name="Commitment"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'Commitment')" name="Commitment"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                        <td><input type="text" id="Commitment" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.Commitment" readonly>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="5" class="EvalutionCriteriaVerticalAlignment">Management</td>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Communication & accessibility</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.CommunicationAccess == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'CommunicationAccess')" name="CommunicationAccess"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'CommunicationAccess')" name="CommunicationAccess"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="CommunicationAccess" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.CommunicationAccess" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Documentation & Reporting system</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.DocReportingSystem == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'DocReportingSystem')" name="DocReportingSystem"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'DocReportingSystem')" name="DocReportingSystem"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                        <td><input type="text" id="DocReportingSystem" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.DocReportingSystem" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Facilities and Environment conditions</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.FacilitiesAndEnvironment == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'FacilitiesAndEnvironment')" name="FacilitiesAndEnvironment"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'FacilitiesAndEnvironment')" name="FacilitiesAndEnvironment"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="FacilitiesAndEnvironment" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.FacilitiesAndEnvironment" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">5S management</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.FiveSManagement == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'FiveSManagement')" name="FiveSManagement"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'FiveSManagement')" name="FiveSManagement"  id="@i" value="@value"></td>
+                            }
+                        }
+
+                        <td><input type="text" id="FiveSManagement" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.FiveSManagement" readonly>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="EvalutionCriteriaQualityWidth" style="word-break: break-all;">Impartiality & confidentiality</td>
+
+                        @for(int value =10, i = 1 ; i<=4; i++,value--)
+                        {
+                            @if(@Model.Confidentiality == value)
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'Confidentiality')" name="Confidentiality"  id="@i" value="@value" checked="checked"></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" onclick="scoreCalculation(event,'Confidentiality')" name="Confidentiality"  id="@i" value="@value"></td>
+                            }
+                        }
+                     
+                        <td><input type="text" id="Confidentiality" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.Confidentiality" readonly>
+                        </td>
+                    </tr>
+
+
+                </table>
+                <br>
+                <table class="TableWidth">
+                    <tr>
+                        <th class="OverallScorePercentageComments">Overall score obtained</th>
+                        <td><input type="text" name="OverallScore" id="OverallScore" value="@Model.OverallScore" class="Border0px numberalign"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.OverallScore" readonly></td>
+                    </tr>
+                    <tr>
+                        <th class="OverallScorePercentageComments">Overall percentage (%)</th>
+                        <td><input type="text" name="OverallPercentage" id="OverallPercentage" value="@Model.OverallPercentage"
+                              style="background-color: rgb(240, 240, 240);"  placeholder="@Model.OverallPercentage" class="Border0px numberalign" readonly></td>
+                    </tr>
+                </table>
+                <br>
+                <table class="TableWidth">
+                    <tr>
+                        <th class="TableWidth2"
+                            class="OverallScorePercentageComments">
+                            Comments / Suggestions if any :</th>
+                        <td class="Tablewidth3">
+                            @if ((@Model.FeedbackStatus == 0 && @Model.LoginUserRoleId!= 2) || (@Model.LoginUserRoleId ==2 && @Model.FeedbackStatus != 1)) 
+                            {
+                                <textarea name="UserComments" id="UserComments" class="Border0px" style="width: 100%; height:70px;" maxlength="4000">@Model.UserComments</textarea>
+                            }
+                            else
+                            {
+                                <textarea name="UserComments" id="UserComments" class="Border0px" style="width: 100%; height:70px;" maxlength="4000" readonly>@Model.UserComments</textarea>
+                            }
+                            
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+                <table class="TableWidth">
+                    <tr>
+                        <th class="TableWidth2">Customer Name</th>
+                        <td class="Tablewidth3">
+                            <input type="text" name="CustomerName" Id="CustomerName" value="@Model.CustomerName"
+                              style="background-color: rgb(240, 240, 240);"  class="Border0px" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="TableWidth2"> Date:</th>
+                        <td class="Tablewidth3">
+                            <input type="text" name="UserSubmitedOn" Id="UserSubmitedOn" value="@Model.UserSubmitedOn" class="Border0px" style="background-color: rgb(240, 240, 240);"  readonly></td>
+                    </tr>
+                </table>
+                
+                @if (@Model.FeedbackStatus == 0) 
+                {
+                    <div class="card-footer">
+                        <center><button type="submit" class="btn btn-primary">Submit</button>
+                        <a href='@Url.Action("Index","Home")'><button type="button" class="btn btn-primary">Cancel</button></a></center>
+                        
+                    </div>
+                }
+                else if (@Model.FeedbackStatus == 1 && @Model.LoginUserRoleId == 1 ) 
+                {
+                        <div class="card-footer">
+                            <center>
+                            <a href='@Url.Action("Index","Home")'><button type="button" class="btn btn-primary">Cancel</button>
+                            </a></center>       
+                        </div>
+                }
+               
+                <br>
+                @if ((@Model.LoginUserRoleId == 2 && @Model.FeedbackStatus==1) || (@Model.LoginUserRoleId == 2 && @Model.FeedbackStatus==2))
+                {
+                    <table class="TableWidth">
+                        <tr>
+                            <th colspan="2">Laboratory Use</th>
+                        </tr>
+                        <tr>
+                            <th class="TableWidth2" rowspan="2">Remarks</th>
+                            <td class="Tablewidth3" rowspan="2">
+                                @if (@Model.FeedbackStatus==1 && @Model.LoginUserRoleId==2) 
+                                {
+                                    <textarea name="ReviewerRemarks" Id="ReviewerRemarks"  class="Border0px" style="width: 100%; height:70px;" maxlength="4000">@Model.ReviewerRemarks</textarea>
+                                }
+                                else
+                                {
+                                    <textarea name="ReviewerRemarks" Id="ReviewerRemarks"  class="Border0px" style="width: 100%; height:70px;" maxlength="4000" readonly>@Model.ReviewerRemarks</textarea>
+                                }
+                                
+                            </td>
+                        </tr>
+
+                    </table>
+                    <br>
+                    <table class="TableWidth">
+                        <tr>
+                            <th>Reviewed By: </th>
+                        </tr>
+                        <tr>
+                            <th class="TableWidth2">Name</th>
+                            <td class="Tablewidth3">
+                                <input type="text" style="background-color: rgb(240, 240, 240);"  name="ReviewedByName" Id="ReviewedByName" value="@Model.ReviewedByName" class="Border0px" readonly>
+     
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="TableWidth2">Date</th>
+                            <td class="Tablewidth3">
+                                <input class="Border0px" style="background-color: rgb(240, 240, 240);"  name="ReviewedOn" Id="ReviewedOn" readonly value="@Model.ReviewedOn"></td>
+                        </tr>
+                        <tr>
+                            <th>Action Required</th>
+                            <td>
+                                <div class="statusalign">
+                                    <label>Yes</label>
+                                    @if (@Model.FeedbackStatus > 1)
+                                    {
+                                        <input type="radio" name="Yes" id="Yes" disabled>
+                                        <label>No</label>
+                                        <input type="radio" name="Yes" id="No" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="Yes" id="Yes">
+                                        <label>No</label>
+                                        <input type="radio" name="Yes" id="No">
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                   
+                    <table id="#tableActionDetails" class="ActionRequiredTable">
+                            <tr>
+                                <th class="TableWidth2">Proposed Actions</th>
+                                <td class="Tablewidth3">
+                                    <textarea name="ProposedActions" Id="ProposedActions"  class="Border0px" style="width: 100%; height:70px;" maxlength="1000">@Model.ProposedActions</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="TableWidth2">Target Date</th>
+                                <td class="TableWidth2">
+                                    <div class="input-group date" id="actionTargetDate" data-target-input="nearest">
+                                        <input type="text" id="TargetDate" name="TargetDate" value="@Model.TargetDate"
+                                            data-target="#actionTargetDate" />
+                                        <div class="input-group-append" data-target="#actionTargetDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="TableWidth2">Responsibility</th>
+                                <td class="Tablewidth3">
+                                    <input maxlength="100" class="Border0px" name="Responsibility" Id="Responsibility"  value="@Model.Responsibility"></td>
+                            </tr>
+                            <tr>
+                                <th class="TableWidth2">Status</th>
+                                <td class="Tablewidth3">
+                                    <input maxlength="50" class="Border0px" name="UpdateStatus" Id="UpdateStatus"  value="@Model.UpdateStatus"></td>
+                            </tr>
+                            <tr>
+                                <th class="TableWidth2">Closed Date</th>
+                                <td class="TableWidth2">
+                                    <div class="input-group date" id="actionClosedDate" data-target-input="nearest">
+                                            <input type="text" id="ClosedDate" name="ClosedDate" value="@Model.ClosedDate"
+                                                data-target="#actionClosedDate" />
+                                            <div class="input-group-append" data-target="#actionClosedDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="TableWidth2">File Attachment</th>
+                                <td class="Tablewidth3">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input"
+                                            accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                            onchange="checkFileSize(this,5,event)" value="@Model.ReviewFileName"  name="FileUpload" id="FileUpload" />
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        <p id="ReviewFileName"></p>
+                                    </div>
+                                    <div id="imageSection">
+                                        @if (@Model.ReviewFileName != null)
+                                        {   
+                                            <a href='~/CustomerFeedbackFiles/@Model.ReviewFileName' target="_blank">@Model.ReviewFileName</a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                    </table>
+                    @if (@Model.FeedbackStatus == 1 && @Model.LoginUserRoleId == 2 ) 
+                    {
+                        <div class="card-footer">
+                            <center><button type="submit" class="btn btn-primary">Review</button>
+                            <a href='@Url.Action("SubmittedList","Feedback")'><button type="button" class="btn btn-primary">Cancel</button></a></center>       
+                        </div>
+                    }
+                    else  if (@Model.FeedbackStatus > 1)
+                    {
+                        <div class="card-footer">
+                            <center>
+                                <a href='@Url.Action("ReviewedList","Feedback")'><button type="button" class="btn btn-primary">Cancel</button></a>
+                            </center>
+                        </div>
+                    }
+                }
+            </form>          
+        </div>
+    </div>
+</section>
+
+<script>
+    setTimeout(function () {
+        $('#actionTargetDate').datetimepicker({
+        format: 'DD/MM/YYYY 00:00:00'
+        });
+
+        $('#actionClosedDate').datetimepicker({
+        format: 'DD/MM/YYYY 00:00:00'
+        }, 1000);
+    });
+
+    function validateLab() {
+
+        var feedbackStatus = document.getElementById("FeedbackStatus").value
+        if(!isNaN(feedbackStatus)  && feedbackStatus !=0)
+             return true;
+
+        if (document.frm.OptionLabName[0].checked != "") {
+            return true;
+        } else if (document.frm.OptionLabName[1].checked != "") {
+            return true;
+        } else if (document.frm.OptionLabName[2].checked != "") {
+            return true;
+        } else {
+            alert("Please choose appropriate Laboratory");
+            return false;
+        }  
+    }
+
+    function validateRatting(){
+
+        var feedbackStatus = document.getElementById("FeedbackStatus").value
+        if(!isNaN(feedbackStatus)  && feedbackStatus !=0)
+             return true;
+
+        var num1 = parseInt(document.getElementById("QualityOfService").value); 
+        var num2 = parseInt(document.getElementById("ReliabilityOfTest").value);
+        var num3 = parseInt(document.getElementById("PersonnelCompetency").value);
+        var num4 = parseInt(document.getElementById("TechnicalCapability").value);
+        var num5 = parseInt(document.getElementById("TestCalibration").value);
+
+        var num6 = parseInt(document.getElementById("OnTimeDeliveryTest").value);
+        var num7 = parseInt(document.getElementById("ResponseToCustomer").value);
+        var num8 = parseInt(document.getElementById("ComplaintResolution").value);
+        var num9 = parseInt(document.getElementById("EmergencySupport").value);
+        var num10 = parseInt(document.getElementById("HandlingOfTest").value);
+
+        var num11 = parseInt(document.getElementById("CommunicationAccess").value);
+        var num12 = parseInt(document.getElementById("DocReportingSystem").value);
+        var num13 = parseInt(document.getElementById("FacilitiesAndEnvironment").value);
+        var num14 = parseInt(document.getElementById("FiveSManagement").value);
+
+        var num15 = parseInt(document.getElementById("SafeguardingData").value);
+        var num16 = parseInt(document.getElementById("Commitment").value);
+        var num17 = parseInt(document.getElementById("Confidentiality").value);
+
+        if (isNaN (num1)){
+           alert("Please give rating for Quality of Service!");
+            return false;
+        }else if (isNaN (num2)){
+           alert("Please give rating for Reliability of Test!");
+           return false;
+        }else if (isNaN (num3)){
+           alert("Please give rating for Personnel Competency!");
+            return false;
+        }else if (isNaN (num4)){
+           alert("Please give rating for Technical Capability!");
+            return false;
+        }else if (isNaN (num5)){
+           alert("Please give rating for Test Calibration!");
+            return false;
+        }else if (isNaN (num6)){
+           alert("Please give rating for On TimeDelivery Test!");
+            return false;
+        }else if (isNaN (num7)){
+           alert("Please give rating for Response To Customer!");
+            return false;
+        }else if (isNaN (num8)){
+           alert("Please give rating for Complaint Resolution!");
+            return false;
+        }else if (isNaN (num9)){
+           alert("Please give rating for Emergency Support!");
+            return false;
+        }else if (isNaN (num10)){
+           alert("Please give rating for Handling of Test!");
+            return false;
+        }else if (isNaN (num11)){
+           alert("Please give rating for Communication Access!");
+            return false;
+        }else if (isNaN (num12)){
+           alert("Please give rating for Doc Reporting System!");
+            return false;
+        }else if (isNaN (num13)){
+           alert("Please give rating for Facilities and Environment!");
+            return false;
+        }else if (isNaN (num14)){
+           alert("Please give rating for FiveS Management!");
+            return false;
+        }else if (isNaN (num15)){
+           alert("Please give rating for Safeguarding of customer data!");
+            return false;
+        }else if (isNaN (num16)){
+           alert("Please give rating for Commitment!");
+            return false;
+        }else if (isNaN (num17)){
+           alert("Please give rating for Impartiality & confidentiality!");
+            return false;
+        }else{
+                return true;
+        }
+    }
+    
+    
+ 
+    function setLabName(labName){
+        document.getElementById("LabName").value = labName;
+    }
+
+    function scoreCalculation(event, controlName) {
+
+        document.getElementById(controlName).value = event.target.value;
+
+        var num1 = parseInt(document.getElementById("QualityOfService").value);
+        var num2 = parseInt(document.getElementById("ReliabilityOfTest").value);
+        var num3 = parseInt(document.getElementById("PersonnelCompetency").value);
+        var num4 = parseInt(document.getElementById("TechnicalCapability").value);
+        var num5 = parseInt(document.getElementById("TestCalibration").value);
+
+        var num6 = parseInt(document.getElementById("OnTimeDeliveryTest").value);
+        var num7 = parseInt(document.getElementById("ResponseToCustomer").value);
+        var num8 = parseInt(document.getElementById("ComplaintResolution").value);
+        var num9 = parseInt(document.getElementById("EmergencySupport").value);
+        var num10 = parseInt(document.getElementById("HandlingOfTest").value);
+
+        var num11 = parseInt(document.getElementById("CommunicationAccess").value);
+        var num12 = parseInt(document.getElementById("DocReportingSystem").value);
+        var num13 = parseInt(document.getElementById("FacilitiesAndEnvironment").value);
+        var num14 = parseInt(document.getElementById("FiveSManagement").value);
+
+        var num15 = parseInt(document.getElementById("SafeguardingData").value);
+        var num16 = parseInt(document.getElementById("Commitment").value);
+        var num17 = parseInt(document.getElementById("Confidentiality").value);
+
+        num1 = isNaN(num1) ? 0 : num1;
+        num2 = isNaN(num2) ? 0: num2;
+        num3 = isNaN(num3) ? 0 : num3;
+        num4 = isNaN(num4) ? 0 : num4;
+        num5 = isNaN(num5) ? 0 : num5;
+        num6 = isNaN(num6) ? 0 : num6;
+        num7 = isNaN(num7) ? 0 : num7;
+        num8 = isNaN(num8) ? 0 : num8;
+        num9 = isNaN(num9) ? 0 : num9;
+        num10 = isNaN(num10) ? 0 : num10;
+        num11 = isNaN(num11) ? 0 : num11;
+        num12 = isNaN(num12) ? 0 : num12;
+        num13 = isNaN(num13) ? 0 : num13;
+        num14 = isNaN(num14) ? 0 : num14;
+
+        num15 = isNaN(num15) ? 0 : num15;
+        num16 = isNaN(num16) ? 0 : num16;
+        num17 = isNaN(num17) ? 0 : num17;
+
+        document.getElementById("OverallScore").value = num1 + num2 + num3 + num4 + num5 + num6 + num7 + num8 + num9 + num10 + num11 + num12 + num13 + num14 + num15+ num16+ num17;
+        var num = parseInt(document.getElementById("OverallScore").value);
+        var avg = ((num / 170) * 100).toFixed(2);
+        document.getElementById("OverallPercentage").value = avg ;
+    }
+</script>
+
+<script type="text/javascript">
+    function checkFileSize(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#FileUpload").val("");
+        }
+        var input = document.getElementById('FileUpload');
+        var output = document.getElementById('ReviewFileName');
+        var result = "";
+        result += input.files.item(0).name;
+        output.innerHTML = result;
+    }
+
+</script>
+
+<script type="text/javascript">
+     $(function () {
+
+        $('#Yes').on('change', function () {
+            if ($('#Yes').not(this).prop('checked', false)) {
+                $('#ActionRequired').val(1);
+                $('.ActionRequiredTable').show();
+            }
+        });
+
+        $('#No').on('change', function () {
+            if ($('#No').not(this).prop('checked', false)) {
+                $('#ActionRequired').val(0);
+               $('.ActionRequiredTable').hide();
+
+            }
+        });
+
+        var actionRequired = $('#ActionRequired').val();
+        if(actionRequired == 1){
+            $('#Yes').prop('checked',true);
+            $('#No').prop('checked',false);
+            $('.ActionRequiredTable').show();
+        }
+        else if(actionRequired == 0){
+            $('#Yes').prop('checked',false);
+            $('#No').prop('checked',true);
+            $('.ActionRequiredTable').hide();
+        }
+    });
+</script>

@@ -1,0 +1,726 @@
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 0.5px solid black;
+        border-collapse: collapse;
+    }
+
+    th{
+        text-align: center;
+    }
+
+    td{
+        text-align: left;
+    }
+      .row {
+        display: flex;
+
+        margin-left: 2px;
+
+        margin-right: 2px;
+    }
+
+    .column {
+
+        flex: 50%;
+    }
+    .wdh{
+        width: 100%;
+        height: 40px;
+    }
+    .outline {
+        outline: none;
+        border: none;
+    }
+    .width100{
+        width: 100%;
+    }
+    .ReadOnly {
+        background-color: #ADD8E6;
+    }
+    .wd100textalign {
+        width: 100%;
+        text-align: right;
+        outline: none;
+        border: none;
+    }
+    .textdefaultalign{
+        text-align: left;
+    }
+    .headingtextalign{
+        text-align: center;
+    }
+    .daimlerboxwidth{
+        width: 225px;
+    }
+    .formatboxwidth{
+        width: 45px;
+        text-align: left;
+    }
+    .formatboxvaluewidth{
+        width: 55px;
+        text-align: left;
+    }
+</style>
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#Approve').on('change', function () {
+            if($('#Approve').not(this).prop('checked', false))
+            {
+                $('#IsApproved').val(1);
+            }
+        });
+        $('#Reject').on('change', function () {
+            if($('#Reject').not(this).prop('checked', false))
+            {
+                $('#IsApproved').val(0);
+            }
+        });        
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
+
+<script>
+    var instList = "";
+
+    function updateInstrumentList() {
+        var InstrumentLabId = $('#InstrumentLabId').val();
+        if (InstrumentLabId == null || InstrumentLabId == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetInstrumentsListByIdNo",
+            data: { idNo: InstrumentLabId },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["idNo"]];
+                    return a;
+                });
+                if (array != null) {
+                    instList = data;
+                    $("#InstrumentLabId").autocomplete({
+                        source: array,
+                        select: showResult
+                    });
+                }
+            }
+        });
+        $("#InstrumentLabId").keyup(function () {
+            if (!this.value) {
+                $('#InstrumentName').val('');
+                $('#InstrumentId').val('');
+                $('#RangeOrSize').val('');
+                $('#LC').val('');
+            }
+        });
+    }
+
+    function showResult(event, ui) {
+        var instrument = instList.find(x => x.idNo == ui.item.value)
+        $('#InstrumentName').val(instrument.instrumentName);
+        $('#InstrumentId').val(instrument.instrumentId);
+        $('#RangeOrSize').val(instrument.rangeOrSize);
+        $('#LC').val(instrument.leastCount);
+    }
+
+</script>
+
+<script>
+    var masterList = "";
+    function updateMasterList() {
+        var UniqueName = $('#MasterLabId').val();
+        if (UniqueName == null || UniqueName == '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "../QualityCheck/GetMasterListByLabId",
+            data: { labId: UniqueName },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                var array = $.map(data, function (value, index) {
+                    var a = [value["labId"]];
+                    return a;
+                });
+                if (array != null) {
+                    masterList = data;
+                    $("#MasterLabId").autocomplete({
+                        source: array,
+                        select: showOut
+                    });
+                }
+            }
+        });
+        $("#MasterLabId").keyup(function () {
+            if (!this.value) {
+
+                $('#MasterEquipmentName').val(''); 
+                $('#MasterEquipmentId').val('');                
+            }
+        });
+    }  
+
+    function showOut(event, ui) {
+        var master = masterList.find(x => x.labId == ui.item.value)
+        $('#MasterEquipmentName').val(master.equipmentName); 
+        $('#MasterEquipmentId').val(master.masterId);        
+    }    
+    
+</script>
+
+<script>
+    function checkFileSize1(element, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > 5) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload1").val("");
+        }
+        var input = document.getElementById('ImageUpload1')
+        var output = document.getElementById('MUx1FileName')
+
+        var result = "";
+
+        result += input.files.item(0).name + '<br />';
+
+        output.innerHTML = result;
+
+    }
+</script>
+
+<script>
+    function checkFileSize2(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload2").val("");
+        }
+        var input = document.getElementById('ImageUpload2')
+        var output2 = document.getElementById('MUx2FileName')
+        var result2 = "";
+        result2 += input.files.item(0).name;
+        output2.innerHTML = result2;
+    }
+</script>
+
+
+<form role="form" id="QCForm" method="post" action='@Url.Action("SaveDataReplicate", "QualityCheck")' enctype="multipart/form-data">
+    <input type="hidden" name="Id" id="Id" value="@Model.Id">
+    <input type="hidden" name="DocumentStatus" id="DocumentStatus" value="@Model.DocumentStatus">
+    <input type="hidden" name="UserRoleId" id="UserRoleId" value="@Model.UserRoleId">
+    <input type="hidden" name="IsApproved" id="IsApproved" value="@Model.IsApproved"> 
+    <input type="hidden" id="RevisionNo" name="RevisionNo" value="@Model.RevisionNo">
+    <input type="hidden" id="RevisionDate" name="RevisionDate" value="@Model.RevisionDate">
+    <input type="hidden" id="MasterEquipmentId" name="MasterEquipmentId" value="@Model.MasterEquipmentId">
+    <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.InstrumentId">
+
+    <table class="width100">
+        <tr>
+            <th rowspan="2" class="daimlerboxwidth headingtextalign">Daimler</th>
+            <th rowspan="2" colspan="2" class="headingtextalign">Quality Assurance: Replicate Test</th>
+            <td>
+                <div class="width100">
+                    <table class="width100">
+                        <tr>
+                            <th class="formatboxwidth textdefaultalign">Format No.</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.FormatNo" id="FormatNo" name="FormatNo" 
+                            style="width:100%"  class="outline ReadOnly" readonly></td>
+                        </tr> 
+                         <tr>
+                            <th class="formatboxwidth" textdefaultalign>Rev.No & Date</th>
+                            <td class="formatboxvaluewidth"><input type="text" value="@Model.RevisionNoAndDate" id="RevisionNoAndDate" name="RevisionNoAndDate"
+                                    style="width:100%"  class="outline ReadOnly" readonly>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+<br>
+<table class="width100">
+    @*<tr>
+        <td>Date:</td>
+        <td colspan="5"><input type="text" id="RevisionDate" name="RevisionDate" value="@Model.RevisionDate"  style="width:100%"  class="outline ReadOnly" readonly></td>
+    </tr>*@
+    <tr>
+        <td>Device Name/Gauge</td>
+        <td  colspan="5"><input type="text" id="InstrumentName" name="InstrumentName" value="@Model.InstrumentName" 
+                         style="width:100%"  class="outline "  ></td>
+    </tr>
+    <tr >
+        <td>Device/Gauge Identification <br>
+             No.</td>
+        <td colspan="5"><input type="text" id="InstrumentLabId" name="InstrumentLabId" value="@Model.InstrumentLabId" style="width:100%"
+                        class="width100" onkeypress="updateInstrumentList()"></td>
+    </tr>
+    <tr >
+        <td>Range / Size</td>
+        <td colspan="3"><input type="text" id="RangeOrSize" name="RangeOrSize" value="@Model.RangeOrSize"  style="width:100%"  class="outline " ></td>
+        <td >Least Count / Resolution</td>
+        <td><input type="text" id="LC" name="LC" value="@Model.LC"  style="width:100%"  class="outline " ></td>
+    </tr>
+    <tr>
+        <td >Master Equipment <br>
+            Used:</td>
+        <td colspan="3"><input type="text" id="MasterEquipmentName" name="MasterEquipmentName" value="@Model.MasterEquipmentName" 
+                       style="width: 100%;" class="wd100 outline " ></td>
+        <td>Temp:</td>
+        <td><input type="text" id="Temperature" name="Temperature" value="@Model.Temperature" class="width100"></td>
+    </tr>
+    <tr>
+        <td>Master Equipment <br>
+             ID No.</td>
+        <td colspan="3"><input type="text" value="@Model.MasterLabId" id="MasterLabId" name="MasterLabId"
+                   style="width: 100%;" class="wd100 outline" onkeypress="updateMasterList()" autofocus>
+        </td>
+        <td>Humidity:</td>
+        <td><input type="text" id="Humidity" name="Humidity" value="@Model.Humidity" class="width100"></td>
+    </tr>
+    <tr>
+        <th colspan="4">Replicate Test-Result</th>
+        <td>All values are in</td>
+         <td><input type="text" name="DataUnit" value="@Model.DataUnit" id="DataUnit" class="width100"></td>
+    </tr>    
+    <tr>
+        <td rowspan="10">Obesrvation</td>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="1" id="Obs1.Observation1" name="Obs1.Observation1" value="@Model.Obs1.Observation1" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2">
+            <input class="wd100textalign" type="text" tabindex="11" id="Obs2.Observation1" name="Obs2.Observation1" value="@Model.Obs2.Observation1" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="2" id="Obs1.Observation2" name="Obs1.Observation2" value="@Model.Obs1.Observation2" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2">
+            <input class="wd100textalign" type="text" tabindex="12" id="Obs2.Observation2" name="Obs2.Observation2" value="@Model.Obs2.Observation2" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="3" id="Obs1.Observation3" name="Obs1.Observation3" value="@Model.Obs1.Observation3" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2">
+            <input class="wd100textalign" type="text" tabindex="13" id="Obs2.Observation3" name="Obs2.Observation3" value="@Model.Obs2.Observation3" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="4" id="Obs1.Observation4" name="Obs1.Observation4" value="@Model.Obs1.Observation4" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2">
+            <input class="wd100textalign" type="text" tabindex="14" id="Obs2.Observation4" name="Obs2.Observation4" value="@Model.Obs2.Observation4" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="5" id="Obs1.Observation5" name="Obs1.Observation5" value="@Model.Obs1.Observation5" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text"tabindex="15" id="Obs2.Observation5" name="Obs2.Observation5" value="@Model.Obs2.Observation5" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="6" id="Obs1.Observation6" name="Obs1.Observation6" value="@Model.Obs1.Observation6" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text" tabindex="16" id="Obs2.Observation6" name="Obs2.Observation6" value="@Model.Obs2.Observation6" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+      <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="7" id="Obs1.Observation7" name="Obs1.Observation7" value="@Model.Obs1.Observation7" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text" tabindex="17" id="Obs2.Observation7" name="Obs2.Observation7" value="@Model.Obs2.Observation7" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+      <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="8" id="Obs1.Observation8" name="Obs1.Observation8" value="@Model.Obs1.Observation8" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text" tabindex="18" id="Obs2.Observation8" name="Obs2.Observation8" value="@Model.Obs2.Observation8" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+      <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="9" id="Obs1.Observation9" name="Obs1.Observation9" value="@Model.Obs1.Observation9" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text" tabindex="19" id="Obs2.Observation9" name="Obs2.Observation9" value="@Model.Obs2.Observation9" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+      <tr>
+        <td colspan="3">
+            <input class="wd100textalign" type="text" tabindex="10" id="Obs1.Observation10" name="Obs1.Observation10" value="@Model.Obs1.Observation10" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+        <td colspan="2"> 
+            <input class="wd100textalign" type="text" tabindex="20" id="Obs2.Observation10" name="Obs2.Observation10" value="@Model.Obs2.Observation10" onkeyup="averagevaluecalculation_Replicate()">
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2">Average</td>
+        <td colspan="3">
+            "x"
+        </td>
+        <td colspan="2">
+            "X"
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input  class="width100 outline ReadOnly" readonly type="text" id="Obs1.Average" name="Obs1.Average" value="@Model.Obs1.Average">
+        </td>
+        <td colspan="2">
+            <input  class="width100 outline ReadOnly" readonly type="text" id="Obs2.Average" name="Obs2.Average" value="@Model.Obs2.Average">
+        </td>
+    </tr>
+    <tr>
+        <td>Mu</td>
+        <td colspan="3"><input type="text" class="width100" id="Obs1.MU" name="Obs1.MU" onkeyup="squarecalculation_Replicate()" value="@Model.Obs1.MU"></td>
+        <td colspan="2"><input type="text" class="width100" id="Obs2.MU" name="Obs2.MU" onkeyup="squarecalculation_Replicate()" value="@Model.Obs2.MU"></td>
+    </tr>
+     <tr>
+        <td class="textdefaultalign">U<sup>2</sup>1</td>
+        <td colspan="3" class="textdefaultalign"><input type="text" id="Obs1.U2" name="Obs1.U2" value="@Model.Obs1.U2" 
+                                                  class="width100 outline ReadOnly" readonly></td>
+        <td class="textdefaultalign">U<sup>2</sup>2</td>
+        <td class="height40size20"><input type="text"  id="Obs2.U2" name="Obs2.U2" value="@Model.Obs2.U2" 
+             class="width100 outline ReadOnly" readonly></td>
+    </tr>
+    <tr>
+        <td class="textdefaultalign" >
+             <img id="imgEnFormula" height="100px" width="100px" src="~/image/EnFormula.png"/><br>
+              Acceptance Criteria :<=1
+        </td>
+        <td colspan="5">
+            <input type="text" id="EnValue" name="EnValue" value="@Model.EnValue"  
+                    style="width:100%"  class="outline ReadOnly" readonly>
+        </td>
+
+    </tr>
+    <tr>
+        <td class="textdefaultalign">MU File Attachment(s)</td>
+        <td colspan="3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input"
+                    accept=" .doc,.docx,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                    onchange="checkFileSize1(this,MaxSize=4,event)" value="@Model.MUx1FileName" name="ImageUpload1"
+                    id="ImageUpload1" />
+                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                <p id="MUx1FileName"></p>
+            </div>
+            <div id="imageSection">
+                @if (@Model.MUx1FileName != null)
+                {
+                    <a href='~/QCReplicateTestFiles/@Model.MUx1FileName' target="_blank">@Model.MUx1FileName</a>
+                }
+            </div>
+        </td>
+        <td colspan="2">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input"
+                    accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                    onchange="checkFileSize2(this,MaxSize=4,event)" value="@Model.MUx2FileName"
+                    name="ImageUpload2" id="ImageUpload2" />
+                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                <p id="MUx2FileName"></p>
+            </div>
+            <div id="imageSection">
+                @if (@Model.MUx2FileName != null)
+                {
+                    <a href='~/QCReplicateTestFiles/@Model.MUx2FileName' target="_blank">@Model.MUx2FileName</a>
+                }
+            </div>
+        </td>
+    </tr>
+
+
+    <tr>
+        <td  class="textdefaultalign">Study Performed By</td>
+        <td colspan="3" class="textdefaultalign"><input class="width100" type="text" id="StudyPerformedBy1" name="StudyPerformedBy1" value="@Model.Obs1.AppraiserFullName"></td>
+        <td colspan="2" class="textdefaultalign"><input class="width100" type="text" id="StudyPerformedBy2" name="StudyPerformedBy2" value="@Model.Obs2.AppraiserFullName"></td>
+    </tr>
+    <tr>
+        <td  class="textdefaultalign">Date</td>
+        <td colspan="3"><input class="width100 outline ReadOnly" readonly type="text" id="Date1" name="Date1" value="@Model.Obs1.AppraiserDate"></td>
+        <td colspan="2"><input class="width100 outline ReadOnly" readonly type="text" id="Date2" name="Date2" value="@Model.Obs2.AppraiserDate"></td>
+    </tr>
+    <tr>
+        <td  class="textdefaultalign">Conclusion</td>
+        <td colspan="5" class="textdefaultalign">
+            <input  type="text" id="Conclusion" name="Conclusion" value="@Model.Conclusion" class="width100">
+        </td>
+    </tr>
+
+    @if(@Model.DocumentStatus  == null || @Model.DocumentStatus == 0 || @Model.DocumentStatus  == 1 )
+    {  
+        <tr>
+            <td colspan="6">
+            <div class="card-footer">
+                <center>
+                    <input type="submit" value="submit" class="btn btn-primary">
+                    <a href='@Url.Action("ReplicateTestGrid","QualityCheck")'><input type="button" value="Cancel" 
+                        class="btn btn-primary"></a>
+                </center>
+            </div>
+            </td>
+        </tr>
+    }
+
+    @if(@Model.DocumentStatus >=2 )
+    {
+        <tr>
+            <td  class="textdefaultalign">Approved / Rejected By</td>
+            <td  colspan="5" class="textdefaultalign">
+                <input  type="text" id="ReviewedByName" name="ReviewedByName" value="@Model.ReviewedByName"style="width:100%"  class="outline ReadOnly" readonly>
+            </td>
+        </tr>
+        <tr>
+                <td  class="textdefaultalign">
+                    Status
+                </td>
+                <td  colspan="5" class="textdefaultalign">
+                    <div>
+                        <label>Approve</label>
+                        @if(@Model.DocumentStatus==3)
+                        {
+                        <input type="radio" name="Approve" checked="true" id="Approve">
+                        }
+                        else
+                        {
+                        <input type="radio" name="Approve" id="Approve">
+                        }
+                        <label>Reject</label>
+                        @if(@Model.DocumentStatus==4)
+                        {
+                        <input type="radio" name="Approve" id="Reject" checked="true">
+                        }
+                        else
+                        {
+                        <input type="radio" name="Approve" id="Reject">
+                        }
+                    </div>
+                </td>
+        </tr>
+        <tr>
+            <td  class="textdefaultalign">Final Status</td>
+            <td colspan="5" class="textdefaultalign">
+                <input  type="text" id="FinalStatus" name="FinalStatus" value="@Model.FinalStatus" class="width100">
+            </td>
+        </tr>
+         @if(@Model.DocumentStatus == 3 || @Model.DocumentStatus == 4 )
+         {
+            <tr>
+                <td colspan="6">
+                <div class="card-footer">
+                    <center>  
+                        <a href='@Url.Action("ReplicateTestGrid","QualityCheck")'><input type="button" value="Cancel" 
+                            class="btn btn-primary"></a>
+                    </center>
+                </div>
+                </td>
+            </tr>
+         }
+    }
+    
+    @if (@ViewBag.UserRoleId == 2 && @Model.DocumentStatus == 2)
+    {
+        <tr>
+            <td colspan="6">
+            <div class="card-footer">
+                <center>
+                    <input type="submit" value="Review" class="btn btn-primary">   
+                    <a href='@Url.Action("ReplicateTestGrid","QualityCheck")'><input type="button" value="Cancel" 
+                        class="btn btn-primary"></a>
+                </center>
+            </div>
+            </td>
+        </tr>
+    }
+</table>  
+</form>
+
+@* ************************************************************************************** *@
+
+
+<html>
+<body>
+  <div id="QualityCheckpdf" style="display: none;">
+<table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="text-align: center;width: 100px;border: 0.5px solid black;border-collapse: collapse" height="30" rowspan="2"><b>Daimler</b></td>
+            <td style="text-align: center;width: 400px;border: 0.5px solid black;border-collapse: collapse" rowspan="2"><b>Quality Assurance: Replicate Test</b></td>
+            <td rowspan="2">
+                <div style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse;font-size:x-small">
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Format No.</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse" >@Model.FormatNo</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 45px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30"><b>Rev.No & Date</b></td>
+                            <td style="width: 55px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.RevisionNoAndDate</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;border: 0px solid white;border-collapse: collapse; font-size:x-small">
+        <tr>
+            <td style="width: 45px;text-align: left;border: 0px solid white;border-collapse: collapse" height="30"></td>
+        </tr>
+        @* <tr style="border: 0.5px solid white" height="30"></tr>
+        <tr style="border: 0.5px solid white" height="30"></tr> *@
+    </table>
+    <table style="width: 100%;border: 0.5px solid black;border-collapse: collapse; font-size:x-small">
+     @* <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Date:</td>
+        <td style="width: 170px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="4">@Model.RevisionDate</td>
+    </tr>*@
+     <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Device Name/Gauge</td>
+        <td style="width: 170px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="4">@Model.InstrumentName</td>
+    </tr>
+    <tr >
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50" rowspan="2">Device/Gauge Identification No.</td>
+        <td style="width: 170px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="50" colspan="4" rowspan="2">@Model.InstrumentLabId</td>
+    </tr>
+    <tr >
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Range / Size</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.RangeOrSize</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Least Count / Resolution</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.LC</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Master Equipment Used:</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.MasterEquipmentName</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Temp:</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Temperature</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Master Equipment ID No.</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.MasterLabId</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">Humidity:</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Humidity</td>
+    </tr>
+    <tr>
+        <td style="width: 100px;text-align: center;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="3"><b>Replicate Test-Result</b></td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">All values are in</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.DataUnit</td>
+    </tr>    
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" rowspan="5">Obesrvation</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Observation1</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Observation1</td>
+    </tr>
+    <tr>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Observation2</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Observation2</td>
+    </tr>
+    <tr>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Observation3</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Observation3</td>
+    </tr>
+    <tr>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Observation4</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Observation4</td>
+    </tr>
+    <tr>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Observation5</td>
+        <td style="width: 80px;text-align: right;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Observation5</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" rowspan="2">Average</td>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">"x"</td>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">"X"</td>
+    </tr>
+    <tr>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.Average</td>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.Average</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Mu</td>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.MU</td>
+        <td style="width: 80px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs2.MU</td>
+    </tr>
+     <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">U<sup>2</sup>1</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs1.U2</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">U<sup>2</sup>2</td>
+        <td style="width: 50px;text-align: left;border: 0.5px solid black;border-collapse: collapse">@Model.Obs2.U2></td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="100"  rowspan="5">
+             @* <img id="imgEnFormula" height="100px" width="100px" src="~/image/EnFormula.png"/> *@
+              Acceptance Criteria :<=1
+        </td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="100" colspan="4" rowspan="5">@Model.EnValue</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">MU File Attachment(s)</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.MUx1FileName</td>
+        <td style="width: 100px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.MUx2FileName</div></td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Study Performed By</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">"@Model.Obs1.AppraiserFullName</td>
+        <td style="width: 100px;text-align: left;border: 0.5px solid black;border-collapse: collapse" colspan="2">@Model.Obs2.AppraiserFullName</td>
+    </tr>
+    <tr>
+        <td  style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Date</td>
+        <td style="width: 70px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs1.AppraiserDate</td>
+        <td style="width: 100px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="2">@Model.Obs2.AppraiserDate</td>
+    </tr>
+    <tr>
+        <td style="width: 40px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30">Conclusion</td>
+        <td style="width: 100px;text-align: left;border: 0.5px solid black;border-collapse: collapse" height="30" colspan="4">@Model.Conclusion</td>
+    </tr>
+    </table>
+</div>
+<!-- ************************************************************************** -->
+
+</body>
+
+</html>
+
+@using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))
+{
+    @if(@Model.DocumentStatus  == 3 )
+    {  
+    <input type="hidden" name="ExportData" />
+    <input type="submit" id="btnSubmit" class="btn btn-primary" value="Export" />
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("input[name='ExportData']").val($("#QualityCheckpdf").html());
+    }); 
+</script>

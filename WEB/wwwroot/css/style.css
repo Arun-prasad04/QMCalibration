@@ -1,0 +1,68 @@
+.daimlerlogo img{
+    width: 185px;
+    margin: auto 9%;
+}
+
+.daimlerlogo2 img{
+    width: 175px;
+    margin: auto 0 1%;
+}
+
+.layout-navbar-fixed .wrapper .main-header {
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1037;
+}
+.sidenavtop {
+    top:55px !important;
+}
+.iconsize {
+    font-size:20px;
+}
+.navbg {
+    background-image: url(../image/img-header-brushed-bg-md.jpg);
+}
+
+.navbg i {
+    color:#ffffff !important;
+    font-size: 20px;
+}
+
+.logopading {
+    padding: 12px !important;
+}
+.loginform {
+    margin-top: 40% !important;
+    margin: auto;
+}
+.loginbg{
+  background-image: url('./../image/CMT_LogIn.jpg') !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  background-position: 50% 50% !important;
+}
+#logoheader {
+    width: 185px;    
+    margin-top: 5%;
+}
+.loginformbg {
+    height: 100vh;
+    background: rgba(0,0,0,.3);
+}
+
+.content-header {
+    padding: 0px 0.5rem !important;
+}
+.container{
+    max-width: 100% !important;
+}
+.navIndend{
+    font-size: medium;
+    padding-left: 30px;
+}
+.required:after {
+    content:" *";
+    color: red;
+  }

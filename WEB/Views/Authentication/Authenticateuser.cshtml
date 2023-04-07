@@ -1,0 +1,42 @@
+@{ Layout ="~/Views/Shared/_ActivationLayout.cshtml"; }
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">User Authentication</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="frm" action='@Url.Action("ActivateUser","Authentication")'>
+                  <div class="card-body">
+                     <input type="hidden" name="AuthKey" value="@ViewBag.ActivationKey">
+                    <div class="form-group">
+                      <label for="Password">Password</label>
+                      <input type="password" class="form-control" id="Password" placeholder="Password" value="" name="Password">
+                      </div>                                    
+                    <div class="form-group">
+                      <label for="CPassword">Confirm Password</label>
+                      <input type="password" class="form-control" id="CPassword" placeholder="Confirm Password" name="CPassword" value="" >
+                      </div>  
+                     </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Activate Account</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+           </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  

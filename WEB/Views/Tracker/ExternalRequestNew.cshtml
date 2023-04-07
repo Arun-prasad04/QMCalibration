@@ -1,0 +1,357 @@
+@{
+  ViewData["Title"] = "Request Details";
+}
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script>
+setTimeout(function(){ 
+
+$('#ReturnDatePicker').datetimepicker({
+      format: 'DD/MM/YYYY'
+});
+}, 500);
+</script>
+<section class="content">
+    <div class="row">
+      <div class="col-12">
+        <!-- general form elements disabled -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="card-title">External Request Details</h3>
+              </div>
+              <div class="col-md-6 text-right">
+                  <input type="hidden" id="ExternalCalibId" value="@Model.Id">
+                  <input type="hidden" id="userRoleId" value='@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'>                  
+              </div>
+            </div>
+          </div>    
+          <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Request Number</label>
+                            <input type="text" class="form-control" id="ReqNo" value="@Model.ReqNo" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Requested Date</label>
+                            <input type="text" class="form-control" id="RequestDate" value="@Model.RequestDate.ToShortDateString()" disabled>
+                        </div>
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Master Name</label>
+                            <input type="text" class="form-control" id="MasterName" value="@Model.MasterName" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Master Serial Number</label>
+                            <input type="text" class="form-control" id="MasterSerialNo" value="@Model.MasterSerialNo" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Master Id Number</label>
+                            <input type="text" class="form-control" id="MasterIdNo" value="@Model.MasterIdNo" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Calibration Date</label>
+                            <input type="text" class="form-control" id="CalibrationDate" value="@Model.CalibrationDate.ToShortDateString()" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="text" class="form-control" id="NextDue" value="@Model.NextDue.ToShortDateString()" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Certificate Number</label>
+                            <input type="text" class="form-control" id="CertificateNo" value="@Model.CertificateNo" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Traceability</label>
+                            <input type="text" class="form-control" id="Traceability" value="@Model.Traceability" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            @if(Model.Status==28)
+                            {
+                            <input type="text" class="form-control" id="status_rejected" value="Rejected" disabled>
+                            }
+                            @if(Model.Status==26)
+                            {
+                            <input type="text" class="form-control" id="status_waitingFM"value="Requeted , Waiting for FM" disabled>
+                            }
+                            @if(Model.Status==27)
+                            {
+                            <input type="text" class="form-control" id="status_accepted"value="Accepted by FM , Waiting for Visual Check Update" disabled>
+                            }
+                            @if(Model.Status==29)
+                            {
+                            <input type="text" class="form-control" id="status_FMVisusalChk"value="FM Check Completed,Returned to LAB" disabled>
+                            }
+                            @if(Model.Status==30)
+                            {
+                            <input type="text" class="form-control" id="status_LabVisusalChk"value="Closed" disabled>
+                            }
+                        </div>
+                    </div>
+                </div>
+@if(Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId"))==3 && Model.Status==26)
+{                
+<div id="requestSection" style="margin-top:20px;">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <!-- text input -->
+                                <div class="form-group">
+                                <label>Accept</label>
+                                <input type="radio" name="AcceptReject" value="Accept" checked onclick="EnableReason()">
+                                
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                 <label>Reject</label>
+                                <input type="radio" name="AcceptReject" value="Reject" onclick="EnableReason()">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rejectionReasonSection" style="display:none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <label>Rejection Reason</label>                        
+                                    <textarea id="reason" style="width: 100%;"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align:right;">
+                                <!-- text input -->
+                                <div class="form-group">
+                                <input type="button" id="submitReason" value="Submit" name="Submit" class="btn btn-primary" onclick="submitAcceptReject()">                               
+                                </div>
+                            </div>
+                        </div>
+</div>
+}
+@if(Model.Status==27 || Model.Status==28)
+{                
+<div id="requestSection" style="margin-top:20px;">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                <label>Accept</label>
+                                @if(Model.Status==27)
+                                {
+                                <input type="radio" name="AcceptReject" value="Accept" checked onclick="EnableReason()" disabled>
+                                }
+                                else{
+                                <input type="radio" name="AcceptReject" value="Accept"  onclick="EnableReason()" disabled>
+                                }                               
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                 <label>Reject</label>
+                                @if(Model.Status==28)
+                                {
+                                <input type="radio" name="AcceptReject" value="Reject" checked onclick="EnableReason()" disabled>
+                                }
+                                else{
+                                  <input type="radio" name="AcceptReject" value="Reject" onclick="EnableReason()" disabled>  
+                                }
+                                </div>
+                            </div>
+                        </div>
+                            @if(Model.Status==27)
+                            {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Submitted On</label>
+                                        <input type="text" class="form-control" id="SubmittedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            @if(Model.Status==28)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Rejected On</label>
+                                            <input type="text" class="form-control" id="rejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Rejected Reason</label>
+                                            <input type="text" class="form-control" id="rejectedReason" value="@Model.RejectReason" disabled>
+                                        </div>
+                                    </div>
+                                </div>                   
+                            }
+</div>
+}
+@if(Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId"))==3 && Model.Status==27)
+{    
+<div class="row">
+    <div class="col-sm-6">
+            <div class="form-group">
+                    <label>Record By</label>
+                    <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
+            </div>
+    </div>
+    <div class="col-sm-6">
+            <div class="form-group">
+                    <label>ClosedDate</label>
+                    <input type="text" id="ClosedDate" name="ClosedDate" value="@DateTime.Now" class="form-control"   />
+            </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+            <div class="form-group">
+                    <label>Result</label>
+                    <input type="text" class="form-control" id="ResultFM" >
+            </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9">
+                           
+    </div>
+    <div class="col-sm-3">
+            <div class="form-group">
+                    <input type="button" class="btn btn-primary" name="SubmitFMVisual" id="SubmitFMVisual" value="Submit Visual Check" onclick="SubmitFMVisual()">
+            </div>
+    </div>
+</div>
+}
+@if(Model.Status==29)
+{    
+<div class="row">
+    <div class="col-sm-6">
+            <div class="form-group">
+                    <label>Record By</label>
+                    <input type="text" class="form-control" id="RecordBy" value="@Model.RecordBy" disabled>
+            </div>
+    </div>
+    <div class="col-sm-6">
+            <div class="form-group">
+                    <label>ClosedDate</label>
+                    <input type="text" id="ClosedDate" name="ClosedDate" value="@Model.ClosedDate.ToShortDateString()" class="form-control" disabled   />
+            </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+            <div class="form-group">
+                    <label>Result</label>
+                    <input type="text" class="form-control" id="ResultFM" value="@Model.ResultFM" disabled >
+            </div>
+    </div>
+</div>
+}
+@if(Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId"))== Model.CreatedBy && Model.Status==29)
+{
+<div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Return Date</label>
+                    <div class="input-group date" id="ReturnDatePicker" data-target-input="nearest" onchange="$('#ReturnDate').attr('value',$('#ReturnDate').val());">
+                                        <input type="text" id="ReturnDate" name="newReturnDate" value="@DateTime.Now"
+                                            class="form-control datetimepicker-input" data-target="#ReturnDatePicker" />
+                                        <div class="input-group-append" data-target="#ReturnDatePicker"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                    </div>                                                
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                        <label>Verified By</label>
+                        <input type="text" class="form-control" id="RecordBy" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
+                </div>
+            </div>
+</div>
+<div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                        <label>LABResult</label>
+                        <input type="text" class="form-control" id="ResultLAB" >
+                </div>
+            </div>
+</div>
+<div class="row">
+            <div class="col-sm-6">
+                    <div class="form-group">
+                    <input  style="margin-top: 32px;" type="button" class="btn btn-primary" name="SubmitLABVisual" id="SubmitLABVisual" value="Submit Visual Check" onclick="SubmitLABVisual()">
+                    </div>
+            </div>
+</div>
+}
+@if(Model.Status==30)
+{
+<div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Return Date</label>
+                    <input type="text" id="ReturnDate" name="ReturnDate" value="@Model.ReturnDate.ToShortDateString()" disabled class="form-control"   />                                                
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                        <label>Verified By</label>
+                        <input type="text" class="form-control" id="RecordBy" value="@Model.RecodedByLAB" disabled>
+                </div>
+            </div>
+</div>
+<div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                        <label>LABResult</label>
+                        <input type="text" class="form-control" id="ResultLAB" value="@Model.ResultLAB" disabled >
+                </div>
+            </div>
+</div>
+}
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+    

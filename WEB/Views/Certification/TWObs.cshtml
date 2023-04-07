@@ -1,0 +1,1436 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="font-family: Calibri;">
+    <!-- page1 start-->
+    <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+        <table style="border-collapse: collapse; border:2px solid #000">
+            <tbody>
+                <tr>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+                    @if(Model.IsNABL ?? false)
+                    {
+                        <img src="../image/NABL.png" style="padding-top:5px;"  width="100px" />
+                    }
+                    else
+                    {
+                        <img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
+                    }
+                        
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+                        <div>
+                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                        </div>
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+                        <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px" src="@ViewBag.QRCodeImage" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <h2 style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
+        </div>
+        <div style="border-collapse: collapse; border:2px solid #000">
+            <div>
+                <div style="padding: 10px;">
+                    <div>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @Model.TorqueData.CertificateFormat</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
+                                    <td style="width:400px;padding-bottom: 25px;">: @Model.TorqueData.ULRFormat</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                            }
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.TorqueData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due</td>
+                                @if(Model.Result == "Rejected")
+                                {
+                                    <td style="width:400px; padding-bottom: 25px;">: --</td>
+                                }
+                                else
+                                {
+                                    <td style="width:400px; padding-bottom: 25px;">: @Model.DueDate.ToString("MMM-yyyy")</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.DepartmentName</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of Equipment</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div style="padding-top: 10px;">
+                        <table style="border-collapse: collapse; border:1px solid #000">
+                            <tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
+                            </tr>
+                            <tr>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.Range</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.LC</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.SlNo</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.Make</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="margin-top:15px">
+                            <tbody>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
+                                    <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+                                    <td style="width:400px;padding-bottom: 25px;">: @Model.TorqueData.ConditionOfTW</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure / <br/> Reference Standard :</td>
+                                    <td style="width:400px; padding-bottom: 25px;">: @Model.StandardReffered</td>
+                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                    <td style="width:400px; padding-bottom: 25px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master & Equipment Used For Calibration & Traceability</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <table style="border-collapse: collapse; border:1px solid #000">
+                            <tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity </th>
+                            </tr>
+                            @{ int i=1;
+                            @foreach (var item in @Model.MasterEqiupmentList)
+                            {
+                            <tr>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            i++;
+                            }
+                           }
+                        </table>
+                        <p class="fw-normal fontsize14">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                    </div>
+
+                    <table style="margin-top:15px">
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition</td>
+                                <td style="width:400px;padding-bottom: 10px;"><p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of Measurement :</td>
+                                <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity" value="@Model.TorqueData.Uncertainity"></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+
+                    <table style="margin-top:15px">
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                                    <div class="col-6 text-start">
+                                        <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                        <img src="../UserSignature/@Model.TorqueData.PerformedBySign" style="width: 100px;"/>
+                                        <p style="margin-left:20px;">@Model.TorqueData.CalibrationPerformedBy</p>
+                                        <p style="margin-left:20px;">@Model.TorqueData.PerformedByDesignation</p>
+                                    </div>
+                                </td>
+                                <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                                    <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                    <img src="../UserSignature/@Model.TorqueData.ReviewedBySign" style="width: 100px;"/>
+                                    <p style="margin: 0px;">@Model.TorqueData.ReviewedBy</p>
+                                    <p style="margin: 0px;">@Model.TorqueData.ReviewedByDesignation</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="border-collapse: collapse; 
+                    border-top: solid;
+                    border-block-width: 2px; border: 2px solid #000; display: flex;">
+                    <div style="padding:10px">
+                        <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                        <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                        <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                    </div>
+                    <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
+                </div>
+            </div>
+        </div>
+        <table style="margin-top:15px">
+                <tbody>
+                    <tr style="font-size: xx-small;">
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div>
+                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                            <h4 style="font-size: small;">Page 1 of 2</h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+    <!-- page1 end-->
+    <!-- page2 start-->
+    <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+        <table style="border-collapse: collapse; border:2px solid #000">
+            <tbody>
+                <tr>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+                       @if(Model.IsNABL ?? false)
+						{
+							<img src="../image/NABL.png" style="padding-top:5px;"  width="100px" />
+						}
+						else
+						{
+							<img src="../image/Bharat_Benz.png" style="padding-top:5px;"  width="150px" />
+						}
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+                        <div>
+                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                        </div>
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+                        <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px" src="@ViewBag.QRCodeImage" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="border: 2px solid #000; padding: 10px;">
+            <table style="margin-top:30px">
+                <tbody>
+                    <tr>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">III. Mechanical Calibration Results</td>
+                        <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;">Certificate No @Model.TorqueData.CertificateFormat</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;">Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="p-3">
+                @* <p style="text-align: center;">All Values are in Microns</p> *@
+                @if(@Model.ObservationType==83){
+                <table style="border-collapse: collapse; border:1px solid #000">
+                   <tr>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="10" class="text-center">SPECS</th>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="10" class="text-center">All Values are in @Model.TorqueData.Allvalues</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Min Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Max Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">I</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">II</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">III</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">0</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">20%</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">60%</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">100%</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Total Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal60</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal100</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Acceptable Band</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec60</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec100</td>
+                    </tr>
+                </table>
+				<table style="margin-top:15px">
+                <tbody>
+                    <tr>
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+                <table style="border-collapse: collapse; border:1px solid #000">
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value I</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value II</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value III</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Measured</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Nominal20">@Model.TorqueData.Nominal20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Nominal60">@Model.TorqueData.Nominal60</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Nominal100">@Model.TorqueData.Nominal100</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="8"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value1">@Model.TorqueData.Value1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value2">@Model.TorqueData.Value2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value3">@Model.TorqueData.Value3</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value4">@Model.TorqueData.Value4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value5">@Model.TorqueData.Value5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value6">@Model.TorqueData.Value6</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value7">@Model.TorqueData.Value7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value8">@Model.TorqueData.Value8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value9">@Model.TorqueData.Value9</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value10">@Model.TorqueData.Value10</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value11">@Model.TorqueData.Value11</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value12">@Model.TorqueData.Value12</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value13">@Model.TorqueData.Value13</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value14">@Model.TorqueData.Value14</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Value15">@Model.TorqueData.Value15</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Average</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average1"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average2"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average3"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Dev from Nom in N-m</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm1"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm2"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm3"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Dev from Nom in %</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom1"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom2"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom3"></td>
+                    </tr>
+				</table>
+                }
+                @if(@Model.ObservationType==82){
+                <table align="center" style="border-collapse: collapse; border:1px solid #000">
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Set Value</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="SetValue">@Model.TorqueData.SetValue</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">S.No</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Actuals</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInOne">@Model.TorqueData.ActualInOne</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInTwo">@Model.TorqueData.ActualInTwo</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInThree">@Model.TorqueData.ActualInThree</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInFour">@Model.TorqueData.ActualInFour</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInFive">@Model.TorqueData.ActualInFive</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">6</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInSix">@Model.TorqueData.ActualInSix</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInSeven">@Model.TorqueData.ActualInSeven</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInEight">@Model.TorqueData.ActualInEight</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">9</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInNine">@Model.TorqueData.ActualInNine</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">10</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInTen">@Model.TorqueData.ActualInTen</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Average</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="Average"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Dev from Nom in N-m</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="DevfromNomNm"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Dev from Nom in %</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="DevfromNom"></td>
+                    </tr>
+				</table>
+                }
+                <table style="margin-top:15px">
+                    <tbody>
+                        <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult" value="@Model.TorqueData.CalibrationResult"></td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Remarks" id="Remarks" id="Remarks" name="Remarks" value="@Model.TorqueData.Remarks"></td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                         <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td colspan="3" style="width:400px;padding-bottom: 25px;">  @Model.RuleConfirmityStatement </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <table style="margin-top:15px">
+                <tbody>
+                    <tr>
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div class="col-6 text-start">
+                                    <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                    <img src="../UserSignature/@Model.TorqueData.PerformedBySign" style="width: 100px;"/>
+                                    <p style="margin: 0px;">@Model.TorqueData.CalibrationPerformedBy</p>
+                                    <p style="margin: 0px;">@Model.TorqueData.PerformedByDesignation</p>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                            <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                            <img src="../UserSignature/@Model.TorqueData.ReviewedBySign" style="width: 100px;"/>
+                            <p style="margin: 0px;">@Model.TorqueData.ReviewedBy</p>
+                            <p style="margin: 0px;">@Model.TorqueData.ReviewedByDesignation</p>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <h5 style="text-align: center;">***End of Certificate***</h5>
+        </div>
+        <div style="border-collapse: collapse; 
+                    border-top: solid;
+                    border-block-width: 2px; border: 2px solid #000; display: flex;">
+            <div style="padding:10px">
+                <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+            </div>
+            <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
+        </div>
+        <table style="margin-top:15px">
+                <tbody>
+                    <tr style="font-size: small;">
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div >
+                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                            <h4 style="font-size: small;">Page 2 of 2</h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>  
+        <div>            
+            <input type="hidden" id="requestId" value="@ViewBag.RequestId">
+            <input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
+            <input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
+            <input type="hidden" name="FileName" id="FileName"  value="@ViewBag.FileName" />
+             @if(@Model.isExportCertificate)
+             {
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                <input type="button" value="ReGenerate" onclick="SaveCertificate('TWObs')" class="btn btn-primary">
+                }
+                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
+                <a class="btn btn-primary" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
+             }
+             else
+             {
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                 <input type="button" value="Save" onclick="SaveCertificate('TWObs')" class="btn btn-primary">
+                }
+             }
+            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+        </div>
+    </div>
+</body>
+@* ************************************************************************* *@
+
+<div id="Pdfhtml" style="display: none;">
+
+    <body style="font-family: Calibri;">
+        <!-- page1 start-->
+        <!--<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%">-->
+            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+                <tr>
+                    <td>
+                        <table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
+                        <tr>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
+                                @if(Model.IsNABL ?? false)
+                                {
+                                    <img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%" />
+                                }
+                                else
+                                {
+                                    <img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:70%" />
+                                }
+                            </td>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
+                                <div>
+                                    <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village,
+                                        Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram
+                                        - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
+                                        www.bharatbenz.com</p>
+                                </div>
+                            </td>
+                            <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
+                                <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;"  alt="logo" />
+                            </td>
+                        </tr>
+                    </table>
+                  </td>
+                </tr>
+            </table>
+            <div>
+                <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION</h3>
+            </div>
+            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr style="font-size:x-small">
+                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC</th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px;">Certificate
+                                    No</td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.TorqueData.CertificateFormat</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px">Report
+                                    Issues Date</td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <tr style="font-size:x-small">
+                                    <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px">ULR No</td>
+                                    <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.TorqueData.ULRFormat</td>
+                                    <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px"></td>
+                                    <td style="width:400px;padding-bottom: 10px;"></td>
+                                </tr>
+                            }
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 10px;padding:10px">Date Of Calibration</td>
+                                <td style="width:400px; padding-bottom: 10px;padding:10px">: @Model.TorqueData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 10px;padding:10px">Next
+                                    Calibration Due</td>
+                                    @if(Model.Result == "Rejected")
+                                    {
+                                        <td style="width:400px; padding-bottom: 10px;padding:10px">: --</td>
+                                    }
+                                    else
+                                    {
+                                    <td style="width:400px; padding-bottom: 10px;padding:10px">: @Model.DueDate.ToString("MMM-yyyy")</td>
+                                    }
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 10px;padding:10px">Name Of The
+                                    Customer</td>
+                                <td style="width:400px; padding-bottom: 10px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px">Date of
+                                    Receipt</td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;padding:10px">Department
+                                </td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 10px;padding:10px">Description
+                                    of Equipment</td>
+                                <td style="width:400px; padding-bottom: 10px;padding:10px">: @Model.InstrumentName</td>
+                            </tr>
+                            @* <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date of
+                                    Receipt</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
+                                    of Equipment</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr> *@
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="center"  style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+
+                            <tr style="font-size:x-small">
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Range</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Least Count</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Serial No</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Make</th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Range</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.LC</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.SlNo</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Make</p>
+                                </td>
+                                
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px;">
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 10px;">
+                                    Identification Number</td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.IdNo</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;"></td>
+                                <td style="width:400px;padding-bottom: 10px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 10px;">Condition
+                                    of DUC</td>
+                                <td style="width:400px;padding-bottom: 10px;padding:10px">: @Model.TorqueData.ConditionOfTW</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 10px;"></td>
+                                <td style="width:400px;padding-bottom: 10px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900; padding:10px;padding-bottom: 10px;">
+                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
+                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>
+                                </td>
+                                <td style="width:400px; padding-bottom: 10px;padding:10px">: @Model.StandardReffered</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 10px;"></td>
+                                <td style="width:400px; padding-bottom: 10px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 10px;">II.
+                                    Master & Equipment Used For Calibration & Traceability</th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:200px;">
+                    <td>
+                        <table align="center" 
+                            style="border-collapse: collapse; border:0.5px solid #000; width:98%;font-size:x-small;">
+                            <tr>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">
+                                    SI.</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Master Equipment</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Id No</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Make </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Traceability </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Certificate No </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Validity </th>
+                            </tr>
+                            @{ int increement=1;
+                            @foreach (var item in @Model.MasterEqiupmentList)
+                            {
+                            <tr>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px;padding: 5px;">@increement</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.EquipName</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.LabId</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.Make</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.Traceability</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.CertNo</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            increement++;
+                            }
+                            }
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px;">
+                            <td>
+                                <p style="padding:10px;padding-bottom: 10px;padding-top: 25px;">The master Equipment used for calibration
+                                    are calibrated and traceable to National / International Standard</p>
+                            </td>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
+                                    Environmental Condition</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px;"><p>: 20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty
+                                    Of Measurement</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.TorqueData.PdfUncertainity</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <td>
+                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded
+                                        uncertainty is estimatd at a confidence level approximately 95% with a coverage
+                                        factor k = 2</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:100%">
+                        <table style="font-size:x-small;padding:5px; width:100%">
+                            <tr>
+                                <td>
+                                    <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                    </p>
+                                    <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.TorqueData.PerformedBySign"/>
+                                    <p style="margin-left:20px;">@Model.TorqueData.CalibrationPerformedBy</p>
+                                    <p style="margin-left:20px;">@Model.TorqueData.PerformedByDesignation</p>
+                                </td>
+
+                                <td style="margin-left: 420px;text-align:right">
+                                    <p style="margin-right: 20px;font-weight: bold;padding-bottom:5px;">Authorized
+                                        Signatory</p>
+                                        <img style="margin-bottom:5px;margin-right:25px; width:100px"  src="./wwwroot/UserSignature/@Model.TorqueData.ReviewedBySign"/>
+                                        <p style="margin-right:20px;">@Model.TorqueData.ReviewedBy</p>
+                                        <p style="margin-right:20px;">@Model.TorqueData.ReviewedByDesignation</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table  
+                            style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:5px">
+                            <td style="padding:2px;">
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the
+                                    time of & under the stated conditions of measurement.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either
+                                    in full or in part without out permission in writing.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this
+                                    cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                            </td>
+                            <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;"></td>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            </td>
+            </tr>
+            <tr>
+                    <td>
+                        <table style="width: 100%;font-size:xx-small;padding:5px">
+                            <tr>
+                                <td>
+                                    <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                </td>
+
+                                <td>
+                                    <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        <!--</div>-->
+        <!-- page1 end-->
+        <!-- page2 start-->
+
+        <table  style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+            <tr>
+                <td>
+                    <table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
+                        <tr>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
+                                @if(Model.IsNABL ?? false)
+                                {
+                                    <img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%"/>
+                                }
+                                else
+                                {
+                                    <img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:75%"/>
+                                }
+                            </td>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
+                                <div>
+                                    <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
+                                        Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
+                                        Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
+                                        www.bharatbenz.com</p>
+                                </div>
+                            </td>
+                            <td
+                                style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
+                                <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;" alt="logo" />
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III.
+                                Mechanical Calibration Results</td>
+                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate
+                                No @Model.TorqueData.CertificateFormat</td>
+                            <td
+                                style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
+                                Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All
+                                Values are in @Model.TorqueData.Allvalues</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+           	@if(@Model.ObservationType == 83){
+            <tr>
+                <td>
+                    <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+                   <tr>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="10" class="text-center">SPECS</th>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="10" class="text-center">All Values are in Microns</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Min Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Max Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">I</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">II</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">III</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">0</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">20%</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">60%</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">100%</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Total Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.Range</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal60</td>
+						<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal100</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Acceptable Band</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec60</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Spec100</td>
+                    </tr>
+                </table>
+				
+                </td>
+            </tr>
+			
+				<tr>
+                <td>
+                    
+                <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value I</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value II</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Observed value III</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Measured</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal20</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal60</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Nominal100</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="8"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value3</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value6</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value9</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value10</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value11</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value12</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value13</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value14</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.TorqueData.Value15</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Average</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average4"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average5"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="Average6"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Dev from Nom in N-m</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm4"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm5"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNomNm6"></td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Dev from Nom in %</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom4"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom5"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2" id="DevfromNom6"></td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+                }
+                @if(@Model.ObservationType==82){
+            <tr>
+                <td>
+                    
+                <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70%;font-size:x-small;">
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Set Value</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.SetValue</td>
+                    </tr>
+					<tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">S.No</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Actuals</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInOne</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="ActualInTwo">@Model.TorqueData.ActualInTwo</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInThree</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInFour</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInFive</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">6</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInSix</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInSeven</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInEight</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">9</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInNine</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">10</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">@Model.TorqueData.ActualInTen</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Average</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="AverageL"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Dev from Nom in N-m</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="DevfromNomNmL"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Dev from Nom in %</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4" id="DevfromNomL"></td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+                }
+            
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration
+                            </td>
+                            <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.TorqueData.PdfCalibrationResult</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks</td>
+                            <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.TorqueData.PdfRemarks</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                         <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;"></td>
+                            <td colspan="3" style="width:400px;padding-bottom: 25px;padding:10px;"> @Model.RuleConfirmityStatement</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:100%">
+                    <table style="font-size:x-small;padding:10px; width:100%">
+                        <tr>
+                            <td>
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                </p>
+                                 <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.TorqueData.PerformedBySign"/>
+                                <p style="margin-left:20px;">@Model.TorqueData.CalibrationPerformedBy</p>
+                                <p style="margin-left:20px;">@Model.TorqueData.PerformedByDesignation</p>
+                            </td>
+                            <td style="margin-left: 420px;text-align:right">
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom:5px;">Authorized
+                                    Signatory</p>
+                                    <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.TorqueData.ReviewedBySign"/>
+                                    <p style="margin-right:20px;">@Model.TorqueData.ReviewedBy</p>
+                                    <p style="margin-right: 20px;">@Model.TorqueData.ReviewedByDesignation</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            @if(@Model.ObservationType==82){
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:2px">
+                        <th style="text-align: center;font-size: small;padding-bottom: 220px;">***End of Certificate***</th>
+                    </table>
+                </td>
+            </tr>
+            }
+            @if(@Model.ObservationType==83){
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:2px">
+                        <th style="text-align: center;font-size: small;padding-bottom: 150px;">***End of Certificate***</th>
+                    </table>
+                </td>
+            </tr>
+            }
+            <tr>
+                <td>
+                    <table
+                        style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:5px">
+                        <td style="padding:2px;"> 
+                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the
+                                time of & under the stated conditions of measurement.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either
+                                in full or in part without out permission in writing.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this
+                                cetificate as per customer request irrespective of the status or condition of the
+                                IMTE.</p>
+                        </td>
+                        <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;"></td>
+                    </table>
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                    <table style="width: 100%;font-size:xx-small;padding:2px">
+                        <tr>
+                            <td>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                            </td>
+
+                            <td>
+                                <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                            </td>
+
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</div>
+
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+function downloadPdfFile(){
+	var filePath = $("#FileName").val();
+	window.open(filePath, "_blank"); 
+}
+</script> 
+
+@*
+@using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))
+{
+    <input type="hidden" name="ExportData" />
+    <input type="submit" id="btnSubmit" value="Export" />
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("input[name='ExportData']").val($("#Pdfhtml").html());
+            var exportData  =  $("#Pdfhtml").html();
+            var isDownloadPdf = $('#isDownloadPdf').val();
+               if(isDownloadPdf == 1){  			   	
+						var _url = '@Url.Action("SaveAsPdf", "Certification")';
+						$.ajax({
+							type: "POST",
+							url: _url,
+							xhrFields: {
+								responseType: 'blob'
+							},
+							data: { ExportData: exportData },
+							success: function (data) {
+								var a = document.createElement('a');
+								var url = window.URL.createObjectURL(data);
+								a.href = url;
+								a.download = 'Certificate.pdf';
+								document.body.append(a);
+								a.click();
+								a.remove();
+								window.URL.revokeObjectURL(url);
+							}
+						});
+               }
+    }); 
+</script>
+*@
+<script>
+    debugger
+
+    var Value1 = parseFloat(document.getElementById("Value1").innerHTML);
+    var Value2 = parseFloat(document.getElementById("Value2").innerHTML);
+    var Value3 = parseFloat(document.getElementById("Value3").innerHTML);
+    var Value4 = parseFloat(document.getElementById("Value4").innerHTML);
+    var Value5 = parseFloat(document.getElementById("Value5").innerHTML);
+    var Value6 = parseFloat(document.getElementById("Value6").innerHTML);
+    var Value7 = parseFloat(document.getElementById("Value7").innerHTML);
+    var Value8 = parseFloat(document.getElementById("Value8").innerHTML);
+    var Value9 = parseFloat(document.getElementById("Value9").innerHTML);
+    var Value10 = parseFloat(document.getElementById("Value10").innerHTML);
+    var Value11 = parseFloat(document.getElementById("Value11").innerHTML);
+    var Value12 = parseFloat(document.getElementById("Value12").innerHTML);
+    var Value13 = parseFloat(document.getElementById("Value13").innerHTML);
+    var Value14 = parseFloat(document.getElementById("Value14").innerHTML);
+    var Value15 = parseFloat(document.getElementById("Value15").innerHTML);
+    var Nominal20 = parseFloat(document.getElementById("Nominal20").innerHTML);
+    var Nominal60 = parseFloat(document.getElementById("Nominal60").innerHTML);
+    var Nominal100 = parseFloat(document.getElementById("Nominal100").innerHTML);
+
+    Value1 = isNaN(Value1) ? 0 : Value1;
+    Value2 = isNaN(Value2) ? 0 : Value2;
+    Value3 = isNaN(Value3) ? 0 : Value3;
+    Value4 = isNaN(Value4) ? 0 : Value4;
+    Value5 = isNaN(Value5) ? 0 : Value5;
+    Value6 = isNaN(Value6) ? 0 : Value6;
+    Value7 = isNaN(Value7) ? 0 : Value7;
+    Value8 = isNaN(Value8) ? 0 : Value8;
+    Value9 = isNaN(Value9) ? 0 : Value9;
+    Value10 = isNaN(Value10) ? 0 : Value10;
+    Value11 = isNaN(Value11) ? 0 : Value11;
+    Value12 = isNaN(Value12) ? 0 : Value12;
+    Value13 = isNaN(Value13) ? 0 : Value13;
+    Value14 = isNaN(Value14) ? 0 : Value14;
+    Value15 = isNaN(Value15) ? 0 : Value15;
+    Nominal20 = isNaN(Nominal20) ? 0 : Nominal20;
+    Nominal60 = isNaN(Nominal60) ? 0 : Nominal60;
+    Nominal60 = isNaN(Nominal60) ? 0 : Nominal60;
+
+    Average1= (Value1+Value4+Value7+Value10+Value13)/5;
+    Average2= (Value2+Value5+Value8+Value11+Value14)/5;
+    Average3= (Value3+Value6+Value9+Value12+Value15)/5;
+    Average4= (Value1+Value4+Value7+Value10+Value13)/5;
+    Average5= (Value2+Value5+Value8+Value11+Value14)/5;
+    Average6= (Value3+Value6+Value9+Value12+Value15)/5;
+
+    DevfromNomNm1=Nominal20-Average1;
+    DevfromNomNm2=Nominal60-Average2;
+    DevfromNomNm3=Nominal100-Average3;
+    DevfromNomNm4=Nominal20-Average1;
+    DevfromNomNm5=Nominal60-Average2;
+    DevfromNomNm6=Nominal100-Average3;
+
+    DevfromNom1=(DevfromNomNm1/Nominal20)*100
+    DevfromNom2=(DevfromNomNm2/Nominal60)*100
+    DevfromNom3=(DevfromNomNm3/Nominal100)*100
+    DevfromNom4=(DevfromNomNm1/Nominal20)*100
+    DevfromNom5=(DevfromNomNm2/Nominal60)*100
+    DevfromNom6=(DevfromNomNm3/Nominal100)*100
+
+
+    document.getElementById("Average1").innerHTML = isNaN(Average1) ? 0 : Average1.toFixed(4);
+    document.getElementById("Average2").innerHTML = isNaN(Average2) ? 0 : Average2.toFixed(4);
+    document.getElementById("Average3").innerHTML = isNaN(Average3) ? 0 : Average3.toFixed(4);
+    document.getElementById("Average4").innerHTML = isNaN(Average4) ? 0 : Average4.toFixed(4);
+    document.getElementById("Average5").innerHTML = isNaN(Average5) ? 0 : Average5.toFixed(4);
+    document.getElementById("Average6").innerHTML = isNaN(Average6) ? 0 : Average6.toFixed(4);
+    document.getElementById("DevfromNomNm1").innerHTML =isNaN(DevfromNomNm1) ? 0 :DevfromNomNm1.toFixed(4);
+    document.getElementById("DevfromNomNm2").innerHTML =isNaN(DevfromNomNm2) ? 0 :DevfromNomNm2.toFixed(4);
+    document.getElementById("DevfromNomNm3").innerHTML =isNaN(DevfromNomNm3) ? 0 :DevfromNomNm3.toFixed(4);
+    document.getElementById("DevfromNomNm4").innerHTML =isNaN(DevfromNomNm4) ? 0 :DevfromNomNm4.toFixed(4);
+    document.getElementById("DevfromNomNm5").innerHTML =isNaN(DevfromNomNm5) ? 0 :DevfromNomNm5.toFixed(4);
+    document.getElementById("DevfromNomNm6").innerHTML =isNaN(DevfromNomNm6) ? 0 :DevfromNomNm6.toFixed(4);
+    document.getElementById("DevfromNom1").innerHTML =isNaN(DevfromNom1) ? 0 : DevfromNom1.toFixed(4);
+    document.getElementById("DevfromNom2").innerHTML =isNaN(DevfromNom2) ? 0 : DevfromNom2.toFixed(4);
+    document.getElementById("DevfromNom3").innerHTML =isNaN(DevfromNom3) ? 0 : DevfromNom3.toFixed(4);
+    document.getElementById("DevfromNom4").innerHTML =isNaN(DevfromNom4) ? 0 : DevfromNom4.toFixed(4);
+    document.getElementById("DevfromNom5").innerHTML =isNaN(DevfromNom5) ? 0 : DevfromNom5.toFixed(4);
+    document.getElementById("DevfromNom6").innerHTML =isNaN(DevfromNom6) ? 0 : DevfromNom6.toFixed(4);
+</script>
+
+<script>
+    debugger
+
+    var ActualInOne = parseFloat(document.getElementById("ActualInOne").innerHTML);
+    var ActualInTwo = parseFloat(document.getElementById("ActualInTwo").innerHTML);
+    var ActualInThree = parseFloat(document.getElementById("ActualInThree").innerHTML);
+    var ActualInFour = parseFloat(document.getElementById("ActualInFour").innerHTML);
+    var ActualInFive = parseFloat(document.getElementById("ActualInFive").innerHTML);
+    var ActualInSix = parseFloat(document.getElementById("ActualInSix").innerHTML);
+    var ActualInSeven = parseFloat(document.getElementById("ActualInSeven").innerHTML);
+    var ActualInEight = parseFloat(document.getElementById("ActualInEight").innerHTML);
+    var ActualInNine = parseFloat(document.getElementById("ActualInNine").innerHTML);
+    var ActualInTen = parseFloat(document.getElementById("ActualInTen").innerHTML);
+    var SetValue = parseFloat(document.getElementById("SetValue").innerHTML);
+    
+    ActualInOne = isNaN(ActualInOne) ? 0 : ActualInOne;
+    ActualInTwo = isNaN(ActualInTwo) ? 0 : ActualInTwo;
+    ActualInThree = isNaN(ActualInThree) ? 0 : ActualInThree;
+    ActualInFour = isNaN(ActualInFour) ? 0 : ActualInFour;
+    ActualInFive = isNaN(ActualInFive) ? 0 : ActualInFive;
+    ActualInSix = isNaN(ActualInSix) ? 0 : ActualInSix;
+    ActualInSeven = isNaN(ActualInSeven) ? 0 : ActualInSeven;
+    ActualInEight = isNaN(ActualInEight) ? 0 : ActualInEight;
+    ActualInNine = isNaN(ActualInNine) ? 0 : ActualInNine;
+    ActualInTen = isNaN(ActualInTen) ? 0 : ActualInTen;
+    SetValue = isNaN(SetValue) ? 0 : SetValue;
+
+
+    Average= (ActualInOne+ActualInTwo+ActualInThree+ActualInFour+ActualInFive+ActualInSix+ActualInSeven+ActualInEight+ActualInNine+ActualInTen)/10;
+    
+    DevfromNomNm=SetValue-Average;
+    
+    DevfromNom=(DevfromNomNm/SetValue)*100
+  
+    document.getElementById("Average").innerHTML        =isNaN(Average) ? 0 : Average.toFixed(4);
+    document.getElementById("DevfromNomNm").innerHTML   =isNaN(DevfromNomNm) ? 0 : DevfromNomNm.toFixed(4);
+    document.getElementById("DevfromNom").innerHTML     =isNaN(DevfromNom) ? 0 : DevfromNom.toFixed(4);
+    
+    document.getElementById("AverageL").innerHTML       =isNaN(Average) ? 0 : Average.toFixed(4);
+    document.getElementById("DevfromNomNmL").innerHTML  =isNaN(DevfromNomNm) ? 0 : DevfromNomNm.toFixed(4);
+    document.getElementById("DevfromNomL").innerHTML    =isNaN(DevfromNom) ? 0 : DevfromNom.toFixed(4);
+</script>

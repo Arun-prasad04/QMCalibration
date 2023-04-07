@@ -1,0 +1,2224 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="font-family: Calibri;">
+    <!-- page1 start-->
+    <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+        <table style="border-collapse: collapse; border:2px solid #000">
+            <tbody>
+                <tr>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+                        @if(Model.IsNABL ?? false)
+                        {
+                            <img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
+                        }
+                        else
+                        {
+                            <img src="../image/Bharat_Benz.png" style="padding-top:5px;"  width="150px" />
+                        }
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+                        <div>
+                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                        </div>
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+                        <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px" src="@ViewBag.QRCodeImage" />
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <h2 style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
+        </div>
+        <div style="border-collapse: collapse; border:2px solid #000">
+            <div>
+                <div style="padding: 10px;">
+                    <div>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @Model.VernierData.CertificateFormat</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
+                                    <td style="width:400px;padding-bottom: 25px;">:  @Model.VernierData.ULRFormat</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                            }
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.VernierData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due</td>
+                                @if(Model.Result == "Rejected")
+                                {
+                                <td style="width:400px; padding-bottom: 25px;">: --</td>
+                                }
+                                else
+                                {
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.DueDate.ToString("MMM-yyyy")</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.DepartmentName</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
+                                <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of Equipment</td>
+                                <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                <td style="width:400px; padding-bottom: 25px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div style="padding-top: 10px;">
+                        <table style="border-collapse: collapse; border:1px solid #000">
+                            <tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
+                            </tr>
+                            <tr>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.Range</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.LC</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.SlNo</p>
+                                </td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                    <p>@Model.Make</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="margin-top:15px">
+                            <tbody>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
+                                    <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+                                    <td style="width:400px;padding-bottom: 25px;">: @Model.VernierData.ConditionOfVernierCaliper</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                    <td style="width:400px;padding-bottom: 25px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure / <br/> Reference Standard :</td>
+                                    <td style="width:400px; padding-bottom: 25px;">: @Model.StandardReffered</td>
+                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
+                                    <td style="width:400px; padding-bottom: 25px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master & Equipment Used For Calibration & Traceability</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <table style="border-collapse: collapse; border:1px solid #000">
+                            <tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity </th>
+                            </tr>
+                            @{ int i=1;
+                            @foreach (var item in @Model.MasterEqiupmentList)
+                            {
+                            <tr>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
+                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            i++;
+                            }
+                           }
+                        </table>
+                        <p class="fw-normal fontsize14">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                    </div>
+
+                    <table style="margin-top:15px">
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition :</td>
+                                <td style="width:400px;padding-bottom: 10px;"><p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of Measurement</td>
+                                <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity" value="@Model.VernierData.Uncertainity"></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                                <td style="width:400px;padding-bottom: 25px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+
+                    <table style="margin-top:15px">
+                        <tbody>
+                            <tr>
+                                <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                                    <div class="col-6 text-start">
+                                    <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                    <img src="../UserSignature/@Model.VernierData.PerformedBySign" style="width: 100px;"/>
+                                    <p style="margin: 0px;">@Model.VernierData.CalibrationPerformedBy</p>
+                                    <p style="margin: 0px;">@Model.VernierData.PerformedByDesignation</p>
+                                    </div>
+                                </td>
+                                <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                                    <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                    <img src="../UserSignature/@Model.VernierData.ReviewedBySign" style="width: 100px;"/>
+                                    <p style="margin: 0px;">@Model.VernierData.ReviewedBy</p>
+                                    <p style="margin: 0px;">@Model.VernierData.ReviewedByDesignation</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="border-collapse: collapse; 
+                    border-top: solid;
+                    border-block-width: 1px; border: 1px solid #000; display: flex;">
+                    <div style="padding:10px">
+                        <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                        <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                        <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                    </div>
+                    <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
+                </div>
+            </div>
+        </div>
+        <table style="margin-top:15px">
+                <tbody>
+                    <tr style="font-size: xx-small;">
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div>
+                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                            <h4 style="font-size: small;">Page 1 of 2</h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+    <!-- page1 end-->
+    <!-- page2 start-->
+    <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+        <table style="border-collapse: collapse; border:2px solid #000">
+            <tbody>
+                <tr>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+                       @if(Model.IsNABL ?? false)
+                        {
+                            <img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
+                        }
+                        else
+                        {
+                            <img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
+                        }
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+                        <div>
+                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                        </div>
+                    </td>
+                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+                        <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px" src="@ViewBag.QRCodeImage" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="border: 2px solid #000; padding: 10px;">
+            <table style="margin-top:30px">
+                <tbody>
+                    <tr>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">III. Mechanical Calibration Results</td>
+                        <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;">Certificate No @Model.VernierData.CertificateFormat</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;">Report Issue Date :  @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="p-3">
+                <p style="text-align: center;">All Values are in @Model.VernierData.Allvalues</p>
+				
+                <table style="border-collapse: collapse; border:1px solid #000">
+                   <tr>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" rowspan="2" class="text-center">Sl.No</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">External Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Internal Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Depth Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+                    </tr>
+					<tr>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>	
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                    </tr>
+                    
+                    <tr id="firstRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal1">@Model.VernierData.Measured1_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg1">@Model.VernierData.Avg1_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation1"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal1">@Model.VernierData.Measured5_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg1">@Model.VernierData.Avg5_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation1"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal1">@Model.VernierData.Measured3_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg1">@Model.VernierData.Avg3_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation1"></td>
+                    </tr>                    
+                    @if((Model.VernierData.Measured1_2=="0.0" || Model.VernierData.Measured1_2=="" || Model.VernierData.Measured1_2==null) && (Model.VernierData.Avg1_2=="" || Model.VernierData.Avg1_2==null || Model.VernierData.Avg1_2=="0.0000"))
+                    {
+                    }
+                    else{
+					<tr id="secondRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal2">@Model.VernierData.Measured1_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg2">@Model.VernierData.Avg1_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation2"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal2">@Model.VernierData.Measured5_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg2">@Model.VernierData.Avg5_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation2"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal2">@Model.VernierData.Measured3_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg2">@Model.VernierData.Avg3_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation2"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_3=="0.0" || Model.VernierData.Measured1_3=="" || Model.VernierData.Measured1_3==null) && (Model.VernierData.Avg1_3=="" || Model.VernierData.Avg1_3==null || Model.VernierData.Avg1_3=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="thirdRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal3">@Model.VernierData.Measured1_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg3">@Model.VernierData.Avg1_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation3"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal3">@Model.VernierData.Measured5_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg3">@Model.VernierData.Avg5_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation3"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal3">@Model.VernierData.Measured3_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg3">@Model.VernierData.Avg3_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation3"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_4=="0.0" || Model.VernierData.Measured1_4=="" || Model.VernierData.Measured1_4==null) && (Model.VernierData.Avg1_4=="" || Model.VernierData.Avg1_4==null || Model.VernierData.Avg1_4=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="forthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal4">@Model.VernierData.Measured1_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg4">@Model.VernierData.Avg1_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation4"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal4">@Model.VernierData.Measured5_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg4">@Model.VernierData.Avg5_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation4"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal4">@Model.VernierData.Measured3_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg4">@Model.VernierData.Avg3_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation4"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_5=="0.0" || Model.VernierData.Measured1_5=="" || Model.VernierData.Measured1_5==null) && (Model.VernierData.Avg1_5=="" || Model.VernierData.Avg1_5==null || Model.VernierData.Avg1_5=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="fifthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal5">@Model.VernierData.Measured1_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg5">@Model.VernierData.Avg1_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation5"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal5">@Model.VernierData.Measured5_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg5">@Model.VernierData.Avg5_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation5"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal5">@Model.VernierData.Measured3_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg5">@Model.VernierData.Avg3_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation5"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_1=="0.0" || Model.VernierData.Measured2_1=="" || Model.VernierData.Measured2_1==null) && (Model.VernierData.Avg2_1=="" || Model.VernierData.Avg2_1==null || Model.VernierData.Avg2_1=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="sixthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">6</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal6">@Model.VernierData.Measured2_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg6">@Model.VernierData.Avg2_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation6"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal6">@Model.VernierData.Measured6_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg6">@Model.VernierData.Avg6_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation6"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal6">@Model.VernierData.Measured4_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg6">@Model.VernierData.Avg4_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation6"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_2=="0.0" || Model.VernierData.Measured2_2=="" || Model.VernierData.Measured2_2==null) && (Model.VernierData.Avg2_2=="" || Model.VernierData.Avg2_2==null || Model.VernierData.Avg2_2=="0.0000"))
+                    {
+                    }
+                    else{
+					<tr id="seventhRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal7">@Model.VernierData.Measured2_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg7">@Model.VernierData.Avg2_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation7"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal7">@Model.VernierData.Measured6_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg7">@Model.VernierData.Avg6_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation7"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal7">@Model.VernierData.Measured4_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg7">@Model.VernierData.Avg4_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation7"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_3=="0.0" || Model.VernierData.Measured2_3=="" || Model.VernierData.Measured2_3==null) && (Model.VernierData.Avg2_3=="" || Model.VernierData.Avg2_3==null || Model.VernierData.Avg2_3=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="eighthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal8">@Model.VernierData.Measured2_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg8">@Model.VernierData.Avg2_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation8"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal8">@Model.VernierData.Measured6_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg8">@Model.VernierData.Avg6_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation8"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal8">@Model.VernierData.Measured4_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg8">@Model.VernierData.Avg4_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation8"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_4=="0.0" || Model.VernierData.Measured2_4=="" || Model.VernierData.Measured2_4==null) && (Model.VernierData.Avg2_4=="" || Model.VernierData.Avg2_4==null || Model.VernierData.Avg2_4=="0.0000"))
+                    {
+                    }
+                    else{
+                    <tr id="ninthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">9</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal9">@Model.VernierData.Measured2_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg9">@Model.VernierData.Avg2_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation9"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal9">@Model.VernierData.Measured6_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg9">@Model.VernierData.Avg6_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation9"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal9">@Model.VernierData.Measured4_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg9">@Model.VernierData.Avg4_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation9"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_5=="0.0" || Model.VernierData.Measured2_5=="" || Model.VernierData.Measured2_5==null) && (Model.VernierData.Avg2_5=="" || Model.VernierData.Avg2_5==null || Model.VernierData.Avg2_5=="0.0000"))
+                    {
+                    }
+                    else{
+                        <tr id="tenthRow">
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">10</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalNominal10">@Model.VernierData.Measured2_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalAvg10">@Model.VernierData.Avg2_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation10"> </td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalNominal10">@Model.VernierData.Measured6_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalAvg10">@Model.VernierData.Avg6_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation10"></td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthNominal10">@Model.VernierData.Measured4_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthAvg10">@Model.VernierData.Avg4_5</td>
+                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation10"></td>
+                        </tr>
+                    }
+                </table>
+                </br>
+                <table style="border-collapse: collapse; border:1px solid #000">
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:140%;height:25px; padding:5px" colspan="10" class="text-center">Actual</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:300px;height:25px; padding:8px" colspan="3" class="text-center">Parallelism for External Jaws</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: left; width:800px;height:25px; padding:8px" colspan="5" class="text-left">@Model.VernierData.ExternalParallelismDetails</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:300px;height:25px; padding:8px" colspan="3" class="text-center">Parallelism for Internal Jaws</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: left; width:800px;height:25px; padding:8px" colspan="5" class="text-left">@Model.VernierData.InternaljawParallelismDetails</td>
+                    </tr>
+
+                </table>
+				<table style="margin-top:15px">
+                    <tbody>
+                        <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult" value="@Model.VernierData.CalibrationResult"></td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Remarks" id="Remarks" name="Remarks" value="@Model.VernierData.Remarks"></td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                         <tr>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td colspan="3" style="width:400px;padding-bottom: 25px;">  @Model.RuleConfirmityStatement </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <table style="margin-top:15px">
+                <tbody>
+                    <tr>
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div class="col-6 text-start">
+                                    <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                    <img src="../UserSignature/@Model.VernierData.PerformedBySign" style="width: 100px;"/>
+                                    <p style="margin-left:20px;">@Model.VernierData.CalibrationPerformedBy</p>
+                                    <p style="margin-left:20px;">@Model.VernierData.PerformedByDesignation</p>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                               <p style="margin-left: 220px;font-weight: bold;padding-bottom:5px;">Authorized
+                                    Signatory</p>
+                                <img style="margin-bottom:5px;margin-right:25px; width:100px" src="../UserSignature/@Model.VernierData.ReviewedBySign" />
+                                <p style="margin-right:20px;">@Model.VernierData.ReviewedBy</p>
+                                <p style="margin-right:20px;">@Model.VernierData.ReviewedByDesignation</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 style="text-align: center;">***End of Certificate***</h5>
+        </div>
+        <div style="border-collapse: collapse; 
+                    border-top: solid;
+                    border-block-width: 1px; border: 1px solid #000; display: flex;">
+            <div style="padding:10px">
+                <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+            </div>
+            <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
+        </div>
+        <table style="margin-top:15px">
+                <tbody>
+                    <tr style="font-size: small;">
+                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                            <div >
+                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            </div>
+                        </td>
+                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                            <h4 style="font-size: small;">Page 2 of 2</h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>  
+        <div>
+            <input type="hidden" id="requestId" value="@ViewBag.RequestId">
+            <input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
+            <input type="hidden" name="FileName" id="FileName"  value="@ViewBag.FileName" />
+             @if(@Model.isExportCertificate)
+             {
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                <input type="button" value="ReGenerate" onclick="SaveCertificate('VernierCaliper')" class="btn btn-primary">
+                }
+                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
+                <a class="btn btn-primary" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
+             }
+             else
+             {
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                 <input type="button" value="Save" onclick="SaveCertificate('VernierCaliper')" class="btn btn-primary">
+                }
+             }
+            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>	
+        </div>
+    </div>
+</body>
+@* ************************************************************************* *@
+
+<div id="Pdfhtml" style="display: none;">
+
+    <body style="font-family: Calibri;">
+        <!-- page1 start-->
+        <!--<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%">-->
+        <table  style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+            <tr>
+                <td>
+                    <table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
+                        <tr>
+                        <td  style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%" />
+                            }
+                            else
+                            {
+                                <img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:75%" />
+                            }
+                        </td>
+                        <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
+                            <div>
+                                <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                                <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village,
+                                    Singaperumal Koil Road,</p>
+                                <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram
+                                    - 602105, Tamil Nadu, India.</p>
+                                <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
+                                    www.bharatbenz.com</p>
+                            </div>
+                        </td>
+                        <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
+                            <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;" alt="logo" />                   
+                        </td>
+                    </tr>
+                </table>
+            <div>
+                <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION</h3>
+            </div>
+            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr style="font-size:x-small">
+                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC</th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate
+                                    No</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.VernierData.CertificateFormat</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report
+                                    Issues Date</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <tr style="font-size:x-small">
+                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No</td>
+                                    <td style="width:400px;padding-bottom: 15px;padding:10px">:  @Model.VernierData.ULRFormat</td>
+                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
+                                    <td style="width:400px;padding-bottom: 15px;"></td>
+                                </tr>
+                            }
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.VernierData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next
+                                    Calibration Due</td>
+                                @if(Model.Result == "Rejected")
+                                {
+                                    <td style="width:400px; padding-bottom: 15px;padding:10px">:--</td>
+                                }
+                                else
+                                {
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DueDate.ToString("MMM-yyyy")</td>
+                                }
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The
+                                    Customer</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of
+                                    Receipt</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department
+                                </td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;">Description
+                                    of Equipment</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
+                            </tr>
+                            @* <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date of
+                                    Receipt</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
+                                    of Equipment</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr> *@
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="center"  style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+
+                            <tr style="font-size:x-small">
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Range</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Least Count</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Serial No</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Make</th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Range</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.LC</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.SlNo</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Make</p>
+                                </td>
+                                
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:100px;">
+                    <td>
+                        <table style="font-size:x-small;padding:5px;">
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
+                                    Identification Number</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.IdNo</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition of DUC</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.VernierData.ConditionOfVernierCaliper</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900; padding:10px;padding-bottom: 15px;">
+                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
+                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>
+                                </td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.StandardReffered</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:40px;">
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II.
+                                    Master & Equipment Used For Calibration & Traceability</th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:180px;">
+                    <td>
+                        <table align="center" 
+                            style="border-collapse: collapse; border:0.5px solid #000; width:98%;font-size:x-small;">
+                            <tr>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">
+                                    SI.</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Master Equipment</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Id No</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Make </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Traceability </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Certificate No </th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
+                                    Validity </th>
+                            </tr>
+                            @{ int increement=1;
+                            @foreach (var item in @Model.MasterEqiupmentList)
+                            {
+                            <tr>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px;padding: 5px;">@increement</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.EquipName</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.LabId</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.Make</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.Traceability</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.CertNo</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;padding: 5px;">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            increement++;
+                            }
+                            }
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>
+                        <table style="font-size:x-small;padding:5px;">
+                            <td>
+                                <p style="padding:10px;padding-bottom: 15px;padding-top: 25px;">The master Equipment used for calibration
+                                    are calibrated and traceable to National / International Standard</p>
+                            </td>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:50px;">
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
+                                    Environmental Condition</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px;"><p>: 20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty
+                                    Of Measurement</td>
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.VernierData.PdfUncertainity</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
+                                <td style="width:400px;padding-bottom: 15px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:50px;">
+                    <td>
+                        <table style="font-size:x-small;padding:5px">
+                            <tr>
+                                <td>
+                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded
+                                        uncertainty is estimatd at a confidence level approximately 95% with a coverage
+                                        factor k = 2</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;">
+                        <table style="font-size:x-small;padding:5px;width:100%;">
+                            <tr>
+                                <td>
+                                    <p style="margin-left:30px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                    </p>
+                                    <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.VernierData.PerformedBySign"/>
+                                    <p style="margin-left:30px;">@Model.VernierData.CalibrationPerformedBy</p>
+                                    <p style="margin-left:30px;padding-bottom: 20px;">@Model.VernierData.PerformedByDesignation</p>
+                                </td>
+
+                                <td style="margin-left: 420px;text-align:right">
+                                    <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
+                                        Signatory</p>
+                                         <img style="margin-bottom:5px;margin-right:25px; width:100px;" src="./wwwroot/UserSignature/@Model.VernierData.ReviewedBySign"/>
+                                        <p style="margin-right: 20px;">@Model.VernierData.ReviewedBy</p>
+                                        <p style="margin-right: 20px;">@Model.VernierData.ReviewedByDesignation</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table  
+                            style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:5px">
+                            <td style="padding:2px;">
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the
+                                    time of & under the stated conditions of measurement.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either
+                                    in full or in part without out permission in writing.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this
+                                    cetificate as per customer request irrespective of the status or condition of the
+                                    IMTE.</p>
+                            </td>
+                            <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
+                                </td>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            </td>
+            </tr>
+            <tr>
+                    <td>
+                        <table style="width: 100%;font-size:xx-small;padding:5px">
+                            <tr>
+                                <td>
+                                    <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                </td>
+
+                                <td>
+                                    <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+        <!--</div>-->
+        <!-- page1 end-->
+        <!-- page2 start-->
+
+        <table  style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
+            <tr>
+                <td>
+                    <table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
+                        <tr>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
+                                @if(Model.IsNABL ?? false)
+                                {
+                                    <img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%"/>
+                                }
+                                else
+                                {
+                                    <img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:60%" />
+                                }
+                            </td>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
+                                <div>
+                                    <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
+                                        Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
+                                        Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
+                                        www.bharatbenz.com</p>
+                                </div>
+                            </td>
+                            <td
+                                style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
+                                <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png"  style="padding-top:5%;width: 75%;" alt="logo" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:5px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px; width: 600px;padding:10px;">III.
+                                Mechanical Calibration Results</td>
+                            <td style="width:400px;padding-bottom: 15px; width: 600px; text-align: center;padding:10px">Certificate
+                                No @Model.VernierData.CertificateFormat</td>
+                            <td
+                                style="width:400px; font-weight: 900;padding-bottom: 15px; width: 600px; text-align: center;padding:10px">
+                                Report Issue Date :  @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All
+                                Values are in @Model.VernierData.Allvalues</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+			
+            <tr style="height:300px">
+                <td>
+                    <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+                  
+                   <tr >
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:70px;height:25px; padding:5px" rowspan="2" class="text-center">Sl.No</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">External Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Internal Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Depth Measurement</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" rowspan="2" class="text-center">Deviation</th>
+                    </tr>
+                   
+					<tr >
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>	
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Nominal</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                    </tr>
+                    
+                    
+                    <tr id="pdfFirstRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured1_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg1_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation11"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured5_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg5_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation11"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured3_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg3_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation11"></td>
+                    </tr>
+                    
+                    @if((Model.VernierData.Measured1_2=="0.0" || Model.VernierData.Measured1_2=="" || Model.VernierData.Measured1_2==null) && (Model.VernierData.Avg1_2=="" || Model.VernierData.Avg1_2==null || Model.VernierData.Avg1_2=="0.0000"))
+                    {
+                    }
+                    else
+                    {
+					<tr id="pdfSecondRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured1_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg1_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation12"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured5_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg5_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation12"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured3_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg3_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation12"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_3=="0.0" || Model.VernierData.Measured1_3=="" || Model.VernierData.Measured1_3==null) && (Model.VernierData.Avg1_3=="" || Model.VernierData.Avg1_3==null || Model.VernierData.Avg1_3=="0.0000"))
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfThirdRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured1_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg1_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation13"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured5_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg5_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation13"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured3_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg3_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation13"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_4=="0.0" || Model.VernierData.Measured1_4=="" || Model.VernierData.Measured1_4==null) && (Model.VernierData.Avg1_4=="" || Model.VernierData.Avg1_4==null || Model.VernierData.Avg1_4=="0.0000"))
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfForthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured1_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg1_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation14"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured5_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg5_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center"id="InternalDeviation14"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured3_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg3_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation14"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured1_5=="0.0" || Model.VernierData.Measured1_5=="" || Model.VernierData.Measured1_5==null) && (Model.VernierData.Avg1_5=="" || Model.VernierData.Avg1_5==null || Model.VernierData.Avg1_5=="0.0000"))
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfFifthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured1_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg1_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation15"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured5_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg5_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation15"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured3_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg3_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation15"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_1=="0.0" || Model.VernierData.Measured2_1=="" || Model.VernierData.Measured2_1==null) && (Model.VernierData.Avg2_1=="" || Model.VernierData.Avg2_1==null || Model.VernierData.Avg2_1=="0.0000"))
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfSixthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">6</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured2_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg2_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation16"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured6_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg6_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation16"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured4_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg4_1</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation16"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_2=="0.0" || Model.VernierData.Measured2_2=="" || Model.VernierData.Measured2_2==null) && 
+                    (Model.VernierData.Avg2_2=="" || Model.VernierData.Avg2_2==null || Model.VernierData.Avg2_2=="0.0000")
+                    )
+                    {
+                    }
+                    else
+                    {
+					<tr id="pdfSeventhRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">7</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured2_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg2_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation17"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured6_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg6_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation17"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured4_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg4_2</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation17"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_3=="0.0" || Model.VernierData.Measured2_3=="" || Model.VernierData.Measured2_3==null) && 
+                    (Model.VernierData.Avg2_3=="" || Model.VernierData.Avg2_3==null || Model.VernierData.Avg2_3=="0.0000")
+                    )
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfEighthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">8</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured2_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg2_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation18"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured6_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg6_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation18"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured4_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg4_3</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation18"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_4=="0.0" || Model.VernierData.Measured2_4=="" || Model.VernierData.Measured2_4==null) && 
+                    (Model.VernierData.Avg2_4=="" || Model.VernierData.Avg2_4==null || Model.VernierData.Avg2_4=="0.0000")
+                    )
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfNinthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">9</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured2_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg2_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation19"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured6_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg6_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation19"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured4_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg4_4</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation19"></td>
+                    </tr>
+                    }
+                    @if((Model.VernierData.Measured2_5=="0.0" || Model.VernierData.Measured2_5=="" || Model.VernierData.Measured2_5==null) && 
+                    (Model.VernierData.Avg2_5=="" || Model.VernierData.Avg2_5==null || Model.VernierData.Avg2_5=="0.0000")
+                    )
+                    {
+                    }
+                    else
+                    {
+                    <tr id="pdfTenthRow">
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">10</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" >@Model.VernierData.Measured2_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" >@Model.VernierData.Avg2_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="ExternalDeviation20"> </td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured6_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg6_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="InternalDeviation20"></td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Measured4_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">@Model.VernierData.Avg4_5</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" id="DepthDeviation20"></td>
+                    </tr> 
+                    }     
+                </table>
+                <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="8" class="text-center">Actual</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:8px" colspan="3" class="text-center">Parallelism for External Jaws</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: left; width:325px;height:25px; padding:8px" colspan="5" class="text-left">@Model.VernierData.ExternalParallelismDetails</td>
+                    </tr>
+                    <tr>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:8px" colspan="3" class="text-center">Parallelism for Internal Jaws</td>
+                        <td style="border-collapse: collapse; border:1px solid #000; text-align: left; width:325px;height:25px; padding:8px" colspan="5" class="text-left">@Model.VernierData.InternaljawParallelismDetails</td>
+                    </tr>
+
+                </table>
+                </td>
+            </tr>
+			
+            <tr style=" height:150px;">
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration
+                            </td>
+                            <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.VernierData.PdfCalibrationResult</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
+                            <td style="width:400px;padding-bottom: 25px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks</td>
+                            <td colspan="3" style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.VernierData.PdfRemarks</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 100%;">
+                    <table style="font-size:x-small;padding:10px;width:100%;">
+                        <tr>
+                            <td>
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                </p>
+                                   <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.VernierData.PerformedBySign"/>
+                                    <p style="margin-left:20px;">@Model.VernierData.CalibrationPerformedBy</p>
+                                    <p style="margin-left:20px;">@Model.VernierData.PerformedByDesignation</p>
+                            </td>
+                            <td style="margin-left: 420px;text-align:right">
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom:5px;">Authorized
+                                    Signatory</p>
+                                    <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.VernierData.ReviewedBySign"/>
+                                    <p style="margin-right:20px;">@Model.VernierData.ReviewedBy</p>
+                                    <p style="margin-right:20px;">@Model.VernierData.ReviewedByDesignation</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="font-size:x-small;padding:10px">
+                        <th style="text-align: center;font-size: small;padding-bottom: 200px;">***End of Certificate***</th>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table
+                        style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
+                        <td style="padding:2px;"> 
+                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the
+                                time of & under the stated conditions of measurement.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either
+                                in full or in part without out permission in writing.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this
+                                cetificate as per customer request irrespective of the status or condition of the
+                                IMTE.</p>
+                        </td>
+                        <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
+                                </td>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <tr>
+                    <td>
+                        <table style="width: 100%;font-size:xx-small;padding:10px">
+                            <tr>
+                                <td>
+                                    <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                </td>
+
+                                <td>
+                                    <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+    </body>
+</div>
+
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+function downloadPdfFile(){
+	var filePath = $("#FileName").val();
+	window.open(filePath, "_blank"); 
+}
+</script> 
+
+
+@*@using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))
+{
+    <input type="hidden" name="ExportData" />
+    <input type="submit" id="btnSubmit" value="Export" />
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("input[name='ExportData']").val($("#Pdfhtml").html());
+            var exportData  =  $("#Pdfhtml").html();
+            var isDownloadPdf = $('#isDownloadPdf').val();
+               if(isDownloadPdf == 1){  			   	
+						var _url = '@Url.Action("SaveAsPdf", "Certification")';
+						$.ajax({
+							type: "POST",
+							url: _url,
+							xhrFields: {
+								responseType: 'blob'
+							},
+							data: { ExportData: exportData },
+							success: function (data) {
+								var a = document.createElement('a');
+								var url = window.URL.createObjectURL(data);
+								a.href = url;
+								a.download = 'Certificate.pdf';
+								document.body.append(a);
+								a.click();
+								a.remove();
+								window.URL.revokeObjectURL(url);
+							}
+						});
+               }
+    }); 
+</script>
+*@
+
+<script>
+	debugger
+    if(("@Model.VernierData.Measured1_1"!="0.0" || "@Model.VernierData.Measured1_1"!="" || "@Model.VernierData.Measured1_1"!=null) && ("@Model.VernierData.Avg1_1"!="" || "@Model.VernierData.Avg1_1"!=null || "@Model.VernierData.Avg1_1"!="0.0000"))
+    {
+                    
+	var ExternalNominal1 = parseFloat(document.getElementById("ExternalNominal1").innerHTML);
+    var ExternalAvg1 = parseFloat(document.getElementById("ExternalAvg1").innerHTML);
+    ExternalNominal1 = isNaN(ExternalNominal1) ? 0 : ExternalNominal1;
+    ExternalAvg1 = isNaN(ExternalAvg1) ? 0 : ExternalAvg1;
+	ExternalDeviation1=ExternalNominal1-ExternalAvg1;
+    document.getElementById("ExternalDeviation1").innerHTML = ExternalDeviation1.toFixed(2);
+	document.getElementById("ExternalDeviation11").innerHTML = ExternalDeviation1.toFixed(2);
+
+    var InternalNominal1 = parseFloat(document.getElementById("InternalNominal1").innerHTML);
+    var InternalAvg1 = parseFloat(document.getElementById("InternalAvg1").innerHTML);
+    InternalNominal1 = isNaN(InternalNominal1) ? 0 : InternalNominal1;
+    InternalAvg1 = isNaN(InternalAvg1) ? 0 : InternalAvg1;
+	InternalDeviation1=InternalNominal1-InternalAvg1;
+    document.getElementById("InternalDeviation1").innerHTML = InternalDeviation1.toFixed(2);
+	document.getElementById("InternalDeviation11").innerHTML = InternalDeviation1.toFixed(2);
+
+    var DepthNominal1 = parseFloat(document.getElementById("DepthNominal1").innerHTML);
+    var DepthAvg1 = parseFloat(document.getElementById("DepthAvg1").innerHTML);
+    DepthNominal1 = isNaN(DepthNominal1) ? 0 : DepthNominal1;
+    DepthAvg1 = isNaN(DepthAvg1) ? 0 : DepthAvg1;
+	DepthDeviation1=DepthNominal1-DepthAvg1;
+    document.getElementById("DepthDeviation1").innerHTML = DepthDeviation1.toFixed(2);
+	document.getElementById("DepthDeviation11").innerHTML = DepthDeviation1.toFixed(2);
+
+    }
+    if(("@Model.VernierData.Measured1_2"!="0.0" || "@Model.VernierData.Measured1_2"!="" || "@Model.VernierData.Measured1_2"!=null) && ("@Model.VernierData.Avg1_2"!="" || "@Model.VernierData.Avg1_2"!=null || "@Model.VernierData.Avg1_2"!="0.0000"))
+    {
+    var ExternalNominal2 = parseFloat(document.getElementById("ExternalNominal2").innerHTML);
+    var ExternalAvg2 = parseFloat(document.getElementById("ExternalAvg2").innerHTML);
+    ExternalNominal2 = isNaN(ExternalNominal2) ? 0 : ExternalNominal2;
+    ExternalAvg2 = isNaN(ExternalAvg2) ? 0 : ExternalAvg2;
+	ExternalDeviation2=ExternalNominal2-ExternalAvg2;
+    document.getElementById("ExternalDeviation2").innerHTML = ExternalDeviation2.toFixed(2);
+	document.getElementById("ExternalDeviation12").innerHTML = ExternalDeviation2.toFixed(2);
+
+    var InternalNominal2 = parseFloat(document.getElementById("InternalNominal2").innerHTML);
+    var InternalAvg2 = parseFloat(document.getElementById("InternalAvg2").innerHTML);
+    InternalNominal2 = isNaN(InternalNominal2) ? 0 : InternalNominal2;
+    InternalAvg2 = isNaN(InternalAvg2) ? 0 : InternalAvg2;
+	InternalDeviation2=InternalNominal2-InternalAvg2;
+    document.getElementById("InternalDeviation2").innerHTML = InternalDeviation2.toFixed(2);
+	document.getElementById("InternalDeviation12").innerHTML = InternalDeviation2.toFixed(2);
+
+    var DepthNominal2 = parseFloat(document.getElementById("DepthNominal2").innerHTML);
+    var DepthAvg2 = parseFloat(document.getElementById("DepthAvg2").innerHTML);
+    DepthNominal2 = isNaN(DepthNominal2) ? 0 : DepthNominal2;
+    DepthAvg2 = isNaN(DepthAvg2) ? 0 : DepthAvg2;
+	DepthDeviation2=DepthNominal2-DepthAvg2;
+    document.getElementById("DepthDeviation2").innerHTML = DepthDeviation2.toFixed(2);
+	document.getElementById("DepthDeviation12").innerHTML = DepthDeviation2.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured1_3"!="0.0" || "@Model.VernierData.Measured1_3"!="" || "@Model.VernierData.Measured1_3"!=null) && ("@Model.VernierData.Avg1_3"!="" || "@Model.VernierData.Avg1_3"!=null || "@Model.VernierData.Avg1_3"!="0.0000"))
+    {
+    var ExternalNominal3 = parseFloat(document.getElementById("ExternalNominal3").innerHTML);
+    var ExternalAvg3 = parseFloat(document.getElementById("ExternalAvg3").innerHTML);
+    ExternalNominal3 = isNaN(ExternalNominal3) ? 0 : ExternalNominal3;
+    ExternalAvg3 = isNaN(ExternalAvg3) ? 0 : ExternalAvg3;
+	ExternalDeviation3=ExternalNominal3-ExternalAvg3;
+    document.getElementById("ExternalDeviation3").innerHTML = ExternalDeviation3.toFixed(2);
+	document.getElementById("ExternalDeviation13").innerHTML = ExternalDeviation3.toFixed(2);
+
+    var InternalNominal3 = parseFloat(document.getElementById("InternalNominal3").innerHTML);
+    var InternalAvg3 = parseFloat(document.getElementById("InternalAvg3").innerHTML);
+    InternalNominal3 = isNaN(InternalNominal3) ? 0 : InternalNominal3;
+    InternalAvg3 = isNaN(InternalAvg3) ? 0 : InternalAvg3;
+	InternalDeviation3=InternalNominal3-InternalAvg3;
+    document.getElementById("InternalDeviation3").innerHTML = InternalDeviation3.toFixed(2);
+	document.getElementById("InternalDeviation13").innerHTML = InternalDeviation3.toFixed(2);
+
+    var DepthNominal3 = parseFloat(document.getElementById("DepthNominal3").innerHTML);
+    var DepthAvg3 = parseFloat(document.getElementById("DepthAvg3").innerHTML);
+    DepthNominal3 = isNaN(DepthNominal3) ? 0 : DepthNominal3;
+    DepthAvg3 = isNaN(DepthAvg3) ? 0 : DepthAvg3;
+	DepthDeviation3=DepthNominal3-DepthAvg3;
+    document.getElementById("DepthDeviation3").innerHTML = DepthDeviation3.toFixed(2);
+	document.getElementById("DepthDeviation13").innerHTML = DepthDeviation3.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured1_4"!="0.0" || "@Model.VernierData.Measured1_4"!="" || "@Model.VernierData.Measured1_4"!=null) && ("@Model.VernierData.Avg1_4"!="" || "@Model.VernierData.Avg1_4"!=null || "@Model.VernierData.Avg1_4"!="0.0000"))
+    {
+    var ExternalNominal4 = parseFloat(document.getElementById("ExternalNominal4").innerHTML);
+    var ExternalAvg4 = parseFloat(document.getElementById("ExternalAvg4").innerHTML);
+    ExternalNominal4 = isNaN(ExternalNominal4) ? 0 : ExternalNominal4;
+    ExternalAvg4 = isNaN(ExternalAvg4) ? 0 : ExternalAvg4;
+	ExternalDeviation4=ExternalNominal4-ExternalAvg4;
+    document.getElementById("ExternalDeviation4").innerHTML = ExternalDeviation4.toFixed(2);
+	document.getElementById("ExternalDeviation14").innerHTML = ExternalDeviation4.toFixed(2);
+
+    var InternalNominal4 = parseFloat(document.getElementById("InternalNominal4").innerHTML);
+    var InternalAvg4 = parseFloat(document.getElementById("InternalAvg4").innerHTML);
+    InternalNominal4 = isNaN(InternalNominal4) ? 0 : InternalNominal4;
+    InternalAvg4 = isNaN(InternalAvg4) ? 0 : InternalAvg4;
+	InternalDeviation4=InternalNominal4-InternalAvg4;
+    document.getElementById("InternalDeviation4").innerHTML = InternalDeviation4.toFixed(2);
+	document.getElementById("InternalDeviation14").innerHTML = InternalDeviation4.toFixed(2);
+
+    var DepthNominal4 = parseFloat(document.getElementById("DepthNominal4").innerHTML);
+    var DepthAvg4 = parseFloat(document.getElementById("DepthAvg4").innerHTML);
+    DepthNominal4 = isNaN(DepthNominal4) ? 0 : DepthNominal4;
+    DepthAvg4 = isNaN(DepthAvg4) ? 0 : DepthAvg4;
+	DepthDeviation4=DepthNominal4-DepthAvg4;
+    document.getElementById("DepthDeviation4").innerHTML = DepthDeviation4.toFixed(2);
+	document.getElementById("DepthDeviation14").innerHTML = DepthDeviation4.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured1_5"!="0.0" || "@Model.VernierData.Measured1_5"!="" || "@Model.VernierData.Measured1_5"!=null) && ("@Model.VernierData.Avg1_5"!="" || "@Model.VernierData.Avg1_5"!=null || "@Model.VernierData.Avg1_5"!="0.0000"))
+    {
+    var ExternalNominal5 = parseFloat(document.getElementById("ExternalNominal5").innerHTML);
+    var ExternalAvg5 = parseFloat(document.getElementById("ExternalAvg5").innerHTML);
+    ExternalNominal5 = isNaN(ExternalNominal5) ? 0 : ExternalNominal5;
+    ExternalAvg5 = isNaN(ExternalAvg5) ? 0 : ExternalAvg5;
+	ExternalDeviation5=ExternalNominal5-ExternalAvg5;
+    document.getElementById("ExternalDeviation5").innerHTML = ExternalDeviation5.toFixed(2);
+	document.getElementById("ExternalDeviation15").innerHTML = ExternalDeviation5.toFixed(2);
+
+    var InternalNominal5 = parseFloat(document.getElementById("InternalNominal5").innerHTML);
+    var InternalAvg5 = parseFloat(document.getElementById("InternalAvg5").innerHTML);
+    InternalNominal5 = isNaN(InternalNominal5) ? 0 : InternalNominal5;
+    InternalAvg5 = isNaN(InternalAvg5) ? 0 : InternalAvg5;
+	InternalDeviation5=InternalNominal5-InternalAvg5;
+    document.getElementById("InternalDeviation5").innerHTML = InternalDeviation5.toFixed(2);
+	document.getElementById("InternalDeviation15").innerHTML = InternalDeviation5.toFixed(2);
+
+    var DepthNominal5 = parseFloat(document.getElementById("DepthNominal5").innerHTML);
+    var DepthAvg5 = parseFloat(document.getElementById("DepthAvg5").innerHTML);
+    DepthNominal5 = isNaN(DepthNominal5) ? 0 : DepthNominal5;
+    DepthAvg5 = isNaN(DepthAvg5) ? 0 : DepthAvg5;
+	DepthDeviation5=DepthNominal5-DepthAvg5;
+    document.getElementById("DepthDeviation5").innerHTML = DepthDeviation5.toFixed(2);
+	document.getElementById("DepthDeviation15").innerHTML = DepthDeviation5.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured2_1"!="0.0" || "@Model.VernierData.Measured2_1"!="" || "@Model.VernierData.Measured2_1"!=null) && ("@Model.VernierData.Avg2_1"!="" || "@Model.VernierData.Avg2_1"!=null || "@Model.VernierData.Avg2_1"!="0.0000"))
+    {
+    var ExternalNominal6 = parseFloat(document.getElementById("ExternalNominal6").innerHTML);
+    var ExternalAvg6 = parseFloat(document.getElementById("ExternalAvg6").innerHTML);
+    ExternalNominal6 = isNaN(ExternalNominal6) ? 0 : ExternalNominal6;
+    ExternalAvg6 = isNaN(ExternalAvg6) ? 0 : ExternalAvg6;
+	ExternalDeviation6=ExternalNominal6-ExternalAvg6;
+    document.getElementById("ExternalDeviation6").innerHTML = ExternalDeviation6.toFixed(2);
+	document.getElementById("ExternalDeviation16").innerHTML = ExternalDeviation6.toFixed(2);
+
+    var InternalNominal6 = parseFloat(document.getElementById("InternalNominal6").innerHTML);
+    var InternalAvg6 = parseFloat(document.getElementById("InternalAvg6").innerHTML);
+    InternalNominal6 = isNaN(InternalNominal6) ? 0 : InternalNominal6;
+    InternalAvg6 = isNaN(InternalAvg6) ? 0 : InternalAvg6;
+	InternalDeviation6=InternalNominal6-InternalAvg6;
+    document.getElementById("InternalDeviation6").innerHTML = InternalDeviation6.toFixed(2);
+	document.getElementById("InternalDeviation16").innerHTML = InternalDeviation6.toFixed(2);
+
+    var DepthNominal6 = parseFloat(document.getElementById("DepthNominal6").innerHTML);
+    var DepthAvg6 = parseFloat(document.getElementById("DepthAvg6").innerHTML);
+    DepthNominal6 = isNaN(DepthNominal6) ? 0 : DepthNominal6;
+    DepthAvg6 = isNaN(DepthAvg6) ? 0 : DepthAvg6;
+	DepthDeviation6=DepthNominal6-DepthAvg6;
+    document.getElementById("DepthDeviation6").innerHTML = DepthDeviation6.toFixed(2);
+	document.getElementById("DepthDeviation16").innerHTML = DepthDeviation6.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured2_2"!="0.0" || "@Model.VernierData.Measured2_2"!="" || "@Model.VernierData.Measured2_2"!=null) && ("@Model.VernierData.Avg2_2"!="" || "@Model.VernierData.Avg2_2"!=null || "@Model.VernierData.Avg2_2"!="0.0000"))
+    {
+    var ExternalNominal7 = parseFloat(document.getElementById("ExternalNominal7").innerHTML);
+    var ExternalAvg7 = parseFloat(document.getElementById("ExternalAvg7").innerHTML);
+    ExternalNominal7 = isNaN(ExternalNominal7) ? 0 : ExternalNominal7;
+    ExternalAvg7 = isNaN(ExternalAvg7) ? 0 : ExternalAvg7;
+	ExternalDeviation7=ExternalNominal7-ExternalAvg7;
+    document.getElementById("ExternalDeviation7").innerHTML = ExternalDeviation7.toFixed(2);
+	document.getElementById("ExternalDeviation17").innerHTML = ExternalDeviation7.toFixed(2);
+
+    var InternalNominal7 = parseFloat(document.getElementById("InternalNominal7").innerHTML);
+    var InternalAvg7 = parseFloat(document.getElementById("InternalAvg7").innerHTML);
+    InternalNominal7 = isNaN(InternalNominal7) ? 0 : InternalNominal7;
+    InternalAvg7 = isNaN(InternalAvg7) ? 0 : InternalAvg7;
+	InternalDeviation7=InternalNominal7-InternalAvg7;
+    document.getElementById("InternalDeviation7").innerHTML = InternalDeviation7.toFixed(2);
+	document.getElementById("InternalDeviation17").innerHTML = InternalDeviation7.toFixed(2);
+
+    var DepthNominal7 = parseFloat(document.getElementById("DepthNominal7").innerHTML);
+    var DepthAvg7 = parseFloat(document.getElementById("DepthAvg7").innerHTML);
+    DepthNominal7 = isNaN(DepthNominal7) ? 0 : DepthNominal7;
+    DepthAvg7 = isNaN(DepthAvg7) ? 0 : DepthAvg7;
+	DepthDeviation7=DepthNominal7-DepthAvg7;
+    document.getElementById("DepthDeviation7").innerHTML = DepthDeviation7.toFixed(2);
+	document.getElementById("DepthDeviation17").innerHTML = DepthDeviation7.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured2_3"!="0.0" || "@Model.VernierData.Measured2_3"!="" || "@Model.VernierData.Measured2_3"!=null) && ("@Model.VernierData.Avg2_3"!="" || "@Model.VernierData.Avg2_3"!=null || "@Model.VernierData.Avg2_3"!="0.0000"))
+    {
+    var ExternalNominal8 = parseFloat(document.getElementById("ExternalNominal8").innerHTML);
+    var ExternalAvg8 = parseFloat(document.getElementById("ExternalAvg8").innerHTML);
+    ExternalNominal8 = isNaN(ExternalNominal8) ? 0 : ExternalNominal8;
+    ExternalAvg8 = isNaN(ExternalAvg8) ? 0 : ExternalAvg8;
+	ExternalDeviation8=ExternalNominal8-ExternalAvg8;
+    document.getElementById("ExternalDeviation8").innerHTML = ExternalDeviation8.toFixed(2);
+	document.getElementById("ExternalDeviation18").innerHTML = ExternalDeviation8.toFixed(2);
+
+    var InternalNominal8 = parseFloat(document.getElementById("InternalNominal8").innerHTML);
+    var InternalAvg8 = parseFloat(document.getElementById("InternalAvg8").innerHTML);
+    InternalNominal8 = isNaN(InternalNominal8) ? 0 : InternalNominal8;
+    InternalAvg8 = isNaN(InternalAvg8) ? 0 : InternalAvg8;
+	InternalDeviation8=InternalNominal8-InternalAvg8;
+    document.getElementById("InternalDeviation8").innerHTML = InternalDeviation8.toFixed(2);
+	document.getElementById("InternalDeviation18").innerHTML = InternalDeviation8.toFixed(2);
+
+    var DepthNominal8 = parseFloat(document.getElementById("DepthNominal8").innerHTML);
+    var DepthAvg8 = parseFloat(document.getElementById("DepthAvg8").innerHTML);
+    DepthNominal8 = isNaN(DepthNominal8) ? 0 : DepthNominal8;
+    DepthAvg8 = isNaN(DepthAvg8) ? 0 : DepthAvg8;
+	DepthDeviation8=DepthNominal8-DepthAvg8;
+    document.getElementById("DepthDeviation8").innerHTML = DepthDeviation8.toFixed(2);
+	document.getElementById("DepthDeviation18").innerHTML = DepthDeviation8.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured2_4"!="0.0" || "@Model.VernierData.Measured2_4"!="" || "@Model.VernierData.Measured2_4"!=null) && ("@Model.VernierData.Avg2_4"!="" || "@Model.VernierData.Avg2_4"!=null || "@Model.VernierData.Avg2_4"!="0.0000"))
+    {
+    var ExternalNominal9 = parseFloat(document.getElementById("ExternalNominal9").innerHTML);
+    var ExternalAvg9 = parseFloat(document.getElementById("ExternalAvg9").innerHTML);
+    ExternalNominal9 = isNaN(ExternalNominal9) ? 0 : ExternalNominal9;
+    ExternalAvg9 = isNaN(ExternalAvg9) ? 0 : ExternalAvg9;
+	ExternalDeviation9=ExternalNominal9-ExternalAvg9;
+    document.getElementById("ExternalDeviation9").innerHTML = ExternalDeviation9.toFixed(2);
+	document.getElementById("ExternalDeviation19").innerHTML = ExternalDeviation9.toFixed(2);
+
+    var InternalNominal9 = parseFloat(document.getElementById("InternalNominal9").innerHTML);
+    var InternalAvg9 = parseFloat(document.getElementById("InternalAvg9").innerHTML);
+    InternalNominal9 = isNaN(InternalNominal9) ? 0 : InternalNominal9;
+    InternalAvg9 = isNaN(InternalAvg9) ? 0 : InternalAvg9;
+	InternalDeviation9=InternalNominal9-InternalAvg9;
+    document.getElementById("InternalDeviation9").innerHTML = InternalDeviation9.toFixed(2);
+	document.getElementById("InternalDeviation19").innerHTML = InternalDeviation9.toFixed(2);
+
+    var DepthNominal9 = parseFloat(document.getElementById("DepthNominal9").innerHTML);
+    var DepthAvg9 = parseFloat(document.getElementById("DepthAvg9").innerHTML);
+    DepthNominal9 = isNaN(DepthNominal9) ? 0 : DepthNominal9;
+    DepthAvg9 = isNaN(DepthAvg9) ? 0 : DepthAvg9;
+	DepthDeviation9=DepthNominal9-DepthAvg9;
+    document.getElementById("DepthDeviation9").innerHTML = DepthDeviation9.toFixed(2);
+	document.getElementById("DepthDeviation19").innerHTML = DepthDeviation9.toFixed(2);
+    }
+    if(("@Model.VernierData.Measured2_5"!="0.0" || "@Model.VernierData.Measured2_5"!="" || "@Model.VernierData.Measured2_5"!=null) && ("@Model.VernierData.Avg2_5"!="" || "@Model.VernierData.Avg2_5"!=null || "@Model.VernierData.Avg2_5"!="0.0000"))
+    {
+    var ExternalNominal10 = parseFloat(document.getElementById("ExternalNominal10").innerHTML);
+    var ExternalAvg10 = parseFloat(document.getElementById("ExternalAvg10").innerHTML);
+    ExternalNominal10 = isNaN(ExternalNominal10) ? 0 : ExternalNominal10;
+    ExternalAvg10 = isNaN(ExternalAvg10) ? 0 : ExternalAvg10;
+	ExternalDeviation10=ExternalNominal10-ExternalAvg10;
+    document.getElementById("ExternalDeviation10").innerHTML = ExternalDeviation10.toFixed(2);
+	document.getElementById("ExternalDeviation20").innerHTML = ExternalDeviation10.toFixed(2);
+
+    var InternalNominal10 = parseFloat(document.getElementById("InternalNominal10").innerHTML);
+    var InternalAvg10 = parseFloat(document.getElementById("InternalAvg10").innerHTML);
+    InternalNominal10 = isNaN(InternalNominal10) ? 0 : InternalNominal10;
+    InternalAvg10 = isNaN(InternalAvg10) ? 0 : InternalAvg10;
+	InternalDeviation10=InternalNominal10-InternalAvg10;
+    document.getElementById("InternalDeviation10").innerHTML = InternalDeviation10.toFixed(2);
+	document.getElementById("InternalDeviation20").innerHTML = InternalDeviation10.toFixed(2);
+
+    var DepthNominal10 = parseFloat(document.getElementById("DepthNominal10").innerHTML);
+    var DepthAvg10 = parseFloat(document.getElementById("DepthAvg10").innerHTML);
+    DepthNominal10 = isNaN(DepthNominal10) ? 0 : DepthNominal10;
+    DepthAvg10 = isNaN(DepthAvg10) ? 0 : DepthAvg10;
+	DepthDeviation10=DepthNominal10-DepthAvg10;
+    document.getElementById("DepthDeviation10").innerHTML = DepthDeviation10.toFixed(2);
+	document.getElementById("DepthDeviation20").innerHTML = DepthDeviation10.toFixed(2);
+    }
+
+
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+    
+
+    
+
+    
+
+   
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+    var ExternalNominal1 = parseFloat(document.getElementById("ExternalNominal1").innerHTML);
+    var ExternalAvg1 = parseFloat(document.getElementById("ExternalAvg1").innerHTML);
+    ExternalNominal1 = isNaN(ExternalNominal1) ? 0 : ExternalNominal1;
+    ExternalAvg1 = isNaN(ExternalAvg1) ? 0 : ExternalAvg1;
+	ExternalDeviation1=ExternalNominal1-ExternalAvg1;
+	document.getElementById("ExternalDeviation11").innerHTML = ExternalDeviation1.toFixed(4);
+
+    var ExternalNominal2 = parseFloat(document.getElementById("ExternalNominal2").innerHTML);
+    var ExternalAvg2 = parseFloat(document.getElementById("ExternalAvg2").innerHTML);
+    ExternalNominal2 = isNaN(ExternalNominal2) ? 0 : ExternalNominal2;
+    ExternalAvg2 = isNaN(ExternalAvg2) ? 0 : ExternalAvg2;
+	ExternalDeviation2=ExternalNominal2-ExternalAvg2;
+	document.getElementById("ExternalDeviation12").innerHTML = ExternalDeviation2.toFixed(4);
+
+    var ExternalNominal3 = parseFloat(document.getElementById("ExternalNominal3").innerHTML);
+    var ExternalAvg3 = parseFloat(document.getElementById("ExternalAvg3").innerHTML);
+    ExternalNominal3 = isNaN(ExternalNominal3) ? 0 : ExternalNominal3;
+    ExternalAvg3 = isNaN(ExternalAvg3) ? 0 : ExternalAvg3;
+	ExternalDeviation3=ExternalNominal3-ExternalAvg3;
+	document.getElementById("ExternalDeviation13").innerHTML = ExternalDeviation3.toFixed(4);
+
+    var ExternalNominal4 = parseFloat(document.getElementById("ExternalNominal4").innerHTML);
+    var ExternalAvg4 = parseFloat(document.getElementById("ExternalAvg4").innerHTML);
+    ExternalNominal4 = isNaN(ExternalNominal4) ? 0 : ExternalNominal4;
+    ExternalAvg4 = isNaN(ExternalAvg4) ? 0 : ExternalAvg4;
+	ExternalDeviation4=ExternalNominal4-ExternalAvg4;
+	document.getElementById("ExternalDeviation14").innerHTML = ExternalDeviation4.toFixed(4);
+
+    var ExternalNominal5 = parseFloat(document.getElementById("ExternalNominal5").innerHTML);
+    var ExternalAvg5 = parseFloat(document.getElementById("ExternalAvg5").innerHTML);
+    ExternalNominal5 = isNaN(ExternalNominal5) ? 0 : ExternalNominal5;
+    ExternalAvg5 = isNaN(ExternalAvg5) ? 0 : ExternalAvg5;
+	ExternalDeviation5=ExternalNominal5-ExternalAvg5;
+	document.getElementById("ExternalDeviation15").innerHTML = ExternalDeviation5.toFixed(4);
+
+    var ExternalNominal6 = parseFloat(document.getElementById("ExternalNominal6").innerHTML);
+    var ExternalAvg6 = parseFloat(document.getElementById("ExternalAvg6").innerHTML);
+    ExternalNominal6 = isNaN(ExternalNominal6) ? 0 : ExternalNominal6;
+    ExternalAvg6 = isNaN(ExternalAvg6) ? 0 : ExternalAvg6;
+	ExternalDeviation6=ExternalNominal6-ExternalAvg6;
+	document.getElementById("ExternalDeviation16").innerHTML = ExternalDeviation6.toFixed(4);
+
+    var ExternalNominal7 = parseFloat(document.getElementById("ExternalNominal7").innerHTML);
+    var ExternalAvg7 = parseFloat(document.getElementById("ExternalAvg7").innerHTML);
+    ExternalNominal7 = isNaN(ExternalNominal7) ? 0 : ExternalNominal7;
+    ExternalAvg7 = isNaN(ExternalAvg7) ? 0 : ExternalAvg7;
+	ExternalDeviation7=ExternalNominal7-ExternalAvg7;
+	document.getElementById("ExternalDeviation17").innerHTML = ExternalDeviation7.toFixed(4);
+
+    var ExternalNominal8 = parseFloat(document.getElementById("ExternalNominal8").innerHTML);
+    var ExternalAvg8 = parseFloat(document.getElementById("ExternalAvg8").innerHTML);
+    ExternalNominal8 = isNaN(ExternalNominal8) ? 0 : ExternalNominal8;
+    ExternalAvg8 = isNaN(ExternalAvg8) ? 0 : ExternalAvg8;
+	ExternalDeviation8=ExternalNominal8-ExternalAvg8;
+	document.getElementById("ExternalDeviation18").innerHTML = ExternalDeviation8.toFixed(4);
+
+    var ExternalNominal9 = parseFloat(document.getElementById("ExternalNominal9").innerHTML);
+    var ExternalAvg9 = parseFloat(document.getElementById("ExternalAvg9").innerHTML);
+    ExternalNominal9 = isNaN(ExternalNominal9) ? 0 : ExternalNominal9;
+    ExternalAvg9 = isNaN(ExternalAvg9) ? 0 : ExternalAvg9;
+	ExternalDeviation9=ExternalNominal9-ExternalAvg9;
+	document.getElementById("ExternalDeviation19").innerHTML = ExternalDeviation9.toFixed(4);
+
+    var ExternalNominal10 = parseFloat(document.getElementById("ExternalNominal10").innerHTML);
+    var ExternalAvg10 = parseFloat(document.getElementById("ExternalAvg10").innerHTML);
+    ExternalNominal10 = isNaN(ExternalNominal10) ? 0 : ExternalNominal10;
+    ExternalAvg10 = isNaN(ExternalAvg10) ? 0 : ExternalAvg10;
+	ExternalDeviation10=ExternalNominal10-ExternalAvg10;
+	document.getElementById("ExternalDeviation20").innerHTML = ExternalDeviation10.toFixed(4);
+
+
+
+    var InternalNominal1 = parseFloat(document.getElementById("InternalNominal1").innerHTML);
+    var InternalAvg1 = parseFloat(document.getElementById("InternalAvg1").innerHTML);
+    InternalNominal1 = isNaN(InternalNominal1) ? 0 : InternalNominal1;
+    InternalAvg1 = isNaN(InternalAvg1) ? 0 : InternalAvg1;
+	InternalDeviation1=InternalNominal1-InternalAvg1;
+	document.getElementById("InternalDeviation11").innerHTML = InternalDeviation1.toFixed(4);
+
+    var InternalNominal2 = parseFloat(document.getElementById("InternalNominal2").innerHTML);
+    var InternalAvg2 = parseFloat(document.getElementById("InternalAvg2").innerHTML);
+    InternalNominal2 = isNaN(InternalNominal2) ? 0 : InternalNominal2;
+    InternalAvg2 = isNaN(InternalAvg2) ? 0 : InternalAvg2;
+	InternalDeviation2=InternalNominal2-InternalAvg2;
+	document.getElementById("InternalDeviation12").innerHTML = InternalDeviation2.toFixed(4);
+
+    var InternalNominal3 = parseFloat(document.getElementById("InternalNominal3").innerHTML);
+    var InternalAvg3 = parseFloat(document.getElementById("InternalAvg3").innerHTML);
+    InternalNominal3 = isNaN(InternalNominal3) ? 0 : InternalNominal3;
+    InternalAvg3 = isNaN(InternalAvg3) ? 0 : InternalAvg3;
+	InternalDeviation3=InternalNominal3-InternalAvg3;
+	document.getElementById("InternalDeviation13").innerHTML = InternalDeviation3.toFixed(4);
+
+    var InternalNominal4 = parseFloat(document.getElementById("InternalNominal4").innerHTML);
+    var InternalAvg4 = parseFloat(document.getElementById("InternalAvg4").innerHTML);
+    InternalNominal4 = isNaN(InternalNominal4) ? 0 : InternalNominal4;
+    InternalAvg4 = isNaN(InternalAvg4) ? 0 : InternalAvg4;
+	InternalDeviation4=InternalNominal4-InternalAvg4;
+	document.getElementById("InternalDeviation14").innerHTML = InternalDeviation4.toFixed(4);
+
+    var InternalNominal5 = parseFloat(document.getElementById("InternalNominal5").innerHTML);
+    var InternalAvg5 = parseFloat(document.getElementById("InternalAvg5").innerHTML);
+    InternalNominal5 = isNaN(InternalNominal5) ? 0 : InternalNominal5;
+    InternalAvg5 = isNaN(InternalAvg5) ? 0 : InternalAvg5;
+	InternalDeviation5=InternalNominal5-InternalAvg5;
+	document.getElementById("InternalDeviation15").innerHTML = InternalDeviation5.toFixed(4);
+
+    var InternalNominal6 = parseFloat(document.getElementById("InternalNominal6").innerHTML);
+    var InternalAvg6 = parseFloat(document.getElementById("InternalAvg6").innerHTML);
+    InternalNominal6 = isNaN(InternalNominal6) ? 0 : InternalNominal6;
+    InternalAvg6 = isNaN(InternalAvg6) ? 0 : InternalAvg6;
+	InternalDeviation6=InternalNominal6-InternalAvg6;
+	document.getElementById("InternalDeviation16").innerHTML = InternalDeviation6.toFixed(4);
+
+    var InternalNominal7 = parseFloat(document.getElementById("InternalNominal7").innerHTML);
+    var InternalAvg7 = parseFloat(document.getElementById("InternalAvg7").innerHTML);
+    InternalNominal7 = isNaN(InternalNominal7) ? 0 : InternalNominal7;
+    InternalAvg7 = isNaN(InternalAvg7) ? 0 : InternalAvg7;
+	InternalDeviation7=InternalNominal7-InternalAvg7;
+	document.getElementById("InternalDeviation17").innerHTML = InternalDeviation7.toFixed(4);
+
+    var InternalNominal8 = parseFloat(document.getElementById("InternalNominal8").innerHTML);
+    var InternalAvg8 = parseFloat(document.getElementById("InternalAvg8").innerHTML);
+    InternalNominal8 = isNaN(InternalNominal8) ? 0 : InternalNominal8;
+    InternalAvg8 = isNaN(InternalAvg8) ? 0 : InternalAvg8;
+	InternalDeviation8=InternalNominal8-InternalAvg8;
+	document.getElementById("InternalDeviation18").innerHTML = InternalDeviation8.toFixed(4);
+
+    var InternalNominal9 = parseFloat(document.getElementById("InternalNominal9").innerHTML);
+    var InternalAvg9 = parseFloat(document.getElementById("InternalAvg9").innerHTML);
+    InternalNominal9 = isNaN(InternalNominal9) ? 0 : InternalNominal9;
+    InternalAvg9 = isNaN(InternalAvg9) ? 0 : InternalAvg9;
+	InternalDeviation9=InternalNominal9-InternalAvg9;
+	document.getElementById("InternalDeviation19").innerHTML = InternalDeviation9.toFixed(4);
+
+    var InternalNominal10 = parseFloat(document.getElementById("InternalNominal10").innerHTML);
+    var InternalAvg10 = parseFloat(document.getElementById("InternalAvg10").innerHTML);
+    InternalNominal10 = isNaN(InternalNominal10) ? 0 : InternalNominal10;
+    InternalAvg10 = isNaN(InternalAvg10) ? 0 : InternalAvg10;
+	InternalDeviation10=InternalNominal10-InternalAvg10;
+	document.getElementById("InternalDeviation20").innerHTML = InternalDeviation10.toFixed(4);
+
+
+
+    var DepthNominal1 = parseFloat(document.getElementById("DepthNominal1").innerHTML);
+    var DepthAvg1 = parseFloat(document.getElementById("DepthAvg1").innerHTML);
+    DepthNominal1 = isNaN(DepthNominal1) ? 0 : DepthNominal1;
+    DepthAvg1 = isNaN(DepthAvg1) ? 0 : DepthAvg1;
+	DepthDeviation1=DepthNominal1-DepthAvg1;
+	document.getElementById("DepthDeviation11").innerHTML = DepthDeviation1.toFixed(4);
+
+    var DepthNominal2 = parseFloat(document.getElementById("DepthNominal2").innerHTML);
+    var DepthAvg2 = parseFloat(document.getElementById("DepthAvg2").innerHTML);
+    DepthNominal2 = isNaN(DepthNominal2) ? 0 : DepthNominal2;
+    DepthAvg2 = isNaN(DepthAvg2) ? 0 : DepthAvg2;
+	DepthDeviation2=DepthNominal2-DepthAvg2;
+	document.getElementById("DepthDeviation12").innerHTML = DepthDeviation2.toFixed(4);
+
+    var DepthNominal3 = parseFloat(document.getElementById("DepthNominal3").innerHTML);
+    var DepthAvg3 = parseFloat(document.getElementById("DepthAvg3").innerHTML);
+    DepthNominal3 = isNaN(DepthNominal3) ? 0 : DepthNominal3;
+    DepthAvg3 = isNaN(DepthAvg3) ? 0 : DepthAvg3;
+	DepthDeviation3=DepthNominal3-DepthAvg3;
+	document.getElementById("DepthDeviation13").innerHTML = DepthDeviation3.toFixed(4);
+
+    var DepthNominal4 = parseFloat(document.getElementById("DepthNominal4").innerHTML);
+    var DepthAvg4 = parseFloat(document.getElementById("DepthAvg4").innerHTML);
+    DepthNominal4 = isNaN(DepthNominal4) ? 0 : DepthNominal4;
+    DepthAvg4 = isNaN(DepthAvg4) ? 0 : DepthAvg4;
+	DepthDeviation4=DepthNominal4-DepthAvg4;
+	document.getElementById("DepthDeviation14").innerHTML = DepthDeviation4.toFixed(4);
+
+    var DepthNominal5 = parseFloat(document.getElementById("DepthNominal5").innerHTML);
+    var DepthAvg5 = parseFloat(document.getElementById("DepthAvg5").innerHTML);
+    DepthNominal5 = isNaN(DepthNominal5) ? 0 : DepthNominal5;
+    DepthAvg5 = isNaN(DepthAvg5) ? 0 : DepthAvg5;
+	DepthDeviation5=DepthNominal5-DepthAvg5;
+	document.getElementById("DepthDeviation15").innerHTML = DepthDeviation5.toFixed(4);
+
+    var DepthNominal6 = parseFloat(document.getElementById("DepthNominal6").innerHTML);
+    var DepthAvg6 = parseFloat(document.getElementById("DepthAvg6").innerHTML);
+    DepthNominal6 = isNaN(DepthNominal6) ? 0 : DepthNominal6;
+    DepthAvg6 = isNaN(DepthAvg6) ? 0 : DepthAvg6;
+	DepthDeviation6=DepthNominal6-DepthAvg6;
+	document.getElementById("DepthDeviation16").innerHTML = DepthDeviation6.toFixed(4);
+
+    var DepthNominal7 = parseFloat(document.getElementById("DepthNominal7").innerHTML);
+    var DepthAvg7 = parseFloat(document.getElementById("DepthAvg7").innerHTML);
+    DepthNominal7 = isNaN(DepthNominal7) ? 0 : DepthNominal7;
+    DepthAvg7 = isNaN(DepthAvg7) ? 0 : DepthAvg7;
+	DepthDeviation7=DepthNominal7-DepthAvg7;
+	document.getElementById("DepthDeviation17").innerHTML = DepthDeviation7.toFixed(4);
+    var DepthNominal8 = parseFloat(document.getElementById("DepthNominal8").innerHTML);
+    var DepthAvg8 = parseFloat(document.getElementById("DepthAvg8").innerHTML);
+    DepthNominal8 = isNaN(DepthNominal8) ? 0 : DepthNominal8;
+    DepthAvg8 = isNaN(DepthAvg8) ? 0 : DepthAvg8;
+	DepthDeviation8=DepthNominal8-DepthAvg8;
+	document.getElementById("DepthDeviation18").innerHTML = DepthDeviation8.toFixed(4);
+
+    var DepthNominal9 = parseFloat(document.getElementById("DepthNominal9").innerHTML);
+    var DepthAvg9 = parseFloat(document.getElementById("DepthAvg9").innerHTML);
+    DepthNominal9 = isNaN(DepthNominal9) ? 0 : DepthNominal9;
+    DepthAvg9 = isNaN(DepthAvg9) ? 0 : DepthAvg9;
+	DepthDeviation9=DepthNominal9-DepthAvg9;
+	document.getElementById("DepthDeviation19").innerHTML = DepthDeviation9.toFixed(4);
+
+    var DepthNominal10 = parseFloat(document.getElementById("DepthNominal10").innerHTML);
+    var DepthAvg10 = parseFloat(document.getElementById("DepthAvg10").innerHTML);
+    DepthNominal10 = isNaN(DepthNominal10) ? 0 : DepthNominal10;
+    DepthAvg10 = isNaN(DepthAvg10) ? 0 : DepthAvg10;
+	DepthDeviation10=DepthNominal10-DepthAvg10;
+	document.getElementById("DepthDeviation20").innerHTML = DepthDeviation10.toFixed(4);
+    
+ 
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+
+        //First Row Sohw and hide
+        var externalNominal1 = $('#ExternalNominal1').text();
+        var externalAvg1     = $('#ExternalAvg1').text();
+        var internalNominal1 = $('#InternalNominal1').text();
+        var internalAvg1 = $('#InternalAvg1').text();
+        var depthNominal1 = $('#DepthNominal1').text();
+        var depthAvg1 = $('#DepthAvg1').text();
+
+        externalNominal1 =  isNaN(externalNominal1) ? null : externalNominal1;
+        externalAvg1 =  isNaN(externalAvg1) ? null : externalAvg1;
+        internalNominal1 =  isNaN(internalNominal1) ? null : internalNominal1;
+        internalAvg1 =  isNaN(internalAvg1) ? null : internalAvg1;
+        depthNominal1 =  isNaN(depthNominal1) ? null : depthNominal1;
+        depthAvg1 =  isNaN(depthAvg1) ? null : depthAvg1;
+
+        if((parseInt(externalNominal1) == null || parseInt(externalAvg1) == null || parseInt(internalNominal1) == null ||
+            parseInt(internalAvg1) == null ||   parseInt(depthNominal1) == null || parseInt(depthAvg1)== null) ||
+
+            (parseInt(externalNominal1) == 0.0000 || parseInt(externalAvg1) == 0.0000 || parseInt(internalNominal1) == 0.0000 ||
+            parseInt(internalAvg1) == 0.0000 ||   parseInt(depthNominal1) == 0.0000 || parseInt(depthAvg1)== 0.0000) ||
+
+            (parseInt(externalNominal1) == "" || parseInt(externalAvg1) == "" || parseInt(internalNominal1) == "" ||
+            parseInt(internalAvg1) == "" ||   parseInt(depthNominal1) == "" || parseInt(depthAvg1)== "")
+            )
+            {
+            //$('#firstRow').hide();
+            document.getElementById("firstRow").style.display = 'none';
+            document.getElementById("PdfFirstRow").style.display = 'none';
+        }
+        else{
+             $('#firstRow').show();
+        }
+
+        //Second Row Sohw and hide
+        var externalNominal2 = $('#ExternalNominal2').text();
+        var externalAvg2     = $('#ExternalAvg2').text();
+        var internalNominal2 = $('#InternalNominal2').text();
+        var internalAvg2 = $('#InternalAvg2').text();
+        var depthNominal2 = $('#DepthNominal2').text();
+        var depthAvg2 = $('#DepthAvg2').text();
+
+        externalNominal2 =  isNaN(externalNominal2) ? null : externalNominal2;
+        externalAvg2 =  isNaN(externalAvg2) ? null : externalAvg2;
+        internalNominal2 =  isNaN(internalNominal2) ? null : internalNominal2;
+        internalAvg2 =  isNaN(internalAvg2) ? null : internalAvg2;
+        depthNominal2 =  isNaN(depthNominal2) ? null : depthNominal2;
+        depthAvg2 =  isNaN(depthAvg2) ? null : depthAvg2;
+
+        if((parseInt(externalNominal2) == null || parseInt(externalAvg2) == null || parseInt(internalNominal2) == null ||
+            parseInt(internalAvg2) == null ||   parseInt(depthNominal2) == null || parseInt(depthAvg2)== null) ||
+
+            (parseInt(externalNominal2) == 0.0000 || parseInt(externalAvg2) == 0.0000 || parseInt(internalNominal2) == 0.0000 ||
+            parseInt(internalAvg2) == 0.0000 ||   parseInt(depthNominal2) == 0.0000 || parseInt(depthAvg2)== 0.0000) ||
+
+            (parseInt(externalNominal2) == "" || parseInt(externalAvg2) == "" || parseInt(internalNominal2) == "" ||
+            parseInt(internalAvg2) == "" ||   parseInt(depthNominal2) == "" || parseInt(depthAvg2)== "")
+            ){
+            //$('#secondRow').hide();
+            document.getElementById("secondRow").style.display = 'none';
+            document.getElementById("PdfSecondRow").style.display = 'none';
+        }
+        else{
+             $('#secondRow').show();
+        }
+
+        //Third Row Sohw and hide
+        var externalNominal3 = $('#ExternalNominal3').text();
+        var externalAvg3     = $('#ExternalAvg3').text();
+        var internalNominal3 = $('#InternalNominal3').text();
+        var internalAvg3 = $('#InternalAvg3').text();
+        var depthNominal3 = $('#DepthNominal3').text();
+        var depthAvg3 = $('#DepthAvg3').text();
+
+        externalNominal3 =  isNaN(externalNominal3) ? null : externalNominal3;
+        externalAvg3 =  isNaN(externalAvg3) ? null : externalAvg3;
+        internalNominal3 =  isNaN(internalNominal3) ? null : internalNominal3;
+        internalAvg3 =  isNaN(internalAvg3) ? null : internalAvg3;
+        depthNominal3 =  isNaN(depthNominal3) ? null : depthNominal3;
+        depthAvg3 =  isNaN(depthAvg3) ? null : depthAvg3;
+
+        if((parseInt(externalNominal3) == null || parseInt(externalAvg3) == null || parseInt(internalNominal3) == null ||
+            parseInt(internalAvg3) == null ||   parseInt(depthNominal3) == null || parseInt(depthAvg3)== null) ||
+
+            (parseInt(externalNominal3) == 0.0000 || parseInt(externalAvg3) == 0.0000 || parseInt(internalNominal3) == 0.0000 ||
+            parseInt(internalAvg3) == 0.0000 ||   parseInt(depthNominal3) == 0.0000 || parseInt(depthAvg3)== 0.0000) ||
+
+            (parseInt(externalNominal3) == "" || parseInt(externalAvg3) == "" || parseInt(internalNominal3) == "" ||
+            parseInt(internalAvg3) == "" ||   parseInt(depthNominal3) == "" || parseInt(depthAvg3)== "")
+            ){
+            //$('#thirdRow').hide();
+            document.getElementById("thirdRow").style.display = 'none';
+            document.getElementById("PdfThirdRow").style.display = 'none';
+            
+        }
+        else{
+             $('#thirdRow').show();
+        }
+
+        //Forth Row Sohw and hide
+        var externalNominal4 = $('#ExternalNominal4').text();
+        var externalAvg4     = $('#ExternalAvg4').text();
+        var internalNominal4 = $('#InternalNominal4').text();
+        var internalAvg4 = $('#InternalAvg4').text();
+        var depthNominal4 = $('#DepthNominal4').text();
+        var depthAvg4 = $('#DepthAvg4').text();
+
+        externalNominal4 =  isNaN(externalNominal4) ? null : externalNominal4;
+        externalAvg4 =  isNaN(externalAvg4) ? null : externalAvg4;
+        internalNominal4 =  isNaN(internalNominal4) ? null : internalNominal4;
+        internalAvg4 =  isNaN(internalAvg4) ? null : internalAvg4;
+        depthNominal4 =  isNaN(depthNominal4) ? null : depthNominal4;
+        depthAvg4 =  isNaN(depthAvg4) ? null : depthAvg4;
+
+        if((parseInt(externalNominal4) == null || parseInt(externalAvg4) == null || parseInt(internalNominal4) == null ||
+            parseInt(internalAvg4) == null ||   parseInt(depthNominal4) == null || parseInt(depthAvg4)== null) ||
+
+            (parseInt(externalNominal4) == 0.0000 || parseInt(externalAvg4) == 0.0000 || parseInt(internalNominal4) == 0.0000 ||
+            parseInt(internalAvg4) == 0.0000 ||   parseInt(depthNominal4) == 0.0000 || parseInt(depthAvg4)== 0.0000) ||
+
+            (parseInt(externalNominal4) == "" || parseInt(externalAvg4) == "" || parseInt(internalNominal4) == "" ||
+            parseInt(internalAvg4) == "" ||   parseInt(depthNominal4) == "" || parseInt(depthAvg4)== "")
+            ){
+            //$('#forthRow').hide();
+            document.getElementById("forthRow").style.display = 'none';
+            document.getElementById("PdfForthRow").style.display = 'none';
+        }
+        else{
+             $('#forthRow').show();
+        }
+
+        //Fifth Row Sohw and hide
+        var externalNominal5 = $('#ExternalNominal5').text();
+        var externalAvg5     = $('#ExternalAvg5').text();
+        var internalNominal5 = $('#InternalNominal5').text();
+        var internalAvg5 = $('#InternalAvg5').text();
+        var depthNominal5 = $('#DepthNominal5').text();
+        var depthAvg5 = $('#DepthAvg5').text();
+
+        externalNominal5 =  isNaN(externalNominal5) ? null : externalNominal5;
+        externalAvg5 =  isNaN(externalAvg5) ? null : externalAvg5;
+        internalNominal5 =  isNaN(internalNominal5) ? null : internalNominal5;
+        internalAvg5 =  isNaN(internalAvg5) ? null : internalAvg5;
+        depthNominal5 =  isNaN(depthNominal5) ? null : depthNominal5;
+        depthAvg5 =  isNaN(depthAvg5) ? null : depthAvg5;
+
+        if((parseInt(externalNominal5) == null || parseInt(externalAvg5) == null || parseInt(internalNominal5) == null ||
+            parseInt(internalAvg5) == null ||   parseInt(depthNominal5) == null || parseInt(depthAvg5)== null) ||
+
+            (parseInt(externalNominal5) == 0.0000 || parseInt(externalAvg5) == 0.0000 || parseInt(internalNominal5) == 0.0000 ||
+            parseInt(internalAvg5) == 0.0000 ||   parseInt(depthNominal5) == 0.0000 || parseInt(depthAvg5)== 0.0000) ||
+
+            (parseInt(externalNominal5) == "" || parseInt(externalAvg5) == "" || parseInt(internalNominal5) == "" ||
+            parseInt(internalAvg5) == "" ||   parseInt(depthNominal5) == "" || parseInt(depthAvg5)== "")
+            ){
+            //$('#fifthRow').hide();
+            document.getElementById("fifthRow").style.display = 'none';
+            document.getElementById("PdfFifthRow").style.display = 'none';
+        }
+        else{
+             $('#fifthRow').show();
+        }
+
+        //Sixth Row Sohw and hide
+        var externalNominal6 = $('#ExternalNominal6').text();
+        var externalAvg6     = $('#ExternalAvg6').text();
+        var internalNominal6 = $('#InternalNominal6').text();
+        var internalAvg6 = $('#InternalAvg6').text();
+        var depthNominal6 = $('#DepthNominal6').text();
+        var depthAvg6 = $('#DepthAvg6').text();
+
+        externalNominal6 =  isNaN(externalNominal6) ? null : externalNominal6;
+        externalAvg6 =  isNaN(externalAvg6) ? null : externalAvg6;
+        internalNominal6 =  isNaN(internalNominal6) ? null : internalNominal6;
+        internalAvg6 =  isNaN(internalAvg6) ? null : internalAvg6;
+        depthNominal6 =  isNaN(depthNominal6) ? null : depthNominal6;
+        depthAvg6 =  isNaN(depthAvg6) ? null : depthAvg6;
+
+        if((parseInt(externalNominal6) == null || parseInt(externalAvg6) == null || parseInt(internalNominal6) == null ||
+            parseInt(internalAvg6) == null ||   parseInt(depthNominal6) == null || parseInt(depthAvg6)== null) ||
+
+            (parseInt(externalNominal6) == 0.0000 || parseInt(externalAvg6) == 0.0000 || parseInt(internalNominal6) == 0.0000 ||
+            parseInt(internalAvg6) == 0.0000 ||   parseInt(depthNominal6) == 0.0000 || parseInt(depthAvg6)== 0.0000) ||
+
+            (parseInt(externalNominal6) == "" || parseInt(externalAvg6) == "" || parseInt(internalNominal6) == "" ||
+            parseInt(internalAvg6) == "" ||   parseInt(depthNominal6) == "" || parseInt(depthAvg6)== "")
+            ){
+            //$('#sixthRow').hide();
+            document.getElementById("sixthRow").style.display = 'none';
+            document.getElementById("PdfSixthRow").style.display = 'none';
+            
+        }
+        else{
+             $('#sixthRow').show();
+        }
+
+        //Seventh Row Sohw and hide
+        var externalNominal7 = $('#ExternalNominal7').text();
+        var externalAvg7     = $('#ExternalAvg7').text();
+        var internalNominal7 = $('#InternalNominal7').text();
+        var internalAvg7 = $('#InternalAvg7').text();
+        var depthNominal7 = $('#DepthNominal7').text();
+        var depthAvg7 = $('#DepthAvg7').text();
+
+        externalNominal7 =  isNaN(externalNominal7) ? null : externalNominal7;
+        externalAvg7 =  isNaN(externalAvg7) ? null : externalAvg7;
+        internalNominal7 =  isNaN(internalNominal7) ? null : internalNominal7;
+        internalAvg7 =  isNaN(internalAvg7) ? null : internalAvg7;
+        depthNominal7 =  isNaN(depthNominal7) ? null : depthNominal7;
+        depthAvg7 =  isNaN(depthAvg7) ? null : depthAvg7;
+
+        if((parseInt(externalNominal7) == null || parseInt(externalAvg7) == null || parseInt(internalNominal7) == null ||
+            parseInt(internalAvg7) == null ||   parseInt(depthNominal7) == null || parseInt(depthAvg7)== null) ||
+
+            (parseInt(externalNominal7) == 0.0000 || parseInt(externalAvg7) == 0.0000 || parseInt(internalNominal7) == 0.0000 ||
+            parseInt(internalAvg7) == 0.0000 ||   parseInt(depthNominal7) == 0.0000 || parseInt(depthAvg7)== 0.0000) ||
+
+            (parseInt(externalNominal7) == "" || parseInt(externalAvg7) == "" || parseInt(internalNominal7) == "" ||
+            parseInt(internalAvg7) == "" ||   parseInt(depthNominal7) == "" || parseInt(depthAvg7)== "")
+            ){
+            //$('#seventhRow').hide();
+            document.getElementById("seventhRow").style.display = 'none';
+            document.getElementById("PdfSeventhRow").style.display = 'none';
+        }
+        else{
+             $('#seventhRow').show();
+        }
+
+        //Eighth Row Sohw and hide
+        var externalNominal8 = $('#ExternalNominal8').text();
+        var externalAvg8     = $('#ExternalAvg8').text();
+        var internalNominal8 = $('#InternalNominal8').text();
+        var internalAvg8 = $('#InternalAvg8').text();
+        var depthNominal8 = $('#DepthNominal8').text();
+        var depthAvg8 = $('#DepthAvg8').text();
+
+        externalNominal8 =  isNaN(externalNominal8) ? null : externalNominal8;
+        externalAvg8 =  isNaN(externalAvg8) ? null : externalAvg8;
+        internalNominal8 =  isNaN(internalNominal8) ? null : internalNominal8;
+        internalAvg8 =  isNaN(internalAvg8) ? null : internalAvg8;
+        depthNominal8 =  isNaN(depthNominal8) ? null : depthNominal8;
+        depthAvg8 =  isNaN(depthAvg8) ? null : depthAvg8;
+
+        if((parseInt(externalNominal8) == null || parseInt(externalAvg8) == null || parseInt(internalNominal8) == null ||
+            parseInt(internalAvg8) == null ||   parseInt(depthNominal8) == null || parseInt(depthAvg8)== null) ||
+
+            (parseInt(externalNominal8) == 0.0000 || parseInt(externalAvg8) == 0.0000 || parseInt(internalNominal8) == 0.0000 ||
+            parseInt(internalAvg8) == 0.0000 ||   parseInt(depthNominal8) == 0.0000 || parseInt(depthAvg8)== 0.0000) ||
+
+            (parseInt(externalNominal8) == "" || parseInt(externalAvg8) == "" || parseInt(internalNominal8) == "" ||
+            parseInt(internalAvg8) == "" ||   parseInt(depthNominal8) == "" || parseInt(depthAvg8)== "")
+            ){
+            //$('#eighthRow').hide();
+            document.getElementById("eighthRow").style.display = 'none';
+            document.getElementById("PdfEighthRow").style.display = 'none';
+        }
+        else{
+             $('#eighthRow').show();
+        }
+
+        //Ninth Row Sohw and hide
+        var externalNominal9 = $('#ExternalNominal9').text();
+        var externalAvg9     = $('#ExternalAvg9').text();
+        var internalNominal9 = $('#InternalNominal9').text();
+        var internalAvg9 = $('#InternalAvg9').text();
+        var depthNominal9 = $('#DepthNominal9').text();
+        var depthAvg9 = $('#DepthAvg9').text();
+
+        externalNominal9 =  isNaN(externalNominal9) ? null : externalNominal9;
+        externalAvg9 =  isNaN(externalAvg9) ? null : externalAvg9;
+        internalNominal9 =  isNaN(internalNominal9) ? null : internalNominal9;
+        internalAvg9 =  isNaN(internalAvg9) ? null : internalAvg9;
+        depthNominal9 =  isNaN(depthNominal9) ? null : depthNominal9;
+        depthAvg9 =  isNaN(depthAvg9) ? null : depthAvg9;
+
+        if((parseInt(externalNominal9) == null || parseInt(externalAvg9) == null || parseInt(internalNominal9) == null ||
+            parseInt(internalAvg9) == null ||   parseInt(depthNominal9) == null || parseInt(depthAvg9)== null) ||
+
+            (parseInt(externalNominal9) == 0.0000 || parseInt(externalAvg9) == 0.0000 || parseInt(internalNominal9) == 0.0000 ||
+            parseInt(internalAvg9) == 0.0000 ||   parseInt(depthNominal9) == 0.0000 || parseInt(depthAvg9)== 0.0000) ||
+
+            (parseInt(externalNominal9) == "" || parseInt(externalAvg9) == "" || parseInt(internalNominal9) == "" ||
+            parseInt(internalAvg9) == "" ||   parseInt(depthNominal9) == "" || parseInt(depthAvg9)== "")
+            ){
+            //$('#ninthRow').hide();
+            document.getElementById("ninthRow").style.display = 'none';
+            document.getElementById("PdfNinthRow").style.display = 'none';
+        }
+        else{
+             $('#ninthRow').show();
+        }
+
+        //Tenth Row Sohw and hide
+        var externalNominal10 = $('#ExternalNominal10').text();
+        var externalAvg10     = $('#ExternalAvg10').text();
+        var internalNominal10 = $('#InternalNominal10').text();
+        var internalAvg10 = $('#InternalAvg10').text();
+        var depthNominal10 = $('#DepthNominal10').text();
+        var depthAvg10 = $('#DepthAvg10').text();
+
+        externalNominal10 =  isNaN(externalNominal10) ? null : externalNominal10;
+        externalAvg10 =  isNaN(externalAvg10) ? null : externalAvg10;
+        internalNominal10 =  isNaN(internalNominal10) ? null : internalNominal10;
+        internalAvg10 =  isNaN(internalAvg10) ? null : internalAvg10;
+        depthNominal10 =  isNaN(depthNominal10) ? null : depthNominal10;
+        depthAvg10 =  isNaN(depthAvg10) ? null : depthAvg10;
+
+        if((parseInt(externalNominal10) == null || parseInt(externalAvg10) == null || parseInt(internalNominal10) == null ||
+            parseInt(internalAvg10) == null ||   parseInt(depthNominal10) == null || parseInt(depthAvg10)== null) ||
+
+            (parseInt(externalNominal10) == 0.0000 || parseInt(externalAvg10) == 0.0000 || parseInt(internalNominal10) == 0.0000 ||
+            parseInt(internalAvg10) == 0.0000 ||   parseInt(depthNominal10) == 0.0000 || parseInt(depthAvg10)== 0.0000) ||
+
+            (parseInt(externalNominal10) == "" || parseInt(externalAvg10) == "" || parseInt(internalNominal10) == "" ||
+            parseInt(internalAvg10) == "" ||   parseInt(depthNominal10) == "" || parseInt(depthAvg10)== "")
+            ){
+            //$('#tenthRow').hide();
+            document.getElementById("tenthRow").style.display = 'none';
+            document.getElementById("PdfTenthRow").style.display = 'none';
+        }
+        else{
+             $('#tenthRow').show();
+        }
+    });
+</script>

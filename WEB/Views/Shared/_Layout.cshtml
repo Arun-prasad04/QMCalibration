@@ -1,0 +1,690 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Calibration Management System</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- own style -->
+	<link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="~/css/fontawesome-free/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- Tempusdominus Bbootstrap 4 -->
+	<link rel="stylesheet" href="~/css/tempusdominus-bootstrap-4.min.css">
+	<!-- iCheck -->
+	<link rel="stylesheet" href="~/css/icheck-bootstrap.min.css">
+	<!-- JQVMap -->
+	<link rel="stylesheet" href="~/css/jqvmap.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="~/css/adminlte.min.css">
+	<!-- overlayScrollbars -->
+	<link rel="stylesheet" href="~/css/OverlayScrollbars.min.css">
+	<!-- Daterange picker -->
+	<link rel="stylesheet" href="~/css/daterangepicker.css">
+	<!-- summernote -->
+	<link rel="stylesheet" href="~/css/jqvmap.min.css">
+	<!-- Google Font: Source Sans Pro -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!-- DataTables -->
+	<link rel="stylesheet" href="~/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="~/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="~/css/animate.css">
+	<link rel="stylesheet" href="~/js/jquery-ui.css">
+	<link rel="stylesheet" href="~/css/bootstrap-select.min.css">
+
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+	<style>
+		.flag-icon-background {
+			background-size: contain;
+			background-position: 50%;
+			background-repeat: no-repeat;
+		}
+
+		.flag-icon {
+			background-size: cover;
+			background-position: 50%;
+			background-repeat: no-repeat;
+			position: relative;
+			display: inline-block;
+			width: 1.33333333em;
+			line-height: 1em;
+		}
+
+			.flag-icon:before {
+				content: "\00a0";
+			}
+
+			.flag-icon.flag-icon-squared {
+				width: 1em;
+			}
+
+		.flag-icon-jp {
+			background-image: url(../image/jp.png);
+		}
+
+		.flag-icon-gb {
+			background-image: url(../image/gb.png);
+		}
+
+		.Languagepicker .dropdown-menu > li > a:hover {
+			color: #ffffff;
+			text-decoration: none;
+			background-color: #00677F;
+		}
+
+		.daimler_language {
+			background: transparent;
+			color: #000000;
+			margin-top: 2pt;
+			margin-right: 39pt;
+			font-size: 12px;
+		}
+
+		.selected {
+			background: #fff;
+		}
+	</style>
+
+	<div class="wrapper">
+
+		<!-- Navbar -->
+		<nav class="main-header navbar navbar-expand navbar-white navbar-light navbg">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+				</li>
+			</ul>
+
+
+			<ul class="navbar-nav ml-auto" style="text-align:right;">
+				<li class="nav-item">
+					<select class="Languagepicker daimler_language" data-width="fit">
+						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
+							English
+						</option>
+						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
+					</select>
+				</li>
+			</ul>
+
+
+			<!-- Right navbar links -->
+			<ul class="navbar-nav ml-auto" style="text-align:right;">
+				<!-- Messages Dropdown Menu -->
+				<a href='@Url.Action("Login","Account")' class="brand-link logopading">
+					<span style="color:black;font-size:14px;"><i class='fas fa-user-circle' style='font-size:25px;color:black;position:relative;top:4px'></i> Signout</span>
+				</a>
+			</ul>
+		</nav>
+		<!-- /.navbar -->
+		<!-- Main Sidebar Container -->
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<!-- Brand Logo -->
+			<a href='@Url.Action("Index","Home")' class="brand-link logopading">
+				<span class="brand-text font-weight-light daimlerlogo"><img src="~/image/header_logo.svg"></span>
+			</a>
+
+
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<!-- Sidebar user panel (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+						<img src="~/image/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+					</div>
+					<div class="info">
+						<a href="dashboard.html" class="d-block">
+							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
+							@HttpContextAccessor.HttpContext.Session.GetString("LastName")
+						</a>
+					</div>
+				</div>
+
+				<!-- Sidebar Menu -->
+				<nav class="mt-2">
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+						<!-- Add icons to the links using the .nav-icon class
+						   with font-awesome or any other icon font library -->
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+						{
+							<li class="nav-item">
+								<a href='@Url.Action("Index","Home")' class="nav-link">
+									<i class="nav-icon fas fa-tachometer-alt"></i>
+									<p class="trn">Dashboard</p>
+								</a>
+							</li>
+						}
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+						{
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-sitemap"></i>
+									<p>
+										<span class="trn">Department</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Department")' class="nav-link">
+											<i class="fas fa-table nav-icon"></i>
+											<p class="trn">Department List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","Department")' class="nav-link">
+											<i class="fa fa-window-restore nav-icon"></i>
+											<p class="trn">New Department</p>
+										</a>
+									</li>
+
+								</ul>
+							</li>
+
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-users"></i>
+									<p>
+										<span class="trn">User</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","User")' class="nav-link">
+											<i class="fas fa-address-card nav-icon"></i>
+											<p class="trn">User List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","User")' class="nav-link">
+											<i class="fas fa-user-plus nav-icon"></i>
+											<p class="trn">New User</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+
+
+							<li class="nav-item has-treeview">
+
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-address-book"></i>
+									<p>
+										<span class="trn">Contact</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Contact")' class="nav-link">
+											<i class="fas fa-id-card nav-icon"></i>
+											<p class="trn">Contact List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","Contact")' class="nav-link">
+											<i class="far fa-id-badge nav-icon"></i>
+											<p class="trn">New Contact</p>
+										</a>
+									</li>
+
+								</ul>
+							</li>
+							<li class="nav-item has-treeview">
+
+								<a href="#" class="nav-link">
+									<i class="nav-icon fa fa-list"></i>
+									<p>
+										<span class="trn">Master</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Master")' class="nav-link">
+											<i class="fa fa-list-alt"></i>
+											<p class="trn">Master List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","Master")' class="nav-link">
+											<i class="fa fa-indent"></i>
+											<p class="trn">New Master</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("GetQuarantineList","Master")' class="nav-link">
+											<i class="fa fa-outdent"></i>
+											<p class="trn">Master Quarantine</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+						}
+
+
+
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+						{
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-calendar-day"></i>
+									<p>
+										<span class="trn">Instruments</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Instrument")' class="nav-link">
+											<i class="nav-icon fas fa-calendar-minus"></i>
+											<p class="trn">Instruments List</p>
+										</a>
+									</li>
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("Create","Instrument")' class="nav-link">
+												<i class="nav-icon far fa-calendar-plus"></i>
+												<p class="trn">New Instrument</p>
+											</a>
+										</li>
+									}
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("QuratineList","Instrument")' class="nav-link">
+
+											<p>
+												<i class="nav-icon fas fa-calendar-times"></i>
+												<span class="trn">Qurataine Instrument</span>
+
+											</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+
+						}
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+						{
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-compass"></i>
+									<p>
+										<span class="trn">Tracker</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
+												<i class="fas fa-truck nav-icon"></i>
+												<p class="trn">External Request</p>
+											</a>
+										</li>
+									}
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("Request","Tracker",new {reqType=4})' class="nav-link">
+												<i class="fas fa-sign-out-alt nav-icon"></i>
+												<p class="trn">Request Tracker</p>
+											</a>
+										</li>
+									}
+								</ul>
+							</li>
+						}
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3")
+						{
+
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-comment-dots"></i>
+									<p>
+										<span class="trn">Customer Feedback</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+
+								<ul class="nav nav-treeview">
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("FeedbackInvite","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-check"></i>
+												<p class="trn">Feedback Invite</p>
+											</a>
+										</li>
+									}
+
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Feedback", new {FeedbackInviteId = 0})' class="nav-link">
+											<i class="nav-icon fas fa-clipboard"></i>
+											<p class="trn">Feedback Form</p>
+										</a>
+									</li>
+
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("SubmittedList","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-list "></i>
+												<p class="trn">Submitted List</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ReviewedList","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-list "></i>
+												<p class="trn">Reviewed List</p>
+											</a>
+										</li>
+									}
+								</ul>
+							</li>
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+							{
+								<li class="nav-item has-treeview">
+									<a href="#" class="nav-link">
+										<i class="nav-icon fas fa-microscope"></i>
+										<p>
+											<span class="trn">Quality Check</span>
+											<i class="fas fa-angle-left right"></i>
+										</p>
+									</a>
+									<ul class="nav nav-treeview">
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("IntermediateGridPage","QCIntermediateTemplate")' class="nav-link">
+												<i class="fas fa-receipt nav-icon"></i>
+												<p class="trn">Intermediate Template</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("AlternateTemplateGrid","QualityCheck")' class="nav-link">
+												<i class="fas fa-receipt nav-icon"></i>
+												<p class="trn">Alternative Template</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ReplicateTestGrid","QualityCheck")' class="nav-link">
+												<i class="fas fa-receipt nav-icon"></i>
+												<p class="trn">Replicate Test</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ReTestGrid","QualityCheck")' class="nav-link">
+												<i class="fas fa-receipt nav-icon"></i>
+												<p class="trn">Re-Test</p>
+											</a>
+										</li>
+									</ul>
+								</li>
+							}
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+							{
+								<li class="nav-item has-treeview">
+									<a href="#" class="nav-link">
+										<i class="fas fa-chart-pie"></i>
+										<p>
+											<span class="trn">Chart</span>
+											<i class="fas fa-angle-left right"></i>
+										</p>
+									</a>
+									<ul class="nav nav-treeview">
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("donutchart","InstrumentReport")' class="nav-link">
+												<i class="fas fa-sign-in-alt nav-icon"></i>
+												<p class="trn">Instrument Report</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("CalibrationLab","InstrumentReport")' class="nav-link">
+												<i class="fas fa-sign-in-alt nav-icon"></i>
+												<p class="trn">Calibration Lab - KPI</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("CustomerReport","InstrumentReport")' class="nav-link">
+												<i class="fas fa-sign-in-alt nav-icon"></i>
+												<p class="trn">Customer Feedback</p>
+											</a>
+										</li>
+									</ul>
+								</li>
+							}
+						}
+					</ul>
+				</nav>
+				<!-- /.sidebar-menu -->
+			</div>
+			<!-- /.sidebar -->
+		</aside>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark"></h1>
+						</div><!-- /.col -->
+						<div class="col-sm-6">
+							@* <ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href='@Url.Action("Index","Home")'>Home</a></li>
+							<li class="breadcrumb-item active">@ViewBag.PageTitle</li>
+							</ol> *@
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<div class="container">
+				<main role="main" style="background-color: white;" class="pb-3">
+					@RenderBody()
+					<!-- Button trigger modal -->
+					<!-- Modal l̥-->
+				</main>
+			</div>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+		<footer class="main-footer">
+			&copy; 2021 - Calibration Management - <a asp-area="" asp-controller="Home" asp-action="About">Privacy</a>
+			<div class="float-right d-none d-sm-inline-block">
+				<b>Version</b> 2.0.0
+			</div>
+		</footer>
+
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+	<!-- ./wrapper -->
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+
+	<div>
+		<!-- jQuery -->
+		<script src="~/js/jquery.min.js"></script>
+		<!-- jQuery UI 1.11.4 -->
+		<script src="~/js/jquery-ui.min.js"></script>
+		<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+		<script>
+			$.widget.bridge('uibutton', $.ui.button)
+		</script>
+		<!-- Bootstrap 4 -->
+		<script src="~/js/bootstrap.bundle.min.js"></script>
+		<!-- ChartJS -->
+		<script src="~/js/Chart.min.js"></script>
+		<!-- Sparkline -->
+		<script src="~/js/sparkline.js"></script>
+		<!-- JQVMap -->
+		<script src="~/js/jquery.vmap.min.js"></script>
+		<script src="~/js/jquery.vmap.usa.js"></script>
+		<!-- jQuery Knob Chart -->
+		<script src="~/js/jquery.knob.min.js"></script>
+		<!-- daterangepicker -->
+		<script src="~/js/moment.min.js"></script>
+		<script src="~/js/daterangepicker.js"></script>
+		<!-- Tempusdominus Bootstrap 4 -->
+		<script src="~/js/tempusdominus-bootstrap-4.min.js"></script>
+		<!-- Summernote -->
+		<script src="~/js/summernote-bs4.min.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="~/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="~/js/adminlte.js"></script>
+		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+		<script src="~/js/dashboard.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="~/js/demo.js"></script>
+
+		<script src="~/js/jquery.dataTables.min.js"></script>
+		<script src="~/js/dataTables.bootstrap4.min.js"></script>
+		<script src="~/js/dataTables.responsive.min.js"></script>
+		<script src="~/js/responsive.bootstrap4.min.js"></script>
+		<script src="~/js/daimler.js"></script>
+		<script src="~/js/jquery.validate.min.js"></script>
+		<script src="~/js/Chart.js"></script>
+		<script src="~/js/additional-methods.min.js"></script>
+		<script src="~/js/template.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="~/js/jquery.translate.js"></script>
+		<script src="~/js/bootstrap-select.min.js"></script>
+
+		<script type="text/javascript">
+			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
+			showPopup('@ViewBag.ResponseCode', '@ViewBag.ResponseMessage');
+
+			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
+			$('.Languagepicker').selectpicker();
+			$('.Languagepicker').selectpicker('val', language);
+			
+			var dict = diction();			
+			var translator = $('body').translate({ lang: language, t: dict });
+
+			$('.Languagepicker').on('change', function () {
+				var selected = $(this).find("option:selected").val();
+				var dict = diction();
+
+				if (selected == "en") {
+					var translator = $('body').translate({ lang: "en", t: dict });
+
+				}
+				else {
+					var translator = $('body').translate({ lang: "jp", t: dict });
+				}
+			});
+
+			function diction() {
+				var dict = {
+					"Master": { jp: "マスター", en: "Master" },
+					"Instruments": { jp: "楽器", en: "Instruments" },
+					"Request": { jp: "リクエスト", en: "Request" },
+					"More info ": { jp: "より詳しい情報 ", en: "More info " },
+					"Dashboard": { jp: "ダッシュボード", en: "Dashboard" },
+					"Department": { jp: "デパートメント", en: "Department" },
+					"Department List": { jp: "部門一覧", en: "Department List" },
+					"New Department": { jp: "新しい部署", en: "New Department" },
+					"User": { jp: "ユーザー", en: "User" },
+					"User List": { jp: "ユーザー一覧", en: "User List" },
+					"New User": { jp: "新しいユーザー", en: "New User" },
+					"Contact": { jp: "コンタクト", en: "Contact" },
+					"Contact List": { jp: "連絡先リスト", en: "Contact List" },
+					"New Contact": { jp: "新しい連絡先", en: "New Contact" },
+					"Master List": { jp: "マスターリスト", en: "Master List" },
+					"New Master": { jp: "新しいマスター", en: "New Master" },
+					"Master Quarantine": { jp: "マスター検疫", en: "Master Quarantine" },
+					"Instruments List": { jp: "楽器一覧", en: "Instruments List" },
+					"New Instrument": { jp: "新しい楽器", en: "New Instrument" },
+					"Qurataine Instrument": { jp: "クラテイン楽器", en: "Qurataine Instrument" },
+					"Tracker": { jp: "トラッカー", en: "Tracker" },
+					"External Request": { jp: "外部リクエスト", en: "External Request" },
+					"Request Tracker": { jp: "リクエストトラッカー", en: "Request Tracker" },
+					"Customer Feedback": { jp: "お客様の声", en: "Customer Feedback" },
+					"Feedback Invite": { jp: "フィードバックの招待", en: "Feedback Invite" },
+					"Feedback Form": { jp: "フィードバックフォーム", en: "Feedback Form" },
+					"Submitted List": { jp: "提出済みリスト", en: "Submitted List" },
+					"Reviewed List": { jp: "レビュー済みリスト", en: "Reviewed List" },
+					"Quality Check": { jp: "品質チェック", en: "Quality Check" },
+					"Intermediate Template": { jp: "中間テンプレート", en: "Intermediate Template" },
+					"Alternative Template": { jp: "代替テンプレート", en: "Alternative Template" },
+					"Replicate Test": { jp: "テストを繰り返す", en: "Replicate Test" },
+					"Re-Test": { jp: "再テスト", en: "Re-Test" },
+					"Chart": { jp: "チャート", en: "Chart" },
+					"Instrument Report": { jp: "機器レポート", en: "Instrument Report" },
+					"Calibration Lab - KPI": { jp: "校正ラボ - KPI", en: "Calibration Lab - KPI" },
+					"Add New Master": { jp: "新しいマスターを追加", en: "Add New Master" },
+					"Quarantine List": { jp: "検疫リスト", en: "Quarantine List" },
+					"Serial Number": { jp: "シリアルナンバー", en: "Serial Number" },
+					"Lab ID Number": { jp: "ラボ ID 番号", en: "Lab ID Number" },
+					"Calibration Frequency": { jp: "校正頻度", en: "Calibration Frequency" },
+					"Calibration Date": { jp: "校正日", en: "Calibration Date" },
+					"Due Date": { jp: "期日", en: "Due Date" },
+					"Edit": { jp: "編集", en: "Edit" },
+					"External Calibration Request": { jp: "外部校正リクエスト", en: "External Calibration Request" },
+					"Quarantine": { jp: "検疫", en: "Quarantine" },
+					"History": { jp: "歴史", en: "History" },
+					"Instrument Name": { jp: "楽器名", en: "Instrument Name" },
+					"Range": { jp: "範囲", en: "Range" },
+					"Add New Instrument": { jp: "新しい楽器を追加", en: "Add New Instrument" },
+					"Quratine List": { jp: "検疫リスト", en: "Quratine List" },
+					"Add New User": { jp: "新しいユーザーを追加", en: "Add New User" },
+					"Add New Contact": { jp: "新しい連絡先を追加", en: "Add New Contact"}
+				}
+				return dict;
+			}
+
+		</script>
+	</div>
+
+</body>
+
+</html>
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="modelBody">
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>

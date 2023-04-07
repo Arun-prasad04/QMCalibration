@@ -1,0 +1,818 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+
+
+    }
+
+    .Tables-AndTableTextBox {
+        width: 100%;
+    }
+
+    .row {
+        display: flex;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .column {
+        flex: 50%;
+
+    }
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .Border0px{
+        width: 100%;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="Tables-AndTableTextBox">
+            <tr class="sizeborder">
+        <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
+            <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
+        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Vernier Caliper</td>
+        <td class="textleftborder"  height="30">Format No.</td>
+        <td class="textcenterborder">365.QM.D.836</td>
+    </tr>
+    <tr>
+        <td class="textleftborder"  height="30">RevNo & </br> Date
+</td>
+        <td class="textcenterborder">01/ 12.08.2019</td>
+    </tr>
+        </table>
+        <br>
+
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <td class="textleftborder">Type / Model</td>
+                <td class="textleftborder">@Model.Name</td>
+                <td class="textleftborder">Range/LC:</td>
+                <td class="textleftborder">@Model.Range</td>
+                <td class="textleftborder">Make:</td>
+                <td class="textleftborder">@Model.Make</td>
+            </tr>
+            <tr>
+                <td class="textleftborder">Serial No.</td>
+                <td class="textleftborder">@Model.SerialNo</td>
+                <td class="textleftborder">ID No:</td>
+                <td class="textleftborder">@Model.IdNo</td>
+                <td class="textleftborder">Ref Std.</td>
+                <td class="textleftborder">@Model.RefStd</td>
+            </tr>
+        <tr>
+                <td>Temp@Start <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
+                <td>Temp@End <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
+                <td>Humidity %RH</td>
+                <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+        </tr>
+             <tr>
+        <td rowspan="2" colspan="4" class="textleftborder">Condition of Vernier Caliper :</br>
+        <textarea name="condition" id="condition" style="height: 50px;width: 400px;">@Model.ConditionOfVernierCaliper</textarea></td>
+        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        
+        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+    </tr>
+
+        </table>
+        <br>
+        @* @if(Model.ObsSubType==84){ *@
+        <div class="row">
+
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="5">ExternalJaw</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+                    </tr>
+                    <tr>
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" value="@Model.Measured1_1"  class="Tables-AndTableTextBox"
+                                id="Measured1_1" name="Measured1_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals1_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_1" name="Actuals1_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_2" name="Actuals1_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_3" name="Actuals1_T_3"></td>
+                        <td><input type="text" value="@Model.Avg1_1" class="Tables-AndTableTextBox"
+                                id="Avg1_1" name="Avg1_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured1_2" class="Tables-AndTableTextBox"
+                                id="Measured1_2" name="Measured1_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals1_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_4" name="Actuals1_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_5" name="Actuals1_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_6" name="Actuals1_T_6"></td>
+                        <td><input type="text" value="@Model.Avg1_2" class="Tables-AndTableTextBox"
+                                id="Avg1_2" name="Avg1_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured1_3" class="Tables-AndTableTextBox"
+                                id="Measured1_3" name="Measured1_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals1_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_7" name="Actuals1_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_8" name="Actuals1_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_9" name="Actuals1_T_9"></td>
+                        <td><input type="text" value="@Model.Avg1_3" class="Tables-AndTableTextBox"
+                                id="Avg1_3" name="Avg1_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured1_4" class="Tables-AndTableTextBox"
+                                id="Measured1_4" name="Measured1_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals1_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_10" name="Actuals1_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_11" name="Actuals1_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_12" name="Actuals1_T_12"></td>
+                        <td><input type="text" value="@Model.Avg1_4" class="Tables-AndTableTextBox"
+                                id="Avg1_4" name="Avg1_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured1_5" class="Tables-AndTableTextBox"
+                                id="Measured1_5" name="Measured1_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals1_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_13" name="Actuals1_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_14" name="Actuals1_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals1_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals1_T_15" name="Actuals1_T_15"></td>
+                        <td><input type="text" value="@Model.Avg1_5" class="Tables-AndTableTextBox"
+                                id="Avg1_5" name="Avg1_5"></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="5">ExternalJaw</th>
+                    </tr>
+                    <tr>
+
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+
+                    </tr>
+                    <tr>
+
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+                        <tr>
+                        <td><input type="text" value="@Model.Measured2_1" class="Tables-AndTableTextBox"
+                                id="Measured2_1" name="Measured2_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals2_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_1" name="Actuals2_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_2" name="Actuals2_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_3" name="Actuals2_T_3"></td>
+                        <td><input type="text" value="@Model.Avg2_1" class="Tables-AndTableTextBox"
+                                id="Avg2_1" name="Avg2_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured2_2" class="Tables-AndTableTextBox"
+                                id="Measured2_2" name="Measured2_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals2_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_4" name="Actuals2_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_5" name="Actuals2_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_6" name="Actuals2_T_6"></td>
+                        <td><input type="text" value="@Model.Avg2_2" class="Tables-AndTableTextBox"
+                                id="Avg2_2" name="Avg2_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured2_3" class="Tables-AndTableTextBox"
+                                id="Measured2_3" name="Measured2_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals2_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_7" name="Actuals2_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_8" name="Actuals2_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_9" name="Actuals2_T_9"></td>
+                        <td><input type="text" value="@Model.Avg2_3" class="Tables-AndTableTextBox"
+                                id="Avg2_3" name="Avg2_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured2_4" class="Tables-AndTableTextBox"
+                                id="Measured2_4" name="Measured2_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals2_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_10" name="Actuals2_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_11" name="Actuals2_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_12" name="Actuals2_T_12"></td>
+                        <td><input type="text" value="@Model.Avg2_4" class="Tables-AndTableTextBox"
+                                id="Avg2_4" name="Avg2_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured2_5" class="Tables-AndTableTextBox"
+                                id="Measured2_5" name="Measured2_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals2_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_13" name="Actuals2_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_14" name="Actuals2_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals2_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals2_T_15" name="Actuals2_T_15"></td>
+                        <td><input type="text" value="@Model.Avg2_5" class="Tables-AndTableTextBox"
+                                id="Avg2_5" name="Avg2_5"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <th>Parallelism Details :</th>
+                <td><input type="text" value="@Model.ExternalParallelismDetails" class="Tables-AndTableTextBox"
+                        id="ExternalParallelismDetails" name="ExternalParallelismDetails"></td>
+            </tr>
+        </table>
+
+        <hr>
+        @* } *@
+@* @if(Model.ObsSubType==85){ *@
+        <div class="row">
+
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="5">InternalJaw</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+                    </tr>
+                    <tr>
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured5_1" class="Tables-AndTableTextBox"
+                                id="Measured5_1" name="Measured5_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals5_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_1" name="Actuals5_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_2" name="Actuals5_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_3" name="Actuals5_T_3"></td>
+                        <td><input type="text" value="@Model.Avg5_1" class="Tables-AndTableTextBox"
+                                id="Avg5_1" name="Avg5_1"></td>
+                    </tr>
+                        
+                    <tr>
+                        <td><input type="text" value="@Model.Measured5_2" class="Tables-AndTableTextBox"
+                                id="Measured5_2" name="Measured5_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals5_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_4" name="Actuals5_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_5" name="Actuals5_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_6" name="Actuals5_T_6"></td>
+                        <td><input type="text" value="@Model.Avg5_2" class="Tables-AndTableTextBox"
+                                id="Avg5_2" name="Avg5_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured5_3" class="Tables-AndTableTextBox"
+                                id="Measured5_3" name="Measured5_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals5_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_7" name="Actuals5_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_8" name="Actuals5_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_9" name="Actuals5_T_9"></td>
+                        <td><input type="text" value="@Model.Avg5_3" class="Tables-AndTableTextBox"
+                                id="Avg5_3" name="Avg5_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured5_4" class="Tables-AndTableTextBox"
+                                id="Measured5_4" name="Measured5_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals5_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_10" name="Actuals5_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_11" name="Actuals5_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_12" name="Actuals5_T_12"></td>
+                        <td><input type="text" value="@Model.Avg5_4" class="Tables-AndTableTextBox"
+                                id="Avg5_4" name="Avg5_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured5_5" class="Tables-AndTableTextBox"
+                                id="Measured5_5" name="Measured5_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals5_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_13" name="Actuals5_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_14" name="Actuals5_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals5_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals5_T_15" name="Actuals5_T_15"></td>
+                        <td><input type="text" value="@Model.Avg5_5" class="Tables-AndTableTextBox"
+                                id="Avg5_5" name="Avg5_5"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="5">InternalJaw</th>
+                    </tr>
+                    <tr>
+
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+
+                    </tr>
+                    <tr>
+
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+                         <tr>
+                        <td><input type="text" value="@Model.Measured6_1" class="Tables-AndTableTextBox"
+                                id="Measured6_1" name="Measured6_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals6_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_1" name="Actuals6_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_2" name="Actuals6_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_3" name="Actuals6_T_3"></td>
+                        <td><input type="text" value="@Model.Avg6_1" class="Tables-AndTableTextBox"
+                                id="Avg6_1" name="Avg6_1"></td>
+                    </tr>
+                        
+                    <tr>
+                        <td><input type="text" value="@Model.Measured6_2" class="Tables-AndTableTextBox"
+                                id="Measured6_2" name="Measured6_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals6_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_4" name="Actuals6_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_5" name="Actuals6_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_6" name="Actuals6_T_6"></td>
+                        <td><input type="text" value="@Model.Avg6_2" class="Tables-AndTableTextBox"
+                                id="Avg6_2" name="Avg6_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured6_3" class="Tables-AndTableTextBox"
+                                id="Measured6_3" name="Measured6_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals6_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_7" name="Actuals6_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_8" name="Actuals6_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_9" name="Actuals6_T_9"></td>
+                        <td><input type="text" value="@Model.Avg6_3" class="Tables-AndTableTextBox"
+                                id="Avg6_3" name="Avg6_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured6_4" class="Tables-AndTableTextBox"
+                                id="Measured6_4" name="Measured6_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals6_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_10" name="Actuals6_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_11" name="Actuals6_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_12" name="Actuals6_T_12"></td>
+                        <td><input type="text" value="@Model.Avg6_4" class="Tables-AndTableTextBox"
+                                id="Avg6_4" name="Avg6_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured6_5" class="Tables-AndTableTextBox"
+                                id="Measured6_5" name="Measured6_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals6_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_13" name="Actuals6_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_14" name="Actuals6_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals6_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals6_T_15" name="Actuals6_T_15"></td>
+                        <td><input type="text" value="@Model.Avg6_5" class="Tables-AndTableTextBox"
+                                id="Avg6_5" name="Avg6_5"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <th>Parallelism Details :</th>
+                <td><input type="text" value="@Model.InternaljawParallelismDetails" class="Tables-AndTableTextBox"
+                        id="InternaljawParallelismDetails"></td>
+            </tr>
+        </table>
+
+
+        <hr>
+@* } *@
+
+        <div class="row">
+
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="4">Depth</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+
+                    </tr>
+                    <tr>
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured3_1" class="Tables-AndTableTextBox"
+                                id="Measured3_1" name="Measured3_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals3_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_1" name="Actuals3_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_2" name="Actuals3_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_3" name="Actuals3_T_3"></td>
+                        <td><input type="text" value="@Model.Avg3_1" class="Tables-AndTableTextBox"
+                                id="Avg3_1" name="Avg3_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured3_2" class="Tables-AndTableTextBox"
+                                id="Measured3_2" name="Measured3_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals3_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_4" name="Actuals3_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_5" name="Actuals3_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_6" name="Actuals3_T_6"></td>
+                        <td><input type="text" value="@Model.Avg3_2" class="Tables-AndTableTextBox"
+                                id="Avg3_2" name="Avg3_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured3_3" class="Tables-AndTableTextBox"
+                                id="Measured3_3" name="Measured3_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals3_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_7" name="Actuals3_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_8" name="Actuals3_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_9" name="Actuals3_T_9"></td>
+                        <td><input type="text" value="@Model.Avg3_3" class="Tables-AndTableTextBox"
+                                id="Avg3_3" name="Avg3_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured3_4" class="Tables-AndTableTextBox"
+                                id="Measured3_4" name="Measured3_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals3_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_10" name="Actuals3_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_11" name="Actuals3_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_12" name="Actuals3_T_12"></td>
+                        <td><input type="text" value="@Model.Avg3_4" class="Tables-AndTableTextBox"
+                                id="Avg3_4" name="Avg3_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured3_5" class="Tables-AndTableTextBox"
+                                id="Measured3_5" name="Measured3_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals3_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_13" name="Actuals3_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_14" name="Actuals3_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals3_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals3_T_15" name="Actuals3_T_15"></td>
+                        <td><input type="text" value="@Model.Avg3_5" class="Tables-AndTableTextBox"
+                                id="Avg3_5" name="Avg3_5"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="column">
+                <table>
+                    <tr>
+                        <th colspan="4">Depth</th>
+                    </tr>
+                    <tr>
+
+                        <th rowspan="2">Measured</th>
+                        <th colspan="3">Actual</th>
+                        <th rowspan="2">Avg.</th>
+
+
+                    </tr>
+                    <tr>
+
+                        <th>Trail1</th>
+                        <th>Trail2</th>
+                        <th>Trail3</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured4_1" class="Tables-AndTableTextBox"
+                                id="Measured4_1" name="Measured4_1">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals4_T_1" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_1" name="Actuals4_T_1"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_2" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_2" name="Actuals4_T_2"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_3" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_3" name="Actuals4_T_3"></td>
+                        <td><input type="text" value="@Model.Avg4_1" class="Tables-AndTableTextBox"
+                                id="Avg4_1" name="Avg4_1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured4_2" class="Tables-AndTableTextBox"
+                                id="Measured4_2" name="Measured4_2">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals4_T_4" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_4" name="Actuals4_T_4"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_5" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_5" name="Actuals4_T_5"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_6" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_6" name="Actuals4_T_6"></td>
+                        <td><input type="text" value="@Model.Avg4_2" class="Tables-AndTableTextBox"
+                                id="Avg4_2" name="Avg4_2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured4_3" class="Tables-AndTableTextBox"
+                                id="Measured4_3" name="Measured4_3">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals4_T_7" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_7" name="Actuals4_T_7"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_8" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_8" name="Actuals4_T_8"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_9" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_9" name="Actuals4_T_9"></td>
+                        <td><input type="text" value="@Model.Avg4_3" class="Tables-AndTableTextBox"
+                                id="Avg4_3" name="Avg4_3"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured4_4" class="Tables-AndTableTextBox"
+                                id="Measured4_4" name="Measured4_4">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals4_T_10" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_10" name="Actuals4_T_10"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_11" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_11" name="Actuals4_T_11"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_12" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_12" name="Actuals4_T_12"></td>
+                        <td><input type="text" value="@Model.Avg4_4" class="Tables-AndTableTextBox"
+                                id="Avg4_4" name="Avg4_4"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="@Model.Measured4_5" class="Tables-AndTableTextBox"
+                                id="Measured4_5" name="Measured4_5">
+                        </td>
+                        <td><input type="text" value="@Model.Actuals4_T_13" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_13" name="Actuals4_T_13"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_14" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_14" name="Actuals4_T_14"></td>
+                        <td><input type="text" value="@Model.Actuals4_T_15" onkeyup="averagemeaservalues()" class="Tables-AndTableTextBox"
+                                id="Actuals4_T_15" name="Actuals4_T_15"></td>
+                        <td><input type="text" value="@Model.Avg4_5" class="Tables-AndTableTextBox"
+                                id="Avg4_5" name="Avg4_5"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+
+        @* <table class="Tables-AndTableTextBox">
+            <tr>
+                <th>Parallelism Details :</th>
+                <td><input type="text" value="@Model.DepthParallelismDetails" class="Tables-AndTableTextBox"
+                        id="DepthParallelismDetails" name="DepthParallelismDetails"></td>
+            </tr>
+        </table> *@
+
+
+        <hr>
+        <br>
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <th colspan="2">For MUcalculation</th>
+            </tr>
+            <tr>
+                <th colspan="2">Interval</th>
+                @* <td><input type="text" value="@Model.Interval" class="Tables-AndTableTextBox"
+                        id="MUcalculationInterval"></td> *@
+            </tr>
+                <tr>
+                    <td><input type="text" value="@Model.MuLeftValue1" class="Tables-AndTableTextBox" id="MuLeftValue1" name="MuLeftValue1"></td>
+                    <td><input type="text" value="@Model.MuRightValue1" class="Tables-AndTableTextBox" id="MuRightValue1" name="MuRightValue1"></td>
+                    </tr>
+                    <tr>
+                    <td><input type="text" value="@Model.MuLeftValue2" class="Tables-AndTableTextBox" id="MuLeftValue2" name="MuLeftValue2"></td>
+                    <td><input type="text" value="@Model.MuRightValue2" class="Tables-AndTableTextBox" id="MuRightValue2" name="MuRightValue2"></td>
+                    </tr>
+                    <tr>
+                    <td><input type="text" value="@Model.MuLeftValue3" class="Tables-AndTableTextBox" id="MuLeftValue3" name="MuLeftValue3"></td>
+                    <td><input type="text" value="@Model.MuRightValue3" class="Tables-AndTableTextBox" id="MuRightValue3" name="MuRightValue3"></td>
+                    </tr>
+                    <tr>
+                    <td><input type="text" value="@Model.MuLeftValue4" class="Tables-AndTableTextBox" id="MuLeftValue4" name="MuLeftValue4"></td>
+                    <td><input type="text" value="@Model.MuRightValue4" class="Tables-AndTableTextBox" id="MuRightValue4" name="MuRightValue4"></td>
+                    </tr>
+                    <tr>
+                    <td><input type="text" value="@Model.MuLeftValue5" class="Tables-AndTableTextBox" id="MuLeftValue5" name="MuLeftValue5"></td>
+                    <td><input type="text" value="@Model.MuRightValue5" class="Tables-AndTableTextBox" id="MuRightValue5" name="MuRightValue5"></td>
+                </tr>
+        </table>
+        <br>
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <th>Calibration Performed By</th>
+                <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTableTextBox"
+                        id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled></td>
+                <th>Reveiwed By</th>
+                <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Tables-AndTableTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                @if(true)
+                {
+                        var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+                        <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                                class="Tables-AndTableTextBox" disabled>
+                        </td>
+                }                 
+                <th class="textleftborder">Date:</th>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
+                        || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
+                        <td><input type="text" name="Review_Date" id="Review_Date" 
+                                value="@Model.Review_Date" class="size" disabled>
+                        </td>
+                }else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"){
+                        <td>
+                                <div class="form-group">
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                                                id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate"  @Model.IsDisabled>
+                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </td>
+                } 
+                </tr>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
+                {
+                        <tr>
+                                <td class="textleftborder">Status</td>
+                                <td class="textleftborder" colspan="3">
+                                <div style="text-align: left;">
+                                        <label>Approve</label>
+                                        <input type="radio" name="Approve" id="Approve">
+                                        <label>Reject</label>
+                                        <input type="radio" name="Approve" id="Reject">
+                                </div>
+                                </td>
+
+                        </tr>
+                }
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4"){
+                <tr>
+                        <td colspan="4">
+                        @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                        {
+                                <input type="button" class="btn btn-primary" value="Save" name="Save" id="VernierCaliper" onclick="SaveVernierCaliper()">
+                        }
+                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                        </td>
+                </tr>
+                }
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+                {
+                        <tr>
+                        <td colspan="4" style="text-align:center;">
+                                @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                                {
+                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                                }
+                                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                        </td>
+                        </tr>
+                }
+
+
+        </table>
+
+        <input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+        <input type="hidden" id="requestId" value="@Model.RequestId">
+        <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+        <input type="hidden" name="TemplateObservationId" Id="TemplateObservationId" value="@Model.TemplateObservationId">
+        <input type="hidden" name="Id" Id="Id" value="@Model.Id">
+
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+</script> 
+ <script>
+    setTimeout(function () {
+
+    $('#reservationdate').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    }, 1000);
+
+    </script> 

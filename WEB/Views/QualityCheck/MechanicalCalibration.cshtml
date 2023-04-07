@@ -1,0 +1,511 @@
+@{
+    ViewData["Title"] = "Feedback Form";
+}
+
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+
+
+    }
+
+    .Tables-AndItsTextBox {
+        width: 100%;
+    }
+
+    
+
+    .SINo-Yes-No-NA_columns { 
+        width: 5%;
+    }
+
+    .Comments { 
+        width: 30%;
+    }
+
+    .CheckPoints {
+        width: 50%;
+    }
+
+    .MasterEquipmentTextBox {
+        height: 60px;
+        width: 100%;
+    }
+</style>
+
+
+
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Intermediate Check Evaluation
+            Mechanical Calibration</th>
+        <th>Format No.</th>
+        <td><input type="text" value="@Model.FormatNo" class="Tables-AndItsTextBox" id="FormatNo"></td>
+    </tr>
+    <tr>
+        <th>Rev.No & Date</th>
+        <td><input type="text" value="@Model.RevNo" class="Tables-AndItsTextBox" id="RevNoAndDate"></td>
+    </tr>
+</table>
+<br>
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th rowspan="2">Master Equipment subjected to Intermediate Check</th>
+        <td rowspan="2"><input type="text" value="@Model.IntermediateCheck" class="MasterEquipmentTextBox"
+                id="MasterEquipmentIntermediateCheck"></td>
+        <th>Master Equipment ID</th>
+        <td><input type="text" value="@Model.MasterEquipmentID" id="MasterEquipmentID" class="Tables-AndItsTextBox"></td>
+    </tr>
+    <tr>
+        <th>Range /Size & Least Count</th>
+        <td><input type="text" value="@Model.RangeSizeLeastCount" class="Tables-AndItsTextBox" id="RangeSizeAndLeastCount"></td>
+    </tr>
+    <tr>
+        <th>Master Equipment used to calibrate</th>
+        <td colspan="3"><input type="text" value="@Model.MasterEquipment" class="Tables-AndItsTextBox" id="MasterEquipmentcalibrate">
+        </td>
+    </tr>
+</table>
+<br>
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th class="SINo-Yes-No-NA_columns">Sl No.</th>
+        <th class="CheckPoints">Check Points</th>
+        <th class="SINo-Yes-No-NA_columns">Yes</th>
+        <th class="SINo-Yes-No-NA_columns">No</th>
+        <th class="SINo-Yes-No-NA_columns">NA</th>
+        <th class="Comments">Comments</th>
+    </tr>
+    <tr>
+        <th colspan="6">Physical Conditions</th>
+    </tr>
+    <tr>
+        <th>1</th>
+        <th>Any Damages, Dent & Scratches ?</th>
+        <td>@if (@Model.DamagesDentAndScratches == "Yes")
+            {
+                <input type="radio" name="DamagesDentAndScratches" value="Yes" checked="checked"
+                id="DamagesDentAndScratchesYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="DamagesDentAndScratches" value="Yes" id="DamagesDentAndScratchesYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.DamagesDentAndScratches == "No")
+            {
+                <input type="radio" name="DamagesDentAndScratches" value="No" checked="checked"
+                id="DamagesDentAndScratchesNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="DamagesDentAndScratches" value="No" id="2" id="DamagesDentAndScratchesNo"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.DamagesDentAndScratches == "NA")
+            {
+                <input type="radio" name="DamagesDentAndScratches" value="NA" checked="checked"
+                id="DamagesDentAndScratchesNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="DamagesDentAndScratches" value="NA" id="DamagesDentAndScratchesNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.DamagesDentAndScratchesComments" class="Tables-AndItsTextBox"></td>
+    </tr>
+    <tr>
+        <th>2</th>
+        <th>Rust/ Oxidation observed on the surfaces ?</th>
+        <td>@if (@Model.RustAndOxidation == "Yes")
+            {
+                <input type="radio" name="RustAndOxidation" value="Yes" checked="checked" id="RustAndOxidationYes"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="RustAndOxidation" value="Yes" id="RustAndOxidationYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.RustAndOxidation == "No")
+            {
+                <input type="radio" name="RustAndOxidation" value="No" checked="checked" id="RustAndOxidationNo"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="RustAndOxidation" value="No" id="RustAndOxidationNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.RustAndOxidation == "NA")
+            {
+                <input type="radio" name="RustAndOxidation" value="NA" checked="checked" id="RustAndOxidationNA"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="RustAndOxidation" value="NA" id="RustAndOxidationNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.RustAndOxidationComments" class="Tables-AndItsTextBox"></td>
+    </tr>
+    <tr>
+        <th>3</th>
+        <th>Accessories, Fixtures & any other attachments Present?</th>
+        <td>@if (@Model.AccessoriesFixturesAndOthers == "Yes")
+            {
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="Yes" checked="checked"
+                id="AccessoriesFixturesAndOthersYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="Yes" id="AccessoriesFixturesAndOthersYes"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.AccessoriesFixturesAndOthers == "No")
+            {
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="No" checked="checked"
+                id="AccessoriesFixturesAndOthersNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="No" id="AccessoriesFixturesAndOthersNo"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.AccessoriesFixturesAndOthers == "NA")
+            {
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="NA" checked="checked"
+                id="AccessoriesFixturesAndOthersNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AccessoriesFixturesAndOthers" value="NA" id="AccessoriesFixturesAndOthersNA"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.AccessoriesFixturesAndOthersComments" class="Tables-AndItsTextBox"></td>
+    </tr>
+    <tr>
+        <th>4</th>
+        <th>Any abnormalities found?</th>
+        <td>@if (@Model.AbnormalitiesFound == "Yes")
+            {
+                <input type="radio" name="AbnormalitiesFound" value="Yes" checked="checked" id="AbnormalitiesFoundYes"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AbnormalitiesFound" value="Yes" id="AbnormalitiesFoundYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.AbnormalitiesFound == "No")
+            {
+                <input type="radio" name="AbnormalitiesFound" value="No" checked="checked" id="AbnormalitiesFoundYNo"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AbnormalitiesFound" value="No" id="AbnormalitiesFoundNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.AbnormalitiesFound == "NA")
+            {
+                <input type="radio" name="AbnormalitiesFound" value="NA" checked="checked" id="AbnormalitiesFoundNA"
+                class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="AbnormalitiesFound" value="NA" id="AbnormalitiesFoundNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.AbnormalitiesFoundComments" class="Tables-AndItsTextBox" id="AbnormalitiesFoundComments">
+        </td>
+    </tr>
+    <tr>
+        <th colspan="6">Function Check</th>
+    </tr>
+    <tr>
+        <th>1</th>
+        <th>Any Powering issue?</th>
+        <td>@if (@Model.PoweringIssue == "Yes")
+            {
+                <input type="radio" name="PoweringIssue" value="Yes" checked="checked" id="PoweringIssueYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="PoweringIssue" value="Yes" id="PoweringIssueYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.PoweringIssue == "No")
+            {
+                <input type="radio" name="PoweringIssue" value="No" checked="checked" id="PoweringIssueNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="PoweringIssue" value="No" id="PoweringIssueNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.PoweringIssue == "NA")
+            {
+                <input type="radio" name="PoweringIssue" value="NA" checked="checked" id="PoweringIssueNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="PoweringIssue" value="NA" id="PoweringIssueNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.PoweringIssueComments" class="Tables-AndItsTextBox" id="PoweringIssueComments"></td>
+    </tr>
+    <tr>
+        <th>2</th>
+        <th>Smooth movement for its entire range</th>
+        <td>@if (@Model.SmoothMovement == "Yes")
+            {
+                <input type="radio" name="SmoothMovement" value="Yes" checked="checked" id="SmoothMovementYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="SmoothMovement" value="Yes" id="SmoothMovementYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.SmoothMovement == "No")
+            {
+                <input type="radio" name="SmoothMovement" value="No" checked="checked" id="SmoothMovementNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="SmoothMovement" value="No" id="SmoothMovementNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.SmoothMovement == "NA")
+            {
+                <input type="radio" name="SmoothMovement" value="NA" checked="checked" id="SmoothMovementNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="SmoothMovement" value="NA" id="SmoothMovementNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.SmoothMovementComments" class="Tables-AndItsTextBox" id="SmoothMovementComments"></td>
+    </tr>
+    <tr>
+        <th>3</th>
+        <th>Any noise observed while functioning of the equipment?</th>
+        <td>@if (@Model.NoiseObserverWhileFunctioning == "Yes")
+            {
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="Yes" checked="checked"
+                id="NoiseObserverWhileFunctioningYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="Yes" id="NoiseObserverWhileFunctioningYes"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.NoiseObserverWhileFunctioning == "No")
+            {
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="No" checked="checked"
+                id="NoiseObserverWhileFunctioningNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="No" id="NoiseObserverWhileFunctioningNo"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.NoiseObserverWhileFunctioning == "NA")
+            {
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="NA" checked="checked"
+                id="NoiseObserverWhileFunctioningNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="NoiseObserverWhileFunctioning" value="NA" id="NoiseObserverWhileFunctioningNA"
+                class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.NoiseObserverWhileFunctioningComments" class="Tables-AndItsTextBox"
+                id="NoiseObserverWhileFunctioningComments"></td>
+    </tr>
+    <tr>
+        <th>4</th>
+        <th>Any faults with functioning of software?</th>
+        <td>@if (@Model.Faults == "Yes")
+            {
+                <input type="radio" name="Faults" value="Yes" checked="checked" id="FaultsYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="Faults" value="Yes" id="FaultsYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.Faults == "No")
+            {
+                <input type="radio" name="Faults" value="No" checked="checked" id="FaultsNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="Faults" value="No" id="FaultsNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.Faults == "NA")
+            {
+                <input type="radio" name="Faults" value="NA" checked="checked" id="FaultsNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="Faults" value="NA" id="FaultsNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.FaultsComments" class="Tables-AndItsTextBox" id="FaultsComments"></td>
+    </tr>
+    <tr>
+        <th>5</th>
+        <th>Any other abnormalities ?</th>
+        <td>@if (@Model.OtherAbnormalities == "Yes")
+            {
+                <input type="radio" name="OtherAbnormalities" value="Yes" checked="checked" id="otherAbnormalitiesYes" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="OtherAbnormalities" value="Yes" id="otherAbnormalitiesYes" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.OtherAbnormalities == "No")
+            {
+                <input type="radio" name="OtherAbnormalities" value="No" checked="checked" id="otherAbnormalitiesNo" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="OtherAbnormalities" value="No" id="otherAbnormalitiesNo" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td>@if (@Model.OtherAbnormalities == "NA")
+            {
+                <input type="radio" name="OtherAbnormalities" value="NA" checked="checked" id="otherAbnormalitiesNA" class="Tables-AndItsTextBox">
+            }
+            else
+            {
+
+                <input type="radio" name="OtherAbnormalities" value="NA" id="otherAbnormalitiesNA" class="Tables-AndItsTextBox">
+            }
+        </td>
+        <td><input type="text" value="@Model.OtherAbnormalitiesComments" class="Tables-AndItsTextBox"></td>
+    </tr>
+</table>
+<br>
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th colspan="8">Accuracy Check</th>
+    </tr>
+    <tr>
+        <th colspan="4">Equipment used to Check the Master Equipment</th>
+        <td><input type="text" value="@Model.EquipmentusedToChecktTheMasterEquipment" class="Tables-AndItsTextBox" id="EquipmentUsedToCheckMasterEquipment"></td>
+        <th colspan="2">Equipment ID</th>
+        <td><input type="text" value="@Model.EquipmentID" class="Tables-AndItsTextBox" id="EquipmentID"></td>
+    </tr>
+    <tr>
+        <th colspan="4">Range / Size</th>
+        <td><input type="text" value="@Model.RangeSize" class="Tables-AndItsTextBox" id="RangeAndSize"></td>
+        <th colspan="2">Least Count</th>
+        <td><input type="text" value="@Model.LeastCount" class="Tables-AndItsTextBox" id="LeastCount"></td>
+    </tr>
+    <tr>
+        <th colspan="2">Master Equipment Calibration Results</th>
+        <th colspan="2">Current Internal Check</th>
+        <th colspan="2">Difference</th>
+        <th>Acceptance Criteria</th>
+        <th>Decision</th>
+    </tr>
+
+
+    @foreach (var item in @Model.Accuracycheck)
+    {
+
+
+        <tr>
+            <td><input type="text" value="@item.MasterEquipmentCalibrationResults1" class="Tables-AndItsTextBox" id="MasterEquipmentCalibrationResults1"></td>
+            <td><input type="text" value="@item.MasterEquipmentCalibrationResults2" class="Tables-AndItsTextBox" id="MasterEquipmentCalibrationResults2"></td>
+            <td><input type="text" value="@item.CurrentInternalCheck1" class="Tables-AndItsTextBox" id="CurrentInternalCheck1"></td>
+            <td><input type="text" value="@item.CurrentInternalCheck2" class="Tables-AndItsTextBox" id="CurrentInternalCheck2"></td>
+            <td><input type="text" value="@item.Difference1" class="Tables-AndItsTextBox" id="Difference1"></td>
+            <td><input type="text" value="@item.Difference2" class="Tables-AndItsTextBox" id="Difference2"></td>
+            <td><input type="text" value="@item.AcceptanceCriteria" class="Tables-AndItsTextBox" id="AcceptanceCriteria"></td>
+            <td><input type="text" value="@item.Decision" class="Tables-AndItsTextBox" id="Decision"></td>
+        </tr>
+    }
+</table>
+<br>
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th colspan="2">Conclusions & Actions</th>
+    </tr>
+    <tr>
+        <th>Any doubts on Performance / Accuracy</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.Accuracy" id="DoubtsOnAccuracyAndPerformance"></td>
+    </tr>
+    <tr>
+        <th>Comments on Acceptance</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.Acceptance" id="CommentsOnAcceptance"></td>
+    </tr>
+    <tr>
+        <th>Any other comments</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.OtherComments" id="OtherComments"></td>
+    </tr>
+</table>
+<br>
+<table class="Tables-AndItsTextBox">
+    <tr>
+        <th>Study Performed by</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.StudyPerformedBy" id="StudyPerformedBy"></td>
+        <th>Technical Manager</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.TechnicalManager" id="TechnicalManager"></td>
+    </tr>
+    <tr>
+        <th>Signature</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.StudyPerformerSignature" id="StudyPerformerSignature"></td>
+        <th>Signature</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.TechnicalManagerSignature" id="TechnicalManagerSignature"></td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.StudyPerformingDate" id="StudyPerformingDate"></td>
+        <th>Date</th>
+        <td><input type="text" class="Tables-AndItsTextBox" value="@Model.TechnicalManagerSignaturedDate" id="TechnicalManagerSignaturedDate"></td>
+    </tr>
+</table>

@@ -1,0 +1,270 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    .border {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    .textcenter {
+        text-align: center;
+    }
+
+    .textleft {
+        text-align: left;
+    }
+
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .textcenterborder2 {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .size {
+        width: 100%;
+    }
+
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .sizeborder2 {writing-mode: vertical-rl;transform: rotate(180deg);}
+    
+</style>
+<div class="row">
+<div class="col-md-2"></div>
+<div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+
+<table class="sizeborder">
+    <tr class="sizeborder">
+        <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
+            <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
+        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Lever Type Dial</td>
+        <td class="textleftborder"  height="30">Format No</td>
+        <td class="textcenterborder">365.QM.D.859</td>
+    </tr>
+    <tr>
+        <td class="textleftborder"  height="30">RevNo & </br> Date
+</td>
+        <td class="textcenterborder">01/ 12.08.2019</td>
+    </tr>
+</table>
+<br>
+<table class="sizeborder">
+    <tr>
+        <td class="textleftborder">Name</td>
+        <td class="textleftborder">@Model.Name</td>
+        <td class="textleftborder">Range/LC</td>
+        <td class="textleftborder">@Model.Range</td>
+        <td class="textleftborder">Make</td>
+        <td class="textleftborder">@Model.Make</td>
+    </tr>
+    <tr>
+        <td class="textleftborder">Serial No</td>
+        <td class="textleftborder">@Model.SerialNo</td>
+        <td class="textleftborder">ID No</td>
+        <td class="textleftborder">@Model.IDNo</td>
+        <td class="textleftborder">Ref Std</td>
+        <td class="textleftborder">@Model.RefStd</td>
+    </tr>
+    <tr>
+        <td class="textleftborder">Temp@Start <sup>o</sup>C</td>
+        <td><input type="text" name="TempStart" id="TempStart" value="@Model.TempStart" class="size" @Model.IsDisabled></td>
+        <td class="textleftborder">Temp@End <sup>o</sup>C</td>
+        <td><input type="text" name="TempEnd" id="TempEnd" value="@Model.TempEnd" class="size" @Model.IsDisabled></td>
+        <td class="textleftborder">Humidity %RH</td>
+        <td><input type="text" name="Humidity"id="Humidity" value="@Model.Humidity" class="size" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="4" class="textleftborder">Condition of the Dial Indicator </br>
+        <textarea name="DialIndicatiorCondition" id="DialIndicatiorCondition" style="height: 50px;width: 400px;" 
+                 @Model.IsDisabled>@Model.DialIndicatiorCondition</textarea></td>
+        <td class="textleftborder" colspan="2">Ref WI:  <input type="text" name="RefWI"id="RefWI" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+    </tr>
+</table>
+<table class="sizeborder">
+
+    <tr style="font-weight: bold;"> 
+        <td class="textcenterborder" rowspan="2">Sl No.</td>
+        <td class="textcenterborder" rowspan="2" colspan="2">Parameter</td>
+        <td class="textcenterborder" rowspan="2">Spec</td>
+        <td class="textcenterborder" colspan="2">Actual</td>
+    </tr>
+    <tr style="font-weight: bold;">
+        <td class="textcenterborder">DirectionA</td>
+        <td class="textcenterborder">DirectionB</td>
+    </tr>
+
+    <tr>
+        <td style="font-weight: bold;" class="textcenterborder">1</td>
+        <aside><td class="textcenterborder2 sizeborder2" style="font-weight: bold;" rowspan="4">Indicator Error</td></aside>
+        <td class="textleftborder" style="font-weight: bold;width: 25%;">Measuring Range</td>
+        <td class="textcenterborder"><input type="text" name="MeasuringRange" id="MeasuringRange" value="@Model.MeasuringRangeSpec" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="MeasuringRangeDirectionA1" id="MeasuringRangeDirectionA1" value="@Model.MeasuringRangeDirectionA1" class="size" @Model.IsDisabled>
+        </td>
+        <td class="textcenterborder"><input type="text" name="MeasuringRangeDirectionB1" id="MeasuringRangeDirectionB1" value="@Model.MeasuringRangeDirectionB1" class="size" @Model.IsDisabled>
+        </td>
+    </tr>
+    <tr>
+        <td class="textcenterborder" style="font-weight: bold;">2</td>
+        <td class="textleftborder" style="font-weight: bold;width: 25%;">10 Scale Division</td>
+        <td class="textcenterborder"><input type="text" name="ScaleDivisionSpec" id="ScaleDivisionSpec" value="@Model.ScaleDivisionSpec" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="ScaleDivisionDirectionA2" id="ScaleDivisionDirectionA2" value="@Model.ScaleDivisionDirectionA2" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="ScaleDivisionDirectionB2" id="ScaleDivisionDirectionB2" value="@Model.ScaleDivisionDirectionB2" class="size" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        <td class="textcenterborder" style="font-weight: bold;">3</td>
+        <td class="textleftborder" style="font-weight: bold;width: 25%;">Hysteresis</td>
+        <td class="textcenterborder"><input type="text" name="HysteresisSpec" id="HysteresisSpec" value="@Model.HysteresisSpec" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="HysteresisDirectionA3" id="HysteresisDirectionA3" value="@Model.HysteresisDirectionA3" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="HysteresisDirectionB3" id="HysteresisDirectionB3" value="@Model.HysteresisDirectionB3" class="size" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        <td class="textcenterborder" style="font-weight: bold;">4</td>
+        <td class="textleftborder" style="font-weight: bold;width: 25%;">Repeatability</td>
+        <td class="textcenterborder"><input type="text" name="RepeatabilitySpec" id="RepeatabilitySpec" value="@Model.RepeatabilitySpec" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="RepeatabilityDirectionA4" id="RepeatabilityDirectionA4" value="@Model.RepeatabilityDirectionA4" class="size" @Model.IsDisabled></td>
+        <td class="textcenterborder"><input type="text" name="RepeatabilityDirectionB4" id="RepeatabilityDirectionB4" value="@Model.RepeatabilityDirectionB4" class="size" @Model.IsDisabled></td>
+    </tr>
+</table>
+<br>
+<table class="sizeborder">
+    <tr>
+        <td style="font-weight: bold;" class="textleftborder">Calibration Performed By</td>
+        <td><input type="text" name="CalibrationPerformedBy" id="CalibrationPerformedBy" value="@Model.CalibrationPerformedBy" class="size" disabled></td>
+       
+        <td style="font-weight: bold;" class="textleftborder">Reveiwed By</td>
+        <td><input type="text" id="ReviewedBy" name="ReviewedBy" value="@Model.ReviewedBy" class="size" disabled></td>
+    </tr>
+    <tr>
+        <td style="font-weight: bold;" class="textleftborder">Date:</td>
+        @if( true)
+        {
+            var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+            <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                    class="size" disabled>
+            </td>
+        }       
+        <td style="font-weight: bold;" class="textleftborder">Date:</td>
+       
+        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
+            || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
+            <td><input type="text" name="Review_Date" id="Review_Date" 
+                 value="@Model.Review_Date" class="size" disabled></td>
+        }else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"){
+            <td>
+                        <div class="form-group">                   
+                        <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                            id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate">
+                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                        </div>
+            </td>
+        }
+    </tr>
+    @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
+    {
+            <tr>
+                    <td class="textleftborder">Status</td>
+                    <td class="textleftborder" colspan="3">
+                        <div style="text-align: left;">
+                            <label>Approve</label>
+                            <input type="radio" name="Approve" id="Approve">
+                            <label>Reject</label>
+                            <input type="radio" name="Approve" id="Reject">
+                        </div>
+                    </td>
+
+            </tr>
+    }
+    @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4"){
+        <tr>
+            <td colspan="4">
+                @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                {
+                    <input type="button" class="btn btn-primary" value="Save"name="Save" id="LeverDial" onclick="SaveLeverDial()">
+                }
+                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+            </td>
+        </tr>
+    }
+    @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+    {
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                    {
+                        <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                    }
+                    <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                </td>
+            </tr>
+    }
+</table> 
+<input type="hidden" name="instrumentId" id="instrumentId" value="@Model.InstrumentId">
+<input type="hidden" name="requestId" id="requestId" value="@Model.RequestId">
+<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+<input type="hidden" name="Id" id="Id" value="@Model.Id">
+<input type="hidden" name="TemplateObservationId" Id="TemplateObservationId" value="@Model.TemplateObservationId">
+
+</div>
+<div class="col-md-2"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+</script>
+
+ <script>
+    setTimeout(function () {
+
+    $('#reservationdate').datetimepicker({
+    format: 'DD/MM/YYYY'
+    });
+    }, 1000);
+
+    </script> 

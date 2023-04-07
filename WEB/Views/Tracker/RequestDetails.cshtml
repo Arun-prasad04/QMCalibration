@@ -1,0 +1,475 @@
+@{
+  ViewData["Title"] = "Request Details";
+}
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script>
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search)
+        for (const param of params) {
+        console.log(param)
+        console.log(param[1]);
+        console.log(param[0]);
+        viewRequestNew(param[1]);
+        }  
+};
+</script>
+
+<section class="content">
+    <input type="hidden" id="RequestCalibId">
+    <input type="hidden" id="MasterInstrument1" name="MasterInstrument1" value="">
+    <input type="hidden" id="MasterInstrument2" name="MasterInstrument2" value="">
+    <input type="hidden" id="MasterInstrument3" name="MasterInstrument3" value="">
+    <input type="hidden" id="MasterInstrument4" name="MasterInstrument4" value="">
+     <input type="hidden" name="IsNABL" id="IsNABL" value="">
+
+
+    <input type="hidden" id="userRoleId" value='@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'>
+    <div class="row">
+      <div class="col-12">
+        <!-- general form elements disabled -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="card-title">Request Details</h3>
+              </div>
+              <div class="col-md-6 text-right">
+                @* <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default"
+                    value="Instrument List"></a> *@
+              </div>
+            </div>
+          </div>    
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Request Number</label>
+                            <input type="text" class="form-control" id="NewReqestNo" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Requested Date</label>
+                            <input type="text" class="form-control" id="NewRequestDate" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Instrument Name</label>
+                            <input type="text" class="form-control" id="NewInstrumentName" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Instrument Serial Number</label>
+                            <input type="text" class="form-control" id="NewInstrumentSerialNumber" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Type Of Request</label>
+                            <input type="text" class="form-control" id="NewTypeOfRequest" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Request By</label>
+                            <input type="text" class="form-control" id="NewReqestBy" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Range</label>
+                            <input type="text" class="form-control" id="NewRange" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input type="text" class="form-control" id="NewUnit1" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>LC</label>
+                            <input type="text" class="form-control" id="NewLC" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input type="text" class="form-control" id="NewUnit2" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Set Value for TW</label>
+                            <input type="text" class="form-control" id="NewTW_Type" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input type="text" class="form-control" id="NewUnit3" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Make</label>
+                            <input type="text" class="form-control" id="NewMake" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <input type="text" class="form-control" id="status_newrejected" value="Rejected" disabled
+                                style="display: none;">
+                            <input type="text" class="form-control" id="status_newrequested"
+                                value="Requested , Waiting for LAB Admin" disabled style="display: none;">
+                            <input type="text" class="form-control" id="status_newaccepted" value="Accepted" disabled
+                                style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Reference Standard/Calibration Method</label>
+                            <input type="text" class="form-control" id="NewRefCalibration" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Calibration Frequency</label>
+                            <input type="text" class="form-control" id="NewCalibrationFrequency" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Type of Instrument</label>
+                            <select id="Instrument_Type" name="Instrument_Type" class="form-control" disabled>                        
+                            <option value="1">Dial</option>                          
+                            <option value="2">Digital</option> 
+                            <option value="3">Analog</option>                          
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                        <label>Drawing is Attached</label>
+                        <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
+                        <option value="Yes">Yes</option> 
+                        <option value="No">No</option> 
+                        </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Decision Rule for statement of Confirmity</label>
+                        <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
+                        <option value="Include MU">Include MU</option> 
+                        <option value="Exclude MU">Exclude MU</option> 
+                        </select>
+                        </div>
+                    </div>                    
+                </div>
+                <div id="newRequestSection" style="display: none;">                    
+                    <div class="row">
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label>Received By</label>
+                                <input type"text" id="ReceivedBy" class="form-control" value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName") @HttpContextAccessor.HttpContext.Session.GetString("LastName")' disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label>Received Date</label>
+                        <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+                          id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
+                        <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>        
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label>Instrument Condition</label>
+                                <input type"text" id="InstrumentCondition" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label>Feasiblity</label>
+                                <select id="Feasiblity" class="form-control">
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>                       
+                      
+                  <div class="col-sm-6">
+                   <div class="form-group">
+                    <label class="required">Standard Reffered/Calibration Method</label>
+                    <input type="text" id="StandardReffered" name="StandardReffered" value=""
+                      class="form-control" placeholder="">
+                  </div>
+                  </div>
+                 <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>NABL</label>
+                                <select id="NewNABL" class="form-control">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                </div>
+                <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label>Tentative Closing Date</label>
+                                <div class="input-group date" id="reservationdate7" data-target-input="nearest"onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());" >
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
+                          id="TentativeCompletionDate" name="TentativeCompletionDate" value="">
+                        <div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                      </div></div>
+
+                            <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Accept</label>
+                                <input type="radio" name="NewAcceptReject" value="Accept"
+                                    onclick="NewReqEnableReason()">
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3" style="top: 35px;" id="RejectSection">
+                            <div class="form-group">
+                                <label>Reject</label>
+                                <input type="radio" name="NewAcceptReject" value="Reject"
+                                    onclick="NewReqEnableReason()">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                    <div id="NewReasonSection" style="display:none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Rejection Reason</label>
+                                    <textarea id="Newreason" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-sm-6" style="text-align:right;">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <input type="button" id="submitReasonNewRequest" value="Submit Review" name="Submit"
+                                    class="btn btn-primary" onclick="AcceptRejectNewRequest()">
+                            </div>
+                        </div>
+                </div>
+
+                <div id="NewacceptSection" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Observation Template</label>
+                                <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Observation Template Type</label>
+                                <select id="NewObservationType" class="form-control">
+                                    
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>MU Template</label>
+                                <select id="NewMU" class="form-control">
+                                    
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Certification Tmeplate</label>
+                                <select id="NewCertification" class="form-control">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="text-align:right;">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <input type="button" id="submitInsDetails" value="Submit" name="Submit"
+                                    class="btn btn-primary" onclick="SaveInstrumentDetails()">
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div id="NewrejectSection" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Rejected On</label>
+                                <input type="text" class="form-control" id="NewrejectedOn" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>Rejected Reason</label>
+                                <input type="text" class="form-control" id="NewrejectedReason" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div id="newfmVisualCheckSection" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Closed Date</label>
+                                <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
+                                    <input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
+                                        class="form-control datetimepicker-input" data-target="#reservationdate2" />
+                                    <div class="input-group-append" data-target="#reservationdate2"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Record By</label>
+                                <input type="text" class="form-control" id="RecordBy"
+                                    value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")'
+                                    disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Result</label>
+                                <input type="text" class="form-control" id="newResultLAB" value='' disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <!-- text input -->
+
+                        </div>
+                        <div class="col-sm-3">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <input type="button" class="btn btn-primary" name="newSubmitFMVisual" id="newSubmitFMVisual"
+                                    value="Submit Visual Check" onclick="newSubmitReqLABVisual()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="newlabVisualCheckSection" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Return Date</label>
+
+                                <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
+                                    <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now"
+                                        class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
+                                    <div class="input-group-append" data-target="#newReturnDatePicker"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Result</label>
+                                    <input type="text" class="form-control" id="newResultDEP" value=''>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group" style="text-align:right;">
+                                <input style="margin-top: 32px;" type="button" class="btn btn-primary"
+                                    name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit Visual Check"
+                                    onclick="newSubmitReqDepVisual()">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+                </div>            
+        </div>
+        </div>
+      </div>
+    </div>    
+</section>

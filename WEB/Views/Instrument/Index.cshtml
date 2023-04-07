@@ -1,0 +1,116 @@
+﻿@{
+	ViewData["Title"] = "Instrument List";
+}
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<section class="content">
+	<div class="row">
+		<div class="col-12">
+
+			<div class="card card-primary">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-6">
+							<h3 class="card-title trn">Instruments List</h3>
+						</div>
+						<div class="col-md-6 text-right">
+							<a href='@Url.Action("Create","Instrument")'><input type="button" class="btn btn-sm btn-default trn" value="Add New Instrument"></a>
+							<a href='@Url.Action("InstrumentQuratineList","Instrument")'><input type="button" class="btn btn-sm btn-default trn" value="Quratine List"></a>
+						</div>
+
+					</div>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<table id="example1" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th class="trn">Instrument Name</th>
+								<th class="trn">Serial Number</th>
+								<th class="trn">Lab ID Number</th>
+								<th class="trn">Range</th>
+								<th class="trn">Department</th>
+								<th class="trn">Calibration Date</th>
+								<th class="trn">Due Date</th>
+								<th class="trn">Edit</th>
+								<!--<th>Delete</th>-->
+								@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+								{
+									<th class="trn">Request</th>
+								}
+								<th class="trn">Quarantine</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>@item.InstrumentName</td>
+									<td>@item.SlNo</td>
+									<td>@item.IdNo</td>
+									<td>@item.Range</td>
+									<td>@item.DepartmentName</td>
+									<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+									<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+
+									<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+									{
+										<td>
+											@if (@item.DueDate != null)
+											{
+												@if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+												{
+													@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
+													{
+														<a href='@Url.Action("Request","Instrument",new {instumentId=@item.Id,typeId=2})'><i class="fas fa-arrow-alt-circle-right"></i></a>
+													}
+
+												}
+												else if (@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year)
+												{
+													@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
+													{
+														<a href='@Url.Action("Request","Instrument",new {instumentId=@item.Id,typeId=3})'><i class="fas fa-arrow-alt-circle-right"></i></a>
+													}
+
+												}
+											}
+										</td>
+									}
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
+										<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this)"></i></td>
+									}
+									else
+									{
+										<td></td>
+									}
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
+		<!-- /.col -->
+	</div>
+	<!-- /.row -->
+</section>
+<script>
+	setTimeout(function () {
+
+		$("#example1").DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": true,
+			"responsive": true,
+		});
+	}, 500);
+</script>

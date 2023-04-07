@@ -1,0 +1,326 @@
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <!-- general form elements disabled -->
+            <div class="card card-default">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label>Year</label>
+                            <select class="form-control" name="Year" id="Year">
+                                @foreach (var year in @ViewBag.yearsList)
+                                {
+                                    if (year == @ViewBag.currentYear)
+                                    {
+                                        <option value="@year" selected="selected">@year</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>Month</label>
+                                <select class="form-control" name="DDMonth" id="DDMonth">
+                                    <option value="0" selected>All</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Request</label>
+                                <select class="form-control" name="Request" id="Request">
+                                    <option value="0" selected>All</option>
+                                    <option value="1">New</option>
+                                    <option value="2">Regular</option>
+                                    <option value="3">Recalibration</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label>Target%</label>
+                                <input id="TargetValue" name="TargetValue" value="100" class="form-control"
+                                    width="40%"></input>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label></label>
+                                <center><button class="btn btn-primary" onclick="BarUpdateChart()">Generate
+                                        Chart</button></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<div class="chart" id="chartsection">
+    <canvas id="myChart" width="1000" height="500"></canvas>
+</div>
+<div class="card-body">
+    <table id="tblFeedbackList" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Type of Request</th>
+                <th>No of requests received</th>
+                <th>Completed on same day</th>
+                <th>Within 1 day</th>
+                <th>Within 2 days</th>
+                <th>Within 3 days</th>
+                <th>More than 3 days</th>
+                <th>KPI% Calculation(Within 2 days)</th>
+            </tr>
+        </thead>
+        <tbody id="tblchartdata">
+            @* @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Month</td>
+                    <td>@item.TypeOfRequest</td>
+                    <td>@item.NoOfRequestsReceived</td>
+                    <td>@item.CompletedOnSameDay</td>
+                    <td>@item.WithinOneDay</td>
+                    <td>@item.WithinTwoDays</td>
+                    <td>@item.WithinThreeDays</td>
+                    <td>@item.Calculation</td>
+                </tr> 
+            }*@
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function BarUpdateChart() {
+        debugger;
+        var labelsArray = [];
+        var dataArray = [];
+        var targetrArray = [];
+        var monthArray = [];
+
+
+
+        $.ajax({
+            url: '../InstrumentReport/GetCalibrationlab',
+            type: 'GET',
+            data: { year: $('#Year').val(), month: $('#DDMonth').val(), Request: $('#Request').val() },
+            datatype: "json"
+        }).done(function (resultObject) {
+            debugger;
+            var responseData = resultObject;
+            var ChartDataNew=resultObject[0].chartDataNew;
+            var ChartDataRegular=resultObject[0].chartDataRegular;
+            var ChartDataRecalibration=resultObject[0].chartDataRecalibration;
+            var data='';
+            var monthName='';
+            debugger;
+            if (responseData != null) {
+                for (i = 0; i < responseData.length; i++) {
+                    var labelString = responseData[i].chartData.label;
+                    labelsArray.push(labelString);
+                    dataArray.push(responseData[i].chartData.value);
+                    var tagetvalue = $('#TargetValue').val();
+                    targetrArray.push(tagetvalue);
+                    var monthString = responseData[i].chartData.month + ' ' + responseData[i].chartData.year;
+                    monthArray.push(monthString);
+                    data +='<tr>';                 
+                    if(monthName != responseData[i].month )
+                    {
+                        data +='<td rowspan="3" style="vertical-align : middle;text-align:center;">'+responseData[i].month+'</td>';
+                        monthName = responseData[i].month;
+                    }
+                   
+                    data +='<td>'+responseData[i].typeOfRequest+'</td>';
+                    data +='<td>'+responseData[i].noOfRequestsReceived+'</td>';
+                    data +='<td>'+responseData[i].completedOnSameDay+'</td>';
+                    data +='<td>'+responseData[i].withinOneDay+'</td>'; 
+                    data +='<td>'+responseData[i].withinTwoDays+'</td>'; 
+                    data +='<td>'+responseData[i].withinThreeDays+'</td>';
+                    data +='<td>'+responseData[i].morethanThreeDays+'</td>'; 
+                    data +='<td>'+responseData[i].calculation+'</td>';
+                    data +='</tr>'; 
+                }
+                $('#tblchartdata').html(data);
+            }
+            else {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: "There is no Instrument",
+                    footer: '',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                });
+            }
+            var ChartData_Labels='';
+            var ChartData_New=''; 
+            var ChartData_Target='';            
+            for (i = 0; i < ChartDataNew.length; i++) {
+                if (i != 0) 
+                {
+                    ChartData_Labels += ',_,' + ChartDataNew[i].month;
+                    ChartData_New += ',_,' + ChartDataNew[i].value;
+                    ChartData_Target += ',_,' + tagetvalue;                                 
+                }
+                else {
+                    ChartData_New += ChartDataNew[i].value;
+                    ChartData_Labels += ChartDataNew[i].month;
+                    ChartData_Target += tagetvalue;                                
+                }
+            }
+            var ChartData_Regular='';            
+            for (i = 0; i < ChartDataRegular.length; i++) {
+                if (i != 0) 
+                {
+                    ChartData_Regular += ',_,' + ChartDataRegular[i].value;                                
+                }
+                else {
+                    ChartData_Regular += ChartDataRegular[i].value;                                
+                }
+            }
+            var ChartData_Recalibration='';            
+            for (i = 0; i < ChartDataRecalibration.length; i++) {
+                if (i != 0) 
+                {
+                    ChartData_Recalibration += ',_,' + ChartDataRecalibration[i].value;                                
+                }
+                else {
+                    ChartData_Recalibration += ChartDataRecalibration[i].value;                                
+                }
+            }
+            var res = ChartData_New.split(",_,");
+            var res_1 = ChartData_Regular.split(",_,");
+            var res_2 = ChartData_Recalibration.split(",_,");
+            var res_Labels = ChartData_Labels.split(",_,");
+            var res_Target = ChartData_Target.split(",_,");
+            var dataa = {
+            labels: res_Labels,
+            datasets: [
+                {
+                    label: "New",
+                    backgroundColor: 'rgba(255, 99, 45, 0.2)',
+                    data: res
+                },
+                {
+                    label: "Regular",
+                    backgroundColor: 'rgb(60, 179, 113)',
+                    data: res_1
+                },
+                {
+                    label: "Recalibration",
+                    backgroundColor: 'rgb(60, 56, 113)',
+                    data: res_2
+                },
+                {
+                    type: 'line',
+                    label: 'Target',
+                    data: res_Target,
+                    fill: false,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235)'
+                }
+            ]
+            };
+
+            UpdateBarChart(labelsArray, dataa, targetrArray, monthArray)
+        });
+    }
+
+    function UpdateBarChart(labelsArray, dataArray, targetrArray, monthArray) {
+
+        $('#myChart').remove();
+        $('#chartsection').append('<canvas id="myChart" width="900" height="400"></canvas>');
+        var ctx = document.getElementById("myChart");
+        let context = ctx.getContext('2d');        
+        context.beginPath();
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data:dataArray,
+            @* data: {
+                labels: monthArray,
+                datasets: [{
+                    label: 'Actual',
+                    data: dataArray,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)'
+                    ],
+                },
+                {
+                    type: 'line',
+                    label: 'Target',
+                    data: targetrArray,
+                    fill: false,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235)'
+                }]
+            }, *@
+            options: {
+                responsive: false,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            maxRotation: 0,
+                            minRotation: 0
+                        },
+                        gridLines: {
+                            offsetGridLines: true // à rajouter
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>

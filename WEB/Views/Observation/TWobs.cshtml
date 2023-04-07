@@ -1,0 +1,399 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    td, 
+    tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .wd100 {
+        width: 100%;
+    }
+
+    .wd25 {
+        width: 25%;
+    }
+
+    .wd5 {
+        width: 5%;
+    }
+
+    .wd20 {
+        width: 20%;
+    }
+
+    .wd100ht60 {
+        width: 100%;
+        height: 60px;
+    }
+
+    .wd100ht150 {
+        width: 100%;
+        height: 150px;
+    }
+    .ht150 {
+        height: 150px;
+    }
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .Border0px{
+        width: 100%;
+    }
+</style>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="wd100">
+            <tr class="sizeborder">
+        <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
+            <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
+        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Torque Wrenches</td>
+        <td class="textleftborder"  height="30">Format No.</td>
+        <td class="textcenterborder">365.QM.D.834</td>
+    </tr>
+    <tr>
+        <td class="textleftborder"  height="30">RevNo & </br> Date
+</td>
+        <td class="textcenterborder">01/ 12.08.2019</td>
+    </tr>
+        </table>
+        <br>
+        <table class="wd100">
+            <tr>
+        <td class="textleftborder">Type / Model</td>
+        <td class="textleftborder">@Model.Name</td>
+        <td class="textleftborder">Range/LC:</td>
+        <td class="textleftborder">@Model.Range</td>
+        <td class="textleftborder">Make:</td>
+        <td class="textleftborder">@Model.Make</td>
+       </tr>
+       <tr>
+        <td class="textleftborder">Serial No.</td>
+        <td class="textleftborder">@Model.SerialNo</td>
+        <td class="textleftborder">ID No:</td>
+        <td class="textleftborder">@Model.IdNo</td>
+        <td class="textleftborder">Ref Std.</td>
+        <td class="textleftborder">@Model.RefStd</td>
+        </tr>
+        <tr>
+        <td>Temp@Start <sup>o</sup>C</td>
+        <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
+        <td>Temp@End <sup>o</sup>C</td>
+        <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
+        <td>Humidity %RH</td>
+        <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+        </tr>
+        <tr>
+        <td colspan="4" class="textleftborder">Condition of Torque Wrench & observations if any:</br>
+        <textarea name="ConditionOfTW" id="ConditionOfTW" style="height: 50px;width: 400px;">@Model.ConditionOfTW</textarea></td>
+        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        <td  colspan="4" class="textleftborder">Master used :</br>
+            <input type="radio" id="ApproveAWS" name="Transducers"><label for="html">AWS TWC with Transducers</label></br>
+            <input type="radio" id="RejectAWS" name="Transducers"><label for="css">Norbar TWC with Transducers</label>
+        </td>
+        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+    </tr>
+         
+        </table>
+         @if(@Model.ObsSubType==82){ 
+        <table class="wd100" style="font-weight: bold;">
+            <tr>
+                <td colspan="8">Fixed Type Wrenches</td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="wd25">Nominal Set Value</td>
+                <td rowspan="2" class="wd25"><input type="text" value="@Model.SetValue" id="SetValue" name="SetValue"
+                        class="wd100ht60"></td>
+                <td>Si No</td>
+                <td colspan="3">Actual Values</td>
+            </tr>
+            <tr>
+                <td class="wd5">1</td>
+                <td class="wd20"><input type="text" value="@Model.ActualInOne" id="ActualInOne" name="ActualInOne"
+                        class="wd100"></td>
+                <td class="wd5">6</td>
+                <td class="wd20"><input type="text" value="@Model.ActualInSix" id="ActualInSix" name="ActualInSix"
+                        class="wd100"></td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="wd25">Spec Max(include MU)</td>
+                <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMax" id="SpecMax" name="SpecMax"
+                        class="wd100ht60"></td>
+                <td>2</td>
+                <td><input type="text" value="@Model.ActualInTwo" id="ActualInTwo" name="ActualInTwo" class="wd100">
+                </td>
+                <td>7</td>
+                <td><input type="text" value="@Model.ActualInSeven" id="ActualInSeven" name="ActualInSeven"
+                        class="wd100"></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><input type="text" value="@Model.ActualInThree" id="ActualInThree" name="ActualInThree"
+                        class="wd100"></td>
+                <td>8</td>
+                <td><input type="text" value="@Model.ActualInEight" id="ActualInEight" name="ActualInEight"
+                        class="wd100"></td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="wd25">Spec Min(include MU)</td>
+                <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMin" id="SpecMin" name="SpecMin"
+                        class="wd100ht60"></td>
+                <td>4</td>
+                <td><input type="text" value="@Model.ActualInFour" id="ActualInFour" name="ActualInFour" class="wd100">
+                </td>
+                <td>9</td>
+                <td><input type="text" value="@Model.ActualInNine" id="ActualInNine" name="ActualInNine" class="wd100">
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><input type="text" value="@Model.ActualInFive" id="ActualInFive" name="ActualInFive" class="wd100">
+                </td>
+                <td>10</td>
+                <td><input type="text" value="@Model.ActualInTen" id="ActualInTen" name="ActualInTen" class="wd100">
+                </td>
+            </tr>
+        </table>
+         }
+        @if(@Model.ObsSubType==83){ 
+        <table class="wd100" style="font-weight: bold;">
+            <tr>
+                <td colspan="4">Adjustable Torque Wrenches</td>
+            </tr>
+            <tr>
+                <td>Measuring Interval</td>
+                <td>20%</td>
+                <td>60%</td>
+                <td>100%</td>
+            </tr>
+            <tr>
+                <td>Nominal Value</td>
+                <td><input type="text" value="@Model.Nominal20" id="Nominal20" name="Nominal20" class="wd100"></td>
+                <td><input type="text" value="@Model.Nominal60" id="Nominal60" name="Nominal60" class="wd100"></td>
+                <td><input type="text" value="@Model.Nominal100" id="Nominal100" name="Nominal100" class="wd100"></td>
+            </tr>
+            <tr>
+                <td>Spec (Include MU)</td>
+                <td><input type="text" value="@Model.Spec20" id="Spec20" name="Spec20" class="wd100"></td>
+                <td><input type="text" value="@Model.Spec60" id="Spec60" name="Spec60" class="wd100"></td>
+                <td><input type="text" value="@Model.Spec100" id="Spec100" name="Spec100" class="wd100"></td>
+            </tr>
+            <tr>
+                <td colspan="4">Actual Values</td>
+            </tr>
+            <tr>
+                <td>SI No</td>
+                <td colspan="3">Values</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td><input type="text" value="@Model.Value1" id="Value1" name="Value1" class="wd100"></td>
+                <td><input type="text" value="@Model.Value2" id="Value2" name="Value2" class="wd100"></td>
+                <td><input type="text" value="@Model.Value3" id="Value3" name="Value3" class="wd100"></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><input type="text" value="@Model.Value4" id="Value4" name="Value4" class="wd100"></td>
+                <td><input type="text" value="@Model.Value5" id="Value5" name="Value5" class="wd100"></td>
+                <td><input type="text" value="@Model.Value6" id="Value6" name="Value6" class="wd100"></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><input type="text" value="@Model.Value7" id="Value7" name="Value7" class="wd100"></td>
+                <td><input type="text" value="@Model.Value8" id="Value8" name="Value8" class="wd100"></td>
+                <td><input type="text" value="@Model.Value9" id="Value9" name="Value9" class="wd100"></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><input type="text" value="@Model.Value10" id="Value10" name="Value10" class="wd100"></td>
+                <td><input type="text" value="@Model.Value11" id="Value11" name="Value11" class="wd100"></td>
+                <td><input type="text" value="@Model.Value12" id="Value12" name="Value12" class="wd100"></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><input type="text" value="@Model.Value13" id="Value13" name="Value13" class="wd100"></td>
+                <td><input type="text" value="@Model.Value14" id="Value14" name="Value14" class="wd100"></td>
+                <td><input type="text" value="@Model.Value15" id="Value15" name="Value15" class="wd100"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: left;">Any Other Comments</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="wd100ht150">
+                    <textarea class="wd100ht150" id="Comments" name="Comments">@Model.Comments</textarea>
+                </td>
+            </tr>
+        </table> <br>
+         } 
+        <table class="wd100" style="font-weight: bold;">
+            <tr>
+                <td>Calibration Performed BY<td>
+                <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy" class="wd100" disabled></td>
+                <td>Reviewed By<td>
+                <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="wd100" disabled></td>
+            </tr>
+            <tr>
+                <td class="textleftborder">Date<td>
+                @if( true)
+                {
+                    var performDate = @Model.CreatedOn.ToString("dd-MM-yyyy");
+                    <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                            class="wd100" disabled>
+                    </td>
+                }
+
+                <td class="textleftborder">Date:<td>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
+                    || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
+                            <td><input type="text" name="Review_Date" id="Review_Date" 
+                                    value="@Model.Review_Date" class="size" disabled>
+                            </td>
+                }else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"){
+                        <td>
+                            <div class="form-group">                  
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                                id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate"  @Model.IsDisabled>
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                            </div>
+                        </td>
+                }
+            </tr>
+@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
+{
+        <tr>
+                <td class="textleftborder">Status</td>
+                <td class="textleftborder" colspan="3">
+                    <div style="text-align: left;">
+                        <label>Approve</label>
+                        <input type="radio" name="Approve" id="Approve">
+                        <label>Reject</label>
+                        <input type="radio" name="Approve" id="Reject">
+                    </div>
+                </td>
+
+        </tr>
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4"){
+     <tr>
+         <td colspan="4">
+            @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+            {
+                <input type="button" class="btn btn-primary" value="Save" name="Save" id="TWobs" onclick="SaveTWobs()">
+            }
+            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+        </td>
+     </tr>
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+{
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                {
+                    <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                }
+                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+            </td>
+        </tr>
+}
+</table>  
+        <input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+        <input type="hidden" id="requestId" value="@Model.RequestId">
+        <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+        <input type="hidden" name="AWSTransducers" id="AWSTransducers" value="@Model.AWSTransducers">
+        <input type="hidden" name="Id" Id="Id" value="@Model.Id">
+        <input type="hidden" name="TemplateObservationId" Id="TemplateObservationId" value="@Model.TemplateObservationId">
+</div>
+    <div class="col-md-2"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+     $(function () {
+
+        $('#ApproveAWS').on('change', function () {
+            if ($('#ApproveAWS').not(this).prop('checked', false)) {
+                $('#AWSTransducers').val(1);
+            }
+        });
+
+        $('#RejectAWS').on('change', function () {
+            if ($('#RejectAWS').not(this).prop('checked', false)) {
+                $('#AWSTransducers').val(2);
+            }
+
+        });
+
+        var reviewAWSStatus = $('#AWSTransducers').val();
+        if (reviewAWSStatus == 1) {
+            $('#ApproveAWS').prop('checked', true);
+            $('#RejectAWS').prop('checked', false);
+        }
+        else if (reviewAWSStatus == 2) {
+            $('#ApproveAWS').prop('checked', false);
+            $('#RejectAWS').prop('checked', true);
+        }
+    });
+
+</script>
+ <script>
+    setTimeout(function () {
+
+    $('#reservationdate').datetimepicker({
+     format: 'DD/MM/YYYY'
+    });
+    }, 1000);
+
+    </script> 

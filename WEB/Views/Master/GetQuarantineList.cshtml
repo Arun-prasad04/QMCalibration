@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Master Quarantine List";
+}
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card card-primary"> 
+                    <div class="card-header">
+                        <div class="row">
+                       <div class="col-md-6">
+                            <h3 class="card-title">Master Quarantine List</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href='@Url.Action("Index","Master")'><input type="button" class="btn btn-sm btn-default" value="Master List" ></a>
+                    </div>
+ 
+                       </div>  
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                   
+
+                                    <th>Master</th> 
+                                    <th>Serial No</th>
+                                    <th>Lab ID No</th>
+                                    <th>Calibration Frequency</th>
+                                    <th>Calibration Date</th>
+                                    <th>Due Date</th>
+                                    <th>Quarantine Date</th>
+                                    <th>Quarantine Reason</th>
+                                    <th>Activate</th>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr id='row_@item.Id'>
+                                        <td>@item.EquipName</td>
+                                        <td>@item.SerialNo</td>
+                                        <td>@item.LabId</td>
+                                        <td>@item.CalibFreqId</td>
+                                        <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.QuarantineReason</td>
+                                        <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="MasterUnQuarantineClick(this)"></i></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+<script>
+     setTimeout(function(){ 
+
+      $("#example1").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+    });
+     }, 500);
+    </script>

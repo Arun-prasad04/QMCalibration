@@ -1,0 +1,182 @@
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <!-- general form elements disabled -->
+      <div class="card card-default">
+        <div class="card-body">
+          <div class="row">  
+            <div class="col-sm-3">
+              <!-- text input -->
+              <label>Year</label>
+              <select class="form-control" name="Year" id="Year">
+                @foreach (var year in @ViewBag.yearsList)
+                {
+                  if (year == @ViewBag.currentYear)
+                  {
+                    <option value="@year" selected="selected">@year</option>
+                  }
+                  else
+                  {
+                    <option value="@year">@year</option>
+                  }
+                }
+              </select>
+            </div>
+             <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Department</label>
+                    <select class="form-control" name="DepartmentId" id="DepartmentId">
+                        <option value="0" selected>All</option>
+                        @foreach (var department in @ViewBag.departmentList)
+                        {
+                            if (department.Id == @ViewBag.departmentId)
+                            {
+                                <option value="@department.Id" selected="selected">@department.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group">
+                    <label>Target%</label>
+                    <input id="TargetValue" name="TargetValue" value="100" class="form-control" width="40%"></input>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                  <br>
+                    <button class="btn btn-primary" onclick="BarUpdateChart()">Generate Chart</button>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="chart" id="chartsection">
+    <canvas id="myChart" width="1000" height="500"></canvas>
+</div>
+
+<script>
+    function BarUpdateChart() {
+        var labelsArray = [];
+        var dataArray = [];
+        var targetrArray = [];
+        var departmentName='All';     
+
+        $.ajax({
+            url: '../InstrumentReport/GetChartData',
+            type: 'GET',
+            data: { year: $('#Year').val(), depid: $('#DepartmentId').val() },
+            datatype: "json"
+        }).done(function (resultObject) {
+            var chartDate = resultObject;
+            if (chartDate != null && chartDate.length > 0 ) {
+                   departmentName=chartDate[0].label;
+                for (i = 0; i < chartDate.length; i++) {
+                    var labelString = chartDate[i].month + ' ' + chartDate[i].year;
+                    labelsArray.push(labelString);
+                    dataArray.push(chartDate[i].value);
+                    var tagetvalue = $('#TargetValue').val();
+                    targetrArray.push(tagetvalue);               
+                }
+                UpdateBarChart(labelsArray, dataArray, targetrArray, departmentName);
+            }
+            else {
+                    $('#myChart').remove();
+                    $('#chartsection').append('<canvas id="myChart" width="1100" height="500"></canvas>');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: "There is no Feedback data",
+                    footer: '',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                });
+
+            }
+        });
+    }
+
+function UpdateBarChart(labelsArray, dataArray, targetrArray, departmentName) {
+        $('#myChart').remove();
+        $('#chartsection').append('<canvas id="myChart" width="1100" height="500"></canvas>');
+        var ctx = document.getElementById("myChart");
+        let context = ctx.getContext('2d');
+        context.beginPath();
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labelsArray,
+                datasets: [{
+                    label: departmentName,
+                    data: dataArray,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)'
+                    ],
+                },
+                {
+                    type: 'line',
+                    label: 'Target',
+                    data: targetrArray,
+                    fill: false,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235)'
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            maxRotation: 0,
+                            minRotation: 0
+                        },
+                        gridLines: {
+                            offsetGridLines: true
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>

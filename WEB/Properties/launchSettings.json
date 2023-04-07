@@ -1,0 +1,43 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:23743",
+      "sslPort": 44343
+    }
+  },
+  "profiles": {
+    "cmtweb": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7161;http://localhost:5088",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },"SmtpSettings": {
+    "Server": "53.151.100.102",
+    "Port": "25",
+    "FromAddress": "DICV_QMLab@Daimler.com",
+    "UserId": "DICV_QMLab@Daimler.com",
+    "Pwd": "daimlerNC09",
+    "IsDevelopmentMode": false,
+    "EnableSsl":true
+  },
+  "ConnectionStrings": {
+    "CMTDatabase": "server=S365BID1Q070;Min Pool Size=5;Max Pool Size=1000;Connection Timeout=90000000; uid=QM_Development;pwd=DICVQM123;database=ACL_Test"
+  },
+  "ApplicationBaseUrl":{
+    "AppUrl":"https://localhost:7161/"
+  }
+
+}

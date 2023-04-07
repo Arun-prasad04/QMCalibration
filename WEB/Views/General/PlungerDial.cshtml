@@ -1,0 +1,237 @@
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+     .Border0px{
+        border: 0px;
+        width: 100%;
+    }
+</style>
+<table class="TableWidth">
+    <tr>
+        <th rowspan="2">Daimler</th>
+        <th rowspan="2">Observation Sheet General</th>
+        <th>Format No.</th>
+        <th>365.QM.D.837</th>
+    </tr>
+    <tr>
+        <th>Rev.No & Date</th>
+        <th>01/ 14.11.2018</th>
+    </tr>
+</table>
+<br>
+
+<table class="TableWidth">
+    <tr>
+        <th>Name</th>
+        <td><input type="text" value="@Model.Name" class="Border0px"></td>
+        <th>Range</th>
+        <td> <input type="text" value="@Model.RangeLC" class="Border0px"></td>
+        <th>Make</th>
+        <td><input type="text" value="@Model.Make" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>Serial No.</th>
+        <td><input type="text" value="@Model.SerialNumber" class="Border0px"></td>
+        <th>ID No.</th>
+        <td><input type="text" value="@Model.IdNumber" class="Border0px"></td>
+        <th>Ref Std</th>
+        <td><input type="text" value="@Model.ReferenceStandard" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>Temp@Start <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempreatureAtStart" class="Border0px"></td>
+        <th>Temp@End <sup>o</sup>C</th>
+        <td><input type="text" value="@Model.TempreatureAtEnd" class="Border0px"></td>
+        <th>Humidity %RH</th>
+        <td><input type="text" value="@Model.Humidity" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="4" class="text-left">Condition Of The Parameter</td>
+        <th>RefWi:</th>
+        <td><input type="text" value="@Model.ReferenceWI" class="Border0px"></td>
+    </tr>
+    <tr>
+        <th>All Values Are In</th>
+        <td><input type="text" value="@Model.AllValuesIn" class="Border0px"></td>
+    </tr>
+</table>
+<br>
+
+
+<table class="TableWidth">
+    <tr>
+        <th colspan="8">Mechanical Plunger Dial Indicator</th>
+    </tr>
+    <tr>
+        <th rowspan="2" style="word-break: break-all;">SI.No</th>
+        <th rowspan="2" style="word-break: break-all;">Parameter</th>
+        <th rowspan="2" style="word-break: break-all;">Spec</th>
+        <th rowspan="2" style="word-break: break-all;">Actual</th>
+        <th rowspan="2" style="word-break: break-all;">SI.No</th>
+        <th colspan="2" style="word-break: break-all;">Repeatability</th>
+
+    </tr>
+    <tr>
+        <th>Interval</th>
+        <td><input type="text" value="@Model.MPIntervalMain" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td rowspan="4">Indicator Error</td>
+        <td style="word-break: break-all;">Whole Measuring Range</td>
+        <td><input type="text" value="@Model.MPWholeMeasuringRangeSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPWholeMeasuringRangeActual" class="Border0px"></td>
+        <td>1</td>
+        <td><input type="text" value="@Model.MPWholeMeasuringRangeRepeatability" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>2</td>
+
+        <td style="word-break: break-all;">½ Revolution</td>
+        <td><input type="text" value="@Model.MPHalfRevSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPHalfRevActual" class="Border0px"></td>
+        <td>2</td>
+        <td><input type="text" value="@Model.MPHalfRevRepeatability" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>3</td>
+
+        <td style="word-break: break-all;">1 Revolution</td>
+        <td><input type="text" value="@Model.MPOneRevSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPOneRevActual" class="Border0px"></td>
+        <td>3</td>
+        <td><input type="text" value="@Model.MPOneRevRepeatability" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>4</td>
+
+        <td style="word-break: break-all;">Narrow range adjacent error</td>
+        <td><input type="text" value="@Model.MPNarrowRangeErrorSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPNarrowRangeErrorActual" class="Border0px"></td>
+        <td>4</td>
+        <td><input type="text" value="@Model.MPNarrowRangeErrorRepeatability" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>5</td>
+
+        <td colspan="2">Retrace Error</td>
+        <td><input type="text" value="@Model.MPRetraceErrorSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPRetraceErrorActual" class="Border0px"></td>
+        <td>5</td>
+        <td><input type="text" value="@Model.MPRetraceErrorRepeatablity" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>6</td>
+
+        <td colspan="2">Repeatability Error</td>
+        <td><input type="text" value="@Model.MPRepeatabilityErrorSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.MPRepeatabilityErrorActual" class="Border0px"></td>
+        <td colspan="2"><input type="text" value="@Model.MPRepeatabilityErrorRepeatability" class="Border0px"></td>
+    </tr>
+</table>
+
+<br>
+
+<table class="TableWidth">
+    <tr>
+        <th colspan="9" style="word-break: break-all;">Digital Plunger Dial Indicator</th>
+    </tr>
+    <tr>
+        <th rowspan="2" >SI.No</th>
+        <th rowspan="2" colspan="2" style="word-break: break-all;">Parameter</th>
+        <th rowspan="2" colspan="2" style="word-break: break-all;">Spec</th>
+        <th rowspan="2" style="word-break: break-all;">Actual</th>
+        <th rowspan="2" >SI.No</th>
+        <th colspan="2" style="word-break: break-all;">Repeatability</th>
+
+    </tr>
+    <tr>
+        <th>Interval</th>
+        <td><input type="text" value="@Model.DPIntervalMain" class="Border0px"></td>
+    </tr>
+
+    <tr>
+        <td><input type="text" value="@Model.SiDPRepeatability" class="Border0px"></td>
+        <td><input type="text" value="@Model.DPRepeatabilityParameter"  class="Border0px"></td>
+        <td style="word-break: break-all;">Repeatability</td>
+        <td>± 1 count</td>
+        <td><input type="text" value="@Model.DPRepeatabilitySpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.DPRepeatabilityActual" class="Border0px"></td>
+        <td>1</td>
+        <td colspan="2"><input type="text" value="@Model.DPRepeatabilityRepeatability" class="Border0px"></td>
+    </tr>
+
+    <tr>
+        <td><input type="text" value="@Model.SiDPHysteresis" class="Border0px"></td>
+        <td rowspan="3" style="word-break: break-all;">1 count = 1 least count</td>
+        <td style="word-break: break-all;">Hysteresis</td>
+        <td>1 count</td>
+        <td><input type="text" value="@Model.DPHysteresisSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.DPHysteresisActual" class="Border0px"></td>
+        <td>2</td>
+        <td colspan="2"><input type="text" value="@Model.DPHysteresisRepeatablility" class="Border0px"></td>
+    </tr>
+    
+    <tr>
+        <td><input type="text" value="@Model.SiDPAccuracyOverall" class="Border0px"></td>
+        <td style="word-break: break-all;">Accuracy Overall</td>
+        <td style="word-break: break-all;"> ± 3 counts</td>
+        <td><input type="text" value="@Model.DPAccuracyOverallSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.DPAccuracyOverallActual" class="Border0px"></td>
+        <td>3</td>
+        <td colspan="2"><input type="text" value="@Model.DPAccuracyOverallRepeatablility" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td><input type="text" value="@Model.SiDPAccuracyMicrocalibration" class="Border0px"></td>
+        <td style="word-break: break-all;">Accuracy Micro calibration</td>
+        <td style="word-break: break-all;">± 3 counts</td>
+        <td><input type="text" value="@Model.DPAccuracyMicrocalibrationSpec" class="Border0px"></td>
+        <td><input type="text" value="@Model.DPAccuracyMicrocalibrationActual" class="Border0px"></td>
+        <td>4</td>
+        <td colspan="2"><input type="text" value="@Model.DPAccuracyMicrocalibrationRepeatablility" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td colspan="6"></td>
+        <td>5</td>
+        <td colspan="2"><input type="text" value="@Model.DPRepeatabilityLast" class="Border0px"></td>
+    </tr>
+    <tr>
+        <td>Remarks :</td>
+        <td colspan="8" rowspan="2"><input type="text" value="@Model.Remarks" class="Border0px"></td>
+    </tr>
+
+</table>
+<br>
+<table class="TableWidth">
+    <tr>
+        <th>Calibration Performed By</th>
+        <td><input type="text" value="@Model.CalibrationPerformedBy" class="Border0px">
+        </td>
+
+        <th>Reviewed By</th>
+        <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px">
+        </td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <td><input type="text" value="@Model.CalibrationDoneDate" class="Border0px">
+        </td>
+
+        <th>Date</th>
+        <td><input type="text" value="@Model.CalibrationReviewedDate" class="Border0px">
+        </td>
+    </tr>
+</table>
+
+<input type="hidden" id="instrumentId" value="@Model.instrumentId">
+<input type="hidden" id="requestId" value="@Model.requestId">

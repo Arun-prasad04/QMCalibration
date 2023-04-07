@@ -1,0 +1,226 @@
+<style>
+    table,
+    th,
+    td {
+        border: 0.5px solid black;
+        text-align: center;
+        border-collapse: collapse;
+    }
+    .wd100{
+        width: 100%;
+    }
+    .wd50{
+        width: 50%;
+    }
+    .wd16{
+        width: 16.66%;
+    }
+    .wd33{
+        width: 33.32%;
+    }
+    .ht30{
+        height: 30px;
+    }
+    .wd16ht30{
+        width: 16.66%;
+        height: 30px
+    }
+</style>
+<section>
+    <table class="wd100">
+        <tr>
+            <th rowspan="2">Daimler</th>
+            <th rowspan="2">Observation Sheet Thread Gauges</th>
+            <th>Format No.</th>
+            <td><input type="text" value="@Model.FormatNo" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Rev.No & Date</th>
+            <td><input type="text" value="@Model.RegNoAndDate" class="wd100"></td>
+        </tr>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <th>Name</th>
+            <td><input type="text" value="@Model.Name" class="wd100"></td>
+            <th>Size</th>
+            <td> <input type="text" value="@Model.Size" class="wd100"></td>
+            <th>Make</th>
+            <td><input type="text" value="@Model.Make" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Serial No.</th>
+            <td><input type="text" value="@Model.SerialNo" class="wd100"></td>
+            <th>ID No.</th>
+            <td><input type="text" value="@Model.IdNo" class="wd100"></td>
+            <th>Ref Std</th>
+            <td><input type="text" value="@Model.RefStd" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Temp@Start  <sup>o</sup>C</th>
+            <td><input type="text" value="@Model.TempStart" class="wd100"></td>
+            <th>Temp@End  <sup>o</sup>C</th>
+            <td><input type="text" value="@Model.TempEnd" class="wd100"></td>
+            <th>Humidity %RH</th>
+            <td><input type="text" value="@Model.Humidity" class="wd100"></td>
+        </tr>
+        <tr>
+            <th rowspan="2" colspan="4">Condition of the Parameter</th>
+            <th>RefWi:</th>
+            <td><input type="text" value="@Model.RefWI" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>All Values Are In</th>
+            <td><input type="text" value="@Model.Allvalues" class="wd100"></td>
+        </tr>
+    </table>
+    <br>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <th class="wd50">Thread Plug Gauge: Go</th>
+            <th class="wd50">Thread Plug Gauge: NoGo</th>
+        </tr>
+        <tr>
+            <th class="wd50">Effective Diameter Spec:</th>
+            <th class="wd50">Effective Diameter Spec:</th>
+        </tr>
+    </table>
+    <table class="wd100">
+        <tr>
+            <th class="wd16">Max:</th>
+            <th class="wd16">Min:</th>
+            <th class="wd16">Wear Limit:</th>
+            <th class="wd16">Max:</th>
+            <th class="wd16">Min:</th>
+            <th class="wd16">Wear Limit:</th>
+        </tr>
+        <tr>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeGo.Max"
+                    class="wd100"></td>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeGo.Min"
+                    class="wd100"></td>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeGo.WearLimit"
+                    class="wd100"></td>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeNoGo.Max"
+                    class="wd100"></td>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeNoGo.Min"
+                    class="wd100"></td>
+            <td class="wd16ht30"><input type="text" value="@Model.PlugGaugeNoGo.WearLimit"
+                    class="wd100"></td>
+        </tr>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <th class="wd16">Actual: Plane1</th>
+            <td class="wd33"><input type="text" value="@Model.PlugGaugeGo.Plane1" class="wd100"></td>
+            <th class="wd16">Actual: Plane1</th>
+            <td class="wd33"><input type="text" value="@Model.PlugGaugeNoGo.Plane1" class="wd100"></td>
+        </tr>
+        <tr>
+            <th class="wd16">Actual: Plane2</th>
+            <td class="wd33"><input type="text" value="@Model.PlugGaugeGo.Plane2" class="wd100"></td>
+            <th class="wd16">Actual: Plane2</th>
+            <td class="wd33"><input type="text" value="@Model.PlugGaugeNoGo.Plane2" class="wd100"></td>
+        </tr>
+        <tr>
+            <th class="wd16">Actual: Plane3</th>
+            <td><input type="text" value="@Model.PlugGaugeGo.Plane3" class="wd100"></td>
+            <th></th>
+            <td></td>
+        </tr>
+    </table>
+    <table class="wd100">
+        <tr>
+            <th colspan="5">Repeatability</th>
+        </tr>
+        <tr>
+            <td class="ht30"><input type="text" value="@Model.Repeat.Box1" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat.Box2" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat.Box3" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat.Box4" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat.Box5" class="wd100"></td>
+        </tr>
+    </table>
+    <br> <br>
+    <table class="wd100">
+        <tr>
+            <th class="wd50">Thread Ring Gauge: Go</th>
+            <th class="wd50">Thread Ring Gauge: NoGo</th>
+        </tr>
+        <tr>
+            <th class="wd50">Effective Diameter Spec:</th>
+            <th class="wd50">Effective Diameter Spec:</th>
+        </tr>
+    </table>
+    <table class="wd100">
+        <tr>
+            <th>Max:</th>
+            <th>Min:</th>
+            <th>Wear Limit:</th>
+            <th>Max:</th>
+            <th>Min:</th>
+            <th>Wear Limit:</th>
+        </tr>
+        <tr>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeGo.Max" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeGo.Min" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeGo.WearLimit" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeNoGo.Max" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeNoGo.Min" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.RingGaugeNoGo.WearLimit" class="wd100">
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="wd100">
+        <tr>
+            <th class="wd16">Actual: Plane1</th>
+            <td class="wd33"><input type="text" value="@Model.RingGaugeGo.Plane1" class="wd100"></td>
+            <th class="wd16">Actual: Plane1</th>
+            <td class="wd33"><input type="text" value="@Model.RingGaugeNoGo.Plane1" class="wd100"></td>
+        </tr>
+        <tr>
+            <th class="wd16">Actual: Plane2</th>
+            <td class="wd33"><input type="text" value="@Model.RingGaugeGo.Plane2" class="wd100"></td>
+            <th class="wd16">Actual: Plane2</th>
+            <td class="wd33"><input type="text" value="@Model.RingGaugeNoGo.Plane2" class="wd100"></td>
+        </tr>
+        <tr>
+            <th class="wd16">Actual: Plane3</th>
+            <td><input type="text" value="@Model.RingGaugeGo.Plane3" class="wd100"></td>
+            <th></th>
+            <td></td>
+        </tr>
+    </table>
+    <table style="width: 100%;">
+        <tr>
+            <th colspan="5">Repeatability</th>
+        </tr>
+        <tr>
+            <td class="ht30"><input type="text" value="@Model.Repeat2.Box1" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat2.Box2" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat2.Box3" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat2.Box4" class="wd100"></td>
+            <td class="ht30"><input type="text" value="@Model.Repeat2.Box5" class="wd100"></td>
+        </tr>
+    </table>
+    <br><br>
+    <table class="wd100">
+        <tr>
+            <th>Calibration Performed BY</th>
+            <td><input type="text" value="@Model.CalibratedBy" class="wd100"></td>
+            <th>Reviewed By</th>
+            <td><input type="text" value="@Model.ReviewedBy" class="wd100"></td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td><input type="text" value="@Model.CalibDate" class="wd100"></td>
+            <th>Date</th>
+            <td><input type="text" value="@Model.ReviewDate" class="wd100"></td>
+        </tr>
+    </table>
+</section>

@@ -1,0 +1,437 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .Tables-AndTableTextBox {
+        width: 100%;
+    }
+
+    .row {
+        display: flex;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .column {
+        flex: 50%;
+
+    }
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .Border0px{
+        width: 100%;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="Tables-AndTableTextBox">
+            <tr class="sizeborder">
+        <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
+            <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
+        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Vernier Caliper</td>
+        <td class="textleftborder"  height="30">Format No.</td>
+        <td class="textcenterborder">365.QM.D.836</td>
+    </tr>
+    <tr>
+        <td class="textleftborder"  height="30">RevNo & </br> Date
+</td>
+        <td class="textcenterborder">01/ 12.08.2019</td>
+    </tr>
+        </table>
+        <br>
+
+        <table class="Tables-AndTableTextBox">
+            <tr>
+                <td class="textleftborder">Type / Model</td>
+                <td class="textleftborder">@Model.Name</td>
+                <td class="textleftborder">Range/LC:</td>
+                <td class="textleftborder">@Model.Range</td>
+                <td class="textleftborder">Make:</td>
+                <td class="textleftborder">@Model.Make</td>
+            </tr>
+            <tr>
+                <td class="textleftborder">Serial No.</td>
+                <td class="textleftborder">@Model.SerialNo</td>
+                <td class="textleftborder">ID No:</td>
+                <td class="textleftborder">@Model.IdNo</td>
+                <td class="textleftborder">Ref Std.</td>
+                <td class="textleftborder">@Model.RefStd</td>
+            </tr>
+        <tr>
+                <td>Temp@Start <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
+                <td>Temp@End <sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
+                <td>Humidity %RH</td>
+                <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+        </tr>
+             <tr>
+        <td rowspan="2" colspan="4" class="textleftborder">Condition of Vernier Caliper :</br>
+        <textarea name="condition" id="condition" style="height: 50px;width: 400px;">@Model.ConditionOfVernierCaliper</textarea></td>
+        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+    </tr>
+    <tr>
+        
+        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+    </tr>
+
+        </table>
+        <br>
+        @* @if(Model.ObsSubType==84){ *@
+        <div class="row">
+
+            <div class="column">
+                <table style=" width:100%">
+                    <tr>
+                        <th colspan="4">CALIBRATION RESULTS </th>
+                    </tr>
+                    <tr>
+                        <th>SL.No</th>
+                        <th colspan="2">NOMINALANGLE</th>
+                        <th>ERRORinDMS</th>
+                    </tr>                    
+                    <tr>
+                        <td>1</td>
+                        <td>0<sup>o</sup></td>
+                        <td rowspan="5">Quadrant-1</td>
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS1_1" id="ErrorinDMS1_1" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>15<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS1_2" id="ErrorinDMS1_2" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>30<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS1_3" id="ErrorinDMS1_3" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>45<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS1_4" id="ErrorinDMS1_4" class="Border0px">
+                        </td>
+                    </tr>
+                                        <tr>
+                        <td>5</td>
+                        <td>90<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS1_5" id="ErrorinDMS1_5" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr><td colspan="4"></td></tr>
+                
+                     <tr>
+                         <td>1</td>
+                         <td>45<sup>o</sup></td>
+                         <td rowspan="5">Quadrant-2</td> 
+                         <td>
+                             <input type="text" value="@Model.ErrorinDMS2_1" id="ErrorinDMS2_1" class="Border0px">
+                         </td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>30<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS2_2" id="ErrorinDMS2_2" class="Border0px">
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>15<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS2_3" id="ErrorinDMS2_3" class="Border0px">
+                        </td>
+                     </tr>
+                     
+                     <tr>
+                        <td>4</td>
+                        <td>0<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS2_4" id="ErrorinDMS2_4" class="Border0px">
+                        </td>
+                     </tr>
+                 <tr><td colspan="4"></td></tr>
+                    <tr>
+                         <td>1</td>
+                         <td>15<sup>o</sup></td>
+                         <td rowspan="5">Quadrant-3</td> 
+                         <td>
+                             <input type="text" value="@Model.ErrorinDMS3_1" id="ErrorinDMS3_1" class="Border0px">
+                         </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>30<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS3_2" id="ErrorinDMS3_2" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>45<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS3_3" id="ErrorinDMS3_3" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>90<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS3_4" id="ErrorinDMS3_4" class="Border0px">
+                        </td>
+                    </tr>
+                <tr><td colspan="4"></td></tr>
+                      <tr>
+                         <td>1</td>
+                         <td>45<sup>o</sup></td>
+                         <td rowspan="5">Quadrant-4</td> 
+                         <td>
+                             <input type="text" value="@Model.ErrorinDMS4_1" id="ErrorinDMS4_1" class="Border0px">
+                         </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>30<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS4_2" id="ErrorinDMS4_2" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>15<sup>o</sup></td>                        
+                        <td>
+                            <input type="text" value="@Model.ErrorinDMS4_3" id="ErrorinDMS4_3" class="Border0px">
+                        </td>
+                    </tr>
+
+                </table>
+                <br>
+                <table style="width:100%">
+                    
+                    <tr>
+                        <th colspan="5">All Values are in mm </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Spec</th>
+                        <th>Actual</th>
+                        <th>DevFromNom</th>
+                    </tr>
+                    <tr>
+                       
+                       <td>Straightness of Working Edge</td>
+                        <td> 
+                            <input type="text" value="@Model.Straightness_spec" id="Straightness_spec" class="Border0px">
+                        </td>                      
+                        <td>
+                            <input type="text" value="@Model.Straightness_Actual" id="Straightness_Actual" class="Border0px">
+                        </td>                 
+                        <td>
+                            <input type="text" value="@Model.Straightness_DevfromNom" id="Straightness_DevfromNom" class="Border0px">
+                        </td>
+                    </tr>
+
+                   
+                    l<tr>
+                       
+                       <td>Parallelism of Working Edge</td>
+                        <td> 
+                            <input type="text" value="@Model.Parallelism_Spec" id="Parallelism_Spec" class="Border0px">
+                        </td>                      
+                        <td>
+                            <input type="text" value="@Model.Parallelism_Actual" id="Parallelism_Actual" class="Border0px">
+                        </td>                 
+                        <td>
+                            <input type="text" value="@Model.Parallelism_DevfromNom" id="Parallelism_DevfromNom" class="Border0px">
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                       
+                       <td rowspan="2">Flatness of Blade</td>
+                        <td> 
+                            <input type="text" value="@Model.FlatnessofBlade_spec_1" id="FlatnessofBlade_spec_1" class="Border0px">
+                        </td>                      
+                        <td>
+                            <input type="text" value="@Model.FlatnessofBlade_Actual_1" id="FlatnessofBlade_Actual_1" class="Border0px">
+                        </td>                 
+                        <td>
+                            <input type="text" value="@Model.FlatnessofBlade_DevfromNom_1" id="FlatnessofBlade_DevfromNom_1" class="Border0px">
+                        </td>
+                    </tr>
+                    <tr>                      
+                       
+                        <td> 
+                            <input type="text" value="@Model.FlatnessofBlade_spec_2" id="FlatnessofBlade_spec_2" class="Border0px">
+                        </td>                      
+                        <td>
+                            <input type="text" value="@Model.FlatnessofBlade_Actual_2" id="FlatnessofBlade_Actual_2" class="Border0px">
+                        </td>                 
+                        <td>
+                            <input type="text" value="@Model.FlatnessofBlade_DevfromNom_2" id="FlatnessofBlade_DevfromNom_2" class="Border0px">
+                        </td>
+                    </tr>
+
+                    </table>
+                    <br>
+                     <table class="Tables-AndTableTextBox">
+            <tr>
+                <th>Calibration Performed By</th>
+                <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTableTextBox"
+                        id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled></td>
+                <th>Reveiwed By</th>
+                <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Tables-AndTableTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                @if(true)
+                {
+                        var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+                        <td><input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                                class="Tables-AndTableTextBox" disabled>
+                        </td>
+                }                 
+                <th class="textleftborder">Date:</th>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
+                        || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
+                        <td><input type="text" name="Review_Date" id="Review_Date" 
+                                value="@Model.Review_Date" class="size" disabled>
+                        </td>
+                }else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"){
+                        <td>
+                                <div class="form-group">
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                                                id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate"  @Model.IsDisabled>
+                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </td>
+                } 
+                </tr>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
+                {
+                        <tr>
+                                <td class="textleftborder">Status</td>
+                                <td class="textleftborder" colspan="3">
+                                <div style="text-align: left;">
+                                        <label>Approve</label>
+                                        <input type="radio" name="Approve" id="Approve">
+                                        <label>Reject</label>
+                                        <input type="radio" name="Approve" id="Reject">
+                                </div>
+                                </td>
+
+                        </tr>
+                }
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4"){
+                <tr>
+                        <td colspan="4">
+                        @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                        {
+                                <input type="button" class="btn btn-primary" value="Save" name="Save" id="GeneralNew" onclick="SaveGeneralNew()">
+                        }
+                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                        </td>
+                </tr>
+                }
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+                {
+                        <tr>
+                        <td colspan="4" style="text-align:center;">
+                                @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
+                                {
+                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                                }
+                                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                        </td>
+                        </tr>
+                }
+
+
+        </table>
+        <input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+        <input type="hidden" id="requestId" value="@Model.RequestId">
+        <input type="hidden" name="Id" Id="Id" value="@Model.Id">
+        <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+        <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
+
+            </div>
+            
+            </div>
+        </div>
+     
+<script>
+    setTimeout(function () {
+
+    $('#reservationdate').datetimepicker({
+     format: 'DD/MM/YYYY'
+    });
+    }, 1000);
+
+    </script> 
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+</script>
+
