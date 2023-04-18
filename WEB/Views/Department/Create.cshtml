@@ -1,4 +1,4 @@
-@{
+﻿@{
 	ViewData["Title"] = "Department Create";
 }
 <!-- Content Header (Page header) -->
@@ -45,41 +45,41 @@
 		</div>
 	</div>
 
-    </section>
-    <!-- /.content -->
-<script>
-  setTimeout(function(){ 
-  $(function () {
-    $('#departmentform').validate({              
-          rules: {
-      Name: {
-      required: true,
-      },
-      Description: {
-      required: true,
-      },
-      },
-      messages: {
-        Name: {
-      required: "Please enter Department Name",
-      },
-      Description: {
-      required: "Please provide Department Description",
-      },
-      },
-      errorElement: 'span',
-      errorPlacement: function (error, element) {
-         error.addClass('invalid-feedback');
-         error.addClass('trn');
-         element.closest('.form-group').append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid');
-      },
-      unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid');
-      }
-      });
-  });
-  },1000);
+</section>
+<!-- /.content -->
+<script type="text/javascript">
+	setTimeout(function () {
+		
+		$(function () {
+			$('#departmentform').validate({
+				rules: {
+					Name: {
+						required: true,
+					},
+					Description: {
+						required: true,
+					},
+				},
+				messages: {
+					Name: {
+						required: "Please enter Department Name",
+					},
+					Description: {
+						required: "Please provide Department Description",
+					},
+				},
+				errorElement: 'span',				
+				errorPlacement: function (error, element) {
+					error.addClass('invalid-feedback');
+					element.closest('.form-group').append(error);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).addClass('is-invalid');
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).removeClass('is-invalid');
+				}
+			});
+		});
+	}, 1000);
 </script>
