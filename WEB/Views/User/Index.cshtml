@@ -180,7 +180,7 @@
         document.getElementById('ID').value = deletingUserid;
         document.getElementById('DeletingID').value = deletingUserid
         var a = document.getElementById('DeletingID').value;
-        alert(a);
+        AlertPopup(a);
 
     }
 </script>
@@ -209,7 +209,7 @@
             }
         }
         if (data == "1") {
-            alert("User Deleted Successfully")
+            AlertPopup("User Deleted Successfully")
         }
     });
 </script>
@@ -218,23 +218,23 @@
 <script>
     var data = @ViewBag.UserDeleteFinalResponse;
     if (data == 200) {
-        alert('User Assigned succesfully');
+        AlertPopup('User Assigned succesfully');
     }
 
 </script>
 <script>
     var data = @ViewBag.DeletingError;
     if (data == 500) {
-        alert('Deleting User and Assigning are same please Change verify it');
+        AlertPopup('Deleting User and Assigning are same please Change verify it');
     }
 </script>
 
 <script>
     var data = @ViewBag.FinalUserDeleteResponseData;
     if (data == "Success") {
-        alert('User Deleted Successfully');
+        AlertPopup('User Deleted Successfully');
     }
     else {
-        alert('User Not Deleted Successfully');
+        AlertPopup('User Not Deleted Successfully');
     }
 </script>
