@@ -1,444 +1,425 @@
 <form name="frm" id="instrumentform" action='@Url.Action("InsertInstrument","Instrument")'>
-	<input type="hidden" name="Id" value="@Model.Id">
-	<!-- Main content -->
-	<section class="content">
-		<div class="row">
-			<div class="col-12">
-				<!-- general form elements disabled -->
-				<div class="card card-primary">
-					<div class="card-header">
+  <input type="hidden" name="Id" value="@Model.Id">
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-12">
+        <!-- general form elements disabled -->
+        <div class="card card-primary">
+          <div class="card-header">
 
-						<div class="row">
-							<div class="col-md-6">
-								<h3 class="card-title trn">New Instrument</h3>
-							</div>
-							<div class="col-md-6 text-right">
-								<a href='@Url.Action("Index","Instrument")'>
-									<input type="button" class="btn btn-sm btn-default"
-										   value="Instrument List">
-								</a>
-							</div>
+            <div class="row">
+              <div class="col-md-6">
+                                <h3 class="card-title trn">New Instrument</h3>
+              </div>
+              <div class="col-md-6 text-right">
+                <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default"
+                    value="Instrument List"></a>
+              </div>
 
-						</div>
-					</div>
+            </div>
+          </div>
 
-					<div class="card card-default">
-						<div class="card-header">
-							<h3 class="card-title trn">Instrument Details</h3>
-							<input type="hidden" name="Id" value="@Model.Id">
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
-							</div>
-						</div>
-						<!-- /.card-header -->
+          <div class="card card-default">
+            <div class="card-header">
+                            <h3 class="card-title trn">Instrument Details</h3>
+              <input type="hidden" name="Id" value="@Model.Id">
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
 
-						<div class="card-body">
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="required trn">Instrument Name</label>
-										<input type="text" id="InstrumentName" name="InstrumentName" value="@Model.InstrumentName"
-											   class="form-control" placeholder="" alt="Please enter Instrument Name">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Instrument Serial Number</label>
-										<input type="text" id="SlNo" name="SlNo" value="@Model.SlNo" class="form-control" placeholder=""
-											   alt="Please enter the Serial Number">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label class="required trn">Instrument Name</label>
+                    <input type="text" id="InstrumentName" name="InstrumentName" value="@Model.InstrumentName"
+                      class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="required trn">Instrument Serial Number</label>
+                    <input type="text" id="SlNo" name="SlNo" value="@Model.SlNo" class="form-control" placeholder="">
 
-									</div>
-								</div>
-							</div>
+                  </div>
+                </div>
+              </div>
 
 
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label for="exampleSelectRounded0" class="trn">Instrument Status</label>
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label for="exampleSelectRounded0" class="trn">Instrument Status</label>
 
-										<select id="InstrumentStatus" name="InstrumentStatus" class="form-control">
-											@foreach (var instrument in @Model.InstrumentStatusList)
-											{
-												if (instrument.Id == Model.InstrumentStatus)
-												{
-													<option value="@instrument.Id" selected="selected">@instrument.AttrValue</option>
-												}
-												else
-												{
-													<option value="@instrument.Id">@instrument.AttrValue</option>
-												}
-											}
-										</select>
+                    <select id="InstrumentStatus" name="InstrumentStatus" class="form-control">
+                      @foreach (var instrument in @Model.InstrumentStatusList)
+                      {
+                        if (instrument.Id == Model.InstrumentStatus)
+                        {
+                          <option value="@instrument.Id" selected="selected">@instrument.AttrValue</option>
+                        }
+                        else
+                        {
+                          <option value="@instrument.Id">@instrument.AttrValue</option>
+                        }
+                      }
+                    </select>
 
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Master Instrument Name</label>
-										<input type="text" id="MasterInstrumentName1" name="MasterInstrumentName1"
-											   value="@Model.MasterInstrumentName1" class="form-control" placeholder="">
-									</div>
-								</div>
-							</div>
-
-
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Instrument Id Number</label>
-										<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder="">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Range</label>
-										<input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="" alt="Please enter Range">
-
-									</div>
-								</div>
-							</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="trn">Master Instrument Name</label>
+                    <input type="text" id="MasterInstrumentName1" name="MasterInstrumentName1"
+                      value="@Model.MasterInstrumentName1" class="form-control" placeholder="">
+                  </div>
+                </div>
+              </div>
 
 
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Lc</label>
-										<input type="text" id="LC" name="LC" value="@Model.LC" class="form-control" placeholder="">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">User Department</label>
-										<input type="text" id="UserDept" name="UserDept" value="@Model.UserDept" class="form-control"
-											   placeholder="" alt="Please enter the user department">
-									</div>
-								</div>
-							</div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label class="trn">Instrument Id Number</label>
+                    <input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="required trn">Range</label>
+                    <input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="">
+
+                  </div>
+                </div>
+              </div>
 
 
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="required trn">Make</label>
-										<input type="text" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="" alt="Please fill this field">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Standard Reffered</label>
-										<input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
-											   class="form-control" placeholder="" alt="Please fill this field">
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Remarks</label>
-										<input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
-											   placeholder="">
-									</div>
-								</div>
-
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label for="exampleSelectRounded0" class="trn">Template Name</label>
-										<select id="TemplateName" name="TemplateName" class="form-control">
-											@foreach (var templatename in @Model.TemplateNameList)
-											{
-												if (templatename.Id == Model.TemplateName)
-												{
-													<option value="@templatename.Id" selected="selected">@templatename.AttrValue</option>
-												}
-												else
-												{
-													<option value="@templatename.Id">@templatename.AttrValue</option>
-												}
-											}
-
-										</select>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label for="exampleSelectRounded0" class="trn">Status</label>
-										<select id="Status" name="Status" class="form-control">
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label class="trn">Lc</label>
+                    <input type="text" id="LC" name="LC" value="@Model.LC" class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="required trn">User Department</label>
+                    <input type="text" id="UserDept" name="UserDept" value="@Model.UserDept" class="form-control"
+                      placeholder="">
+                  </div>
+                </div>
+              </div>
 
 
-											@foreach (var status in @Model.StatusList)
-											{
-												if (status.Id == Model.Status)
-												{
-													<option value="@status.Id" selected="selected">@status.AttrValue</option>
-												}
-												else
-												{
-													<option value="@status.Id">@status.AttrValue</option>
-												}
-											}
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label class="required trn">Make</label>
+                    <input type="text" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="required trn">Standard Reffered</label>
+                    <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
+                      class="form-control" placeholder="">
+                  </div>
+                </div>
+              </div>
 
-										</select>
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label class="trn">Remarks</label>
+                    <input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
+                      placeholder="">
+                  </div>
+                </div>
 
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label for="exampleInputFile" class="trn">Upload Image</label>
-										<div class="input-group">
-											<div class="custom-file">
-												<input type="file" class="custom-file-input" id="exampleInputFile">
-												<label class="custom-file-label" for="exampleInputFile">Choose file</label>
-											</div>
-											<div class="input-group-append">
-												<span class="input-group-text">Upload</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label for="exampleSelectRounded0" class="trn">Template Name</label>
+                    <select id="TemplateName" name="TemplateName" class="form-control">
+                      @foreach (var templatename in @Model.TemplateNameList)
+                      {
+                        if (templatename.Id == Model.TemplateName)
+                        {
+                          <option value="@templatename.Id" selected="selected">@templatename.AttrValue</option>
+                        }
+                        else
+                        {
+                          <option value="@templatename.Id">@templatename.AttrValue</option>
+                        }
+                      }
 
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-						</div>
-					</div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- text input -->
+                  <div class="form-group">
+                                        <label for="exampleSelectRounded0" class="trn">Status</label>
+                    <select id="Status" name="Status" class="form-control">
+                      
+                      
+                        @foreach (var status in @Model.StatusList)
+                        {
+                          if (status.Id == Model.Status)
+                          {
+                            <option value="@status.Id" selected="selected">@status.AttrValue</option>
+                          }
+                          else
+                          {
+                            <option value="@status.Id">@status.AttrValue</option>
+                          }
+                        }
+                      
+                    </select>
 
-					<div class="card card-default">
-						<div class="card-header">
-							<h3 class="card-title trn">Calibration Details</h3>
-
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
-							</div>
-						</div>
-						<!-- /.card-header -->
-						<div class="card-body">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Calibration Frequency</label>
-										<select id="CalibrationFreq" name="CalibrationFreq" class="form-control">
-											@foreach (var freq in @Model.CalibFreqList)
-											{
-												if (freq.Id == Model.CalibFreq)
-												{
-													<option value="@freq.Id" selected="selected">@freq.AttrValue</option>
-												}
-												else
-												{
-													<option value="@freq.Id">@freq.AttrValue</option>
-												}
-											}
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Calibration Date</label>
-										<div class="input-group date" id="reservationdate" data-target-input="nearest">
-											<input type="text" id="CalibDate" name="CalibDate" value="@DateTime.Now"
-												   class="form-control datetimepicker-input" data-target="#reservationdate" />
-											<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Due Date</label>
-										<div class="input-group date" id="reservationdate1" data-target-input="nearest">
-											<input type="text" id="DueDate" name="DueDate" value="@DateTime.Now"
-												   class="form-control datetimepicker-input" data-target="#reservationdate1" />
-											<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Date Of Receipt</label>
-										<div class="input-group date" id="reservationdate2" data-target-input="nearest">
-											<input type="text" id="DateOfReceipt" name="DateOfReceipt" value="@DateTime.Now"
-												   class="form-control datetimepicker-input" data-target="#reservationdate2" />
-											<div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label for="exampleInputFile" class="trn">Upload Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Calibration Source</label>
-										<input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
-											   class="form-control" placeholder="" alt="Please provide the Calibration Source">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label for="exampleSelectRounded0" class="trn">Calibration Status</label>
-										<select id="CalibrationStatus" name="CalibrationStatus" class="form-control">
-											@foreach (var calibrationstatus in @Model.CalibrationStatusList)
-											{
-												if (calibrationstatus.Id == Model.CalibrationStatus)
-												{
-													<option value="@calibrationstatus.Id" selected="selected">@calibrationstatus.AttrValue</option>
-												}
-												else
-												{
-													<option value="@calibrationstatus.Id">@calibrationstatus.AttrValue</option>
-												}
-											}
+            </div>
+          </div>
 
-										</select>
-									</div>
-								</div>
-							</div>
+          <div class="card card-default">
+            <div class="card-header">
+                            <h3 class="card-title trn">Calibration Details</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="trn">Calibration Frequency</label>
+                    <select id="CalibrationFreq" name="CalibrationFreq" class="form-control">
+                      @foreach (var freq in @Model.CalibFreqList)
+                      {
+                        if (freq.Id == Model.CalibFreq)
+                        {
+                          <option value="@freq.Id" selected="selected">@freq.AttrValue</option>
+                        }
+                        else
+                        {
+                          <option value="@freq.Id">@freq.AttrValue</option>
+                        }
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="trn">Calibration Date</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                      <input type="text" id="CalibDate" name="CalibDate" value="@DateTime.Now"
+                        class="form-control datetimepicker-input" data-target="#reservationdate" />
+                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
-						</div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="trn">Due Date</label>
+                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                      <input type="text" id="DueDate" name="DueDate" value="@DateTime.Now"
+                        class="form-control datetimepicker-input" data-target="#reservationdate1" />
+                      <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-					</div>
-					<div class="card-footer">
-						<center><button type="submit" class="btn btn-primary trn">Submit</button></center>
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
-			</div>
-			<!-- /.col -->
-		</div>
-		<!-- /.row -->
-	</section>
-	<!-- /.content -->
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="trn">Date Of Receipt</label>
+                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                      <input type="text" id="DateOfReceipt" name="DateOfReceipt" value="@DateTime.Now"
+                        class="form-control datetimepicker-input" data-target="#reservationdate2" />
+                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label class="required trn">Calibration Source</label>
+                    <input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
+                      class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                                        <label for="exampleSelectRounded0" class="trn">Calibration Status</label>
+                    <select id="CalibrationStatus" name="CalibrationStatus" class="form-control">
+                      @foreach (var calibrationstatus in @Model.CalibrationStatusList)
+                      {
+                        if (calibrationstatus.Id == Model.CalibrationStatus)
+                        {
+                          <option value="@calibrationstatus.Id" selected="selected">@calibrationstatus.AttrValue</option>
+                        }
+                        else
+                        {
+                          <option value="@calibrationstatus.Id">@calibrationstatus.AttrValue</option>
+                        }
+                      }
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+          <div class="card-footer">
+                        <center><button type="submit" class="btn btn-primary trn">Submit</button></center>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
 </form>
 
 <script>
-	setTimeout(function () {
-		$(function () {
-			$('#instrumentform').validate({
-				rules: {
-					InstrumentName: {
-						required: true,
-					},
-					SlNo: {
-						required: true,
-					},
-					Range: {
-						required: true,
-					},
-					UserDept: {
-						required: true,
-					},
-					Make: {
-						required: true,
-					},
-					StandardReffered: {
-						required: true,
-					},
-					TemplateName: {
-						required: true,
-					},
-					Status: {
-						required: true,
-					},
-					CalibSource: {
-						required: true,
-					},
-					CalibFreq: {
-						required: true,
-					},
-				},
-				messages: {
-					InstrumentName: {
-						required: "Please enter Instrument  Name",
-					},
-					SlNo: {
-						required: "Please enter the Serial Number",
-					},
-					Range: {
-						required: "Please enter Range",
-					},
-					UserDept: {
-						required: "Please enter the UserDepartment",
-					},
-					Make: {
-						required: "Please Fill This Field",
-					},
-					StandardReffered: {
-						required: "Please Fill This Field",
-					},
-					TemplateName: {
-						required: "Please Fill This Field",
-					},
-					Status: {
-						required: "Please enter the Status",
-					},
-					CalibSource: {
-						required: "Please provide The Calibration Source",
-					},
-					CalibFreq: {
-						required: "Please provide The Calibration Frequency",
-					},
-				},
-				errorElement: 'span',
-				errorPlacement: function (error, element) {
-					error.addClass('invalid-feedback');
-					element.closest('.form-group').append(error);
-				},
-				highlight: function (element, errorClass, validClass) {
-					$(element).addClass('is-invalid');
-				},
-				unhighlight: function (element, errorClass, validClass) {
-					$(element).removeClass('is-invalid');
-				}
-			});
-
-			//$('#instrumentform').find('input').each(function () {
-			//	var thisctrl = $(this);
-			//	var id = $(thisctrl).attr('id');
-			//	var message = $(thisctrl).attr('alt');
-
-			//	if (id && message) {
-			//		var transMsg = dict[message][language];
-
-			//		$('[name=' + id + ']').rules('add', {
-			//			messages: {
-			//				required: transMsg,
-			//			}
-			//		});
-			//	}
-			//});
-		});
-	}, 1000);
+  setTimeout(function () {
+    $(function () {
+      $('#instrumentform').validate({
+        rules: {
+          InstrumentName: {
+            required: true,
+          },
+          SlNo: {
+            required: true,
+          },
+          Range: {
+            required: true,
+          },
+          UserDept: {
+            required: true,
+          },
+          Make: {
+            required: true,
+          },
+          StandardReffered: {
+            required: true,
+          },
+          TemplateName: {
+            required: true,
+          },
+          Status: {
+            required: true,
+          },
+          CalibSource: {
+            required: true,
+          },
+          CalibFreq: {
+            required: true,
+          },
+        },
+        messages: {
+          InstrumentName: {
+            required: "Please enter Instrument  Name",
+          },
+          SlNo: {
+            required: "Please enter the Serial Number",
+          },
+          Range: {
+            required: "Please enter Range",
+          },
+          UserDept: {
+            required: "Please enter the UserDepartment",
+          },
+          Make: {
+            required: "Please Fill This Field",
+          },
+          StandardReffered: {
+            required: "Please Fill This Field",
+          },
+          TemplateName: {
+            required: "Please Fill This Field",
+          },
+          Status: {
+            required: "Please enter the Status",
+          },
+          CalibSource: {
+            required: "Please provide The Calibration Source",
+          },
+          CalibFreq: {
+            required: "Please provide The Calibration Frequency",
+          },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
+    });
+  }, 1000);
 </script>

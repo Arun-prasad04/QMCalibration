@@ -1,7 +1,4 @@
-﻿var FileData = [];
-var lang = $('#hdnLanguage').val();
-console.log(lang);
-
+var FileData = [];
 
 function logoShowHide() {
     var x = document.getElementById("logoheader");
@@ -25,12 +22,6 @@ function showSuccess(successMsg) {
             popup: 'animate__animated animate__fadeOutUp'
         }
     });
-
-    if (lang == 'jp') {
-        Swal.update({
-            title: '成功'
-        });
-    }
 }
 
 function showError(errorMsg) {
@@ -46,12 +37,6 @@ function showError(errorMsg) {
             popup: 'animate__animated animate__fadeOutUp'
         }
     });
-
-    if (lang == 'jp') {
-        Swal.update({
-            title: 'エラー'
-        });
-    }
 }
 
 function showWarning(warningMsg) {
@@ -68,11 +53,11 @@ function showWarning(warningMsg) {
         }
     });
 }
-$("#profileUpdate").click(function () {
+$("#profileUpdate").click(function() {
     var url = document.location.origin + '/User/ProfileUpdate';
     $.ajax({
         url: url,
-        success: function (result) {
+        success: function(result) {
             $("#modelBody").html(result);
         }
     });
@@ -92,13 +77,6 @@ function validateSession(sessionvalue) {
                 window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
             }
         });
-
-        if (lang == 'jp') {
-            Swal.update({
-                title: 'セッションの有効期限が切れ！作業を続けるにはログインしてください。',
-                confirmButtonText: 'わかった'
-            });
-        }
     }
 }
 
@@ -118,7 +96,7 @@ function viewExternalRequest(element) {
         url: '../Tracker/ExternalRequestGetById',
         type: 'POST',
         data: { externalRequestId: element.id }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignExternalRequestValues(resultObject);
         $("#trackerViewModel").modal('show');
     });
@@ -219,7 +197,7 @@ function AcceptExternalRequest() {
         url: '../Tracker/AcceptExternalRequest',
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignExternalRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -242,7 +220,7 @@ function RejecttExternalRequest() {
         url: '../Tracker/RejectExternalRequest',
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), rejectReason: $('#reason').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignExternalRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -274,7 +252,7 @@ function SubmitFMVisual() {
         url: '../Tracker/SubmitFMExternalRequest',
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultFM').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignExternalRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -305,7 +283,7 @@ function SubmitLABVisual() {
         url: '../Tracker/SubmitLABExternalRequest',
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultLAB').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignExternalRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -374,7 +352,7 @@ function CloseTrackerPopup() {
     $("#trackerViewModel").modal('hide');
 }
 
-function MasterQuarantineClick(element, lang) {
+function MasterQuarantineClick(element) {
     Swal.fire({
         title: 'Enter Reason for Quarantine',
         input: 'text',
@@ -389,23 +367,15 @@ function MasterQuarantineClick(element, lang) {
         reverseButtons: true,
 
         inputValidator: (value) => {
-            if (!value) {
-                if (lang == 'jp') {
-                    return '検疫の理由を記入してください'
-                }
-                else {
-                    return 'please fill the reason for Quarantine'
-                }
-            }
-            else
-                return null
+            if (!value) return 'please fill the reason for Quarantine'
+            else return null
         },
         preConfirm: (msg) => {
             $.ajax({
                 url: '../Master/MasterQuarantine',
                 type: 'POST',
                 data: { masterId: element.id, reason: msg }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -418,29 +388,12 @@ function MasterQuarantineClick(element, lang) {
                         popup: 'animate__animated animate__fadeOutUp'
                     }
                 });
-
-                if (lang == 'jp') {
-                    Swal.update({
-                        title: '成功',
-                        text: 'マスターは検疫リストに移動しました'
-                    });
-                }
-
                 $('#row_' + element.id).next("tr").remove()
                 $('#row_' + element.id).remove();
             });
         },
         allowOutsideClick: () => !Swal.isLoading()
     });
-
-    if (lang == 'jp') {
-        Swal.update({
-            title: '検疫の理由を入力してください',
-            confirmButtonText: '検疫',
-            cancelButtonText: 'キャンセル',
-            
-        });
-    }
 }
 
 function MasterUnQuarantineClick(element) {
@@ -448,7 +401,7 @@ function MasterUnQuarantineClick(element) {
         url: '../Master/MasterRemoveQuarantine',
         type: 'POST',
         data: { masterId: element.id }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -490,7 +443,7 @@ function InstrumentQuarantineClick(element) {
                 url: '../Instrument/InstrumentQuarantine',
                 type: 'POST',
                 data: { instrumentId: element.id, reason: msg }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -516,7 +469,7 @@ function InstrumentUnQuarantineClick(element) {
         url: '../Instrument/InstrumentRemoveQuarantine',
         type: 'POST',
         data: { instrumentId: element.id }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -540,7 +493,7 @@ function viewRequestNew(Id) {
         url: '../Tracker/GetRequestById',
         type: 'POST',
         data: { RequestId: Id }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         if (resultObject.typeOfRequest == 1) {
             AssignNewRequestValues(resultObject);
             $("#NewInstrument").modal('show');
@@ -548,7 +501,7 @@ function viewRequestNew(Id) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'ObservationTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewObservation')
                     .find('option')
                     .remove();
@@ -562,7 +515,7 @@ function viewRequestNew(Id) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'MUTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewMU')
                     .find('option')
                     .remove();
@@ -577,7 +530,7 @@ function viewRequestNew(Id) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'CerTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewCertification')
                     .find('option')
                     .remove();
@@ -611,7 +564,7 @@ function viewRequest(element) {
         url: '../Tracker/GetRequestById',
         type: 'POST',
         data: { RequestId: element.id }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         if (resultObject.typeOfRequest == 1) {
             AssignNewRequestValues(resultObject);
             $("#NewInstrument").modal('show');
@@ -619,7 +572,7 @@ function viewRequest(element) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'ObservationTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewObservation')
                     .find('option')
                     .remove();
@@ -633,7 +586,7 @@ function viewRequest(element) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'MUTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewMU')
                     .find('option')
                     .remove();
@@ -648,7 +601,7 @@ function viewRequest(element) {
                 url: '../Tracker/LoadObservationType',
                 type: 'POST',
                 data: { attrType: 'CerTemplate', attrsubType: '' }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 $('#NewCertification')
                     .find('option')
                     .remove();
@@ -874,7 +827,7 @@ function AcceptRequest(type) {
         ReceivedBy: $('#ReceivedBy').val(),
         InstrumentCondition: $('#InstrumentCondition').val(),
         Feasiblity: $('#Feasiblity').val(),
-        TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+        TentativeCompletionDate: $('#TentativeCompletionDate').val(),        
         newNABL: $('#IsNABL').val(),
         newObservation: $('#NewObservation').val(),
         newObservationType: $('#NewObservationType').val(),
@@ -890,7 +843,7 @@ function AcceptRequest(type) {
         url: '../Tracker/AcceptRequest',
         type: 'POST',
         data: data
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         // if (resultObject.TypeOfRequest == 1) {
         //     AssignNewRequestValues(resultObject);
         // } else {
@@ -926,7 +879,7 @@ function AcceptRequestRecalibration(AcceptValue) {
         url: '../Tracker/AcceptRequestReCalibration',
         type: 'POST',
         data: data
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
         Swal.fire({
             icon: 'success',
@@ -971,7 +924,7 @@ function RejecttRequest(type) {
         url: '../Tracker/RejectRequest',
         type: 'POST',
         data: data
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         // if (resultObject.TypeOfRequest == 1) {
         //     AssignNewRequestValues(resultObject);
         // } else {
@@ -1008,7 +961,7 @@ function SubmitReqDepVisual() {
         url: '../Tracker/SubmitDepartmentRequestVisual',
         type: 'POST',
         data: { requestId: $('#RequestCalibId').val(), Result: $('#ResultDEP').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -1025,13 +978,13 @@ function SubmitReqDepVisual() {
 
     });
 }
-function disableFields() {
-    document.getElementById("NewObservation").disabled = true;
+function disableFields(){
+    document.getElementById("NewObservation").disabled     = true;
     document.getElementById("NewObservationType").disabled = true;
     document.getElementById("NewMU").disabled = true;
-    document.getElementById("NewCertification").disabled = true;
-    document.getElementById("newSubmitLABAdmin").disabled = true;
-}
+    document.getElementById("NewCertification").disabled = true;   
+    document.getElementById("newSubmitLABAdmin").disabled = true;   
+   }
 
 function SaveLABAdminUpdates() {
     $.ajax({
@@ -1039,13 +992,13 @@ function SaveLABAdminUpdates() {
         type: 'POST',
         data: {
             requestId: $('#RequestCalibId').val(),
-            ObservationTemplate: $('#NewObservation').val(),
+                        ObservationTemplate: $('#NewObservation').val(),
             ObservationTemplateType: $('#NewObservationType').val(),
             MUTemplate: $('#NewMU').val(),
             CertificationTemplate: $('#NewCertification').val()
 
         }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -1059,7 +1012,7 @@ function SaveLABAdminUpdates() {
                 popup: 'animate__animated animate__fadeOutUp'
             }
         });
-        disableFields();
+     disableFields();  
     });
 }
 function SubmitReqLABVisual() {
@@ -1075,7 +1028,7 @@ function SubmitReqLABVisual() {
         url: '../Tracker/SubmitLABRequestVisual',
         type: 'POST',
         data: { requestId: $('#RequestCalibId').val(), Result: $('#ResultLAB').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -1205,7 +1158,7 @@ function AssignNewRequestValues(resultObject) {
 
                 $('#submitInsDetails').css('display', 'none');
                 $('#NewLabId').val(resultObject.instrumentIdNo);
-                //$('#NewNABL').val(resultObject.isNABL);
+              //$('#NewNABL').val(resultObject.isNABL);
                 $('#NewObservation').val(resultObject.observationTemplate.toString());
                 $('#NewObservationType').val(resultObject.observationType.toString());
                 $('#NewMU').val(resultObject.muTemplate.toString());
@@ -1412,7 +1365,7 @@ function AcceptQuarRequest() {
         data: {
             requestId: $('#RequestCalibId').val()
         }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignQuarRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -1435,7 +1388,7 @@ function RejecttQuarRequest() {
         url: '../Tracker/RejectRequest',
         type: 'POST',
         data: { requestId: $('#RequestCalibId').val(), rejectReason: $('#Quarreason').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         AssignQuarRequestValues(resultObject);
         Swal.fire({
             icon: 'success',
@@ -1458,7 +1411,7 @@ function LoadObservationType() {
         url: '../Tracker/LoadObservationType',
         type: 'POST',
         data: { attrType: '', attrsubType: $('#ObservationTemplate option:selected').text() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         $('#ObservationType')
             .find('option')
             .remove();
@@ -1492,8 +1445,8 @@ function SaveLeverDial() {
         RepeatabilitySpec: $('#RepeatabilitySpec').val(),
         RepeatabilityDirectionA4: $('#RepeatabilityDirectionA4').val(),
         RepeatabilityDirectionB4: $('#RepeatabilityDirectionB4').val(),
-        CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
-        CalibrationReviewedBy: $('#CalibrationReviewedBy').val(),
+         CalibrationPerformedBy:$('#CalibrationPerformedBy').val(),
+         CalibrationReviewedBy:$('#CalibrationReviewedBy').val(),
         // CalibrationPerformedDate:$('#CalibrationPerformedDate').val(),
         // CalibrationReviewedDate:$('#CalibrationReviewedDate').val(),
         InstrumentId: $('#instrumentId').val(),
@@ -1504,7 +1457,7 @@ function SaveLeverDial() {
         url: '../Observation/InsertLeverDial',
         type: 'POST',
         data: { levertypedial: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -1614,7 +1567,7 @@ function SaveMicrometer() {
         url: '../Observation/InsertMicrometer',
         type: 'POST',
         data: { micrometer: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -1635,7 +1588,7 @@ function SaveMicrometer() {
 function SaveGeneral() {
 
     var GeneralResult = new Array();
-    $('#Generaladd tbody tr').each(function (row, tr) {
+    $('#Generaladd tbody tr').each(function(row, tr) {
 
         var GeneralData = {
             MeasuedValue: $(tr).find("td:eq(0) input[type='text']").val(),
@@ -1650,7 +1603,7 @@ function SaveGeneral() {
     });
 
     var GeneralManualResult = new Array();
-    $('#Manualadd tbody tr').each(function (row, tr) {
+    $('#Manualadd tbody tr').each(function(row, tr) {
 
         var GeneralManualData = {
             Column1: $(tr).find("td:eq(0) input[type='text']").val(),
@@ -1688,7 +1641,7 @@ function SaveGeneral() {
         type: 'POST',
         data: { general: data },
         dataType: "json",
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -1893,7 +1846,7 @@ function SaveVernierCaliper() {
         url: '../Observation/InsertVernierCaliper',
         type: 'POST',
         data: { verniercaliper: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -1951,18 +1904,18 @@ function SaveGeneralNew() {
         FlatnessofBlade_spec_2: $('#FlatnessofBlade_spec_2').val(),
         FlatnessofBlade_Actual_2: $('#FlatnessofBlade_Actual_2').val(),
         FlatnessofBlade_DevfromNom_2: $('#FlatnessofBlade_DevfromNom_2').val(),
-        EnvironmentCondition: $("#EnvironmentCondition").val(),
-        Uncertainity: $("#Uncertainity").val(),
+        EnvironmentCondition:$("#EnvironmentCondition").val(),
+        Uncertainity:$("#Uncertainity").val(),
         CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
         ReviewedBy: $('#ReviewedBy').val(),
         CalibrationPerformedDate: $('#CalibrationPerformedDate').val(),
-        ReviewedDate: $('#ReviewedDate').val(),
+        ReviewedDate: $('#ReviewedDate').val(), 
     }
     $.ajax({
         url: '../Observation/InsertGeneralnewobs',
         type: 'POST',
         data: { GeneralNew: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -1990,29 +1943,29 @@ function SavePlungerDial() {
 
     var obsSubType = $('#ObsSubType').val();
 
-    var spec1 = '';
-    var spec2 = '';
-    var spec3 = '';
-    var spec4 = '';
-    var spec5 = '';
-    var spec6 = '';
+    var spec1 ='';
+    var spec2 ='';
+    var spec3 ='';
+    var spec4 ='';
+    var spec5 ='';
+    var spec6 ='';
 
-    var actual1 = '';
-    var actual2 = '';
-    var actual3 = '';
-    var actual4 = '';
-    var actual5 = '';
-    var actual6 = '';
-
-    var interval1 = '';
-    var interval2 = '';
-    var interval3 = '';
-    var interval4 = '';
-    var interval5 = '';
-    var interval6 = '';
+    var actual1 ='';
+    var actual2 ='';
+    var actual3 ='';
+    var actual4 ='';
+    var actual5 ='';
+    var actual6 ='';
+        
+    var interval1 ='';
+    var interval2 ='';
+    var interval3 ='';
+    var interval4 ='';
+    var interval5 ='';
+    var interval6 ='';
     var remarks = '';
 
-    if (obsSubType == 79) {
+    if(obsSubType == 79){
         spec1 = $('#Digital_Spec1').val();
         spec2 = $('#Digital_Spec2').val();
         spec3 = $('#Digital_Spec3').val();
@@ -2032,7 +1985,7 @@ function SavePlungerDial() {
         interval5 = $('#Digital_Interval5').val();
         remarks = $('#Remarks').val();
     }
-    else {
+    else{
         spec1 = $('#Spec1').val();
         spec2 = $('#Spec2').val();
         spec3 = $('#Spec3').val();
@@ -2088,14 +2041,14 @@ function SavePlungerDial() {
         Interval5: interval5,
         Interval6: interval6,
 
-        ObsSubType: $('#ObsSubType').val(),
+        ObsSubType:$('#ObsSubType').val(),
         Remarks: remarks,
     }
     $.ajax({
         url: '../Observation/InsertPlungerDial',
         type: 'POST',
         data: { plungerDial: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -2115,66 +2068,66 @@ function SavePlungerDial() {
 
 function SaveThreadGauges() {
 
-    var RefWi = '';
-    var Max1 = '';
-    var Max2 = '';
-    var Min1 = '';
-    var Min2 = '';
-    var WearLimit1 = '';
-    var WearLimit2 = '';
-    var Plane1 = '';
-    var Plane2 = '';
-    var Plane3 = '';
-    var Plane4 = '';
-    var Plane5 = '';
-    var Repeatability1 = '';
-    var Repeatability2 = '';
-    var Repeatability3 = '';
-    var Repeatability4 = '';
-    var Repeatability5 = '';
+   var  RefWi= '';              
+   var  Max1='';                
+   var  Max2='';                
+   var  Min1='';                
+   var  Min2='';                
+   var  WearLimit1='' ;         
+   var  WearLimit2='';          
+   var  Plane1='';              
+   var  Plane2='';              
+   var  Plane3='';              
+   var  Plane4='';              
+   var  Plane5='';              
+   var  Repeatability1='';      
+   var  Repeatability2='';      
+   var  Repeatability3='';      
+   var  Repeatability4='';      
+   var  Repeatability5='';  
+   
+   var obsSubType = $('#ObsSubType').val();
+    
+   if(obsSubType == 80){
 
-    var obsSubType = $('#ObsSubType').val();
+            RefWi               = $('#RefWi').val();                              
+            Max1                = $('#Max1').val();                               
+            Max2                = $('#Max2').val();                                
+            Min1                = $('#Min1').val();                                
+            Min2                = $('#Min2').val();                                
+            WearLimit1          = $('#WearLimit1').val();                          
+            WearLimit2          = $('#WearLimit2').val();                           
+            Plane1              = $('#Plane1').val();                           
+            Plane2              = $('#Plane2').val();                               
+            Plane3              = $('#Plane3').val();                               
+            Plane4              = $('#Plane4').val();                               
+            Plane5              = $('#Plane5').val();                               
+            Repeatability1      = $('#Repeatability1').val();                        
+            Repeatability2      = $('#Repeatability2').val();                        
+            Repeatability3      = $('#Repeatability3').val();                        
+            Repeatability4      = $('#Repeatability4').val();                        
+            Repeatability5      = $('#Repeatability5').val();                        
+   }else{
 
-    if (obsSubType == 80) {
-
-        RefWi = $('#RefWi').val();
-        Max1 = $('#Max1').val();
-        Max2 = $('#Max2').val();
-        Min1 = $('#Min1').val();
-        Min2 = $('#Min2').val();
-        WearLimit1 = $('#WearLimit1').val();
-        WearLimit2 = $('#WearLimit2').val();
-        Plane1 = $('#Plane1').val();
-        Plane2 = $('#Plane2').val();
-        Plane3 = $('#Plane3').val();
-        Plane4 = $('#Plane4').val();
-        Plane5 = $('#Plane5').val();
-        Repeatability1 = $('#Repeatability1').val();
-        Repeatability2 = $('#Repeatability2').val();
-        Repeatability3 = $('#Repeatability3').val();
-        Repeatability4 = $('#Repeatability4').val();
-        Repeatability5 = $('#Repeatability5').val();
-    } else {
-
-        RefWi = $('#Ring_RefWi').val();
-        Max1 = $('#Ring_Max1').val();
-        Max2 = $('#Ring_Max2').val();
-        Min1 = $('#Ring_Min1').val();
-        Min2 = $('#Ring_Min2').val();
-        WearLimit1 = $('#Ring_WearLimit1').val();
-        WearLimit2 = $('#Ring_WearLimit2').val();
-        Plane1 = $('#Ring_Plane1').val();
-        Plane2 = $('#Ring_Plane2').val();
-        Plane3 = $('#Ring_Plane3').val();
-        Plane4 = $('#Ring_Plane4').val();
-        Plane5 = $('#Ring_Plane5').val();
-        Repeatability1 = $('#Ring_Repeatability1').val();
-        Repeatability2 = $('#Ring_Repeatability2').val();
-        Repeatability3 = $('#Ring_Repeatability3').val();
-        Repeatability4 = $('#Ring_Repeatability4').val();
-        Repeatability5 = $('#Ring_Repeatability5').val();
-    }
-
+            RefWi               = $('#Ring_RefWi').val();                              
+            Max1                = $('#Ring_Max1').val();                               
+            Max2                = $('#Ring_Max2').val();                                
+            Min1                = $('#Ring_Min1').val();                                
+            Min2                = $('#Ring_Min2').val();                                
+            WearLimit1          = $('#Ring_WearLimit1').val();                          
+            WearLimit2          = $('#Ring_WearLimit2').val();                           
+            Plane1              = $('#Ring_Plane1').val();                           
+            Plane2              = $('#Ring_Plane2').val();                               
+            Plane3              = $('#Ring_Plane3').val();                               
+            Plane4              = $('#Ring_Plane4').val();                               
+            Plane5              = $('#Ring_Plane5').val();                               
+            Repeatability1      = $('#Ring_Repeatability1').val();                        
+            Repeatability2      = $('#Ring_Repeatability2').val();                        
+            Repeatability3      = $('#Ring_Repeatability3').val();                        
+            Repeatability4      = $('#Ring_Repeatability4').val();                        
+            Repeatability5      = $('#Ring_Repeatability5').val();
+   }
+   
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -2185,18 +2138,18 @@ function SaveThreadGauges() {
         Humidity: $('#Humidity').val(),
         Allvalues: $('#Allvalues').val(),
         ThreadgaugeCondtion: $('#ThreadgaugeCondtion').val(),
-        RefWi: RefWi,
-        Max1: Max1,
-        Max2: Max2,
-        Min1: Min1,
-        Min2: Min2,
-        WearLimit1: WearLimit1,
-        WearLimit2: WearLimit2,
-        Plane1: Plane1,
-        Plane2: Plane2,
-        Plane3: Plane3,
-        Plane4: Plane4,
-        Plane5: Plane5,
+        RefWi:          RefWi         ,
+        Max1:           Max1          ,
+        Max2:           Max2          ,
+        Min1:           Min1          ,
+        Min2:           Min2          ,
+        WearLimit1:     WearLimit1    ,
+        WearLimit2:     WearLimit2    ,
+        Plane1:         Plane1        ,
+        Plane2:         Plane2        ,
+        Plane3:         Plane3        ,
+        Plane4:         Plane4        ,
+        Plane5:         Plane5        ,
         Repeatability1: Repeatability1,
         Repeatability2: Repeatability2,
         Repeatability3: Repeatability3,
@@ -2208,7 +2161,7 @@ function SaveThreadGauges() {
         url: '../Observation/InsertThreadGuages',
         type: 'POST',
         data: { threadGauges: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -2285,7 +2238,7 @@ function SaveTWobs() {
         url: '../Observation/InsertTWobs',
         type: 'POST',
         data: { torquewrenches: data }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -2332,7 +2285,7 @@ function LoadObservationTypePopup() {
         url: '../Tracker/LoadObservationType',
         type: 'POST',
         data: { attrType: '', attrsubType: $('#NewObservation option:selected').text() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         $('#NewObservationType')
             .find('option')
             .remove();
@@ -2403,21 +2356,21 @@ function DeleteMasterEqiupment(id) {
 
 function SaveCertificate(templtatename) {
 
-    var result = $('#CalibrationResult').val();
-    if (result == null || result == "") {
+    var result =  $('#CalibrationResult').val();
+    if(result == null || result == ""){
         Swal.fire({
             icon: 'warning',
             title: 'Warning',
             text: "Please enter the Calibration Result!!!",
             footer: '',
             showClass: {
-                popup: 'animate__animated animate__fadeInDown'
+              popup: 'animate__animated animate__fadeInDown'
             },
             hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
+              popup: 'animate__animated animate__fadeOutUp'
             }
-        });
-        return true;
+          });
+          return true;
     }
 
     Swal.fire({
@@ -2428,11 +2381,11 @@ function SaveCertificate(templtatename) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes, generate it!",
         closeOnConfirm: false
-    }).then((result) => {
-        // }, function (isConfirm) {
-        //       if (!isConfirm) return;
+    }).then((result) => {  
+   // }, function (isConfirm) {
+     //       if (!isConfirm) return;
 
-        if (result.isConfirmed) {
+        if (result.isConfirmed) { 
             $.ajax({
                 url: '../Certification/SaveLeverDialCertificate',
                 type: 'POST',
@@ -2446,7 +2399,7 @@ function SaveCertificate(templtatename) {
                     ExportData: $("#Pdfhtml").html(),
                     TempltateName: templtatename
                 }
-            }).done(function (resultObject) {
+            }).done(function(resultObject) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -2488,7 +2441,7 @@ function SaveInstrumentDetails() {
             dateOfReceipt: $('#DateOfReceipt').val(),
 
         }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -2514,8 +2467,9 @@ function newSubmitReqLABVisual() {
     } else {
         $('#newResultLAB').removeClass('is-invalid');
     }
-    var DueDate = null;
-    if ($('#newResultLAB').val() != 'Rejected') {
+    var DueDate=null;
+    if($('#newResultLAB').val() != 'Rejected')
+    {
         DueDate = $('#DueDate').val();
     }
 
@@ -2543,7 +2497,7 @@ function newSubmitReqLABVisual() {
             FileData: FileData,
 
         }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         var Id = $('#RequestCalibId').val();
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
         //AssignNewRequestValues(resultObject);
@@ -2577,7 +2531,7 @@ function newSubmitReqDepVisual() {
         url: '../Tracker/SubmitDepartmentRequestVisual',
         type: 'POST',
         data: { requestId: $('#RequestCalibId').val(), Result: $('#newResultDEP').val(), CollectedBy: $('#CollectedBy').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         //AssignNewRequestValues(resultObject);
         Swal.fire({
@@ -2601,7 +2555,7 @@ function SubmitReview() {
         url: '../Observation/SubmitReview',
         type: 'POST',
         data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
-    }).done(function (resultObject) {
+    }).done(function(resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         Swal.fire({
             icon: 'success',
@@ -2617,9 +2571,9 @@ function SubmitReview() {
         });
     });
 }
-$(document).ready(function () {
+$(document).ready(function() {
     if (window.File && window.FileList && window.FileReader) {
-        $("#ImageUpload").on("change", function (e) {
+        $("#ImageUpload").on("change", function(e) {
             var filedata = [];
             var filename = [];
             var filesize = [];
@@ -2633,7 +2587,7 @@ $(document).ready(function () {
                 var f = files[i];
                 filename.push(f.name);
                 filesize.push(f.size);
-                fileReader.onload = (function (e) {
+                fileReader.onload = (function(e) {
                     var file = e.target;
                     filedata.push(e.target.result);
                     loaded++;

@@ -118,7 +118,6 @@ public class UserController : BaseController
             return RedirectToAction("Index", "Home");
 
         }
-
         else
         {
             TempData["ResponseCode"] = response.ResponseCode;
