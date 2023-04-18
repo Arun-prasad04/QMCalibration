@@ -481,19 +481,18 @@
 </script>
 
 <script>
-    function checkFileSize(element, maxSize, event) {
-        var val = $(element).val(); //get file value
-        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
-        if (fileSize > maxSize) {
-            //alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
-            AlertPopup("File Size Should Not Exceed More Than 5MB");
-            $("#ImageUpload").val("");
-        }
-        var input = document.getElementById('ImageUpload')
-        var output = document.getElementById('SignImageName')
-        var result = "";
-        result += input.files.item(0).name;
-        output.innerHTML = result;
-    }
+	function checkFileSize(element, maxSize, event) {
+		var val = $(element).val(); //get file value
+		var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+		if (fileSize > maxSize) {
+			alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+			$("#ImageUpload").val("");
+		}
+		var input = document.getElementById('ImageUpload')
+		var output = document.getElementById('SignImageName')
+		var result = "";
+		result += input.files.item(0).name;
+		output.innerHTML = result;
+	}
 </script>
 

@@ -374,9 +374,7 @@ function CloseTrackerPopup() {
     $("#trackerViewModel").modal('hide');
 }
 
-function MasterQuarantineClick(element) {
-    var lngselect = $('.Languagepicker').find("option:selected").val();
-    //console.log('lang_select -', $('.Languagepicker').find("option:selected").val())
+function MasterQuarantineClick(element, lang) {
     Swal.fire({
         title: 'Enter Reason for Quarantine',
         input: 'text',

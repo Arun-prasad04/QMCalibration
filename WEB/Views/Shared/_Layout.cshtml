@@ -301,7 +301,7 @@
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 									{
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("Create","Instrument")'  class="nav-link">
+											<a href='@Url.Action("Create","Instrument")' class="nav-link">
 												<i class="nav-icon far fa-calendar-plus"></i>
 												<p class="trn">New Instrument</p>
 											</a>
@@ -587,7 +587,8 @@
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="~/js/jquery.translate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
-		
+		<script src="~/js/TranslateValidation.js"></script>
+
 		<script type="text/javascript">
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
 			var language = $('#hdnLanguage').val();			
