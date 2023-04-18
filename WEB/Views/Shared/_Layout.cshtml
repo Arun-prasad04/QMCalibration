@@ -5,7 +5,6 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - Calibration Management System</title>
@@ -111,7 +110,9 @@
 			<ul class="navbar-nav ml-auto" style="text-align:right;">
 				<li class="nav-item">
 					<select class="Languagepicker daimler_language" data-width="fit">
-						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>English</option>
+						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
+							English
+						</option>
 						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
 					</select>
 				</li>
@@ -585,29 +586,22 @@
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="~/js/jquery.translate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
-		
+
 		<script type="text/javascript">
-			
-			
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
 			showPopup('@ViewBag.ResponseCode', '@ViewBag.ResponseMessage');
-			
+
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
-			
-			console.log('current lang - ', language);
 			$('.Languagepicker').selectpicker();
 			$('.Languagepicker').selectpicker('val', language);
-
-						
+			
 			var dict = diction();			
 			var translator = $('body').translate({ lang: language, t: dict });
 
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
-				language = selected;
-				console.log('changeds lang - ',selected);
-								
+				console.log(selected);
 				
 				$.ajax({
 					type: "POST",
@@ -616,7 +610,6 @@
 					dataType: "json",
 					success: function (data) {
 						console.log("Language changed successfully!!");
-						console.log(data);
 					},
 					failure: function (response) {
 						console.log(response.responseText);
@@ -1045,114 +1038,10 @@
 					"Add New Contact": { jp: "新しい連絡先を追加", en: "Add New Contact"},
 					"Add New Instrument": { jp: "新しい楽器を追加", en: "Add New Instrument"},
 					"Quratine List": { jp: "検疫リスト", en: "Quratine List"},
-					"Instrument List": { jp: "楽器リスト", en: "Instrument List"},
-					"Please enter Instrument  Name": { jp: "楽器名を入力してください", en: "Please enter Instrument  Name"},
-					
-					"Short Name": { jp: "略称", en: "Short Name"},
-					"Email Address": { jp: "電子メールアドレス", en: "Email Address"},
-					"ShortID": { jp: "ショートID", en: "ShortID"},
-					"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email"},
-					"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email"},
-					"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email"},
-					"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email"},
-					//"Please enter Your Name": { jp: "お名前を入力してください", en: "Please enter Your Name"},
-					//"Please Enter Your Department Name": { jp: "部署名を入力してください", en: "Please Enter Your Department Name"},
-					//"Please provide Your Email Address": { jp: "メールアドレスを入力してください", en: "Please provide Your Email Address"},
-					//"Please provide Your Phone Number": { jp: "電話番号を入力してください", en: "Please provide Your Phone Number"},
-					//"Please enter Department Name": { jp: "部署名を入力してください", en: "Please enter Department Name"},
-					//"Please provide Department Description": { jp: "部門の説明を入力してください", en: "Please provide Department Description"},
-					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine"},					
-					"Email Sended Succesfully": { jp: "メールが正常に送信されました", en: "Email Sended Succesfully"},
-					"Please Check your Email": { jp: "メールを確認してください", en: "Please Check your Email"},
-					"Email Address Not Present.": { jp: "メールアドレスがありません。", en: "Email Address Not Present."},
-					"Password Updated Successfully.": { jp: "パスワードが正常に更新されました。", en: "Password Updated Successfully."},
-					"Invite Feedback Id": { jp: "フィードバックの招待 ID", en: "Invite Feedback Id"},
-					"Please choose appropriate Laboratory": { jp: "適切な研究室を選択してください", en: "Please choose appropriate Laboratory"},
-					"Please give rating for Quality of Service!": { jp: "サービスの質を評価してください!", en: "Please give rating for Quality of Service!"},
-					"Please give rating for Reliability of Test!": { jp: "テストの信頼性を評価してください!", en: "Please give rating for Reliability of Test!"},
-					"Please give rating for Personnel Competency!": { jp: "人事能力の評価をお願いします!", en: "Please give rating for Personnel Competency!"},
-					"Please give rating for Technical Capability!": { jp: "技術力の評価をお願いします!", en: "Please give rating for Technical Capability!"},
-					"Please give rating for Test Calibration!": { jp: "テストキャリブレーションの評価をお願いします!", en: "Please give rating for Test Calibration!"},
-					"Please give rating for Response To Customer!": { jp: "Response To Customer の評価をお願いします!", en: "Please give rating for Response To Customer!"},
-					"Please give rating for Complaint Resolution!": { jp: "苦情解決の評価をお願いします!", en: "Please give rating for Complaint Resolution!"},
-					"File Size Should Not Exceed More Than 5MB": { jp: "ファイル サイズは 5 MB を超えてはなりません", en: "File Size Should Not Exceed More Than 5MB"},
-					"Sucessfully Submited...": { jp: "正常に送信されました...", en: "Sucessfully Submited..."},
-					"Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.": { jp: "無効なユーザーです。レベル アクセス権を付与するか、新しいユーザーを作成して、このユーザーにレベル アクセス権を付与してください。", en: "Invalid User, Please give Level Access or Create a new User and provide Level Access for this user."},
-					"User Deleted Successfully": { jp: "ユーザーが正常に削除されました", en: "User Deleted Successfully"},
-					"User Assigned succesfully": { jp: "ユーザーが正常に割り当てられました", en: "User Assigned succesfully"},
-					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it"},
-					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully"},
-					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!"},
-
-
-
-					// Only for Place Holder Jp to EN
-					"説明": { jp: "説明", en: "Description" },
-					"部署名": { jp: "部署名", en: "Department Name"},
-					"名前": { jp: "名前", en: "Name"},
-					"Eメール": { jp: "Eメール", en: "Email"},
-					"モバイル番号": { jp: "モバイル番号", en: "Mobile No"},
-					"略称": { jp: "略称", en: "Short Name"},
-					"ファーストネーム": { jp: "ファーストネーム", en: "First Name"},
-					"苗字": { jp: "苗字", en: "Last Name"},
-					"電子メールアドレス": { jp: "電子メールアドレス", en: "Email Address"},
-					"携帯電話番号": { jp: "携帯電話番号", en: "Mobile Number"},
-					"ショートID": { jp: "ショートID", en: "ShortID"},
-					"L3 マネージャーの電子メール": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email"},
-					"L4 マネージャーの電子メール": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email"},
-					"L5 マネージャーの電子メール": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email"},
-					"L6 マネージャーの電子メール": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email"},
-					"署名を選択": { jp: "署名を選択", en: "Choose Signature"}
-
+					"Instrument List": { jp: "楽器リスト", en: "Instrument List"}
 
 				}
 				return dict;
-			}
-
-			
-			
-
-			//var dictionary = {
-			//	"en": {
-			//		"login": "Login",
-			//		"username": "Username",
-			//		"username_placeHolder": "Enter Username"
-			//	},
-			//	"jP": {
-			//		"login": "로그인",
-			//		"username": "사용자 이름",
-			//		"username_placeHolder": "KoreanLang PlaceHldr"
-			//	}
-			//};
-
-
-			//var set_lang = function (dictionary) {
-			//	$("[data-translate]").each(function () {
-			//		if ($(this).is("input")) {
-			//			$(this).attr('placeholder', dictionary[$(this).data("translate")])
-			//		} else {
-			//			$(this).text(dictionary[$(this).data("translate")])
-			//		}
-			//	})
-			//};
-
-			//// Swap languages when menu changes
-			//$("#language").on("change", function () {
-			//	var language = $(this).val().toLowerCase();
-
-			//	if (dictionary.hasOwnProperty(language)) {
-			//		set_lang(dictionary[language]);
-			//	}
-			//});
-
-			//// Set initial language to English
-			//set_lang(dictionary.en);
-			
-
-			function AlertPopup(message) {
-				console.log(message);
-				console.log(language);
-				alert(dict[message][language]);
 			}
 
 		</script>

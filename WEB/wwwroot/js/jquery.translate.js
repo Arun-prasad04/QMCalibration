@@ -37,12 +37,11 @@
         };
 
 
-        this.get = function (index) {
-            
+        this.get = function (index) {            
             var res = index;
-           
+
             try {
-                res = t[index][settings.lang];                
+                res = t[index][settings.lang];
             }
             catch (err) {
                 //not found, return index
@@ -60,9 +59,7 @@
         //main
         this.find(settings.css).each(function (i) {
             var $this = $(this);
-            
             var trn_key = $this.attr("data-trn-key");
-            var trn_Plc = $this.attr("placeholder");
             
             if (!trn_key) {
 
@@ -73,37 +70,14 @@
                     trn_key = $this.val();
                 }
                 $this.attr("data-trn-key", trn_key);   //store key for next time
-            }           
-
-            if (!trn_Plc) {
-                //console.log('Trn_plc');
-                //console.log($this);
-                //if ($this.html() != "") {
-                //    trn_Plc = $this.html();
-                //}
-                //else {
-                //    trn_Plc = $this.val();
-                //}
-                //$this.attr("data-trn-key", that.get(trn_Plc));
-                //$this.attr("data-trn-key", trn_Plc);   //store key for next time
-                $this.attr('placeholder', trn_Plc);
             }
 
-            //$this.attr("data-trn-key", trn_Plc);
-
-            if ($this.html() != "") {               
+            if ($this.html() != "") {
                 $this.html(that.get(trn_key));
-                //$this.html(that.get(trn_Plc));
-                //$this.attr("placeholder", that.get(trn_Plc));
-                
             }
-            else {                
-                $this.val(that.get(trn_key));              
-                $this.attr("placeholder", that.get(trn_Plc));   
-              //  $this.attr("data-trn-key", that.get(trn_Plc));   
-                
+            else {
+                $this.val(that.get(trn_key));
             }            
-           
         });
 
         return this;

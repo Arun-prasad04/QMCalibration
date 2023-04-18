@@ -301,28 +301,24 @@
 	<script>
 		var data = @ViewBag.ForgerPasswordResponse;
 		if (data == 200) {
-			//alert('Email Sended Succesfully');
-			AlertPopup('Email Sended Succesfully');
+			alert('Email Sended Succesfully');
 		}
 		if (data == 500) {
-			//alert('Please Check your Email');
-			AlertPopup('Please Check your Email');
+			alert('Please Check your Email');
 		}
 
 	</script>
 	<script>
 		var data = @ViewBag.IncorrectEmailAddress;
 		if (data == 500) {
-			//alert('Email Address Not Present.');
-			AlertPopup('Email Address Not Present.');
+			alert('Email Address Not Present.');
 		}
 
 	</script>
 	<script>
 		var data = @ViewBag.PasswordUpdateResponseCode;
 		if (data == 200) {
-			//alert('Password Updated Successfully.');
-			AlertPopup('Password Updated Successfully.');
+			alert('Password Updated Successfully.');
 		}
 	</script>
 

@@ -9,7 +9,7 @@ public interface IUserService
     ResponseViewModel<UserViewModel> UpdateUser(UserViewModel User);
     ResponseViewModel<UserViewModel> PasswordUpdate(UserViewModel User);
     ResponseViewModel<string> DeleteUser(int userId);
-    ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password, string email);
+    ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password);
     ResponseViewModel<UserViewModel> CreateNewUser();
     ResponseViewModel<UserViewModel> ActivateUser(ActivationUserViewModel userActivation);
 

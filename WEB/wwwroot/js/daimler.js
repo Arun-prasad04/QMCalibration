@@ -1,8 +1,4 @@
-﻿var FileData = [];
-//import { globalVariable } from '_Layout'
-//var final_selectedLang = globalVariable.x;
-//console.log('lang_select -', final_selectedLang);
-//console.log('lang_select -', $('.Languagepicker').find("option:selected").val())
+var FileData = [];
 
 function logoShowHide() {
     var x = document.getElementById("logoheader");
@@ -357,8 +353,6 @@ function CloseTrackerPopup() {
 }
 
 function MasterQuarantineClick(element) {
-    var lngselect = $('.Languagepicker').find("option:selected").val();
-    //console.log('lang_select -', $('.Languagepicker').find("option:selected").val())
     Swal.fire({
         title: 'Enter Reason for Quarantine',
         input: 'text',
@@ -400,10 +394,6 @@ function MasterQuarantineClick(element) {
         },
         allowOutsideClick: () => !Swal.isLoading()
     });
-    //if (lngselect == 'jp')
-    //Swal.update({
-    //    title: '検疫の理由を入力してください',
-    //});
 }
 
 function MasterUnQuarantineClick(element) {
@@ -431,7 +421,7 @@ function MasterUnQuarantineClick(element) {
 
 function InstrumentQuarantineClick(element) {
     Swal.fire({
-        title: "<p class='trn'>Enter Reason for Quarantine</p>", //"<p class='trn'>that.get('Enter Reason for Quarantine'')</p>", // "<p class='trn'>Enter Reason for Quarantine</p>",
+        title: 'Enter Reason for Quarantine',
         input: 'text',
         inputAttributes: {
             autocapitalize: 'off'
@@ -2606,8 +2596,7 @@ $(document).ready(function() {
                         if (CheckFileExtension(filename)) {
                             FileUpload(filedata, filename, filesize);
                         } else {
-                            //alert('Please check uploaded files are Invalid!');
-                            AlertPopup("Please check uploaded files are Invalid!");
+                            alert('Please check uploaded files are Invalid!');
                             return false;
                         }
                     }
@@ -2692,4 +2681,3 @@ function getrequest(type) {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
     }
 }
-
