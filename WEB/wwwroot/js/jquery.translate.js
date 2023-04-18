@@ -41,7 +41,7 @@
             var res = index;
 
             try {
-                res = t[index][settings.lang];
+                res = t[index][settings.lang];                
             }
             catch (err) {
                 //not found, return index
@@ -53,16 +53,18 @@
             else
                 return index;
         };
+        
 
         this.g = this.get;
-                
+
         //main
         this.find(settings.css).each(function (i) {
             var $this = $(this);
+
             var trn_key = $this.attr("data-trn-key");
             
             if (!trn_key) {
-
+                
                 if ($this.html() != "") {
                     trn_key = $this.html();
                 }
@@ -71,7 +73,7 @@
                 }
                 $this.attr("data-trn-key", trn_key);   //store key for next time
             }
-
+            
             if ($this.html() != "") {
                 $this.html(that.get(trn_key));
             }

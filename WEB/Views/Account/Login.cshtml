@@ -31,7 +31,6 @@
 
 	<!-- /.login-box -->
 	<!-- jQuery -->
-	
 	<!-- Bootstrap 4 -->
 
 	<script src="~/js/jquery.min.js"></script>
@@ -40,7 +39,7 @@
 
 	<script src="~/js/bootstrap.bundle.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="~/js/adminlte.min.js"></script>	
+	<script src="~/js/adminlte.min.js"></script>
 
 	<script src="~/js/daimler.js"></script>
 
@@ -135,7 +134,7 @@
 								<input type="hidden" id="language" name="language">
 
 								<div class="input-group mb-3">
-									<input type="text" class="form-control" placeholder="ShortName Or Email" id="userName"
+									<input type="text" class="form-control" placeholder="ShortName Or Email" alt="Please enter a email address or short name" id="userName"
 										   name="userName">
 									<div class="input-group-append">
 										<div class="input-group-text">
@@ -144,7 +143,7 @@
 									</div>
 								</div>
 								<div class="input-group mb-3">
-									<input type="password" class="form-control" placeholder="Password" id="userPassword"
+									<input type="password" class="form-control" placeholder="Password" alt="Please provide a password" id="userPassword"
 										   name="userPassword">
 									<div class="input-group-append">
 										<div class="input-group-text">
@@ -162,7 +161,7 @@
 									</div>
 									<!-- /.col -->
 									<div class="col-4">
-										<button type="submit" class="btn btn-primary btn-block" onclick="lsRememberMe()">Sign In</button>
+										<button type="submit" class="btn btn-primary btn-block trn" onclick="lsRememberMe()">Sign In</button>
 									</div>
 									<!-- /.col -->
 								</div>
@@ -180,8 +179,8 @@
 		</div>
 
 	</div>
-	
-	
+
+
 
 	<script>
 
@@ -195,14 +194,14 @@
 						required: true,
 					},
 				},
-				messages: {
-					userName: {
-						required: "Please enter a email address or short name",
-					},
-					userPassword: {
-						required: "Please provide a password",
-					},
-				},
+				//messages: {
+				//	userName: {
+				//		required: "Please enter a email address or short name",
+				//	},
+				//	userPassword: {
+				//		required: "Please provide a password",
+				//	},
+				//},
 				errorElement: 'span',
 				errorPlacement: function (error, element) {
 					error.addClass('invalid-feedback');
@@ -216,7 +215,6 @@
 				}
 			});
 
-
 			var dict = {
 				"Sign in to start your session": {
 					jp: "サインインしてセッションを開始する",
@@ -229,10 +227,22 @@
 				"Remember Me": {
 					jp: "私を覚えてますか",
 					en: "Remember Me"
-				}
+				},
+				"Sign In": {
+					jp: "ログイン",
+					en: "Sign In"
+				},
+				"Please enter a email address or short name": {
+					jp: "メールアドレスまたは短い名前を入力してください", 
+					en: "Please enter a email address or short name" 
+				},
+				"Please provide a password": { 
+					jp: "パスワードを入力してください", 
+					en: "Please provide a password" 
+				},
 			}
 
-			
+
 			var language = "en";
 			$('.Languagepicker').selectpicker();
 			$('.Languagepicker').selectpicker('val', language);
@@ -243,6 +253,7 @@
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				document.getElementById("language").value = selected;
+				language = selected;
 
 				if (selected == "en") {
 					var translator = $('body').translate({ lang: "en", t: dict });
@@ -250,7 +261,26 @@
 				else {
 					var translator = $('body').translate({ lang: "jp", t: dict });
 				}
+				
+				$('#loginform').find('input').each(function () {
+					var thisctrl = $(this);
+					var id = $(thisctrl).attr('id');
+					var message = $(thisctrl).attr('alt');
+
+					if (id && message) {
+						var transMsg = dict[message][language];
+				
+						$('[name=' + id + ']').rules('add', {
+							messages: {
+								required: transMsg,
+							}
+						});
+					}
+				});
+
 			});
+
+			
 
 		});
 	</script>

@@ -1,118 +1,122 @@
-   @{
-    ViewData["Title"] = "Contact Create";
+@{
+	ViewData["Title"] = "Contact Create";
 }
- <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-12"> 
-          
-              <!-- general form elements -->
-              <div class="card card-primary">
-                <div class="card-header"> 
-                                          <div class="row">
-                       <div class="col-md-6">
-                            <h3 class="card-title trn">Contact Creation</h3>
-                    </div>
-                    <div class="col-md-6 text-right">
-                <a href='@Url.Action("Index","Contact")'><input type="button" class="btn btn-sm btn-default trn" value="Contact List" >                                
-                            </a>
-                    </div>
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-12">
 
-                       </div> 
+			<!-- general form elements -->
+			<div class="card card-primary">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-6">
+							<h3 class="card-title trn">Contact Creation</h3>
+						</div>
+						<div class="col-md-6 text-right">
+							<a href='@Url.Action("Index","Contact")'>
+								<input type="button" class="btn btn-sm btn-default trn" value="Contact List">
+							</a>
+						</div>
 
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form role="form" id="contactform" action='@Url.Action("InsertContact","Contact")'>
-                  <div class="card-body">
-                     <input type="hidden" name="Id" value="@Model.Id">
-                    <div class="form-group">
-                            <label for="Name" class="required trn">Name</label>
-                      <input type="text" class="form-control" id="Name" placeholder="Name" name="Name" value="@Model.Name">
-                      </div>                                    
-                    <div class="form-group">
-                            <label class="required trn">Department Name</label>
-                  <select class="form-control" name="DepartmentId" id="DepartmentId" > 
-                    @foreach(var department in @Model.DepartmentList){
-                      if(department.Id==Model.DepartmentId){
-                      <option value="@department.Id" selected="selected">@department.Name</option>
-                      }else{
-                      <option value="@department.Id" >@department.Name</option>
-                      }
-                    }
-                  </select>
-                </div>
-                    <div class="form-group">
-                            <label class="required trn">Email Id</label>
-                  <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" value="@Model.Email">
-                </div>
-                                   <div class="form-group">
-                            <label class="required trn">Mobile Number</label>
-                  <input type="text" class="form-control" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo" >
-                </div>
- 
-               </div>
-                  <!-- /.card-body -->
-  
-                  <div class="card-footer">
-                        <button type="submit" class="btn btn-primary trn">Submit</button>
-                  </div>
-                </form>
-              </div>
-              <!-- /.card -->
-           </div>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-    <script>
-      setTimeout(function(){ 
-  $(function () {
-    $('#contactform').validate({
-      rules: {
-      Name: {
-      required: true,
-      },
-      DepartmentId: {
-      required: true,
-      },
-      Email: {
-      required: true,
-      },
-      MobileNo: {
-      required: true,
-      },
-      },
-      messages: {
-        Name: {
-      required: "Please enter Your Name",
-      },
-      DepartmentId: {
-      required: "Please Enter Your Department Name",
-      },
-      Email: {
-      required: "Please provide Your Email Address",
-      },
-      MobileNo: {
-      required: "Please provide Your Phone Number",
-      },
-      },
-      errorElement: 'span',
-      errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid');
-      },
-      unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid');
-      }
-      });
-  });
-      },1000);
+					</div>
+
+				</div>
+				<!-- /.card-header -->
+				<!-- form start -->
+				<form name="frm" id="contactform" action='@Url.Action("InsertContact","Contact")' method="post" enctype="multipart/form-data">
+					<div class="card-body">
+						<input type="hidden" name="Id" value="@Model.Id">
+						<div class="form-group">
+							<label for="Name" class="required trn">Name</label>
+							<input type="text" class="form-control" id="Name" alt="Please enter your name" placeholder="Name" name="Name" value="@Model.Name">
+						</div>
+						<div class="form-group">
+							<label class="required trn">Department Name</label>							
+							<select class="form-control" name="DepartmentId" id="DepartmentId">
+								@foreach (var department in @Model.DepartmentList)
+								{
+									if (department.Id == Model.DepartmentId)
+									{
+										<option value="@department.Id" selected="selected">@department.Name</option>
+									}
+									else
+									{
+										<option value="@department.Id">@department.Name</option>
+									}
+								}
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="required trn">Email Id</label>
+							<input type="text" class="form-control" alt="Please provide your email address" placeholder="Email" id="Email" name="Email" value="@Model.Email">
+						</div>
+						<div class="form-group">
+							<label class="required trn">Mobile Number</label>
+							<input type="text" class="form-control" alt="Please provide your phone number" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+						</div>
+
+					</div>
+					<!-- /.card-body -->
+
+					<div class="card-footer">
+						<button type="submit" class="btn btn-primary trn">Submit</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.card -->
+		</div>
+	</div>
+	<!-- /.col -->
+	</div>
+	<!-- /.row -->
+</section>
+<!-- /.content -->
+<script>
+	setTimeout(function () {
+		$(function () {
+			$('#contactform').validate({
+				rules: {
+					Name: {
+						required: true,
+					},
+					DepartmentId: {
+						required: true,
+					},
+					Email: {
+						required: true,
+					},
+					MobileNo: {
+						required: true,
+					},
+				},
+				messages: {
+					Name: {
+						required: "Please enter your name",
+					},
+					DepartmentId: {
+						required: "Please enter your department name",
+					},
+					Email: {
+						required: "Please provide your email address",
+					},
+					MobileNo: {
+						required: "Please provide your phone number",
+					},
+				},
+				errorElement: 'span',
+				errorPlacement: function (error, element) {
+					error.addClass('invalid-feedback');
+					element.closest('.form-group').append(error);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).addClass('is-invalid');
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).removeClass('is-invalid');
+				}
+			});
+		});
+	}, 1000);
 </script>
 
-  
