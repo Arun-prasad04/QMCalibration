@@ -1,24 +1,26 @@
-   @{
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
     ViewData["Title"] = "Contact Create";
 }
- <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-12"> 
-          
-              <!-- general form elements -->
-              <div class="card card-primary">
-                <div class="card-header"> 
-                                          <div class="row">
-                       <div class="col-md-6">
-                            <h3 class="card-title trn">Contact Creation</h3>
-                    </div>
-                    <div class="col-md-6 text-right">
-                <a href='@Url.Action("Index","Contact")'><input type="button" class="btn btn-sm btn-default trn" value="Contact List" >                                
-                            </a>
-                    </div>
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-12">
 
-                       </div> 
+			<!-- general form elements -->
+			<div class="card card-primary">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-6">
+							<h3 class="card-title trn">Contact Creation</h3>
+						</div>
+						<div class="col-md-6 text-right">
+							<a href='@Url.Action("Index","Contact")'>
+								<input type="button" class="btn btn-sm btn-default trn" value="Contact List">
+							</a>
+						</div>
+
+					</div>
 
                 </div>
                 <!-- /.card-header -->
@@ -28,7 +30,7 @@
                      <input type="hidden" name="Id" value="@Model.Id">
                     <div class="form-group">
                             <label for="Name" class="required trn">Name</label>
-                      <input type="text" class="form-control" id="Name" placeholder="Name" name="Name" value="@Model.Name">
+                            <input type="text" class="form-control trn"  placeholder="Name" name="Name" value="@Model.Name">
                       </div>                                    
                     <div class="form-group">
                             <label class="required trn">Department Name</label>
@@ -44,11 +46,11 @@
                 </div>
                     <div class="form-group">
                             <label class="required trn">Email Id</label>
-                  <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" value="@Model.Email">
+                  <input type="text" class="form-control trn" placeholder="Email" id="Email" name="Email" value="@Model.Email">
                 </div>
                                    <div class="form-group">
                             <label class="required trn">Mobile Number</label>
-                  <input type="text" class="form-control" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo" >
+                  <input type="text" class="form-control trn" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo" >
                 </div>
  
                </div>
@@ -68,8 +70,10 @@
     </section>
     <!-- /.content -->
     <script>
-      setTimeout(function(){ 
+        setTimeout(function(){ 
   $(function () {
+      var tr = 'en';
+
     $('#contactform').validate({
       rules: {
       Name: {
@@ -85,7 +89,7 @@
       required: true,
       },
       },
-      messages: {
+      messages: {                 
         Name: {
       required: "Please enter Your Name",
       },
@@ -97,11 +101,13 @@
       },
       MobileNo: {
       required: "Please provide Your Phone Number",
+      },                 
       },
-      },
+      
       errorElement: 'span',
       errorPlacement: function (error, element) {
       error.addClass('invalid-feedback');
+      error.addClass('trn');
       element.closest('.form-group').append(error);
       },
       highlight: function (element, errorClass, validClass) {
@@ -115,4 +121,3 @@
       },1000);
 </script>
 
-  

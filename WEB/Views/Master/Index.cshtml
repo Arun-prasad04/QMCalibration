@@ -56,7 +56,7 @@
 										{
 											<a href='@Url.Action("ExternalRequest","Master",new {masterId=@item.Id})'><i class="fas fa-arrow-alt-circle-right"></i></a>
 										}</td>
-									<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="MasterQuarantineClick(this)"></i></td>
+									<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="MasterQuarantineClick(this, language)"></i></td>
 									<td><a href='@Url.Action("MasterHistory","Master",new {MasterId=@item.Id})'><i class="fas fa-history" style="cursor:pointer;" id='@item.Id'></i></td>
 								</tr>
 							}

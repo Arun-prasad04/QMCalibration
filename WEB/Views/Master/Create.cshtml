@@ -1,537 +1,538 @@
-
 @{
-    ViewData["Title"] = "Master Create";
+	ViewData["Title"] = "Master Create";
 }
 <form name="frm" id="masterform" method="post" enctype="multipart/form-data"
-  action='@Url.Action("MasterInsert","Master")'>
-  <input type="hidden" name="Id" value="@Model.Id">
-  <!-- Main content -->
-  <section class="content">
-    <div class="row">
-      <div class="col-12">
-        <!-- general form elements disabled -->
-        <div class="card card-primary">
-          <div class="card-header">
+   action='@Url.Action("MasterInsert","Master")'>
+	<input type="hidden" name="Id" value="@Model.Id">
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-12">
+				<!-- general form elements disabled -->
+				<div class="card card-primary">
+					<div class="card-header">
 
-            <div class="row">
-              <div class="col-md-6">
-                                <h3 class="card-title trn">New Master</h3>
-                            </div>
-              <div class="col-md-6 text-right">
-                <a href='@Url.Action("Index","Master")'><input type="button" class="btn btn-sm btn-default trn"
-                                    value="Master List">                        
-                    </a>
-              </div>
- 
-            </div>
-          </div>
-          <div class="card card-default">
-            <div class="card-header">
+						<div class="row">
+							<div class="col-md-6">
+								<h3 class="card-title trn">New Master</h3>
+							</div>
+							<div class="col-md-6 text-right">
+								<a href='@Url.Action("Index","Master")'>
+									<input type="button" class="btn btn-sm btn-default trn"
+										   value="Master List">
+								</a>
+							</div>
 
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
+						</div>
+					</div>
+					<div class="card card-default">
+						<div class="card-header">
 
-            <div class="card-body">
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<!-- /.card-header -->
 
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <!-- text input -->
-                  <div class="form-group">
-                                        <label class="required trn">Equipment Name</label>
-                    <input type="text" id="EquipName" name="EquipName" value="@Model.EquipName" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label for="LocationId" class="required trn">Location</label>
-                    <select id="LocationId" name="LocationId" class="form-control">
+						<div class="card-body">
 
 
+							<div class="row">
+								<div class="col-sm-6">
+									<!-- text input -->
+									<div class="form-group">
+										<label class="required trn">Equipment Name</label>
+										<input type="text" id="EquipName" name="EquipName" value="@Model.EquipName" class="form-control"
+											   placeholder="" alt="Please enter Equipment Name">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="LocationId" class="required trn">Location</label>
+										<select id="LocationId" name="LocationId" class="form-control">
 
-                      @foreach (var location in @Model.LocationList)
-                      {
-                        if (location.Id == Model.LocationId)
-                        {
-                          <option value="@location.Id" selected="selected">@location.AttrValue</option>
-                        }
-                        else
-                        {
-                          <option value="@location.Id">@location.AttrValue</option>
-                        }
-                      }
-
-
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <!-- text input -->
-                  <div class="form-group">
-                                        <label class="required trn">P.O.Number</label>
-                    <input type="text" id="PONo" name="PONo" value="@Model.PONo" class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">P.O.Date</label>
-                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
-                      <input type="text" id="PODate" name="PODate" value="@Model.PODate"
-                        class="form-control datetimepicker-input" data-target="#reservationdate1" />
-                      <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label class="required trn">Commissioned On</label>
-                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                      <input type="text" id="CommissionedOn" name="CommissionedOn" value="@Model.CommissionedOn"
-                        class="form-control datetimepicker-input" data-target="#reservationdate2" />
-                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <!-- text input -->
-                  <div class="form-group">
-                    <label class="required trn">Make</label>
-                    <input type="text" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-5">
-                  <!-- text input -->
-                  <div class="form-group">
-                                        <label class="required trn">Cost</label>
-                    <input type="text" id="Cost" name="Cost" value="@Model.Cost" class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-1">
-                  <div class="form-group">
-                    <label for="CurrencyId" class="text-white">.</label>
-                    <select id="CurrencyId" name="CurrencyId" class="form-control">
+											@foreach (var location in @Model.LocationList)
+											{
+												if (location.Id == Model.LocationId)
+												{
+													<option value="@location.Id" selected="selected">@location.AttrValue</option>
+												}
+												else
+												{
+													<option value="@location.Id">@location.AttrValue</option>
+												}
+											}
 
 
-
-                      @foreach (var currency in @Model.CurrencyList)
-                      {
-                        if (currency.Id == Model.CurrencyId)
-                        {
-                          <option value="@currency.Id" selected="selected">@currency.AttrValue</option>
-                        }
-                        else
-                        {
-                          <option value="@currency.Id">@currency.AttrValue</option>
-                        }
-                      }
-
-
-                    </select>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label for="CalibrationSourceId" class="required trn">Calibration Source</label>
-                    <select id="CalibrationSourceId" name="CalibrationSourceId" class="form-control">
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<!-- text input -->
+									<div class="form-group">
+										<label class="required trn">P.O.Number</label>
+										<input type="text" id="PONo" name="PONo" value="@Model.PONo" class="form-control" placeholder=""
+											   alt="Please provide the P.O. Number">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">P.O.Date</label>
+										<div class="input-group date" id="reservationdate1" data-target-input="nearest">
+											<input type="text" id="PODate" name="PODate" value="@Model.PODate"
+												   class="form-control datetimepicker-input" data-target="#reservationdate1" />
+											<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Commissioned On</label>
+										<div class="input-group date" id="reservationdate2" data-target-input="nearest">
+											<input type="text" alt="Please provide the date" id="CommissionedOn" name="CommissionedOn" value="@Model.CommissionedOn"
+												   class="form-control datetimepicker-input" data-target="#reservationdate2" />
+											<div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<!-- text input -->
+									<div class="form-group">
+										<label class="required trn">Make</label>
+										<input type="text" alt="Please fill this field" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-5">
+									<!-- text input -->
+									<div class="form-group">
+										<label class="required trn">Cost</label>
+										<input type="text" alt="Please provide the amount" id="Cost" name="Cost" value="@Model.Cost" class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-1">
+									<div class="form-group">
+										<label for="CurrencyId" class="text-white">.</label>
+										<select id="CurrencyId" name="CurrencyId" class="form-control">
 
 
 
-                      @foreach (var source in @Model.CalibrationSourceList)
-                      {
-                        if (source.Id == Model.CalibrationSourceId)
-                        {
-                          <option value="@source.Id" selected="selected">@source.AttrValue</option>
-                        }
-                        else
-                        {
-                          <option value="@source.Id">@source.AttrValue</option>
-                        }
-                      }
+											@foreach (var currency in @Model.CurrencyList)
+											{
+												if (currency.Id == Model.CurrencyId)
+												{
+													<option value="@currency.Id" selected="selected">@currency.AttrValue</option>
+												}
+												else
+												{
+													<option value="@currency.Id">@currency.AttrValue</option>
+												}
+											}
 
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card card-default">
-            <div class="card-header">
-                            <h3 class="card-title trn">details 2</h3>
 
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="required trn">Supplier/Agency</label>
-                    <input type="text" id="Supplier" name="Supplier" value="@Model.Supplier" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="CalibFreqId" class="required trn">Calibration Frequency</label>
-                    <select id="CalibFreqId" name="CalibFreqId" class="form-control">
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="CalibrationSourceId" class="required trn">Calibration Source</label>
+										<select id="CalibrationSourceId" name="CalibrationSourceId" class="form-control">
 
 
 
-                      @foreach (var freq in @Model.CalibrationFreq)
-                      {
-                        if (freq.Id == Model.CalibFreqId)
-                        {
-                          <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
-                        }
-                        else
-                        {
-                          <option value="@freq.Id">@freq.AttrValue</option>
-                        }
-                      }
+											@foreach (var source in @Model.CalibrationSourceList)
+											{
+												if (source.Id == Model.CalibrationSourceId)
+												{
+													<option value="@source.Id" selected="selected">@source.AttrValue</option>
+												}
+												else
+												{
+													<option value="@source.Id">@source.AttrValue</option>
+												}
+											}
 
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Calibration Date</label>
-                    <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">
-                      <input type="text" id="CalibDate" name="CalibDate" value="@Model.CalibDate"
-                        class="form-control datetimepicker-input" data-target="#reservationdate3" />
-                      <div class="input-group-append" data-target="#reservationdate3" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Due Date</label>
-                    <div class="input-group date" id="reservationdate4" data-target-input="nearest">
-                      <input type="text" id="DueDate" name="DueDate" value="@Model.DueDate"
-                        class="form-control datetimepicker-input" data-target="#reservationdate4" />
-                      <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Range</label>
-                    <input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Serial Number</label>
-                    <input type="text" id="SerialNo" name="SerialNo" value="@Model.SerialNo" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="required trn">Lab ID</label>
-                    <input type="text" id="LabId" name="LabId" value="@Model.LabId" class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Certificate Number</label>
-                    <input type="text" id="CertNo" name="CertNo" value="@Model.CertNo" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Traceability</label>
-                    <input type="text" id="Traceability" name="Traceability" value="@Model.Traceability"
-                      class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label for="exampleInputFile" class="trn">Upload Image</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input"
-                          accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
-                          onchange="checkFileSize(this,MaxSize=4,event)" value="@Model.FileList" name="ImageUpload"
-                          id="ImageUpload" multiple />
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card card-default">
+						<div class="card-header">
+							<h3 class="card-title trn">details 2</h3>
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                </div>
-                <div class="col-sm-6">
-                  <div>
-                    <p id="FileList"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                </div>
-                <div id="imageSection" class="col-md-6">
-                  @if (@Model.FileList != null)
-                  {
-                    foreach (var img in @Model.FileList)
-                    {
-                      string[] imgarray = @img.ToString().Split('.');
-                      if (imgarray[1] == "doc" || imgarray[1] == "docx")
-                      {
-                        <img height="25" width="25" src="https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg">
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Supplier/Agency</label>
+										<input type="text" alt="Please provide the supplier or agency" id="Supplier" name="Supplier" value="@Model.Supplier" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="CalibFreqId" class="required trn">Calibration Frequency</label>
+										<select id="CalibFreqId" name="CalibFreqId" class="form-control">
 
-                      }
-                      if (imgarray[1] == "jpg" || imgarray[1] == "jpeg" || imgarray[1] == "PNG")
-                      {
-                        <img height="25" width="25"
-                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Picture_icon_BLACK.svg">
 
-                      }
-                      if (imgarray[1] == "pdf")
-                      {
-                        <img height="25" width="25"
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg">
 
-                      }
-                      if (imgarray[1] == "ppt" || imgarray[1] == "pptx")
-                      {
-                        <img height="25" width="25"
-                    src="https://upload.wikimedia.org/wikipedia/commons/a/a0/.pptx_icon_%282019%29.svg">
+											@foreach (var freq in @Model.CalibrationFreq)
+											{
+												if (freq.Id == Model.CalibFreqId)
+												{
+													<option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
+												}
+												else
+												{
+													<option value="@freq.Id">@freq.AttrValue</option>
+												}
+											}
 
-                      }
-                      if (imgarray[1] == "xls" || imgarray[1] == "xlsx")
-                      {
-                        <img height="25" width="25"
-                    src="https://cdn3.iconfinder.com/data/icons/document-icons-2/30/647702-excel-512.png">
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Calibration Date</label>
+										<div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">
+											<input type="text" id="CalibDate" name="CalibDate" value="@Model.CalibDate"
+												   class="form-control datetimepicker-input" data-target="#reservationdate3" />
+											<div class="input-group-append" data-target="#reservationdate3" data-toggle="datetimepicker">
+												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Due Date</label>
+										<div class="input-group date" id="reservationdate4" data-target-input="nearest">
+											<input type="text" id="DueDate" name="DueDate" value="@Model.DueDate"
+												   class="form-control datetimepicker-input" data-target="#reservationdate4" />
+											<div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
+												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Range</label>
+										<input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Serial Number</label>
+										<input type="text" id="SerialNo" name="SerialNo" value="@Model.SerialNo" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Lab ID</label>
+										<input type="text" alt="Please provide lab Id" id="LabId" name="LabId" value="@Model.LabId" class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Certificate Number</label>
+										<input type="text" id="CertNo" name="CertNo" value="@Model.CertNo" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Traceability</label>
+										<input type="text" id="Traceability" name="Traceability" value="@Model.Traceability"
+											   class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="exampleInputFile" class="trn">Upload Image</label>
+										<div class="input-group">
+											<div class="custom-file">
+												<input type="file" class="custom-file-input"
+													   accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+													   onchange="checkFileSize(this,MaxSize=4,event)" value="@Model.FileList" name="ImageUpload"
+													   id="ImageUpload" multiple />
+												<label class="custom-file-label" for="exampleInputFile">Choose file</label>
+											</div>
 
-                      }
-                      <a href='~/Master/@img' target="_blank">@img</a><br />
-                    }
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card card-default">
-            <div class="card-header">
-                            <h3 class="card-title trn">Supplier Information</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+								</div>
+								<div class="col-sm-6">
+									<div>
+										<p id="FileList"></p>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+								</div>
+								<div id="imageSection" class="col-md-6">
+									@if (@Model.FileList != null)
+									{
+										foreach (var img in @Model.FileList)
+										{
+											string[] imgarray = @img.ToString().Split('.');
+											if (imgarray[1] == "doc" || imgarray[1] == "docx")
+											{
+												<img height="25" width="25" src="https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg">
 
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                                        <label class="required trn">Name</label>
-                    <input type="text" id="Name" name="Name" value="@Model.Name" class="form-control" placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label class="required trn">Phone Number</label>
-                    <input type="text" id="PhoneNo" name="PhoneNo" value="@Model.PhoneNo" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                                        <label class="required trn">Email Id</label>
-                    <input type="text" id="EmailId" name="EmailId" value="@Model.EmailId" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                                        <label class="trn">Mobile Number</label>
-                    <input type="text" id="MobileNo" name="MobileNo" value="@Model.MobileNo" class="form-control"
-                      placeholder="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-                        <button type="submit" class="btn btn-primary trn">Submit</button>
-          </div>
+											}
+											if (imgarray[1] == "jpg" || imgarray[1] == "jpeg" || imgarray[1] == "PNG")
+											{
+												<img height="25" width="25"
+													 src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Picture_icon_BLACK.svg">
 
-        </div>
+											}
+											if (imgarray[1] == "pdf")
+											{
+												<img height="25" width="25"
+													 src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg">
 
-      </div>
-      <!-- /.card-body -->
-    </div>
-    <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    </div>
-    <!-- /.row -->
-  </section>
-  <!-- /.content -->
+											}
+											if (imgarray[1] == "ppt" || imgarray[1] == "pptx")
+											{
+												<img height="25" width="25"
+													 src="https://upload.wikimedia.org/wikipedia/commons/a/a0/.pptx_icon_%282019%29.svg">
+
+											}
+											if (imgarray[1] == "xls" || imgarray[1] == "xlsx")
+											{
+												<img height="25" width="25"
+													 src="https://cdn3.iconfinder.com/data/icons/document-icons-2/30/647702-excel-512.png">
+
+											}
+											<a href='~/Master/@img' target="_blank">@img</a>
+
+											<br />
+										}
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card card-default">
+						<div class="card-header">
+							<h3 class="card-title trn">Supplier Information</h3>
+
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="required trn">Name</label>
+										<input type="text" alt="Please provide supplier name" id="Name" name="Name" value="@Model.Name" class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Phone Number</label>
+										<input type="text" alt="Please provide supplier phone number" id="PhoneNo" name="PhoneNo" value="@Model.PhoneNo" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="required trn">Email Id</label>
+										<input type="text" alt="Please provide supplier Email address" id="EmailId" name="EmailId" value="@Model.EmailId" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="trn">Mobile Number</label>
+										<input type="text" id="MobileNo" name="MobileNo" value="@Model.MobileNo" class="form-control"
+											   placeholder="">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<button type="submit" class="btn btn-primary trn">Submit</button>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+		</div>
+		<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
 </form>
 
 
 <script>
-  setTimeout(function () {
-      $('#reservationdate1').datetimepicker({
-      format: 'DD/MM/YYYY'
-    });
-    $('#reservationdate2').datetimepicker({
-      format: 'DD/MM/YYYY'
-    });
-    $('#reservationdate3').datetimepicker({
-      format: 'DD/MM/YYYY'
-    });
-$('#reservationdate4').datetimepicker({
-      format: 'DD/MM/YYYY'
-    });
-    $(function () {
-      $('#masterform').validate({
-        rules: {
-          EquipName: {
-            required: true,
-          },
-          LocationId: {
-            required: true,
-          },
-          PONo: {
-            required: true,
-          },
-          CommissionedOn: {
-            required: true,
-          },
-          Make: {
-            required: true,
-          },
-          Cost: {
-            required: true,
-          },
-          CalibrationSourceId: {
-            required: true,
-          },
-          Supplier: {
-            required: true,
-          },
-          CalibFreqId: {
-            required: true,
-          },
-          LabId: {
-            required: true,
-          },
-          Name: {
-            required: true,
-          },
-          PhoneNO: {
-            required: true,
-          },
-          EmailId: {
-            required: true,
-          },
-        },
-        messages: {
-          EquipName: {
-            required: "Please enter Equipment  Name",
-          },
-          LocationId: {
-            required: "Please Enter The Location",
-          },
-          PONo: {
-            required: "Please provide The P.O Number",
-          },
-          CommissionedOn: {
-            required: "Please provide The Date",
-          },
-          Make: {
-            required: "Please Fill This Field",
-          },
-          Cost: {
-            required: "Please provide The Amount",
-          },
-          CalibrationSourceId: {
-            required: "Please provide The Calibration Source",
-          },
-          Supplier: {
-            required: "Please provide The Supplier Or Agency",
-          },
-          CalibFreqId: {
-            required: "Please provide The Calibration Frequency",
-          },
-          LabId: {
-            required: "Please provide Lab Id",
-          },
-          Name: {
-            required: "Please provide Supplier Name",
-          },
-          PhoneNO: {
-            required: "Please provide Supplier Phone Number",
-          },
-          EmailId: {
-            required: "Please provide Supplier Email Id",
-          },
-        },
-        errorElement: 'span',
-        errorPlacement: function (error, element) {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
-        },
-        highlight: function (element, errorClass, validClass) {
-          $(element).addClass('is-invalid');
-        },
-        unhighlight: function (element, errorClass, validClass) {
-          $(element).removeClass('is-invalid');
-        }
-      });
-    });
-  }, 1000);
+	setTimeout(function () {
+		$('#reservationdate1').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+		$('#reservationdate2').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+		$('#reservationdate3').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+		$('#reservationdate4').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+		$(function () {
+			$('#masterform').validate({
+				rules: {
+					EquipName: {
+						required: true,
+					},
+					LocationId: {
+						required: true,
+					},
+					PONo: {
+						required: true,
+					},
+					CommissionedOn: {
+						required: true,
+					},
+					Make: {
+						required: true,
+					},
+					Cost: {
+						required: true,
+					},
+					CalibrationSourceId: {
+						required: true,
+					},
+					Supplier: {
+						required: true,
+					},
+					CalibFreqId: {
+						required: true,
+					},
+					LabId: {
+						required: true,
+					},
+					Name: {
+						required: true,
+					},
+					PhoneNo: {
+						required: true,
+					},
+					EmailId: {
+						required: true,
+					},
+				},
+				messages: {
+					EquipName: {
+						required: "Please enter Equipment Name",
+					},
+					LocationId: {
+						required: "Please enter the location",
+					},
+					PONo: {
+						required: "Please provide the P.O. Number",
+					},
+					CommissionedOn: {
+						required: "Please provide the date",
+					},
+					Make: {
+						required: "Please fill this field",
+					},
+					Cost: {
+						required: "Please provide the amount",
+					},
+					CalibrationSourceId: {
+						required: "Please provide the Calibration Source",
+					},
+					Supplier: {
+						required: "Please provide the supplier or agency",
+					},
+					CalibFreqId: {
+						required: "Please provide the Calibration Frequency",
+					},
+					LabId: {
+						required: "Please provide lab Id",
+					},
+					Name: {
+						required: "Please provide supplier name",
+					},
+					PhoneNo: {
+						required: "Please provide supplier phone number",
+					},
+					EmailId: {
+						required: "Please provide supplier Email address",
+					},
+				},
+				errorElement: 'span',
+				errorPlacement: function (error, element) {
+					error.addClass('invalid-feedback');
+					element.closest('.form-group').append(error);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).addClass('is-invalid');
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).removeClass('is-invalid');
+				}
+			});
+		});
+	}, 1000);
 </script>
 
 
@@ -541,7 +542,8 @@ $('#reservationdate4').datetimepicker({
     var val = $(element).val(); //get file value
     var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
     if (fileSize > maxSize) {
-      alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+      //alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            AlertPopup("File Size Should Not Exceed More Than 5MB");
       $("#ImageUpload").val("");
     }
     var input = document.getElementById('ImageUpload')
@@ -552,211 +554,183 @@ $('#reservationdate4').datetimepicker({
     }
     output.innerHTML = result;
 
-  }
+	}
 </script>
 <script>
-    function loaddate(){
-    debugger;
-    var date1 = document.getElementById("CalibDate").value;
-    var e = document.getElementById("CalibFreqId");
-    var type = e.options[e.selectedIndex].text;    
-    var datestr=(date1.split(" ")[0]).split("/");
-    var newDate = new Date(datestr[2],datestr[1],datestr[0]);
-    if(type=="One Month")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+1)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Two Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+2)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Three Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+3)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Four Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+4)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Five Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+5)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Six Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+6));
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;     
-    }
-    if(type=="Seven Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+7)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Eight Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+8)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Nine Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+9)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Ten Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+10)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="Eleven Months")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth()+11)); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear();
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="1 Year")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth())); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear()+1;
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    } 
-    if(type=="2 Years")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth())); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear()+2;
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }
-    if(type=="3 Years")
-    {
-        var d  = new Date(newDate);
-        var newDate = new Date(d.setMonth(d.getMonth())); 
-        var day=newDate.getDate();
-        var month=newDate.getMonth();
-        if(month==0)
-        {
-          month=12
-        }
-        var year=newDate.getFullYear()+3;
-        var result3=day+"/"+month+"/"+year;
-        document.getElementById("DueDate").value = result3;      
-    }     
-    }    
+	function loaddate() {
+		debugger;
+		var date1 = document.getElementById("CalibDate").value;
+		var e = document.getElementById("CalibFreqId");
+		var type = e.options[e.selectedIndex].text;
+		var datestr = (date1.split(" ")[0]).split("/");
+		var newDate = new Date(datestr[2], datestr[1], datestr[0]);
+		if (type == "One Month") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 1));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Two Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 2));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Three Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 3));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Four Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 4));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Five Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 5));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Six Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 6));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Seven Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 7));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Eight Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 8));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Nine Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 9));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Ten Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 10));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "Eleven Months") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth() + 11));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear();
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "1 Year") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth()));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear() + 1;
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "2 Years") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth()));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear() + 2;
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+		if (type == "3 Years") {
+			var d = new Date(newDate);
+			var newDate = new Date(d.setMonth(d.getMonth()));
+			var day = newDate.getDate();
+			var month = newDate.getMonth();
+			if (month == 0) {
+				month = 12
+			}
+			var year = newDate.getFullYear() + 3;
+			var result3 = day + "/" + month + "/" + year;
+			document.getElementById("DueDate").value = result3;
+		}
+	}
 </script>

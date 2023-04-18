@@ -53,16 +53,18 @@
             else
                 return index;
         };
+        
 
         this.g = this.get;
-                
+
         //main
         this.find(settings.css).each(function (i) {
             var $this = $(this);
+            
             var trn_key = $this.attr("data-trn-key");
             
             if (!trn_key) {
-
+                
                 if ($this.html() != "") {
                     trn_key = $this.html();
                 }
@@ -70,9 +72,25 @@
                     trn_key = $this.val();
                 }
                 $this.attr("data-trn-key", trn_key);   //store key for next time
+            }           
+
+            if (!trn_Plc) {
+                //console.log('Trn_plc');
+                //console.log($this);
+                //if ($this.html() != "") {
+                //    trn_Plc = $this.html();
+                //}
+                //else {
+                //    trn_Plc = $this.val();
+                //}
+                //$this.attr("data-trn-key", that.get(trn_Plc));
+                //$this.attr("data-trn-key", trn_Plc);   //store key for next time
+                $this.attr('placeholder', trn_Plc);
             }
 
-            if ($this.html() != "") {
+            //$this.attr("data-trn-key", trn_Plc);
+
+            if ($this.html() != "") {               
                 $this.html(that.get(trn_key));
             }
             else {
