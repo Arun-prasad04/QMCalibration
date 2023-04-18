@@ -9,7 +9,8 @@
     var val = $(element).val(); //get file value
     var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
     if (fileSize > maxSize) {
-      alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+      //alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            AlertPopup("File Size Should Not Exceed More Than 5MB");
       $("#ImageUpload").val("");
     }
     var input = document.getElementById('ImageUpload')

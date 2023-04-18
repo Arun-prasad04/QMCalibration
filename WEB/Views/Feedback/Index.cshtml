@@ -750,7 +750,8 @@
         } else if (document.frm.OptionLabName[2].checked != "") {
             return true;
         } else {
-            alert("Please choose appropriate Laboratory");
+            //alert("Please choose appropriate Laboratory");
+            AlertPopup("Please choose appropriate Laboratory");
             return false;
         }  
     }
@@ -783,55 +784,72 @@
         var num17 = parseInt(document.getElementById("Confidentiality").value);
 
         if (isNaN (num1)){
-           alert("Please give rating for Quality of Service!");
+           //alert("Please give rating for Quality of Service!");
+            AlertPopup("Please give rating for Quality of Service!");
             return false;
         }else if (isNaN (num2)){
-           alert("Please give rating for Reliability of Test!");
-           return false;
+           //alert("Please give rating for Reliability of Test!");
+            AlertPopup("Please give rating for Reliability of Test!");
+            return false;
         }else if (isNaN (num3)){
-           alert("Please give rating for Personnel Competency!");
+          // alert("Please give rating for Personnel Competency!");
+            AlertPopup("Please give rating for Personnel Competency!");
             return false;
         }else if (isNaN (num4)){
-           alert("Please give rating for Technical Capability!");
+           //alert("Please give rating for Technical Capability!");
+            AlertPopup("Please give rating for Technical Capability!");
             return false;
         }else if (isNaN (num5)){
-           alert("Please give rating for Test Calibration!");
+          // alert("Please give rating for Test Calibration!");
+            AlertPopup("Please give rating for Test Calibration!");
             return false;
         }else if (isNaN (num6)){
-           alert("Please give rating for On TimeDelivery Test!");
+          // alert("Please give rating for On TimeDelivery Test!");
+            AlertPopup("Please give rating for On TimeDelivery Test!");
             return false;
         }else if (isNaN (num7)){
-           alert("Please give rating for Response To Customer!");
+           //alert("Please give rating for Response To Customer!");
+            AlertPopup("Please give rating for Response To Customer!");
             return false;
         }else if (isNaN (num8)){
-           alert("Please give rating for Complaint Resolution!");
+          // alert("Please give rating for Complaint Resolution!");
+            AlertPopup("Please give rating for Complaint Resolution!");
             return false;
         }else if (isNaN (num9)){
-           alert("Please give rating for Emergency Support!");
+           //alert("Please give rating for Emergency Support!");
+            AlertPopup("Please give rating for Emergency Support!");
             return false;
         }else if (isNaN (num10)){
-           alert("Please give rating for Handling of Test!");
+           //alert("Please give rating for Handling of Test!");
+            AlertPopup("Please give rating for Handling of Test!");
             return false;
         }else if (isNaN (num11)){
-           alert("Please give rating for Communication Access!");
+           //alert("Please give rating for Communication Access!");
+            AlertPopup("Please give rating for Communication Access!");
             return false;
         }else if (isNaN (num12)){
-           alert("Please give rating for Doc Reporting System!");
+           //alert("Please give rating for Doc Reporting System!");
+            AlertPopup("Please give rating for Doc Reporting System!");
             return false;
         }else if (isNaN (num13)){
-           alert("Please give rating for Facilities and Environment!");
+           //alert("Please give rating for Facilities and Environment!");
+            AlertPopup("Please give rating for Facilities and Environment!");
             return false;
         }else if (isNaN (num14)){
-           alert("Please give rating for FiveS Management!");
+           //alert("Please give rating for FiveS Management!");
+            AlertPopup("Please give rating for FiveS Management!");
             return false;
         }else if (isNaN (num15)){
-           alert("Please give rating for Safeguarding of customer data!");
+           //alert("Please give rating for Safeguarding of customer data!");
+            AlertPopup("Please give rating for Safeguarding of customer data!");
             return false;
         }else if (isNaN (num16)){
-           alert("Please give rating for Commitment!");
+           //alert("Please give rating for Commitment!");
+            AlertPopup("Please give rating for Commitment!");
             return false;
         }else if (isNaN (num17)){
-           alert("Please give rating for Impartiality & confidentiality!");
+           //alert("Please give rating for Impartiality & confidentiality!");
+            AlertPopup("Please give rating for Impartiality & confidentiality!");
             return false;
         }else{
                 return true;
@@ -900,7 +918,8 @@
         var val = $(element).val(); //get file value
         var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
         if (fileSize > maxSize) {
-            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            //alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            AlertPopup("File Size Should Not Exceed More Than 5MB");
             $("#FileUpload").val("");
         }
         var input = document.getElementById('FileUpload');

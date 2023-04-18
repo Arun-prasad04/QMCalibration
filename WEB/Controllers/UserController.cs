@@ -97,7 +97,8 @@ public class UserController : BaseController
     }
     public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
     {
-        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
+        string email = Convert.ToString(HttpContext.Request.Query["email"]);
+        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword, email);
         if (response.ResponseMessage == "Success")
         {
             if (response.ResponseData != null)
