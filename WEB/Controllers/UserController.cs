@@ -97,8 +97,7 @@ public class UserController : BaseController
     }
     public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
     {
-        string email = Convert.ToString(HttpContext.Request.Query["email"]);
-        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword, email);
+        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
         if (response.ResponseMessage == "Success")
         {
             if (response.ResponseData != null)
@@ -119,6 +118,7 @@ public class UserController : BaseController
             return RedirectToAction("Index", "Home");
 
         }
+
         else
         {
             TempData["ResponseCode"] = response.ResponseCode;

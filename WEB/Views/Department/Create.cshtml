@@ -1,87 +1,85 @@
-﻿   @{
-    ViewData["Title"] = "Department Create";
-} 
+﻿@{
+	ViewData["Title"] = "Department Create";
+}
 <!-- Content Header (Page header) -->
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-primary">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-6">
+							<h3 class="card-title trn">New Department</h3>
+						</div>
+						<div class="col-md-6 text-right">
+							<a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default trn" value="Department List"></a>
+						</div>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-12"> 
-                  <div class="card card-primary"> 
-                  <div class="card-header"> 
-                                         <div class="row"> 
-                       <div class="col-md-6">
-                            <h3 class="card-title trn">New Department</h3>
-                    </div>
-                    <div class="col-md-6 text-right">
-                              <a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default trn" value="Department List" ></a>                             
-                    </div>
+					</div>
 
-                       </div>
+				</div>
+				<!-- /.card-header -->
+				<!-- form start -->
+				<form name="frm" id="departmentform" action='@Url.Action("InsertDepartment","Department")'>
+					<input type="hidden" name="Id" value="@Model.Id">
+					<div class="card-body">
+						<div class="form-group">
+							<label for="Name" class="required trn">Department Name</label>
+							<input type="text" class="form-control" id="Name" placeholder="Department Name" alt="Please enter Department Name" name="Name" value="@Model.Name">
+						</div>
+						<div class="form-group">
+							<label for="Description" class="required trn">Department Description</label>
+							<input type="text" class="form-control" data-trn-key="dfgdfg" id="Description" placeholder="Description" alt="Please provide Department Description" name="Description" value="@Model.Description">
+						</div>
+					</div>
+					<!-- /.card-body -->
 
-                  </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-               <form name="frm" id="departmentform" action='@Url.Action("InsertDepartment","Department")'>
-               <input type="hidden" name="Id" value="@Model.Id">
-                  <div class="card-body">
-                      <div class="form-group">
-                      <label for="Name" class="required trn">Department Name</label>
-                            <input type="text" class="form-control trn" id="Name" placeholder="Department Name" name="Name" value="@Model.Name">
-                    </div>
-                    <div class="form-group">
-                      <label for="Description" class="required trn">Department Description</label>
-                            <input type="text" class="form-control trn" id="Description" placeholder="Description" name="Description" value="@Model.Description">
-                    </div>
-                    </div>
-                  <!-- /.card-body -->
-                 
-                   
-                  
-                   <div class="card-footer">
-                        <button type="submit" class="btn btn-primary trn">Submit</button>
-                  </div>
-                  </form>
-  </div>
-        </div>
-      </div>          
 
-    </section>
-    <!-- /.content -->
-<script>
-  setTimeout(function(){ 
-  $(function () {
-    $('#departmentform').validate({              
-          rules: {
-      Name: {
-      required: true,
-      },
-      Description: {
-      required: true,
-      },
-      },
-      messages: {
-        Name: {
-      required: "Please enter Department Name",
-      },
-      Description: {
-      required: "Please provide Department Description",
-      },
-      },
-      errorElement: 'span',
-      errorPlacement: function (error, element) {
-         error.addClass('invalid-feedback');
-         error.addClass('trn');
-         element.closest('.form-group').append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid');
-      },
-      unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid');
-      }
-      });
-  });
-  },1000);
+
+					<div class="card-footer">
+						<button type="submit" id="btnsubmit" class="btn btn-primary trn">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</section>
+<!-- /.content -->
+<script type="text/javascript">
+	setTimeout(function () {
+		
+		$(function () {
+			$('#departmentform').validate({
+				rules: {
+					Name: {
+						required: true,
+					},
+					Description: {
+						required: true,
+					},
+				},
+				messages: {
+					Name: {
+						required: "Please enter Department Name",
+					},
+					Description: {
+						required: "Please provide Department Description",
+					},
+				},
+				errorElement: 'span',				
+				errorPlacement: function (error, element) {
+					error.addClass('invalid-feedback');
+					element.closest('.form-group').append(error);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).addClass('is-invalid');
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).removeClass('is-invalid');
+				}
+			});
+		});
+	}, 1000);
 </script>
-  
