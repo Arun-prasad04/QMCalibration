@@ -2642,7 +2642,7 @@ $(document).ready(function () {
                         if (CheckFileExtension(filename)) {
                             FileUpload(filedata, filename, filesize);
                         } else {
-                            alert('Please check uploaded files are Invalid!');
+                            AlertPopup('Please check uploaded files are Invalid!');
                             return false;
                         }
                     }
