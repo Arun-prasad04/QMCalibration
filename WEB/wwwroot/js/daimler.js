@@ -25,12 +25,6 @@ function showSuccess(successMsg) {
             popup: 'animate__animated animate__fadeOutUp'
         }
     });
-
-    if (lang == 'jp') {
-        Swal.update({
-            title: '成功'
-        });
-    }
 }
 
 function showError(errorMsg) {
@@ -46,12 +40,6 @@ function showError(errorMsg) {
             popup: 'animate__animated animate__fadeOutUp'
         }
     });
-
-    if (lang == 'jp') {
-        Swal.update({
-            title: 'エラー'
-        });
-    }
 }
 
 function showWarning(warningMsg) {
@@ -89,16 +77,10 @@ function validateSession(sessionvalue) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
+               // window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
+                window.location.href = 'http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/';
             }
         });
-
-        if (lang == 'jp') {
-            Swal.update({
-                title: 'セッションの有効期限が切れ！作業を続けるにはログインしてください。',
-                confirmButtonText: 'わかった'
-            });
-        }
     }
 }
 

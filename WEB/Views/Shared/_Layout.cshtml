@@ -80,18 +80,26 @@
 			color: #ffffff;
 			text-decoration: none;
 			background-color: #00677F;
+			
 		}
 
 		.daimler_language {
 			background: transparent;
 			color: #000000;
-			margin-top: 2pt;
-			margin-right: 39pt;
+			margin-top: 8pt;
+			margin-right: 10pt;
 			font-size: 12px;
 		}
 
 		.selected {
 			background: #fff;
+		}
+		.layout-fixed .brand-link {
+			width : 150px;
+		}
+		.dropdown-toggle {
+			background: transparent;
+			border: none;
 		}
 	</style>
 
@@ -107,7 +115,7 @@
 			</ul>
 
 
-			<ul class="navbar-nav ml-auto" style="text-align:right;">
+			@*<ul class="navbar-nav ml-auto float-end" style="text-align:right;">
 				<li class="nav-item">
 					<select class="Languagepicker daimler_language" data-width="fit">
 						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
@@ -116,18 +124,28 @@
 						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
 					</select>
 				</li>
-			</ul>
+			</ul>*@
 
 
 			<!-- Right navbar links -->
 			<ul class="navbar-nav ml-auto" style="text-align:right;">
+				<li class="nav-item text-center">
+					<select class="Languagepicker daimler_language" data-width="fit" >
+						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
+							English
+						</option>
+						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
+					</select>
+				</li>
 				<!-- Messages Dropdown Menu -->
-				<a href='@Url.Action("Login","Account")' class="brand-link logopading">
+				<li class="nav-item text-center">
+				<a href='@Url.Action("Logout","Account")' class="brand-link logopading">
 					<p>
 						<i class='fas fa-user-circle' style='font-size:25px;color:black;position:relative;top:4px'></i>
 						<span style="color:black;font-size:14px;" class="trn">Signout</span>
 					</p>
 				</a>
+				</li>
 			</ul>
 		</nav>
 		<!-- /.navbar -->
@@ -144,10 +162,11 @@
 				<!-- Sidebar user panel (optional) -->
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 					<div class="image">
-						<img src="~/image/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+						@*<img src="~/image/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">*@
+						<i class='fas fa-user-circle' style='font-size:25px;color:black;position:relative;top:4px'></i>
 					</div>
 					<div class="info">
-						<a href="dashboard.html" class="d-block">
+						<a href="#" class="d-block">
 							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
 							@HttpContextAccessor.HttpContext.Session.GetString("LastName")
 						</a>
@@ -159,6 +178,16 @@
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 						<!-- Add icons to the links using the .nav-icon class
 						   with font-awesome or any other icon font library -->
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" 
+						|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+						{
+							<li class="nav-item">
+								<a href='@Url.Action("HomePage","Home")' class="nav-link">
+									<i class="nav-icon fas fa-home"></i>
+									<p class="trn">Home</p>
+								</a>
+							</li>
+						}
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 						{
@@ -517,9 +546,9 @@
 		<!-- /.content-wrapper -->
 
 		<footer class="main-footer">
-			&copy; 2021 - Calibration Management - <a asp-area="" asp-controller="Home" asp-action="About">Privacy</a>
+			&copy; <span class="trn">2021 - Calibration Management - </span><a asp-area="" class="trn">Privacy</a>
 			<div class="float-right d-none d-sm-inline-block">
-				<b>Version</b> 2.0.0
+				<b class="trn">Version</b> 2.0.0
 			</div>
 		</footer>
 
@@ -596,11 +625,11 @@
 			
 			var respmsg = '@ViewBag.ResponseMessage';
 
-			//if(respmsg){
-			//	console.log("am here trans resp msg");
-			//	console.log(respmsg);
-			//	respmsg = dict[respmsg][language];
-			//}
+			if(respmsg){
+				console.log("am here trans resp msg");
+				console.log(respmsg);
+				respmsg = dict[respmsg][language];
+			}
 			
 			showPopup('@ViewBag.ResponseCode', respmsg);
 
@@ -615,7 +644,8 @@
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
 				language = selected;
-
+				
+				
 				$.ajax({
 					type: "POST",
 					url: "../User/SetLanguage",
@@ -1131,6 +1161,35 @@
 					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it"},
 					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully"},
 					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!"},
+					"Home": { jp: "家", en: "Home" },
+
+					
+					"Success": { jp: "成功", en: "Success" },
+					"Failure": { jp: "失敗", en: "Failure"},
+					"Invalid Password": { jp: "無効なパスワード", en: "Invalid Password"},
+					"Invalid UserName": { jp: "無効なユーザー名", en: "Invalid UserName"},
+					"No records found": { jp: "レコードが見つかりません", en: "No records found"},
+					"Already user(s) has invited..!": { jp: "すでにユーザーが招待しています..!", en: "Already user(s) has invited..!"},
+					"Successfully sent invite...": { jp: "招待状を送信しました...", en: "Successfully sent invite..."},
+
+					"2021 - Calibration Management - ": { jp: "2021 - 校正管理 -", en: "2021 - Calibration Management - "},
+					"Privacy": { jp: "プライバシー", en: "Privacy"},
+					"Version": { jp: "バージョン", en: "Version"},
+					"Version": { jp: "バージョン", en: "Version"},
+					"Showing": { jp: "表示中", en: "Showing" },
+					"to": { jp: "に", en: "to" },
+					"of": { jp: "の", en: "of" },
+					"entries": { jp: "エントリ", en: "entries" },
+					"Previous": { jp: "前", en: "Previous" },
+					"First": { jp: "初め", en: "First" },
+					"Last": { jp: "最後", en: "Last" },
+					"Next": { jp: "次", en: "Next" },
+					"Show": { jp: "見せる", en: "Show" },
+					"No data available in table": { jp: "テーブルにデータがありません", en: "No data available in table" },
+					"Search:": { jp: "検索：", en: "Search:" },
+					"No matching records found": { jp: "該当する記録が見つかりません", en: "No matching records found" },
+					"filtered from": { jp: "からフィルタリング", en: "filtered from"},
+					"total entries": { jp: "総エントリー数", en: "total entries"},
 
 					// Only for Place Holder Jp to EN
 					"説明": { jp: "説明", en: "Description" },
@@ -1157,6 +1216,29 @@
 				console.log(message);
 				console.log(language);
 				alert(dict[message][language]);
+			}
+
+			
+			function DataTableCall(){								
+				$('.Lagtab').DataTable().destroy()
+				$('.Lagtab').DataTable({					 
+				  "language": {					
+					url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/ja.json",
+				  }
+			});
+			}
+
+			function DataTableCallEn(){				
+				$('.Lagtab').DataTable().destroy()
+				$('.Lagtab').DataTable({					
+				  "language": {					
+						url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json",
+				  }
+			});
+			}
+
+			function Conversion(){
+				var translator = $('body').translate({ lang: language, t: dict });
 			}
 
 		</script>

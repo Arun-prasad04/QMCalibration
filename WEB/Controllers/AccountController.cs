@@ -16,11 +16,14 @@ public class AccountController : BaseController
 {
     private IUserService _userService { get; set; }
     private IMasterService _masterService { get; set; }
-    public AccountController(IMasterService masterService, IUserService userService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor) : base(logger, contextAccessor)
+
+	private IConfiguration _configuration;
+	public AccountController(IMasterService masterService, IUserService userService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration Configuration) : base(logger, contextAccessor)
     {
         _userService = userService;
         _masterService = masterService;
-    }
+		_configuration = Configuration;
+	}
 
     public IActionResult Index()
     {
@@ -79,5 +82,13 @@ public class AccountController : BaseController
         };
 
         return View(loginViewModel);
+    }
+
+    public IActionResult Logout()
+    {
+
+        var Path = _configuration["Logout"];
+
+        return Redirect(Path);
     }
 }

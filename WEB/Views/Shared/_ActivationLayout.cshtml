@@ -158,7 +158,16 @@
 
 		<script type="text/javascript">
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
-			showPopup('@ViewBag.ResponseCode', '@ViewBag.ResponseMessage');
+
+            var respmsg = '@ViewBag.ResponseMessage';
+
+            if (respmsg) {
+                console.log("am here trans resp msg");
+                console.log(respmsg);
+                respmsg = dict[respmsg][language];
+            }
+
+            showPopup('@ViewBag.ResponseCode', respmsg);
 
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
 			$('.Languagepicker').selectpicker();

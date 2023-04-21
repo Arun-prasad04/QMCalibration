@@ -336,6 +336,7 @@
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
                                     class="btn btn-primary" onclick="AcceptRejectReCalibrationRequest()">
+                                <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>                    
               }
@@ -565,6 +566,7 @@
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
                                     class="btn btn-primary" onclick="AcceptRejectNewRequest()">
+                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                             </div>
                         </div>                        
@@ -677,6 +679,7 @@
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
                                     class="btn btn-primary" onclick="AcceptRejectNewRequest()">
+                                <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>                        
                     </div>
@@ -1075,6 +1078,7 @@
                             <div class="form-group">
                                 <input type="button" class="btn btn-primary" name="newSubmitFMVisual" id="newSubmitFMVisual"
                                     value="Submit" onclick="newSubmitReqLABVisual()">
+                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>
                     </div>                                
@@ -1360,7 +1364,7 @@
                                 <label class="trn">Return Date</label>
 
                                 <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
-                                    <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now"
+                                            <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now.AddHours(3).AddMinutes(30).ToString("yyyy/MM/dd HH:mm:ss") JST"
                                         class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
                                     <div class="input-group-append" data-target="#newReturnDatePicker"
                                         data-toggle="datetimepicker">
@@ -1385,9 +1389,9 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group" style="text-align:right;">
-                                <input style="margin-top: 32px;" type="button" class="btn btn-primary"
-                                    name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                                <input style="margin-top: 32px;" type="button" class="btn btn-primary" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
                                     onclick="newSubmitReqDepVisual()">
+                                        <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>
                     </div>

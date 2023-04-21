@@ -523,12 +523,14 @@ public class UserService : IUserService
         }
     }
     public ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password)
+    //public ResponseViewModel<UserViewModel> ValidateUser(string email)
     {
         try
         {
-            //string pass =_utilityService.Encrypt(Password);
-            UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
-            (Q.ShortId == UserName || Q.Email == UserName)).Include(I => I.Department).Select(S => new UserViewModel()
+			//ErrorViewModelTest.Log("EmailService - " + email);
+			UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
+            (Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
+            //(Q.Email.Trim() == email)).Include(I => I.Department).Select(S => new UserViewModel()
             {
                 DepartmentName = S.Department.Name,
                 FirstName = S.FirstName,
@@ -551,7 +553,8 @@ public class UserService : IUserService
                 DepartmentId = S.DepartmentId,
                 Id = S.Id
             }).SingleOrDefault();
-            if (validateUser == null)
+			ErrorViewModelTest.Log("ValidateUser - " + validateUser);
+			if (validateUser == null)
             {
                 return new ResponseViewModel<UserViewModel>
                 {
@@ -562,6 +565,17 @@ public class UserService : IUserService
                 };
 
             }
+            //        else
+            //        {
+            //return new ResponseViewModel<UserViewModel>
+            //            {
+            //                ResponseCode = 200,
+            //                ResponseMessage = "Success",
+            //                ResponseData = validateUser,
+            //                ResponseDataList = null
+            //            };
+            //        }
+
             string decryptUserPass = _utilityService.Decrypt(validateUser.Password);
             if (Password == decryptUserPass)
             {
@@ -586,7 +600,8 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            return new ResponseViewModel<UserViewModel>
+			ErrorViewModelTest.Log("Exception - " + e.Message);
+			return new ResponseViewModel<UserViewModel>
             {
                 ResponseCode = 500,
                 ResponseMessage = "Failure",
