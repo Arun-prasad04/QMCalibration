@@ -335,7 +335,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary" onclick="AcceptRejectReCalibrationRequest()">
+                                    class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest()">
                                 <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>                    
@@ -565,7 +565,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary" onclick="AcceptRejectNewRequest()">
+                                    class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                             </div>
@@ -678,7 +678,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary" onclick="AcceptRejectNewRequest()">
+                                               class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
                                 <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>                        
@@ -1076,7 +1076,7 @@
                         <div class="col-sm-3">
                             <!-- text input -->
                             <div class="form-group">
-                                <input type="button" class="btn btn-primary" name="newSubmitFMVisual" id="newSubmitFMVisual"
+                                <input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
                                     value="Submit" onclick="newSubmitReqLABVisual()">
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
@@ -1095,8 +1095,8 @@
                             <div class="form-group">
                                 <input type="button" class="btn btn-primary" name="newedit" id="newedit"
                                     value="Edit" onclick="enableFields()">
-                                <input type="button" class="btn btn-primary" name="newSubmitLABAdmin" disabled id="newSubmitLABAdmin"
-                                    value="Update" onclick="SaveLABAdminUpdates()">
+                                <input type="button" class="btn btn-primary trn" name="newSubmitLABAdmin" disabled id="newSubmitLABAdmin"
+                                           value="Update" onclick="SaveLABAdminUpdates(language)">
                             </div>
                         </div>
                     </div>      
@@ -1389,7 +1389,7 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group" style="text-align:right;">
-                                <input style="margin-top: 32px;" type="button" class="btn btn-primary" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                                <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
                                     onclick="newSubmitReqDepVisual()">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
                             </div>

@@ -299,11 +299,11 @@
 	</script>
 
 	<script type="text/javascript">
-		function showPopup(resCode, resMsg) {
+		function showPopup(resCode, resMsg, lang) {
 			if (resCode != '' && resCode != undefined && resCode == 200) {
-				showSuccess(resMsg);
+				showSuccess(resMsg, lang);
 			} else if (resCode != undefined && resCode != '') {
-				showError(resMsg);
+				showError(resMsg, lang);
 			}
 		}
 		const rmCheck = document.getElementById("remember"),

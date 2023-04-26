@@ -1,6 +1,6 @@
 ﻿var FileData = [];
 var lang = $('#hdnLanguage').val();
-console.log(lang);
+console.log('daimlerjs -', lang);
 
 
 function logoShowHide() {
@@ -12,37 +12,69 @@ function logoShowHide() {
     }
 }
 //SweetAlert
-function showSuccess(successMsg) {
+function showSuccess(successMsg, lang) {
     Swal.fire({
         icon: 'success',
         title: 'Success',
         text: successMsg,
+        customClass: {
+            title: 'swal2-trn',
+            confirmButton: 'swal2-trn',
+        },
         footer: '',
         showClass: {
             popup: 'animate__animated animate__fadeInDown'
         },
         hideClass: {
             popup: 'animate__animated animate__fadeOutUp'
+        },
+        didOpen: function (ele) {
+            $(ele).find('div.swal2-html-container')
+                .addClass('swal2-trn')
+
+            if (lang == "en") {
+                translator = $('body').swaltranslate({ lang: "en", t: dict });
+            }
+            else {
+                translator = $('body').swaltranslate({ lang: "jp", t: dict });
+            }
         }
     });
 }
 
-function showError(errorMsg) {
+function showError(errorMsg, lang) {
     Swal.fire({
         icon: 'error',
         title: 'Error',
         text: errorMsg,
+        customClass: {
+            title: 'swal2-trn',
+            confirmButtonText: 'swal2-trn',
+        },
         footer: '',
         showClass: {
             popup: 'animate__animated animate__fadeInDown'
         },
         hideClass: {
             popup: 'animate__animated animate__fadeOutUp'
+        },
+        didOpen: function (ele) {
+            $(ele).find('div.swal2-html-container')
+                .addClass('swal2-trn')
+
+            console.log(lang);
+            if (lang == "en") {
+                translator = $('body').swaltranslate({ lang: "en", t: dict });
+
+            }
+            else {
+                translator = $('body').swaltranslate({ lang: "jp", t: dict });
+            }
         }
     });
 }
 
-function showWarning(warningMsg) {
+function showWarning(warningMsg, lang) {
     Swal.fire({
         icon: 'warning',
         title: 'Warning',
@@ -53,6 +85,23 @@ function showWarning(warningMsg) {
         },
         hideClass: {
             popup: 'animate__animated animate__fadeOutUp'
+        },
+        didOpen: function (ele) {
+            $(ele).find('div.swal2-html-container')
+                .addClass('swal2-trn')
+
+            console.log(lang);
+            if (lang == "en") {
+                translator = $('body').swaltranslate({ lang: "en", t: dict });
+
+            }
+            else {
+                translator = $('body').swaltranslate({ lang: "jp", t: dict });
+            }
+        },
+        customClass: {
+            title: 'swal2-trn',
+            confirmButtonText: 'swal2-trn',
         }
     });
 }
@@ -68,11 +117,15 @@ $("#profileUpdate").click(function () {
 
 function validateSession(sessionvalue) {
     if (sessionvalue == undefined || sessionvalue == '') {
-        Swal.fire({
+        Swal.fire({           
             title: 'Session Expired! Please login to continue your work.',
             icon: 'warning',
             confirmButtonText: 'OK',
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            customClass: {
+                title: 'swal2-trn',
+                confirmButtonText: 'swal2-trn',
+            }
 
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
@@ -86,11 +139,11 @@ function validateSession(sessionvalue) {
 
 
 
-function showPopup(resCode, resMsg) {
+function showPopup(resCode, resMsg, lang) {
     if (resCode != '' && resCode != undefined && resCode == 200) {
-        showSuccess(resMsg);
+        showSuccess(resMsg, lang);
     } else if (resCode != undefined && resCode != '') {
-        showError(resMsg);
+        showError(resMsg, lang);
     }
 }
 //External Request
@@ -242,7 +295,7 @@ function RejecttExternalRequest() {
     });
 }
 
-function SubmitFMVisual() {
+function SubmitFMVisual(lang) {
 
     if ($('#ResultFM').val() == '' || $('#ResultFM').val() == undefined) {
         $('#ResultFM').addClass('is-invalid');
@@ -257,24 +310,12 @@ function SubmitFMVisual() {
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultFM').val() }
     }).done(function (resultObject) {
-        AssignExternalRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        AssignExternalRequestValues(resultObject);        
+        showSuccess("Your visual check details recorded.", lang);
     });
 }
 
-function SubmitLABVisual() {
+function SubmitLABVisual(lang) {
 
     if ($('#ResultLAB').val() == '' || $('#ResultLAB').val() == undefined) {
         $('#ResultLAB').addClass('is-invalid');
@@ -288,20 +329,8 @@ function SubmitLABVisual() {
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultLAB').val() }
     }).done(function (resultObject) {
-        AssignExternalRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        AssignExternalRequestValues(resultObject);        
+        showSuccess("Your visual check details recorded.", lang);
     });
 }
 
@@ -313,20 +342,9 @@ function EnableReason() {
     }
 }
 
-function submitAcceptReject() {
+function submitAcceptReject(lang) {
     if ($('input[name="AcceptReject"]:checked').val() == undefined || $('input[name="AcceptReject"]:checked').val() == '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please choose either Accept / Reject and try again.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="AcceptReject"]:checked').val() == 'Accept') {
         AcceptExternalRequest();
     } else {
@@ -335,18 +353,7 @@ function submitAcceptReject() {
             RejecttExternalRequest();
         } else {
             $('#reason').addClass('is-invalid');
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: "Please enter reason for rejection and try again.",
-                footer: '',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            });
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -369,86 +376,61 @@ function MasterQuarantineClick(element, lang) {
         closeOnConfirm: false,
         closeOnCancel: false,
         reverseButtons: true,
-
-        inputValidator: (value) => {
+        customClass: {
+            confirmButton: 'swal2-trn',
+            cancelButton: 'swal2-trn',
+            title: 'swal2-trn',
+        },
+        
+        preConfirm: (value) => {
             if (!value) {
-                if (lang == 'jp') {
-                    return '検疫の理由を記入してください'
+                Swal.showValidationMessage(
+                    '<span class="swal2-trn">Please fill the reason for Quarantine</span>'
+                )
+                if (lang == "en") {
+                    translator = $('body').swaltranslate({ lang: "en", t: dict });
                 }
                 else {
-                    return 'please fill the reason for Quarantine'
+                    translator = $('body').swaltranslate({ lang: "jp", t: dict });
                 }
             }
-            else
-                return null
-        },
-        preConfirm: (msg) => {
-            $.ajax({
-                url: '../Master/MasterQuarantine',
-                type: 'POST',
-                data: { masterId: element.id, reason: msg }
-            }).done(function (resultObject) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: "Master moved to quarantine list",
-                    footer: '',
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
-                    }
+            else {
+                $.ajax({
+                    url: '../Master/MasterQuarantine',
+                    type: 'POST',
+                    data: { masterId: element.id, reason: value }
+                }).done(function (resultObject) {
+                    showSuccess("Master moved to quarantine list", lang);
+
+                    $('#row_' + element.id).next("tr").remove()
+                    $('#row_' + element.id).remove();
                 });
-
-                if (lang == 'jp') {
-                    Swal.update({
-                        title: '成功',
-                        text: 'マスターは検疫リストに移動しました'
-                    });
-                }
-
-                $('#row_' + element.id).next("tr").remove()
-                $('#row_' + element.id).remove();
-            });
+            }
         },
         allowOutsideClick: () => !Swal.isLoading()
-    });
+    }); 
+    if (lang == "en") {
+        translator = $('body').swaltranslate({ lang: "en", t: dict });
 
-    if (lang == 'jp') {
-        Swal.update({
-            title: '検疫の理由を入力してください',
-            confirmButtonText: '検疫',
-            cancelButtonText: 'キャンセル',
-            
-        });
+    }
+    else {
+        translator = $('body').swaltranslate({ lang: "jp", t: dict });
     }
 }
 
-function MasterUnQuarantineClick(element) {
+function MasterUnQuarantineClick(element, lang) {
     $.ajax({
         url: '../Master/MasterRemoveQuarantine',
         type: 'POST',
         data: { masterId: element.id }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Master Activated Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("Master Activated Successfully", lang);
         $('#row_' + element.id).next("tr").remove()
         $('#row_' + element.id).remove();
     });
 }
 
-function InstrumentQuarantineClick(element) {
+function InstrumentQuarantineClick(element, lang) {
     Swal.fire({
         title: 'Enter Reason for Quarantine',
         input: 'text',
@@ -461,56 +443,56 @@ function InstrumentQuarantineClick(element) {
         closeOnCancel: false,
         reverseButtons: true,
         showLoaderOnConfirm: true,
-        inputValidator: (value) => {
-            if (!value) return 'please fill the reason for Quarantine'
-            else return null
+        customClass: {
+            confirmButton: 'swal2-trn',
+            cancelButton: 'swal2-trn',
+            title: 'swal2-trn',
         },
+        
+        preConfirm: (value) => {
+            if (!value) {
+                Swal.showValidationMessage(
+                    '<span class="swal2-trn">Please fill the reason for Quarantine</span>'
+                )
+                if (lang == "en") {
+                    translator = $('body').swaltranslate({ lang: "en", t: dict });
+                }
+                else {
+                    translator = $('body').swaltranslate({ lang: "jp", t: dict });
+                }
+            }
+            else {
+                $.ajax({
+                    url: '../Instrument/InstrumentQuarantine',
+                    type: 'POST',
+                    data: { instrumentId: element.id, reason: msg }
+                }).done(function (resultObject) {
+                    showSuccess("Instrument moved to quarantine list", lang);
 
-
-        preConfirm: (msg) => {
-            $.ajax({
-                url: '../Instrument/InstrumentQuarantine',
-                type: 'POST',
-                data: { instrumentId: element.id, reason: msg }
-            }).done(function (resultObject) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: "Instrument moved to quarantine list",
-                    footer: '',
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
-                    }
+                    $('#row_' + element.id).next("tr").remove()
+                    $('#row_' + element.id).remove();
                 });
-                $('#row_' + element.id).next("tr").remove()
-                $('#row_' + element.id).remove();
-            });
+
+            }
         },
         allowOutsideClick: () => !Swal.isLoading()
     });
+    if (lang == "en") {
+        translator = $('body').swaltranslate({ lang: "en", t: dict });
+
+    }
+    else {
+        translator = $('body').swaltranslate({ lang: "jp", t: dict });
+    }
 }
 
-function InstrumentUnQuarantineClick(element) {
+function InstrumentUnQuarantineClick(element, lang) {
     $.ajax({
         url: '../Instrument/InstrumentRemoveQuarantine',
         type: 'POST',
         data: { instrumentId: element.id }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Instrument Unquarantine successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("Instrument Unquarantine successfully", lang);
         $('#row_' + element.id).next("tr").remove()
         $('#row_' + element.id).remove();
     });
@@ -810,20 +792,9 @@ function ReqEnableReason() {
     }
 }
 
-function AcceptRejectRequest() {
+function AcceptRejectRequest(lang) {
     if ($('input[name="ReqAcceptReject"]:checked').val() == undefined || $('input[name="ReqAcceptReject"]:checked').val() == '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please choose either Accept / Reject and try again.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="ReqAcceptReject"]:checked').val() == 'Accept') {
         AcceptRequest(2);
     } else {
@@ -832,18 +803,7 @@ function AcceptRejectRequest() {
             RejecttRequest(2);
         } else {
             $('#reason').addClass('is-invalid');
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: "Please enter reason for rejection and try again.",
-                footer: '',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            });
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -1015,7 +975,7 @@ function disableFields() {
     document.getElementById("newSubmitLABAdmin").disabled = true;
 }
 
-function SaveLABAdminUpdates() {
+function SaveLABAdminUpdates(lang) {
     $.ajax({
         url: '../Tracker/SubmitLABAdminUpdates',
         type: 'POST',
@@ -1028,19 +988,8 @@ function SaveLABAdminUpdates() {
 
         }
     }).done(function (resultObject) {
-        AssignRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Certificate Updated Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        AssignRequestValues(resultObject);       
+        showSuccess("Certificate Updated Successfully", lang);
         disableFields();
     });
 }
@@ -1232,21 +1181,11 @@ function NewReqEnableReason() {
     }
 }
 
-function AcceptRejectNewRequest() {
+function AcceptRejectNewRequest(lang) {
+    console.log('--', lang);
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please choose either Accept / Reject and try again.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         AcceptRequest(type);
     } else {
@@ -1255,18 +1194,7 @@ function AcceptRejectNewRequest() {
             RejecttRequest(type);
         } else {
             $('#Newreason').addClass('is-invalid');
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: "Please enter reason for rejection and try again.",
-                footer: '',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            });
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -1274,18 +1202,7 @@ function AcceptRejectNewRequest() {
 function AcceptRejectReCalibrationRequest() {
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please choose either Accept / Reject and try again.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please choose either Accept / Reject and try again.");
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         AcceptRequestRecalibration(1);
     } else {
@@ -1351,18 +1268,7 @@ function QuarReqEnableReason() {
 
 function AcceptRejectQuarRequest() {
     if ($('input[name="QuarAcceptReject"]:checked').val() == undefined || $('input[name="QuarAcceptReject"]:checked').val() == '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please choose either Accept / Reject and try again.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please choose either Accept / Reject and try again.");
     } else if ($('input[name="QuarAcceptReject"]:checked').val() == 'Accept') {
         AcceptQuarRequest();
     } else {
@@ -1371,18 +1277,7 @@ function AcceptRejectQuarRequest() {
             RejecttQuarRequest();
         } else {
             $('#Quarreason').addClass('is-invalid');
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: "Please enter reason for rejection and try again.",
-                footer: '',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            });
+            showWarning("Please enter reason for rejection and try again.");
         }
     }
 }
@@ -1453,7 +1348,7 @@ function LoadObservationType() {
 
 }
 
-function SaveLeverDial() {
+function SaveLeverDial(lang) {
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -1486,24 +1381,12 @@ function SaveLeverDial() {
         url: '../Observation/InsertLeverDial',
         type: 'POST',
         data: { levertypedial: data }
-    }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+    }).done(function (resultObject) {        
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
-function SaveMicrometer() {
+function SaveMicrometer(lang) {
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -1596,25 +1479,13 @@ function SaveMicrometer() {
         url: '../Observation/InsertMicrometer',
         type: 'POST',
         data: { micrometer: data }
-    }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+    }).done(function (resultObject) {       
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
 
-function SaveGeneral() {
+function SaveGeneral(lang) {
 
     var GeneralResult = new Array();
     $('#Generaladd tbody tr').each(function (row, tr) {
@@ -1670,25 +1541,13 @@ function SaveGeneral() {
         type: 'POST',
         data: { general: data },
         dataType: "json",
-    }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+    }).done(function (resultObject) {       
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
 
-function SaveVernierCaliper() {
+function SaveVernierCaliper(lang) {
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -1875,20 +1734,8 @@ function SaveVernierCaliper() {
         url: '../Observation/InsertVernierCaliper',
         type: 'POST',
         data: { verniercaliper: data }
-    }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+    }).done(function (resultObject) {        
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
@@ -2327,7 +2174,7 @@ function LoadObservationTypePopup() {
 
 }
 
-function AddNewInstrumentMaster() {
+function AddNewInstrumentMaster(lang) {
     if ($('#MasterInstrument option:selected').val() != undefined && $('#MasterInstrument option:selected').val() != "") {
         if ($('#MasterInstrument1').val() == 0) {
             $('#MasterInstrument1').val($('#MasterInstrument option:selected').val());
@@ -2346,18 +2193,7 @@ function AddNewInstrumentMaster() {
             $('#MasterInstrument4').attr('value', ($('#MasterInstrument option:selected').val()));
             $('#masterEquipmentValue').append('<div id="masvalue4">' + $('#MasterInstrument option:selected').text() + '<i class="fas fa-trash" onclick="DeleteMasterEqiupment(4)"></i>' + '<br></div>');
         } else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: "Maximum 4 Equipment Allowed",
-                footer: '',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            });
+            showWarning("Maximum 4 Equipment Allowed", lang);
         }
     } else {
         Swal.fire({
@@ -2383,22 +2219,11 @@ function DeleteMasterEqiupment(id) {
 
 
 
-function SaveCertificate(templtatename) {
+function SaveCertificate(templtatename, lang) {
 
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: "Please enter the Calibration Result!!!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showWarning("Please enter the Calibration Result!!!", lang);
         return true;
     }
 

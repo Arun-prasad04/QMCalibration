@@ -98,17 +98,13 @@ public class UserController : BaseController
         ResponseViewModel<UserViewModel> response = _userService.CreateNewUser();
         return View(response.ResponseData);
     }
-    public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
-    //public IActionResult ValidateLogin(string email, string ln)
+    //public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
+    public IActionResult ValidateLogin(string email, string ln)
     {
-		//string email = Convert.ToString(Request.QueryString["email"]);
-
-		//string email = HttpContext.Request.Query["email"].ToString();
-
 	    //language = HttpContext.Request.Query["ln"].ToString();
 		//ErrorViewModelTest.Log("Email - " + email);
-		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
-		//ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
+		//ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
+		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
 		ErrorViewModelTest.Log("response - " + response.ResponseMessage);
 		ErrorViewModelTest.Log("responseData - " + response.ResponseData);
 		if (response.ResponseMessage == "Success")
@@ -123,11 +119,11 @@ public class UserController : BaseController
                 HttpContext.Session.SetString("LoggedId", response.ResponseData.Id.ToString());
                 HttpContext.Session.SetString("DepartmentName", response.ResponseData.DepartmentName.ToString());
                 HttpContext.Session.SetString("DepartmentId", response.ResponseData.DepartmentId.ToString());
-				HttpContext.Session.SetString("Language", language.ToString());
+				HttpContext.Session.SetString("Language", ln.ToString());
 			}
 
-            if (!string.IsNullOrEmpty(ReturnUrl))
-                return Redirect(ReturnUrl);
+            //if (!string.IsNullOrEmpty(ReturnUrl))
+            //    return Redirect(ReturnUrl);
 
             return RedirectToAction("Index", "Home");
 

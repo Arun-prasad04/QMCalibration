@@ -522,15 +522,15 @@ public class UserService : IUserService
             };
         }
     }
-    public ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password)
-    //public ResponseViewModel<UserViewModel> ValidateUser(string email)
+   // public ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password)
+    public ResponseViewModel<UserViewModel> ValidateUser(string email)
     {
         try
         {
 			//ErrorViewModelTest.Log("EmailService - " + email);
 			UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
-            (Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
-            //(Q.Email.Trim() == email)).Include(I => I.Department).Select(S => new UserViewModel()
+            //(Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
+            (Q.Email.Trim() == email)).Include(I => I.Department).Select(S => new UserViewModel()
             {
                 DepartmentName = S.Department.Name,
                 FirstName = S.FirstName,
@@ -565,19 +565,7 @@ public class UserService : IUserService
                 };
 
             }
-            //        else
-            //        {
-            //return new ResponseViewModel<UserViewModel>
-            //            {
-            //                ResponseCode = 200,
-            //                ResponseMessage = "Success",
-            //                ResponseData = validateUser,
-            //                ResponseDataList = null
-            //            };
-            //        }
-
-            string decryptUserPass = _utilityService.Decrypt(validateUser.Password);
-            if (Password == decryptUserPass)
+            else
             {
                 return new ResponseViewModel<UserViewModel>
                 {
@@ -587,16 +575,28 @@ public class UserService : IUserService
                     ResponseDataList = null
                 };
             }
-            else
-            {
-                return new ResponseViewModel<UserViewModel>
-                {
-                    ResponseCode = 500,
-                    ResponseMessage = "Invalid Password",
-                    ResponseData = null,
-                    ResponseDataList = null
-                };
-            }
+
+            //string decryptUserPass = _utilityService.Decrypt(validateUser.Password);
+            //if (Password == decryptUserPass)
+            //{
+            //    return new ResponseViewModel<UserViewModel>
+            //    {
+            //        ResponseCode = 200,
+            //        ResponseMessage = "Success",
+            //        ResponseData = validateUser,
+            //        ResponseDataList = null
+            //    };
+            //}
+            //else
+            //{
+            //    return new ResponseViewModel<UserViewModel>
+            //    {
+            //        ResponseCode = 500,
+            //        ResponseMessage = "Invalid Password",
+            //        ResponseData = null,
+            //        ResponseDataList = null
+            //    };
+            //}
         }
         catch (Exception e)
         {

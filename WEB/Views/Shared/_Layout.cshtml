@@ -80,7 +80,6 @@
 			color: #ffffff;
 			text-decoration: none;
 			background-color: #00677F;
-			
 		}
 
 		.daimler_language {
@@ -94,9 +93,11 @@
 		.selected {
 			background: #fff;
 		}
+
 		.layout-fixed .brand-link {
-			width : 150px;
+			width: 150px;
 		}
+
 		.dropdown-toggle {
 			background: transparent;
 			border: none;
@@ -116,21 +117,21 @@
 
 
 			@*<ul class="navbar-nav ml-auto float-end" style="text-align:right;">
-				<li class="nav-item">
-					<select class="Languagepicker daimler_language" data-width="fit">
-						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
-							English
-						</option>
-						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
-					</select>
-				</li>
+			<li class="nav-item">
+			<select class="Languagepicker daimler_language" data-width="fit">
+			<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
+			English
+			</option>
+			<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
+			</select>
+			</li>
 			</ul>*@
 
 
 			<!-- Right navbar links -->
 			<ul class="navbar-nav ml-auto" style="text-align:right;">
 				<li class="nav-item text-center">
-					<select class="Languagepicker daimler_language" data-width="fit" >
+					<select class="Languagepicker daimler_language" data-width="fit">
 						<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
 							English
 						</option>
@@ -139,12 +140,12 @@
 				</li>
 				<!-- Messages Dropdown Menu -->
 				<li class="nav-item text-center">
-				<a href='@Url.Action("Logout","Account")' class="brand-link logopading">
-					<p>
-						<i class='fas fa-user-circle' style='font-size:25px;color:black;position:relative;top:4px'></i>
-						<span style="color:black;font-size:14px;" class="trn">Signout</span>
-					</p>
-				</a>
+					<a href='@Url.Action("Logout","Account")' class="brand-link logopading">
+						<p>
+							<i class='fas fa-user-circle' style='font-size:25px;color:black;position:relative;top:4px'></i>
+							<span style="color:black;font-size:14px;" class="trn">Signout</span>
+						</p>
+					</a>
 				</li>
 			</ul>
 		</nav>
@@ -178,8 +179,8 @@
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 						<!-- Add icons to the links using the .nav-icon class
 						   with font-awesome or any other icon font library -->
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" 
-						|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"
+								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("HomePage","Home")' class="nav-link">
@@ -615,37 +616,34 @@
 		<script src="~/js/template.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="~/js/jquery.translate.js"></script>
+		<script src="~/js/jquery.swaltranslate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
 		<script src="~/js/TranslateValidation.js"></script>
 
 		<script type="text/javascript">
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
-			var language = $('#hdnLanguage').val();			
+			var language = $('#hdnLanguage').val();
 			var dict = diction();
-			
-			var respmsg = '@ViewBag.ResponseMessage';
 
-			if(respmsg){
+			var respmsg = '@ViewBag.ResponseMessage';
+			if (respmsg) {
 				console.log("am here trans resp msg");
 				console.log(respmsg);
 				respmsg = dict[respmsg][language];
 			}
-			
-			showPopup('@ViewBag.ResponseCode', respmsg);
 
-			var formid = $('.container').find('form').attr('id');			
+			showPopup('@ViewBag.ResponseCode', respmsg);
+			var formid = $('.container').find('form').attr('id');
 			$('.Languagepicker').selectpicker();
 			$('.Languagepicker').selectpicker('val', language);
 
-			
 			var translator = $('body').translate({ lang: language, t: dict });
-
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
 				language = selected;
-				
-				
+				$('#hdnLanguage').val(selected);
+
 				$.ajax({
 					type: "POST",
 					url: "../User/SetLanguage",
@@ -661,23 +659,18 @@
 						console.log(response.responseText);
 					}
 				});
-
 				if (selected == "en") {
 					var translator = $('body').translate({ lang: "en", t: dict });
-
 				}
 				else {
 					var translator = $('body').translate({ lang: "jp", t: dict });
 				}
-
-				$('#'+formid).find('input').each(function () {
+				$('#' + formid).find('input').each(function () {
 					var thisctrl = $(this);
 					var id = $(thisctrl).attr('id');
 					var message = $(thisctrl).attr('alt');
-
 					if (id && message) {
 						var transMsg = dict[message][language];
-
 						$('[name=' + id + ']').rules('add', {
 							messages: {
 								required: transMsg,
@@ -685,9 +678,8 @@
 						});
 					}
 				});
-				
-			});
 
+			});
 			function diction() {
 				var dict = {
 					"Master": { jp: "マスター", en: "Master" },
@@ -1109,7 +1101,7 @@
 					"Please enter Instrument Name": { jp: "楽器名を入力してください", en: "Please enter Instrument Name" },
 					"Please enter the Serial Number": { jp: "シリアル番号を入力してください", en: "Please enter the Serial Number" },
 					"Please enter Range": { jp: "範囲を入力してください", en: "Please enter Range" },
-					"Please enter Unit": { jp: "単位を入力してください", en: "Please enter Unit"},
+					"Please enter Unit": { jp: "単位を入力してください", en: "Please enter Unit" },
 					"Please enter the user department": { jp: "ユーザー部門を入力してください", en: "Please enter the user department" },
 					"Please fill this field": { jp: "このフィールドに入力してください", en: "Please fill this field" },
 					"Please enter the Status": { jp: "ステータスを入力してください", en: "Please enter the Status" },
@@ -1124,58 +1116,90 @@
 					"Please provide lab Id": { jp: "ラボ ID を入力してください", en: "Please provide lab Id" },
 					"Please provide supplier name": { jp: "サプライヤー名を入力してください", en: "Please provide supplier name" },
 					"Please provide supplier phone number": { jp: "サプライヤーの電話番号を入力してください", en: "Please provide supplier phone number" },
-					"Please provide supplier Email address": { jp: "サプライヤーの電子メールアドレスを入力してください", en: "Please provide supplier Email address"},
+					"Please provide supplier Email address": { jp: "サプライヤーの電子メールアドレスを入力してください", en: "Please provide supplier Email address" },
 					"Please enter your first name": { jp: "お名前を入力してください", en: "Please enter your first name" },
 					"Please enter your last name": { jp: "あなたの姓を入力", en: "Please enter your last name" },
 					"Please provide user role": { jp: "ユーザーの役割を入力してください", en: "Please provide user role" },
 					"Please provide the Email address": { jp: "メールアドレスを入力してください", en: "Please provide the Email address" },
 					"Please provide the mobile number": { jp: "携帯番号を教えてください", en: "Please provide the mobile number" },
 					"Please provide the department name": { jp: "部署名を教えてください", en: "Please provide the department name" },
-
-					"Short Name": { jp: "略称", en: "Short Name"},
-					"Email Address": { jp: "電子メールアドレス", en: "Email Address"},
-					"ShortID": { jp: "ショートID", en: "ShortID"},
-					"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email"},
-					"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email"},
-					"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email"},
-					"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email"},					
-					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine"},					
-					"Email Sended Succesfully": { jp: "メールが正常に送信されました", en: "Email Sended Succesfully"},
-					"Please Check your Email": { jp: "メールを確認してください", en: "Please Check your Email"},
-					"Email Address Not Present.": { jp: "メールアドレスがありません。", en: "Email Address Not Present."},
-					"Password Updated Successfully.": { jp: "パスワードが正常に更新されました。", en: "Password Updated Successfully."},
-					"Invite Feedback Id": { jp: "フィードバックの招待 ID", en: "Invite Feedback Id"},
-					"Please choose appropriate Laboratory": { jp: "適切な研究室を選択してください", en: "Please choose appropriate Laboratory"},
-					"Please give rating for Quality of Service!": { jp: "サービスの質を評価してください!", en: "Please give rating for Quality of Service!"},
-					"Please give rating for Reliability of Test!": { jp: "テストの信頼性を評価してください!", en: "Please give rating for Reliability of Test!"},
-					"Please give rating for Personnel Competency!": { jp: "人事能力の評価をお願いします!", en: "Please give rating for Personnel Competency!"},
-					"Please give rating for Technical Capability!": { jp: "技術力の評価をお願いします!", en: "Please give rating for Technical Capability!"},
-					"Please give rating for Test Calibration!": { jp: "テストキャリブレーションの評価をお願いします!", en: "Please give rating for Test Calibration!"},
-					"Please give rating for Response To Customer!": { jp: "Response To Customer の評価をお願いします!", en: "Please give rating for Response To Customer!"},
-					"Please give rating for Complaint Resolution!": { jp: "苦情解決の評価をお願いします!", en: "Please give rating for Complaint Resolution!"},
-					"File Size Should Not Exceed More Than 5MB": { jp: "ファイル サイズは 5 MB を超えてはなりません", en: "File Size Should Not Exceed More Than 5MB"},
-					"Sucessfully Submited...": { jp: "正常に送信されました...", en: "Sucessfully Submited..."},
-					"Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.": { jp: "無効なユーザーです。レベル アクセス権を付与するか、新しいユーザーを作成して、このユーザーにレベル アクセス権を付与してください。", en: "Invalid User, Please give Level Access or Create a new User and provide Level Access for this user."},
-					"User Deleted Successfully": { jp: "ユーザーが正常に削除されました", en: "User Deleted Successfully"},
-					"User Assigned succesfully": { jp: "ユーザーが正常に割り当てられました", en: "User Assigned succesfully"},
-					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it"},
-					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully"},
-					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!"},
+					"Short Name": { jp: "略称", en: "Short Name" },
+					"Email Address": { jp: "電子メールアドレス", en: "Email Address" },
+					"ShortID": { jp: "ショートID", en: "ShortID" },
+					"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email" },
+					"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email" },
+					"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email" },
+					"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email" },
+					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine" },
+					"Email Sended Succesfully": { jp: "メールが正常に送信されました", en: "Email Sended Succesfully" },
+					"Please Check your Email": { jp: "メールを確認してください", en: "Please Check your Email" },
+					"Email Address Not Present.": { jp: "メールアドレスがありません。", en: "Email Address Not Present." },
+					"Password Updated Successfully.": { jp: "パスワードが正常に更新されました。", en: "Password Updated Successfully." },
+					"Invite Feedback Id": { jp: "フィードバックの招待 ID", en: "Invite Feedback Id" },
+					"Please choose appropriate Laboratory": { jp: "適切な研究室を選択してください", en: "Please choose appropriate Laboratory" },
+					"Please give rating for Quality of Service!": { jp: "サービスの質を評価してください!", en: "Please give rating for Quality of Service!" },
+					"Please give rating for Reliability of Test!": { jp: "テストの信頼性を評価してください!", en: "Please give rating for Reliability of Test!" },
+					"Please give rating for Personnel Competency!": { jp: "人事能力の評価をお願いします!", en: "Please give rating for Personnel Competency!" },
+					"Please give rating for Technical Capability!": { jp: "技術力の評価をお願いします!", en: "Please give rating for Technical Capability!" },
+					"Please give rating for Test Calibration!": { jp: "テストキャリブレーションの評価をお願いします!", en: "Please give rating for Test Calibration!" },
+					"Please give rating for Response To Customer!": { jp: "Response To Customer の評価をお願いします!", en: "Please give rating for Response To Customer!" },
+					"Please give rating for Complaint Resolution!": { jp: "苦情解決の評価をお願いします!", en: "Please give rating for Complaint Resolution!" },
+					"File Size Should Not Exceed More Than 5MB": { jp: "ファイル サイズは 5 MB を超えてはなりません", en: "File Size Should Not Exceed More Than 5MB" },
+					"Sucessfully Submited...": { jp: "正常に送信されました...", en: "Sucessfully Submited..." },
+					"Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.": { jp: "無効なユーザーです。レベル アクセス権を付与するか、新しいユーザーを作成して、このユーザーにレベル アクセス権を付与してください。", en: "Invalid User, Please give Level Access or Create a new User and provide Level Access for this user." },
+					"User Deleted Successfully": { jp: "ユーザーが正常に削除されました", en: "User Deleted Successfully" },
+					"User Assigned succesfully": { jp: "ユーザーが正常に割り当てられました", en: "User Assigned succesfully" },
+					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it" },
+					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully" },
+					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!" },
 					"Home": { jp: "家", en: "Home" },
-
+					"Add New Intermediate Data": { jp: "新しい中間データを追加", en: "Add New Intermediate Data" },
+					"Add New Calibration": { jp: "新しいキャリブレーションを追加", en: "Add New Calibration" },
+					"Add New": { jp: "新しく追加する", en: "Add New" },
+					"SendInvite": { jp: "招待を送る", en: "SendInvite" },
+					"Session Expired! Please login to continue your work.": { jp: "セッションの有効期限が切れ！ログインして作業を続けてください。", en: "Session Expired! Please login to continue your work." },
 					
-					"Success": { jp: "成功", en: "Success" },
-					"Failure": { jp: "失敗", en: "Failure"},
-					"Invalid Password": { jp: "無効なパスワード", en: "Invalid Password"},
-					"Invalid UserName": { jp: "無効なユーザー名", en: "Invalid UserName"},
-					"No records found": { jp: "レコードが見つかりません", en: "No records found"},
-					"Already user(s) has invited..!": { jp: "すでにユーザーが招待しています..!", en: "Already user(s) has invited..!"},
-					"Successfully sent invite...": { jp: "招待状を送信しました...", en: "Successfully sent invite..."},
+					"Please fill the reason for Quarantine": { jp: "検疫の理由を記入してください", en: "Please fill the reason for Quarantine" },
+					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list"},
+					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!"},
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
+					"Your visual check details recorded.": { jp: "目視チェックの詳細が記録されました。", en: "Your visual check details recorded."},
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
+					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine"},
+					"Master moved to quarantine list": { jp: "マスターは検疫リストに移動しました", en: "Master moved to quarantine list"},
+					"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully"},
+					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list"},
+					"Instrument Unquarantine successfully": { jp: "検疫の解除に成功しました", en: "Instrument Unquarantine successfully"},
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
+					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully"},
+					"Maximum 4 Equipment Allowed": { jp: "最大4つの装備が許可されています", en: "Maximum 4 Equipment Allowed"},
+					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully"},
+					"Please enter the Calibration Result!!!": { jp: "校正結果を入力してください!!!", en: "Please enter the Calibration Result!!!"},
+					"You will save Certificate and Generate QR Code with Pdf file!": { jp: "証明書を保存し、PDF ファイルで QR コードを生成します。", en: "You will save Certificate and Generate QR Code with Pdf file!"},
+					"Are you want Generate QR Code with Pdf file?": { jp: "PDFファイルでQRコードを生成しますか?", en: "Are you want Generate QR Code with Pdf file?"},
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
+					"Your details recorded.": { jp: "あなたの詳細が記録されました。", en: "Your details recorded."},
+					"Warning": { jp: "警告", en: "Warning"},
+					"Error": { jp: "エラー", en: "Error"},
 
-					"2021 - Calibration Management - ": { jp: "2021 - 校正管理 -", en: "2021 - Calibration Management - "},
-					"Privacy": { jp: "プライバシー", en: "Privacy"},
-					"Version": { jp: "バージョン", en: "Version"},
-					"Version": { jp: "バージョン", en: "Version"},
+
+					"Success": { jp: "成功", en: "Success" },
+					"Failure": { jp: "失敗", en: "Failure" },
+					"Invalid Password": { jp: "無効なパスワード", en: "Invalid Password" },
+					"Invalid UserName": { jp: "無効なユーザー名", en: "Invalid UserName" },
+					"No records found": { jp: "レコードが見つかりません", en: "No records found" },
+					"Already user(s) has invited..!": { jp: "すでにユーザーが招待しています..!", en: "Already user(s) has invited..!" },
+					"Successfully sent invite...": { jp: "招待状を送信しました...", en: "Successfully sent invite..." },
+					"2021 - Calibration Management - ": { jp: "2021 - 校正管理 -", en: "2021 - Calibration Management - " },
+					"Privacy": { jp: "プライバシー", en: "Privacy" },
+					"Version": { jp: "バージョン", en: "Version" },
+					"Version": { jp: "バージョン", en: "Version" },
 					"Showing": { jp: "表示中", en: "Showing" },
 					"to": { jp: "に", en: "to" },
 					"of": { jp: "の", en: "of" },
@@ -1188,9 +1212,8 @@
 					"No data available in table": { jp: "テーブルにデータがありません", en: "No data available in table" },
 					"Search:": { jp: "検索：", en: "Search:" },
 					"No matching records found": { jp: "該当する記録が見つかりません", en: "No matching records found" },
-					"filtered from": { jp: "からフィルタリング", en: "filtered from"},
-					"total entries": { jp: "総エントリー数", en: "total entries"},
-
+					"filtered from": { jp: "からフィルタリング", en: "filtered from" },
+					"total entries": { jp: "総エントリー数", en: "total entries" },
 					// Only for Place Holder Jp to EN
 					"説明": { jp: "説明", en: "Description" },
 					"部署名": { jp: "部署名", en: "Department Name" },
@@ -1211,36 +1234,31 @@
 				}
 				return dict;
 			}
-
 			function AlertPopup(message) {
 				console.log(message);
 				console.log(language);
 				alert(dict[message][language]);
 			}
 
-			
-			function DataTableCall(){								
+			function DataTableCall() {
 				$('.Lagtab').DataTable().destroy()
-				$('.Lagtab').DataTable({					 
-				  "language": {					
-					url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/ja.json",
-				  }
-			});
+				$('.Lagtab').DataTable({
+					"language": {
+						url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/ja.json",
+					}
+				});
 			}
-
-			function DataTableCallEn(){				
+			function DataTableCallEn() {
 				$('.Lagtab').DataTable().destroy()
-				$('.Lagtab').DataTable({					
-				  "language": {					
+				$('.Lagtab').DataTable({
+					"language": {
 						url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json",
-				  }
-			});
+					}
+				});
 			}
-
-			function Conversion(){
+			function Conversion() {
 				var translator = $('body').translate({ lang: language, t: dict });
 			}
-
 		</script>
 	</div>
 
