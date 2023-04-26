@@ -201,7 +201,7 @@
             <td colspan="4">
                 @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                 {
-                    <input type="button" class="btn btn-primary" value="Save"name="Save" id="LeverDial" onclick="SaveLeverDial()">
+                            <input type="button" class="btn btn-primary" value="Save" name="Save" id="LeverDial" onclick="SaveLeverDial(language)">
                 }
                 <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
             </td>

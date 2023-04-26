@@ -103,6 +103,9 @@
 		.selected {
 			background: #fff;
 		}
+		/*.inner show {
+			padding-left: 15px;
+		}*/
 	</style>
 
 	<div class="container">
@@ -117,12 +120,12 @@
 					<!-- /.login-logo -->
 					<div class="card">
 
-						<div class="card-body login-card-body" style="border-radius: 5px;">
+						<div class="card-body login-card-body" style="border-radius: 10px;  padding-left: 15px;">
 							<select class="Languagepicker daimler_language" data-width="fit">
-								<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> English'>
+								<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span>  English' style="padding-left: 15px;">
 									English
 								</option>
-								<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
+								<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span>  日本語' style="padding-left: 15px;">日本語</option>
 							</select>
 						</div>
 
@@ -296,11 +299,11 @@
 	</script>
 
 	<script type="text/javascript">
-		function showPopup(resCode, resMsg) {
+		function showPopup(resCode, resMsg, lang) {
 			if (resCode != '' && resCode != undefined && resCode == 200) {
-				showSuccess(resMsg);
+				showSuccess(resMsg, lang);
 			} else if (resCode != undefined && resCode != '') {
-				showError(resMsg);
+				showError(resMsg, lang);
 			}
 		}
 		const rmCheck = document.getElementById("remember"),
@@ -326,7 +329,16 @@
 				localStorage.checkbox = "";
 			}
 		}
-		showPopup('@ViewBag.ResponseCode', '@ViewBag.ResponseMessage');
+
+		var respmsg = '@ViewBag.ResponseMessage';
+
+		if (respmsg) {
+			//console.log("am here trans resp msg");
+			//console.log(respmsg);
+			respmsg = dict[respmsg][language];
+		}
+
+		showPopup('@ViewBag.ResponseCode', respmsg);
 	</script>
 	<script>
 		var data = @ViewBag.ForgerPasswordResponse;

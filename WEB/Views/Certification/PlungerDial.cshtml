@@ -486,6 +486,7 @@
              {
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
+
                     <input type="button" value="ReGenerate" onclick="SaveCertificate('PlungerDail,language')" class="btn btn-primary">
                 }
                 <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
@@ -496,6 +497,7 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
                     <input type="button" value="Save" onclick="SaveCertificate('PlungerDail,language')" class="btn btn-primary">
+
                 }
              }
             <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>

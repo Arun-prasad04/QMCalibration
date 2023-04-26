@@ -114,7 +114,7 @@ $("#profileUpdate").click(function () {
 
 function validateSession(sessionvalue) {
     if (sessionvalue == undefined || sessionvalue == '') {
-        Swal.fire({
+        Swal.fire({           
             title: 'Session Expired! Please login to continue your work.',
             icon: 'warning',
             confirmButtonText: 'OK',
@@ -127,7 +127,7 @@ function validateSession(sessionvalue) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                // window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
+               // window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
                 window.location.href = 'http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/';
             }
         });
@@ -285,6 +285,7 @@ function SubmitFMVisual(lang) {
     }).done(function (resultObject) {
         AssignExternalRequestValues(resultObject);
         showSuccess("Your visual check details recorded", lang);
+
     });
 }
 
@@ -317,7 +318,7 @@ function EnableReason() {
 
 function submitAcceptReject(lang) {
     if ($('input[name="AcceptReject"]:checked').val() == undefined || $('input[name="AcceptReject"]:checked').val() == '') {
-        showWarning("Please choose either Accept / Reject and try again.");
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="AcceptReject"]:checked').val() == 'Accept') {
         AcceptExternalRequest(lang);
     } else {
@@ -326,7 +327,7 @@ function submitAcceptReject(lang) {
             RejecttExternalRequest(lang);
         } else {
             $('#reason').addClass('is-invalid');
-            showWarning("Please enter reason for rejection and try again.");
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -354,7 +355,6 @@ function MasterQuarantineClick(element, lang) {
             cancelButton: 'swal2-trn',
             title: 'swal2-trn',
         },
-
         preConfirm: (value) => {
             if (!value) {
                 Swal.showValidationMessage(
@@ -382,6 +382,7 @@ function MasterQuarantineClick(element, lang) {
         },
         allowOutsideClick: () => !Swal.isLoading()
     });
+
     if (lang == "en") {
         translator = $('body').swaltranslate({ lang: "en", t: dict });
 
@@ -421,7 +422,6 @@ function InstrumentQuarantineClick(element, lang) {
             cancelButton: 'swal2-trn',
             title: 'swal2-trn',
         },
-
         preConfirm: (value) => {
             if (!value) {
                 Swal.showValidationMessage(
@@ -765,9 +765,9 @@ function ReqEnableReason() {
     }
 }
 
-function AcceptRejectRequest() {
+function AcceptRejectRequest(lang) {
     if ($('input[name="ReqAcceptReject"]:checked').val() == undefined || $('input[name="ReqAcceptReject"]:checked').val() == '') {
-        showWarning("Please choose either Accept / Reject and try again.");
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="ReqAcceptReject"]:checked').val() == 'Accept') {
         AcceptRequest(2);
     } else {
@@ -776,7 +776,7 @@ function AcceptRejectRequest() {
             RejecttRequest(2);
         } else {
             $('#reason').addClass('is-invalid');
-            showWarning("Please enter reason for rejection and try again.");
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -1099,7 +1099,7 @@ function NewReqEnableReason() {
 function AcceptRejectNewRequest(lang) {
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
-        showWarning("Please choose either Accept / Reject and try again.");
+        showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         AcceptRequest(type, lang);
     } else {
@@ -1108,7 +1108,7 @@ function AcceptRejectNewRequest(lang) {
             RejecttRequest(type,lang);
         } else {
             $('#Newreason').addClass('is-invalid');
-            showWarning("Please enter reason for rejection and try again.");
+            showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
 }
@@ -1295,7 +1295,8 @@ function SaveLeverDial(lang) {
         url: '../Observation/InsertLeverDial',
         type: 'POST',
         data: { levertypedial: data }
-    }).done(function (resultObject) {
+
+    }).done(function (resultObject) {        
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1455,7 +1456,7 @@ function SaveGeneral(lang) {
         type: 'POST',
         data: { general: data },
         dataType: "json",
-    }).done(function (resultObject) {
+    }).done(function (resultObject) {       
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -2059,7 +2060,7 @@ function AddNewInstrumentMaster(lang) {
             $('#MasterInstrument4').attr('value', ($('#MasterInstrument option:selected').val()));
             $('#masterEquipmentValue').append('<div id="masvalue4">' + $('#MasterInstrument option:selected').text() + '<i class="fas fa-trash" onclick="DeleteMasterEqiupment(4)"></i>' + '<br></div>');
         } else {
-            showWarning("Maximum 4 Equipment Allowed");
+            showWarning("Maximum 4 Equipment Allowed", lang);
         }
     } else {
         showSuccess("Master Equipment Added Successfully", lang);       
@@ -2074,11 +2075,12 @@ function DeleteMasterEqiupment(id) {
 
 
 
-function SaveCertificate(templtatename,lang) {
+
+function SaveCertificate(templtatename, lang) {
 
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
-        showWarning("Please enter the Calibration Result!!!");
+        showWarning("Please enter the Calibration Result!!!", lang);
         return true;
     }
 

@@ -1,4 +1,5 @@
-﻿/**
+/**
+
  * @file jquery.translate.js
  * @brief jQuery plugin to translate text in the client side.
  * @author Manuel Fernandes
