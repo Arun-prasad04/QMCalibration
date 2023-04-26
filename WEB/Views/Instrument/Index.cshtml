@@ -83,7 +83,7 @@
 									}
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 									{
-										<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this)"></i></td>
+										<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
 									}
 									else
 									{

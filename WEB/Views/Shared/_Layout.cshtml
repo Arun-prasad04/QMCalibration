@@ -528,9 +528,6 @@
 			<!-- Control sidebar content goes here -->
 		</aside>
 		<!-- /.control-sidebar -->
-
-		<input type="hidden" id="hdnLanguage" value="@HttpContextAccessor.HttpContext.Session.GetString("Language")">
-
 	</div>
 	<!-- ./wrapper -->
 
@@ -579,19 +576,21 @@
 		<script src="~/js/dataTables.bootstrap4.min.js"></script>
 		<script src="~/js/dataTables.responsive.min.js"></script>
 		<script src="~/js/responsive.bootstrap4.min.js"></script>
-		<script src="~/js/daimler.js"></script>
 		<script src="~/js/jquery.validate.min.js"></script>
 		<script src="~/js/Chart.js"></script>
 		<script src="~/js/additional-methods.min.js"></script>
 		<script src="~/js/template.js"></script>
-		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		@*<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
+		<script src="~/js/SweetAlert.js"></script>
 		<script src="~/js/jquery.translate.js"></script>
+		<script src="~/js/jquery.swaltranslate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
 		<script src="~/js/TranslateValidation.js"></script>
+		<script src="~/js/daimler.js"></script>
 
 		<script type="text/javascript">
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
-			var language = $('#hdnLanguage').val();			
+			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
 			var dict = diction();
 			
 			var respmsg = '@ViewBag.ResponseMessage';
@@ -602,7 +601,7 @@
 			//	respmsg = dict[respmsg][language];
 			//}
 			
-			showPopup('@ViewBag.ResponseCode', respmsg);
+			showPopup('@ViewBag.ResponseCode', respmsg, language);
 
 			var formid = $('.container').find('form').attr('id');			
 			$('.Languagepicker').selectpicker();
@@ -655,7 +654,6 @@
 						});
 					}
 				});
-				
 			});
 
 			function diction() {
@@ -1131,6 +1129,23 @@
 					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it"},
 					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully"},
 					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!"},
+					"Please fill the reason for Quarantine": { jp: "検疫の理由を記入してください", en: "Please fill the reason for Quarantine" },
+					"Success": { jp: "成功", en: "Success" },
+					"OK": { jp: "わかった", en: "OK" },
+					"Master moved to quarantine list": { jp: "マスターは検疫リストに移動しました", en: "Master moved to quarantine list" },
+					"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully" },
+					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list" },
+					"Instrument Unquarantine successfully": { jp: "検疫の解除に成功しました", en: "Instrument Unquarantine successfully" },
+					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"Your visual check details recorded": { jp: "目視チェックの詳細が記録されました", en: "Your visual check details recorded" },
+					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully" },
+					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"Your details recorded": { jp: "あなたの詳細が記録されました", en: "Your details recorded" },
+
+					
 
 					// Only for Place Holder Jp to EN
 					"説明": { jp: "説明", en: "Description" },
