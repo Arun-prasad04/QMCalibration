@@ -288,7 +288,7 @@
                         <td colspan="4" style="text-align:center;">
                             @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                             {
-                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview()" @Model.IsDisabled>
+                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                             }
                             <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
                         </td>
