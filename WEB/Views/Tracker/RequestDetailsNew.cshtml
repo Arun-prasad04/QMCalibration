@@ -335,7 +335,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest()">
+                                    class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest(language)">
                                 <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>                    
@@ -591,7 +591,7 @@
                         </select>
                     </div>
                     </div>
-                    <div class="col-sm-2" style="top: 36px;"><input type="button" class="btn-primary" value="Add" onclick="AddNewInstrumentMaster()"></div>
+                    <div class="col-sm-2" style="top: 36px;"><input type="button" class="btn-primary" value="Add" onclick="AddNewInstrumentMaster(language)"></div>
                     <div class="col-sm-6">
                     <input type="hidden" id="MasterInstrument1" name="MasterInstrument1" value="">
                     <input type="hidden" id="MasterInstrument2" name="MasterInstrument2" value="">
@@ -1077,7 +1077,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
-                                    value="Submit" onclick="newSubmitReqLABVisual()">
+                                    value="Submit" onclick="newSubmitReqLABVisual(language)">
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>
@@ -1390,7 +1390,7 @@
                             <!-- text input -->
                             <div class="form-group" style="text-align:right;">
                                 <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-                                    onclick="newSubmitReqDepVisual()">
+                                    onclick="newSubmitReqDepVisual(language)">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
                             </div>
                         </div>

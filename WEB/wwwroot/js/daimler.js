@@ -1,7 +1,4 @@
 ﻿var FileData = [];
-var lang = $('#hdnLanguage').val();
-console.log('daimlerjs -', lang);
-
 
 function logoShowHide() {
     var x = document.getElementById("logoheader");
@@ -256,19 +253,7 @@ function AcceptExternalRequest() {
         data: { externalRequestId: $('#ExternalCalibId').val() }
     }).done(function (resultObject) {
         AssignExternalRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "You are accepted the request. LAB admin get notified!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("You are accepted the request. LAB admin get notified!", lang);
     });
 }
 
@@ -279,19 +264,7 @@ function RejecttExternalRequest() {
         data: { externalRequestId: $('#ExternalCalibId').val(), rejectReason: $('#reason').val() }
     }).done(function (resultObject) {
         AssignExternalRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "You are rejected the request. LAB admin get notified!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("You are rejected the request. LAB admin get notified!", lang);
     });
 }
 
@@ -310,8 +283,9 @@ function SubmitFMVisual(lang) {
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultFM').val() }
     }).done(function (resultObject) {
-        AssignExternalRequestValues(resultObject);        
-        showSuccess("Your visual check details recorded.", lang);
+        AssignExternalRequestValues(resultObject);
+        showSuccess("Your visual check details recorded", lang);
+
     });
 }
 
@@ -329,8 +303,8 @@ function SubmitLABVisual(lang) {
         type: 'POST',
         data: { externalRequestId: $('#ExternalCalibId').val(), Result: $('#ResultLAB').val() }
     }).done(function (resultObject) {
-        AssignExternalRequestValues(resultObject);        
-        showSuccess("Your visual check details recorded.", lang);
+        AssignExternalRequestValues(resultObject);
+        showSuccess("Your visual check details recorded", lang);
     });
 }
 
@@ -346,11 +320,11 @@ function submitAcceptReject(lang) {
     if ($('input[name="AcceptReject"]:checked').val() == undefined || $('input[name="AcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="AcceptReject"]:checked').val() == 'Accept') {
-        AcceptExternalRequest();
+        AcceptExternalRequest(lang);
     } else {
         if ($('#reason').val() != '') {
             $('#reason').removeClass('is-invalid');
-            RejecttExternalRequest();
+            RejecttExternalRequest(lang);
         } else {
             $('#reason').addClass('is-invalid');
             showWarning("Please enter reason for rejection and try again.", lang);
@@ -381,7 +355,6 @@ function MasterQuarantineClick(element, lang) {
             cancelButton: 'swal2-trn',
             title: 'swal2-trn',
         },
-        
         preConfirm: (value) => {
             if (!value) {
                 Swal.showValidationMessage(
@@ -408,7 +381,8 @@ function MasterQuarantineClick(element, lang) {
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
-    }); 
+    });
+
     if (lang == "en") {
         translator = $('body').swaltranslate({ lang: "en", t: dict });
 
@@ -448,7 +422,6 @@ function InstrumentQuarantineClick(element, lang) {
             cancelButton: 'swal2-trn',
             title: 'swal2-trn',
         },
-        
         preConfirm: (value) => {
             if (!value) {
                 Swal.showValidationMessage(
@@ -808,7 +781,7 @@ function AcceptRejectRequest(lang) {
     }
 }
 
-function AcceptRequest(type) {
+function AcceptRequest(type,lang) {
     var data;
     var Id = $('#RequestCalibId').val();
     data = {
@@ -839,23 +812,12 @@ function AcceptRequest(type) {
         //     AssignRequestValues(resultObject);
         // }
         window.location.href = '../Tracker/Request?reqType=4';
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "You are accepted the request. Department User get notified!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
 
+        showSuccess("You are accepted the request. Department User get notified!", lang);       
     });
 }
 
-function AcceptRequestRecalibration(AcceptValue) {
+function AcceptRequestRecalibration(AcceptValue, lang) {
     var data;
     var Id = $('#RequestCalibId').val();
     var departmentId = $('#hdnDepartmentId').val();
@@ -870,22 +832,11 @@ function AcceptRequestRecalibration(AcceptValue) {
         data: data
     }).done(function (resultObject) {
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "You are accepted the request. Department User get notified!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("You are accepted the request. Department User get notified!", lang);        
     });
 }
 
-function RejecttRequest(type) {
+function RejecttRequest(type,lang) {
     var data;
     if (type == 1) {
         data = {
@@ -920,23 +871,11 @@ function RejecttRequest(type) {
         //     AssignRequestValues(resultObject);
         // }
         window.location.href = '../Tracker/Request?reqType=4';
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "You are rejected the request. LAB admin get notified!",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("You are rejected the request. LAB admin get notified!", lang);
     });
 }
 
-function SubmitReqDepVisual() {
+function SubmitReqDepVisual(lang) {
 
     if ($('#ResultDEP').val() == '' || $('#ResultDEP').val() == undefined) {
         $('#ResultDEP').addClass('is-invalid');
@@ -952,19 +891,7 @@ function SubmitReqDepVisual() {
         data: { requestId: $('#RequestCalibId').val(), Result: $('#ResultDEP').val() }
     }).done(function (resultObject) {
         AssignRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Your visual check details recorded", lang);
     });
 }
 function disableFields() {
@@ -988,12 +915,12 @@ function SaveLABAdminUpdates(lang) {
 
         }
     }).done(function (resultObject) {
-        AssignRequestValues(resultObject);       
+        AssignRequestValues(resultObject);
         showSuccess("Certificate Updated Successfully", lang);
         disableFields();
     });
 }
-function SubmitReqLABVisual() {
+function SubmitReqLABVisual(lang) {
 
     if ($('#ResultLAB').val() == '' || $('#ResultLAB').val() == undefined) {
         $('#ResultLAB').addClass('is-invalid');
@@ -1008,19 +935,7 @@ function SubmitReqLABVisual() {
         data: { requestId: $('#RequestCalibId').val(), Result: $('#ResultLAB').val() }
     }).done(function (resultObject) {
         AssignRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Your visual check details recorded", lang);
     });
 }
 
@@ -1182,16 +1097,15 @@ function NewReqEnableReason() {
 }
 
 function AcceptRejectNewRequest(lang) {
-    console.log('--', lang);
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        AcceptRequest(type);
+        AcceptRequest(type, lang);
     } else {
         if ($('#Newreason').val() != '') {
             $('#Newreason').removeClass('is-invalid');
-            RejecttRequest(type);
+            RejecttRequest(type,lang);
         } else {
             $('#Newreason').addClass('is-invalid');
             showWarning("Please enter reason for rejection and try again.", lang);
@@ -1199,14 +1113,14 @@ function AcceptRejectNewRequest(lang) {
     }
 }
 
-function AcceptRejectReCalibrationRequest() {
+function AcceptRejectReCalibrationRequest(lang) {
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.");
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        AcceptRequestRecalibration(1);
+        AcceptRequestRecalibration(1, lang);
     } else {
-        AcceptRequestRecalibration(0);
+        AcceptRequestRecalibration(0, lang);
     }
 }
 
@@ -1381,6 +1295,7 @@ function SaveLeverDial(lang) {
         url: '../Observation/InsertLeverDial',
         type: 'POST',
         data: { levertypedial: data }
+
     }).done(function (resultObject) {        
         showSuccess("Data Saved Successfully", lang);
     });
@@ -1479,7 +1394,7 @@ function SaveMicrometer(lang) {
         url: '../Observation/InsertMicrometer',
         type: 'POST',
         data: { micrometer: data }
-    }).done(function (resultObject) {       
+    }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1734,13 +1649,13 @@ function SaveVernierCaliper(lang) {
         url: '../Observation/InsertVernierCaliper',
         type: 'POST',
         data: { verniercaliper: data }
-    }).done(function (resultObject) {        
+    }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
 
 
-function SaveGeneralNew() {
+function SaveGeneralNew(lang) {
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -1792,19 +1707,7 @@ function SaveGeneralNew() {
         type: 'POST',
         data: { GeneralNew: data }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
@@ -1815,7 +1718,7 @@ function SaveGeneralNew() {
 
 
 
-function SavePlungerDial() {
+function SavePlungerDial(lang) {
 
     var obsSubType = $('#ObsSubType').val();
 
@@ -1925,24 +1828,12 @@ function SavePlungerDial() {
         type: 'POST',
         data: { plungerDial: data }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
 
-function SaveThreadGauges() {
+function SaveThreadGauges(lang) {
 
     var RefWi = '';
     var Max1 = '';
@@ -2038,23 +1929,11 @@ function SaveThreadGauges() {
         type: 'POST',
         data: { threadGauges: data }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
-function SaveTWobs() {
+function SaveTWobs(lang) {
     var data = {
         Id: $('#Id').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -2115,19 +1994,7 @@ function SaveTWobs() {
         type: 'POST',
         data: { torquewrenches: data }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Data Saved Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Data Saved Successfully", lang);
     });
 }
 
@@ -2196,18 +2063,7 @@ function AddNewInstrumentMaster(lang) {
             showWarning("Maximum 4 Equipment Allowed", lang);
         }
     } else {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Master Equipment Added Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("Master Equipment Added Successfully", lang);       
     }
 }
 
@@ -2216,6 +2072,7 @@ function DeleteMasterEqiupment(id) {
     $('#MasterInstrument' + id).remove();
     $('#masvalue' + id).remove();
 }
+
 
 
 
@@ -2254,25 +2111,14 @@ function SaveCertificate(templtatename, lang) {
                     TempltateName: templtatename
                 }
             }).done(function (resultObject) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: "Certificate Updated Successfully",
-                    footer: '',
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
-                    }
-                });
+                showSuccess("Master Activated Successfully", lang);
                 window.location.reload();
             });
         }
     });
 }
 
-function SaveInstrumentDetails() {
+function SaveInstrumentDetails(lang) {
     $.ajax({
         url: '../Tracker/SaveInstrumentFromRequest',
         type: 'POST',
@@ -2296,24 +2142,13 @@ function SaveInstrumentDetails() {
 
         }
     }).done(function (resultObject) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Certificate Updated Successfully",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("Certificate Updated Successfully", lang);        
         window.location.reload();
     });
 }
 
 
-function newSubmitReqLABVisual() {
+function newSubmitReqLABVisual(lang) {
 
     if ($('#newResultLAB').val() == '0') {
         $('#newResultLAB').addClass('is-invalid');
@@ -2353,24 +2188,11 @@ function newSubmitReqLABVisual() {
     }).done(function (resultObject) {
         var Id = $('#RequestCalibId').val();
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
-        //AssignNewRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Your visual check details recorded", lang);        
     });
 }
 
-function newSubmitReqDepVisual() {
+function newSubmitReqDepVisual(lang) {
 
     if ($('#newResultDEP').val() == '' || $('#newResultDEP').val() == undefined) {
         $('#newResultDEP').addClass('is-invalid');
@@ -2387,43 +2209,21 @@ function newSubmitReqDepVisual() {
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         //AssignNewRequestValues(resultObject);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your visual check details recorded.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
-
+        showSuccess("Your visual check details recorded", lang);        
     });
 }
 
-function SubmitReview() {
+function SubmitReview(lang) {
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
         data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Your details recorded.",
-            footer: '',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+        showSuccess("Your details recorded", lang);        
     });
 }
+
 $(document).ready(function () {
     if (window.File && window.FileList && window.FileReader) {
         $("#ImageUpload").on("change", function (e) {

@@ -53,14 +53,12 @@
             else
                 return index;
         };
-        
 
         this.g = this.get;
 
         //main
         this.find(settings.css).each(function (i) {
             var $this = $(this);
-
             var trn_key = $this.attr("data-trn-key");
             var trn_Plc = $this.attr("placeholder");
 
