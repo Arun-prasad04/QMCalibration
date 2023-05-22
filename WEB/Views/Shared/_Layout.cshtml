@@ -44,12 +44,6 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 
 	<style>
-
-		.dataTables_scrollBody thead tr[role="row"]
-		{
-			visibility: collapse !important;
-		}
-
 		.flag-icon-background {
 			background-size: contain;
 			background-position: 50%;
@@ -625,23 +619,43 @@
 		<script src="~/js/daimler.js"></script>
 
 		<script type="text/javascript">
+			var dicts;
+			var GlDicts;
+			//$(document).ready(function() {
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
-			var dict = diction();
 
-			var respmsg = '@ViewBag.ResponseMessage';			
-			
+			//setTimeout(function(){  }, 2000);
+			//var dict = diction();
+			//var dict;
+
+			var dict = diction();
+			//dict = MasterTranslate(dict)
+			MasterTranslate(language)
+			console.log(dict);
+
+			var respmsg = '@ViewBag.ResponseMessage';
+
 			showPopup('@ViewBag.ResponseCode', respmsg, language);
 
-			var formid = $('.container').find('form').attr('id');			
+			var formid = $('.container').find('form').attr('id');
 
 			$('.Languagepicker').selectpicker();
 			$('.Languagepicker').selectpicker('val', language);
-
+			//var dict = {};
 			var translator = $('body').translate({ lang: language, t: dict });
+
+
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
+				//console.log(dict);
+				MasterTranslate(selected);
+				//dict = MasterTranslate(dict);
+
+				//dict["2D Linear Height Gauge"] = { jp: "2Dリニアハイトゲージ", en: "2D Linear Height Gauge" };
+				console.log(dict);
+
 				language = selected;
 				$('#hdnLanguage').val(selected);
 
@@ -680,8 +694,13 @@
 					}
 				});
 			});
+
+			//});
+
+
+
 			function diction() {
-				var dict = {
+				dicts = {
 					"Master": { jp: "マスター", en: "Master" },
 					"Instruments": { jp: "楽器", en: "Instruments" },
 					"Signout": { jp: "サインアウト", en: "Signout" },
@@ -1159,35 +1178,35 @@
 					"Add New": { jp: "新しく追加する", en: "Add New" },
 					"SendInvite": { jp: "招待を送る", en: "SendInvite" },
 					"Session Expired! Please login to continue your work.": { jp: "セッションの有効期限が切れ！ログインして作業を続けてください。", en: "Session Expired! Please login to continue your work." },
-					
+
 					"Please fill the reason for Quarantine": { jp: "検疫の理由を記入してください", en: "Please fill the reason for Quarantine" },
-					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list"},
-					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!"},
-					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
-					"Your visual check details recorded.": { jp: "目視チェックの詳細が記録されました。", en: "Your visual check details recorded."},
-					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
-					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
-					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine"},
-					"Master moved to quarantine list": { jp: "マスターは検疫リストに移動しました", en: "Master moved to quarantine list"},
-					"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully"},
-					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list"},
-					"Instrument Unquarantine successfully": { jp: "検疫の解除に成功しました", en: "Instrument Unquarantine successfully"},
-					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
-					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
-					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
-					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
-					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
-					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
-					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully"},
-					"Maximum 4 Equipment Allowed": { jp: "最大4つの装備が許可されています", en: "Maximum 4 Equipment Allowed"},
-					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully"},
-					"Please enter the Calibration Result!!!": { jp: "校正結果を入力してください!!!", en: "Please enter the Calibration Result!!!"},
-					"You will save Certificate and Generate QR Code with Pdf file!": { jp: "証明書を保存し、PDF ファイルで QR コードを生成します。", en: "You will save Certificate and Generate QR Code with Pdf file!"},
-					"Are you want Generate QR Code with Pdf file?": { jp: "PDFファイルでQRコードを生成しますか?", en: "Are you want Generate QR Code with Pdf file?"},
-					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
-					"Your details recorded.": { jp: "あなたの詳細が記録されました。", en: "Your details recorded."},
-					"Warning": { jp: "警告", en: "Warning"},
-					"Error": { jp: "エラー", en: "Error"},
+					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list" },
+					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"Your visual check details recorded.": { jp: "目視チェックの詳細が記録されました。", en: "Your visual check details recorded." },
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again." },
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again." },
+					"Enter Reason for Quarantine": { jp: "検疫の理由を入力してください", en: "Enter Reason for Quarantine" },
+					"Master moved to quarantine list": { jp: "マスターは検疫リストに移動しました", en: "Master moved to quarantine list" },
+					"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully" },
+					"Instrument moved to quarantine list": { jp: "楽器は検疫リストに移動しました", en: "Instrument moved to quarantine list" },
+					"Instrument Unquarantine successfully": { jp: "検疫の解除に成功しました", en: "Instrument Unquarantine successfully" },
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again." },
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again." },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully" },
+					"Maximum 4 Equipment Allowed": { jp: "最大4つの装備が許可されています", en: "Maximum 4 Equipment Allowed" },
+					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully" },
+					"Please enter the Calibration Result!!!": { jp: "校正結果を入力してください!!!", en: "Please enter the Calibration Result!!!" },
+					"You will save Certificate and Generate QR Code with Pdf file!": { jp: "証明書を保存し、PDF ファイルで QR コードを生成します。", en: "You will save Certificate and Generate QR Code with Pdf file!" },
+					"Are you want Generate QR Code with Pdf file?": { jp: "PDFファイルでQRコードを生成しますか?", en: "Are you want Generate QR Code with Pdf file?" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"Your details recorded.": { jp: "あなたの詳細が記録されました。", en: "Your details recorded." },
+					"Warning": { jp: "警告", en: "Warning" },
+					"Error": { jp: "エラー", en: "Error" },
 
 					"Success": { jp: "成功", en: "Success" },
 					"Failure": { jp: "失敗", en: "Failure" },
@@ -1215,7 +1234,7 @@
 					"filtered from": { jp: "からフィルタリング", en: "filtered from" },
 					"total entries": { jp: "総エントリー数", en: "total entries" },
 
-          "Please fill the reason for Quarantine": { jp: "検疫の理由を記入してください", en: "Please fill the reason for Quarantine" },
+					"Please fill the reason for Quarantine": { jp: "検疫の理由を記入してください", en: "Please fill the reason for Quarantine" },
 					"Success": { jp: "成功", en: "Success" },
 					"OK": { jp: "わかった", en: "OK" },
 					"Master moved to quarantine list": { jp: "マスターは検疫リストに移動しました", en: "Master moved to quarantine list" },
@@ -1230,7 +1249,11 @@
 					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully" },
 					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
 					"Your details recorded": { jp: "あなたの詳細が記録されました", en: "Your details recorded" },
+					"Equipment Name Japanese": { jp: "機器名 日本語", en: "Equipment Name Japanese" },
+					"Instrument Id Number": { jp: "機器ID番号", en: "Instrument Id Number" },
 
+
+					"3D Linear Height Gauge": { jp: "2Dリニアハイトゲージ", en: "2D Linear Height Gauge" },
 
 
 					// Only for Place Holder Jp to EN
@@ -1251,8 +1274,70 @@
 					"L6 マネージャーの電子メール": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email" },
 					"署名を選択": { jp: "署名を選択", en: "Choose Signature" }
 				}
+
+
+				//var dicts = {}
+				//$.each(GlDicts, function (index, item) {
+				//		if (index == 2) {
+				//			dicts = {
+				//			"2D Linear Height Gauge": { jp: item.nameJp, en: item.nameEng },
+				//			"+{{item.nameEng}}+" = { jp: item.nameJp, en: item.nameEng }
+				//			}
+				//		}
+
+				//	});
+				//dicts = dict;
+				return dicts;
+			}
+
+			function MasterTranslate(lang) {
+				$.ajax({
+					url: '../Home/MasterTranslate',
+					type: 'POST',
+					data: ''
+				}).done(function (resultObject) {
+					GlDicts = resultObject;
+
+					var optionhtml;
+
+					$("#MasterInstrument").empty();
+
+					if (lang == 'jp') {
+						optionhtml = '<option value=""> -- マスターを選択 -- </option>';
+					}
+					else {
+						optionhtml = '<option value=""> -- Select Master -- </option>';
+					}
+					$("#MasterInstrument").append(optionhtml);
+
+					$.each(resultObject, function (index, item) {
+						////console.log(item.nameEng)
+						////console.log(item.nameJp)
+
+						//dict[item.nameEng] = { jp: item.nameJp, en: item.nameEng };
+						////dicts = {
+						////	item.nameEng: { jp: item.nameJp, en:item.nameEng };
+						////}
+
+						//$("#MasterInstrument").append($("<option></option>").val(value.CountryId).html(value.CountryName));
+						optionhtml = '';
+						if (lang == 'jp') {
+							//optionhtml = '<option value=""> -- Select -- </option>';
+							optionhtml = '<option value="' + item.id + '">' + item.nameJp + '</option>';
+						}
+						else {
+							//optionhtml = '<option value=""> -- Select -- </option>';
+							optionhtml = '<option value="' + item.id + '">' + item.nameEng + '</option>';
+						}
+
+						$("#MasterInstrument").append(optionhtml);
+
+					});
+
+				});
 				return dict;
 			}
+
 			function AlertPopup(message) {
 				console.log(message);
 				console.log(language);
@@ -1278,6 +1363,8 @@
 			function Conversion() {
 				var translator = $('body').translate({ lang: language, t: dict });
 			}
+
+
 		</script>
 	</div>
 

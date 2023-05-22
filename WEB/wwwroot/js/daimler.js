@@ -114,7 +114,7 @@ $("#profileUpdate").click(function () {
 
 function validateSession(sessionvalue) {
     if (sessionvalue == undefined || sessionvalue == '') {
-        Swal.fire({           
+        Swal.fire({
             title: 'Session Expired! Please login to continue your work.',
             icon: 'warning',
             confirmButtonText: 'OK',
@@ -127,7 +127,7 @@ function validateSession(sessionvalue) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-               // window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
+                // window.location.href = 'http://s365id1qdg044/cmtlive/Account/Login';
                 window.location.href = 'http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/';
             }
         });
@@ -438,7 +438,7 @@ function InstrumentQuarantineClick(element, lang) {
                 $.ajax({
                     url: '../Instrument/InstrumentQuarantine',
                     type: 'POST',
-                    data: { instrumentId: element.id, reason: msg }
+                    data: { instrumentId: element.id, reason: value }
                 }).done(function (resultObject) {
                     showSuccess("Instrument moved to quarantine list", lang);
 
@@ -781,7 +781,7 @@ function AcceptRejectRequest(lang) {
     }
 }
 
-function AcceptRequest(type,lang) {
+function AcceptRequest(type, lang) {
     var data;
     var Id = $('#RequestCalibId').val();
     data = {
@@ -813,7 +813,7 @@ function AcceptRequest(type,lang) {
         // }
         window.location.href = '../Tracker/Request?reqType=4';
 
-        showSuccess("You are accepted the request. Department User get notified!", lang);       
+        showSuccess("You are accepted the request. Department User get notified!", lang);
     });
 }
 
@@ -832,11 +832,11 @@ function AcceptRequestRecalibration(AcceptValue, lang) {
         data: data
     }).done(function (resultObject) {
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
-        showSuccess("You are accepted the request. Department User get notified!", lang);        
+        showSuccess("You are accepted the request. Department User get notified!", lang);
     });
 }
 
-function RejecttRequest(type,lang) {
+function RejecttRequest(type, lang) {
     var data;
     if (type == 1) {
         data = {
@@ -1105,7 +1105,7 @@ function AcceptRejectNewRequest(lang) {
     } else {
         if ($('#Newreason').val() != '') {
             $('#Newreason').removeClass('is-invalid');
-            RejecttRequest(type,lang);
+            RejecttRequest(type, lang);
         } else {
             $('#Newreason').addClass('is-invalid');
             showWarning("Please enter reason for rejection and try again.", lang);
@@ -1296,7 +1296,7 @@ function SaveLeverDial(lang) {
         type: 'POST',
         data: { levertypedial: data }
 
-    }).done(function (resultObject) {        
+    }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1456,7 +1456,7 @@ function SaveGeneral(lang) {
         type: 'POST',
         data: { general: data },
         dataType: "json",
-    }).done(function (resultObject) {       
+    }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -2063,7 +2063,7 @@ function AddNewInstrumentMaster(lang) {
             showWarning("Maximum 4 Equipment Allowed", lang);
         }
     } else {
-        showSuccess("Master Equipment Added Successfully", lang);       
+        showSuccess("Master Equipment Added Successfully", lang);
     }
 }
 
@@ -2077,7 +2077,7 @@ function DeleteMasterEqiupment(id) {
 
 
 function SaveCertificate(templtatename, lang) {
-
+    var temptName = templtatename;
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
         showWarning("Please enter the Calibration Result!!!", lang);
@@ -2108,7 +2108,7 @@ function SaveCertificate(templtatename, lang) {
                     CalibrationResult: $('#CalibrationResult').val(),
                     Remarks: $('#Remarks').val(),
                     ExportData: $("#Pdfhtml").html(),
-                    TempltateName: templtatename
+                    TempltateName: temptName
                 }
             }).done(function (resultObject) {
                 showSuccess("Master Activated Successfully", lang);
@@ -2142,7 +2142,7 @@ function SaveInstrumentDetails(lang) {
 
         }
     }).done(function (resultObject) {
-        showSuccess("Certificate Updated Successfully", lang);        
+        showSuccess("Certificate Updated Successfully", lang);
         window.location.reload();
     });
 }
@@ -2188,7 +2188,7 @@ function newSubmitReqLABVisual(lang) {
     }).done(function (resultObject) {
         var Id = $('#RequestCalibId').val();
         window.location.href = '../Tracker/RequestDetailsNew?Id=' + resultObject.id + '';
-        showSuccess("Your visual check details recorded", lang);        
+        showSuccess("Your visual check details recorded", lang);
     });
 }
 
@@ -2209,7 +2209,7 @@ function newSubmitReqDepVisual(lang) {
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         //AssignNewRequestValues(resultObject);
-        showSuccess("Your visual check details recorded", lang);        
+        showSuccess("Your visual check details recorded", lang);
     });
 }
 
@@ -2220,7 +2220,7 @@ function SubmitReview(lang) {
         data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
-        showSuccess("Your details recorded", lang);        
+        showSuccess("Your details recorded", lang);
     });
 }
 

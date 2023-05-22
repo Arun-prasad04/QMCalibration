@@ -42,6 +42,8 @@ public class MasterViewModel
     public int SupplierId { get; set; }
     public List<string> FileList{get;set;}
     public string? CalibrationFrequency {get;set;}
- 
-    }
+
+	public string? EquipNameJP { get; set; }
+
+	}
 }
