@@ -1,0 +1,18 @@
+[17:05:2023] [08:54:34:3428]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [09:00:05:4732]	Exception - An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure' to the 'UseSqlServer' call.
+[17:05:2023] [09:00:15:7037]	Exception - Login failed for user 'sa'.  Reason: The password of the account has expired.
+[17:05:2023] [09:00:50:3971]	Exception - An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure' to the 'UseSqlServer' call.
+[17:05:2023] [09:01:01:1623]	Exception - Login failed for user 'sa'.  Reason: The password of the account has expired.
+[17:05:2023] [09:01:35:1311]	Exception - Login failed for user 'sa'.  Reason: The password of the account has expired.
+[17:05:2023] [09:02:09:3599]	Exception - Login failed for user 'sa'.  Reason: The password of the account has expired.
+[17:05:2023] [09:06:09:8121]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [09:10:51:3907]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [09:12:58:3298]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [09:22:03:9705]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [10:19:49:7309]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [12:55:16:7255]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [12:55:53:6607]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [12:58:16:3391]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [12:59:01:9782]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [13:13:05:6606]	response from GetTorqueWrenchesById - Success
+[17:05:2023] [13:13:58:5391]	response from GetTorqueWrenchesById - Success
