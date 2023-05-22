@@ -1,4 +1,5 @@
 /**
+
  * @file jquery.translate.js
  * @brief jQuery plugin to translate text in the client side.
  * @author Manuel Fernandes
@@ -11,21 +12,21 @@
  */
 
 (function ($) {
-    $.fn.translate = function (options) {
+    $.fn.swaltranslate = function (options) {
         var that = this; //a reference to ourselves
 
         var settings = {
-            css: "trn",
+            css: "swal2-trn",
             lang: "en"
         };
 
         settings = $.extend(settings, options || {});
-        
+
         if (settings.css.lastIndexOf(".", 0) !== 0)   //doesn't start with '.'
             settings.css = "." + settings.css;
 
         var t = settings.t;
-        
+
         //public methods
         this.lang = function (l) {
             if (l) {
@@ -37,11 +38,11 @@
         };
 
 
-        this.get = function (index) {            
+        this.get = function (index) {
             var res = index;
 
             try {
-                res = t[index][settings.lang];                
+                res = t[index][settings.lang];
             }
             catch (err) {
                 //not found, return index
@@ -53,6 +54,7 @@
             else
                 return index;
         };
+
 
         this.g = this.get;
 
@@ -73,17 +75,17 @@
                 $this.attr("data-trn-key", trn_key);   //store key for next time
             }
 
-            if (!trn_Plc) {               
+            if (!trn_Plc) {
                 $this.attr('placeholder', trn_Plc);
             }
 
 
             if ($this.html() != "") {
-                $this.html(that.get(trn_key));              
+                $this.html(that.get(trn_key));
             }
             else {
                 $this.val(that.get(trn_key));
-                $this.attr("placeholder", that.get(trn_Plc));                
+                $this.attr("placeholder", that.get(trn_Plc));
             }
 
         });

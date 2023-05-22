@@ -55,8 +55,8 @@
                                         <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
                                         <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>
                                         <td>@item.QuarantineReason</td>
-                                        
-                                        <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentUnQuarantineClick(this)"></i></td>
+
+                                    <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentUnQuarantineClick(this, language)"></i></td>
                                     </tr>
                                 }
                             </tbody>
@@ -82,5 +82,6 @@
       "autoWidth": true,
       "responsive": true,
     });
+        Conversion();
      }, 500);
     </script>

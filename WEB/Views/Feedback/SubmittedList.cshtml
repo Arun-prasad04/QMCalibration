@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="tblFeedbackList" class="table table-bordered table-striped">
+                    <table id="tblFeedbackList" class="table table-bordered table-striped Lagtab">
                         <thead>
                             <tr>
                                 <th class="trn">Short Id</th>
@@ -66,8 +66,9 @@
             "ordering": true,
             "info": true,
             "autoWidth": true,
-            "responsive": true,
+            "responsive": true,                                
         });
+        Conversion();
     }, 500);
 </script>
 
@@ -79,6 +80,6 @@
     }
 
     function viewFeedbackForm(inviteId) {
-        alert("Invite Feedback Id" + inviteId);
+        AlertPopup("Invite Feedback Id" + inviteId);
     }
 </script>

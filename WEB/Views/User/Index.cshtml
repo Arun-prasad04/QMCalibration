@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" /> *@
 
-<section class="content">
+<section class="content">    
+
     <div class="row">
         <div class="col-12">
 
@@ -33,7 +34,7 @@
                     <input type="hidden" name="ID" id="ID">
 
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table table-bordered table-striped" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th class="trn">First Name</th>
@@ -64,10 +65,10 @@
                                         <td>@item.MobileNo</td>
                                         <td>@item.ShortId</td>
                                         <td>@item.CreatedOn.ToString("dd-MM-yyyy")</td>
-                                        <td>@item.L3Email</td>
-                                        <td>@item.L4Email</td>
-                                        <td>@item.L5Email</td>
-                                        <td>@item.L6Email</td>
+                                        <td>@item.AsstForemanEmail</td>
+                                        <td>@item.ForemanEmail</td>
+                                        <td>@item.KakarichoEmail</td>
+                                        <td>@item.ManagerEmail</td>
                                         <td><a href='@Url.Action("UserEdit","User",new {userId=@item.Id})'><i
                                                 class="fas fa-edit"></i></a></td>
                                         <td><a href='@Url.Action("UserDelete","User",new {userId=@item.Id})'
@@ -173,6 +174,7 @@
             // "responsive": true,
             "scrollX": true
         });
+        Conversion();
     }, 500);
 </script>
 <script>
@@ -180,7 +182,7 @@
         document.getElementById('ID').value = deletingUserid;
         document.getElementById('DeletingID').value = deletingUserid
         var a = document.getElementById('DeletingID').value;
-        alert(a);
+        AlertPopup(a);
 
     }
 </script>
@@ -195,7 +197,6 @@
     $('document').ready(function () {
         var data = @ViewBag.UserDeleteResponse;
 
-
         if (data == "0") {
             if (confirm('User has Assigned with Various Flows,Do you want to assign another person')) {
                 // Save it!
@@ -209,7 +210,7 @@
             }
         }
         if (data == "1") {
-            alert("User Deleted Successfully")
+            AlertPopup("User Deleted Successfully")
         }
     });
 </script>
@@ -218,23 +219,23 @@
 <script>
     var data = @ViewBag.UserDeleteFinalResponse;
     if (data == 200) {
-        alert('User Assigned succesfully');
+        AlertPopup('User Assigned succesfully');
     }
 
 </script>
 <script>
     var data = @ViewBag.DeletingError;
     if (data == 500) {
-        alert('Deleting User and Assigning are same please Change verify it');
+        AlertPopup('Deleting User and Assigning are same please Change verify it');
     }
 </script>
 
 <script>
     var data = @ViewBag.FinalUserDeleteResponseData;
     if (data == "Success") {
-        alert('User Deleted Successfully');
+        AlertPopup('User Deleted Successfully');
     }
     else {
-        alert('User Not Deleted Successfully');
+        AlertPopup('User Not Deleted Successfully');
     }
 </script>

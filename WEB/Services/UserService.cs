@@ -46,10 +46,10 @@ public class UserService : IUserService
                 ModifiedOn = S.ModifiedOn,
                 UserRoleId = S.UserRoleId,
                 Password = S.Password,
-                L3Email = S.L3Email,
-                L4Email = S.L4Email,
-                L5Email = S.L5Email,
-                L6Email = S.L6Email,
+				AsstForemanEmail = S.AsstForemanEmail,
+				ForemanEmail = S.ForemanEmail,
+				KakarichoEmail = S.KakarichoEmail,
+				ManagerEmail = S.ManagerEmail,
                 DepartmentId = S.DepartmentId
             }).ToList();
 
@@ -238,53 +238,53 @@ public class UserService : IUserService
             {
                 userById.Level = user.Level;
             }
-            if (user.L3ShortId != null)
+            if (user.AsstForemanShortId != null)
             {
-                userById.L3ShortId = user.L3ShortId;
+                userById.AsstForemanShortId = user.AsstForemanShortId;
             }
-            if (user.L3Name != null)
+            if (user.AsstForemanName != null)
             {
-                userById.L3Name = user.L3Name;
+                userById.AsstForemanName = user.AsstForemanName;
             }
-            if (user.L3Email != null)
+            if (user.AsstForemanEmail != null)
             {
-                userById.L3Email = user.L3Email;
+                userById.AsstForemanEmail = user.AsstForemanEmail;
             }
-            if (user.L4ShortId != null)
+            if (user.ForemanShortId != null)
             {
-                userById.L4ShortId = user.L4ShortId;
+                userById.ForemanShortId = user.ForemanShortId;
             }
-            if (user.L4Name != null)
+            if (user.ForemanName != null)
             {
-                userById.L4Name = user.L4Name;
+                userById.ForemanName = user.ForemanName;
             }
-            if (user.L4Email != null)
+            if (user.ForemanEmail != null)
             {
-                userById.L4Email = user.L4Email;
+                userById.ForemanEmail = user.ForemanEmail;
             }
-            if (user.L5ShortId != null)
+            if (user.KakarichoShortId != null)
             {
-                userById.L5ShortId = user.L5ShortId;
+                userById.KakarichoShortId = user.KakarichoShortId;
             }
-            if (user.L5Name != null)
+            if (user.KakarichoName != null)
             {
-                userById.L5Name = user.L5Name;
+                userById.KakarichoName = user.KakarichoName;
             }
-            if (user.L5Email != null)
+            if (user.KakarichoEmail != null)
             {
-                userById.L5Email = user.L5Email;
+                userById.KakarichoEmail = user.KakarichoEmail;
             }
-            if (user.L6ShortId != null)
+            if (user.ManagerShortId != null)
             {
-                userById.L6ShortId = user.L6ShortId;
+                userById.ManagerShortId = user.ManagerShortId;
             }
-            if (user.L6Name != null)
+            if (user.ManagerName != null)
             {
-                userById.L6Name = user.L6Name;
+                userById.ManagerName = user.ManagerName;
             }
-            if (user.L6Email != null)
+            if (user.ManagerEmail != null)
             {
-                userById.L6Email = user.L6Email;
+                userById.ManagerEmail = user.ManagerEmail;
             }
 
             if (user.ImageUpload != null)
@@ -522,13 +522,15 @@ public class UserService : IUserService
             };
         }
     }
-    public ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password)
+   // public ResponseViewModel<UserViewModel> ValidateUser(string UserName, string Password)
+    public ResponseViewModel<UserViewModel> ValidateUser(string email)
     {
         try
         {
-            //string pass =_utilityService.Encrypt(Password);
-            UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
-            (Q.ShortId == UserName || Q.Email == UserName)).Include(I => I.Department).Select(S => new UserViewModel()
+			//ErrorViewModelTest.Log("EmailService - " + email);
+			UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
+            //(Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
+            (Q.Email.Trim() == email)).Include(I => I.Department).Select(S => new UserViewModel()
             {
                 DepartmentName = S.Department.Name,
                 FirstName = S.FirstName,
@@ -544,14 +546,15 @@ public class UserService : IUserService
                 ModifiedOn = S.ModifiedOn,
                 UserRoleId = S.UserRoleId,
                 Password = S.Password,
-                L3Email = S.L3Email,
-                L4Email = S.L4Email,
-                L5Email = S.L5Email,
-                L6Email = S.L6Email,
+                AsstForemanEmail = S.AsstForemanEmail,
+                ForemanEmail = S.ForemanEmail,
+                KakarichoEmail = S.KakarichoEmail,
+                ManagerEmail = S.ManagerEmail,
                 DepartmentId = S.DepartmentId,
                 Id = S.Id
             }).SingleOrDefault();
-            if (validateUser == null)
+			//ErrorViewModelTest.Log("ValidateUser - " + validateUser);
+			if (validateUser == null)
             {
                 return new ResponseViewModel<UserViewModel>
                 {
@@ -562,8 +565,7 @@ public class UserService : IUserService
                 };
 
             }
-            string decryptUserPass = _utilityService.Decrypt(validateUser.Password);
-            if (Password == decryptUserPass)
+            else
             {
                 return new ResponseViewModel<UserViewModel>
                 {
@@ -573,20 +575,33 @@ public class UserService : IUserService
                     ResponseDataList = null
                 };
             }
-            else
-            {
-                return new ResponseViewModel<UserViewModel>
-                {
-                    ResponseCode = 500,
-                    ResponseMessage = "Invalid Password",
-                    ResponseData = null,
-                    ResponseDataList = null
-                };
-            }
+
+            //string decryptUserPass = _utilityService.Decrypt(validateUser.Password);
+            //if (Password == decryptUserPass)
+            //{
+            //    return new ResponseViewModel<UserViewModel>
+            //    {
+            //        ResponseCode = 200,
+            //        ResponseMessage = "Success",
+            //        ResponseData = validateUser,
+            //        ResponseDataList = null
+            //    };
+            //}
+            //else
+            //{
+            //    return new ResponseViewModel<UserViewModel>
+            //    {
+            //        ResponseCode = 500,
+            //        ResponseMessage = "Invalid Password",
+            //        ResponseData = null,
+            //        ResponseDataList = null
+            //    };
+            //}
         }
         catch (Exception e)
         {
-            return new ResponseViewModel<UserViewModel>
+			//ErrorViewModelTest.Log("Exception - " + e.Message);
+			return new ResponseViewModel<UserViewModel>
             {
                 ResponseCode = 500,
                 ResponseMessage = "Failure",

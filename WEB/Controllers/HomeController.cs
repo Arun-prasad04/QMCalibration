@@ -18,12 +18,15 @@ public class HomeController : BaseController
     private CMTDatabaseContext db;
     private IUnitOfWork _unitOfWork { get; set; }
     private IMasterService _masterService{get;set;}
-    public HomeController(IUnitOfWork unitOfWork, IMapper mapper,IMasterService masterService,ILogger<BaseController>logger,IHttpContextAccessor contextAccessor):base(logger,contextAccessor)
+
+	private IConfiguration _configuration;
+	public HomeController(IUnitOfWork unitOfWork, IMapper mapper,IMasterService masterService,ILogger<BaseController>logger,IHttpContextAccessor contextAccessor, IConfiguration Configuration) :base(logger,contextAccessor)
     {
         _masterService=masterService;
         _unitOfWork=unitOfWork;
         _mapper = mapper;
-    }
+		_configuration = Configuration;
+	}
 
     public IActionResult Index()
     {
@@ -113,4 +116,12 @@ public class HomeController : BaseController
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+	public IActionResult HomePage()
+	{
+
+		var Path = _configuration["HomePage"];
+
+		return Redirect(Path);
+	}
 }

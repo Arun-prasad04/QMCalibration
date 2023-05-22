@@ -29,7 +29,7 @@
 						<input type="hidden" name="Id" value="@Model.Id">
 						<div class="form-group">
 							<label for="Name" class="required trn">Name</label>
-							<input type="text" class="form-control" id="Name" alt="Please enter your name" placeholder="Name" name="Name" value="@Model.Name">
+							<input type="text" class="form-control trn" id="Name" alt="Please enter your name" placeholder="Name" name="Name" value="@Model.Name">
 						</div>
 						<div class="form-group">
 							<label class="required trn">Department Name</label>							
@@ -49,11 +49,11 @@
 						</div>
 						<div class="form-group">
 							<label class="required trn">Email Id</label>
-							<input type="text" class="form-control" alt="Please provide your email address" placeholder="Email" id="Email" name="Email" value="@Model.Email">
+							<input type="text" class="form-control trn" alt="Please provide your email address" placeholder="Email" id="Email" name="Email" value="@Model.Email">
 						</div>
 						<div class="form-group">
 							<label class="required trn">Mobile Number</label>
-							<input type="text" class="form-control" alt="Please provide your phone number" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+							<input type="text" class="form-control trn" alt="Please provide your phone number" placeholder="Mobile No" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
 						</div>
 
 					</div>
@@ -61,6 +61,9 @@
 
 					<div class="card-footer">
 						<button type="submit" class="btn btn-primary trn">Submit</button>
+						<a href='@Url.Action("Index","Contact")'>
+							<input type="button" class="btn btn-default trn" value="Cancel">
+						</a>
 					</div>
 				</form>
 			</div>

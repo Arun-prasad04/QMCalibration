@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using AutoMapper;
 using WEB.Services;
 
+
 namespace WEB.Controllers;
 
 public class UserController : BaseController
@@ -16,12 +17,14 @@ public class UserController : BaseController
     private IUserService _userService { get; set; }
     private IUnitOfWork _unitOfWork { get; set; }
     private readonly IMapper _mapper;
-    public UserController(IUserService userService, IMapper mapper, IUnitOfWork unitOfWork, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor) : base(logger, contextAccessor)
+	private IConfiguration _configuration;
+	public UserController(IUserService userService, IMapper mapper, IUnitOfWork unitOfWork, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration configuration) : base(logger, contextAccessor)
     {
         _userService = userService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
+		_configuration = configuration;
+	}
 
     public IActionResult Index()
     {
@@ -95,13 +98,20 @@ public class UserController : BaseController
         ResponseViewModel<UserViewModel> response = _userService.CreateNewUser();
         return View(response.ResponseData);
     }
-    public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
+    //public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
+    public IActionResult ValidateLogin(string email, string ln)
     {
-        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
-        if (response.ResponseMessage == "Success")
+	    //language = HttpContext.Request.Query["ln"].ToString();
+		//ErrorViewModelTest.Log("Email - " + email);
+		//ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
+		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
+		//ErrorViewModelTest.Log("response - " + response.ResponseMessage);
+		//ErrorViewModelTest.Log("responseData - " + response.ResponseData);
+		if (response.ResponseMessage == "Success")
         {
             if (response.ResponseData != null)
             {
+
                 HttpContext.Session.SetString("UserRoleId", response.ResponseData.UserRoleId.ToString());
                 HttpContext.Session.SetString("FirstName", response.ResponseData.FirstName.ToString());
                 HttpContext.Session.SetString("LastName", response.ResponseData.LastName.ToString());
@@ -109,11 +119,11 @@ public class UserController : BaseController
                 HttpContext.Session.SetString("LoggedId", response.ResponseData.Id.ToString());
                 HttpContext.Session.SetString("DepartmentName", response.ResponseData.DepartmentName.ToString());
                 HttpContext.Session.SetString("DepartmentId", response.ResponseData.DepartmentId.ToString());
-				HttpContext.Session.SetString("Language", language.ToString());
+				HttpContext.Session.SetString("Language", ln.ToString());
 			}
 
-            if (!string.IsNullOrEmpty(ReturnUrl))
-                return Redirect(ReturnUrl);
+            //if (!string.IsNullOrEmpty(ReturnUrl))
+            //    return Redirect(ReturnUrl);
 
             return RedirectToAction("Index", "Home");
 
@@ -248,4 +258,6 @@ public class UserController : BaseController
         return RedirectToAction("Index", "User");
 
     }
+	
+
 }

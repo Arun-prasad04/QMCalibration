@@ -17,18 +17,18 @@ namespace WEB.Models
         public DateTime? ModifiedOn { get; set; }
         public int UserRoleId { get; set; }
         public string? Password { get; set; }
-        public string? L3ShortId { get; set; }
-        public string? L3Name { get; set; }
-        public string? L3Email { get; set; }
-        public string? L4ShortId { get; set; }
-        public string? L4Name { get; set; }
-        public string? L4Email { get; set; }
-        public string? L5ShortId { get; set; }
-        public string? L5Name { get; set; }
-        public string? L5Email { get; set; }
-        public string? L6ShortId { get; set; }
-        public string? L6Name { get; set; }
-        public string? L6Email { get; set; }
+        public string? AsstForemanShortId { get; set; }
+        public string? AsstForemanName { get; set; }
+        public string? AsstForemanEmail { get; set; }
+        public string? ForemanShortId { get; set; }
+        public string? ForemanName { get; set; }
+        public string? ForemanEmail { get; set; }
+        public string? KakarichoShortId { get; set; }
+        public string? KakarichoName { get; set; }
+        public string? KakarichoEmail { get; set; }
+        public string? ManagerShortId { get; set; }
+        public string? ManagerName { get; set; }
+        public string? ManagerEmail { get; set; }
         public int DepartmentId { get; set; }
         public int Designation { get; set; }
         public string? SignImageName { get; set; }

@@ -26,7 +26,8 @@ public class MasterController : BaseController
         ViewBag.ResponseCode=TempData["ResponseCode"];
         ViewBag.ResponseMessage=TempData["ResponseMessage"];
        ResponseViewModel<MasterViewModel>response=_masterService.GetAllMasterList();
-       return View(response.ResponseDataList);
+       
+        return View(response.ResponseDataList);
     }
 
     public IActionResult Edit()

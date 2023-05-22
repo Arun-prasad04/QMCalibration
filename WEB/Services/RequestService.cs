@@ -301,7 +301,7 @@ public class RequestService : IRequestService
     {
       _unitOfWork.BeginTransaction();
       User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
-      User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.L4ShortId && Q.DepartmentId== userById.DepartmentId).FirstOrDefault();
+      User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId && Q.DepartmentId== userById.DepartmentId).FirstOrDefault();
       User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).FirstOrDefault();
       Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
       Request newRequest = new Request();
