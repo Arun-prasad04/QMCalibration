@@ -191,20 +191,9 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="trn">Calibration Frequency</label>
-										<select id="CalibFreq" name="CalibFreq" class="form-control">
-											@foreach (var freq in @Model.CalibFreqList)
-											{
-												if (freq.Id == Model.CalibFreq)
-												{
-													<option value="@freq.Id" selected="selected">@freq.AttrValue</option>
-												}
-												else
-												{
-													<option value="@freq.Id">@freq.AttrValue</option>
-												}
-											}
-										</select>
+										<label class="required trn">Instrument Id Number</label>
+										<input type="text" id="txtIdNo" name="IdNo" value="@Model.IdNo"
+											   class="form-control" placeholder="" alt="Please fill this field">
 									</div>
 								</div>
 							</div>
@@ -290,17 +279,35 @@
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Remarks</label>
-										<input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
-											   placeholder="">
-									</div>
+								<div class="col-sm-6">								
+										<div class="form-group">
+											<label class="trn">Calibration Frequency</label>
+											<select id="CalibFreq" name="CalibFreq" class="form-control">
+												@foreach (var freq in @Model.CalibFreqList)
+												{
+													if (freq.Id == Model.CalibFreq)
+													{
+														<option value="@freq.Id" selected="selected">@freq.AttrValue</option>
+													}
+													else
+													{
+														<option value="@freq.Id">@freq.AttrValue</option>
+													}
+												}
+											</select>
+										</div>									
 								</div>
 
 							</div>
 							<div class="row">
+								<div class="col-sm-6">
+								<!-- text input -->
+								<div class="form-group">
+									<label class="trn">Remarks</label>
+									<input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
+										   placeholder="">
+								</div>
+								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="exampleInputFile" class="trn">If yes provision for standard/drawing attachment</label>
@@ -697,6 +704,9 @@
 					StandardReffered: {
 						required: true,
 					},
+					IdNo: {
+						required: true,
+					},
 					TemplateName: {
 						required: true,
 					},
@@ -736,6 +746,9 @@
 						required: "Please Fill This Field",
 					},
 					StandardReffered: {
+						required: "Please Fill This Field",
+					},
+					IdNo: {
 						required: "Please Fill This Field",
 					},
 					TemplateName: {

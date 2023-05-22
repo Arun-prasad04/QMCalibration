@@ -52,24 +52,11 @@
 									</div>
 								</div>
 								<div class="col-sm-6">
+									<!-- text input -->
 									<div class="form-group">
-										<label for="LocationId" class="required trn">Location</label>
-										<select id="LocationId" name="LocationId" class="form-control">
-
-											@foreach (var location in @Model.LocationList)
-											{
-												if (location.Id == Model.LocationId)
-												{
-													<option value="@location.Id" selected="selected">@location.AttrValue</option>
-												}
-												else
-												{
-													<option value="@location.Id">@location.AttrValue</option>
-												}
-											}
-
-
-										</select>
+										<label class="required trn">Equipment Name Japanese</label>
+										<input type="text" id="EquipName" name="EquipNameJP" value="@Model.EquipNameJP" class="form-control"
+											   placeholder="" alt="Please enter Equipment Name">
 									</div>
 								</div>
 							</div>
@@ -165,6 +152,28 @@
 													<option value="@source.Id">@source.AttrValue</option>
 												}
 											}
+
+										</select>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="LocationId" class="required trn">Location</label>
+										<select id="LocationId" name="LocationId" class="form-control">
+
+											@foreach (var location in @Model.LocationList)
+											{
+												if (location.Id == Model.LocationId)
+												{
+													<option value="@location.Id" selected="selected">@location.AttrValue</option>
+												}
+												else
+												{
+													<option value="@location.Id">@location.AttrValue</option>
+												}
+											}
+
 
 										</select>
 									</div>
