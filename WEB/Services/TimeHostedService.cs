@@ -63,14 +63,14 @@ public class TimedHostedService : IHostedService, IDisposable
                     if (daysInCurrentMonth == (int)DateTime.Now.DayOfWeek)
                     {
                         emailList.Add(userdate.Email);
-                        emailList.Add(userdate.L4Email);
-                        emailList.Add(userdate.L3Email);
+                        emailList.Add(userdate.ForemanName);
+                        emailList.Add(userdate.AsstForemanEmail);
                     }
                     else if (twodaysBeforeDate == 29)
                     {
                         emailList.Add(userdate.Email);
-                        emailList.Add(userdate.L4Email);
-                        emailList.Add(userdate.L3Email);
+                        emailList.Add(userdate.ForemanName);
+                        emailList.Add(userdate.AsstForemanEmail);
                         emailList.AddRange(userList.Where(W => W.UserRoleId == 2 && W.UserRoleId == 4).Select(s => s.Email).ToList());
                     }
                     string duedate = Convert.ToDateTime(item.DueDate).ToShortDateString();

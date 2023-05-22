@@ -320,7 +320,7 @@ public class InstrumentService : IInstrumentService
         smtp.UseDefaultCredentials = false;
         smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-        smtp.Send(message);
+        //smtp.Send(message);
 
 
       }
@@ -714,7 +714,7 @@ public class InstrumentService : IInstrumentService
     {
       _unitOfWork.BeginTransaction();
       User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
-      User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.L4ShortId).SingleOrDefault();
+      User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId).SingleOrDefault();
       User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).SingleOrDefault();
       Instrument instrument = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).FirstOrDefault();
       InstrumentQuarantine instrumentQuarantineById = _unitOfWork.Repository<InstrumentQuarantine>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId && Q.StatusId == 1).FirstOrDefault();
