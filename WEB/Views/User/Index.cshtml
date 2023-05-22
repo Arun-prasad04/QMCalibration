@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" /> *@
 
-<section class="content">
+<section class="content">    
+
     <div class="row">
         <div class="col-12">
 
@@ -64,10 +65,10 @@
                                         <td>@item.MobileNo</td>
                                         <td>@item.ShortId</td>
                                         <td>@item.CreatedOn.ToString("dd-MM-yyyy")</td>
-                                        <td>@item.L3Email</td>
-                                        <td>@item.L4Email</td>
-                                        <td>@item.L5Email</td>
-                                        <td>@item.L6Email</td>
+                                        <td>@item.AsstForemanEmail</td>
+                                        <td>@item.ForemanEmail</td>
+                                        <td>@item.KakarichoEmail</td>
+                                        <td>@item.ManagerEmail</td>
                                         <td><a href='@Url.Action("UserEdit","User",new {userId=@item.Id})'><i
                                                 class="fas fa-edit"></i></a></td>
                                         <td><a href='@Url.Action("UserDelete","User",new {userId=@item.Id})'
@@ -195,7 +196,6 @@
 <script>
     $('document').ready(function () {
         var data = @ViewBag.UserDeleteResponse;
-
 
         if (data == "0") {
             if (confirm('User has Assigned with Various Flows,Do you want to assign another person')) {

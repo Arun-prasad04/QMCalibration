@@ -96,12 +96,12 @@
 									<input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
 								</div>
 							</div>
-							<div class="col-md-4">
+							@*<div class="col-md-4">
 								<div class="form-group">
 									<label class="required trn">Mobile No</label>
 									<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
 								</div>
-							</div>
+							</div>*@
 						</div>
 						<div class="row">
 							<div class="col-md-4">
@@ -140,7 +140,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-4">
+							@*<div class="col-md-4">
 								<div class="form-group">
 									<label class="required trn">Level</label>
 									<select class="form-control" name="Level" id="Level">
@@ -186,89 +186,89 @@
 										}
 									</select>
 								</div>
-							</div>
+							</div>*@
 						</div>
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L3ShortId" class="trn">Level 3 ShortID</label>
-									<input type="text" class="form-control trn" id="L3ShortId" placeholder="ShortID" name="L3ShortId" value="@Model.L3ShortId" maxlength="7" onblur="GetUserDetailsData('L3')">
+									<label for="AsstForemanShortId" class="trn">Asst.Foreman ShortID</label>
+									<input type="text" class="form-control trn" id="AsstForemanShortId" placeholder="ShortID" name="AsstForemanShortId" value="@Model.AsstForemanShortId" maxlength="7" onblur="GetUserDetailsData('L3')">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L3Name" class="trn">Level 3 Name</label>
-									<input type="text" class="form-control trn" id="L3Name" placeholder="Name" name="L3Name" value="@Model.L3Name">
+									<label for="AsstForemanName" class="trn">Asst.Foreman Name</label>
+									<input type="text" class="form-control trn" id="AsstForemanName" placeholder="Name" name="AsstForemanName" value="@Model.AsstForemanName">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L3Email" class="trn">Level 3 Email</label>
-									<input type="text" alt="Please provide the L3 Email Id" class="form-control trn" id="L3Email" placeholder="L3 Manager Email" name="L3Email" value="@Model.L3Email">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="L4ShortId" class="trn">Level 4 ShortID</label>
-									<input type="text" class="form-control trn" id="L4ShortId" placeholder="ShortID" name="L4ShortId" value="@Model.L4ShortId" maxlength="7" onblur="GetUserDetailsData('L4')">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="L4Name" class="trn">Level 4 Name</label>
-									<input type="text" class="form-control trn" id="L4Name" placeholder="Name" name="L4Name" value="@Model.L4Name">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="L4Email" class="trn">Level 4 Email</label>
-									<input type="text" alt="Please provide the L4 Email Id" class="form-control trn" id="L4Email" placeholder="L4 Manager Email" name="L4Email" value="@Model.L4Email">
+									<label for="AsstForemanEmail" class="trn">Asst.Foreman Email</label>
+									<input type="text" alt="Please provide the L3 Email Id" class="form-control trn" id="AsstForemanEmail" placeholder="Email" name="AsstForemanEmail" value="@Model.AsstForemanEmail">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L5ShortId" class="trn">Level 5 ShortID</label>
-									<input type="text" class="form-control trn" id="L5ShortId" placeholder="ShortID" name="L5ShortId" value="@Model.L5ShortId" maxlength="7" onblur="GetUserDetailsData('L5')">
+									<label for="ForemanShortId" class="trn">Foreman ShortID</label>
+									<input type="text" class="form-control trn" id="ForemanShortId" placeholder="ShortID" name="ForemanShortId" value="@Model.ForemanShortId" maxlength="7" onblur="GetUserDetailsData('L4')">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L5Name" class="trn">Level 5 Name</label>
-									<input type="text" class="form-control trn" id="L5Name" placeholder="Name" name="L5Name" value="@Model.L5Name">
+									<label for="ForemanName" class="trn">Foreman Name</label>
+									<input type="text" class="form-control trn" id="ForemanName" placeholder="Name" name="ForemanName" value="@Model.ForemanName">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L5Email" class="trn">Level 5 Email</label>
-									<input type="text" alt="Please provide the L5 Email Id" class="form-control trn" id="L5Email" placeholder="L5 Manager Email" name="L5Email" value="@Model.L5Email">
+									<label for="ForemanEmail" class="trn">Foreman Email</label>
+									<input type="text" alt="Please provide the L4 Email Id" class="form-control trn" id="ForemanEmail" placeholder="Email" name="ForemanEmail" value="@Model.ForemanEmail">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L6ShortId" class="trn">Level 6 ShortID</label>
-									<input type="text" class="form-control trn" id="L6ShortId" placeholder="ShortID" name="L6ShortId" value="@Model.L6ShortId" maxlength="7" onblur="GetUserDetailsData('L6')">
+									<label for="KakarichoShortId" class="trn">Kakaricho ShortID</label>
+									<input type="text" class="form-control trn" id="KakarichoShortId" placeholder="ShortID" name="KakarichoShortId" value="@Model.KakarichoShortId" maxlength="7" onblur="GetUserDetailsData('L5')">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L6Name" class="trn">Level 6 Name</label>
-									<input type="text" class="form-control trn" id="L6Name" placeholder="Name" name="L6Name" value="@Model.L6Name">
+									<label for="KakarichoName" class="trn">Kakaricho Name</label>
+									<input type="text" class="form-control trn" id="KakarichoName" placeholder="Name" name="KakarichoName" value="@Model.KakarichoName">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L6Email" class="trn">Level 6 Email</label>
-									<input type="text" alt="Please provide the L6 Email Id" class="form-control trn" id="L6Email" placeholder="L6 Manager Email" name="L6Email" value="@Model.L6Email">
+									<label for="KakarichoEmail" class="trn">Kakaricho Email</label>
+									<input type="text" alt="Please provide the L5 Email Id" class="form-control trn" id="KakarichoEmail" placeholder="Email" name="KakarichoEmail" value="@Model.KakarichoEmail">
 								</div>
 							</div>
 						</div>
 						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="ManagerShortId" class="trn">Manager ShortID</label>
+									<input type="text" class="form-control trn" id="ManagerShortId" placeholder="ShortID" name="ManagerShortId" value="@Model.ManagerShortId" maxlength="7" onblur="GetUserDetailsData('L6')">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="ManagerName" class="trn">Manager Name</label>
+									<input type="text" class="form-control trn" id="ManagerName" placeholder="Name" name="ManagerName" value="@Model.ManagerName">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="ManagerEmail" class="trn">Manager Email</label>
+									<input type="text" alt="Please provide the L6 Email Id" class="form-control trn" id="ManagerEmail" placeholder="Email" name="ManagerEmail" value="@Model.ManagerEmail">
+								</div>
+							</div>
+						</div>
+						<div class="ro w">
 							<div class="col-md-4">
 								<div class="form-group">
 									<div class="custom-file">
@@ -283,7 +283,7 @@
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="L6Email" class="trn">Signature Image</label>
+									<label for="ManagerEmail" class="trn">Signature Image</label>
 									<p id="SignImageName"></p>
 									@if (@Model.SignImageName != null)
 									{
@@ -374,7 +374,6 @@
 <script>
 	var instList = "";
 	function GetUserDetails() {
-		debugger;
 		var ShortId = $('#ShortId').val();
 		if ((ShortId == null || ShortId == '') && ShortId.length > 6)
 			return;
@@ -385,7 +384,6 @@
 			data: { ShortId: ShortId },
 			dataType: "json",
 			success: function (data) {
-				debugger;
 				// Transform JS object to an array
 				if (data != null) {
 					if (data.length == 0) {
@@ -414,19 +412,18 @@
 		});
 	}
 	function GetUserDetailsData(Level) {
-		debugger;
 		var ShortId;
 		if (Level == "L6") {
-			ShortId = $('#L6ShortId').val();
+			ShortId = $('#ManagerShortId').val();
 		}
 		else if (Level == "L5") {
-			ShortId = $('#L5ShortId').val();
+			ShortId = $('#KakarichoShortId').val();
 		}
 		else if (Level == "L4") {
-			ShortId = $('#L4ShortId').val();
+			ShortId = $('#ForemanShortId').val();
 		}
 		else if (Level == "L3") {
-			ShortId = $('#L3ShortId').val();
+			ShortId = $('#AsstForemanShortId').val();
 		}
 		if ((ShortId == null || ShortId == '')) {
 			return;
@@ -438,41 +435,40 @@
 				data: { ShortId: ShortId, Level: Level },
 				dataType: "json",
 				success: function (data) {
-					debugger;
 					// Transform JS object to an array
 					if (data != null) {
 						if (Level == "L3") {
-							$('#L3Name').val(data.firstName);
-							$('#L3Email').val(data.email);
+							$('#AsstForemanName').val(data.firstName);
+							$('#AsstForemanEmail').val(data.email);
 						}
 						else if (Level == "L4") {
-							$('#L4Name').val(data.firstName);
-							$('#L4Email').val(data.email);
+							$('#ForemanName').val(data.firstName);
+							$('#ForemanEmail').val(data.email);
 
 						}
 						else if (Level == "L5") {
-							$('#L5Name').val(data.firstName);
-							$('#L5Email').val(data.email);
+							$('#KakarichoName').val(data.firstName);
+							$('#KakarichoEmail').val(data.email);
 
 						}
 						else if (Level == "L6") {
-							$('#L6Name').val(data.firstName);
-							$('#L6Email').val(data.email);
+							$('#ManagerName').val(data.firstName);
+							$('#ManagerEmail').val(data.email);
 
 						}
 					}
 					else {
 						if (Level == "L3") {
-							$('#L3ShortId').val('');
+							$('#AsstForemanShortId').val('');
 						}
 						else if (Level == "L4") {
-							$('#L4ShortId').val('');
+							$('#ForemanShortId').val('');
 						}
 						else if (Level == "L5") {
-							$('#L5ShortId').val('');
+							$('#KakarichoShortId').val('');
 						}
 						else if (Level == "L6") {
-							$('#L6ShortId').val('');
+							$('#ManagerShortId').val('');
 						}
 						alert("Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.");
 						return;

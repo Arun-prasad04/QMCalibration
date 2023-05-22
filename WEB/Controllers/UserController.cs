@@ -105,8 +105,8 @@ public class UserController : BaseController
 		//ErrorViewModelTest.Log("Email - " + email);
 		//ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
 		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
-		ErrorViewModelTest.Log("response - " + response.ResponseMessage);
-		ErrorViewModelTest.Log("responseData - " + response.ResponseData);
+		//ErrorViewModelTest.Log("response - " + response.ResponseMessage);
+		//ErrorViewModelTest.Log("responseData - " + response.ResponseData);
 		if (response.ResponseMessage == "Success")
         {
             if (response.ResponseData != null)
