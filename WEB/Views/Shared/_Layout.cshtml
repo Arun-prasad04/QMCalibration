@@ -622,6 +622,7 @@
 			var dicts;
 			var GlDicts;
 			//$(document).ready(function() {
+			//alert(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId"));
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
 
@@ -963,8 +964,8 @@
 					"Serial No.": { jp: "シリアル番号。", en: "Serial No." },
 					"ID No.": { jp: "アイディー番号。", en: "ID No." },
 					"Ref Std": { jp: "参照基準", en: "Ref Std" },
-					"Temp@Start": { jp: "Temp@Start", en: "Temp@Start" },
-					"Temp@End": { jp: "Temp@End", en: "Temp@End" },
+					//"Temp@Start": { jp: "Temp@Start", en: "Temp@Start" },
+					//"Temp@End": { jp: "Temp@End", en: "Temp@End" },
 					"Humidity %RH": { jp: "湿度 %RH", en: "Humidity %RH" },
 					"Condition of the Instrument": { jp: "楽器の状態", en: "Condition of the Instrument" },
 					"Ref WI: ": { jp: "参照WI:", en: "Ref WI: " },
@@ -979,6 +980,10 @@
 					"Reviewed By": { jp: "によってレビュー", en: "Reviewed By" },
 					"Date:": { jp: "日にち：", en: "Date:" },
 					"Cancel": { jp: "キャンセル", en: "Cancel" },
+					"Submit Review": { jp: "レビュー送信", en: "Submit Review"},
+					"Temp@Start ": { jp: "温度@開始", en: "Temp@Start " },
+					"Temp@End ": { jp: "温度@終了", en: "Temp@End "},
+					"Approve": { jp: "承認", en: "Approve"},
 					"Type / Model": { jp: "種類・型式", en: "Type / Model" },
 					"Range/LC:": { jp: "範囲/LC:", en: "Range/LC:" },
 					"Make:": { jp: "作る：", en: "Make:" },
@@ -1253,8 +1258,76 @@
 					"Instrument Id Number": { jp: "機器ID番号", en: "Instrument Id Number" },
 
 
-					"3D Linear Height Gauge": { jp: "2Dリニアハイトゲージ", en: "2D Linear Height Gauge" },
+					//Micrometer Template Observation Sheet
+					"Micrometer": { jp: "マイクロメータ", en: "Micrometer"},
+					"Range/LC": { jp: "範囲/LC", en: "Range/LC"},
+					"Actuals": { jp: "実績", en: "Actuals"},
+					"Save": { jp: "保存", en: "Save"},
 
+
+					// Torque Wrenches  Template Observation Sheet
+					"Torque Wrenches": { jp: "トルクレンチ", en: "Torque Wrenches"},
+					"Type / Model": { jp: "種類・型式", en: "Type / Model"},
+					"Condition of Torque Wrench & observations if any:": { jp: "トルクレンチの状態と観察結果 (ある場合):", en: "Condition of Torque Wrench & observations if any:"},
+					"WI no :  ": { jp: "WI いいえ:", en: "WI no :  "},
+					"Master used :": { jp: "マスター使用:", en: "Master used :"},
+					"AWS TWC with Transducers": { jp: "AWS TWC とトランスデューサー", en: "AWS TWC with Transducers"},
+					"Norbar TWC with Transducers": { jp: "Norbar TWC トランスデューサ付き", en: "Norbar TWC with Transducers"},
+					"All Values Are In ": { jp: "すべての値が入っています", en: "All Values Are In "},
+					"Fixed Type Wrenches": { jp: "固定式レンチ", en: "Fixed Type Wrenches"},
+					"Nominal Set Value": { jp: "公称設定値", en: "Nominal Set Value"},
+					"Si No": { jp: "シノ", en: "Si No"},
+					"Actual Values": { jp: "実際の値", en: "Actual Values"},
+					"Spec Max(include MU)": { jp: "スペックマックス(MU含む)", en: "Spec Max(include MU)"},
+					"Spec Min(include MU)": { jp: "スペック最小(MUを含む)", en: "Spec Min(include MU)"},
+					"Adjustable Torque Wrenches": { jp: "調整式トルクレンチ", en: "Adjustable Torque Wrenches"},
+					"Measuring Interval": { jp: "測定間隔", en: "Measuring Interval"},
+					"Nominal Value": { jp: "公称値", en: "Nominal Value"},
+					"Spec (Include MU)": { jp: "スペック（MU含む）", en: "Spec (Include MU)"},
+					"Actual Values": { jp: "実際の値", en: "Actual Values"},
+					"SI No": { jp: "SI いいえ", en: "SI No"},
+					"Values": { jp: "価値観", en: "Values"},
+					"Any Other Comments": { jp: "その他のコメント", en: "Any Other Comments"},
+					"Condition of Torque Wrench &amp; observations if any:": { jp: "トルクレンチとトルクレンチの状態観察結果がある場合:", en: "Condition of Torque Wrench &amp; observations if any:" },
+
+					// Thread gauges Template Observation Sheet
+					"Thread Gauges": { jp: "ねじゲージ", en: "Thread Gauges"},
+					"Condition of Thread Gauge": { jp: "ねじゲージの状態", en: "Condition of Thread Gauge"},
+					"Thread Plug Gauge: Go": { jp: "ねじプラグゲージ：GO", en: "Thread Plug Gauge: Go" },
+					"Thread Plug Gauge: NoGo": { jp: "ねじプラグゲージ: NoGo", en: "Thread Plug Gauge: NoGo" },
+					"Effective Diameter Spec.": { jp: "有効径仕様", en: "Effective Diameter Spec." },
+					"Max": { jp: "マックス", en: "Max" },
+					"Min": { jp: "分", en: "Min" },
+					"Wear Limit": { jp: "摩耗限界", en: "Wear Limit" },
+					"Actual: Plane1": { jp: "実際: 平面 1", en: "Actual: Plane1" },
+					"Actual: Plane2": { jp: "実際: 平面 2", en: "Actual: Plane2" },
+					"Actual: Plane3": { jp: "実際: 平面 3", en: "Actual: Plane3" },
+					"Thread Ring Gauge: Go": { jp: "スレッドリングゲージ: Go", en: "Thread Ring Gauge: Go" },
+					"Thread Ring Gauge: NoGo": { jp: "スレッドリングゲージ: NoGo", en: "Thread Ring Gauge: NoGo" },
+
+					// Lever Type Dial Template Observation Sheet
+					"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial"},
+"Format No": { jp: "フォーマット番号", en: "Format No"},
+"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator"},
+
+					// Dial Indicators(PlungerDial) Template Observation Sheet
+					"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators"},
+"Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :"},
+"Mechanical Plunger Dial Indicator": { jp: "メカニカルプランジャーダイヤルインジケーター", en: "Mechanical Plunger Dial Indicator"},
+"Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error"},
+"Digital Plunger Dial Indicator": { jp: "デジタルプランジャーダイヤルインジケーター", en: "Digital Plunger Dial Indicator"},
+
+
+					// Vernier Caliper Template Observation Sheet
+					"Vernier Caliper": { jp: "ノギス", en: "Vernier Caliper"},
+"Condition of Vernier Caliper :": { jp: "ノギスの状態：", en: "Condition of Vernier Caliper :"},
+"ExternalJaw": { jp: "外部顎", en: "ExternalJaw"},
+"Parallelism Details :": { jp: "並列処理の詳細:", en: "Parallelism Details :"},
+"InternalJaw": { jp: "内部顎", en: "InternalJaw"},
+"Depth": { jp: "深さ", en: "Depth"},
+"For MUcalculation": { jp: "MU計算用", en: "For MUcalculation"},
+
+				
 
 					// Only for Place Holder Jp to EN
 					"説明": { jp: "説明", en: "Description" },
@@ -1275,18 +1348,6 @@
 					"署名を選択": { jp: "署名を選択", en: "Choose Signature" }
 				}
 
-
-				//var dicts = {}
-				//$.each(GlDicts, function (index, item) {
-				//		if (index == 2) {
-				//			dicts = {
-				//			"2D Linear Height Gauge": { jp: item.nameJp, en: item.nameEng },
-				//			"+{{item.nameEng}}+" = { jp: item.nameJp, en: item.nameEng }
-				//			}
-				//		}
-
-				//	});
-				//dicts = dict;
 				return dicts;
 			}
 

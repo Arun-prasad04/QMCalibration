@@ -53,12 +53,12 @@
             <tr class="sizeborder">
         <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
             <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
-        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Vernier Caliper</td>
-        <td class="textleftborder"  height="30">Format No.</td>
+                <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;"><span class="trn">Observation Sheet</span></br> <span class="trn">Vernier Caliper</span></td>
+        <td class="textleftborder trn"  height="30">Format No.</td>
         <td class="textcenterborder">365.QM.D.836</td>
     </tr>
     <tr>
-        <td class="textleftborder"  height="30">RevNo & </br> Date
+                <td class="textleftborder" height="30">RevNo & </br> <span class="trn">Date</span>
 </td>
         <td class="textcenterborder">01/ 12.08.2019</td>
     </tr>
@@ -67,37 +67,37 @@
 
         <table class="Tables-AndTableTextBox">
             <tr>
-                <td class="textleftborder">Type / Model</td>
+                <td class="textleftborder trn">Type / Model</td>
                 <td class="textleftborder">@Model.Name</td>
-                <td class="textleftborder">Range/LC:</td>
+                <td class="textleftborder trn">Range/LC:</td>
                 <td class="textleftborder">@Model.Range</td>
-                <td class="textleftborder">Make:</td>
+                <td class="textleftborder trn">Make:</td>
                 <td class="textleftborder">@Model.Make</td>
             </tr>
             <tr>
-                <td class="textleftborder">Serial No.</td>
+                <td class="textleftborder trn">Serial No.</td>
                 <td class="textleftborder">@Model.SerialNo</td>
-                <td class="textleftborder">ID No:</td>
+                <td class="textleftborder trn">ID No:</td>
                 <td class="textleftborder">@Model.IdNo</td>
-                <td class="textleftborder">Ref Std.</td>
+                <td class="textleftborder trn">Ref Std.</td>
                 <td class="textleftborder">@Model.RefStd</td>
             </tr>
         <tr>
-                <td>Temp@Start <sup>o</sup>C</td>
+                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-                <td>Temp@End <sup>o</sup>C</td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-                <td>Humidity %RH</td>
+                <td class="trn">Humidity %RH</td>
                 <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
         </tr>
              <tr>
-        <td rowspan="2" colspan="4" class="textleftborder">Condition of Vernier Caliper :</br>
+                <td rowspan="2" colspan="4" class="textleftborder"><span class="trn">Condition of Vernier Caliper :</span></br>
         <textarea name="condition" id="condition" style="height: 50px;width: 400px;">@Model.ConditionOfVernierCaliper</textarea></td>
-        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">WI no :  </span><input type="text" name="RefWi" id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
     </tr>
     <tr>
-        
-        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+
+                <td class="textleftborder" colspan="2"><span class="trn">All Values Are In </span><input type="text" style="width: 60px;" name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
     </tr>
 
         </table>
@@ -108,17 +108,17 @@
             <div class="column">
                 <table style=" width:100%">
                     <tr>
-                        <th colspan="4">CALIBRATION RESULTS </th>
+                        <th colspan="4" class="trn">CALIBRATION RESULTS </th>
                     </tr>
                     <tr>
-                        <th>SL.No</th>
-                        <th colspan="2">NOMINALANGLE</th>
-                        <th>ERRORinDMS</th>
+                        <th class="trn">SL.No</th>
+                        <th colspan="2" class="trn">NOMINALANGLE</th>
+                        <th class="trn">ERRORinDMS</th>
                     </tr>                    
                     <tr>
                         <td>1</td>
                         <td>0<sup>o</sup></td>
-                        <td rowspan="5">Quadrant-1</td>
+                        <td rowspan="5" class="trn">Quadrant-1</td>
                         <td>
                             <input type="text" value="@Model.ErrorinDMS1_1" id="ErrorinDMS1_1" class="Border0px">
                         </td>
@@ -156,7 +156,7 @@
                      <tr>
                          <td>1</td>
                          <td>45<sup>o</sup></td>
-                         <td rowspan="5">Quadrant-2</td> 
+                         <td rowspan="5" class="trn">Quadrant-2</td> 
                          <td>
                              <input type="text" value="@Model.ErrorinDMS2_1" id="ErrorinDMS2_1" class="Border0px">
                          </td>
@@ -187,7 +187,7 @@
                     <tr>
                          <td>1</td>
                          <td>15<sup>o</sup></td>
-                         <td rowspan="5">Quadrant-3</td> 
+                         <td rowspan="5" class="trn">Quadrant-3</td> 
                          <td>
                              <input type="text" value="@Model.ErrorinDMS3_1" id="ErrorinDMS3_1" class="Border0px">
                          </td>
@@ -217,7 +217,7 @@
                       <tr>
                          <td>1</td>
                          <td>45<sup>o</sup></td>
-                         <td rowspan="5">Quadrant-4</td> 
+                         <td rowspan="5" class="trn">Quadrant-4</td> 
                          <td>
                              <input type="text" value="@Model.ErrorinDMS4_1" id="ErrorinDMS4_1" class="Border0px">
                          </td>
@@ -242,17 +242,17 @@
                 <table style="width:100%">
                     
                     <tr>
-                        <th colspan="5">All Values are in mm </th>
+                        <th colspan="5" class="trn">All Values are in mm </th>
                     </tr>
                     <tr>
                         <th></th>
-                        <th>Spec</th>
-                        <th>Actual</th>
-                        <th>DevFromNom</th>
+                        <th class="trn">Spec</th>
+                        <th class="trn">Actual</th>
+                        <th class="trn">DevFromNom</th>
                     </tr>
                     <tr>
-                       
-                       <td>Straightness of Working Edge</td>
+
+                        <td class="trn">Straightness of Working Edge</td>
                         <td> 
                             <input type="text" value="@Model.Straightness_spec" id="Straightness_spec" class="Border0px">
                         </td>                      
@@ -266,8 +266,8 @@
 
                    
                     l<tr>
-                       
-                       <td>Parallelism of Working Edge</td>
+
+                        <td class="trn">Parallelism of Working Edge</td>
                         <td> 
                             <input type="text" value="@Model.Parallelism_Spec" id="Parallelism_Spec" class="Border0px">
                         </td>                      
@@ -280,8 +280,8 @@
                     </tr>
                     
                     <tr>
-                       
-                       <td rowspan="2">Flatness of Blade</td>
+
+                        <td rowspan="2" class="trn">Flatness of Blade</td>
                         <td> 
                             <input type="text" value="@Model.FlatnessofBlade_spec_1" id="FlatnessofBlade_spec_1" class="Border0px">
                         </td>                      
@@ -309,14 +309,14 @@
                     <br>
                      <table class="Tables-AndTableTextBox">
             <tr>
-                <th>Calibration Performed By</th>
+                        <th class="trn">Calibration Performed By</th>
                 <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTableTextBox"
                         id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled></td>
-                <th>Reveiwed By</th>
+                        <th class="trn">Reveiwed By</th>
                 <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Tables-AndTableTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
             </tr>
             <tr>
-                <th>Date:</th>
+                        <th class="trn">Date:</th>
                 @if(true)
                 {
                         var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -324,7 +324,7 @@
                                 class="Tables-AndTableTextBox" disabled>
                         </td>
                 }                 
-                <th class="textleftborder">Date:</th>
+                <th class="textleftborder trn">Date:</th>
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
                         || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
                         <td><input type="text" name="Review_Date" id="Review_Date" 
@@ -347,12 +347,12 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
                 {
                         <tr>
-                                <td class="textleftborder">Status</td>
+                                <td class="textleftborder trn">Status</td>
                                 <td class="textleftborder" colspan="3">
                                 <div style="text-align: left;">
-                                        <label>Approve</label>
+                                        <label class="trn">Approve</label>
                                         <input type="radio" name="Approve" id="Approve">
-                                        <label>Reject</label>
+                                    <label class="trn">Reject</label>
                                         <input type="radio" name="Approve" id="Reject">
                                 </div>
                                 </td>
@@ -364,9 +364,9 @@
                         <td colspan="4">
                         @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                         {
-                                <input type="button" class="btn btn-primary" value="Save" name="Save" id="GeneralNew" onclick="SaveGeneralNew(language)">
+                                <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="GeneralNew" onclick="SaveGeneralNew(language)">
                         }
-                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
                         </td>
                 </tr>
                 }
@@ -376,9 +376,9 @@
                         <td colspan="4" style="text-align:center;">
                                 @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                                 {
-                                    <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+                                    <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                                 }
-                                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                                <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
                         </td>
                         </tr>
                 }

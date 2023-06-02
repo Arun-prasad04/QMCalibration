@@ -55,12 +55,12 @@
             <tr class="sizeborder">
         <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
             <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
-        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Vernier Caliper</td>
-        <td class="textleftborder"  height="30">Format No.</td>
+                <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;"><span class="trn">Observation Sheet</span></br> <span class="trn">Vernier Caliper</span></td>
+        <td class="textleftborder trn"  height="30">Format No.</td>
         <td class="textcenterborder">365.QM.D.836</td>
     </tr>
     <tr>
-        <td class="textleftborder"  height="30">RevNo & </br> Date
+        <td class="textleftborder"  height="30">RevNo & </br> <span class="trn">Date</span>
 </td>
         <td class="textcenterborder">01/ 12.08.2019</td>
     </tr>
@@ -69,37 +69,37 @@
 
         <table class="Tables-AndTableTextBox">
             <tr>
-                <td class="textleftborder">Type / Model</td>
+                <td class="textleftborder trn">Type / Model</td>
                 <td class="textleftborder">@Model.Name</td>
-                <td class="textleftborder">Range/LC:</td>
+                <td class="textleftborder trn">Range/LC:</td>
                 <td class="textleftborder">@Model.Range</td>
-                <td class="textleftborder">Make:</td>
+                <td class="textleftborder trn">Make:</td>
                 <td class="textleftborder">@Model.Make</td>
             </tr>
             <tr>
-                <td class="textleftborder">Serial No.</td>
+                <td class="textleftborder trn">Serial No.</td>
                 <td class="textleftborder">@Model.SerialNo</td>
-                <td class="textleftborder">ID No:</td>
+                <td class="textleftborder trn">ID No:</td>
                 <td class="textleftborder">@Model.IdNo</td>
-                <td class="textleftborder">Ref Std.</td>
+                <td class="textleftborder trn">Ref Std.</td>
                 <td class="textleftborder">@Model.RefStd</td>
             </tr>
         <tr>
-                <td>Temp@Start <sup>o</sup>C</td>
+                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-                <td>Temp@End <sup>o</sup>C</td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-                <td>Humidity %RH</td>
+                <td class="trn">Humidity %RH</td>
                 <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
         </tr>
              <tr>
-        <td rowspan="2" colspan="4" class="textleftborder">Condition of Vernier Caliper :</br>
+                <td rowspan="2" colspan="4" class="textleftborder"><span class="trn">Condition of Vernier Caliper :</span></br>
         <textarea name="condition" id="condition" style="height: 50px;width: 400px;">@Model.ConditionOfVernierCaliper</textarea></td>
-        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">WI no :  </span><input type="text" name="RefWi" id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
     </tr>
     <tr>
-        
-        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+
+                <td class="textleftborder" colspan="2"><span class="trn">All Values Are In </span><input type="text" style="width: 60px;" name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
     </tr>
 
         </table>
@@ -110,17 +110,17 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="5">ExternalJaw</th>
+                        <th colspan="5" class="trn">ExternalJaw</th>
                     </tr>
                     <tr>
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
                     </tr>
                     <tr>
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
 
                     <tr>
@@ -194,20 +194,20 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="5">ExternalJaw</th>
+                        <th colspan="5" class="trn">ExternalJaw</th>
                     </tr>
                     <tr>
 
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
 
                     </tr>
                     <tr>
 
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
                         <tr>
                         <td><input type="text" value="@Model.Measured2_1" class="Tables-AndTableTextBox"
@@ -280,7 +280,7 @@
         <br>
         <table class="Tables-AndTableTextBox">
             <tr>
-                <th>Parallelism Details :</th>
+                <th class="trn">Parallelism Details :</th>
                 <td><input type="text" value="@Model.ExternalParallelismDetails" class="Tables-AndTableTextBox"
                         id="ExternalParallelismDetails" name="ExternalParallelismDetails"></td>
             </tr>
@@ -294,17 +294,17 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="5">InternalJaw</th>
+                        <th colspan="5" class="trn">InternalJaw</th>
                     </tr>
                     <tr>
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
                     </tr>
                     <tr>
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
                     <tr>
                         <td><input type="text" value="@Model.Measured5_1" class="Tables-AndTableTextBox"
@@ -377,20 +377,20 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="5">InternalJaw</th>
+                        <th colspan="5" class="trn">InternalJaw</th>
                     </tr>
                     <tr>
 
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
 
                     </tr>
                     <tr>
 
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
                          <tr>
                         <td><input type="text" value="@Model.Measured6_1" class="Tables-AndTableTextBox"
@@ -464,7 +464,7 @@
         <br>
         <table class="Tables-AndTableTextBox">
             <tr>
-                <th>Parallelism Details :</th>
+                <th class="trn">Parallelism Details :</th>
                 <td><input type="text" value="@Model.InternaljawParallelismDetails" class="Tables-AndTableTextBox"
                         id="InternaljawParallelismDetails"></td>
             </tr>
@@ -479,18 +479,18 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="4">Depth</th>
+                        <th colspan="4" class="trn">Depth</th>
                     </tr>
                     <tr>
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
 
                     </tr>
                     <tr>
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
                     <tr>
                         <td><input type="text" value="@Model.Measured3_1" class="Tables-AndTableTextBox"
@@ -562,21 +562,21 @@
             <div class="column">
                 <table>
                     <tr>
-                        <th colspan="4">Depth</th>
+                        <th colspan="4" class="trn">Depth</th>
                     </tr>
                     <tr>
 
-                        <th rowspan="2">Measured</th>
-                        <th colspan="3">Actual</th>
-                        <th rowspan="2">Avg.</th>
+                        <th rowspan="2" class="trn">Measured</th>
+                        <th colspan="3" class="trn">Actual</th>
+                        <th rowspan="2" class="trn">Avg.</th>
 
 
                     </tr>
                     <tr>
 
-                        <th>Trail1</th>
-                        <th>Trail2</th>
-                        <th>Trail3</th>
+                        <th class="trn">Trail1</th>
+                        <th class="trn">Trail2</th>
+                        <th class="trn">Trail3</th>
                     </tr>
                     <tr>
                         <td><input type="text" value="@Model.Measured4_1" class="Tables-AndTableTextBox"
@@ -661,10 +661,10 @@
         <br>
         <table class="Tables-AndTableTextBox">
             <tr>
-                <th colspan="2">For MUcalculation</th>
+                <th colspan="2" class="trn">For MUcalculation</th>
             </tr>
             <tr>
-                <th colspan="2">Interval</th>
+                <th colspan="2" class="trn">Interval</th>
                 @* <td><input type="text" value="@Model.Interval" class="Tables-AndTableTextBox"
                         id="MUcalculationInterval"></td> *@
             </tr>
@@ -692,14 +692,14 @@
         <br>
         <table class="Tables-AndTableTextBox">
             <tr>
-                <th>Calibration Performed By</th>
+                <th class="trn">Calibration Performed By</th>
                 <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTableTextBox"
                         id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled></td>
-                <th>Reveiwed By</th>
+                <th class="trn">Reveiwed By</th>
                 <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Tables-AndTableTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
             </tr>
             <tr>
-                <th>Date:</th>
+                <th class="trn">Date:</th>
                 @if(true)
                 {
                         var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -707,7 +707,7 @@
                                 class="Tables-AndTableTextBox" disabled>
                         </td>
                 }                 
-                <th class="textleftborder">Date:</th>
+                <th class="textleftborder trn">Date:</th>
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
                         || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
                         <td><input type="text" name="Review_Date" id="Review_Date" 
@@ -730,12 +730,12 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
                 {
                         <tr>
-                                <td class="textleftborder">Status</td>
+                                <td class="textleftborder trn">Status</td>
                                 <td class="textleftborder" colspan="3">
                                 <div style="text-align: left;">
-                                        <label>Approve</label>
+                                        <label class="trn">Approve</label>
                                         <input type="radio" name="Approve" id="Approve">
-                                        <label>Reject</label>
+                                        <label class="trn">Reject</label>
                                         <input type="radio" name="Approve" id="Reject">
                                 </div>
                                 </td>
@@ -747,9 +747,9 @@
                         <td colspan="4">
                         @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                         {
-                            <input type="button" class="btn btn-primary" value="Save" name="Save" id="VernierCaliper" onclick="SaveVernierCaliper(language)">
+                            <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="VernierCaliper" onclick="SaveVernierCaliper(language)">
                         }
-                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
                         </td>
                 </tr>
                 }
@@ -759,9 +759,9 @@
                         <td colspan="4" style="text-align:center;">
                                 @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                                 {
-                            <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+                            <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                                 }
-                                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                                <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
                         </td>
                         </tr>
                 }
