@@ -42,53 +42,40 @@ public class ObservationTemplateService : IObservationTemplateService
     public ResponseViewModel<LeverTypeDialViewModel> InsertLeverDial(LeverTypeDialViewModel levertypedial)
     {
 
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                         .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
-                                                                                    && Q.InstrumentId == levertypedial.InstrumentId)
-                                                         .SingleOrDefault();
-
-            // User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            //if (levertypedial.Id == 0)
-            if (levertypedial.Id == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = levertypedial.InstrumentId,
-                        RequestId = levertypedial.RequestId,
-                        TempStart = levertypedial.TempStart,
-                        TempEnd = levertypedial.TempEnd,
-                        Humidity = levertypedial.Humidity,
-                        InstrumentCondition = levertypedial.DialIndicatiorCondition,
-                        RefWi = levertypedial.RefWi,
-                        Allvalues = levertypedial.Allvalues,
-                        CreatedOn = DateTime.Now,
-                        CreatedBy = levertypedial.CreatedBy,
-                        // CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-
-                }
-
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
-                //																			&& Q.InstrumentId == levertypedial.InstrumentId)
-                //												 .SingleOrDefault();
-                if (observationById != null)
-                {
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (levertypedial.Id == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = levertypedial.InstrumentId,
+					RequestId = levertypedial.RequestId,
+					TempStart = levertypedial.TempStart,
+					TempEnd = levertypedial.TempEnd,
+					Humidity = levertypedial.Humidity,
+					InstrumentCondition = levertypedial.DialIndicatiorCondition,
+					RefWi = levertypedial.RefWi,
+					Allvalues = levertypedial.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = levertypedial.CreatedBy,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
+																							&& Q.InstrumentId == levertypedial.InstrumentId)
+																 .SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (levertypedial.TempStart != null)
                     {
@@ -105,60 +92,56 @@ public class ObservationTemplateService : IObservationTemplateService
                         observationById.Humidity = levertypedial.Humidity;
                     }
 
-                    if (levertypedial.DialIndicatiorCondition != null)
-                    {
-                        observationById.InstrumentCondition = levertypedial.DialIndicatiorCondition;
-                    }
-                    if (levertypedial.RefWi != null)
-                    {
-                        observationById.RefWi = levertypedial.RefWi;
-                    }
-                    if (levertypedial.Allvalues != null)
-                    {
-                        observationById.Allvalues = levertypedial.Allvalues;
-                    }
-                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
-                    _unitOfWork.SaveChanges();
-                }
-            }
+					if (levertypedial.DialIndicatiorCondition != null)
+					{
+						observationById.InstrumentCondition = levertypedial.DialIndicatiorCondition;
+					}
+					if (levertypedial.RefWi != null)
+					{
+						observationById.RefWi = levertypedial.RefWi;
+					}
+					if (levertypedial.Allvalues != null)
+					{
+						observationById.Allvalues = levertypedial.Allvalues;
+					}
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+					_unitOfWork.SaveChanges();
+				}
+			}
 
-            if (levertypedial.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-                }
-                ObsTemplateLeverTypeDial leverdial = new ObsTemplateLeverTypeDial()
-                {
-                    ObservationId = templateObservationId,
-                    DirectionA1 = levertypedial.MeasuringRangeDirectionA1,
-                    DirectionA2 = levertypedial.ScaleDivisionDirectionA2,
-                    DirectionA3 = levertypedial.HysteresisDirectionA3,
-                    DirectionA4 = levertypedial.RepeatabilityDirectionA4,
-                    DirectionB1 = levertypedial.MeasuringRangeDirectionB1,
-                    DirectionB2 = levertypedial.ScaleDivisionDirectionB2,
-                    DirectionB3 = levertypedial.HysteresisDirectionB3,
-                    DirectionB4 = levertypedial.RepeatabilityDirectionB4,
-                    Specification1 = levertypedial.MeasuringRangeSpec,
-                    Specification2 = levertypedial.ScaleDivisionSpec,
-                    Specification3 = levertypedial.HysteresisSpec,
-                    Specification4 = levertypedial.RepeatabilitySpec,
-                };
-                _unitOfWork.Repository<ObsTemplateLeverTypeDial>().Insert(leverdial);
-            }
-            else
-            {
-                ObsTemplateLeverTypeDial leverTypeDialById = _unitOfWork.Repository<ObsTemplateLeverTypeDial>()
-                                                                        .GetQueryAsNoTracking(Q => Q.Id == levertypedial.Id)
-                                                                        .SingleOrDefault();
-                if (levertypedial.MeasuringRangeDirectionA1 != null)
-                {
-                    leverTypeDialById.DirectionA1 = levertypedial.MeasuringRangeDirectionA1;
-                }
-                if (levertypedial.MeasuringRangeDirectionB1 != null)
-                {
-                    leverTypeDialById.DirectionB1 = levertypedial.MeasuringRangeDirectionB1;
-                }
+			if (levertypedial.Id == 0)
+			{
+				ObsTemplateLeverTypeDial leverdial = new ObsTemplateLeverTypeDial()
+				{
+					ObservationId = templateObservationId,
+					DirectionA1 = levertypedial.MeasuringRangeDirectionA1,
+					DirectionA2 = levertypedial.ScaleDivisionDirectionA2,
+					DirectionA3 = levertypedial.HysteresisDirectionA3,
+					DirectionA4 = levertypedial.RepeatabilityDirectionA4,
+					DirectionB1 = levertypedial.MeasuringRangeDirectionB1,
+					DirectionB2 = levertypedial.ScaleDivisionDirectionB2,
+					DirectionB3 = levertypedial.HysteresisDirectionB3,
+					DirectionB4 = levertypedial.RepeatabilityDirectionB4,
+					Specification1 = levertypedial.MeasuringRangeSpec,
+					Specification2 = levertypedial.ScaleDivisionSpec,
+					Specification3 = levertypedial.HysteresisSpec,
+					Specification4 = levertypedial.RepeatabilitySpec,
+				};
+				_unitOfWork.Repository<ObsTemplateLeverTypeDial>().Insert(leverdial);
+			}
+			else
+			{
+				ObsTemplateLeverTypeDial leverTypeDialById = _unitOfWork.Repository<ObsTemplateLeverTypeDial>()
+																		.GetQueryAsNoTracking(Q => Q.Id == levertypedial.Id)
+																		.SingleOrDefault();
+				if (levertypedial.MeasuringRangeDirectionA1 != null)
+				{
+					leverTypeDialById.DirectionA1 = levertypedial.MeasuringRangeDirectionA1;
+				}
+				if (levertypedial.MeasuringRangeDirectionB1 != null)
+				{
+					leverTypeDialById.DirectionB1 = levertypedial.MeasuringRangeDirectionB1;
+				}
 
                 if (levertypedial.ScaleDivisionDirectionA2 != null)
                 {
@@ -328,56 +311,50 @@ public class ObservationTemplateService : IObservationTemplateService
 
     #endregion
 
-    #region "Micrometer"
-    public ResponseViewModel<MicrometerViewModel> InsertMicrometer(MicrometerViewModel micrometer)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int tempobsId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == micrometer.RequestId
-                                                                  && Q.InstrumentId == micrometer.InstrumentId).SingleOrDefault();
-            //User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (micrometer.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = micrometer.InstrumentId,
-                        RequestId = micrometer.RequestId,
-                        TempStart = micrometer.TempStart,
-                        TempEnd = micrometer.TempEnd,
-                        Humidity = micrometer.Humidity,
-                        InstrumentCondition = micrometer.MicrometerCondition,
-                        RefWi = micrometer.RefWi,
-                        Allvalues = micrometer.Allvalues,
-                        CreatedOn = DateTime.Now,
-                        CreatedBy = micrometer.CreatedBy,
-                        //   CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    //tempobsId = templateObservation.Id;
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    tempobsId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == micrometer.RequestId
-                //												  && Q.InstrumentId == micrometer.InstrumentId).SingleOrDefault();
-                //tempobsId = observationById.Id;
-                if (observationById != null)
-                {
 
 
-                    if (micrometer.TempStart != null)
-                    {
-                        observationById.TempStart = micrometer.TempStart;
-                    }
+
+	#region "Micrometer"
+	public ResponseViewModel<MicrometerViewModel> InsertMicrometer(MicrometerViewModel micrometer)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int tempobsId = 0;
+			//User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (micrometer.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = micrometer.InstrumentId,
+					RequestId = micrometer.RequestId,
+					TempStart = micrometer.TempStart,
+					TempEnd = micrometer.TempEnd,
+					Humidity = micrometer.Humidity,
+					InstrumentCondition = micrometer.MicrometerCondition,
+					RefWi = micrometer.RefWi,
+					Allvalues = micrometer.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = micrometer.CreatedBy,
+					//   CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				tempobsId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == micrometer.RequestId
+																  && Q.InstrumentId == micrometer.InstrumentId).SingleOrDefault();
+				if (observationById != null)
+				{
+
+					if (micrometer.TempStart != null)
+					{
+						observationById.TempStart = micrometer.TempStart;
+					}
 
                     if (micrometer.TempEnd != null)
                     {
@@ -403,98 +380,91 @@ public class ObservationTemplateService : IObservationTemplateService
                     }
                     _unitOfWork.Repository<TemplateObservation>().Update(observationById);
 
-                }
-            }
-            _unitOfWork.SaveChanges();
-            if (micrometer.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    tempobsId = observationById.Id;
-                }
-
-                ObsTemplateMicrometer obsTemplateMicrometer = new ObsTemplateMicrometer()
-                {
-
-                    ObservationId = tempobsId,
-                    Flatness1 = micrometer.Flatness1,
-                    Flatness2 = micrometer.Flatness2,
-                    ParallelismSpec = micrometer.ParallelismSpec,
-                    Actuals = micrometer.Actuals,
-                    ActualsT11 = micrometer.ActualsT11,
-                    ActualsT21 = micrometer.ActualsT21,
-                    ActualsT31 = micrometer.ActualsT31,
-                    Avg1 = micrometer.Avg1,
-                    MuInterval1 = micrometer.MuInterval1,
-                    ActualsT12 = micrometer.ActualsT12,
-                    ActualsT22 = micrometer.ActualsT22,
-                    ActualsT32 = micrometer.ActualsT32,
-                    Avg2 = micrometer.Avg2,
-                    MuInterval2 = micrometer.MuInterval2,
-                    ActualsT13 = micrometer.ActualsT13,
-                    ActualsT23 = micrometer.ActualsT23,
-                    ActualsT33 = micrometer.ActualsT33,
-                    Avg3 = micrometer.Avg3,
-                    MuInterval3 = micrometer.MuInterval3,
-                    ActualsT14 = micrometer.ActualsT14,
-                    ActualsT24 = micrometer.ActualsT24,
-                    ActualsT34 = micrometer.ActualsT34,
-                    Avg4 = micrometer.Avg4,
-                    MuInterval4 = micrometer.MuInterval4,
-                    ActualsT15 = micrometer.MuInterval4,
-                    ActualsT25 = micrometer.ActualsT25,
-                    ActualsT35 = micrometer.ActualsT35,
-                    Avg5 = micrometer.Avg5,
-                    MuInterval5 = micrometer.MuInterval5,
-                    ActualsT16 = micrometer.ActualsT16,
-                    ActualsT26 = micrometer.ActualsT26,
-                    ActualsT36 = micrometer.ActualsT36,
-                    Avg6 = micrometer.Avg6,
-                    ActualsT17 = micrometer.ActualsT17,
-                    ActualsT27 = micrometer.ActualsT27,
-                    ActualsT37 = micrometer.ActualsT37,
-                    Avg7 = micrometer.Avg7,
-                    ActualsT18 = micrometer.ActualsT18,
-                    ActualsT28 = micrometer.ActualsT28,
-                    ActualsT38 = micrometer.ActualsT38,
-                    Avg8 = micrometer.Avg8,
-                    ActualsT19 = micrometer.ActualsT19,
-                    ActualsT29 = micrometer.ActualsT29,
-                    ActualsT39 = micrometer.ActualsT39,
-                    Avg9 = micrometer.Avg9,
-                    ActualsT110 = micrometer.ActualsT110,
-                    ActualsT210 = micrometer.ActualsT210,
-                    ActualsT310 = micrometer.ActualsT310,
-                    Avg10 = micrometer.Avg10,
-                    ActualsT111 = micrometer.ActualsT111,
-                    ActualsT211 = micrometer.ActualsT211,
-                    ActualsT311 = micrometer.ActualsT311,
-                    Avg11 = micrometer.Avg11,
-                    Measurement1 = micrometer.Measurement1,
-                    Measurement2 = micrometer.Measurement2,
-                    Measurement3 = micrometer.Measurement3,
-                    Measurement4 = micrometer.Measurement4,
-                    Measurement5 = micrometer.Measurement5,
-                    Measurement6 = micrometer.Measurement6,
-                    Measurement7 = micrometer.Measurement7,
-                    Measurement8 = micrometer.Measurement8,
-                    Measurement9 = micrometer.Measurement9,
-                    Measurement10 = micrometer.Measurement10,
-                    Measurement11 = micrometer.Measurement11,
-                    MURemarks = micrometer.MURemarks,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = micrometer.CreatedBy,
-                    //CalibrationReviewedBy = labTechnicalManager.Id,
-                    CalibrationReviewedDate = DateTime.Now
-
-                };
-                _unitOfWork.Repository<ObsTemplateMicrometer>().Insert(obsTemplateMicrometer);
-            }
-            else
-            {
-                ObsTemplateMicrometer micrometerById = _unitOfWork.Repository<ObsTemplateMicrometer>()
-                                                                .GetQueryAsNoTracking(Q => Q.Id == micrometer.Id)
-                                                                .SingleOrDefault();
+				}
+			}
+			_unitOfWork.SaveChanges();
+			if (micrometer.Id == 0)
+			{
+				ObsTemplateMicrometer obsTemplateMicrometer = new ObsTemplateMicrometer()
+				{
+					ObservationId = tempobsId,
+					Flatness1 = micrometer.Flatness1,
+					Flatness2 = micrometer.Flatness2,
+					ParallelismSpec = micrometer.ParallelismSpec,
+					Actuals = micrometer.Actuals,
+					ActualsT11 = micrometer.ActualsT11,
+					ActualsT21 = micrometer.ActualsT21,
+					ActualsT31 = micrometer.ActualsT31,
+					Avg1 = micrometer.Avg1,
+					MuInterval1 = micrometer.MuInterval1,
+					ActualsT12 = micrometer.ActualsT12,
+					ActualsT22 = micrometer.ActualsT22,
+					ActualsT32 = micrometer.ActualsT32,
+					Avg2 = micrometer.Avg2,
+					MuInterval2 = micrometer.MuInterval2,
+					ActualsT13 = micrometer.ActualsT13,
+					ActualsT23 = micrometer.ActualsT23,
+					ActualsT33 = micrometer.ActualsT33,
+					Avg3 = micrometer.Avg3,
+					MuInterval3 = micrometer.MuInterval3,
+					ActualsT14 = micrometer.ActualsT14,
+					ActualsT24 = micrometer.ActualsT24,
+					ActualsT34 = micrometer.ActualsT34,
+					Avg4 = micrometer.Avg4,
+					MuInterval4 = micrometer.MuInterval4,
+					ActualsT15 = micrometer.MuInterval4,
+					ActualsT25 = micrometer.ActualsT25,
+					ActualsT35 = micrometer.ActualsT35,
+					Avg5 = micrometer.Avg5,
+					MuInterval5 = micrometer.MuInterval5,
+					ActualsT16 = micrometer.ActualsT16,
+					ActualsT26 = micrometer.ActualsT26,
+					ActualsT36 = micrometer.ActualsT36,
+					Avg6 = micrometer.Avg6,
+					ActualsT17 = micrometer.ActualsT17,
+					ActualsT27 = micrometer.ActualsT27,
+					ActualsT37 = micrometer.ActualsT37,
+					Avg7 = micrometer.Avg7,
+					ActualsT18 = micrometer.ActualsT18,
+					ActualsT28 = micrometer.ActualsT28,
+					ActualsT38 = micrometer.ActualsT38,
+					Avg8 = micrometer.Avg8,
+					ActualsT19 = micrometer.ActualsT19,
+					ActualsT29 = micrometer.ActualsT29,
+					ActualsT39 = micrometer.ActualsT39,
+					Avg9 = micrometer.Avg9,
+					ActualsT110 = micrometer.ActualsT110,
+					ActualsT210 = micrometer.ActualsT210,
+					ActualsT310 = micrometer.ActualsT310,
+					Avg10 = micrometer.Avg10,
+					ActualsT111 = micrometer.ActualsT111,
+					ActualsT211 = micrometer.ActualsT211,
+					ActualsT311 = micrometer.ActualsT311,
+					Avg11 = micrometer.Avg11,
+					Measurement1 = micrometer.Measurement1,
+					Measurement2 = micrometer.Measurement2,
+					Measurement3 = micrometer.Measurement3,
+					Measurement4 = micrometer.Measurement4,
+					Measurement5 = micrometer.Measurement5,
+					Measurement6 = micrometer.Measurement6,
+					Measurement7 = micrometer.Measurement7,
+					Measurement8 = micrometer.Measurement8,
+					Measurement9 = micrometer.Measurement9,
+					Measurement10 = micrometer.Measurement10,
+					Measurement11 = micrometer.Measurement11,
+					MURemarks = micrometer.MURemarks,
+					CreatedOn = DateTime.Now,
+					CreatedBy = micrometer.CreatedBy,
+					//CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<ObsTemplateMicrometer>().Insert(obsTemplateMicrometer);
+			}
+			else
+			{
+				ObsTemplateMicrometer micrometerById = _unitOfWork.Repository<ObsTemplateMicrometer>()
+																.GetQueryAsNoTracking(Q => Q.Id == micrometer.Id)
+																.SingleOrDefault();
 
                 if (micrometer.ActualsT11 != null)
                     micrometerById.ActualsT11 = micrometer.ActualsT11;
@@ -874,53 +844,46 @@ public class ObservationTemplateService : IObservationTemplateService
 
     #endregion
 
-    #region "Plunger Dial"
-    public ResponseViewModel<PlungerDialViewModel> InsertPlungerDial(PlungerDialViewModel plungerDial)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                 .GetQueryAsNoTracking(Q => Q.RequestId == plungerDial.RequestId
-                                                 && Q.InstrumentId == plungerDial.InstrumentId).SingleOrDefault();
-
-            //  User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (plungerDial.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = plungerDial.InstrumentId,
-                        RequestId = plungerDial.RequestId,
-                        TempStart = plungerDial.TempStart,
-                        TempEnd = plungerDial.TempEnd,
-                        Humidity = plungerDial.Humidity,
-                        InstrumentCondition = plungerDial.ConditionAndObservation,
-                        RefWi = plungerDial.RefWi,
-                        Allvalues = plungerDial.Allvalues,
-                        CreatedOn = DateTime.Now,
-                        CreatedBy = plungerDial.CreatedBy,
-                        // CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == plungerDial.RequestId
-                //												 && Q.InstrumentId == plungerDial.InstrumentId).SingleOrDefault();
-                if (observationById != null)
-                {
-                    if (plungerDial.TempStart != null)
-                    {
-                        observationById.TempStart = plungerDial.TempStart;
-                    }
+	#region "Plunger Dial"
+	public ResponseViewModel<PlungerDialViewModel> InsertPlungerDial(PlungerDialViewModel plungerDial)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			//  User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (plungerDial.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = plungerDial.InstrumentId,
+					RequestId = plungerDial.RequestId,
+					TempStart = plungerDial.TempStart,
+					TempEnd = plungerDial.TempEnd,
+					Humidity = plungerDial.Humidity,
+					InstrumentCondition = plungerDial.ConditionAndObservation,
+					RefWi = plungerDial.RefWi,
+					Allvalues = plungerDial.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = plungerDial.CreatedBy,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id; ;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == plungerDial.RequestId
+																 && Q.InstrumentId == plungerDial.InstrumentId).SingleOrDefault();
+				if (observationById != null)
+				{
+					if (plungerDial.TempStart != null)
+					{
+						observationById.TempStart = plungerDial.TempStart;
+					}
 
                     if (plungerDial.TempEnd != null)
                     {
@@ -946,41 +909,37 @@ public class ObservationTemplateService : IObservationTemplateService
                         observationById.Allvalues = plungerDial.Allvalues;
                     }
 
-                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
-                    _unitOfWork.SaveChanges();
-                }
-            }
-            if (plungerDial.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-                }
-                ObsTemplatePlungerDial obsTemplatePlungerDial = new ObsTemplatePlungerDial()
-                {
-                    ObservationId = templateObservationId,
-                    Spec1 = plungerDial.Spec1,
-                    Spec2 = plungerDial.Spec2,
-                    Spec3 = plungerDial.Spec3,
-                    Spec4 = plungerDial.Spec4,
-                    Spec5 = plungerDial.Spec5,
-                    Spec6 = plungerDial.Spec6,
-                    Actual1 = plungerDial.Actual1,
-                    Actual2 = plungerDial.Actual2,
-                    Actual3 = plungerDial.Actual3,
-                    Actual4 = plungerDial.Actual4,
-                    Actual5 = plungerDial.Actual5,
-                    Actual6 = plungerDial.Actual6,
-                    Interval1 = plungerDial.Interval1,
-                    Interval2 = plungerDial.Interval2,
-                    Interval3 = plungerDial.Interval3,
-                    Interval4 = plungerDial.Interval4,
-                    Interval5 = plungerDial.Interval5,
-                    Remarks = plungerDial.Remarks,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = plungerDial.CreatedBy,
-                    //CalibrationReviewedBy = labTechnicalManager.Id,
-                    CalibrationReviewedDate = DateTime.Now
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+					_unitOfWork.SaveChanges();
+				}
+			}
+			if (plungerDial.Id == 0)
+			{
+				ObsTemplatePlungerDial obsTemplatePlungerDial = new ObsTemplatePlungerDial()
+				{
+					ObservationId = templateObservationId,
+					Spec1 = plungerDial.Spec1,
+					Spec2 = plungerDial.Spec2,
+					Spec3 = plungerDial.Spec3,
+					Spec4 = plungerDial.Spec4,
+					Spec5 = plungerDial.Spec5,
+					Spec6 = plungerDial.Spec6,
+					Actual1 = plungerDial.Actual1,
+					Actual2 = plungerDial.Actual2,
+					Actual3 = plungerDial.Actual3,
+					Actual4 = plungerDial.Actual4,
+					Actual5 = plungerDial.Actual5,
+					Actual6 = plungerDial.Actual6,
+					Interval1 = plungerDial.Interval1,
+					Interval2 = plungerDial.Interval2,
+					Interval3 = plungerDial.Interval3,
+					Interval4 = plungerDial.Interval4,
+					Interval5 = plungerDial.Interval5,
+					Remarks = plungerDial.Remarks,
+					CreatedOn = DateTime.Now,
+					CreatedBy = plungerDial.CreatedBy,
+					//CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
 
                 };
                 _unitOfWork.Repository<ObsTemplatePlungerDial>().Insert(obsTemplatePlungerDial);
@@ -1178,52 +1137,44 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-    #endregion
-    #region "Thread Guages"
-    public ResponseViewModel<ThreadGaugesViewModel> InsertThreadGuages(ThreadGaugesViewModel threadGauges)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                .GetQueryAsNoTracking(Q => Q.RequestId == threadGauges.RequestId
-                                                                                      && Q.InstrumentId == threadGauges.InstrumentId)
-                                                                 .SingleOrDefault();
-
-            // User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (threadGauges.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = threadGauges.InstrumentId,
-                        RequestId = threadGauges.RequestId,
-                        TempStart = threadGauges.TempStart,
-                        TempEnd = threadGauges.TempEnd,
-                        Humidity = threadGauges.Humidity,
-                        RefWi = threadGauges.RefWi,
-                        InstrumentCondition = threadGauges.ThreadgaugeCondtion,
-                        Allvalues = threadGauges.Allvalues,
-                        CreatedBy = threadGauges.CreatedBy,
-                        CreatedOn = DateTime.Now,
-                        //CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												.GetQueryAsNoTracking(Q => Q.RequestId == threadGauges.RequestId
-                //																	  && Q.InstrumentId == threadGauges.InstrumentId)
-                //												 .SingleOrDefault();
-                if (observationById != null)
-                {
+	#endregion
+	#region "Thread Guages"
+	public ResponseViewModel<ThreadGaugesViewModel> InsertThreadGuages(ThreadGaugesViewModel threadGauges)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (threadGauges.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = threadGauges.InstrumentId,
+					RequestId = threadGauges.RequestId,
+					TempStart = threadGauges.TempStart,
+					TempEnd = threadGauges.TempEnd,
+					Humidity = threadGauges.Humidity,
+					RefWi = threadGauges.RefWi,
+					InstrumentCondition = threadGauges.ThreadgaugeCondtion,
+					Allvalues = threadGauges.Allvalues,
+					CreatedBy = threadGauges.CreatedBy,
+					CreatedOn = DateTime.Now,
+					//CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																.GetQueryAsNoTracking(Q => Q.RequestId == threadGauges.RequestId
+																					  && Q.InstrumentId == threadGauges.InstrumentId)
+																 .SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (threadGauges.TempStart != null)
                     {
@@ -1240,64 +1191,59 @@ public class ObservationTemplateService : IObservationTemplateService
                         observationById.Humidity = threadGauges.Humidity;
                     }
 
-                    if (threadGauges.ThreadgaugeCondtion != null)
-                    {
-                        observationById.InstrumentCondition = threadGauges.ThreadgaugeCondtion;
-                    }
-                    if (threadGauges.RefWi != null)
-                    {
-                        observationById.RefWi = threadGauges.RefWi;
-                    }
-                    if (threadGauges.Allvalues != null)
-                    {
-                        observationById.Allvalues = threadGauges.Allvalues;
-                    }
-                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
-                }
-            }
-            _unitOfWork.SaveChanges();
-            if (threadGauges.Id == 0)
-            {
-
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-                }
-                ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
-                {
-                    ObservationId = templateObservationId,
-                    Max1 = threadGauges.Max1,
-                    Max2 = threadGauges.Max2,
-                    Min1 = threadGauges.Min1,
-                    Min2 = threadGauges.Min2,
-                    WearLimit1 = threadGauges.WearLimit1,
-                    WearLimit2 = threadGauges.WearLimit2,
-                    Plane1 = threadGauges.Plane1,
-                    Plane2 = threadGauges.Plane2,
-                    Plane3 = threadGauges.Plane3,
-                    Plane4 = threadGauges.Plane4,
-                    Plane5 = threadGauges.Plane5,
-                    Repeatability1 = threadGauges.Repeatability1,
-                    Repeatability2 = threadGauges.Repeatability2,
-                    Repeatability3 = threadGauges.Repeatability3,
-                    Repeatability4 = threadGauges.Repeatability4,
-                    Repeatability5 = threadGauges.Repeatability5,
-                    //CalibrationReviewedBy = threadGauges.CalibrationReviewedBy,
-                    ReviewDate = threadGauges.CalibrationReviewedDate,
-                    CreatedBy = threadGauges.CreatedBy,
-                    CreatedOn = DateTime.Now,
-                    //CalibrationReviewedBy = labTechnicalManager.Id,
-                    CalibrationReviewedDate = DateTime.Now
-                };
-                _unitOfWork.Repository<ObsTemplateThreadGauges>().Insert(ObsTemplateThreadGauges);
-            }
-            else
-            {
-                ObsTemplateThreadGauges threadGaugesById = _unitOfWork.Repository<ObsTemplateThreadGauges>()
-                                                                      .GetQueryAsNoTracking(Q => Q.Id == threadGauges.Id)
-                                                                      .SingleOrDefault();
-                if (threadGauges.Max1 != null)
-                    threadGaugesById.Max1 = threadGauges.Max1;
+					if (threadGauges.ThreadgaugeCondtion != null)
+					{
+						observationById.InstrumentCondition = threadGauges.ThreadgaugeCondtion;
+					}
+					if (threadGauges.RefWi != null)
+					{
+						observationById.RefWi = threadGauges.RefWi;
+					}
+					if (threadGauges.Allvalues != null)
+					{
+						observationById.Allvalues = threadGauges.Allvalues;
+					}
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+				}
+			}
+			_unitOfWork.SaveChanges();
+			if (threadGauges.TemplateObservationId == 0)
+			{
+				ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
+				{
+					ObservationId = templateObservationId,
+					Max1 = threadGauges.Max1,
+					Max2 = threadGauges.Max2,
+					Min1 = threadGauges.Min1,
+					Min2 = threadGauges.Min2,
+					WearLimit1 = threadGauges.WearLimit1,
+					WearLimit2 = threadGauges.WearLimit2,
+					Plane1 = threadGauges.Plane1,
+					Plane2 = threadGauges.Plane2,
+					Plane3 = threadGauges.Plane3,
+					Plane4 = threadGauges.Plane4,
+					Plane5 = threadGauges.Plane5,
+					Repeatability1 = threadGauges.Repeatability1,
+					Repeatability2 = threadGauges.Repeatability2,
+					Repeatability3 = threadGauges.Repeatability3,
+					Repeatability4 = threadGauges.Repeatability4,
+					Repeatability5 = threadGauges.Repeatability5,
+					//CalibrationReviewedBy = threadGauges.CalibrationReviewedBy,
+					ReviewDate = threadGauges.CalibrationReviewedDate,
+					CreatedBy = threadGauges.CreatedBy,
+					CreatedOn = DateTime.Now,
+					//CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<ObsTemplateThreadGauges>().Insert(ObsTemplateThreadGauges);
+			}
+			else
+			{
+				ObsTemplateThreadGauges threadGaugesById = _unitOfWork.Repository<ObsTemplateThreadGauges>()
+																	  .GetQueryAsNoTracking(Q => Q.Id == threadGauges.Id)
+																	  .SingleOrDefault();
+				if (threadGauges.Max1 != null)
+					threadGaugesById.Max1 = threadGauges.Max1;
 
                 if (threadGauges.Max2 != null)
                     threadGaugesById.Max2 = threadGauges.Max2;
@@ -1474,48 +1420,40 @@ public class ObservationTemplateService : IObservationTemplateService
 
     #endregion
 
-    #region "TorqueWrenches"
-    public ResponseViewModel<TorqueWrenchesViewModel> InsertTWobs(TorqueWrenchesViewModel torquewrenches)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == torquewrenches.RequestId
-                                                                 && Q.InstrumentId == torquewrenches.InstrumentId).SingleOrDefault();
-
-            //templateObservationId = observationById.Id;
-            if (torquewrenches.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = torquewrenches.InstrumentId,
-                        RequestId = torquewrenches.RequestId,
-                        TempStart = torquewrenches.TempStart,
-                        TempEnd = torquewrenches.TempEnd,
-                        Humidity = torquewrenches.Humidity,
-                        RefWi = torquewrenches.RefWi,
-                        InstrumentCondition = torquewrenches.ConditionOfTW,
-                        Allvalues = torquewrenches.Allvalues,
-                        CreatedBy = torquewrenches.CreatedBy,
-                        CreatedOn = DateTime.Now,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == torquewrenches.RequestId
-                //												 && Q.InstrumentId == torquewrenches.InstrumentId).SingleOrDefault();
-                if (observationById != null)
-                {
+	#region "TorqueWrenches"
+	public ResponseViewModel<TorqueWrenchesViewModel> InsertTWobs(TorqueWrenchesViewModel torquewrenches)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			if (torquewrenches.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = torquewrenches.InstrumentId,
+					RequestId = torquewrenches.RequestId,
+					TempStart = torquewrenches.TempStart,
+					TempEnd = torquewrenches.TempEnd,
+					Humidity = torquewrenches.Humidity,
+					RefWi = torquewrenches.RefWi,
+					InstrumentCondition = torquewrenches.ConditionOfTW,
+					Allvalues = torquewrenches.Allvalues,
+					CreatedBy = torquewrenches.CreatedBy,
+					CreatedOn = DateTime.Now,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == torquewrenches.RequestId
+																 && Q.InstrumentId == torquewrenches.InstrumentId).SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (torquewrenches.TempStart != null)
                     {
@@ -1549,67 +1487,62 @@ public class ObservationTemplateService : IObservationTemplateService
                 }
                 _unitOfWork.SaveChanges();
 
-            }
-            if (torquewrenches.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-
-                }
-                ObsTemplateTWobs obsTemplateTWobs = new ObsTemplateTWobs()
-                {
-                    ObservationId = templateObservationId,
-                    SpecMax = torquewrenches.SpecMax,
-                    SpecMin = torquewrenches.SpecMin,
-                    ActualInOne = torquewrenches.ActualInOne,
-                    ActualInTwo = torquewrenches.ActualInTwo,
-                    ActualInThree = torquewrenches.ActualInThree,
-                    ActualInFour = torquewrenches.ActualInFour,
-                    ActualInFive = torquewrenches.ActualInFive,
-                    ActualInSix = torquewrenches.ActualInSix,
-                    ActualInSeven = torquewrenches.ActualInSeven,
-                    ActualInEight = torquewrenches.ActualInEight,
-                    ActualInNine = torquewrenches.ActualInNine,
-                    ActualInTen = torquewrenches.ActualInTen,
-                    Nominal20 = torquewrenches.Nominal20,
-                    Nominal60 = torquewrenches.Nominal60,
-                    Nominal100 = torquewrenches.Nominal100,
-                    Spec20 = torquewrenches.Spec20,
-                    Spec60 = torquewrenches.Spec60,
-                    Spec100 = torquewrenches.Spec100,
-                    Comments = torquewrenches.Comments,
-                    Value1 = torquewrenches.Value1,
-                    Value2 = torquewrenches.Value2,
-                    Value3 = torquewrenches.Value3,
-                    Value4 = torquewrenches.Value4,
-                    Value5 = torquewrenches.Value5,
-                    Value6 = torquewrenches.Value6,
-                    Value7 = torquewrenches.Value7,
-                    Value8 = torquewrenches.Value8,
-                    Value9 = torquewrenches.Value9,
-                    Value10 = torquewrenches.Value10,
-                    Value11 = torquewrenches.Value11,
-                    Value12 = torquewrenches.Value12,
-                    Value13 = torquewrenches.Value13,
-                    Value14 = torquewrenches.Value14,
-                    Value15 = torquewrenches.Value15,
-                    SetValue = torquewrenches.SetValue,
-                    CreatedBy = torquewrenches.CreatedBy,
-                    AWSTransducers = torquewrenches.AWSTransducers,
-                    CreatedOn = DateTime.Now,
-                    CalibrationReviewedDate = DateTime.Now
-                };
-                _unitOfWork.Repository<ObsTemplateTWobs>().Insert(obsTemplateTWobs);
-                _unitOfWork.SaveChanges();
-            }
-            else
-            {
-                ObsTemplateTWobs torquewrenchesById = _unitOfWork.Repository<ObsTemplateTWobs>()
-                                                                 .GetQueryAsNoTracking(Q => Q.Id == torquewrenches.Id)
-                                                                 .SingleOrDefault();
-                if (torquewrenches.SpecMax != null)
-                    torquewrenchesById.SpecMax = torquewrenches.SpecMax;
+			}
+			if (torquewrenches.Id == 0)
+			{
+				ObsTemplateTWobs obsTemplateTWobs = new ObsTemplateTWobs()
+				{
+					ObservationId = templateObservationId,
+					SpecMax = torquewrenches.SpecMax,
+					SpecMin = torquewrenches.SpecMin,
+					ActualInOne = torquewrenches.ActualInOne,
+					ActualInTwo = torquewrenches.ActualInTwo,
+					ActualInThree = torquewrenches.ActualInThree,
+					ActualInFour = torquewrenches.ActualInFour,
+					ActualInFive = torquewrenches.ActualInFive,
+					ActualInSix = torquewrenches.ActualInSix,
+					ActualInSeven = torquewrenches.ActualInSeven,
+					ActualInEight = torquewrenches.ActualInEight,
+					ActualInNine = torquewrenches.ActualInNine,
+					ActualInTen = torquewrenches.ActualInTen,
+					Nominal20 = torquewrenches.Nominal20,
+					Nominal60 = torquewrenches.Nominal60,
+					Nominal100 = torquewrenches.Nominal100,
+					Spec20 = torquewrenches.Spec20,
+					Spec60 = torquewrenches.Spec60,
+					Spec100 = torquewrenches.Spec100,
+					Comments = torquewrenches.Comments,
+					Value1 = torquewrenches.Value1,
+					Value2 = torquewrenches.Value2,
+					Value3 = torquewrenches.Value3,
+					Value4 = torquewrenches.Value4,
+					Value5 = torquewrenches.Value5,
+					Value6 = torquewrenches.Value6,
+					Value7 = torquewrenches.Value7,
+					Value8 = torquewrenches.Value8,
+					Value9 = torquewrenches.Value9,
+					Value10 = torquewrenches.Value10,
+					Value11 = torquewrenches.Value11,
+					Value12 = torquewrenches.Value12,
+					Value13 = torquewrenches.Value13,
+					Value14 = torquewrenches.Value14,
+					Value15 = torquewrenches.Value15,
+					SetValue = torquewrenches.SetValue,
+					CreatedBy = torquewrenches.CreatedBy,
+					AWSTransducers = torquewrenches.AWSTransducers,
+					CreatedOn = DateTime.Now,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<ObsTemplateTWobs>().Insert(obsTemplateTWobs);
+				_unitOfWork.SaveChanges();
+			}
+			else
+			{
+				ObsTemplateTWobs torquewrenchesById = _unitOfWork.Repository<ObsTemplateTWobs>()
+																 .GetQueryAsNoTracking(Q => Q.Id == torquewrenches.Id)
+																 .SingleOrDefault();
+				if (torquewrenches.SpecMax != null)
+					torquewrenchesById.SpecMax = torquewrenches.SpecMax;
 
                 if (torquewrenches.SpecMin != null)
                     torquewrenchesById.SpecMin = torquewrenches.SpecMin;
@@ -1876,51 +1809,43 @@ public class ObservationTemplateService : IObservationTemplateService
 
     #endregion
 
-    #region "VernierCaliber"
-    public ResponseViewModel<VernierCaliperViewModel> InsertVernierCaliper(VernierCaliperViewModel verniercaliper)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == verniercaliper.RequestId
-                                                                            && Q.InstrumentId == verniercaliper.InstrumentId)
-                                                                 .SingleOrDefault();
-
-            // User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (verniercaliper.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = verniercaliper.InstrumentId,
-                        RequestId = verniercaliper.RequestId,
-                        TempStart = verniercaliper.TempStart,
-                        TempEnd = verniercaliper.TempEnd,
-                        Humidity = verniercaliper.Humidity,
-                        InstrumentCondition = verniercaliper.ConditionOfVernierCaliper,
-                        RefWi = verniercaliper.RefWi,
-                        Allvalues = verniercaliper.Allvalues,
-                        CreatedOn = DateTime.Now,
-                        CreatedBy = verniercaliper.CreatedBy,
-                        //  CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == verniercaliper.RequestId
-                //															&& Q.InstrumentId == verniercaliper.InstrumentId)
-                //												 .SingleOrDefault();
-                if (observationById != null)
-                {
+	#region "VernierCaliber"
+	public ResponseViewModel<VernierCaliperViewModel> InsertVernierCaliper(VernierCaliperViewModel verniercaliper)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (verniercaliper.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = verniercaliper.InstrumentId,
+					RequestId = verniercaliper.RequestId,
+					TempStart = verniercaliper.TempStart,
+					TempEnd = verniercaliper.TempEnd,
+					Humidity = verniercaliper.Humidity,
+					InstrumentCondition = verniercaliper.ConditionOfVernierCaliper,
+					RefWi = verniercaliper.RefWi,
+					Allvalues = verniercaliper.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = verniercaliper.CreatedBy,
+					//  CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == verniercaliper.RequestId
+																			&& Q.InstrumentId == verniercaliper.InstrumentId)
+																 .SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (verniercaliper.TempStart != null)
                     {
@@ -1952,196 +1877,192 @@ public class ObservationTemplateService : IObservationTemplateService
 
                     _unitOfWork.Repository<TemplateObservation>().Update(observationById);
 
-                }
-            }
-            _unitOfWork.SaveChanges();
-            if (verniercaliper.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-                }
-                ObsTemplateVernierCaliper obsTemplateVernierCaliper = new ObsTemplateVernierCaliper()
-                {
-                    ObservationId = templateObservationId,
-                    Measured1_1 = verniercaliper.Measured1_1,
-                    Actuals1_T_1 = verniercaliper.Actuals1_T_1,
-                    Actuals1_T_2 = verniercaliper.Actuals1_T_2,
-                    Actuals1_T_3 = verniercaliper.Actuals1_T_3,
-                    Avg1_1 = verniercaliper.Avg1_1,
-                    Measured1_2 = verniercaliper.Measured1_2,
-                    Actuals1_T_4 = verniercaliper.Actuals1_T_4,
-                    Actuals1_T_5 = verniercaliper.Actuals1_T_5,
-                    Actuals1_T_6 = verniercaliper.Actuals1_T_6,
-                    Avg1_2 = verniercaliper.Avg1_2,
-                    Measured1_3 = verniercaliper.Measured1_3,
-                    Actuals1_T_7 = verniercaliper.Actuals1_T_7,
-                    Actuals1_T_8 = verniercaliper.Actuals1_T_8,
-                    Actuals1_T_9 = verniercaliper.Actuals1_T_9,
-                    Avg1_3 = verniercaliper.Avg1_3,
-                    Measured1_4 = verniercaliper.Measured1_4,
-                    Actuals1_T_10 = verniercaliper.Actuals1_T_10,
-                    Actuals1_T_11 = verniercaliper.Actuals1_T_11,
-                    Actuals1_T_12 = verniercaliper.Actuals1_T_12,
-                    Avg1_4 = verniercaliper.Avg1_4,
-                    Measured1_5 = verniercaliper.Measured1_5,
-                    Actuals1_T_13 = verniercaliper.Actuals1_T_13,
-                    Actuals1_T_14 = verniercaliper.Actuals1_T_14,
-                    Actuals1_T_15 = verniercaliper.Actuals1_T_15,
-                    Avg1_5 = verniercaliper.Avg1_5,
-                    Measured2_1 = verniercaliper.Measured2_1,
-                    Actuals2_T_1 = verniercaliper.Actuals2_T_1,
-                    Actuals2_T_2 = verniercaliper.Actuals2_T_2,
-                    Actuals2_T_3 = verniercaliper.Actuals2_T_3,
-                    Avg2_1 = verniercaliper.Avg2_1,
-                    Measured2_2 = verniercaliper.Measured2_2,
-                    Actuals2_T_4 = verniercaliper.Actuals2_T_4,
-                    Actuals2_T_5 = verniercaliper.Actuals2_T_5,
-                    Actuals2_T_6 = verniercaliper.Actuals2_T_6,
-                    Avg2_2 = verniercaliper.Avg2_2,
-                    Measured2_3 = verniercaliper.Measured2_3,
-                    Actuals2_T_7 = verniercaliper.Actuals2_T_7,
-                    Actuals2_T_8 = verniercaliper.Actuals2_T_8,
-                    Actuals2_T_9 = verniercaliper.Actuals2_T_9,
-                    Avg2_3 = verniercaliper.Avg2_3,
-                    Measured2_4 = verniercaliper.Measured2_4,
-                    Actuals2_T_10 = verniercaliper.Actuals2_T_10,
-                    Actuals2_T_11 = verniercaliper.Actuals2_T_11,
-                    Actuals2_T_12 = verniercaliper.Actuals2_T_12,
-                    Avg2_4 = verniercaliper.Avg2_4,
-                    Measured2_5 = verniercaliper.Measured2_5,
-                    Actuals2_T_13 = verniercaliper.Actuals2_T_13,
-                    Actuals2_T_14 = verniercaliper.Actuals2_T_14,
-                    Actuals2_T_15 = verniercaliper.Actuals2_T_15,
-                    Avg2_5 = verniercaliper.Avg2_5,
-                    Measured3_1 = verniercaliper.Measured3_1,
-                    Actuals3_T_1 = verniercaliper.Actuals3_T_1,
-                    Actuals3_T_2 = verniercaliper.Actuals3_T_2,
-                    Actuals3_T_3 = verniercaliper.Actuals3_T_3,
-                    Avg3_1 = verniercaliper.Avg3_1,
-                    Measured3_2 = verniercaliper.Measured3_2,
-                    Actuals3_T_4 = verniercaliper.Actuals3_T_4,
-                    Actuals3_T_5 = verniercaliper.Actuals3_T_5,
-                    Actuals3_T_6 = verniercaliper.Actuals3_T_6,
-                    Avg3_2 = verniercaliper.Avg3_2,
-                    Measured3_3 = verniercaliper.Measured3_3,
-                    Actuals3_T_7 = verniercaliper.Actuals3_T_7,
-                    Actuals3_T_8 = verniercaliper.Actuals3_T_8,
-                    Actuals3_T_9 = verniercaliper.Actuals3_T_9,
-                    Avg3_3 = verniercaliper.Avg3_3,
-                    Measured3_4 = verniercaliper.Measured3_4,
-                    Actuals3_T_10 = verniercaliper.Actuals3_T_10,
-                    Actuals3_T_11 = verniercaliper.Actuals3_T_11,
-                    Actuals3_T_12 = verniercaliper.Actuals3_T_12,
-                    Avg3_4 = verniercaliper.Avg3_4,
-                    Measured3_5 = verniercaliper.Measured3_5,
-                    Actuals3_T_13 = verniercaliper.Actuals3_T_13,
-                    Actuals3_T_14 = verniercaliper.Actuals3_T_14,
-                    Actuals3_T_15 = verniercaliper.Actuals3_T_15,
-                    Avg3_5 = verniercaliper.Avg3_5,
-                    Measured4_1 = verniercaliper.Measured4_1,
-                    Actuals4_T_1 = verniercaliper.Actuals4_T_1,
-                    Actuals4_T_2 = verniercaliper.Actuals4_T_2,
-                    Actuals4_T_3 = verniercaliper.Actuals4_T_3,
-                    Avg4_1 = verniercaliper.Avg4_1,
-                    Measured4_2 = verniercaliper.Measured4_2,
-                    Actuals4_T_4 = verniercaliper.Actuals4_T_4,
-                    Actuals4_T_5 = verniercaliper.Actuals4_T_5,
-                    Actuals4_T_6 = verniercaliper.Actuals4_T_6,
-                    Avg4_2 = verniercaliper.Avg4_2,
-                    Measured4_3 = verniercaliper.Measured4_3,
-                    Actuals4_T_7 = verniercaliper.Actuals4_T_7,
-                    Actuals4_T_8 = verniercaliper.Actuals4_T_8,
-                    Actuals4_T_9 = verniercaliper.Actuals4_T_9,
-                    Avg4_3 = verniercaliper.Avg4_3,
-                    Measured4_4 = verniercaliper.Measured4_4,
-                    Actuals4_T_10 = verniercaliper.Actuals4_T_10,
-                    Actuals4_T_11 = verniercaliper.Actuals4_T_11,
-                    Actuals4_T_12 = verniercaliper.Actuals4_T_12,
-                    Avg4_4 = verniercaliper.Avg4_4,
-                    Measured4_5 = verniercaliper.Measured4_5,
-                    Actuals4_T_13 = verniercaliper.Actuals4_T_13,
-                    Actuals4_T_14 = verniercaliper.Actuals4_T_14,
-                    Actuals4_T_15 = verniercaliper.Actuals4_T_15,
-                    Avg4_5 = verniercaliper.Avg4_5,
-                    Measured5_1 = verniercaliper.Measured5_1,
-                    Actuals5_T_1 = verniercaliper.Actuals5_T_1,
-                    Actuals5_T_2 = verniercaliper.Actuals5_T_2,
-                    Actuals5_T_3 = verniercaliper.Actuals5_T_3,
-                    Avg5_1 = verniercaliper.Avg5_1,
-                    Measured5_2 = verniercaliper.Measured5_2,
-                    Actuals5_T_4 = verniercaliper.Actuals5_T_4,
-                    Actuals5_T_5 = verniercaliper.Actuals5_T_5,
-                    Actuals5_T_6 = verniercaliper.Actuals5_T_6,
-                    Avg5_2 = verniercaliper.Avg5_2,
-                    Measured5_3 = verniercaliper.Measured5_3,
-                    Actuals5_T_7 = verniercaliper.Actuals5_T_7,
-                    Actuals5_T_8 = verniercaliper.Actuals5_T_8,
-                    Actuals5_T_9 = verniercaliper.Actuals5_T_9,
-                    Avg5_3 = verniercaliper.Avg5_3,
-                    Measured5_4 = verniercaliper.Measured5_4,
-                    Actuals5_T_10 = verniercaliper.Actuals5_T_10,
-                    Actuals5_T_11 = verniercaliper.Actuals5_T_11,
-                    Actuals5_T_12 = verniercaliper.Actuals5_T_12,
-                    Avg5_4 = verniercaliper.Avg5_4,
-                    Measured5_5 = verniercaliper.Measured5_5,
-                    Actuals5_T_13 = verniercaliper.Actuals5_T_13,
-                    Actuals5_T_14 = verniercaliper.Actuals5_T_14,
-                    Actuals5_T_15 = verniercaliper.Actuals5_T_15,
-                    Avg5_5 = verniercaliper.Avg5_5,
-                    Measured6_1 = verniercaliper.Measured6_1,
-                    Actuals6_T_1 = verniercaliper.Actuals6_T_1,
-                    Actuals6_T_2 = verniercaliper.Actuals6_T_2,
-                    Actuals6_T_3 = verniercaliper.Actuals6_T_3,
-                    Avg6_1 = verniercaliper.Avg6_1,
-                    Measured6_2 = verniercaliper.Measured6_2,
-                    Actuals6_T_4 = verniercaliper.Actuals6_T_4,
-                    Actuals6_T_5 = verniercaliper.Actuals6_T_5,
-                    Actuals6_T_6 = verniercaliper.Actuals6_T_6,
-                    Avg6_2 = verniercaliper.Avg6_2,
-                    Measured6_3 = verniercaliper.Measured6_3,
-                    Actuals6_T_7 = verniercaliper.Actuals6_T_7,
-                    Actuals6_T_8 = verniercaliper.Actuals6_T_8,
-                    Actuals6_T_9 = verniercaliper.Actuals6_T_9,
-                    Avg6_3 = verniercaliper.Avg6_3,
-                    Measured6_4 = verniercaliper.Measured6_4,
-                    Actuals6_T_10 = verniercaliper.Actuals6_T_10,
-                    Actuals6_T_11 = verniercaliper.Actuals6_T_11,
-                    Actuals6_T_12 = verniercaliper.Actuals6_T_12,
-                    Avg6_4 = verniercaliper.Avg6_4,
-                    Measured6_5 = verniercaliper.Measured6_5,
-                    Actuals6_T_13 = verniercaliper.Actuals6_T_13,
-                    Actuals6_T_14 = verniercaliper.Actuals6_T_14,
-                    Actuals6_T_15 = verniercaliper.Actuals6_T_15,
-                    Avg6_5 = verniercaliper.Avg6_5,
-                    MuLeftValue1 = verniercaliper.MuLeftValue1,
-                    MuRightValue1 = verniercaliper.MuRightValue1,
-                    MuLeftValue2 = verniercaliper.MuLeftValue2,
-                    MuRightValue2 = verniercaliper.MuRightValue2,
-                    MuLeftValue3 = verniercaliper.MuLeftValue3,
-                    MuRightValue3 = verniercaliper.MuRightValue3,
-                    MuLeftValue4 = verniercaliper.MuLeftValue4,
-                    MuRightValue4 = verniercaliper.MuRightValue4,
-                    MuLeftValue5 = verniercaliper.MuLeftValue5,
-                    MuRightValue5 = verniercaliper.MuRightValue5,
-                    ExternalParallelismDetails = verniercaliper.ExternalParallelismDetails,
-                    InternaljawParallelismDetails = verniercaliper.InternaljawParallelismDetails,
-                    CalibrationPerformedBy = verniercaliper.CalibrationPerformedBy,
-                    CalibrationPerformedDate = verniercaliper.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = verniercaliper.CreatedBy,
-                    ReviewedDate = verniercaliper.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
-                    CalibrationReviewedDate = DateTime.Now
-                    //CalibrationReviewedBy = labTechnicalManager.Id,
-                    //ReviewedBy = verniercaliper.ReviewedBy
-                };
-                _unitOfWork.Repository<ObsTemplateVernierCaliper>().Insert(obsTemplateVernierCaliper);
-            }
-            else
-            {
-                ObsTemplateVernierCaliper verniercaliperById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
-                                                                          .GetQueryAsNoTracking(Q => Q.Id == verniercaliper.Id)
-                                                                          .SingleOrDefault();
+				}
+			}
+			_unitOfWork.SaveChanges();
+			if (verniercaliper.Id == 0)
+			{
+				ObsTemplateVernierCaliper obsTemplateVernierCaliper = new ObsTemplateVernierCaliper()
+				{
+					ObservationId = templateObservationId,
+					Measured1_1 = verniercaliper.Measured1_1,
+					Actuals1_T_1 = verniercaliper.Actuals1_T_1,
+					Actuals1_T_2 = verniercaliper.Actuals1_T_2,
+					Actuals1_T_3 = verniercaliper.Actuals1_T_3,
+					Avg1_1 = verniercaliper.Avg1_1,
+					Measured1_2 = verniercaliper.Measured1_2,
+					Actuals1_T_4 = verniercaliper.Actuals1_T_4,
+					Actuals1_T_5 = verniercaliper.Actuals1_T_5,
+					Actuals1_T_6 = verniercaliper.Actuals1_T_6,
+					Avg1_2 = verniercaliper.Avg1_2,
+					Measured1_3 = verniercaliper.Measured1_3,
+					Actuals1_T_7 = verniercaliper.Actuals1_T_7,
+					Actuals1_T_8 = verniercaliper.Actuals1_T_8,
+					Actuals1_T_9 = verniercaliper.Actuals1_T_9,
+					Avg1_3 = verniercaliper.Avg1_3,
+					Measured1_4 = verniercaliper.Measured1_4,
+					Actuals1_T_10 = verniercaliper.Actuals1_T_10,
+					Actuals1_T_11 = verniercaliper.Actuals1_T_11,
+					Actuals1_T_12 = verniercaliper.Actuals1_T_12,
+					Avg1_4 = verniercaliper.Avg1_4,
+					Measured1_5 = verniercaliper.Measured1_5,
+					Actuals1_T_13 = verniercaliper.Actuals1_T_13,
+					Actuals1_T_14 = verniercaliper.Actuals1_T_14,
+					Actuals1_T_15 = verniercaliper.Actuals1_T_15,
+					Avg1_5 = verniercaliper.Avg1_5,
+					Measured2_1 = verniercaliper.Measured2_1,
+					Actuals2_T_1 = verniercaliper.Actuals2_T_1,
+					Actuals2_T_2 = verniercaliper.Actuals2_T_2,
+					Actuals2_T_3 = verniercaliper.Actuals2_T_3,
+					Avg2_1 = verniercaliper.Avg2_1,
+					Measured2_2 = verniercaliper.Measured2_2,
+					Actuals2_T_4 = verniercaliper.Actuals2_T_4,
+					Actuals2_T_5 = verniercaliper.Actuals2_T_5,
+					Actuals2_T_6 = verniercaliper.Actuals2_T_6,
+					Avg2_2 = verniercaliper.Avg2_2,
+					Measured2_3 = verniercaliper.Measured2_3,
+					Actuals2_T_7 = verniercaliper.Actuals2_T_7,
+					Actuals2_T_8 = verniercaliper.Actuals2_T_8,
+					Actuals2_T_9 = verniercaliper.Actuals2_T_9,
+					Avg2_3 = verniercaliper.Avg2_3,
+					Measured2_4 = verniercaliper.Measured2_4,
+					Actuals2_T_10 = verniercaliper.Actuals2_T_10,
+					Actuals2_T_11 = verniercaliper.Actuals2_T_11,
+					Actuals2_T_12 = verniercaliper.Actuals2_T_12,
+					Avg2_4 = verniercaliper.Avg2_4,
+					Measured2_5 = verniercaliper.Measured2_5,
+					Actuals2_T_13 = verniercaliper.Actuals2_T_13,
+					Actuals2_T_14 = verniercaliper.Actuals2_T_14,
+					Actuals2_T_15 = verniercaliper.Actuals2_T_15,
+					Avg2_5 = verniercaliper.Avg2_5,
+					Measured3_1 = verniercaliper.Measured3_1,
+					Actuals3_T_1 = verniercaliper.Actuals3_T_1,
+					Actuals3_T_2 = verniercaliper.Actuals3_T_2,
+					Actuals3_T_3 = verniercaliper.Actuals3_T_3,
+					Avg3_1 = verniercaliper.Avg3_1,
+					Measured3_2 = verniercaliper.Measured3_2,
+					Actuals3_T_4 = verniercaliper.Actuals3_T_4,
+					Actuals3_T_5 = verniercaliper.Actuals3_T_5,
+					Actuals3_T_6 = verniercaliper.Actuals3_T_6,
+					Avg3_2 = verniercaliper.Avg3_2,
+					Measured3_3 = verniercaliper.Measured3_3,
+					Actuals3_T_7 = verniercaliper.Actuals3_T_7,
+					Actuals3_T_8 = verniercaliper.Actuals3_T_8,
+					Actuals3_T_9 = verniercaliper.Actuals3_T_9,
+					Avg3_3 = verniercaliper.Avg3_3,
+					Measured3_4 = verniercaliper.Measured3_4,
+					Actuals3_T_10 = verniercaliper.Actuals3_T_10,
+					Actuals3_T_11 = verniercaliper.Actuals3_T_11,
+					Actuals3_T_12 = verniercaliper.Actuals3_T_12,
+					Avg3_4 = verniercaliper.Avg3_4,
+					Measured3_5 = verniercaliper.Measured3_5,
+					Actuals3_T_13 = verniercaliper.Actuals3_T_13,
+					Actuals3_T_14 = verniercaliper.Actuals3_T_14,
+					Actuals3_T_15 = verniercaliper.Actuals3_T_15,
+					Avg3_5 = verniercaliper.Avg3_5,
+					Measured4_1 = verniercaliper.Measured4_1,
+					Actuals4_T_1 = verniercaliper.Actuals4_T_1,
+					Actuals4_T_2 = verniercaliper.Actuals4_T_2,
+					Actuals4_T_3 = verniercaliper.Actuals4_T_3,
+					Avg4_1 = verniercaliper.Avg4_1,
+					Measured4_2 = verniercaliper.Measured4_2,
+					Actuals4_T_4 = verniercaliper.Actuals4_T_4,
+					Actuals4_T_5 = verniercaliper.Actuals4_T_5,
+					Actuals4_T_6 = verniercaliper.Actuals4_T_6,
+					Avg4_2 = verniercaliper.Avg4_2,
+					Measured4_3 = verniercaliper.Measured4_3,
+					Actuals4_T_7 = verniercaliper.Actuals4_T_7,
+					Actuals4_T_8 = verniercaliper.Actuals4_T_8,
+					Actuals4_T_9 = verniercaliper.Actuals4_T_9,
+					Avg4_3 = verniercaliper.Avg4_3,
+					Measured4_4 = verniercaliper.Measured4_4,
+					Actuals4_T_10 = verniercaliper.Actuals4_T_10,
+					Actuals4_T_11 = verniercaliper.Actuals4_T_11,
+					Actuals4_T_12 = verniercaliper.Actuals4_T_12,
+					Avg4_4 = verniercaliper.Avg4_4,
+					Measured4_5 = verniercaliper.Measured4_5,
+					Actuals4_T_13 = verniercaliper.Actuals4_T_13,
+					Actuals4_T_14 = verniercaliper.Actuals4_T_14,
+					Actuals4_T_15 = verniercaliper.Actuals4_T_15,
+					Avg4_5 = verniercaliper.Avg4_5,
+					Measured5_1 = verniercaliper.Measured5_1,
+					Actuals5_T_1 = verniercaliper.Actuals5_T_1,
+					Actuals5_T_2 = verniercaliper.Actuals5_T_2,
+					Actuals5_T_3 = verniercaliper.Actuals5_T_3,
+					Avg5_1 = verniercaliper.Avg5_1,
+					Measured5_2 = verniercaliper.Measured5_2,
+					Actuals5_T_4 = verniercaliper.Actuals5_T_4,
+					Actuals5_T_5 = verniercaliper.Actuals5_T_5,
+					Actuals5_T_6 = verniercaliper.Actuals5_T_6,
+					Avg5_2 = verniercaliper.Avg5_2,
+					Measured5_3 = verniercaliper.Measured5_3,
+					Actuals5_T_7 = verniercaliper.Actuals5_T_7,
+					Actuals5_T_8 = verniercaliper.Actuals5_T_8,
+					Actuals5_T_9 = verniercaliper.Actuals5_T_9,
+					Avg5_3 = verniercaliper.Avg5_3,
+					Measured5_4 = verniercaliper.Measured5_4,
+					Actuals5_T_10 = verniercaliper.Actuals5_T_10,
+					Actuals5_T_11 = verniercaliper.Actuals5_T_11,
+					Actuals5_T_12 = verniercaliper.Actuals5_T_12,
+					Avg5_4 = verniercaliper.Avg5_4,
+					Measured5_5 = verniercaliper.Measured5_5,
+					Actuals5_T_13 = verniercaliper.Actuals5_T_13,
+					Actuals5_T_14 = verniercaliper.Actuals5_T_14,
+					Actuals5_T_15 = verniercaliper.Actuals5_T_15,
+					Avg5_5 = verniercaliper.Avg5_5,
+					Measured6_1 = verniercaliper.Measured6_1,
+					Actuals6_T_1 = verniercaliper.Actuals6_T_1,
+					Actuals6_T_2 = verniercaliper.Actuals6_T_2,
+					Actuals6_T_3 = verniercaliper.Actuals6_T_3,
+					Avg6_1 = verniercaliper.Avg6_1,
+					Measured6_2 = verniercaliper.Measured6_2,
+					Actuals6_T_4 = verniercaliper.Actuals6_T_4,
+					Actuals6_T_5 = verniercaliper.Actuals6_T_5,
+					Actuals6_T_6 = verniercaliper.Actuals6_T_6,
+					Avg6_2 = verniercaliper.Avg6_2,
+					Measured6_3 = verniercaliper.Measured6_3,
+					Actuals6_T_7 = verniercaliper.Actuals6_T_7,
+					Actuals6_T_8 = verniercaliper.Actuals6_T_8,
+					Actuals6_T_9 = verniercaliper.Actuals6_T_9,
+					Avg6_3 = verniercaliper.Avg6_3,
+					Measured6_4 = verniercaliper.Measured6_4,
+					Actuals6_T_10 = verniercaliper.Actuals6_T_10,
+					Actuals6_T_11 = verniercaliper.Actuals6_T_11,
+					Actuals6_T_12 = verniercaliper.Actuals6_T_12,
+					Avg6_4 = verniercaliper.Avg6_4,
+					Measured6_5 = verniercaliper.Measured6_5,
+					Actuals6_T_13 = verniercaliper.Actuals6_T_13,
+					Actuals6_T_14 = verniercaliper.Actuals6_T_14,
+					Actuals6_T_15 = verniercaliper.Actuals6_T_15,
+					Avg6_5 = verniercaliper.Avg6_5,
+					MuLeftValue1 = verniercaliper.MuLeftValue1,
+					MuRightValue1 = verniercaliper.MuRightValue1,
+					MuLeftValue2 = verniercaliper.MuLeftValue2,
+					MuRightValue2 = verniercaliper.MuRightValue2,
+					MuLeftValue3 = verniercaliper.MuLeftValue3,
+					MuRightValue3 = verniercaliper.MuRightValue3,
+					MuLeftValue4 = verniercaliper.MuLeftValue4,
+					MuRightValue4 = verniercaliper.MuRightValue4,
+					MuLeftValue5 = verniercaliper.MuLeftValue5,
+					MuRightValue5 = verniercaliper.MuRightValue5,
+					ExternalParallelismDetails = verniercaliper.ExternalParallelismDetails,
+					InternaljawParallelismDetails = verniercaliper.InternaljawParallelismDetails,
+					CalibrationPerformedBy = verniercaliper.CalibrationPerformedBy,
+					CalibrationPerformedDate = verniercaliper.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
+					CreatedOn = DateTime.Now,
+					CreatedBy = verniercaliper.CreatedBy,
+					ReviewedDate = verniercaliper.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
+					CalibrationReviewedDate = DateTime.Now
+					//CalibrationReviewedBy = labTechnicalManager.Id,
+					//ReviewedBy = verniercaliper.ReviewedBy
+				};
+				_unitOfWork.Repository<ObsTemplateVernierCaliper>().Insert(obsTemplateVernierCaliper);
+			}
+			else
+			{
+				ObsTemplateVernierCaliper verniercaliperById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
+																		  .GetQueryAsNoTracking(Q => Q.Id == verniercaliper.Id)
+																		  .SingleOrDefault();
 
                 if (verniercaliper.Measured1_1 != null)
                     verniercaliperById.Measured1_1 = verniercaliper.Measured1_1;
@@ -2907,53 +2828,43 @@ public class ObservationTemplateService : IObservationTemplateService
     }
     #endregion
 
-    #region "GeneralNew"
-    public ResponseViewModel<GeneralNewViewModel> InsertGeneralnewobs(GeneralNewViewModel GeneralNew)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int templateObservationId = 0;
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == GeneralNew.RequestId
-                                                                            && Q.InstrumentId == GeneralNew.InstrumentId)
-                                                                 .SingleOrDefault();
-
-            // User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (GeneralNew.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = GeneralNew.InstrumentId,
-                        RequestId = GeneralNew.RequestId,
-                        TempStart = GeneralNew.TempStart,
-                        TempEnd = GeneralNew.TempEnd,
-                        Humidity = GeneralNew.Humidity,
-                        InstrumentCondition = GeneralNew.ConditionOfVernierCaliper,
-                        RefWi = GeneralNew.RefWi,
-                        Allvalues = GeneralNew.Allvalues,
-                        CreatedOn = DateTime.Now,
-                        CreatedBy = GeneralNew.CreatedBy,
-                        //  CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    templateObservationId = templateObservation.Id;
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == GeneralNew.RequestId
-                //															&& Q.InstrumentId == GeneralNew.InstrumentId)
-                //												 .SingleOrDefault();
-
-                if (observationById != null)
-                {
+	#region "GeneralNew"
+	public ResponseViewModel<GeneralNewViewModel> InsertGeneralnewobs(GeneralNewViewModel GeneralNew)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int templateObservationId = 0;
+			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (GeneralNew.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = GeneralNew.InstrumentId,
+					RequestId = GeneralNew.RequestId,
+					TempStart = GeneralNew.TempStart,
+					TempEnd = GeneralNew.TempEnd,
+					Humidity = GeneralNew.Humidity,
+					InstrumentCondition = GeneralNew.ConditionOfVernierCaliper,
+					RefWi = GeneralNew.RefWi,
+					Allvalues = GeneralNew.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = GeneralNew.CreatedBy,
+					//  CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == GeneralNew.RequestId
+																			&& Q.InstrumentId == GeneralNew.InstrumentId)
+																 .SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (GeneralNew.TempStart != null)
                     {
@@ -2985,67 +2896,63 @@ public class ObservationTemplateService : IObservationTemplateService
 
                     _unitOfWork.Repository<TemplateObservation>().Update(observationById);
 
-                }
-            }
-            _unitOfWork.SaveChanges();
-            if (GeneralNew.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    templateObservationId = observationById.Id;
-                }
-                ObsTemplateGeneralNew obsgeneralNew = new ObsTemplateGeneralNew()
-                {
-                    ObservationId = templateObservationId,
-                    EnvironmentCondition = GeneralNew.EnvironmentCondition,
-                    Uncertainity = GeneralNew.Uncertainity,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = GeneralNew.CreatedBy,
-                    ReviewedDate = GeneralNew.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
-                    CalibrationReviewedDate = DateTime.Now,
-                    CalibrationReviewedBy = GeneralNew.CalibrationReviewedBy,
-                    // CalibrationReviewedDate=GeneralNew.CalibrationReviewedDate,
-                    CalibrationPerformedBy = GeneralNew.CalibrationPerformedBy,
-                    ReviewedBy = GeneralNew.ReviewedBy,
-                    CalibrationPerformedDate = GeneralNew.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
-                    //ReviewedDate=GeneralNew.Review_Date.ToString("dd/MM/yyyy"),
-                    CalibrationResult = GeneralNew.CalibrationResult,
-                    ErrorinDMS1_1 = GeneralNew.ErrorinDMS1_1,
-                    ErrorinDMS1_2 = GeneralNew.ErrorinDMS1_2,
-                    ErrorinDMS1_3 = GeneralNew.ErrorinDMS1_3,
-                    ErrorinDMS1_4 = GeneralNew.ErrorinDMS1_4,
-                    ErrorinDMS1_5 = GeneralNew.ErrorinDMS1_5,
-                    ErrorinDMS2_1 = GeneralNew.ErrorinDMS2_1,
-                    ErrorinDMS2_2 = GeneralNew.ErrorinDMS2_2,
-                    ErrorinDMS2_3 = GeneralNew.ErrorinDMS2_3,
-                    ErrorinDMS2_4 = GeneralNew.ErrorinDMS2_4,
-                    ErrorinDMS3_1 = GeneralNew.ErrorinDMS3_1,
-                    ErrorinDMS3_2 = GeneralNew.ErrorinDMS3_2,
-                    ErrorinDMS3_3 = GeneralNew.ErrorinDMS3_3,
-                    ErrorinDMS3_4 = GeneralNew.ErrorinDMS3_4,
-                    ErrorinDMS4_1 = GeneralNew.ErrorinDMS4_1,
-                    ErrorinDMS4_2 = GeneralNew.ErrorinDMS4_2,
-                    ErrorinDMS4_3 = GeneralNew.ErrorinDMS4_3,
-                    Straightness_spec = GeneralNew.Straightness_spec,
-                    Straightness_Actual = GeneralNew.Straightness_Actual,
-                    Straightness_DevfromNom = GeneralNew.Straightness_DevfromNom,
-                    Parallelism_Spec = GeneralNew.Parallelism_Spec,
-                    Parallelism_Actual = GeneralNew.Parallelism_Actual,
-                    Parallelism_DevfromNom = GeneralNew.Parallelism_DevfromNom,
-                    FlatnessofBlade_spec_1 = GeneralNew.FlatnessofBlade_spec_1,
-                    FlatnessofBlade_Actual_1 = GeneralNew.FlatnessofBlade_Actual_1,
-                    FlatnessofBlade_DevfromNom_1 = GeneralNew.FlatnessofBlade_DevfromNom_1,
-                    FlatnessofBlade_spec_2 = GeneralNew.FlatnessofBlade_spec_2,
-                    FlatnessofBlade_Actual_2 = GeneralNew.FlatnessofBlade_Actual_2,
-                    FlatnessofBlade_DevfromNom_2 = GeneralNew.FlatnessofBlade_DevfromNom_2
-                };
-                _unitOfWork.Repository<ObsTemplateGeneralNew>().Insert(obsgeneralNew);
-            }
-            else
-            {
-                ObsTemplateGeneralNew GeneralNewObsById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
-                                                                          .GetQueryAsNoTracking(Q => Q.Id == GeneralNew.Id)
-                                                                          .SingleOrDefault();
+				}
+			}
+			_unitOfWork.SaveChanges();
+			if (GeneralNew.Id == 0)
+			{
+				ObsTemplateGeneralNew obsgeneralNew = new ObsTemplateGeneralNew()
+				{
+					ObservationId = templateObservationId,
+					EnvironmentCondition = GeneralNew.EnvironmentCondition,
+					Uncertainity = GeneralNew.Uncertainity,
+					CreatedOn = DateTime.Now,
+					CreatedBy = GeneralNew.CreatedBy,
+					ReviewedDate = GeneralNew.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
+					CalibrationReviewedDate = DateTime.Now,
+					CalibrationReviewedBy = GeneralNew.CalibrationReviewedBy,
+					// CalibrationReviewedDate=GeneralNew.CalibrationReviewedDate,
+					CalibrationPerformedBy = GeneralNew.CalibrationPerformedBy,
+					ReviewedBy = GeneralNew.ReviewedBy,
+					CalibrationPerformedDate = GeneralNew.CalibrationPerformedDate.ToString("dd/MM/yyyy"),
+					//ReviewedDate=GeneralNew.Review_Date.ToString("dd/MM/yyyy"),
+					CalibrationResult = GeneralNew.CalibrationResult,
+					ErrorinDMS1_1 = GeneralNew.ErrorinDMS1_1,
+					ErrorinDMS1_2 = GeneralNew.ErrorinDMS1_2,
+					ErrorinDMS1_3 = GeneralNew.ErrorinDMS1_3,
+					ErrorinDMS1_4 = GeneralNew.ErrorinDMS1_4,
+					ErrorinDMS1_5 = GeneralNew.ErrorinDMS1_5,
+					ErrorinDMS2_1 = GeneralNew.ErrorinDMS2_1,
+					ErrorinDMS2_2 = GeneralNew.ErrorinDMS2_2,
+					ErrorinDMS2_3 = GeneralNew.ErrorinDMS2_3,
+					ErrorinDMS2_4 = GeneralNew.ErrorinDMS2_4,
+					ErrorinDMS3_1 = GeneralNew.ErrorinDMS3_1,
+					ErrorinDMS3_2 = GeneralNew.ErrorinDMS3_2,
+					ErrorinDMS3_3 = GeneralNew.ErrorinDMS3_3,
+					ErrorinDMS3_4 = GeneralNew.ErrorinDMS3_4,
+					ErrorinDMS4_1 = GeneralNew.ErrorinDMS4_1,
+					ErrorinDMS4_2 = GeneralNew.ErrorinDMS4_2,
+					ErrorinDMS4_3 = GeneralNew.ErrorinDMS4_3,
+					Straightness_spec = GeneralNew.Straightness_spec,
+					Straightness_Actual = GeneralNew.Straightness_Actual,
+					Straightness_DevfromNom = GeneralNew.Straightness_DevfromNom,
+					Parallelism_Spec = GeneralNew.Parallelism_Spec,
+					Parallelism_Actual = GeneralNew.Parallelism_Actual,
+					Parallelism_DevfromNom = GeneralNew.Parallelism_DevfromNom,
+					FlatnessofBlade_spec_1 = GeneralNew.FlatnessofBlade_spec_1,
+					FlatnessofBlade_Actual_1 = GeneralNew.FlatnessofBlade_Actual_1,
+					FlatnessofBlade_DevfromNom_1 = GeneralNew.FlatnessofBlade_DevfromNom_1,
+					FlatnessofBlade_spec_2 = GeneralNew.FlatnessofBlade_spec_2,
+					FlatnessofBlade_Actual_2 = GeneralNew.FlatnessofBlade_Actual_2,
+					FlatnessofBlade_DevfromNom_2 = GeneralNew.FlatnessofBlade_DevfromNom_2
+				};
+				_unitOfWork.Repository<ObsTemplateGeneralNew>().Insert(obsgeneralNew);
+			}
+			else
+			{
+				ObsTemplateGeneralNew GeneralNewObsById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
+																		  .GetQueryAsNoTracking(Q => Q.Id == GeneralNew.Id)
+																		  .SingleOrDefault();
 
                 if (GeneralNew.ErrorinDMS1_1 != null)
                     GeneralNewObsById.ErrorinDMS1_1 = GeneralNew.ErrorinDMS1_1;
@@ -3279,62 +3186,56 @@ public class ObservationTemplateService : IObservationTemplateService
     }
     #endregion
 
-    #region "General"
-    public ResponseViewModel<GeneralViewModel> InsertGeneral(GeneralViewModel general)
-    {
+	#region "Gentral"
+	public ResponseViewModel<GeneralViewModel> InsertGeneral(GeneralViewModel general)
+	{
 
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int generalId = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == general.RequestId
-                                                                                        && Q.InstrumentId == general.InstrumentId)
-                                                                 .SingleOrDefault();
-            // User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
-            if (general.TemplateObservationId == 0)
-            {
-                if (observationById == null)
-                {
-                    TemplateObservation templateObservation = new TemplateObservation()
-                    {
-                        InstrumentId = general.InstrumentId,
-                        RequestId = general.RequestId,
-                        TempStart = general.TempStart,
-                        TempEnd = general.TempEnd,
-                        Humidity = general.Humidity,
-                        RefWi = general.RefWi,
-                        InstrumentCondition = general.DialIndicatiorCondition,
-                        Allvalues = general.Allvalues,
-                        CreatedBy = general.CreatedBy,
-                        CreatedOn = DateTime.Now,
-                        // CalibrationReviewedBy = labTechnicalManager.Id,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                    _unitOfWork.SaveChanges();
-                    generalId = templateObservation.Id;
-                    //}
-                    ObsTemplateGeneral obsTemplateGeneral = new ObsTemplateGeneral()
-                    {
-                        ObservationId = generalId,
-                        CreatedBy = general.CreatedBy,
-                        CreatedOn = DateTime.Now,
-                        CalibrationReviewedDate = DateTime.Now
-                    };
-                    _unitOfWork.Repository<ObsTemplateGeneral>().Insert(obsTemplateGeneral);
-                    _unitOfWork.SaveChanges();
-                }
-            }
-            else
-            {
-                //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                //												 .GetQueryAsNoTracking(Q => Q.RequestId == general.RequestId
-                //																		&& Q.InstrumentId == general.InstrumentId)
-                //												 .SingleOrDefault();
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int generalId = 0;
 
-                if (observationById != null)
-                {
+			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
+			if (general.TemplateObservationId == 0)
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = general.InstrumentId,
+					RequestId = general.RequestId,
+					TempStart = general.TempStart,
+					TempEnd = general.TempEnd,
+					Humidity = general.Humidity,
+					RefWi = general.RefWi,
+					InstrumentCondition = general.DialIndicatiorCondition,
+					Allvalues = general.Allvalues,
+					CreatedBy = general.CreatedBy,
+					CreatedOn = DateTime.Now,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				generalId = templateObservation.Id;
+
+				ObsTemplateGeneral obsTemplateGeneral = new ObsTemplateGeneral()
+				{
+					ObservationId = generalId,
+					CreatedBy = general.CreatedBy,
+					CreatedOn = DateTime.Now,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<ObsTemplateGeneral>().Insert(obsTemplateGeneral);
+				_unitOfWork.SaveChanges();
+
+			}
+			else
+			{
+				TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == general.RequestId
+																						&& Q.InstrumentId == general.InstrumentId)
+																 .SingleOrDefault();
+				if (observationById != null)
+				{
 
                     if (general.TempStart != null)
                     {
@@ -3351,39 +3252,35 @@ public class ObservationTemplateService : IObservationTemplateService
                         observationById.Humidity = general.Humidity;
                     }
 
-                    if (general.DialIndicatiorCondition != null)
-                    {
-                        observationById.InstrumentCondition = general.DialIndicatiorCondition;
-                    }
-                    if (general.RefWi != null)
-                    {
-                        observationById.RefWi = general.RefWi;
-                    }
-                    if (general.Allvalues != null)
-                    {
-                        observationById.Allvalues = general.Allvalues;
-                    }
-                    //generalId = observationById.Id;
-                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
-                }
-            }
-            _unitOfWork.SaveChanges();
-            if (observationById != null)
-            {
+					if (general.DialIndicatiorCondition != null)
+					{
+						observationById.InstrumentCondition = general.DialIndicatiorCondition;
+					}
+					if (general.RefWi != null)
+					{
+						observationById.RefWi = general.RefWi;
+					}
+					if (general.Allvalues != null)
+					{
+						observationById.Allvalues = general.Allvalues;
+					}
+					generalId = observationById.Id;
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+				}
+			}
+			_unitOfWork.SaveChanges();
 
-                generalId = observationById.Id;
-            }
-            general.GeneralAddResultViewModelList.ForEach(x => x.ParentId = generalId);
-            var detailData = _mapper.Map<ObsGeneralMeasuredValues[]>(general.GeneralAddResultViewModelList
-                                    .Where(x => x.Id > 0).ToList());
-            if (detailData.Any())
-            {
-                foreach (var updateData in detailData)
-                {
-                    _unitOfWork.Repository<ObsGeneralMeasuredValues>().Update(updateData);
-                    _unitOfWork.SaveChanges();
-                }
-            }
+			general.GeneralAddResultViewModelList.ForEach(x => x.ParentId = generalId);
+			var detailData = _mapper.Map<ObsGeneralMeasuredValues[]>(general.GeneralAddResultViewModelList
+									.Where(x => x.Id > 0).ToList());
+			if (detailData.Any())
+			{
+				foreach (var updateData in detailData)
+				{
+					_unitOfWork.Repository<ObsGeneralMeasuredValues>().Update(updateData);
+					_unitOfWork.SaveChanges();
+				}
+			}
 
             detailData = _mapper.Map<ObsGeneralMeasuredValues[]>(general.GeneralAddResultViewModelList
                                     .Where(x => x.Id == null).ToList());
@@ -3553,32 +3450,25 @@ public class ObservationTemplateService : IObservationTemplateService
     #endregion
 
 
-    public ResponseViewModel<LeverTypeDialViewModel> SaveLeverDialCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-
-            _unitOfWork.BeginTransaction();
-
-
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == requestId
-                                                                                        && Q.InstrumentId == instrumentId)
-                                                                 .SingleOrDefault();
-
-
-            ObsTemplateLeverTypeDial leverTypeDialById = _unitOfWork.Repository<ObsTemplateLeverTypeDial>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
-            leverTypeDialById.EnvironmentCondition = EnvironmentCondition;
-            leverTypeDialById.Uncertainity = Uncertainity;
-            leverTypeDialById.CalibrationResult = CalibrationResult;
-            leverTypeDialById.Remarks = Remarks;
-            _unitOfWork.Repository<ObsTemplateLeverTypeDial>().Update(leverTypeDialById);
-            _unitOfWork.SaveChanges();
+	public ResponseViewModel<LeverTypeDialViewModel> SaveLeverDialCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateLeverTypeDial leverTypeDialById = _unitOfWork.Repository<ObsTemplateLeverTypeDial>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
+			leverTypeDialById.EnvironmentCondition = EnvironmentCondition;
+			leverTypeDialById.Uncertainity = Uncertainity;
+			leverTypeDialById.CalibrationResult = CalibrationResult;
+			leverTypeDialById.Remarks = Remarks;
+			_unitOfWork.Repository<ObsTemplateLeverTypeDial>().Update(leverTypeDialById);
+			_unitOfWork.SaveChanges();
 
 
             ResponseViewModel<QRCodeFilesViewModel> qrCodeResponseData = InsertQRCodeFiles(requestId, instrumentId, userId, exportData);
@@ -3623,27 +3513,25 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-    public ResponseViewModel<MicrometerViewModel> SaveMicrometerCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-
-            ObsTemplateMicrometer MicrometerById = _unitOfWork.Repository<ObsTemplateMicrometer>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
-            MicrometerById.EnvironmentCondition = EnvironmentCondition;
-            MicrometerById.Uncertainity = Uncertainity;
-            MicrometerById.CalibrationResult = CalibrationResult;
-            MicrometerById.Remarks = Remarks;
-            _unitOfWork.Repository<ObsTemplateMicrometer>().Update(MicrometerById);
-            _unitOfWork.SaveChanges();
+	public ResponseViewModel<MicrometerViewModel> SaveMicrometerCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateMicrometer MicrometerById = _unitOfWork.Repository<ObsTemplateMicrometer>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
+			MicrometerById.EnvironmentCondition = EnvironmentCondition;
+			MicrometerById.Uncertainity = Uncertainity;
+			MicrometerById.CalibrationResult = CalibrationResult;
+			MicrometerById.Remarks = Remarks;
+			_unitOfWork.Repository<ObsTemplateMicrometer>().Update(MicrometerById);
+			_unitOfWork.SaveChanges();
 
             ResponseViewModel<QRCodeFilesViewModel> qrCodeResponseData = InsertQRCodeFiles(requestId, instrumentId, userId, exportData);
 
@@ -3687,27 +3575,25 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-    public ResponseViewModel<PlungerDialViewModel> SavePlungerDialCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-
-            ObsTemplatePlungerDial MicrometerById = _unitOfWork.Repository<ObsTemplatePlungerDial>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
-            MicrometerById.EnvironmentCondition = EnvironmentCondition;
-            MicrometerById.Uncertainity = Uncertainity;
-            MicrometerById.CalibrationResult = CalibrationResult;
-            MicrometerById.Remarks = Remarks;
-            _unitOfWork.Repository<ObsTemplatePlungerDial>().Update(MicrometerById);
-            _unitOfWork.SaveChanges();
+	public ResponseViewModel<PlungerDialViewModel> SavePlungerDialCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplatePlungerDial MicrometerById = _unitOfWork.Repository<ObsTemplatePlungerDial>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
+			MicrometerById.EnvironmentCondition = EnvironmentCondition;
+			MicrometerById.Uncertainity = Uncertainity;
+			MicrometerById.CalibrationResult = CalibrationResult;
+			MicrometerById.Remarks = Remarks;
+			_unitOfWork.Repository<ObsTemplatePlungerDial>().Update(MicrometerById);
+			_unitOfWork.SaveChanges();
 
             ResponseViewModel<QRCodeFilesViewModel> qrCodeResponseData = InsertQRCodeFiles(requestId, instrumentId, userId, exportData);
 
@@ -3751,27 +3637,25 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-    public ResponseViewModel<ThreadGaugesViewModel> SaveThreadGaugesCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-            ObsTemplateThreadGauges MicrometerById = _unitOfWork.Repository<ObsTemplateThreadGauges>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
-            MicrometerById.EnvironmentCondition = EnvironmentCondition;
-            MicrometerById.Uncertainity = Uncertainity;
-            MicrometerById.CalibrationResult = CalibrationResult;
-            MicrometerById.Remarks = Remarks;
-            _unitOfWork.Repository<ObsTemplateThreadGauges>().Update(MicrometerById);
-            _unitOfWork.SaveChanges();
+	public ResponseViewModel<ThreadGaugesViewModel> SaveThreadGaugesCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateThreadGauges MicrometerById = _unitOfWork.Repository<ObsTemplateThreadGauges>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
+			MicrometerById.EnvironmentCondition = EnvironmentCondition;
+			MicrometerById.Uncertainity = Uncertainity;
+			MicrometerById.CalibrationResult = CalibrationResult;
+			MicrometerById.Remarks = Remarks;
+			_unitOfWork.Repository<ObsTemplateThreadGauges>().Update(MicrometerById);
+			_unitOfWork.SaveChanges();
 
             ResponseViewModel<QRCodeFilesViewModel> qrCodeResponseData = InsertQRCodeFiles(requestId, instrumentId, userId, exportData);
 
@@ -3815,26 +3699,25 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-    public ResponseViewModel<TorqueWrenchesViewModel> SaveTorqueWrenchesCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-
-            _unitOfWork.BeginTransaction();
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-            ObsTemplateTWobs MicrometerById = _unitOfWork.Repository<ObsTemplateTWobs>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
-            MicrometerById.EnvironmentCondition = EnvironmentCondition;
-            MicrometerById.Uncertainity = Uncertainity;
-            MicrometerById.CalibrationResult = CalibrationResult;
-            MicrometerById.Remarks = Remarks;
-            _unitOfWork.Repository<ObsTemplateTWobs>().Update(MicrometerById);
-            _unitOfWork.SaveChanges();
+	public ResponseViewModel<TorqueWrenchesViewModel> SaveTorqueWrenchesCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateTWobs MicrometerById = _unitOfWork.Repository<ObsTemplateTWobs>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
+			MicrometerById.EnvironmentCondition = EnvironmentCondition;
+			MicrometerById.Uncertainity = Uncertainity;
+			MicrometerById.CalibrationResult = CalibrationResult;
+			MicrometerById.Remarks = Remarks;
+			_unitOfWork.Repository<ObsTemplateTWobs>().Update(MicrometerById);
+			_unitOfWork.SaveChanges();
 
 
 
@@ -3855,45 +3738,43 @@ public class ObservationTemplateService : IObservationTemplateService
                 };
             }
 
-            _unitOfWork.Commit();
-            return new ResponseViewModel<TorqueWrenchesViewModel>
-            {
-                ResponseCode = 200,
-                ResponseMessage = "Success",
-                ResponseData = null,
-                ResponseDataList = null
-            };
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.RollBack();
-            return new ResponseViewModel<TorqueWrenchesViewModel>
-            {
-                ResponseCode = 500,
-                ResponseMessage = "Failure",
-                ErrorMessage = e.Message,
-                ResponseData = null,
-                ResponseDataList = null,
-                ResponseService = "ObservationTemplateService",
-                ResponseServiceMethod = "UpdateVernierCaliper"
-            };
-        }
-    }
-    public ResponseViewModel<VernierCaliperViewModel> SaveVernierCaliperCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-
-            ObsTemplateVernierCaliper MicrometerById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
+			_unitOfWork.Commit();
+			return new ResponseViewModel<TorqueWrenchesViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			_unitOfWork.RollBack();
+			return new ResponseViewModel<TorqueWrenchesViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "UpdateVernierCaliper"
+			};
+		}
+	}
+	public ResponseViewModel<VernierCaliperViewModel> SaveVernierCaliperCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateVernierCaliper MicrometerById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
 
             MicrometerById.EnvironmentCondition = EnvironmentCondition;
             MicrometerById.Uncertainity = Uncertainity;
@@ -3949,17 +3830,15 @@ public class ObservationTemplateService : IObservationTemplateService
                                                                                 string Remarks, int userId, string exportData)
     {
 
-        try
-        {
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-
-            ObsTemplateGeneralNew MicrometerById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateGeneralNew MicrometerById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
 
             MicrometerById.EnvironmentCondition = EnvironmentCondition;
             MicrometerById.Uncertainity = Uncertainity;
@@ -4014,21 +3893,19 @@ public class ObservationTemplateService : IObservationTemplateService
 
     }
 
-    public ResponseViewModel<GeneralViewModel> SaveGeneralCertificate(int requestId, int instrumentId, string EnvironmentCondition,
-                                                                                string Uncertainity, string CalibrationResult,
-                                                                                string Remarks, int userId, string exportData)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                             .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-                                                             .SingleOrDefault();
-
-            ObsTemplateGeneral MicrometerById = _unitOfWork.Repository<ObsTemplateGeneral>()
-                                                                    .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
-                                                                    .SingleOrDefault();
+	public ResponseViewModel<GeneralViewModel> SaveGeneralCertificate(int requestId, int instrumentId, string EnvironmentCondition,
+																				string Uncertainity, string CalibrationResult,
+																				string Remarks, int userId, string exportData)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+															 .SingleOrDefault();
+			_unitOfWork.BeginTransaction();
+			ObsTemplateGeneral MicrometerById = _unitOfWork.Repository<ObsTemplateGeneral>()
+																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+																	.SingleOrDefault();
 
             MicrometerById.EnvironmentCondition = EnvironmentCondition;
             MicrometerById.Uncertainity = Uncertainity;

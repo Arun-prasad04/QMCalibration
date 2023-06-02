@@ -457,7 +457,7 @@
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="form-group">
-												<label class="required trn">Standard Reffered</label>
+												<label class="trn">Standard Reffered</label>
 												<input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
 													   class="form-control" placeholder="" @Model.IsDisabled>
 											</div>
@@ -510,7 +510,7 @@
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="form-group">
-												<label class="required trn">Calibration Source</label>
+												<label class="trn">Calibration Source</label>
 												<input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
 													   class="form-control" placeholder="" alt="Please provide the Calibration Source" @Model.IsDisabled>
 											</div>
@@ -702,7 +702,7 @@
 						required: true,
 					},
 					StandardReffered: {
-						required: true,
+						required: false,
 					},
 					IdNo: {
 						required: true,
@@ -714,7 +714,7 @@
 						required: true,
 					},
 					CalibSource: {
-						required: true,
+						required: false,
 					},
 					CalibFreq: {
 						required: true,
@@ -758,7 +758,7 @@
 						required: "Please enter the Status",
 					},
 					CalibSource: {
-						required: "Please provide The Calibration Source",
+						required: " Please provide The Calibration Source",
 					},
 					CalibFreq: {
 						required: "Please provide The Calibration Frequency",

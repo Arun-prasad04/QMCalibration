@@ -24,7 +24,7 @@ namespace CMT.DAL
             {
                 dbSet.Attach(entityToDelete);
             }
-            dbSet.Remove(entityToDelete);
+             dbSet.Remove(entityToDelete);
         }
 
         public virtual void DeleteRange(TEntity[] entityArrayToDelete)
@@ -166,7 +166,7 @@ namespace CMT.DAL
             if (filter != null)
             {
                 query = query.Where(filter).AsNoTracking();
-            }
+              }
 
             if (includeProperties != null)
             {

@@ -13,8 +13,11 @@
 
 <body style="font-family: Calibri;">
     <!-- page1 start-->
+    @*//Google Translater start//*@
+    @*<div id="google_translate_element"></div>*@
+    @*//Google Translater end//*@
     <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
-        <table style="border-collapse: collapse; border:2px solid #000">
+        <table style="border-collapse: collapse; border:2px solid #000" >
             <tbody>
                 <tr>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
@@ -29,14 +32,13 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,
-                                Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -
-                                602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com /
-                                www.bharatbenz.com</p>
+                            <h5 class="trn" style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,</p>
+                                
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com</p>
+                               
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -47,41 +49,42 @@
             </tbody>
         </table>
         <div>
-            <h2 style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
+            <h2 class="trn" style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
         </div>
         <div style="border-collapse: collapse; border:2px solid #000">
             <div>
                 <div style="padding: 10px;">
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of
-                            DUC</p>
+                        <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
+                           
                     </div>
                     <table>
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.GeneralData.CertificateFormat
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                                <td  style="width:400px;padding-bottom: 25px;">
+                                    : @Model.GeneralData.CertificateFormat
                                 </td>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")
                                 </td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
                                     <td style="width:400px;padding-bottom: 25px;">:  @Model.GeneralData.ULRFormat</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                             }
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration
-                                </td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
+                                
                                 <td style="width:400px; padding-bottom: 25px;">:
                                     @Model.GeneralData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due
-                                </td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Next Calibration Due</td>
+                                
                                  @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 25px;">: --</td>
@@ -92,29 +95,27 @@
                                     }
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer
-                                </td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of the Customer</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
                                 <td style="width:400px; padding-bottom: 25px;">:
                                     @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of
-                                    Equipment</td>
-                                <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
+                                <td class="trn" style="width:325px; font-weight:900; padding-bottom: 25px;">Description of Equipment</td>
+                               <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
@@ -125,18 +126,15 @@
                     <div style="padding-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
+                                    
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
+                                   
                                 <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Range</th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Least Count</th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Serial No</th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Make</th>
+                                    class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
+                                   
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
+                                    
                             </tr>
                             <tr>
                                 <td
@@ -161,23 +159,25 @@
                         <table style="margin-top:15px">
                             <tbody>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification
-                                        Number</td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
+                                       
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC
-                                    </td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+                                    
                                     <td style="width:400px;padding-bottom: 25px;">:
                                         @Model.GeneralData.DialIndicatiorCondition</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration
-                                        Procedure / <br /> Reference Standard :</td>
+                                    <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure  /  Reference Standard :</td>
+                                                           
+
+                                        @*Procedure / <br /> Reference Standard :*@
                                     <td style="width:400px; padding-bottom: 25px;">: @Model.StandardReffered</td>
                                     <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                     <td style="width:400px; padding-bottom: 25px;"></td>
@@ -187,33 +187,29 @@
                     </div>
 
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master &
-                            Equipment Used For Calibration & Traceability</p>
-                    </div>
+                        <p class="trn" style="width:325px; font-weight: 900; padding-bottom:25px; width:600px;">II. Master & Equipment Used For Calibration & Traceability</p>
+                    </div> 
                     <div style="margin-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+                                  
+                                    
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+                                    
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+                                    
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make</th>
+                                    
                                 <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    SI.</th>
+                                    class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability</th>
+                                    
                                 <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Master Equipment</th>
+                                    class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No</th>
+                                    
                                 <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Id No</th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Make </th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Traceability </th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Certificate No </th>
-                                <th
-                                    style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                    Validity </th>
+                                    class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity</th>
+                                    
                             </tr>
                             @{
                                 int i = 1;
@@ -238,23 +234,22 @@
                                         <td
                                         style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
                                             @item.CertNo</td>
-                                        <td
+                                        <tdn
                                         style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">
-                                            @item.DueDate.ToString("dd-MM-yyyy")</td>
+                                            @item.DueDate.ToString("dd-MM-yyyy")</tdn>
                                     </tr>
                                     i++;
                                 }
                             }
                         </table>
-                        <p class="fw-normal fontsize14">The master Equipment used for calibration are calibrated and
-                            traceable to National / International Standard</p>
+                     <p class="fw-normal fontsize14 trn">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                        
                     </div>
 
                     <table style="margin-top:15px">
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition
-                                    :</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition:</td>
                                 <td style="width:400px;padding-bottom: 10px;">
                                     <p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p>
                                 </td>
@@ -262,9 +257,8 @@
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of
-                                    Measurement</td>
-                                <td style="width:400px;padding-bottom: 25px;"><input class="form-control"
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of Measurement</td>
+                                 <td style="width:400px;padding-bottom: 25px;"><input class="form-control"
                                         placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity"
                                         value="@Model.GeneralData.Uncertainity"></td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
@@ -273,15 +267,13 @@
                         </tbody>
                     </table>
 
-                    <p>The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a
-                        coverage factor k = 2</p>
-
-                    <table style="margin-top:15px">
+                    <p class="trn">The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+                                  <table style="margin-top:15px">
                         <tbody>
                             <tr>
                                 <td style="width:325px; padding-bottom: 25px; width: 800px;">
                                     <div class="col-6 text-start">
-                                        <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                        <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
                                         <img src="../UserSignature/@Model.GeneralData.PerformedBySign"
                                             style="width: 100px;" />
                                         <p style="margin: 0px;">@Model.GeneralData.CalibrationPerformedBy</p>
@@ -289,7 +281,7 @@
                                     </div>
                                 </td>
                                 <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                    <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                    <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
                                     <img src="../UserSignature/@Model.GeneralData.ReviewedBySign"
                                         style="width: 100px;" />
                                     <p style="margin: 0px;">@Model.GeneralData.ReviewedBy</p>
@@ -304,12 +296,10 @@
                     border-top: solid;
                     border-block-width: 2px; border: 2px solid #000; display: flex;">
                     <div style="padding:10px">
-                        <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of &
-                            under the stated conditions of measurement.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full
-                            or in part without out permission in writing.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate
-                            as per customer request irrespective of the status or condition of the IMTE.</p>
+                        <p class="trn" style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                        <p class="trn" style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                        <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                            
                     </div>
                     <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
                 </div>
@@ -320,11 +310,11 @@
                     <tr style="font-size: xx-small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div>
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                                <h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 style="font-size: small;">Page 1 of 2</h4>
+                            <h4 class="trn" style="font-size: small;">Page 1 of 2</h4>
                         </td>
                     </tr>
                 </tbody>
@@ -348,14 +338,14 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,
-                                Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -
-                                602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com /
-                                www.bharatbenz.com</p>
+                            <h5 class="trn" style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,</p>
+                                
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.</p>
+                                
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com</p>
+                                
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -369,35 +359,42 @@
             <table style="margin-top:30px">
                 <tbody>
                     <tr>
-                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">III. Mechanical
-                            Calibration Results</td>
-                        <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;">Certificate No
-                            @Model.GeneralData.CertificateFormat</td>
-                        <td
-                            style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;">
-                            Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        <td class="trn" style="width:325px; font-weight:900; padding-bottom:25px; width:600px;">III. Mechanical Calibration Results</td>
+                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                        <td style="width:400px;padding-bottom: 25px;">: @Model.GeneralData.CertificateFormat</td>
+                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                        <td style="width:400px;padding-bottom: 25px;">
+                            : @DateTime.Now.ToString("dd-MM-yyyy")
+                        </td>
+                        @*<td class="trn" style="width:400px; padding-bottom:25px; width:600px;">Certificate No @Model.GeneralData.CertificateFormat</td>*@
+                        @*<td class="trn" style="width:325px; font-weight:900; padding-bottom:25px; width:600px; text-align:center;">
+                            Report Issue Date :@DateTime.Now.ToString("dd-MM-yyyy")*@
+                        </td>
+                        
+                            
+                        
+                                
                     </tr>
                 </tbody>
             </table>
-
             <div class="p-3">
-                <p style="text-align: center;">All Values are in @Model.GeneralData.Allvalues </p>
-                <table style="border-collapse: collapse; border:1px solid #000">
+                <p class="trn" style="text-align: center;">All Values are in @Model.GeneralData.Allvalues </p>
+                <table style="border-collapse: collapse; border:1px solid#000">
                     <tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px; padding:5px"
-                            colspan="2" class="text-center">Nominal</th>
+                            colspan="2" class="text-center trn">Nominal</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px; padding:5px"
-                            colspan="2" class="text-center">Trial-1</th>
+                            colspan="2" class="text-center trn">Trial-1</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px; padding:5px"
-                            colspan="2" class="text-center">Trial-2</th>
+                            colspan="2" class="text-center trn">Trial-2</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px; padding:5px"
-                            colspan="2" class="text-center">Trial-3</th>
+                            colspan="2" class="text-center trn">Trial-3</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px; padding:5px"
-                            colspan="2" class="text-center">Average</th>
+                            colspan="2" class="text-center trn">Average</th>
 
                     </tr>
 
-                    @* @{ i=1; *@
+                    @* @{ i=1; 
                     @foreach (var item in @Model.GeneralData.GeneralAddResultViewModelList)
                     {
                         <tr>
@@ -415,10 +412,10 @@
                         </tr>
                         @* i++;
                             } *@
-                    }
+                    
                 </table>
 
-                </br>
+                
                 <div>
 
                 
@@ -463,18 +460,18 @@
                 <table style="margin-top:15px">
                     <tbody>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :
-                            </td>
-                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control"
+                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+                           
+                            <td class="trn" style="width:400px;padding-bottom: 25px;"><input class="form-control"
                                     placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
                                     value="@Model.GeneralData.CalibrationResult"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
-                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control"
-                                    placeholder="Remarks" id="Remarks" id="Remarks" name="Remarks"
+                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+                            <td class="trn" style="width:400px;padding-bottom: 25px;"><input class="form-control"
+                                    placeholder="Remarks" id="Remarks" name="Remarks"
                                     value="@Model.GeneralData.Remarks"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
@@ -493,14 +490,14 @@
                     <tr>
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div class="col-6 text-start">
-                                <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
                                 <img src="../UserSignature/@Model.GeneralData.PerformedBySign" style="width: 100px;" />
                                 <p style="margin: 0px;">@Model.GeneralData.CalibrationPerformedBy</p>
                                 <p style="margin: 0px;">@Model.GeneralData.PerformedByDesignation</p>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                            <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
                             <img src="../UserSignature/@Model.GeneralData.ReviewedBySign" style="width: 100px;" />
                             <p style="margin: 0px;">@Model.GeneralData.ReviewedBy</p>
                             <p style="margin: 0px;">@Model.GeneralData.ReviewedByDesignation</p>
@@ -508,19 +505,17 @@
                     </tr>
                 </tbody>
             </table>
-            <h5 style="text-align: center;">***End of Certificate***</h5>
+            <h5 class="trn" style="text-align: center;">***End of Certificate***</h5>
         </div>
         <div style="border-collapse: collapse; 
                     border-top: solid;
                     border-block-width: 2px; border: 2px solid #000; display: flex;">
             <div style="padding:10px">
-                <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the
-                    stated conditions of measurement.</p>
-                <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in
-                    part without out permission in writing.</p>
-                <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per
-                    customer request irrespective of the status or condition of the IMTE.</p>
-            </div>
+                <p class="trn" style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p class="trn" style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+
+                  </div>
             <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
         </div>
         <table style="margin-top:15px">
@@ -528,11 +523,11 @@
                     <tr style="font-size: small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div >
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                                <h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 style="font-size: small;">Page 2 of 2</h4>
+                            <h4 class="trn" style="font-size: small;">Page 2 of 2</h4>
                         </td>
                     </tr>
                 </tbody>
@@ -547,13 +542,13 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
 
-                <input type="button" value="ReGenerate" onclick="SaveCertificate('General',language)" class="btn btn-primary">
+                <input type="button" value="ReGenerate" onclick="SaveCertificate('General',language)" class="btn btn-primary trn">
                 }
-                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export"
+                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export"
                 onclick="downloadPdfFile()" />
-                <a class="btn btn-primary"
-                href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print
-                    QR Code</a>
+                <a class="btn btn-primary trn"
+                   href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
+                    
             }
             else
             {
@@ -562,7 +557,7 @@
                     <input type="button" value="Save" onclick="SaveCertificate('General',language)" class="btn btn-primary">
                 }
             }
-            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
         </div>
     </div>
 </body>
@@ -570,7 +565,7 @@
 @* *********************************************************************************************************************
 *@
 
-<div id="Pdfhtml" style="display: none;">
+<div id="Pdfhtml" style="display: block;">
 
     <body style="font-family: Arial Unicode MS;">
         <!-- page1 start-->
@@ -595,16 +590,16 @@
                                 style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
                                 <div>
                                     <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab
-                                    </h5>                                    
+                                    </h5>
                                     <!--<p style="margin: 5px; font-size: x-large;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</p>-->
-                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
+                                    <p class="trn" style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
                                         Village,
                                         Singaperumal Koil Road,</p>
-                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
+                                    <p class="trn" style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
                                         Kanchipuram
                                         - 602105, Tamil Nadu, India.</p>
-                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
-                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
+                                    <p class="trn" style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p class="trn" style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
                                         www.bharatbenz.com</p>
                                 </div>
                             </td>
@@ -845,9 +840,10 @@
                 <td>
                     <table style="font-size:x-small;padding:5px;">
                         <td>
-                            <p style="padding:10px;padding-bottom: 10px;padding-top: 25px;">The master Equipment used
-                                for calibration
-                                are calibrated and traceable to National / International Standard</p>
+                            <p class="trn" style="padding:10px;padding-bottom: 10px;padding-top: 25px;">
+                                The master Equipment used for calibration are calibrated and traceable to National / International Standard
+                            </p>
+                               
                         </td>
                     </table>
                 </td>
@@ -880,7 +876,7 @@
                     <table style="font-size:x-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="font-size: x-small;padding:10px;padding-bottom: 10px;">The stated Expanded
+                                <p class="trn" style="font-size: x-small;padding:10px;padding-bottom: 10px;">The stated Expanded
                                     uncertainty is estimatd at a confidence level approximately 95% with a coverage
                                     factor k = 2</p>
                             </td>
@@ -918,17 +914,10 @@
                     <table
                         style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                         <td style="padding:2px;">
-                            <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at
-                                the
-                                time of & under the stated conditions of measurement.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced
-                                either
-                                in full or in part without out permission in writing.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in
-                                this
-                                cetificate as per customer request irrespective of the status or condition of the
-                                IMTE.</p>
-                        </td>
+                            <p class="trn" style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                            <p class="trn" style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                            <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                              </td>
                         <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png"
                                 style="margin-left: 450px;width: 100px;">
                         </td>
@@ -939,11 +928,11 @@
         <table style="width: 100%;font-size:xx-small;padding:5px">
             <tr>
                 <td>
-                    <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                    <p class="trn" style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
                 </td>
 
                 <td>
-                    <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                    <p class="trn" style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
                 </td>
 
             </tr>
@@ -1015,16 +1004,26 @@
             <tr>
                 <td>
                     <table style="font-size:x-small;padding:10px">
-                        <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">
-                                III.
-                                Mechanical Calibration Results</td>
-                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
-                                Certificate
-                                No @Model.GeneralData.CertificateFormat</td>
-                            <td
-                                style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
-                                Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        <tr>test2
+                            <td class="trn" style="width:400px; font-weight: 900;padding-bottom: 25px; width:600px;padding:10px;">Mechanical Calibration Results</td>
+                          @*  <td class="trn" style="width:400px;padding-bottom: 25px; width:600px; text-align:center;padding:10px">Certificate No @Model.GeneralData.CertificateFormat</td>
+                         *@ 
+                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                            <td style="width:400px;padding-bottom: 25px;">
+                                : @Model.GeneralData.CertificateFormat
+                            </td>
+                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                            <td style="width:400px;padding-bottom: 25px;">
+                                : @DateTime.Now.ToString("dd-MM-yyyy")
+                            </td>
+                            @*<td class="trn" style="width:325px; font-weight:900; padding-bottom:25px; width:600px; text-align:center;">
+                                Report Issue Date :@DateTime.Now.ToString("dd-MM-yyyy")
+                            </td>
+*@
+                           
+                                
+                            
+
                         </tr>
                     </table>
                 </td>
@@ -1178,26 +1177,23 @@
             <tr>
                 <td style="text-align: center;">
                     <table style="font-size:x-small;padding:5px">
-                        <th style="text-align: center;font-size: small;">***End of Certificate***</th>
+                        <th class="trn" style="text-align: center;font-size: small;">***End of Certificate***</th>
                     </table>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <table
-                        style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:5px">
+                    <table style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:5px">
                         <td style="padding:2px;">
-                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at
-                                the
-                                time of & under the stated conditions of measurement.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced
-                                either
-                                in full or in part without out permission in writing.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in
-                                this
-                                cetificate as per customer request irrespective of the status or condition of the
-                                IMTE.</p>
-                        </td>
+                <p class="trn" style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p class="trn" style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+
+                @*<p class="trn" style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                    <p class="trn" style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                    <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+*@
+            </td>
                         <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png"
                                 style="margin-left: 450px;width: 100px;"></td>
                     </table>
@@ -1207,27 +1203,40 @@
         <table style="width: 100%;font-size:xx-small;padding:5px">
             <tr>
                 <td>
-                    <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+            <p class="trn" style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
                 </td>
 
-                    <td>
-                        <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                    <td>  
+                        <p class="trn" style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
                     </td>
-                </tr>
-            </table>   
+            </tr>
+        </table>   
         <!--</div>-->
+
     </body>
 </div>
 
 </html>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-function downloadPdfFile(){
-	var filePath = $("#FileName").val();
-	window.open(filePath, "_blank"); 
-}
+    function downloadPdfFile() {
+        var filePath = $("#FileName").val();
+        alert(filePath);
+        window.open(filePath, "_blank");
+    }
 </script>
+   
+
+
+@*//Google Translater start//*@
+@*<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>*@
+@*//Google Translater end//*@
 
 @*
 @using (Html.BeginForm("SaveAsPdf", "Certification", FormMethod.Post))

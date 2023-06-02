@@ -25,7 +25,7 @@ namespace CMT.DAL
 
             IRepository<T> repo = new Repository<T>(Context);
             Repositories.Add(typeof(T), repo);
-            return repo;
+             return repo;
         }
 
         public virtual void Commit()
