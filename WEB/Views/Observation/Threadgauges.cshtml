@@ -57,12 +57,12 @@
         <tr class="sizeborder">
         <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
             <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
-        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Thread Gauges</td>
-        <td class="textleftborder"  height="30">Format No.</td>
-        <td class="textcenterborder">365.QM.D.835</td>
+                <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;"><span class="trn">Observation Sheet</span> </br> <span class="trn">Thread Gauges</span></td>
+        <td class="textleftborder trn"  height="30">Format No.</td>
+        <td class="textcenterborder trn">365.QM.D.835</td>
     </tr>
     <tr>
-        <td class="textleftborder"  height="30">RevNo & </br>Date
+                <td class="textleftborder" height="30">RevNo & </br> <span class="trn">Date</span>
 </td>
         <td class="textcenterborder">01/ 12.08.2019</td>
     </tr>
@@ -70,36 +70,36 @@
     <br>
     <table class="wd100">
         <tr>
-        <td class="textleftborder">Name</td>
+        <td class="textleftborder trn">Name</td>
         <td class="textleftborder">@Model.Name</td>
-        <td class="textleftborder">Range</td>
+        <td class="textleftborder trn">Range</td>
         <td class="textleftborder">@Model.Range</td>
-        <td class="textleftborder">Make</td>
+        <td class="textleftborder trn">Make</td>
         <td class="textleftborder">@Model.Make</td>
        </tr>
        <tr>
-        <td class="textleftborder">Serial No.</td>
+        <td class="textleftborder trn">Serial No.</td>
         <td class="textleftborder">@Model.SerialNo</td>
-        <td class="textleftborder">ID No.</td>
+        <td class="textleftborder trn">ID No.</td>
         <td class="textleftborder">@Model.IdNo</td>
-        <td class="textleftborder">Ref Std</td>
+        <td class="textleftborder trn">Ref Std</td>
         <td class="textleftborder">@Model.RefStd</td>
         </tr>
         <tr>
-        <td>Temp@Start <sup>o</sup>C</td>
+                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
         <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-        <td>Temp@End <sup>o</sup>C</td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
         <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-        <td>Humidity %RH</td>
+        <td class="trn">Humidity %RH</td>
         <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
         </tr>
         <tr>
-        <td rowspan="2" colspan="4" class="textleftborder">Condition of Thread Gauge </br>
+                <td rowspan="2" colspan="4" class="textleftborder"><span class="trn">Condition of Thread Gauge</span></br>
         <textarea name="ThreadgaugeCondtion" id="ThreadgaugeCondtion" style="height: 50px;width: 400px;">@Model.ThreadgaugeCondtion</textarea></td>
-        <td class="textleftborder" colspan="2">Ref WI:  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">Ref WI: </span><input type="text" name="RefWi" id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
     </tr>
     <tr>
-        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">All Values Are In </span><input type="text" style="width: 60px;" name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
     </tr>
     </table>
     <br>
@@ -108,22 +108,22 @@
     <br>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td class="wd50">Thread Plug Gauge: Go</td>
-            <td class="wd50">Thread Plug Gauge: NoGo</td>
+            <td class="wd50 trn">Thread Plug Gauge: Go</td>
+            <td class="wd50 trn">Thread Plug Gauge: NoGo</td>
         </tr>
         <tr>
-            <td class="wd50">Effective Diameter Spec.</td>
-            <td class="wd50">Effective Diameter Spec.</td>
+            <td class="wd50 trn">Effective Diameter Spec.</td>
+            <td class="wd50 trn">Effective Diameter Spec.</td>
         </tr>
     </table>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td class="wd16">Max</td>
-            <td class="wd16">Min</td>
-            <td class="wd16">Wear Limit</td>
-            <td class="wd16">Max</td>
-            <td class="wd16">Min</td>
-            <td class="wd16">Wear Limit</td>
+            <td class="wd16 trn">Max</td>
+            <td class="wd16 trn">Min</td>
+            <td class="wd16 trn">Wear Limit</td>
+            <td class="wd16 trn">Max</td>
+            <td class="wd16 trn">Min</td>
+            <td class="wd16 trn">Wear Limit</td>
         </tr>
         <tr>
             <td class="wd16ht30"><input type="text" id="Max1" name="Max1" value="@Model.Max1"
@@ -143,26 +143,26 @@
     <br>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td class="wd16">Actual: Plane1</td>
+            <td class="wd16 trn">Actual: Plane1</td>
             <td class="wd33"><input type="text" id="Plane1" name="Plane1" value="@Model.Plane1" class="wd100"></td>
-            <td class="wd16">Actual: Plane1</td>
+            <td class="wd16 trn">Actual: Plane1</td>
             <td class="wd33"><input type="text" id="Plane2" name="Plane2" value="@Model.Plane2" class="wd100"></td>
         </tr>
         <tr>
-            <td class="wd16">Actual: Plane2</td>
+            <td class="wd16 trn">Actual: Plane2</td>
             <td class="wd33"><input type="text" id="Plane3" name="Plane3" value="@Model.Plane3" class="wd100"></td>
-            <td class="wd16">Actual: Plane2</td>
+            <td class="wd16 trn">Actual: Plane2</td>
             <td class="wd33"><input type="text" id="Plane4" name="Plane5" value="@Model.Plane4" class="wd100"></td>
         </tr>
         <tr>
-            <td class="wd16">Actual: Plane3</td>
+            <td class="wd16 trn">Actual: Plane3</td>
             <td><input type="text" id="Plane5" name="Plane5" value="@Model.Plane5" class="wd100"></td>
             <td colspan="2"></td>
         </tr>
     </table>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td colspan="5">Repeatability</td>
+                    <td colspan="5" class="trn">Repeatability</td>
         </tr>
         <tr>
             <td class="ht30"><input type="text" value="@Model.Repeatability1" id="Repeatability1" name="Repeatability1" class="wd100"></td>
@@ -177,22 +177,22 @@
     @if(@Model.ObsSubType==81){
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td class="wd50">Thread Ring Gauge: Go</td>
-            <td class="wd50">Thread Ring Gauge: NoGo</td>
+            <td class="wd50 trn">Thread Ring Gauge: Go</td>
+            <td class="wd50 trn">Thread Ring Gauge: NoGo</td>
         </tr>
         <tr>
-            <td class="wd50">Effective Diameter Spec.</td>
-            <td class="wd50">Effective Diameter Spec.</td>
+            <td class="wd50 trn">Effective Diameter Spec.</td>
+            <td class="wd50 trn">Effective Diameter Spec.</td>
         </tr>
     </table>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td>Max</td>
-            <td>Min</td>
-            <td>Wear Limit</td>
-            <td>Max</td>
-            <td>Min</td>
-            <td>Wear Limit</td>
+            <td class="trn">Max</td>
+            <td class="trn">Min</td>
+            <td class="trn">Wear Limit</td>
+            <td class="trn">Max</td>
+            <td class="trn">Min</td>
+                    <td class="trn">Wear Limit</td>
         </tr>
         <tr>
             <td class="ht30"><input type="text" id="Ring_Max1" name="Ring_Max1" value="@Model.Max1" class="wd100"></td>
@@ -206,26 +206,26 @@
     <br>
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td class="wd16">Actual: Plane1</td>
+            <td class="wd16 trn">Actual: Plane1</td>
             <td class="wd33"><input type="text" id="Ring_Plane1" name="Ring_Plane1" value="@Model.Plane1" class="wd100"></td>
-            <td class="wd16">Actual: Plane1</td>
+            <td class="wd16 trn">Actual: Plane1</td>
             <td class="wd33"><input type="text" id="Ring_Plane2" name="Ring_Plane2" value="@Model.Plane2" class="wd100"></td>
         </tr>
         <tr>
-            <td class="wd16">Actual: Plane2</td> 
+            <td class="wd16 trn">Actual: Plane2</td> 
             <td class="wd33"><input type="text" id="Ring_Plane3" name="Ring_Plane3" value="@Model.Plane3" class="wd100"></td>
-            <td class="wd16">Actual: Plane2</td>
+            <td class="wd16 trn">Actual: Plane2</td>
             <td class="wd33"><input type="text" id="Ring_Plane4" name="Ring_Plane4" value="@Model.Plane4" class="wd100"></td>
         </tr>
         <tr>
-            <td class="wd16">Actual: Plane3</td>
+            <td class="wd16 trn">Actual: Plane3</td>
             <td><input type="text" id="Ring_Plane5" name="Ring_Plane5" value="@Model.Plane5" class="wd100"></td>
             <td colspan="2"></td>
         </tr>
     </table>
     <table style="width: 100%;" style="font-weight: bold;">
         <tr>
-            <td colspan="5" style="font-weight: bold;">Repeatability</td>
+                    <td colspan="5" style="font-weight: bold;" class="trn">Repeatability</td>
         </tr>
         <tr>
             <td class="ht30"><input type="text" value="@Model.Repeatability1" id="Ring_Repeatability1" name="Ring_Repeatability1" class="wd100"></td>
@@ -239,13 +239,13 @@
     }
     <table class="wd100" style="font-weight: bold;">
         <tr>
-            <td>Calibration Performed BY</td>
+            <td class="trn">Calibration Performed By</td>
             <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy" class="wd100" disabled ></td>
-            <td>Reviewed By</td>
+                <td class="trn">Reviewed By</td>
             <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="wd100" disabled></td>
         </tr>
         <tr>
-            <td class="textleftborder">Date</td>   
+            <td class="textleftborder trn">Date</td>   
             @if(true)
             {
                 var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -254,7 +254,7 @@
                 </td>
             } 
             
-            <td class="textleftborder">Date</td>
+            <td class="textleftborder trn">Date</td>
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
                     || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
                         <td><input type="text" name="Review_Date" id="Review_Date" 
@@ -277,12 +277,12 @@
         @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
         {
                 <tr>
-                        <td class="textleftborder">Status</td>
+                        <td class="textleftborder trn">Status</td>
                         <td class="textleftborder" colspan="3">
                             <div style="text-align: left;">
-                                <label>Approve</label>
+                                <label class="trn">Approve</label>
                                 <input type="radio" name="Approve" id="Approve">
-                                <label>Reject</label>
+                            <label class="trn">Reject</label>
                                 <input type="radio" name="Approve" id="Reject">
                             </div>
                         </td>
@@ -294,9 +294,9 @@
                 <td colspan="4">
                     @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                     {
-                        <input type="button" class="btn btn-primary" value="Save" name="Save" id="ThreadGauges" onclick="SaveThreadGauges(language)">
+                        <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="ThreadGauges" onclick="SaveThreadGauges(language)">
                     }
-                    <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                    <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
                 </td>
             </tr>
         }
@@ -306,10 +306,10 @@
                     <td colspan="4" style="text-align:center;">
                         @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                         {
-                            <input type="button" class="btn btn-primary" value="Submit Review" name="Submit"
+                            <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit"
                                    id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                         }
-                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
                     </td>
                 </tr>
         }

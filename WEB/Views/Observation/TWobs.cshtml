@@ -65,12 +65,13 @@
             <tr class="sizeborder">
         <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="60">
             <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" /></td>
-        <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;">Observation Sheet </br> Torque Wrenches</td>
-        <td class="textleftborder"  height="30">Format No.</td>
+                <td class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 20px;"><span class="trn">Observation Sheet</span> </br> <span class="trn">Torque Wrenches</span></td>
+        <td class="textleftborder trn"  height="30">Format No.</td>
         <td class="textcenterborder">365.QM.D.834</td>
     </tr>
     <tr>
-        <td class="textleftborder"  height="30">RevNo & </br> Date
+                <td class="textleftborder" height="30">
+                    RevNo & </br> <span class="trn">Date</span>
 </td>
         <td class="textcenterborder">01/ 12.08.2019</td>
     </tr>
@@ -78,54 +79,56 @@
         <br>
         <table class="wd100">
             <tr>
-        <td class="textleftborder">Type / Model</td>
+        <td class="textleftborder trn">Type / Model</td>
         <td class="textleftborder">@Model.Name</td>
-        <td class="textleftborder">Range/LC:</td>
+        <td class="textleftborder trn">Range/LC:</td>
         <td class="textleftborder">@Model.Range</td>
-        <td class="textleftborder">Make:</td>
+        <td class="textleftborder trn">Make:</td>
         <td class="textleftborder">@Model.Make</td>
        </tr>
        <tr>
-        <td class="textleftborder">Serial No.</td>
+        <td class="textleftborder trn">Serial No.</td>
         <td class="textleftborder">@Model.SerialNo</td>
-        <td class="textleftborder">ID No:</td>
+        <td class="textleftborder trn">ID No:</td>
         <td class="textleftborder">@Model.IdNo</td>
-        <td class="textleftborder">Ref Std.</td>
+        <td class="textleftborder trn">Ref Std.</td>
         <td class="textleftborder">@Model.RefStd</td>
         </tr>
         <tr>
-        <td>Temp@Start <sup>o</sup>C</td>
+        <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
         <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-        <td>Temp@End <sup>o</sup>C</td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
         <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-        <td>Humidity %RH</td>
+        <td class="trn">Humidity %RH</td>
         <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
         </tr>
         <tr>
-        <td colspan="4" class="textleftborder">Condition of Torque Wrench & observations if any:</br>
+                <td colspan="4" class="textleftborder">
+                    <span class="trn">Condition of Torque Wrench & observations if any:</span></br>
         <textarea name="ConditionOfTW" id="ConditionOfTW" style="height: 50px;width: 400px;">@Model.ConditionOfTW</textarea></td>
-        <td class="textleftborder" colspan="2">WI no :  <input type="text" name="RefWi"id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">WI no :  </span><input type="text" name="RefWi" id="RefWi" value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
     </tr>
     <tr>
-        <td  colspan="4" class="textleftborder">Master used :</br>
-            <input type="radio" id="ApproveAWS" name="Transducers"><label for="html">AWS TWC with Transducers</label></br>
-            <input type="radio" id="RejectAWS" name="Transducers"><label for="css">Norbar TWC with Transducers</label>
+                <td colspan="4" class="textleftborder">
+                    <span class="trn">Master used :</span></br>
+                    <input type="radio" id="ApproveAWS" name="Transducers"><label for="html"> <span class="trn">AWS TWC with Transducers</span></label></br>
+                    <input type="radio" id="RejectAWS" name="Transducers"><label for="css"><span class="trn">Norbar TWC with Transducers</span></label>
         </td>
-        <td class="textleftborder" colspan="2">All Values Are In <input type="text" style="width: 60px;" name="Allvalues"id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
+                <td class="textleftborder" colspan="2"><span class="trn">All Values Are In </span><input type="text" style="width: 60px;" name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size" @Model.IsDisabled></td>
     </tr>
          
         </table>
          @if(@Model.ObsSubType==82){ 
         <table class="wd100" style="font-weight: bold;">
             <tr>
-                <td colspan="8">Fixed Type Wrenches</td>
+                    <td colspan="8" class="trn">Fixed Type Wrenches</td>
             </tr>
             <tr>
-                <td rowspan="2" class="wd25">Nominal Set Value</td>
+                <td rowspan="2" class="wd25 trn">Nominal Set Value</td>
                 <td rowspan="2" class="wd25"><input type="text" value="@Model.SetValue" id="SetValue" name="SetValue"
                         class="wd100ht60"></td>
-                <td>Si No</td>
-                <td colspan="3">Actual Values</td>
+                    <td class="trn">Si No</td>
+                    <td colspan="3" class="trn">Actual Values</td>
             </tr>
             <tr>
                 <td class="wd5">1</td>
@@ -136,7 +139,7 @@
                         class="wd100"></td>
             </tr>
             <tr>
-                <td rowspan="2" class="wd25">Spec Max(include MU)</td>
+                <td rowspan="2" class="wd25 trn">Spec Max(include MU)</td>
                 <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMax" id="SpecMax" name="SpecMax"
                         class="wd100ht60"></td>
                 <td>2</td>
@@ -155,7 +158,7 @@
                         class="wd100"></td>
             </tr>
             <tr>
-                <td rowspan="2" class="wd25">Spec Min(include MU)</td>
+                <td rowspan="2" class="wd25 trn">Spec Min(include MU)</td>
                 <td rowspan="2" class="wd25"><input type="text" value="@Model.SpecMin" id="SpecMin" name="SpecMin"
                         class="wd100ht60"></td>
                 <td>4</td>
@@ -178,32 +181,32 @@
         @if(@Model.ObsSubType==83){ 
         <table class="wd100" style="font-weight: bold;">
             <tr>
-                <td colspan="4">Adjustable Torque Wrenches</td>
+                <td colspan="4" class="trn">Adjustable Torque Wrenches</td>
             </tr>
             <tr>
-                <td>Measuring Interval</td>
+                <td class="trn">Measuring Interval</td>
                 <td>20%</td>
                 <td>60%</td>
                 <td>100%</td>
             </tr>
             <tr>
-                <td>Nominal Value</td>
+                    <td class="trn">Nominal Value</td>
                 <td><input type="text" value="@Model.Nominal20" id="Nominal20" name="Nominal20" class="wd100"></td>
                 <td><input type="text" value="@Model.Nominal60" id="Nominal60" name="Nominal60" class="wd100"></td>
                 <td><input type="text" value="@Model.Nominal100" id="Nominal100" name="Nominal100" class="wd100"></td>
             </tr>
             <tr>
-                <td>Spec (Include MU)</td>
+                    <td class="trn">Spec (Include MU)</td>
                 <td><input type="text" value="@Model.Spec20" id="Spec20" name="Spec20" class="wd100"></td>
                 <td><input type="text" value="@Model.Spec60" id="Spec60" name="Spec60" class="wd100"></td>
                 <td><input type="text" value="@Model.Spec100" id="Spec100" name="Spec100" class="wd100"></td>
             </tr>
             <tr>
-                <td colspan="4">Actual Values</td>
+                    <td colspan="4" class="trn">Actual Values</td>
             </tr>
             <tr>
-                <td>SI No</td>
-                <td colspan="3">Values</td>
+                    <td class="trn">SI No</td>
+                    <td colspan="3" class="trn">Values</td>
             </tr>
 
             <tr>
@@ -237,7 +240,7 @@
                 <td><input type="text" value="@Model.Value15" id="Value15" name="Value15" class="wd100"></td>
             </tr>
             <tr>
-                <td colspan="4" style="text-align: left;">Any Other Comments</td>
+                    <td colspan="4" style="text-align: left;" class="trn">Any Other Comments</td>
             </tr>
             <tr>
                 <td colspan="4" class="wd100ht150">
@@ -248,13 +251,14 @@
          } 
         <table class="wd100" style="font-weight: bold;">
             <tr>
-                <td>Calibration Performed BY<td>
+                <td class="trn">Calibration Performed By<td>
                 <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy" class="wd100" disabled></td>
-                <td>Reviewed By<td>
+                <td><span class="trn">Reviewed By</span>
+                <td>
                 <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="wd100" disabled></td>
             </tr>
             <tr>
-                <td class="textleftborder">Date<td>
+                <td class="textleftborder trn">Date<td>
                 @if( true)
                 {
                     var performDate = @Model.CreatedOn.ToString("dd-MM-yyyy");
@@ -263,7 +267,7 @@
                     </td>
                 }
 
-                <td class="textleftborder">Date:<td>
+                <td class="textleftborder trn">Date:<td>
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" 
                     || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"){
                             <td><input type="text" name="Review_Date" id="Review_Date" 
@@ -286,12 +290,12 @@
 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
 {
         <tr>
-                <td class="textleftborder">Status</td>
+                <td class="textleftborder trn">Status</td>
                 <td class="textleftborder" colspan="3">
                     <div style="text-align: left;">
-                        <label>Approve</label>
+                        <label class="trn">Approve</label>
                         <input type="radio" name="Approve" id="Approve">
-                        <label>Reject</label>
+                            <label class="trn">Reject</label>
                         <input type="radio" name="Approve" id="Reject">
                     </div>
                 </td>
@@ -303,9 +307,9 @@
          <td colspan="4">
             @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
             {
-                <input type="button" class="btn btn-primary" value="Save" name="Save" id="TWobs" onclick="SaveTWobs(language)">
+                <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="TWobs" onclick="SaveTWobs(language)">
             }
-            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
         </td>
      </tr>
 }
@@ -315,9 +319,9 @@
             <td colspan="4" style="text-align:center;">
                 @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                 {
-                            <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+                            <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                 }
-                <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
             </td>
         </tr>
 }
