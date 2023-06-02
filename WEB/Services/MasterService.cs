@@ -129,6 +129,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("GetMasterById Exception ");
+			ErrorViewModelTest.Log(e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,

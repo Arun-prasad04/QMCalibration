@@ -66,55 +66,61 @@
                     height="60">
                     <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" />
                 </td>
-                <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">Observation Sheet
-                    </br> General</td>
-                <td class="textleftborder" height="30">Format No.</td>
-                <td class="textcenterborder">365.QM.D.824</td>
+                <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">
+                    <span class="trn">Observation Sheet</span>
+                    </br> <span class="trn">General</span>
+                </td>
+                <td class="textleftborder trn" height="30">Format No.</td>
+                <td class="textcenterborder trn">365.QM.D.824</td>
             </tr>
             <tr>
-                <td class="textleftborder" height="30">RevNo & </br> Date
+                <td class="textleftborder" height="30">
+                    <span class="trn">RevNo & </span></br> <span class="trn">Date</span>
                 </td>
-                <td class="textcenterborder">01/ 14.11.2018</td>
+                <td class="textcenterborder trn">01/ 14.11.2018</td>
             </tr>
         </table>
         <br>
 
         <table class="TableWidth">
             <tr>
-                <td class="textleftborder">Name</td>
+                <td class="textleftborder trn">Name</td>
                 <td>@Model.Name</td>
-                <td class="textleftborder">Range</td>
+                <td class="textleftborder trn">Range</td>
                 <td>@Model.Range</td>
-                <td class="textleftborder">Make</td>
+                <td class="textleftborder trn">Make</td>
                 <td>@Model.Make</td>
             </tr>
             <tr>
-                <td class="textleftborder">Serial No.</td>
+                <td class="textleftborder trn">Serial No.</td>
                 <td>@Model.SerialNo</td>
-                <td class="textleftborder">ID No.</td>
+                <td class="textleftborder trn">ID No.</td>
                 <td>@Model.IdNo</td>
-                <td class="textleftborder">Ref Std</td>
+                <td class="textleftborder trn">Ref Std</td>
                 <td>@Model.RefStd</td>
             </tr>
             <tr>
-                <td>Temp@Start <sup>o</sup>C</td>
+                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-                <td>Temp@End <sup>o</sup>C</td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
                 <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-                <td>Humidity %RH</td>
+                <td class="trn">Humidity %RH</td>
                 <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
             </tr>
 
             <tr>
-                <td rowspan="2" colspan="4" class="textleftborder">Condition of the Instrument</br>
+                <td rowspan="2" colspan="4" class="textleftborder">
+                    <span class="trn">Condition of the Instrument</span></br>
                     <textarea name="DialIndicatiorCondition" id="DialIndicatiorCondition"
                         style="height: 50px;width: 400px;">@Model.DialIndicatiorCondition</textarea>
                 </td>
-                <td class="textleftborder" colspan="2">Ref WI: <input type="text" name="RefWi" id="RefWi"
+                <td class="textleftborder" colspan="2">
+                    <span class="trn">Ref WI: </span><input type="text" name="RefWi" id="RefWi"
                         value="@Model.RefWi" class="size" style="width: 140px;" @Model.IsDisabled></td>
             </tr>
             <tr>
-                <td class="textleftborder" colspan="2">All Values Are In<input type="text" style="width: 60px;"
+                <td class="textleftborder" colspan="2">
+                    <span class="trn">All Values Are In</span><input type="text" style="width: 60px;"
                         name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size"
                         @Model.IsDisabled></td>
             </tr>
@@ -122,8 +128,7 @@
         <br>
         <tr>
             <p align="right">
-                <button style="align-content: right: ;;" id="add" name="add" type="button" class="btn btn-primary">Add
-                    New Row</button>
+                <button style="align-content: right: ;;" id="add" name="add" type="button" class="btn btn-primary trn">Add New Row</button>
             </p>
         </tr>
 
@@ -131,12 +136,12 @@
             <table id="Generaladd">
                 <thead>
                     <tr>
-                        <td style="word-break: break-all;">Measured</td>
-                        <td style="word-break: break-all;">Trial-1</td>
-                        <td style="word-break: break-all;">Trial-2</td>
-                        <td style="word-break: break-all;">Trial-3</td>
-                        <td style="word-break: break-all;">Average</td>
-                        <td style="width: 40px;">Delete</td>
+                        <td style="word-break: break-all;" class="trn">Measured</td>
+                        <td style="word-break: break-all;" class="trn">Trial-1</td>
+                        <td style="word-break: break-all;" class="trn">Trial-2</td>
+                        <td style="word-break: break-all;" class="trn">Trial-3</td>
+                        <td style="word-break: break-all;" class="trn">Average</td>
+                        <td style="width: 40px;" class="trn">Delete</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -167,7 +172,7 @@
         <tr>
             <p align="right">
                 <button style="align-content: right: ;;" id="addManual" name="addManual" type="button"
-                    class="btn btn-primary">Add New Row</button>
+                    class="btn btn-primary trn">Add New Row</button>
             </p>
         </tr>
         <div class="TableWidth">
@@ -176,7 +181,7 @@
                     <thead>
                         <tr>
                             <td style="word-break: break-all;width: 100%;" colspan="6"></td>
-                            <td style="width: 40px;">Delete</td>
+                            <td style="width: 40px;" class="trn">Delete</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -214,17 +219,17 @@
         <br>
         <table class="TableWidth">
             <tr>
-                <td>Calibration Performed By</td>
+                <td class="trn">Calibration Performed By</td>
                 <td><input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy"
                         class="Border0px" disabled>
                 </td>
 
-                <td>Reviewed By</td>
+                <td class="trn">Reviewed By</td>
                 <td><input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px" disabled>
                 </td>
             </tr>
             <tr>
-                <td class="textleftborder">Date:</td>
+                <td class="textleftborder trn">Date:</td>
                 @if(true)
                 {
                     var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -233,7 +238,7 @@
                     </td>
                 }
 
-                <td class="textleftborder">Date:</td>  
+                <td class="textleftborder trn">Date:</td>  
                        
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
                 || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
@@ -259,12 +264,12 @@
             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null )
             {
                     <tr>
-                            <td class="textleftborder">Status</td>
+                            <td class="textleftborder trn">Status</td>
                             <td class="textleftborder" colspan="3">
                                 <div style="text-align: left;">
-                                    <label>Approve</label>
+                                    <label class="trn">Approve</label>
                                     <input type="radio" name="Approve" id="Approve">
-                                    <label>Reject</label>
+                                    <label class="trn">Reject</label>
                                     <input type="radio" name="Approve" id="Reject">
                                 </div>
                             </td>
@@ -276,9 +281,9 @@
                     <td colspan="4">
                         @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                         {
-                            <input type="button" class="btn btn-primary" value="Save" name="Save" id="General" onclick="SaveGeneral(language)">
+                            <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="General" onclick="SaveGeneral(language)">
                         }
-                        <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
                     </td>
                 </tr>
             }
@@ -288,9 +293,9 @@
                         <td colspan="4" style="text-align:center;">
                             @if(@Model.ReviewStatus == null || @Model.ReviewStatus == 0 )
                             {
-                                <input type="button" class="btn btn-primary" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+                                <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
                             }
-                            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
+                            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>    
                         </td>
                     </tr>
             }

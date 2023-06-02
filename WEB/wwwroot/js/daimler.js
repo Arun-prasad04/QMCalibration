@@ -2077,6 +2077,7 @@ function DeleteMasterEqiupment(id) {
 
 
 function SaveCertificate(templtatename, lang) {
+    debugger;
     var temptName = templtatename;
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {

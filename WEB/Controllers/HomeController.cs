@@ -29,9 +29,9 @@ public class HomeController : BaseController
 	}
 
 	public IActionResult Index()
-	{
+	{		
 		ViewBag.PageTitle = "DashBoard";
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));		
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
