@@ -554,7 +554,7 @@
              {
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
-                <input type="button" value="ReGenerate" onclick="SaveCertificate('TWObs,language')" class="btn btn-primary">
+                    <input type="button" value="ReGenerate" onclick="SaveCertificate('TWObs',language)" class="btn btn-primary">
 
                 }
                 <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	

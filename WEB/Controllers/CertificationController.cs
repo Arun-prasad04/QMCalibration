@@ -593,27 +593,39 @@ public class CertificationController : BaseController
     doc.OptionFixNestedTags = true;
     doc.LoadHtml(ExportData);
     ExportData = doc.DocumentNode.OuterHtml;
-    using (MemoryStream sourceStream = new System.IO.MemoryStream())
-    {
-      StringReader reader = new StringReader(ExportData);
-      Document PdfFile = new Document(PageSize.A4, 20, 20, 30, 30);
-      PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);
-      PdfFile.Open();
-      XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
-      PdfFile.Close();
+       
+		using (MemoryStream sourceStream = new System.IO.MemoryStream())
+        {
+			
+			StringReader reader = new StringReader(ExportData);
 
-      // StringReader stringReader = new StringReader(ExportData);         
-      //     Document PDFdoc = new Document(PageSize.A4, 10, 10, 10, 20);
-      //     HTMLWorker htmlparser =   new HTMLWorker(PDFdoc);
-      //     PdfWriter.GetInstance(PDFdoc, sourceStream);
+            
+			Document PdfFile = new Document(PageSize.A4, 20, 20, 30, 30);
+            PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);
 
-      //     PDFdoc.Open();
-      //     htmlparser.Parse(stringReader);
-      //     //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
-      //     PDFdoc.Close();
+            PdfFile.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+			
+			PdfFile.Close();
 
-      return File(sourceStream.ToArray(), "application/pdf", "ExportData.pdf");
-    }
+			
+			//System.IO.FileStream fs = new FileStream(Server.MapPath("PDFDIR") + "\\" + otd.NumeroOTD.ToString() + ".pdf", FileMode.Create);
+
+
+
+			// StringReader stringReader = new StringReader(ExportData);         
+			//     Document PDFdoc = new Document(PageSize.A4, 10, 10, 10, 20);
+			//     HTMLWorker htmlparser =   new HTMLWorker(PDFdoc);
+			//     PdfWriter.GetInstance(PDFdoc, sourceStream);
+
+			//     PDFdoc.Open();
+			//     htmlparser.Parse(stringReader);
+			//     //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+			//     PDFdoc.Close();
+			//return File(Fs, "application/pdf", sTemp);
+			return File(sourceStream.ToArray(), "application/pdf", "ExportData.pdf");
+
+		}
   }
 
   #endregion

@@ -2077,6 +2077,7 @@ function DeleteMasterEqiupment(id) {
 
 
 function SaveCertificate(templtatename, lang) {
+    
     var temptName = templtatename;
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
@@ -2085,7 +2086,7 @@ function SaveCertificate(templtatename, lang) {
     }
 
     Swal.fire({
-        title: "Are you want Generate QR Code with Pdf file?",
+        title: "Are you want to Generate QR Code with Pdf file?",
         text: "You will save Certificate and Generate QR Code with Pdf file!",
         type: "warning",
         showCancelButton: true,

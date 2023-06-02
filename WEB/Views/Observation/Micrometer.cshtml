@@ -219,9 +219,12 @@
         <td colspan="2">Flatness2</td>
     </tr>
     <tr>
-        <td colspan="2" class="FlatNess1and2-TextBox"><input type="text" value="@Model.Flatness1" class="Tables-AndTablesTextBox"
+                <td colspan="2" class="FlatNess1and2-TextBox">
+                    <input type="text" value="@Model.Flatness1" class="Tables-AndTablesTextBox" onkeypress="ValidateFlatness1(language)"
                 id="Flatness1" name="Flatness1"></td>
-        <td colspan="2" class="FlatNess1and2-TextBox"><input type="text" value="@Model.Flatness2" class="Tables-AndTablesTextBox"
+                
+                <td colspan="2" class="FlatNess1and2-TextBox">
+                    <input type="text" value="@Model.Flatness2" onkeypress="ValidateFlatness2(language)" class="Tables-AndTablesTextBox"
                 id="Flatness2" name="Flatness2"></td>
     </tr>
     <tr>
@@ -237,7 +240,7 @@
 
 </table>
 <br>
-<table class="Tables-AndTablesTextBox">
+<table class="Tables-AndTablesTextBox" id="TblMicro">
     <tr>
         <td style="font-weight: bold;">Calibration Performed By</td>
         <td><input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
@@ -334,16 +337,21 @@
 
 
 <script type="text/javascript">
-    $(function () {
+    $(function () 
+    {
 
-        $('#Approve').on('change', function () {
-            if ($('#Approve').not(this).prop('checked', false)) {
+        $('#Approve').on('change', function ()
+        {
+            if ($('#Approve').not(this).prop('checked', false))
+            {
                 $('#ReviewStatus').val(1);
             }
         });
 
-        $('#Reject').on('change', function () {
-            if ($('#Reject').not(this).prop('checked', false)) {
+        $('#Reject').on('change', function () 
+        {
+            if ($('#Reject').not(this).prop('checked', false))
+            {
                 $('#ReviewStatus').val(2);
             }
 
@@ -361,14 +369,55 @@
     });
 
 </script>
+<script type="text/javascript">
+    $(function ValidateFlatness1(lang) {
+         
+        $("#Flatness1").keypress(function (evt)
+        {
+            
+
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+            {
+                evt.preventDefault();
+                showWarning("Please enter the Decimal value", lang);
+            
+           
+            }
+
+        });
+
+       
+    });
+    $(function ValidateFlatness2(lang) {
+
+        $("#Flatness2").keypress(function (evt) {
+
+
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {
+                evt.preventDefault();
+                showWarning("Please enter the Decimal value", lang);
+               
+
+            }
+
+        });
+
+
+    });
+
+</script>
 
  <script>
-    setTimeout(function () {
+    setTimeout(function ()
+    {
 
     $('#reservationdate').datetimepicker({
      format: 'DD/MM/YYYY'
     });
+           
+   
     }, 1000);
 
 </script> 
+
 

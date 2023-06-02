@@ -127,7 +127,7 @@ public class InstrumentReportController : BaseController
         {
             yearsList.Add(year);
         }
-
+        
         ViewBag.currentYear = currentYear;
         ViewBag.yearsList = yearsList;
         if (response.ResponseDataList==null || !response.ResponseDataList.Any())
