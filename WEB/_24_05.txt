@@ -1,0 +1,15 @@
+[24:05:2023] [09:32:02:5979]	Email - labadmin@gmail.com
+[24:05:2023] [09:32:08:4787]	ValidateUser - WEB.Models.UserViewModel
+[24:05:2023] [09:32:08:6126]	response - Success
+[24:05:2023] [09:33:23:4128]	Home Index Method 
+[24:05:2023] [09:33:23:4463]	UserID - 25
+[24:05:2023] [09:33:23:4483]	userRoleId - 2
+[24:05:2023] [09:33:23:9497]	MasterList - 17
+[24:05:2023] [09:33:29:0980]	Home MasterTranslate Method 
+[24:05:2023] [09:33:29:1255]	Home MasterTranslate Method 
+[24:05:2023] [11:09:07:3970]	Email - labadmin@gmail.com
+[24:05:2023] [11:09:13:1891]	ValidateUser - WEB.Models.UserViewModel
+[24:05:2023] [11:09:13:2856]	response - Success
+[24:05:2023] [11:09:13:2874]	UserRoleId Session - 2
+[24:05:2023] [11:13:59:0368]	Email - labadmin@gmail.com
+[24:05:2023] [11:15:41:5046]	Email - labadmin@gmail.com

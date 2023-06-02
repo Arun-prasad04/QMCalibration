@@ -157,6 +157,8 @@ public ResponseViewModel<ExternalRequestViewModel> InsertExternalRequest(int mas
             };
         }catch(Exception e){
             _unitOfWork.RollBack();
+            ErrorViewModelTest.Log("ExternalRequestService - InsertExternalRequest Method Exception");
+            ErrorViewModelTest.Log(e.Message);
             return new ResponseViewModel<ExternalRequestViewModel>{
                 ResponseCode=500,
                 ResponseMessage="Failure",

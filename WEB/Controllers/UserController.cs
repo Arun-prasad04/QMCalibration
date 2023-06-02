@@ -110,8 +110,7 @@ public class UserController : BaseController
 		if (response.ResponseMessage == "Success")
 		{
 			if (response.ResponseData != null)
-			{
-
+			{				
 				HttpContext.Session.SetString("UserRoleId", response.ResponseData.UserRoleId.ToString());
 				HttpContext.Session.SetString("FirstName", response.ResponseData.FirstName.ToString());
 				HttpContext.Session.SetString("LastName", response.ResponseData.LastName.ToString());

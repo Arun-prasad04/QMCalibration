@@ -487,7 +487,7 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
 
-                    <input type="button" value="ReGenerate" onclick="SaveCertificate('PlungerDail,language')" class="btn btn-primary">
+                    <input type="button" value="ReGenerate" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary">
                 }
                 <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
                 <a class="btn btn-primary" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
@@ -496,7 +496,7 @@
              {
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
-                    <input type="button" value="Save" onclick="SaveCertificate('PlungerDail,language')" class="btn btn-primary">
+                    <input type="button" value="Save" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary">
 
                 }
              }

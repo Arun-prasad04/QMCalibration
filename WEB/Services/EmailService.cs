@@ -71,7 +71,7 @@ namespace WEB.Service
             //msg.Bcc.Add("mohammedashik.s@intelizign.com");
             // msg.Bcc.Add("sikkandar.kadhar@intelizign.com");
             client.SendCompleted += EmailSendCompleted;
-            await client.SendMailAsync(msg);
+            //await client.SendMailAsync(msg);
           }
         }
         else
@@ -137,7 +137,7 @@ namespace WEB.Service
           smtp.UseDefaultCredentials = false;
           smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
           smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-          smtp.Send(message);
+          //smtp.Send(message);
       }
       else
       {
