@@ -238,7 +238,7 @@ public class QualityCheckController : BaseController
         return View();
     }
     public IActionResult ReplicateTestGrid()
-    {
+    { 
         ViewBag.ResponseCode = TempData["ResponseCode"];
         ViewBag.ResponseMessage = TempData["ResponseMessage"];
 

@@ -26,7 +26,7 @@ public class ObservationController : BaseController
             }
 
             else if (response.ResponseData.ObservationTemplate == 72)
-            {
+            {  
                 templateName = "LeverDial";
             }
             else if (response.ResponseData.ObservationTemplate == 73)

@@ -93,6 +93,7 @@ public class InstrumentService : IInstrumentService
           RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
         }
         ).ToList();
+
       }
 
       return new ResponseViewModel<InstrumentViewModel>
