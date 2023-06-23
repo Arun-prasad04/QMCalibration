@@ -63,6 +63,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - GetAllMasterList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -129,8 +131,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
-			ErrorViewModelTest.Log("GetMasterById Exception ");
-			ErrorViewModelTest.Log(e.Message);
+			ErrorViewModelTest.Log("MasterService - GetMasterById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -218,6 +220,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - InsertMaster Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -354,6 +358,8 @@ public class MasterService : IMasterService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("MasterService - UpdateMaster Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -386,6 +392,8 @@ public class MasterService : IMasterService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("MasterService - DeleteMaster Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -422,6 +430,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - CreateNewMaster Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -476,6 +486,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - GetAllMasterQuarantineList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -530,6 +542,8 @@ public class MasterService : IMasterService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("MasterService - MasterQuarantine Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -567,6 +581,8 @@ public class MasterService : IMasterService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("MasterService - MasterRemoveQuarantine Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -606,6 +622,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - GetEquipmentListByName Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,
@@ -647,6 +665,8 @@ public class MasterService : IMasterService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("MasterService - GetEquipmentListByLabId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 500,

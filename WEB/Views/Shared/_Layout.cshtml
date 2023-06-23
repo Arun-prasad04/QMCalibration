@@ -188,9 +188,9 @@
 							}
 
 							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
-							@HttpContextAccessor.HttpContext.Session.GetString("LastName")
+							@HttpContextAccessor.HttpContext.Session.GetString("LastName") 
 						</a>
-					</div>
+					</div>					
 				</div>
 
 				<!-- Sidebar Menu -->
@@ -1282,7 +1282,25 @@
 					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
 					"Your details recorded": { jp: "あなたの詳細が記録されました", en: "Your details recorded" },
 					"Equipment Name Japanese": { jp: "機器名 日本語", en: "Equipment Name Japanese" },
-					"Instrument Id Number": { jp: "機器ID番号", en: "Instrument Id Number" },
+					"Instrument Id Number": { jp: "サブ部門", en: "Instrument Id Number" },
+					"Sub Department": { jp: "機器ID番号", en: "Sub Department" },
+					"Asst.Foreman ShortID": { jp: "職長補佐のショートID", en: "Asst.Foreman ShortID" },
+					"Asst.Foreman Name": { jp: "職長補佐名", en: "Asst.Foreman Name" },
+					"Asst.Foreman Email": { jp: "職長補佐の電子メール", en: "Asst.Foreman Email" },
+					"Foreman ShortID": { jp: "職長ショートID", en: "Foreman ShortID" },
+					"Foreman Name": { jp: "職長名", en: "Foreman Name" },
+					"Foreman Email": { jp: "職長のメール", en: "Foreman Email" },
+					"Kakaricho ShortID": { jp: "掛かり町ショートID", en: "Kakaricho ShortID" },
+					"Kakaricho Name": { jp: "掛町名", en: "Kakaricho Name" },
+					"Kakaricho Email": { jp: "掛かり町メール", en: "Kakaricho Email" },
+					"Manager ShortID": { jp: "マネージャーのショートID", en: "Manager ShortID" },
+					"Manager Name": { jp: "マネージャー名", en: "Manager Name" },
+					"Manager Email": { jp: "マネージャーのメールアドレス", en: "Manager Email" },
+					"Asst.Foreman Contact": { jp: "職長補佐の連絡先", en: "Asst.Foreman Contact" },
+					"Foreman Contact": { jp: "職長の連絡先", en: "Foreman Contact" },
+					"Kakaricho Contact": { jp: "掛町連絡先", en: "Kakaricho Contact" },
+					"Manager Contact": { jp: "マネージャーの連絡先", en: "Manager Contact" },
+
 
 
 					//Micrometer Template Observation Sheet
@@ -1451,10 +1469,33 @@
 					"Certificate No": { jp: "証明書の番号", en: "Certificate No" },
 					"1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement.": { jp: "1. キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。", en: "1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement." },
 								"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability" },
-					//"Remarks": { jp: "備考", en: "Remarks"},
-					
-					"Master & Equipment Used For Calibration & Traceability": { jp: "校正とトレーサビリティに使用されるマスターと機器", en: "Master & Equipment Used For Calibration & Traceability" }
-							}
+					"Remarks": { jp: "備考", en: "Remarks"},
+					"Calibration Procedure / <br> Reference Standard :": { jp: "校正手順 / <br> 基準標準 :", en: "Calibration Procedure / <br> Reference Standard :" },
+					"Format No :": { jp: "形式番号:", en: "Format No :" },
+				
+					// VernierCaliper Certification Template
+					"External Measurement": { jp: "外部測定", en: "External Measurement" },
+					"Deviation": { jp: "偏差", en: "Deviation" },
+					"Internal Measurement": { jp: "内部測定", en: "Internal Measurement" },
+					"Depth Measurement": { jp: "深さ測定", en: "Depth Measurement" },
+					"Parallelism for External Jaws": { jp: "外爪の平行度", en: "Parallelism for External Jaws" },
+					"Parallelism for Internal Jaws": { jp: "内爪の平行度", en: "Parallelism for Internal Jaws" },
+
+					// TWObs Certification Template
+					"Set Value": { jp: "設定値", en: "Set Value" },
+					"Dev from Nom in N-m": { jp: "N-m の Nom からの偏差", en: "Dev from Nom in N-m" },
+					"Dev from Nom in %": { jp: "公称値からの偏差 (%)", en: "Dev from Nom in %" },
+
+					// ThreadGauges Certification Template
+					"Result : NoGo Member": { jp: "結果 : NoGo メンバー", en: "Result : NoGo Member" },
+					"Thread Plug Gauge : Go": { jp: "ねじプラグゲージ : Go", en: "Thread Plug Gauge : Go" },
+					"Thread Plug Gauge : NoGo": { jp: "ねじプラグゲージ : NoGo", en: "Thread Plug Gauge : NoGo" },
+					"Effective Diameter Max": { jp: "有効径最大値", en: "Effective Diameter Max" },
+					"Effective Diameter Min": { jp: "最小有効径", en: "Effective Diameter Min" },
+					"Effective Diameter Wear limit": { jp: "有効直径 摩耗限界", en: "Effective Diameter Wear limit" }
+
+
+				}
 
 				return dicts;
 			}

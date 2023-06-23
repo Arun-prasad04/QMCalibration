@@ -1,4 +1,4 @@
-namespace CMT.DATAMODELS  
+namespace CMT.DATAMODELS
 {
  public class Department{
 public int Id { get;set;}

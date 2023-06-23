@@ -45,7 +45,7 @@ public class HomeController : BaseController
 		}
 		if (userRoleId == 2 || userRoleId == 4)
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
+			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && Q.ActiveStatus == true).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
 			if (InstrumentList != null)
 			{
 				ViewBag.InstrumentCount = InstrumentList.Count;

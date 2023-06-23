@@ -12,7 +12,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 namespace WEB.Services;
 
 
-public class DepartmentService:IDepartmentService
+public class DepartmentService : IDepartmentService
 {
     
     private readonly IMapper _mapper;
@@ -161,9 +161,9 @@ public class DepartmentService:IDepartmentService
     public ResponseViewModel<DepartmentViewModel> InsertDepartment(DepartmentViewModel department){
         try{
             _unitOfWork.BeginTransaction();
-            //_unitOfWork.Repository<Department>().Insert(_mapper.Map<Department>(department));
-            //_unitOfWork.SaveChanges();
-            //_unitOfWork.Commit();
+            _unitOfWork.Repository<Department>().Insert(_mapper.Map<Department>(department));
+            _unitOfWork.SaveChanges();
+            _unitOfWork.Commit();
             return new ResponseViewModel<DepartmentViewModel>{
                 ResponseCode=200,
                 ResponseMessage="Success",
@@ -186,25 +186,12 @@ public class DepartmentService:IDepartmentService
     public ResponseViewModel<DepartmentViewModel> UpdateDepartment(DepartmentViewModel department){
 
         try{
-			
-			Department departmentById=_unitOfWork.Repository<Department>().GetQueryAsNoTracking(Q=>Q.Id==department.Id).SingleOrDefault();
+
+            Department departmentById=_unitOfWork.Repository<Department>().GetQueryAsNoTracking(Q=>Q.Id==department.Id).SingleOrDefault();
             departmentById.Name=department.Name;
-			departmentById.NameJP = department.NameJP;
-			departmentById.Description=department.Description;
-			departmentById.DescriptionJP = department.DescriptionJP;
-			//------------------new MODIFICATION START---------------------
-			//departmentById.Section = department;
-			//------------------new MODIFICATION END---------------------
-			departmentById.DeptCode = department.DeptCode;
-            departmentById.PlantId = department.PlantId;
-            departmentById.Section=department.Section;
-            departmentById.SubSection=department.SubSection;
-
-			departmentById.SectionJP = department.SectionJP;
-			departmentById.SubSectionJP = department.SubSectionJP;
-
-			//departmentById.ModifiedBy= userId;
-			departmentById.ModifiedOn=DateTime.Now;
+            departmentById.Description=department.Description;
+            departmentById.ModifiedBy=1;
+            departmentById.ModifiedOn=DateTime.Now;
             _unitOfWork.BeginTransaction();
             _unitOfWork.Repository<Department>().Update(departmentById);
             _unitOfWork.SaveChanges();

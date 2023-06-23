@@ -102,26 +102,6 @@
 									<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
 								</div>
 							</div>*@
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Department Name</label>
-									<select class="form-control" name="DepartmentId" id="DepartmentId">
-										@foreach (var department in @Model.DepartmentList)
-										{
-											if (department.Id == Model.DepartmentId)
-											{
-												<option value="@department.Id" selected="selected">@department.Name</option>
-											}
-											else
-											{
-												<option value="@department.Id">@department.Name</option>
-											}
-										}
-									</select>
-								</div>
-							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label class="required trn">Designation</label>
@@ -140,10 +120,74 @@
 									</select>
 								</div>
 							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="required trn">Department Name</label>
+									<select class="form-control" name="DepartmentId" id="DepartmentId">
+										<option value="">--Select--</option>
+										@foreach (var department in @Model.DepartmentList)
+										{
+											if (department.Id == Model.DepartmentId)
+											{
+												<option value="@department.Id" selected="selected">@department.Name</option>
+											}
+											else
+											{
+												<option value="@department.Id">@department.Name</option>
+											}
+										}
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="required trn">Sub Department</label>
+									<select class="form-control" name="SubDepartment" id="SubDepartment">
+
+										@*@foreach (var designation in @Model.DesignationList)
+										{
+											if (designation.Id == Model.Designation)
+											{
+												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+											}
+											else
+											{
+												<option value="@designation.Id">@designation.AttrValue</option>
+											}
+										}*@
+									</select>
+								</div>
+							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label class="required trn">Level</label>
 									<select class="form-control" name="Level" id="Level">
+										@if (Model.Level == "L10")
+										{
+											<option value="L10" selected="true">L10</option>
+										}
+										else
+										{
+											<option value="L10">L10</option>
+										}
+										@if (Model.Level == "L9")
+										{
+											<option value="L9" selected="true">L9</option>
+										}
+										else
+										{
+											<option value="L9">L9</option>
+										}
+										@if (Model.Level == "L8")
+										{
+											<option value="L8" selected="true">L8</option>
+										}
+										else
+										{
+											<option value="L8">L8</option>
+										}
 										@if (Model.Level == "L7")
 										{
 											<option value="L7" selected="true">L7</option>
@@ -159,30 +203,6 @@
 										else
 										{
 											<option value="L6">L6</option>
-										}
-										@if (Model.Level == "L5")
-										{
-											<option value="L5" selected="true">L5</option>
-										}
-										else
-										{
-											<option value="L5">L5</option>
-										}
-										@if (Model.Level == "L4")
-										{
-											<option value="L4" selected="true">L4</option>
-										}
-										else
-										{
-											<option value="L4">L4</option>
-										}
-										@if (Model.Level == "L3")
-										{
-											<option value="L3" selected="true">L3</option>
-										}
-										else
-										{
-											<option value="L3">L3</option>
 										}
 									</select>
 								</div>
@@ -268,7 +288,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="ro w">
+						<div class="row" id="divSign">
 							<div class="col-md-4">
 								<div class="form-group">
 									<div class="custom-file">
@@ -391,18 +411,25 @@
 						$('#LastName').val('');
 						$('#Email').val('');
 						$('#MobileNo').val('');
-	@* $('#FirstName').removeAttr('disabled');
+						@* $('#FirstName').removeAttr('disabled');
 							$('#LastName').removeAttr('disabled');
 							$('#Email').removeAttr('disabled');
 							$('#MobileNo').removeAttr('disabled'); *@
 					  }
 					else {
+						console.log(data);
 						instList = data;
+						console.log(instList);
 						$('#FirstName').val(instList.firstName);
 						$('#LastName').val(instList.lastName);
 						$('#Email').val(instList.emailId);
 						$('#MobileNo').val(instList.mobile);
-	@* $('#FirstName').attr('disabled','disabled');
+						$('#DepartmentId option:contains(' + instList.DepartmentId + ')').attr('selected', 'selected');
+						//$('#DepartmentId option').map(function () {
+						//	if ($(this).text() == instList.DepartmentId) return this;
+						//}).attr('selected', 'selected');
+
+						@* $('#FirstName').attr('disabled','disabled');
 							$('#LastName').attr('disabled','disabled');
 							$('#Email').attr('disabled','disabled');
 							$('#MobileNo').attr('disabled','disabled'); *@
@@ -480,6 +507,88 @@
 </script>
 
 <script>
+	
+	var sourcearray = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.DepartmentList))');
+	//alert(sourcearray);
+
+	var selectDept = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.UserDept))');
+	//alert(selectDept);
+	var eddata = [];
+	$.each(sourcearray, function (key, value) {
+		console.log(value);
+		if (jQuery.inArray(value.id, selectDept) == -1 && value.id == selectDept) {
+			eddata.push({ Id: value.id, Name: value.name, Section: value.section });
+			//alert(value.ShippingMode);
+			//$("#DepartmentId").
+			console.log(eddata);
+
+		}
+	});
+	BindEditSubDepartment(eddata);
+
+
+	function BindEditSubDepartment(data) {
+		console.log(data);
+		$("#SubDepartment").empty();
+		//$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
+		$.each(data, function (key, value) {
+			$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
+		});
+	}
+
+
+
+	$("#DepartmentId").change(function () {
+		var val = this.value;
+		//alert(val);
+		if (val == 66){
+			$("#divSign").show();
+		}
+		else {
+			$("#divSign").hide();
+		}
+		var data = [];
+		$.each(sourcearray, function (key, value) {
+			//console.log(value);
+
+			debugger;
+			if (jQuery.inArray(value.id, val) == -1 && value.id == val && value.section != null) {
+				data.push({ Id: value.id, Name: value.name, Section: value.section });
+				//alert(value.ShippingMode);
+
+			}
+		});
+
+		BindSubDepartment(data);
+	});
+
+
+	function BindSubDepartment(data) {
+		console.log(data);
+		$("#SubDepartment").empty();
+		$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
+		$.each(data, function (key, value) {		
+			if (value.Section != null) {
+				$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
+			}
+				
+		});
+	}
+	
+
+	$(document).ready(function () {
+		
+		var dptid = $("#DepartmentId").val();
+		//alert(dptid);
+		if (dptid == 66) {
+			$("#divSign").show();
+		}
+		else {
+			$("#divSign").hide();
+		}
+		
+	});
+
 	function checkFileSize(element, maxSize, event) {
 		var val = $(element).val(); //get file value
 		var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB

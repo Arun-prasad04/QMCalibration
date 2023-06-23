@@ -47,6 +47,8 @@ public class UserController : BaseController
 	{
 		ViewBag.PageTitle = "User Edit";
 		ResponseViewModel<UserViewModel> response = _userService.GetUserById(userId);
+		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
+		ViewBag.UserDept = response.ResponseData.DepartmentId;
 		return View("Create", response.ResponseData);
 	}
 	public class CurrentUserInfo
@@ -57,6 +59,8 @@ public class UserController : BaseController
 		public string EmailId { get; set; }
 		public string Landline { get; set; }
 		public string Mobile { get; set; }
+
+		public string DepartmentId { get; set; }
 		public int UserCount { get; set; }
 	}
 	public IActionResult GetUserInfoFromLDAP(string ShortId)
@@ -80,7 +84,9 @@ public class UserController : BaseController
 					LastName = dsresult.Properties["sn"][0].ToString(),
 					EmailId = dsresult.Properties["mail"][0].ToString(),
 					Landline = dsresult.Properties["telephoneNumber"].Value == null ? "" : dsresult.Properties["telephoneNumber"].Value.ToString(),
-					Mobile = dsresult.Properties["mobile"].Value == null ? "" : dsresult.Properties["mobile"].Value.ToString()
+					Mobile = dsresult.Properties["mobile"].Value == null ? "" : dsresult.Properties["mobile"].Value.ToString(),
+					DepartmentId = dsresult.Properties["department"] == null ? "" : dsresult.Properties["department"].Value.ToString(),
+
 				};
 				return Json(currentUserInfo);
 			}
@@ -96,6 +102,7 @@ public class UserController : BaseController
 	{
 		ViewBag.PageTitle = "User Create";
 		ResponseViewModel<UserViewModel> response = _userService.CreateNewUser();
+		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
 		return View(response.ResponseData);
 	}
 	//public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
