@@ -1,5 +1,3 @@
-using CMT.DATAMODELS;
-
 namespace WEB.Models{
 
 public class DepartmentViewModel

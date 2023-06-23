@@ -40,7 +40,9 @@ namespace WEB.Models
         public IFormFile ImageUpload { get; set; }
         public List<UserViewModel> Labadminuserlist { get; set; }
         public int DeletingID { get; set; }
-    }
+
+		public string? subSection { get; set; }
+	}
     public class InviteUsers
     {
         public string? Email { get; set; }

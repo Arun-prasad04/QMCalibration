@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
@@ -513,10 +513,11 @@
                                 <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
                                     <div>
                                         <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                        <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village,
-                                            Singaperumal Koil Road,</p>
-                                        <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram
-                                            - 602105, Tamil Nadu, India.</p>
+                                        <h5 style="margin: 5px;">ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                        <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT工業団地、オラガダム村、シンガペルマル・コイル・ロード、</p>
+                                        <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">マトゥール(PO)、スリペルンバドゥル・タルク、カンチプラム - 602105、タミル・ナードゥ州、インド。</p>
                                         <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
                                         <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
                                             www.bharatbenz.com</p>
@@ -529,37 +530,34 @@
                     </table>
               
             <div>
-                    <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION</h3>
+                        <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION / 校正証明書</h3>
             </div>
             <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
                 <tr>
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr style="font-size:x-small">
-                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC</th>
+                                        <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC / DUCの説明</th>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate
-                                    No</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate No / 証明書の番号</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">:  @Model.MicrometerData.CertificateFormat</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report
-                                    Issues Date</td>
+                                        <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report Issues Date / レポート発行日</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr style="font-size:x-small">
-                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No</td>
+                                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No / ULR番号</td>
                                     <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.MicrometerData.ULRFormat</td>
                                     <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
                                     <td style="width:400px;padding-bottom: 15px;"></td>
                                 </tr>
                             }
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration</td>
+                                        <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration / 校正日</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.MicrometerData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next
-                                    Calibration Due</td>
+                                        <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next Calibration Due / 次回の校正期限</td>
                                     @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 15px;padding:10px">: --</td>
@@ -570,19 +568,15 @@
                                     }
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The
-                                    Customer</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The Customer / お客様のお名前</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of
-                                    Receipt</td>
+                                        <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of Receipt / 領収書の日付</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department
-                                </td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department / デパートメント</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
-                                    of Equipment</td>
+                                        <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description of Equipment / 設備の説明</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
                             </tr>
                             @* <tr style="font-size:x-small">
@@ -608,17 +602,10 @@
 
                             <tr style="font-size:x-small">
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Range</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Least Count</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Serial No</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Make</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Range / 範囲</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Least Count / 最小数</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Serial No / シリアル番号</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Make / 作る</th>
                             </tr>
                             <tr style="font-size:x-small">
                                 <td
@@ -647,23 +634,21 @@
                     <td>
                         <table style="font-size:x-small;padding:5px;">
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Identification Number</td>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Identification Number / 識別番号</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.IdNo</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition
-                                    of DUC</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition of DUC / DUCの状態</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.MicrometerData.MicrometerCondition</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
                                 <td style="width:400px; font-weight: 900; padding:10px;padding-bottom: 15px;">
-                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
-                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>
+                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure 校正手順 / </p>
+                                            <p style="margin: 0px; font-size: x-small;">Reference Standard 参照標準 :</p>
                                 </td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.StandardReffered</td>
                                 <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
@@ -676,8 +661,8 @@
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr>
-                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II.
-                                    Master & Equipment Used For Calibration & Traceability</th>
+                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II. Master & Equipment Used For Calibration & Traceability</th>
+                                        <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II. 校正とトレーサビリティに使用されるマスターと機器</th>
                             </tr>
                         </table>
                     </td>
@@ -688,26 +673,17 @@
                             style="border-collapse: collapse; border:0.5px solid #000; width:98%;font-size:x-small;">
                             <tr>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">
-                                    SI.</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">SI.</th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Master Equipment</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Master Equipment / マスター装備</th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Id No</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Id No / アイディー番号</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Make / 作る </th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Make </th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Traceability / トレーサビリティ </th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Traceability </th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Certificate No </th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Validity </th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Certificate No / 証明書の番号 </th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Validity / 有効 </th>
                             </tr>
                             @{ int increment=1;
                             @foreach (var item in @Model.MasterEqiupmentList)
@@ -731,8 +707,8 @@
                     <td>
                         <table style="font-size:x-small;padding:5px;">
                             <td>
-                                <p style="padding:10px;padding-bottom: 15px;padding-top: 15px;">The master Equipment used for calibration
-                                    are calibrated and traceable to National / International Standard</p>
+                                <p style="padding:10px;padding-bottom: 15px;padding-top: 15px;">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                                <p style="padding:10px;padding-bottom: 15px;padding-top: 15px;">校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。</p>
                             </td>
                         </table>
                     </td>
@@ -741,15 +717,13 @@
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Environmental Condition</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Environmental Condition / Environmental Condition</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px;"><p>: 20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty
-                                    Of Measurement</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty Of Measurement / 測定の不確かさ</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.MicrometerData.PdfUncertainity</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
@@ -762,9 +736,8 @@
                         <table style="font-size:x-small;padding:5px">
                             <tr>
                                 <td>
-                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded
-                                        uncertainty is estimatd at a confidence level approximately 95% with a coverage
-                                        factor k = 2</p>
+                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+                                            <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 95% の信頼水準で推定されます。</p>
                                 </td>
                             </tr>
                         </table>
@@ -775,16 +748,14 @@
                         <table style="font-size:x-small;padding:10px;width:100%">
                             <tr>
                                 <td>
-                                    <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
-                                    </p>
+                                            <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By / 校正者 </p>
                                     <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.MicrometerData.PerformedBySign"/>
                                     <p style="margin-left:20px;">@Model.MicrometerData.CalibrationPerformedBy</p>
                                     <p style="margin-left:20px;">@Model.MicrometerData.PerformedByDesignation</p>
                                 </td>
 
                                 <td style="margin-left: 420px;text-align:right">
-                                    <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                        Signatory</p>
+                                            <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
                                         <img style="margin-bottom:5px;margin-right:25px; width:100px;" src="./wwwroot/UserSignature/@Model.MicrometerData.ReviewedBySign"/>
                                         <p style="margin-right:20px;">@Model.MicrometerData.ReviewedBy</p>
                                         <p style="margin-right:20px;">@Model.MicrometerData.ReviewedByDesignation</p>
@@ -798,13 +769,12 @@
                         <table  
                             style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                             <td style="padding:2px;">
-                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the
-                                    time of & under the stated conditions of measurement.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either
-                                    in full or in part without out permission in writing.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this
-                                    cetificate as per customer request irrespective of the status or condition of the
-                                    IMTE.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. 校正結果は、記載された測定条件下での測定時に有効です。</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                                        <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. 書面による許可なく、レポートの全部または一部を複製してはなりません。</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                                        <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
                             </td>
                             <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
                                 </td>
@@ -819,11 +789,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:10px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 / フォーマット番号 : 365.QM.D.16, Rev No : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                                <p style="margin-left: 80px;font-size:xx-small">Page / ページ 1 of 2</p>
                             </td>
 
                         </tr>
@@ -853,13 +823,16 @@
                             <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
                                 <div>
                                     <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
-                                        Village, Singaperumal Koil Road,</p>
-                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
-                                        Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <h5 style="margin: 5px;">ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT工業団地、オラガダム村、シンガペルマル・コイル・ロード、</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">マトゥール(PO)、スリペルンバドゥル・タルク、カンチプラム - 602105、タミル・ナードゥ州、インド。</p>
                                     <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
-                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
-                                        www.bharatbenz.com</p>
+                                    <p style="margin: 5px; font-size: x-small;">
+                                        Website: www.daimler-indiacv.com /
+                                        www.bharatbenz.com
+                                    </p>
                                 </div>
                             </td>
                             <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
@@ -873,13 +846,10 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III.
-                                Mechanical Calibration Results</td>
-                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate
-                                No  @Model.MicrometerData.CertificateFormat</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III. Mechanical Calibration Results / 機械的校正結果</td>
+                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate No / 証明書の番号  @Model.MicrometerData.CertificateFormat</td>
                             <td
-                                style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
-                                Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                                style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Report Issue Date / レポート発行日 : @DateTime.Now.ToString("dd-MM-yyyy")</td>
                         </tr>
                     </table>
                 </td>
@@ -888,8 +858,7 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All
-                                Values are in @Model.MicrometerData.Allvalues</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All Values are in / すべての値が入っています @Model.MicrometerData.Allvalues</td>
                         </tr>
                     </table>
                 </td>
@@ -900,9 +869,9 @@
                         style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                     <tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px"  colspan="2" class="text-center">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Measured</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Observed</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Dev from Nom</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Measured / 測定した</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Observed / 観察された</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2" class="text-center">Dev from Nom / ノムからの開発</th>
                     </tr>
                     <tr>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">1</td>
@@ -1038,15 +1007,15 @@
                     <table align="center" 
                         style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                         <tr>
-						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2" rowspan="2">Range</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Zero Setting</td>
-						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">Parallelism</td>
-						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">FlatNess</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2" rowspan="2">Range / 範囲</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Zero Setting / ゼロ設定</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">Parallelism / 平行度</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">FlatNess / フラットネス</td>
                     </tr>
 					<tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Actual</td>
-						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">Actual</td>
-						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Actual</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Actual / 実際</td>
+						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">Actual / 実際</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">Actual / 実際</td>
                     </tr>
 					<tr>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:400px;height:25px; padding:5px" colspan="2">@Model.Range</td>
@@ -1061,14 +1030,13 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration
-                            </td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration / 校正結果 </td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.MicrometerData.PdfCalibrationResult</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks / 備考</td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.MicrometerData.PdfRemarks</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
@@ -1085,15 +1053,13 @@
                     <table style="font-size:x-small;padding:10px; width:100%">
                         <tr>
                             <td>
-                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
-                                </p>
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By / 校正者  </p>
                                  <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.MicrometerData.PerformedBySign"/>
                                 <p style="margin-left:20px;">@Model.MicrometerData.CalibrationPerformedBy</p>
                                 <p style="margin-left:20px;">@Model.MicrometerData.PerformedByDesignation</p>
                             </td>
                             <td style="margin-left: 420px;text-align:right">
-                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                    Signatory</p>
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
                                     <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.MicrometerData.ReviewedBySign"/>
                                     <p style="margin-right:20px;">@Model.MicrometerData.ReviewedBy</p>
                                     <p style="margin-right:20px;">@Model.MicrometerData.ReviewedByDesignation</p>
@@ -1105,7 +1071,7 @@
             <tr>
                 <td>
                     <table style="font-size:x-small;padding:10px">
-                        <th style="text-align: center;font-size: small;padding-bottom: 220px;">***End of Certificate***</th>
+                        <th style="text-align: center;font-size: small;padding-bottom: 220px;">***End of Certificate / 証明書の終わり***</th>
                     </table>
                 </td>
             </tr>
@@ -1114,13 +1080,12 @@
                     <table
                         style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                         <td style="padding:2px;"> 
-                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the
-                                time of & under the stated conditions of measurement.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either
-                                in full or in part without out permission in writing.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this
-                                cetificate as per customer request irrespective of the status or condition of the
-                                IMTE.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px">1. 校正結果は、記載された測定条件下での測定時に有効です。</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. 書面による許可なく、レポートの全部または一部を複製してはなりません。</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
                         </td>
                         <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;"></td>
                     </table>
@@ -1131,11 +1096,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 / フォーマット番号 : 365.QM.D.16, Rev No : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                                <p style="margin-left: 80px;font-size:xx-small">Page / ページ 2 of 2</p>
                             </td>
 
                         </tr>

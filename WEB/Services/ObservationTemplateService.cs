@@ -219,6 +219,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertData Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 500,
@@ -314,6 +316,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - GetLeverDialById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 500,
@@ -414,11 +418,11 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 					tempobsId = observationById.Id;
 				}
-				
+
 				ObsTemplateMicrometer obsTemplateMicrometer = new ObsTemplateMicrometer()
 				{
-						
-					ObservationId=tempobsId,
+
+					ObservationId = tempobsId,
 					Flatness1 = micrometer.Flatness1,
 					Flatness2 = micrometer.Flatness2,
 					ParallelismSpec = micrometer.ParallelismSpec,
@@ -711,6 +715,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 500,
@@ -861,6 +867,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - micrometerId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 500,
@@ -1065,6 +1073,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertPlungerDial Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<PlungerDialViewModel>
 			{
 				ResponseCode = 500,
@@ -1168,6 +1178,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - plungerdialId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<PlungerDialViewModel>
 			{
 				ResponseCode = 500,
@@ -1363,6 +1375,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertThreadGuages Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<ThreadGaugesViewModel>
 			{
 				ResponseCode = 500,
@@ -1462,6 +1476,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - threadgaugesId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<ThreadGaugesViewModel>
 			{
 				ResponseCode = 500,
@@ -1737,6 +1753,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertTWobs Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<TorqueWrenchesViewModel>
 			{
 				ResponseCode = 500,
@@ -1864,8 +1882,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
-			ErrorViewModelTest.Log("torquewrenchesId Exception");
-			ErrorViewModelTest.Log(e.Message);
+			ErrorViewModelTest.Log("ObservationTemplateService - torquewrenchesId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<TorqueWrenchesViewModel>
 			{
 				ResponseCode = 500,
@@ -2650,6 +2668,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertVernierCaliper Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<VernierCaliperViewModel>
 			{
 				ResponseCode = 500,
@@ -2899,6 +2919,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - verniercaliperId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<VernierCaliperViewModel>
 			{
 				ResponseCode = 500,
@@ -3152,6 +3174,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertGeneralnewobs Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralNewViewModel>
 			{
 				ResponseCode = 500,
@@ -3271,6 +3295,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - GetGeneralNewById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralNewViewModel>
 			{
 				ResponseCode = 500,
@@ -3433,6 +3459,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertGeneral Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralViewModel>
 			{
 				ResponseCode = 500,
@@ -3544,6 +3572,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - generalId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralViewModel>
 			{
 				ResponseCode = 500,
@@ -3617,6 +3647,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveLeverDialCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 500,
@@ -3625,7 +3657,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveLeverDialCertificate"
 			};
 		}
 	}
@@ -3681,6 +3713,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveMicrometerCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 500,
@@ -3689,7 +3723,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveMicrometerCertificate"
 			};
 		}
 	}
@@ -3745,6 +3779,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SavePlungerDialCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<PlungerDialViewModel>
 			{
 				ResponseCode = 500,
@@ -3753,7 +3789,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SavePlungerDialCertificate"
 			};
 		}
 	}
@@ -3809,6 +3845,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveThreadGaugesCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<ThreadGaugesViewModel>
 			{
 				ResponseCode = 500,
@@ -3817,7 +3855,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveThreadGaugesCertificate"
 			};
 		}
 	}
@@ -3874,6 +3912,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveTorqueWrenchesCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<TorqueWrenchesViewModel>
 			{
 				ResponseCode = 500,
@@ -3882,7 +3922,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveTorqueWrenchesCertificate"
 			};
 		}
 	}
@@ -3938,6 +3978,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveVernierCaliperCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<VernierCaliperViewModel>
 			{
 				ResponseCode = 500,
@@ -3946,7 +3988,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveVernierCaliperCertificate"
 			};
 		}
 	}
@@ -4006,6 +4048,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveGeneralNewCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralNewViewModel>
 			{
 				ResponseCode = 500,
@@ -4014,7 +4058,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveGeneralNewCertificate"
 			};
 		}
 
@@ -4073,6 +4117,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SaveGeneralCertificate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<GeneralViewModel>
 			{
 				ResponseCode = 500,
@@ -4081,7 +4127,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SaveGeneralCertificate"
 			};
 		}
 	}
@@ -4097,6 +4143,10 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			Instrument instrumentData = _unitOfWork.Repository<Instrument>()
 																	.GetQueryAsNoTracking(Q => Q.Id == observationById.InstrumentId)
+																	.SingleOrDefault();
+
+			Request ReqstData = _unitOfWork.Repository<Request>()
+																	.GetQueryAsNoTracking(Q => Q.Id == observationById.RequestId)
 																	.SingleOrDefault();
 
 			var numberList = GenerateULRAndCertificateNumber(instrumentData.IsNABL);
@@ -4118,12 +4168,13 @@ public class ObservationTemplateService : IObservationTemplateService
 			reqestStatus.CreatedBy = reviewedBy;
 			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 			_unitOfWork.SaveChanges();
+
 			//----------------------New update for listing Approved Request start---------------------------
-			//Request Tempreqest = new Request();
-			//Tempreqest.Id= observationById.RequestId;
-			//Tempreqest.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
-			//_unitOfWork.Repository<Request>().Update(Tempreqest);
-			//_unitOfWork.SaveChanges();
+			//Request Tempreqests = new Request();
+			ReqstData.Id = observationById.RequestId;
+			ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+			_unitOfWork.Repository<Request>().Update(ReqstData);
+			_unitOfWork.SaveChanges();
 			//----------------------New update for listing Approved Request end---------------------------
 
 			_unitOfWork.Commit();
@@ -4138,6 +4189,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - SubmitReview Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 500,
@@ -4146,7 +4199,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseData = null,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
-				ResponseServiceMethod = "UpdateVernierCaliper"
+				ResponseServiceMethod = "SubmitReview"
 			};
 		}
 	}
@@ -4320,6 +4373,8 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertQRCodeFiles Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<QRCodeFilesViewModel>
 			{
 				ResponseCode = 500,
@@ -4346,28 +4401,28 @@ public class ObservationTemplateService : IObservationTemplateService
 		using (MemoryStream sourceStream = new System.IO.MemoryStream())
 		{
 			TextReader reader = new StringReader(ExportData);
-            //PageSize.A4, 10.0F, 10.0F, 100.0F, 0.0F)PageSize.A4, 10, 10, 10, 20
+			//PageSize.A4, 10.0F, 10.0F, 100.0F, 0.0F)PageSize.A4, 10, 10, 10, 20
 
-            Document PdfFile = new Document(PageSize.LETTER.Rotate(), 2, 2, 5, 2);
+			Document PdfFile = new Document(PageSize.LETTER.Rotate(), 2, 2, 5, 2);
 			PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);
-            //  String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2 strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 26pt;font-weight: 900; }";
-            String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2, strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody1 { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 16pt; }";
-            MemoryStream msCss = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Export_css));
-            MemoryStream msHtml = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(ExportData));
- 
-            PdfFile.Open();
-          
-            UnicodeFontFactory smartUIFontObj = new UnicodeFontFactory();
+			//  String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2 strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 26pt;font-weight: 900; }";
+			String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2, strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody1 { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 16pt; }";
+			MemoryStream msCss = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Export_css));
+			MemoryStream msHtml = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(ExportData));
 
-		
-            XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, msHtml, msCss, System.Text.Encoding.UTF8, smartUIFontObj);
-	
+			PdfFile.Open();
+			string FontPath1 = Path.Combine(_configuration["TempFontCodePath"], "ARIALUNI.TTF");
+			UnicodeFontFactory smartUIFontObj = new UnicodeFontFactory(FontPath1);
 
-            PdfFile.Close();
-           
-            /********************Write Pdf document header and footer Section Start*****************************************************/
-            //Document document = new Document(PageSize.A4, 36, 36, 36 + <height of table>, 36); // note height should be set here
-            /*PdfHeaderService events = new PdfHeaderService();
+
+			XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, msHtml, msCss, System.Text.Encoding.UTF8, smartUIFontObj);
+
+
+			PdfFile.Close();
+
+			/********************Write Pdf document header and footer Section Start*****************************************************/
+			//Document document = new Document(PageSize.A4, 36, 36, 36 + <height of table>, 36); // note height should be set here
+			/*PdfHeaderService events = new PdfHeaderService();
             PdfWriter pw = PdfWriter.GetInstance(PdfFile, new FileStream("TableTest.pdf", FileMode.Create));
            
             pw.PageEvent = events;
@@ -4380,17 +4435,17 @@ public class ObservationTemplateService : IObservationTemplateService
 
             PdfFile.Close();*/
 
-            /*******************Write Pdf document header and footer Section End ******************************************************/
+			/*******************Write Pdf document header and footer Section End ******************************************************/
 
-            // StringReader stringReader = new StringReader(ExportData);         
-            // Document PDFdoc = new Document(PageSize.A4, 10.0F, 10.0F, 10.0F, 0.0F);
-            // HTMLWorker htmlparser =   new HTMLWorker(PDFdoc);
-            // PdfWriter.GetInstance(PDFdoc, sourceStream);
+			// StringReader stringReader = new StringReader(ExportData);         
+			// Document PDFdoc = new Document(PageSize.A4, 10.0F, 10.0F, 10.0F, 0.0F);
+			// HTMLWorker htmlparser =   new HTMLWorker(PDFdoc);
+			// PdfWriter.GetInstance(PDFdoc, sourceStream);
 
-            // PDFdoc.Open();
-            // htmlparser.Parse(stringReader);
-            // //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
-            // PDFdoc.Close();
+			// PDFdoc.Open();
+			// htmlparser.Parse(stringReader);
+			// //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+			// PDFdoc.Close();
 
             string uploadDirectoryName = Path.Combine(Constants.Certification_FolderName, newDirectoryName);
 			string filePath = Path.Combine(this._environment.WebRootPath, uploadDirectoryName);
@@ -4411,24 +4466,23 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 	}
 
-    public class UnicodeFontFactory : FontFactoryImp
-    {
-        //var Path =  _configuration["UNICodeFontPath"];
-		private static readonly string FontPath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),"ARIALUNI.TTF"); 
-        private static readonly string FontPath = @"D:\CMTNEW\WEB\wwwroot\css\ARIALUNI.ttf";
-        private readonly BaseFont _baseFont;
+	public class UnicodeFontFactory : FontFactoryImp
+	{
+		private string _configuration;
+		//var Path =  _configuration["UNICodeFontPath"];
+		
+		//private static readonly string FontPath = @"D:\CMTNEW\WEB\wwwroot\css\ARIALUNI.ttf";
+		private readonly BaseFont _baseFont;
 
-        public UnicodeFontFactory()
-        {
+		public UnicodeFontFactory(string Fpath)
+		{
+			_baseFont = BaseFont.CreateFont(Fpath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);			
+		}
+		//private string FontPath1 = Path.Combine(_configuration["TempQRCodePath"], "ARIALUNI.TTF");
+		public override Font GetFont(string fontname, string encoding, bool embedded, float size, int style, BaseColor color, bool cached)
+		{
+			return new Font(_baseFont, size, style, BaseColor.BLACK);
 
-            _baseFont = BaseFont.CreateFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-
-        }
-
-        public override Font GetFont(string fontname, string encoding, bool embedded, float size, int style, BaseColor color, bool cached)
-        {
-            return new Font(_baseFont, size, style, BaseColor.BLACK);
-
-        }
-    }
+		}
+	}
 }
