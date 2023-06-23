@@ -22,9 +22,16 @@
                     <table id="example1" class="table table-bordered table-striped Lagtab">
                             <thead>
                                 <tr>
-
+                                <th class="trn">Plant Location</th>
+                                <th class="trn">Plant Code</th>
                                     <th class="trn">Department Name</th>
-                                    <th class="trn">Department Desc</th>
+                                    @*<th class="trn">Department Desc</th>*@
+                                <th class="trn">Department Code</th>
+                                
+                                <th class="trn">Section</th>
+                                <th class="trn">Sub Section</th>
+
+
                                     <th class="trn">Created Date</th>
 
                                     <th class="trn">Edit</th>
@@ -36,9 +43,17 @@
                                 @foreach (var item in Model)
                                 {
                                        <tr>
-                                        
+                                    
+                                    
+                                    <td>@item.PlantLocation</td>
+                                    <td>@item.PlantCode</td>
                                         <td>@item.Name</td>
-                                        <td>@item.Description</td>
+                                        @*<td>@item.Description</td>*@
+                                    <td>@item.DeptCode</td>
+                                    <td>@item.Section</td>
+                                    <td>@item.SubSection</td>
+                                   
+                                    
                                         <td >@item.CreatedOn.ToString("dd-MM-yyyy")</td>
                                         
                                         <td><a href='@Url.Action("DepartmentEdit","Department",new {departmentId=@item.Id})'><i class="fas fa-edit"></i></a></td>

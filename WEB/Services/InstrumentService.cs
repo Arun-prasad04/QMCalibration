@@ -36,10 +36,11 @@ public class InstrumentService : IInstrumentService
     {
       UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
       List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
-      if (userRoleId == 2 || userRoleId == 4)
+      //if (userRoleId == 2 || userRoleId == 4)
+       if (userRoleId == 2 || labUserById.DepartmentId == 66)
       {
 
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+         instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
         {
           Id = s.Id,
           InstrumentName = s.InstrumentName,
@@ -68,7 +69,8 @@ public class InstrumentService : IInstrumentService
       }
       else if (userRoleId == 1)
       {
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+         
+        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
         {
           Id = s.Id,
           InstrumentName = s.InstrumentName,
@@ -95,8 +97,37 @@ public class InstrumentService : IInstrumentService
         ).ToList();
 
       }
+            else if (userRoleId == 4)
+            {
+                instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+                {
+                    Id = s.Id,
+                    InstrumentName = s.InstrumentName,
+                    SlNo = s.SlNo,
+                    IdNo = s.IdNo,
+                    Range = s.Range,
+                    LC = s.LC,
+                    CalibFreq = s.CalibFreq,
+                    CalibDate = s.CalibDate,
+                    DueDate = s.DueDate,
+                    Make = s.Make,
+                    CalibSource = s.CalibSource,
+                    StandardReffered = s.StandardReffered,
+                    Remarks = s.Remarks,
+                    Status = s.Status,
+                    FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+                    CalibrationStatus = s.CalibrationStatus,
+                    InstrumentStatus = s.InstrumentStatus,
+                    DateOfReceipt = s.DateOfReceipt,
+                    DepartmentName = s.DepartmenttModel.Name,
+                    NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+                    RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
+                }
+                ).ToList();
 
-      return new ResponseViewModel<InstrumentViewModel>
+            }
+
+            return new ResponseViewModel<InstrumentViewModel>
       {
         ResponseCode = 200,
         ResponseMessage = "Success",
@@ -575,7 +606,7 @@ public class InstrumentService : IInstrumentService
     {
       UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
       List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
-      if (userRoleId == 2 || userRoleId == 4)
+      if (userRoleId == 2 || labUserById.DepartmentId == 66)
       {
         instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
         {
@@ -604,9 +635,9 @@ public class InstrumentService : IInstrumentService
         }
         ).ToList();
       }
-      else if (userRoleId == 1)
+      else if (userRoleId == 1)//And 
       {
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Select(s => new InstrumentViewModel()
+        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Select(s => new InstrumentViewModel()
         {
           Id = s.Id,
           InstrumentName = s.InstrumentName,
@@ -632,8 +663,37 @@ public class InstrumentService : IInstrumentService
           QuarantineReason = s.QuarantineModel.Select(s => s.Reason).FirstOrDefault()
         }
         ).ToList();
-      }
-      return new ResponseViewModel<InstrumentViewModel>
+         }
+            if (userRoleId == 4)
+            {
+                instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
+                {
+                    Id = s.Id,
+                    InstrumentName = s.InstrumentName,
+                    SlNo = s.SlNo,
+                    IdNo = s.IdNo,
+                    Range = s.Range,
+                    LC = s.LC,
+                    CalibFreq = s.CalibFreq,
+                    CalibDate = s.CalibDate,
+                    DueDate = s.DueDate,
+                    Make = s.Make,
+                    CalibSource = s.CalibSource,
+                    StandardReffered = s.StandardReffered,
+                    Remarks = s.Remarks,
+                    Status = s.Status,
+                    FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+                    CalibrationStatus = s.CalibrationStatus,
+                    InstrumentStatus = s.InstrumentStatus,
+                    DateOfReceipt = s.DateOfReceipt,
+                    DepartmentName = s.DepartmenttModel.Name,
+                    NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+                    QuaraantineOn = s.QuarantineModel.Select(s => s.CreatedOn).FirstOrDefault(),
+                    QuarantineReason = s.QuarantineModel.Select(s => s.Reason).FirstOrDefault()
+                }
+                ).ToList();
+            }
+            return new ResponseViewModel<InstrumentViewModel>
       {
         ResponseCode = 200,
         ResponseMessage = "Success",
