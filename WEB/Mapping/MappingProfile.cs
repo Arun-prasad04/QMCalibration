@@ -25,8 +25,9 @@ public class MappingProfile : Profile
         CreateMap<ExternalRequest, ExternalRequestViewModel>();
         CreateMap<LovsViewModel, Lovs>();
         CreateMap<Lovs, LovsViewModel>();
-
-        CreateMap<QCAlternateMethodTemplateViewModel, QCAlternateMethodTemplate>();
+		CreateMap<Location, LocationViewModel>();
+		CreateMap<LocationViewModel, Location>();
+		CreateMap<QCAlternateMethodTemplateViewModel, QCAlternateMethodTemplate>();
         CreateMap<QCAlternateMethodTemplate, QCAlternateMethodTemplateViewModel>();
 
         CreateMap<QCAlternateMethodTemplateDataViewModel, QCAlternateMethodTemplateData>();

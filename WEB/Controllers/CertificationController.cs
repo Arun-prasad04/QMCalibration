@@ -207,7 +207,7 @@ public class CertificationController : BaseController
       {
         instrumentresponse.ResponseData.GeneralData = response.ResponseData;
         instrumentresponse.ResponseData.GeneralData.GeneralAddResultViewModelList = response.ResponseData.GeneralAddResultViewModelList;
-        instrumentresponse.ResponseData.GeneralData.GeneralManualAddResultViewModelList = response.ResponseData.GeneralManualAddResultViewModelList;
+         instrumentresponse.ResponseData.GeneralData.GeneralManualAddResultViewModelList = response.ResponseData.GeneralManualAddResultViewModelList;
 
         instrumentresponse.ResponseData.GeneralData.PdfCalibrationResult = Constants.PDF_CERTIFICATE_RESULTS;
         instrumentresponse.ResponseData.GeneralData.PdfRemarks = Constants.PDF_CERTIFICATE_REMARKS;
@@ -482,6 +482,7 @@ public class CertificationController : BaseController
         instrumentresponse.ResponseData.GeneralNewData.PdfCalibrationResult = Constants.PDF_CERTIFICATE_RESULTS;
         instrumentresponse.ResponseData.GeneralNewData.PdfRemarks = Constants.PDF_CERTIFICATE_REMARKS;
         instrumentresponse.ResponseData.GeneralNewData.PdfUncertainity = Constants.PDF_CERTIFICATE_UNCERTAINTY;
+               
         if (string.IsNullOrEmpty(instrumentresponse.ResponseData.GeneralNewData.CalibrationResult))
         {
           instrumentresponse.ResponseData.isExportCertificate = false;
@@ -526,7 +527,7 @@ public class CertificationController : BaseController
     ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_RESULTS, CalibrationResult);
     ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_REMARKS, Remarks);
     ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_UNCERTAINTY, Uncertainity);
-
+       
     int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
     if (TempltateName == "LeverDial")
     {

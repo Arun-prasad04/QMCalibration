@@ -11,7 +11,7 @@ using iTextSharp.text.html.simpleparser;
 using Microsoft.Extensions.Options;
 using System.Text;
 using HtmlAgilityPack;
-//using Org.BouncyCastle.Asn1.Ocsp;
+
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -56,31 +56,31 @@ public class ObservationTemplateService : IObservationTemplateService
 			//if (levertypedial.Id == 0)
 			if ((levertypedial.Id == 0) && (observationById == null))
 
-			{
+            {
 				//if (observationById == null)
 				//{
-				TemplateObservation templateObservation = new TemplateObservation()
-				{
-					InstrumentId = levertypedial.InstrumentId,
-					RequestId = levertypedial.RequestId,
-					TempStart = levertypedial.TempStart,
-					TempEnd = levertypedial.TempEnd,
-					Humidity = levertypedial.Humidity,
-					InstrumentCondition = levertypedial.DialIndicatiorCondition,
-					RefWi = levertypedial.RefWi,
-					Allvalues = levertypedial.Allvalues,
-					CreatedOn = DateTime.Now,
-					CreatedBy = levertypedial.CreatedBy,
-					// CalibrationReviewedBy = labTechnicalManager.Id,
-					CalibrationReviewedDate = DateTime.Now
-				};
+					TemplateObservation templateObservation = new TemplateObservation()
+					{
+						InstrumentId = levertypedial.InstrumentId,
+						RequestId = levertypedial.RequestId,
+						TempStart = levertypedial.TempStart,
+						TempEnd = levertypedial.TempEnd,
+						Humidity = levertypedial.Humidity,
+						InstrumentCondition = levertypedial.DialIndicatiorCondition,
+						RefWi = levertypedial.RefWi,
+						Allvalues = levertypedial.Allvalues,
+						CreatedOn = DateTime.Now,
+						CreatedBy = levertypedial.CreatedBy,
+						// CalibrationReviewedBy = labTechnicalManager.Id,
+						CalibrationReviewedDate = DateTime.Now
+					};
 
-				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-				_unitOfWork.SaveChanges();
-				templateObservationId = templateObservation.Id;
+					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+					_unitOfWork.SaveChanges();
+					templateObservationId = templateObservation.Id;
 
 				//}
-
+				
 			}
 			else
 			{
@@ -122,7 +122,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					_unitOfWork.SaveChanges();
 				}
 			}
-
+			
 			if (levertypedial.Id == 0)
 			{
 				if (observationById != null)
@@ -346,28 +346,28 @@ public class ObservationTemplateService : IObservationTemplateService
 			//User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((micrometer.TemplateObservationId == 0) && (observationById == null))
 
-			{
+            {
 				//if (observationById == null)
 				//{
-				TemplateObservation templateObservation = new TemplateObservation()
-				{
-					InstrumentId = micrometer.InstrumentId,
-					RequestId = micrometer.RequestId,
-					TempStart = micrometer.TempStart,
-					TempEnd = micrometer.TempEnd,
-					Humidity = micrometer.Humidity,
-					InstrumentCondition = micrometer.MicrometerCondition,
-					RefWi = micrometer.RefWi,
-					Allvalues = micrometer.Allvalues,
-					CreatedOn = DateTime.Now,
-					CreatedBy = micrometer.CreatedBy,
-					//   CalibrationReviewedBy = labTechnicalManager.Id,
-					CalibrationReviewedDate = DateTime.Now
-				};
-				//tempobsId = templateObservation.Id;
-				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-				_unitOfWork.SaveChanges();
-				tempobsId = templateObservation.Id;
+					TemplateObservation templateObservation = new TemplateObservation()
+					{
+						InstrumentId = micrometer.InstrumentId,
+						RequestId = micrometer.RequestId,
+						TempStart = micrometer.TempStart,
+						TempEnd = micrometer.TempEnd,
+						Humidity = micrometer.Humidity,
+						InstrumentCondition = micrometer.MicrometerCondition,
+						RefWi = micrometer.RefWi,
+						Allvalues = micrometer.Allvalues,
+						CreatedOn = DateTime.Now,
+						CreatedBy = micrometer.CreatedBy,
+						//   CalibrationReviewedBy = labTechnicalManager.Id,
+						CalibrationReviewedDate = DateTime.Now
+					};
+					//tempobsId = templateObservation.Id;
+					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+					_unitOfWork.SaveChanges();
+					tempobsId = templateObservation.Id;
 				//}
 			}
 			else
@@ -898,27 +898,27 @@ public class ObservationTemplateService : IObservationTemplateService
 			//  User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((plungerDial.TemplateObservationId == 0) && (observationById == null))
 
-			{
+            {
 				//if (observationById == null)
 				//{
-				TemplateObservation templateObservation = new TemplateObservation()
-				{
-					InstrumentId = plungerDial.InstrumentId,
-					RequestId = plungerDial.RequestId,
-					TempStart = plungerDial.TempStart,
-					TempEnd = plungerDial.TempEnd,
-					Humidity = plungerDial.Humidity,
-					InstrumentCondition = plungerDial.ConditionAndObservation,
-					RefWi = plungerDial.RefWi,
-					Allvalues = plungerDial.Allvalues,
-					CreatedOn = DateTime.Now,
-					CreatedBy = plungerDial.CreatedBy,
-					// CalibrationReviewedBy = labTechnicalManager.Id,
-					CalibrationReviewedDate = DateTime.Now
-				};
-				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-				_unitOfWork.SaveChanges();
-				templateObservationId = templateObservation.Id;
+					TemplateObservation templateObservation = new TemplateObservation()
+					{
+						InstrumentId = plungerDial.InstrumentId,
+						RequestId = plungerDial.RequestId,
+						TempStart = plungerDial.TempStart,
+						TempEnd = plungerDial.TempEnd,
+						Humidity = plungerDial.Humidity,
+						InstrumentCondition = plungerDial.ConditionAndObservation,
+						RefWi = plungerDial.RefWi,
+						Allvalues = plungerDial.Allvalues,
+						CreatedOn = DateTime.Now,
+						CreatedBy = plungerDial.CreatedBy,
+						// CalibrationReviewedBy = labTechnicalManager.Id,
+						CalibrationReviewedDate = DateTime.Now
+					};
+					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+					_unitOfWork.SaveChanges();
+					templateObservationId = templateObservation.Id; 
 				//}
 			}
 			else
@@ -1209,7 +1209,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((threadGauges.TemplateObservationId == 0) && (observationById == null))
 
-			{
+           {
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -1279,7 +1279,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 					templateObservationId = observationById.Id;
 				}
-				ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
+					ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
 				{
 					ObservationId = templateObservationId,
 					Max1 = threadGauges.Max1,
@@ -1508,7 +1508,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			//templateObservationId = observationById.Id;
 			if ((torquewrenches.TemplateObservationId == 0) && (observationById == null))
 
-			{
+            {
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -1914,7 +1914,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((verniercaliper.TemplateObservationId == 0) && (observationById == null))
 
-			{
+            {
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -1981,7 +1981,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 			if (verniercaliper.Id == 0)
 			{
-				if (observationById != null)
+				if(observationById!= null)
 				{
 					templateObservationId = observationById.Id;
 				}
@@ -3018,7 +3018,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 			if (GeneralNew.Id == 0)
 			{
-				if (observationById != null)
+				if(observationById != null)
 				{
 					templateObservationId = observationById.Id;
 				}
@@ -3326,27 +3326,27 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((general.TemplateObservationId == 0) && (observationById == null))
 
-			{
+            {
 				//if (observationById == null)
 				//{
-				TemplateObservation templateObservation = new TemplateObservation()
-				{
-					InstrumentId = general.InstrumentId,
-					RequestId = general.RequestId,
-					TempStart = general.TempStart,
-					TempEnd = general.TempEnd,
-					Humidity = general.Humidity,
-					RefWi = general.RefWi,
-					InstrumentCondition = general.DialIndicatiorCondition,
-					Allvalues = general.Allvalues,
-					CreatedBy = general.CreatedBy,
-					CreatedOn = DateTime.Now,
-					// CalibrationReviewedBy = labTechnicalManager.Id,
-					CalibrationReviewedDate = DateTime.Now
-				};
-				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-				_unitOfWork.SaveChanges();
-				generalId = templateObservation.Id;
+					TemplateObservation templateObservation = new TemplateObservation()
+					{
+						InstrumentId = general.InstrumentId,
+						RequestId = general.RequestId,
+						TempStart = general.TempStart,
+						TempEnd = general.TempEnd,
+						Humidity = general.Humidity,
+						RefWi = general.RefWi,
+						InstrumentCondition = general.DialIndicatiorCondition,
+						Allvalues = general.Allvalues,
+						CreatedBy = general.CreatedBy,
+						CreatedOn = DateTime.Now,
+						// CalibrationReviewedBy = labTechnicalManager.Id,
+						CalibrationReviewedDate = DateTime.Now
+					};
+					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+					_unitOfWork.SaveChanges();
+					generalId = templateObservation.Id;
 				//}
 				ObsTemplateGeneral obsTemplateGeneral = new ObsTemplateGeneral()
 				{
@@ -3401,7 +3401,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				}
 			}
 			_unitOfWork.SaveChanges();
-			if (observationById != null)
+			if(observationById != null)
 			{
 
 				generalId = observationById.Id;
@@ -3596,7 +3596,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-
+			
 			_unitOfWork.BeginTransaction();
 
 
@@ -3739,7 +3739,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-
+			
 			ObsTemplatePlungerDial MicrometerById = _unitOfWork.Repository<ObsTemplatePlungerDial>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -3800,7 +3800,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-
+			
 			_unitOfWork.BeginTransaction();
 
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
@@ -3866,7 +3866,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-
+			
 			_unitOfWork.BeginTransaction();
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
@@ -3937,7 +3937,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-
+			
 			ObsTemplateVernierCaliper MicrometerById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4005,7 +4005,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-
+		
 			ObsTemplateGeneralNew MicrometerById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4076,7 +4076,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-
+		
 			ObsTemplateGeneral MicrometerById = _unitOfWork.Repository<ObsTemplateGeneral>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4447,7 +4447,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
 			// PDFdoc.Close();
 
-			string uploadDirectoryName = Path.Combine(Constants.Certification_FolderName, newDirectoryName);
+            string uploadDirectoryName = Path.Combine(Constants.Certification_FolderName, newDirectoryName);
 			string filePath = Path.Combine(this._environment.WebRootPath, uploadDirectoryName);
 
 			if (!Directory.Exists(filePath))

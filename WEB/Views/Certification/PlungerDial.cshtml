@@ -28,11 +28,11 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4475 / 4456,</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                            <h5 class="trn" style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4475 / 4456,</p>
+                            <p class="trn" style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -42,64 +42,64 @@
             </tbody>
         </table>
         <div>
-            <h2 style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
+            <h2 class="trn" style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
         </div>
         <div style="border-collapse: collapse; border:2px solid #000">
             <div>
                 <div style="padding: 10px;">
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
+                        <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
                     </div>
                     <table>
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.PlungerDialData.CertificateFormat</td>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                                <td class="trn" style="width:400px;padding-bottom: 25px;">: @Model.PlungerDialData.CertificateFormat</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td class="trn" style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
-                                    <td style="width:400px;padding-bottom: 25px;">:  @Model.PlungerDialData.ULRFormat</td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
+                                    <td class="trn" style="width:400px;padding-bottom: 25px;">:  @Model.PlungerDialData.ULRFormat</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                             }
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.PlungerDialData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due</td>
                                 @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 25px;">: --</td>
-                                    }
+                                    } 
                                     else
                                     {
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DueDate.ToString("MMM-yyyy")</td>
                                     }
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
+                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of Equipment</td>
+                                <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of Equipment</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
@@ -111,10 +111,10 @@
                     <div style="padding-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
                             </tr>
                             <tr>
                                 <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
@@ -135,19 +135,19 @@
                         <table style="margin-top:15px">
                             <tbody>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.PlungerDialData.ConditionAndObservation</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure / <br/> Reference Standard :</td>
+                                    <td class="trn" style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure / <br/> Reference Standard :</td>
                                     <td style="width:400px; padding-bottom: 25px;">: @Model.StandardReffered</td>
                                     <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                     <td style="width:400px; padding-bottom: 25px;"></td>
@@ -157,18 +157,18 @@
                     </div>
 
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master & Equipment Used For Calibration & Traceability</p>
+                        <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master & Equipment Used For Calibration & Traceability</p>
                     </div>
                     <div style="margin-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity </th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make </th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability </th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No </th>
+                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity </th>
                             </tr>
                             @{ int i=1;
                             @foreach (var item in @Model.MasterEqiupmentList)
@@ -186,41 +186,41 @@
                             }
                            }
                         </table>
-                        <p class="fw-normal fontsize14">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                        <p class="fw-normal fontsize14 trn">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
                     </div>
 
                     <table style="margin-top:15px">
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition</td>
-                                <td style="width:400px;padding-bottom: 10px;"><p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Environmental Condition</td>
+                                <td style="width:400px;padding-bottom: 10px;" class="trn"><p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of Measurement</td>
-                                <td style="width:400px;padding-bottom: 25px;"><input  class="form-control" placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity" value="@Model.PlungerDialData.Uncertainity"></td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Uncertainty Of Measurement</td>
+                                <td style="width:400px;padding-bottom: 25px;"><input  class="form-control trn" placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity" value="@Model.PlungerDialData.Uncertainity"></td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p>The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+                    <p class="trn">The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
 
                     <table style="margin-top:15px">
                         <tbody>
                             <tr>
                                 <td style="width:325px; padding-bottom: 25px; width: 800px;">
                                     <div class="col-6 text-start">
-                                        <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                        <h5 style="margin-bottom: 5px;" class="trn"> Calibrated By</h5>
                                         <img src="../UserSignature/@Model.PlungerDialData.PerformedBySign" style="width: 100px;"/>
                                         <p style="margin: 0px;">@Model.PlungerDialData.CalibrationPerformedBy</p>
                                         <p style="margin: 0px;">@Model.PlungerDialData.PerformedByDesignation</p>
                                     </div>
                                 </td>
                                 <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                    <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                    <h5 style="margin-bottom: 5px;" class="trn">Authorized Signatory</h5>
                                     <img src="../UserSignature/@Model.PlungerDialData.ReviewedBySign" style="width: 100px;"/>
                                     <p  style="margin: 0px;">@Model.PlungerDialData.ReviewedBy</p>
                                     <p  style="margin: 0px;">@Model.PlungerDialData.ReviewedByDesignation</p>
@@ -234,9 +234,9 @@
                     border-top: solid;
                     border-block-width: 2px; border: 2px solid #000; display: flex;">
                     <div style="padding:10px">
-                        <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                        <p style="margin: 0px; font-size: 12px;" class="trn">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                        <p style="margin: 0px; font-size: 12px;" class="trn"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                        <p style="margin: 0px; font-size: 12px;" class="trn"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
                     </div>
                     <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
                 </div>
@@ -247,7 +247,7 @@
                     <tr style="font-size: xx-small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div>
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            <h4 style="font-size: small;" class="trn"> Format No : 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
@@ -275,11 +275,11 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                            <h5 style="margin: 5px;" class="trn">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -292,9 +292,9 @@
             <table style="margin-top:30px">
                 <tbody>
                     <tr>
-                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">III. Mechanical Calibration Results</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;" class="trn">III. Mechanical Calibration Results</td>
                         <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;">Certificate No @Model.PlungerDialData.CertificateFormat</td>
-                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;">Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;" >Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
                     </tr>
                 </tbody>
             </table>
@@ -307,45 +307,45 @@
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="8" class="text-center">Mechanical Plunger Dial Indicator</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center" >SI.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Parameter</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Spec</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center trn" >SI.No</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="4">Parameter</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn">Spec</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Actual</th>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">1</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px;writing-mode: vertical-rl;transform: rotate(180deg);" rowspan="4">Indicator Error</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Whole Measuring Range</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">1</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px;writing-mode: vertical-rl;transform: rotate(180deg);" rowspan="4" class="trn">Indicator Error</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3" class="trn">Whole Measuring Range</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec1</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual1</td>
                     </tr>
 					<tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">2</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">½ Revolution</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">2</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3" class="trn">½ Revolution</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec2</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual2</td>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">3</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">1 Revolution</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">3</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3" class="trn">1 Revolution</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec3</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual3</td>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">4</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Narrow range adjacent error</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">4</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3" class="trn">Narrow range adjacent error</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec4</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual4</td>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">5</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">5</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4" class="trn">Narrow range adjacent error</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec5</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"colspan="2" >@Model.PlungerDialData.Actual5</td>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">6</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">6</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4" class="trn">Narrow range adjacent error</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec6</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual6</td>
                     </tr>
@@ -357,43 +357,43 @@
                 
                 <table style="border-collapse: collapse; border:1px solid #000">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="9" class="text-center">Digital Plunger Dial Indicator</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="9" class="text-center trn">Digital Plunger Dial Indicator</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center">SI.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Parameter</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Spec</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center trn">SI.No</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Parameter</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Spec</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn">Actual</th>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">1</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">1</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Repeatability</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 1 count</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">Repeatability</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">± 1 count</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec1</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Actual1</td>
                     </tr>
 					<tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">2</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70px;height:25px; padding:5px" rowspan="3">1 count = 1 least count</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Hysteresis</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">1 count</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">2</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70px;height:25px; padding:5px" rowspan="3" class="trn">1 count = 1 least count</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">Hysteresis</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">1 count</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec2</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Actual2</td>
                         
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">3</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Accuracy Overall</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 3 counts</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">3</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">Accuracy Overall</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">± 3 counts</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec3</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Actual3</td>
                         
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">4</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Accuracy Micro calibration</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 3 counts</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="trn">4</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">Accuracy Micro calibration</td>
+                            <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="trn">± 3 counts</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec4</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Actual4</td>
                         </tr>
@@ -411,14 +411,14 @@
                 <table style="margin-top:15px">
                     <tbody>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">IV. Result Of Calibration :</td>
                             <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult" value="@Model.PlungerDialData.CalibrationResult"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
-                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Remarks" id="Remarks" id="Remarks" name="Remarks" value="@Model.PlungerDialData.Remarks"></td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">V. Remarks :</td>
+                            <td style="width:400px;padding-bottom: 25px;"><input class="form-control trn" placeholder="Remarks" id="Remarks" name="Remarks" value="@Model.PlungerDialData.Remarks"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
@@ -435,7 +435,7 @@
                     <tr>
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div class="col-6 text-start">
-                                <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                <h5 style="margin-bottom: 5px;" class="trn"> Calibrated By</h5>
                                 <img src="../UserSignature/@Model.PlungerDialData.PerformedBySign" style="width: 100px;"/>
                                 <p style="margin: 0px;">@Model.PlungerDialData.CalibrationPerformedBy</p>
                                 <p style="margin: 0px;">@Model.PlungerDialData.PerformedByDesignation</p>
@@ -443,7 +443,7 @@
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                            <h5 style="margin-bottom: 5px;" class="trn">Authorized Signatory</h5>
                              <img src="../UserSignature/@Model.PlungerDialData.ReviewedBySign" style="width: 100px;"/>
                             <p  style="margin: 0px;">@Model.PlungerDialData.ReviewedBy</p>
                             <p  style="margin: 0px;">@Model.PlungerDialData.ReviewedByDesignation</p>
@@ -452,15 +452,15 @@
                     </tr>
                 </tbody>
             </table>
-            <h5 style="text-align: center;">***End of Certificate***</h5>
+            <h5 style="text-align: center;" class="trn">***End of Certificate***</h5>
         </div>
         <div style="border-collapse: collapse; 
                     border-top: solid;
                     border-block-width: 2px; border: 2px solid #000; display: flex;">
             <div style="padding:10px">
-                <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
-                <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
-                <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
             </div>
             <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
         </div>
@@ -469,11 +469,11 @@
                     <tr style="font-size: small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div >
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                                <h4 style="font-size: small;" class="trn"> Format No : 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 style="font-size: small;">Page 2 of 2</h4>
+                        <h4 style="font-size: small;" class="trn">Page 2 of 2</h4>
                         </td>
                     </tr>
                 </tbody>
@@ -500,13 +500,13 @@
 
                 }
              }
-            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
 </div>
     </div>
 </body>
 @* ************************************************************************* *@
 
-<div id="Pdfhtml" style="display: none;">
+<div id="Pdfhtml" style="display: block;">
 
     <body style="font-family: Calibri;">
         <!-- page1 start-->
@@ -527,14 +527,12 @@
                                 }
                             </td>
                             <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
-                                <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
-                                    Village, Singaperumal Koil Road,</p>
-                                <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
-                                    Kanchipuram - 602105, Tamil Nadu, India.</p>
-                                <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
-                                <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
-                                    www.bharatbenz.com</p>
+                                <h5 style="margin: 5px; font-family:Arial ;font-size: 12px; ">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab / >ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road / SIPCOT工業団地、オラガダム村、シンガポール・コイル・ロード</p>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India / マトゥール (PO)、スリペルンバドゥル タルク、カンチプラム -602105、タミル ナードゥ州、インド。</p>
+                                <p style="margin: 5px; font-size: 12px;">Phone / 電話: +91 44 4969 4456,</p>
+                                <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com / Webサイト：www.ダイムラー--インドアック。コム / ..バラトベンツ。コム</p>
+
                             </td>
                             <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
                                 <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;"  alt="logo" />
@@ -545,37 +543,37 @@
                 </tr>
             </table>
             <div style=" height:50px;">
-                <h3 style="text-align: center; padding: 2px;height:30px;">CERTIFICATE OF CALIBRATION</h3>
+            <h3 style="text-align: center; padding: 2px;height:30px;">CERTIFICATE OF CALIBRATION / / キャリブレーションの証明書</h3>
             </div>
             <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small;">
                 <tr>
                     <td>
                         <table style="font-size:x-small;padding:5px;">
                             <tr style="font-size:x-small">
-                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC</th>
+                            <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC / DUCの説明</th>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate
-                                    No</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate No / 証明書の番号</td>
+                                    
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CertificateFormat</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report
-                                    Issues Date</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report Issues Date / 発行日を報告します</td>
+                                    
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr style="font-size:x-small">
-                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No / ULRいいえ</td>
                                     <td style="width:400px;padding-bottom: 15px;padding:10px">:  @Model.PlungerDialData.ULRFormat</td>
                                     <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
                                     <td style="width:400px;padding-bottom: 15px;"></td>
                                 </tr>
                             }
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration / キャリブレーションの日付</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
                                 <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next
-                                    Calibration Due</td>
+                                    Calibration Due / 次回の校正期限</td>
                                     @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 15px;padding:10px">: --</td>
@@ -586,19 +584,19 @@
                                     }
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The
-                                    Customer</td>
+                            <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The Customer / 顧客の名前</td>
+                                    
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of
-                                    Receipt</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of Receipt / 領収書の日付</td>
+                                    
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department
-                                </td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department / デパートメント</td>
+                                
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
-                                    of Equipment</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description of Equipment / 設備の説明</td>
+                                    
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
                             </tr>
                             @* <tr style="font-size:x-small">
@@ -625,16 +623,17 @@
                             <tr style="font-size:x-small">
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Range</th>
+                                    Range/ 範囲</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Least Count</th>
+                                    Least Count / 最小数</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Serial No</th>
+                                    Serial No / シリアル番号。</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Make</th>
+                                Make /  作る
+                            </th>
                             </tr>
                             <tr style="font-size:x-small">
                                 <td
@@ -664,22 +663,23 @@
                         <table style="font-size:x-small;padding:5px;">
                             <tr>
                                 <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Identification Number</td>
+                                    Identification Number / 識別番号</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.IdNo</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition
-                                    of DUC</td>
+                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition of DUC / DUCの状態</td>
+                                   
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.ConditionAndObservation</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
                                 <td style="width:400px; font-weight: 900; padding:10px;padding-bottom: 15px;">
-                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
-                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>
+                                Calibration Procedure / 校正手順 / <br />Reference Standard / 基準標準 :
+                                    @*<p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
+                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>*@
                                 </td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.StandardReffered</td>
                                 <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
@@ -693,7 +693,8 @@
                         <table style="font-size:x-small;padding:5px;">
                             <tr>
                                 <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II.
-                                    Master & Equipment Used For Calibration & Traceability</th>
+                                Master & Equipment Used For Calibration & Traceability  / 校正とトレーサビリティに使用されるマスターと機器
+                            </th>
                             </tr>
                         </table>
                     </td>
@@ -704,25 +705,30 @@
                             <tr>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">
-                                    SI.</th>
+                                SI. / SI.
+                            </th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Master Equipment</th>
+                                    Master Equipment / マスター装備</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Id No</th>
+                                    Id No / アイディー番号</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Make </th>
+                                Make / 作る
+                            </th>
+                           
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Traceability </th>
+                                Traceability / トレーサビリティ
+                            </th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Certificate No </th>
+                                    Certificate No / 証明書の番号</th>
                                 <th
                                     style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Validity </th>
+                                Validity / 有効
+                            </th>
                             </tr>
                             @{ int increement=1;
                             @foreach (var item in @Model.MasterEqiupmentList)
@@ -747,7 +753,8 @@
                         <table style="font-size:x-small;padding:5px;">
                             <td>
                                 <p style="padding:10px;padding-bottom: 15px;padding-top: 15px;">The master Equipment used for calibration
-                                    are calibrated and traceable to National / International Standard</p>
+                                are calibrated and traceable to National / International Standard <br /> / 校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。
+                            </p>
                             </td>
                         </table>
                     </td>
@@ -757,14 +764,15 @@
                         <table style="font-size:x-small;padding:5px;">
                             <tr>
                                 <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Environmental Condition</td>
+                                Environmental Condition / 環境条件 :
+                            </td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px;"><p>: 20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty
-                                    Of Measurement</td>
+                            <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty  Of Measurement / 測定の不確かさ</td>
+                                   
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.PdfUncertainity</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
@@ -779,7 +787,8 @@
                                 <td>
                                     <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded
                                         uncertainty is estimatd at a confidence level approximately 95% with a coverage
-                                        factor k = 2</p>
+                                    factor k = 2<br /> 記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 95% の信頼水準で推定されます。
+                                </p>
                                 </td>
                             </tr>
                         </table>
@@ -790,7 +799,8 @@
                         <table style="font-size:x-small;padding:10px; width:100%">
                             <tr>
                                 <td>
-                                    <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;">
+                                    Calibrated By / 校正者
                                     </p>
                                     <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.PlungerDialData.PerformedBySign"/>
                                     <p  style="margin-left:20px;">@Model.PlungerDialData.CalibrationPerformedBy</p>
@@ -798,8 +808,8 @@
                                 </td>
 
                                 <td style="margin-left: 420px;text-align:right">
-                                    <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                        Signatory</p>
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
+                                        
                                     <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.PlungerDialData.ReviewedBySign"/>
                                     <p style="margin-right:20px;">@Model.PlungerDialData.ReviewedBy</p>
                                     <p style="margin-right:20px;">@Model.PlungerDialData.ReviewedByDesignation</p>
@@ -813,13 +823,10 @@
                         <table  
                             style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                             <td style="padding:2px;">
-                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the
-                                    time of & under the stated conditions of measurement.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either
-                                    in full or in part without out permission in writing.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this
-                                    cetificate as per customer request irrespective of the status or condition of the
-                                    IMTE.</p>
+                            <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.<br /> / キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。</p>
+                            <p style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing.<br /> / レポートの全部または一部を書面による許可なく複製することはできません。</p>
+                            <p style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.<br /> /  次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
+
                             </td>
                             <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
                                 </td>
@@ -834,11 +841,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                            <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 /  フォーマット番号 : 365.QM.D.16、リビジョン番号 : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                            <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2 / 1/2 ページ</p>
                             </td>
 
                         </tr>
@@ -866,14 +873,12 @@
                                 }
                             </td>
                             <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
-                                <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
-                                    Village, Singaperumal Koil Road,</p>
-                                <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
-                                    Kanchipuram - 602105, Tamil Nadu, India.</p>
-                                <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
-                                <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
-                                    www.bharatbenz.com</p>
+                                <h5 style="margin: 5px; font-family:Arial ;font-size: 12px; ">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab / >ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road / SIPCOT工業団地、オラガダム村、シンガポール・コイル・ロード</p>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India / マトゥール (PO)、スリペルンバドゥル タルク、カンチプラム -602105、タミル ナードゥ州、インド。</p>
+                                <p style="margin: 5px; font-size: 12px;">Phone / 電話: +91 44 4969 4456,</p>
+                                <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com / Webサイト：www.ダイムラー--インドアック。コム / ..バラトベンツ。コム</p>
+
                             </td>
                             <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
                                 <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;"  alt="logo" />
@@ -886,13 +891,13 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III.
-                                Mechanical Calibration Results</td>
-                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate
-                                No @Model.PlungerDialData.CertificateFormat</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III.Mechanical Calibration Results / 機械的校正結果</td>
+                                
+                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate No / 証明書の番号 :@Model.PlungerDialData.CertificateFormat</td>
+                                
                             <td
                                 style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
-                                Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                                Report Issue Date / レポート発行日 :@DateTime.Now.ToString("dd-MM-yyyy")</td>
                         </tr>
                     </table>
                 </td>
@@ -902,7 +907,8 @@
                     <table style="font-size:x-small;padding:10px">
                         <tr>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All
-                                Values are in Microns @Model.PlungerDialData.Allvalues</td>
+                                Values are in Microns / すべての値が入っています :@Model.PlungerDialData.Allvalues
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -912,48 +918,48 @@
                 <td>
                     <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="8" class="text-center">Mechanical Plunger Dial Indicator</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="8" class="text-center">Mechanical Plunger Dial Indicator / メカニカルプランジャーダイヤルインジケーター</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center" >SI.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Parameter</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Spec</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center">SI.No / SI.No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Parameter / パラメータ</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Spec / 仕様</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual / 実際</th>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">1</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px;writing-mode: vertical-rl;transform: rotate(180deg);" rowspan="4">Indicator Error</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Whole Measuring Range</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px;writing-mode: vertical-rl;transform: rotate(180deg);" rowspan="4">Indicator Error / インジケータエラー</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Whole Measuring Range / 全測定範囲</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec1</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual1</td>
                     </tr>
 					<tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">2</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">½ Revolution</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">½ Revolution / 回転</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec2</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual2</td>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">3</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">1 Revolution</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">1 Revolution / 1回転</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec3</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual3</td>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">4</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Narrow range adjacent error</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Narrow range adjacent error / 狭範囲隣接誤差</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec4</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual4</td>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">5</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error / 狭範囲隣接誤差</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec5</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"colspan="2" >@Model.PlungerDialData.Actual5</td>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px">6</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="4">Narrow range adjacent error / 狭範囲隣接誤差</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Spec6</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="2">@Model.PlungerDialData.Actual6</td>
                     </tr>
@@ -966,34 +972,34 @@
 					<td>
                 <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="8" class="text-center">Digital Plunger Dial Indicator</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%;height:25px; padding:5px" colspan="8" class="text-center">Digital Plunger Dial Indicator / デジタルプランジャーダイヤルインジケーター</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center">SI.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Parameter</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Spec</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50px;height:25px; padding:5px" class="text-center">SI.No / SI.No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="4">Parameter / パラメータ</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Spec / 仕様</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center">Actual / 実際</th>
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px"></td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70px;height:25px; padding:5px"></td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Repeatability</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 1 count</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Repeatability / 再現性</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 1 count / ±1カウント</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                     </tr>
 					<tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px"></td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70px;height:25px; padding:5px" rowspan="3">1 count = 1 least count</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Hysteresis</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">1 count</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:70px;height:25px; padding:5px" rowspan="3">1 count = 1 least count / 1 カウント = 1 最小カウント</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Hysteresis / ヒステリシス</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">1 count / 1カウント</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px"></td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Accuracy Overall</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Accuracy Overall / 精度全体</td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 3 counts</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
@@ -1001,8 +1007,8 @@
                     </tr>
                     <tr>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px"></td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Accuracy Micro calibration</td>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 3 counts</td>
+                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px" colspan="3">Accuracy Micro calibration / 精度 マイクロキャリブレーション</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">± 3 counts / ±3カウント</td>
 						<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px"></td>
                         </tr>
@@ -1010,7 +1016,7 @@
                         <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:50px;height:25px; padding:5px" colspan="8"></td>
                     </tr>
                     <tr>
-                        <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Remarks :</td>
+                                <td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">Remarks/備考 : </td>
                         <td colspan="7" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px;height:25px; padding:5px">@Model.PlungerDialData.Remarks</td>
                     </tr>
                 </table>
@@ -1021,14 +1027,15 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">
+                                IV. Result Of Calibration / キャリブレーションの結果
                             </td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.PlungerDialData.PdfCalibrationResult</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks / 備考</td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.PlungerDialData.PdfRemarks</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
@@ -1046,7 +1053,8 @@
                     <table style="font-size:x-small;padding:10px; width:100%">
                         <tr>
                             <td>
-                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;">
+                                    Calibrated By / 校正者
                                 </p>
                                 <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.PlungerDialData.PerformedBySign"/>
                                 <p  style="margin-left:20px;">@Model.PlungerDialData.CalibrationPerformedBy</p>
@@ -1055,8 +1063,8 @@
                             </td>
 
                             <td style="margin-left: 420px;text-align:right">
-                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                    Signatory</p>
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
+                                    
                                     <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.PlungerDialData.ReviewedBySign"/>
                                     <p style="margin-right:20px;">@Model.PlungerDialData.ReviewedBy</p>
                                     <p style="margin-right:20px;">@Model.PlungerDialData.ReviewedByDesignation</p>
@@ -1067,9 +1075,10 @@
             </tr>
             <tr style="height:200px;">
                 <td>
-                    <table style="font-size:x-small;padding:10px">
+                    <h3 style="text-align: center;font-size: small;">***End of Certificat / 証明書の終わりe***</h3>
+                   @* <table style="font-size:x-small;padding:10px">
                         <th style="text-align: center;font-size: small;padding-bottom: 200px;">***End of Certificate***</th>
-                    </table>
+                    </table>*@
                 </td>
             </tr>
             <tr>
@@ -1077,13 +1086,10 @@
                     <table
                         style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                         <td style="padding:2px;"> 
-                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the
-                                time of & under the stated conditions of measurement.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either
-                                in full or in part without out permission in writing.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this
-                                cetificate as per customer request irrespective of the status or condition of the
-                                IMTE.</p>
+                            <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement. /<br /> キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。</p>
+                            <p style="margin: 0px; font-size: 12px;">2. The report shoult not be reproduced either in full or in part without out permission in writing. /<br /> レポートの全部または一部を書面による許可なく複製することはできません。</p>
+                            <p style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE. /<br />  次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
+
                         </td>
                         <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;"></td>
                     </table>
@@ -1094,11 +1100,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 /  フォーマット番号 : 365.QM.D.16、リビジョン番号 : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                                <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2 / 2/2 ページ</p>
                             </td>
 
                         </tr>
