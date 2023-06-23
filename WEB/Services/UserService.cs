@@ -50,7 +50,8 @@ public class UserService : IUserService
 				ForemanEmail = S.ForemanEmail,
 				KakarichoEmail = S.KakarichoEmail,
 				ManagerEmail = S.ManagerEmail,
-				DepartmentId = S.DepartmentId
+				DepartmentId = S.DepartmentId,
+				subSection = S.Department.Section
 			}).ToList();
 
 			return new ResponseViewModel<UserViewModel>
@@ -63,6 +64,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - GetAllUserList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -95,6 +98,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - GetUserById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -133,6 +138,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - CheckEmailAddress Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<string>
 			{
 				ResponseCode = 500,
@@ -184,6 +191,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - InsertUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -310,6 +319,8 @@ public class UserService : IUserService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("UserService - UpdateUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -373,6 +384,8 @@ public class UserService : IUserService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("UserService - AssignUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -412,6 +425,8 @@ public class UserService : IUserService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("UserService - PasswordUpdate Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -510,6 +525,8 @@ public class UserService : IUserService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("UserService - DeleteUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<string>
 			{
 				ResponseCode = 500,
@@ -598,7 +615,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
-			ErrorViewModelTest.Log("ValidateUser Exception - " + e.Message);
+			ErrorViewModelTest.Log("UserService - ValidateUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -631,6 +649,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - CreateNewUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -675,6 +695,8 @@ public class UserService : IUserService
 		catch (Exception e)
 		{
 			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("UserService - ActivateUser Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,
@@ -719,6 +741,8 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("UserService - ForgotUserPassword Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 500,

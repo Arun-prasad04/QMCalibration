@@ -13,6 +13,8 @@ using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
 using iTextSharp.text.html.simpleparser;
 using HtmlAgilityPack;
+using iTextSharp.text.pdf.parser;
+
 namespace WEB.Controllers;
 
 public class CertificationController : BaseController
@@ -697,8 +699,14 @@ public class CertificationController : BaseController
 
     if (qrCodeGenOutputViewModel== null)
       return qrCodeGenInputViewModel;
-    else
-      System.IO.File.WriteAllBytes(_configuration["TempQRCodePath"],qrCodeGenOutputViewModel.DecodeText);
+        else
+        {
+            using (FileStream stream = new FileStream(_configuration["TempQRCodePath"], FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                stream.Write(qrCodeGenOutputViewModel.DecodeText, 0, qrCodeGenOutputViewModel.DecodeText.Length);
+            }
+        }
+      //System.IO.File.WriteAllBytes(_configuration["TempQRCodePath"],qrCodeGenOutputViewModel.DecodeText);
   
   return qrCodeGenOutputViewModel;
   }

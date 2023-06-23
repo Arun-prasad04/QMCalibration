@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
@@ -28,11 +28,11 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                            <h5 style="margin: 5px;" class="trn">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>                           
+                            <p style="margin: 5px; font-size: 12px;" class="trn">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Website: www.daimler-indiacv.com / .bharatbenz.com</p>
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -43,35 +43,35 @@
             </tbody>
         </table>
         <div>
-            <h2 style="text-align: center; text-transform: uppercase;">Certificate of calibration</h2>
+            <h2 style="text-align: center; text-transform: uppercase;" class="trn">Certificate of calibration</h2>
         </div>
         <div style="border-collapse: collapse; border:2px solid #000">
             <div>
                 <div style="padding: 10px;">
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Descriptions of DUC</p>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;" class="trn">I. Descriptions of DUC</p>
                     </div>
                     <table>
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Certificate No</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @Model.ThreadGaugeData.CertificateFormat</td>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Report Issues Date</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">ULR No</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">ULR No</td>
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.ThreadGaugeData.ULRFormat</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                             }
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Calibration</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Date of Calibration</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.ThreadGaugeData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Next Calibration Due</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Next Calibration Due</td>
                                 @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 25px;">: --</td>
@@ -82,25 +82,25 @@
                                 }
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Name of the Customer</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Name of the Customer</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Department</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Department</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Date of Receipt</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Date of Receipt</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Description of Equipment</td>
+                                <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Description of Equipment</td>
                                 <td style="width:400px; padding-bottom: 25px;">: @Model.InstrumentName</td>
                                 <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                 <td style="width:400px; padding-bottom: 25px;"></td>
@@ -112,10 +112,10 @@
                     <div style="padding-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;" class="trn">Range</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;" class="trn">Least Count</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;" class="trn">Serial No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;" class="trn">Make</th>
                             </tr>
                             <tr>
                                 <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
@@ -136,19 +136,19 @@
                         <table style="margin-top:15px">
                             <tbody>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification Number</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Identification Number</td>
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Condition of DUC</td>
                                     <td style="width:400px;padding-bottom: 25px;">: @Model.ThreadGaugeData.ThreadgaugeCondtion</td>
                                     <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                     <td style="width:400px;padding-bottom: 25px;"></td>
                                 </tr>
                                 <tr>
-                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;">Calibration Procedure / <br/> Reference Standard :</td>
+                                    <td style="width:325px; font-weight: 900; padding-bottom: 25px;" class="trn">Calibration Procedure / <br /> Reference Standard :</td>
                                     <td style="width:400px; padding-bottom: 25px;">: @Model.StandardReffered</td>
                                     <td style="width:325px; font-weight: 900; padding-bottom: 25px;"></td>
                                     <td style="width:400px; padding-bottom: 25px;"></td>
@@ -158,18 +158,18 @@
                     </div>
 
                     <div>
-                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">II. Master & Equipment Used For Calibration & Traceability</p>
+                        <p style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;" class="trn">II. Master & Equipment Used For Calibration & Traceability</p>                        
                     </div>
                     <div style="margin-top: 10px;">
                         <table style="border-collapse: collapse; border:1px solid #000">
                             <tr>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No </th>
-                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity </th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">SI.</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Master Equipment</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Id No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Make</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Traceability</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Certificate No</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px" class="trn">Validity</th>
                             </tr>
                             @{ int i=1;
                             @foreach (var item in @Model.MasterEqiupmentList)
@@ -187,19 +187,19 @@
                             }
                            }
                         </table>
-                        <p class="fw-normal fontsize14">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                        <p class="fw-normal fontsize14 trn">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>                        
                     </div>
 
                     <table style="margin-top:15px">
                         <tbody>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental Condition</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Environmental Condition:</td>
                                 <td style="width:400px;padding-bottom: 10px;"><p>20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;">Uncertainty Of Measurement :</td>
+                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">Uncertainty Of Measurement</td>
                                 <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Uncertainty Of Measurement" id="Uncertainity" name="Uncertainity" value="@Model.ThreadGaugeData.Uncertainity"></td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
@@ -207,21 +207,21 @@
                         </tbody>
                     </table>
 
-                    <p>The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+                    <p class="trn">The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>                    
 
                     <table style="margin-top:15px">
                         <tbody>
                             <tr>
                                 <td style="width:325px; padding-bottom: 25px; width: 800px;">
                                     <div class="col-6 text-start">
-                                        <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                        <h5 style="margin-bottom: 5px;" class="trn">Calibrated By</h5>
                                         <img src="../UserSignature/@Model.ThreadGaugeData.PerformedBySign" style="width: 100px;"/>
                                         <p style="margin: 0px;">@Model.ThreadGaugeData.CalibrationPerformedBy</p>
                                         <p style="margin: 0px;">@Model.ThreadGaugeData.PerformedByDesignation</p>
                                     </div>
                                 </td>
                                 <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                    <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                    <h5 style="margin-bottom: 5px;" class="trn">Authorized Signatory</h5>
                                     <img src="../UserSignature/@Model.ThreadGaugeData.ReviewedBySign" style="width: 100px;"/>
                                     <p style="margin: 0px;">@Model.ThreadGaugeData.ReviewedBy</p>
                                     <p style="margin: 0px;">@Model.ThreadGaugeData.ReviewedByDesignation</p>
@@ -235,9 +235,9 @@
                     border-top: solid;
                     border-block-width: 1px; border: 1px solid #000; display: flex;">
                     <div style="padding:10px">
-                        <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
-                        <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                        <p style="margin: 0px; font-size: 12px;" class="trn">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>                        
+                        <p style="margin: 0px; font-size: 12px;" class="trn">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>                        
+                        <p style="margin: 0px; font-size: 12px;" class="trn">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
                     </div>
                     <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
                 </div>
@@ -248,11 +248,11 @@
                     <tr style="font-size: xx-small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div>
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                            <h4 style="font-size: small;"><span class="trn">Format No :</span> 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 style="font-size: small;">Page 1 of 2</h4>
+                        <h4 style="font-size: small;" class="trn">Page 1 of 2</h4>
                         </td>
                     </tr>
                 </tbody>
@@ -276,11 +276,11 @@
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
                         <div>
-                            <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                            <p style="margin: 5px; font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
-                            <p style="margin: 5px; font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
-                            <p style="margin: 5px; font-size: 12px;">Phone: +91 44 4969 4456,</p>
-                            <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
+                             <h5 style="margin: 5px;" class="trn">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>                           
+                            <p style="margin: 5px; font-size: 12px;" class="trn">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Phone: +91 44 4969 4456,</p>
+                            <p style="margin: 5px; font-size: 12px;" class="trn">Website: www.daimler-indiacv.com / .bharatbenz.com</p>
                         </div>
                     </td>
                     <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
@@ -294,50 +294,50 @@
             <table style="margin-top:30px">
                 <tbody>
                     <tr>
-                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">III. Mechanical Calibration Results</td>
-                        <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;">Certificate No @Model.ThreadGaugeData.CertificateFormat</td>
-                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;">Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;" class="trn">III. Mechanical Calibration Results</td>
+                        <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;"><span class="trn">Certificate No</span> @Model.ThreadGaugeData.CertificateFormat</td>
+                        <td style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;"><span class="trn">Report Issue Date :</span> @DateTime.Now.ToString("dd-MM-yyyy")</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="p-3">
-                <p style="text-align: center;">All Values are in @Model.ThreadGaugeData.Allvalues</p>
+                <p style="text-align: center;"><span class="trn">All Values are in</span> @Model.ThreadGaugeData.Allvalues</p>
 				@if(@Model.ObservationType==80){
                 <table style="border-collapse: collapse; border:1px solid #000">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : Go</th>
-						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : NoGo</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center trn">Thread Plug Gauge : Go</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center trn">Thread Plug Gauge : NoGo</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Max</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Max</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Max</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max2</th>	
                     </tr>
                     <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Min</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Min</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Min</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min2</th>	
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center trn" colspan="2">Effective Diameter Wear limit</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Wear limit</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit2</th>	
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8"></th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8">Result : NoGo Member</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="8">Result : NoGo Member</th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>	
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center trn" colspan="2">S.No</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Actual</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">S.No</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Actual</th>
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">1</th>
@@ -360,38 +360,38 @@
 				@if(@Model.ObservationType==81){
                 <table style="border-collapse: collapse; border:1px solid #000">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : Go</th>
-						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : NoGo</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center trn">Thread Ring Gauge : Go</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center trn">Thread Ring Gauge : NoGo</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Max</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Max</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Max</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max2</th>	
                     </tr>
                     <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Min</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Min</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Min</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min2</th>	
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Wear limit</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Effective Diameter Wear limit</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit2</th>	
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8"></th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8">Result : NoGo Member</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="8">Result : NoGo Member</th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>	
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center trn" colspan="2">S.No</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">S.No</th>
+                            <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center trn" colspan="2">Actual</th>
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">1</th>
@@ -416,13 +416,13 @@
                 <table style="margin-top:15px">
                     <tbody>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">IV. Result Of Calibration :</td>
                             <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult" value="@Model.ThreadGaugeData.CalibrationResult"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+                            <td style="width:325px; font-weight: 900;padding-bottom: 25px;" class="trn">V. Remarks :</td>
                             <td style="width:400px;padding-bottom: 25px;"><input class="form-control" placeholder="Remarks" id="Remarks" id="Remarks" name="Remarks" value="@Model.ThreadGaugeData.Remarks"></td>
                             <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
@@ -440,14 +440,14 @@
                     <tr>
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div class="col-6 text-start">
-                                <h5 style="margin-bottom: 5px;"> Calibrated By</h5>
+                                <h5 style="margin-bottom: 5px;" class="trn">Calibrated By</h5>
                                 <img src="../UserSignature/@Model.ThreadGaugeData.PerformedBySign" style="width: 100px;"/>
                                         <p style="margin: 0px;">@Model.ThreadGaugeData.CalibrationPerformedBy</p>
                                         <p style="margin: 0px;">@Model.ThreadGaugeData.PerformedByDesignation</p>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h5 style="margin-bottom: 5px;">Authorized Signatory</h5>
+                            <h5 style="margin-bottom: 5px;" class="trn">Authorized Signatory</h5>
                             <img src="../UserSignature/@Model.ThreadGaugeData.ReviewedBySign" style="width: 100px;"/>
                                     <p style="margin: 0px;">@Model.ThreadGaugeData.ReviewedBy</p>
                                     <p style="margin: 0px;">@Model.ThreadGaugeData.ReviewedByDesignation</p>
@@ -456,15 +456,15 @@
                     </tr>
                 </tbody>
             </table>
-            <h5 style="text-align: center;">***End of Certificate***</h5>
+            <h5 style="text-align: center;" class="trn">***End of Certificate***</h5>
         </div>
         <div style="border-collapse: collapse; 
                     border-top: solid;
                     border-block-width: 1px; border: 1px solid #000; display: flex;">
             <div style="padding:10px">
-                <p style="margin: 0px; font-size: 12px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
-                <p style="margin: 0px; font-size: 12px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
-                <p style="margin: 0px; font-size: 12px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
             </div>
             <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
         </div>
@@ -473,11 +473,11 @@
                     <tr style="font-size: small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div >
-                                <h4 style="font-size: small;"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                                <h4 style="font-size: small;"><span class="trn">Format No :</span> 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 style="font-size: small;">Page 2 of 2</h4>
+                            <h4 style="font-size: small;" class="trn">Page 2 of 2</h4>
                         </td>
                     </tr>
                 </tbody>
@@ -489,15 +489,15 @@
             <input type="hidden" name="FileName" id="FileName"  value="@ViewBag.FileName" />
              @if(@Model.isExportCertificate)
              {
-                <input type="button" value="ReGenerate" onclick="SaveCertificate('ThreadGauges',language)" class="btn btn-primary">
-                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
-                <a class="btn btn-primary" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
+                <input type="button" value="ReGenerate" onclick="SaveCertificate('ThreadGauges',language)" class="btn btn-primary trn">
+                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
+                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
              }
              else
              {
-                <input type="button" value="Save" onclick="SaveCertificate('ThreadGauges',language)" class="btn btn-primary">
+                <input type="button" value="Save" onclick="SaveCertificate('ThreadGauges',language)" class="btn btn-primary trn">
              }
-            <a class="btn btn-primary" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
         </div>
     </div>
 </body>
@@ -525,14 +525,14 @@
                         </td>
                         <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
                             <div>
-                                <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village,
-                                    Singaperumal Koil Road,</p>
-                                <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram
-                                    - 602105, Tamil Nadu, India.</p>
-                                <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
-                                <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
-                                    www.bharatbenz.com</p>
+                                    <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
+                                    <h5 style="margin: 5px; font-family: 'Arial Unicode MS';">ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT工業団地、オラガダム村、シンガペルマル・コイル・ロード、</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">マトゥール(PO)、スリペルンバドゥル・タルク、カンチプラム - 602105、タミル・ナードゥ州、インド。</p>
+                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>
                             </div>
                         </td>
                         <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
@@ -541,37 +541,34 @@
                     </tr>
                </table>
             <div>
-                <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION</h3>
+                        <h3 style="text-align: center; padding: 5px;">CERTIFICATE OF CALIBRATION / 校正証明書</h3>
             </div>
             <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small">
                 <tr>
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr style="font-size:x-small">
-                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC</th>
+                                <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC / DUCの説明</th>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate
-                                    No</td>
+                                        <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate No / 証明書の番号</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.ThreadGaugeData.CertificateFormat</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px">Report
-                                    Issues Date</td>
+                                        <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px">Report Issues Date / レポート発行日</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
                             {
                                 <tr style="font-size:x-small">
-                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No</td>
+                                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No / ULR番号</td>
                                     <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.ThreadGaugeData.ULRFormat</td>
                                     <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
                                     <td style="width:400px;padding-bottom: 15px;"></td>
                                 </tr>
                             }
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration</td>
+                                        <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration / 校正日</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.ThreadGaugeData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next
-                                    Calibration Due</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next Calibration Due / 次回の校正期限</td>
                                     @if(Model.Result == "Rejected")
                                     {
                                         <td style="width:400px; padding-bottom: 15px;padding:10px">: --</td>
@@ -582,19 +579,15 @@
                                     }
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The
-                                    Customer</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The Customer / お客様のお名前</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of
-                                    Receipt</td>
+                                        <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of Receipt / 領収書の日付</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
                             </tr>
                             <tr style="font-size:x-small">
-                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department
-                                </td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department / デパートメント </td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
-                                    of Equipment</td>
+                                        <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description of Equipment / 設備の説明</td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
                             </tr>
                             @* <tr style="font-size:x-small">
@@ -619,18 +612,12 @@
                         <table align="center"  style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
 
                             <tr style="font-size:x-small">
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Range / 範囲</th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Range</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Least Count / 最小数</th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Least Count</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Serial No</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-                                    Make</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Serial No / シリアル番号</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">Make / 作る</th>
                             </tr>
                             <tr style="font-size:x-small">
                                 <td
@@ -659,22 +646,21 @@
                     <td>
                         <table style="font-size:x-small;padding:5px;">
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Identification Number</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Identification Number / 識別番号</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.IdNo</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition of DUC</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Condition of DUC / DUCの状態</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.ThreadGaugeData.ThreadgaugeCondtion</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
                                 <td style="width:400px; font-weight: 900; padding:10px;padding-bottom: 15px;">
-                                    <p style="margin: 0px; font-size: x-small;">Calibration Procedure / </p>
-                                    <p style="margin: 0px; font-size: x-small;">Reference Standard :</p>
+                                            <p style="margin: 0px; font-size: x-small;">Calibration Procedure 校正手順 / </p>
+                                            <p style="margin: 0px; font-size: x-small;">Reference Standard 参照標準 :</p>
                                 </td>
                                 <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.StandardReffered</td>
                                 <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
@@ -687,8 +673,8 @@
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr>
-                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II.
-                                    Master & Equipment Used For Calibration & Traceability</th>
+                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II. Master & Equipment Used For Calibration & Traceability</th>
+                                <th style="font-size: x-small;text-align:left;padding:10px;padding-bottom: 15px;">II. 校正とトレーサビリティに使用されるマスターと機器</th>
                             </tr>
                         </table>
                     </td>
@@ -699,26 +685,14 @@
                             style="border-collapse: collapse; border:0.5px solid #000; width:98%;font-size:x-small;">
                             <tr>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">
-                                    SI.</th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:100px; padding: 5px;">SI.</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Master Equipment / マスター装備</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Id No / アイディー番号</th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Make / 作る </th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Traceability / トレーサビリティ </th>
                                 <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Master Equipment</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Id No</th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Make </th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Traceability </th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Certificate No </th>
-                                <th
-                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">
-                                    Validity </th>
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Certificate No / 証明書の番号 </th>
+                                <th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:325px; padding: 5px;">Validity / 有効 </th>
                             </tr>
                             @{ int increement=1;
                             @foreach (var item in @Model.MasterEqiupmentList)
@@ -742,8 +716,8 @@
                     <td>
                         <table style="font-size:x-small;padding:5px;">
                             <td>
-                                <p style="padding:10px;padding-bottom: 15px;padding-top: 25px;">The master Equipment used for calibration
-                                    are calibrated and traceable to National / International Standard</p>
+                                <p style="padding:10px;padding-bottom: 15px;padding-top: 25px;">The master Equipment used for calibration are calibrated and traceable to National / International Standard</p>
+                                <p style="padding:10px;padding-bottom: 15px;padding-top: 25px;">校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。</p>
                             </td>
                         </table>
                     </td>
@@ -752,15 +726,13 @@
                     <td>
                         <table style="font-size:x-small;padding:5px">
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">
-                                    Environmental Condition</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Environmental Condition / 環境条件</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px;"><p>: 20 &plusmn; 1.0<sup>o</sup>C / 50 &plusmn; 10% RH</p></td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
                             </tr>
                             <tr>
-                                <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty
-                                    Of Measurement</td>
+                                        <td style="width:400px; font-weight: 900;padding:10px;padding-bottom: 15px;">Uncertainty Of Measurement / 測定の不確かさ</td>
                                 <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.ThreadGaugeData.PdfUncertainity</td>
                                 <td style="width:400px; font-weight: 900;padding-bottom: 15px;"></td>
                                 <td style="width:400px;padding-bottom: 15px;"></td>
@@ -773,9 +745,8 @@
                         <table style="font-size:x-small;padding:5px">
                             <tr>
                                 <td>
-                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded
-                                        uncertainty is estimatd at a confidence level approximately 95% with a coverage
-                                        factor k = 2</p>
+                                    <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2</p>
+                                            <p style="font-size: x-small;padding:10px;padding-bottom: 15px;">記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 95% の信頼水準で推定されます。</p>
                                 </td>
                             </tr>
                         </table>
@@ -786,16 +757,14 @@
                         <table style="font-size:x-small;padding:5px; width:100%">
                             <tr>
                                 <td>
-                                    <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
-                                    </p>
+                                    <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By / 校正者 </p>
                                      <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.ThreadGaugeData.PerformedBySign"/>
                                     <p style="margin-left:20px;">@Model.ThreadGaugeData.CalibrationPerformedBy</p>
                                     <p style="margin-left:20px;">@Model.ThreadGaugeData.PerformedByDesignation</p>
                                 </td>
 
                                 <td style="margin-left: 420px;text-align:right">
-                                    <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                        Signatory</p>
+                                            <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
                                      <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.ThreadGaugeData.ReviewedBySign"/>
                                     <p style="margin-right:20px;">@Model.ThreadGaugeData.ReviewedBy</p>
                                     <p style="margin-right:20px;">@Model.ThreadGaugeData.ReviewedByDesignation</p>
@@ -809,13 +778,12 @@
                         <table  
                             style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
                             <td style="padding:2px;">
-                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the
-                                    time of & under the stated conditions of measurement.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either
-                                    in full or in part without out permission in writing.</p>
-                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this
-                                    cetificate as per customer request irrespective of the status or condition of the
-                                    IMTE.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;">1. 校正結果は、記載された測定条件下での測定時に有効です。</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. 書面による許可なく、レポートの全部または一部を複製してはなりません。</p>
+                                <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                                        <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
                             </td>
                             <td style="margin-left: 450px;text-align:right">
                                 <img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
@@ -831,11 +799,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 / フォーマット番号 : 365.QM.D.16, Rev No : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 1 of 2</p>
+                                <p style="margin-left: 80px;font-size:xx-small">Page / ページ 1 of 2</p>
                             </td>
 
                         </tr>
@@ -867,13 +835,13 @@
                             </td>
                             <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
                                 <h5 style="margin: 5px;">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab</h5>
-                                <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam
-                                    Village, Singaperumal Koil Road,</p>
-                                <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk,
-                                    Kanchipuram - 602105, Tamil Nadu, India.</p>
-                                <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456</p>
-                                <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com /
-                                    www.bharatbenz.com</p>
+                                    <h5 style="margin: 5px; font-family: 'Arial Unicode MS';">ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT Insdustrial Estate, Oragadam Village, Singaperumal Koil Road,</p>
+                                    <p style="margin: 5px; font-size: x-small;">SIPCOT工業団地、オラガダム村、シンガペルマル・コイル・ロード、</p>
+                                    <p style="margin: 5px; font-size: x-small;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram - 602105, Tamil Nadu, India.</p>
+                                    <p style="margin: 5px; font-size: x-small;">マトゥール(PO)、スリペルンバドゥル・タルク、カンチプラム - 602105、タミル・ナードゥ州、インド。</p>
+                                    <p style="margin: 5px; font-size: x-small;">Phone: +91 44 4969 4456,</p>
+                                    <p style="margin: 5px; font-size: x-small;">Website: www.daimler-indiacv.com / www.bharatbenz.com</p>    
                             </td>
                             <td
                                 style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
@@ -887,13 +855,11 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III.
-                                Mechanical Calibration Results</td>
-                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate
-                                No @Model.ThreadGaugeData.CertificateFormat</td>
-                            <td
-                                style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
-                                Report Issue Date : @DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px;padding:10px;">III. Mechanical Calibration Results / 機械的校正結果</td>
+                            <td style="width:400px;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">Certificate No / 証明書の番号 : @Model.ThreadGaugeData.CertificateFormat</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px; width: 600px; text-align: center;padding:10px">
+                                Report Issue Date / レポート発行日 : @DateTime.Now.ToString("dd-MM-yyyy")
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -902,8 +868,7 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All
-                                Values are in @Model.ThreadGaugeData.Allvalues</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;text-align: center;">All Values are in / すべての値が入っています @Model.ThreadGaugeData.Allvalues</td>
                         </tr>
                     </table>
                 </td>
@@ -913,39 +878,39 @@
                 <td>
                     <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : Go</th>
-						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : NoGo</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : Go / ねじプラグゲージ : 行く</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Plug Gauge : NoGo / ねじプラグゲージ : 立ち入り禁止</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Max</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max / 有効径最大値</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max / 有効径最大値</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max2</th>	
                     </tr>
                     <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Min</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min / 最小有効径</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min / 最小有効径</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min2</th>	
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Wear limit / 有効直径 摩耗限界</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit / 有効直径 摩耗限界</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit2</th>	
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8"></th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8">Result : NoGo Member</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="8">Result : NoGo Member / 結果 ：ノーゴーメンバー</th>
                 	</tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual / 実際</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>	
-                    </tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual / 実際</th>
+                            </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">1</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Plane1</th>
@@ -974,39 +939,39 @@
 						
                 <table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;">
                    <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : Go</th>
-						<th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : NoGo</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : Go / ねじプラグゲージ : 行く</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:50%;height:25px; padding:5px" colspan="4" class="text-center">Thread Ring Gauge : NoGo / ねじプラグゲージ : 立ち入り禁止</th>
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Max</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max / 有効径最大値</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Max / 有効径最大値</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Max2</th>	
                     </tr>
                     <tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Min</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Min / 最小有効径</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Min / 最小有効径</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Min2</th>	
                     </tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit / 有効直径 摩耗限界</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit1</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Effective Diameter Wear limit / 有効直径 摩耗限界</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.WearLimit2</th>	
                     </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8"></th>
                 	</tr>
 					<tr>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="8">Result : NoGo Member</th>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="8">Result : NoGo Member / 結果 : ノーゴーメンバー</th>
                 	</tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>
+                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual / 実際</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">S.No</th>
-                        <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual</th>	
-                    </tr>
+                                <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">Actual / 実際</th>
+                            </tr>
 					<tr>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px"  class="text-center" colspan="2">1</th>
                         <th style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;height:25px; padding:5px" class="text-center" colspan="2">@Model.ThreadGaugeData.Plane1</th>
@@ -1031,14 +996,13 @@
                 <td>
                     <table style="font-size:x-small;padding:10px">
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration
-                            </td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">IV. Result Of Calibration / 校正結果</td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.ThreadGaugeData.PdfCalibrationResult</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
                         </tr>
                         <tr>
-                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 25px;padding:10px;">V. Remarks / 備考</td>
                             <td style="width:400px;padding-bottom: 25px;padding:10px;">: @Model.ThreadGaugeData.PdfRemarks</td>
                             <td style="width:400px; font-weight: 900;padding-bottom: 25px;"></td>
                             <td style="width:400px;padding-bottom: 25px;"></td>
@@ -1056,15 +1020,13 @@
                     <table style="font-size:x-small;padding:10px; width:100%">
                         <tr>
                             <td>
-                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By
-                                </p>
+                                <p style="margin-left:20px;font-weight:bold;padding-bottom: 5px;"> Calibrated By / 校正者</p>
                                 <img style="margin-bottom:5px;margin-left:25px; width:100px" src="./wwwroot/UserSignature/@Model.ThreadGaugeData.PerformedBySign"/>
                                 <p style="margin-left:20px;">@Model.ThreadGaugeData.CalibrationPerformedBy</p>
                                 <p style="margin-left:20px;">@Model.ThreadGaugeData.PerformedByDesignation</p>
                             </td>
                             <td style="margin-left: 420px;text-align:right">
-                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized
-                                    Signatory</p>
+                                <p style="margin-right: 20px;font-weight: bold;padding-bottom: 5px;">Authorized Signatory / 承認された署名者</p>
                                  <img style="margin-bottom:5px;margin-right:25px; width:100px" src="./wwwroot/UserSignature/@Model.ThreadGaugeData.ReviewedBySign"/>
                                 <p style="margin-right:20px;">@Model.ThreadGaugeData.ReviewedBy</p>
                                 <p style="margin-right:20px;">@Model.ThreadGaugeData.ReviewedByDesignation</p>
@@ -1077,7 +1039,7 @@
             <tr>
                 <td>
                     <table style="font-size:x-small;padding:10px">
-                        <th style="text-align: center;font-size: small;padding-bottom: 320px;">***End of Certificate***</th>
+                        <th style="text-align: center;font-size: small;padding-bottom: 320px;">***End of Certificate / 証明書の終わり***</th>
                     </table>
                 </td>
             </tr>
@@ -1085,14 +1047,13 @@
                 <td>
                     <table
                         style="border-collapse: collapse; border:2px solid #000;width:100%;font-size:xx-small;padding:10px">
-                        <td style="padding:2px;"> 
-                            <p style="margin: 0px; font-size: 8px;padding:2px">1. The Calibration results are valid at the
-                                time of & under the stated conditions of measurement.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 2. The report shoult not be reproduced either
-                                in full or in part without out permission in writing.</p>
-                            <p style="margin: 0px; font-size: 8px;padding:2px"> 3. Next calibration due date given in this
-                                cetificate as per customer request irrespective of the status or condition of the
-                                IMTE.</p>
+                        <td style="padding:2px;">
+                            <p style="margin: 0px; font-size: 8px;padding:2px;">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px;">1. 校正結果は、記載された測定条件下での測定時に有効です。</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 2. 書面による許可なく、レポートの全部または一部を複製してはなりません。</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                            <p style="margin: 0px; font-size: 8px;padding:2px;"> 3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。</p>
                         </td>
                         <td style="margin-left: 450px;text-align:right"><img src="./wwwroot/image/footer1.png" style="margin-left: 450px;width: 100px;">
                                </td>
@@ -1104,11 +1065,11 @@
                     <table style="width: 100%;font-size:xx-small;padding:5px">
                         <tr>
                             <td>
-                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02</p>
+                                <p style="margin-left:10px;font-size:xx-small">Format No : 365.QM.D.16, Rev No : 02 / フォーマット番号 : 365.QM.D.16, Rev No : 02</p>
                             </td>
 
                             <td>
-                                <p style="margin-left: 80px;font-size:xx-small">Page 2 of 2</p>
+                                <p style="margin-left: 80px;font-size:xx-small">Page / ページ 2 of 2</p>
                             </td>
 
                         </tr>

@@ -9,6 +9,9 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Drawing;
+using System.Linq;
+using System;
+
 namespace WEB.Services;
 
 public class RequestService : IRequestService
@@ -43,10 +46,10 @@ public class RequestService : IRequestService
 		try
 		{
 			List<RequestViewModel> RequestList = new List<RequestViewModel>();
-			if (userRoleId == 2 || userRoleId == 4)
+			if (userRoleId == 2)
 			{
 				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking()
-				.Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel)
+				.Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1)).Include(I => I.RequestStatusModel)
 				.Select(s => new RequestViewModel()
 				{
 					Id = s.Id,
@@ -82,10 +85,58 @@ public class RequestService : IRequestService
 					LabResult = s.Result
 				}).ToList();
 			}
+			else if (userRoleId == 4)
+			{
+				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.StatusId == (int)EnumRequestStatus.Approved)
+				.Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
+				.Include(I => I.RequestStatusModel).Where(t => t.StatusId == (int)EnumRequestStatus.Approved)
+				//.Include(r => r.RequestStatusModel.OrderByDescending(k => k.CreatedOn)).Where(rs => rs.RequestStatusModel.Any(d => d.StatusId == 27))
+				//.Include(r => r.RequestStatusModel.GroupBy(j => j.RequestId))
+				//.Include(r => r.RequestStatusModel.Where(rs => rs.StatusId == 27)
+				
+				//.Where(rs => rs.StatusId == 27)) //.Where(rs=>rs.StatusId == 27)//.GroupBy(s => s.RequestStatusModel.FirstOrDefault().RequestId)
+				.Select(s => new RequestViewModel()
+				{
+					Id = s.Id,
+					ReqestNo = s.ReqestNo,
+					InstrumentName = s.InstrumentModel.InstrumentName,
+					InstrumentIdNo = s.InstrumentModel.IdNo,
+					InstrumentId = s.InstrumentId,
+					RequestDate = s.RequestDate,
+					TypeOfRequest = s.TypeOfReqest,
+					Range = s.InstrumentModel.Range,
+					InstrumentSerialNumber = s.InstrumentModel.SlNo,
+					CalibDate = s.InstrumentModel.CalibDate,
+					DueDate = s.InstrumentModel.DueDate,
+					UserDept = s.InstrumentModel.UserDept,
+					SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+					RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+					Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
+					ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
+					ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
+					RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+					Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
+					//Status = (int)EnumRequestStatus.Approved,
+					ReceivedBy = s.ReceivedBy,
+					InstrumentCondition = s.InstrumentCondition,
+					Feasiblity = s.Feasiblity,
+					TentativeCompletionDate = s.TentativeCompletionDate,
+					ReceivedDate = s.ReceivedDate,
+					IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+					ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+					ObservationType = s.InstrumentModel.ObservationType,
+					MUTemplate = s.InstrumentModel.MUTemplate,
+					CertificationTemplate = s.InstrumentModel.CertificationTemplate,
+					UserRoleId = userRoleId,
+					LabResult = s.Result
+				}).ToList();				
+			}
 			else
 			{
 				RequestList = _unitOfWork.Repository<Request>()
-									   .GetQueryAsNoTracking(x => x.CreatedBy == userId || x.LabL4 == userId || x.UserL4 == userId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
+									   .GetQueryAsNoTracking(x => x.CreatedBy == userId || x.LabL4 == userId || x.UserL4 == userId)
+									   .Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
+									   .Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
 									   {
 										   Id = s.Id,
 										   ReqestNo = s.ReqestNo,
@@ -149,6 +200,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - GetAllRequestList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -415,6 +468,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - InsertRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -448,6 +503,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - UpdateRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -476,6 +533,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - DeleteRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -509,21 +568,21 @@ public class RequestService : IRequestService
 
 			//---------start of converting Default date to null to fix out of range issue--------
 
-			
+
 			int Tyear = TentativeCompletionDate.Year;
 			//int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
-            
-			if (Tyear.Equals(1))
-            {
-                requestById.TentativeCompletionDate = null;
-            }
-            else
-            {
-                requestById.TentativeCompletionDate = TentativeCompletionDate;
-            }
-            //---------end of converting date---------------------
 
-            requestById.TentativeCompletionDate = TentativeCompletionDate;
+			if (Tyear.Equals(1))
+			{
+				requestById.TentativeCompletionDate = null;
+			}
+			else
+			{
+				requestById.TentativeCompletionDate = TentativeCompletionDate;
+			}
+			//---------end of converting date---------------------
+
+			requestById.TentativeCompletionDate = TentativeCompletionDate;
 			requestById.ReceivedDate = DateTime.Now;
 			_unitOfWork.Repository<Request>().Update(requestById);
 			_unitOfWork.SaveChanges();
@@ -649,6 +708,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - AcceptRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -749,6 +810,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - AcceptRequestRecalibration Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -891,6 +954,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - RejectRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -989,6 +1054,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SubmitDepartmentRequestVisual Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1025,7 +1092,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception ex)
 		{
-
+			ErrorViewModelTest.Log("RequestService - SaveFiles Method");
+			ErrorViewModelTest.Log("exception - " + ex.Message);
 		}
 
 	}
@@ -1061,6 +1129,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SaveQRFile Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return false;
 			//throw e;
 		}
@@ -1303,6 +1373,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SubmitLABRequestVisual Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1354,6 +1426,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SubmitLABAdminUpdates Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<InstrumentViewModel>
 			{
 				ResponseCode = 500,
@@ -1466,6 +1540,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SubmitNewRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1571,6 +1647,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SubmitQuarantineRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1608,6 +1686,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - GetLovs Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<LovsViewModel>
 			{
 				ResponseCode = 500,
@@ -1740,6 +1820,8 @@ public class RequestService : IRequestService
 		}
 		catch (Exception e)
 		{
+			ErrorViewModelTest.Log("RequestService - SaveInstrumentData Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
