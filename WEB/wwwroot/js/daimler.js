@@ -2077,6 +2077,7 @@ function DeleteMasterEqiupment(id) {
 
 
 function SaveCertificate(templtatename, lang) {
+    
     var temptName = templtatename;
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
@@ -2085,7 +2086,7 @@ function SaveCertificate(templtatename, lang) {
     }
 
     Swal.fire({
-        title: "Are you want to Generate QR Code with Pdf file?",
+        title: "Are you want To Generate QR Code with Pdf file?",
         text: "You will save Certificate and Generate QR Code with Pdf file!",
         type: "warning",
         showCancelButton: true,
@@ -2324,6 +2325,7 @@ function FileUpload(filedata, filename, filesize) {
 }
 
 function getrequest(type) {
+   
     if ($('input[name="ReqTracker"]:checked').val() == 'New') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
     } else if ($('input[name="ReqTracker"]:checked').val() == 'Regular') {

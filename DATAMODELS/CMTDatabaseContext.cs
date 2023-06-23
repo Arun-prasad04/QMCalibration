@@ -18,7 +18,8 @@ namespace CMT.DATAMODELS
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Contact> Contact { get; set; }
         public virtual DbSet<Lovs> Lovs { get; set; }
-        public virtual DbSet<Instrument> Instrument { get; set; }
+		public virtual DbSet<Location> Location { get; set; }
+		public virtual DbSet<Instrument> Instrument { get; set; }
         public virtual DbSet<Master> Master { get; set; }
         public virtual DbSet<Request> Request { get; set; }
         public virtual DbSet<ExternalRequest> ExternalRequest { get; set; }
@@ -98,12 +99,17 @@ namespace CMT.DATAMODELS
             .WithMany(b => b.User)
             .HasForeignKey(p => p.DepartmentId);
 
-            modelBuilder.Entity<Request>()
+			modelBuilder.Entity<Department>()
+			.HasOne(p => p.Location)
+			.WithMany(b => b.Department)
+			.HasForeignKey(p => p.PlantId);
+
+			modelBuilder.Entity<Request>()
             .HasOne(p => p.InstrumentModel)
             .WithMany(b => b.RequestModel)
             .HasForeignKey(p => p.InstrumentId);
 
-            modelBuilder.Entity<RequestStatus>()
+			modelBuilder.Entity<RequestStatus>()
            .HasOne(p => p.RequestModel)
            .WithMany(b => b.RequestStatusModel)
            .HasForeignKey(p => p.RequestId);
