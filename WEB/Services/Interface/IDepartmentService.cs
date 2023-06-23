@@ -7,5 +7,6 @@ ResponseViewModel<DepartmentViewModel> GetAllDepartmentList();
 ResponseViewModel<DepartmentViewModel> GetDepartmentById(int departmentId);
 ResponseViewModel<DepartmentViewModel> InsertDepartment(DepartmentViewModel department);
 ResponseViewModel<DepartmentViewModel> UpdateDepartment(DepartmentViewModel department);
-ResponseViewModel<DepartmentViewModel> DeleteDepartment(int departmentId);
+	ResponseViewModel<DepartmentViewModel> CreateNewDepartment();
+	ResponseViewModel<DepartmentViewModel> DeleteDepartment(int departmentId);
 }

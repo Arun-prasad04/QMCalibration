@@ -13,7 +13,7 @@ namespace CMT.DATAMODELS
         public virtual Instrument InstrumentModel{get;set;}
         public virtual List<RequestStatus> RequestStatusModel{get;set;}
 
-        public int? ReceivedBy{get;set;}
+		public int? ReceivedBy{get;set;}
         public int? UserL4{get;set;}
         public int? IsUserL4Accepted{get;set;}
         public int? LabL4{get;set;}

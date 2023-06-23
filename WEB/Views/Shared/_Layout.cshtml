@@ -168,6 +168,25 @@
 					</div>
 					<div class="info">
 						<a href="#" class="d-block">
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+							{
+								<label id="lblUserType1" name="UserType1">Department User</label>
+
+								<br />
+							}
+						@if( @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+							{
+								<label id="lblUserType2" name="UserType2">Lab Admin</label><br />
+						}
+						@if(  @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+							{
+								<label id="lblUserType3" name="UserType3">Facility Manager</label><br />
+							}
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+							{
+								<label id="lblUserType4" name="UserType4">Technical Manager</label><br />
+							}
+
 							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
 							@HttpContextAccessor.HttpContext.Session.GetString("LastName")
 						</a>
@@ -199,117 +218,44 @@
 								</a>
 							</li>
 						}
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 						{
 							<li class="nav-item has-treeview">
 								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-sitemap"></i>
+									<i class="nav-icon fas fa-compass"></i>
 									<p>
-										<span class="trn">Department</span>
+										<span class="trn">Tracker</span>
 										<i class="fas fa-angle-left right"></i>
 									</p>
 								</a>
 								<ul class="nav nav-treeview">
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Index","Department")' class="nav-link">
-											<i class="fas fa-table nav-icon"></i>
-											<p class="trn">Department List</p>
-										</a>
-									</li>
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Create","Department")' class="nav-link">
-											<i class="fa fa-window-restore nav-icon"></i>
-											<p class="trn">New Department</p>
-										</a>
-									</li>
-
-								</ul>
-							</li>
-
-							<li class="nav-item has-treeview">
-								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-users"></i>
-									<p>
-										<span class="trn">User</span>
-										<i class="fas fa-angle-left right"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Index","User")' class="nav-link">
-											<i class="fas fa-address-card nav-icon"></i>
-											<p class="trn">User List</p>
-										</a>
-									</li>
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Create","User")' class="nav-link">
-											<i class="fas fa-user-plus nav-icon"></i>
-											<p class="trn">New User</p>
-										</a>
-									</li>
-								</ul>
-							</li>
-
-
-							<li class="nav-item has-treeview">
-
-								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-address-book"></i>
-									<p>
-										<span class="trn">Contact</span>
-										<i class="fas fa-angle-left right"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Index","Contact")' class="nav-link">
-											<i class="fas fa-id-card nav-icon"></i>
-											<p class="trn">Contact List</p>
-										</a>
-									</li>
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Create","Contact")' class="nav-link">
-											<i class="far fa-id-badge nav-icon"></i>
-											<p class="trn">New Contact</p>
-										</a>
-									</li>
-
-								</ul>
-							</li>
-							<li class="nav-item has-treeview">
-
-								<a href="#" class="nav-link">
-									<i class="nav-icon fa fa-list"></i>
-									<p>
-										<span class="trn">Master</span>
-										<i class="fas fa-angle-left right"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Index","Master")' class="nav-link">
-											<i class="fa fa-list-alt"></i>
-											<p class="trn">Master List</p>
-										</a>
-									</li>
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Create","Master")' class="nav-link">
-											<i class="fa fa-indent"></i>
-											<p class="trn">New Master</p>
-										</a>
-									</li>
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("GetQuarantineList","Master")' class="nav-link">
-											<i class="fa fa-outdent"></i>
-											<p class="trn">Master Quarantine</p>
-										</a>
-									</li>
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
+												<i class="fas fa-truck nav-icon"></i>
+												<p class="trn">External Request</p>
+											</a>
+										</li>
+									}
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("Request","Tracker",new {reqType=4})' class="nav-link">
+												<i class="fas fa-sign-out-alt nav-icon"></i>
+												<p class="trn">Request Tracker</p>
+											</a>
+										</li>
+									}
 								</ul>
 							</li>
 						}
-
-
-
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 						{
@@ -351,44 +297,124 @@
 							</li>
 
 						}
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 						{
 							<li class="nav-item has-treeview">
+
 								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-compass"></i>
+									<i class="nav-icon fa fa-list"></i>
 									<p>
-										<span class="trn">Tracker</span>
+										<span class="trn">Master</span>
 										<i class="fas fa-angle-left right"></i>
 									</p>
 								</a>
 								<ul class="nav nav-treeview">
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-									{
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
-												<i class="fas fa-truck nav-icon"></i>
-												<p class="trn">External Request</p>
-											</a>
-										</li>
-									}
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
-									{
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("Request","Tracker",new {reqType=4})' class="nav-link">
-												<i class="fas fa-sign-out-alt nav-icon"></i>
-												<p class="trn">Request Tracker</p>
-											</a>
-										</li>
-									}
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Master")' class="nav-link">
+											<i class="fa fa-list-alt"></i>
+											<p class="trn">Master List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","Master")' class="nav-link">
+											<i class="fa fa-indent"></i>
+											<p class="trn">New Master</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("GetQuarantineList","Master")' class="nav-link">
+											<i class="fa fa-outdent"></i>
+											<p class="trn">Master Quarantine</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-users"></i>
+									<p>
+										<span class="trn">User</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","User")' class="nav-link">
+											<i class="fas fa-address-card nav-icon"></i>
+											<p class="trn">User List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","User")' class="nav-link">
+											<i class="fas fa-user-plus nav-icon"></i>
+											<p class="trn">New User</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+
+
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-sitemap"></i>
+									<p>
+										<span class="trn">Department</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Department")' class="nav-link">
+											<i class="fas fa-table nav-icon"></i>
+											<p class="trn">Department List</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Create","Department")' class="nav-link">
+											<i class="fa fa-window-restore nav-icon"></i>
+											<p class="trn">New Department</p>
+										</a>
+									</li>
+
+								</ul>
+							</li>
+	
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-chart-pie"></i>
+									<p>
+										<span class="trn">Chart</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("donutchart","InstrumentReport")' class="nav-link">
+											<i class="fas fa-sign-in-alt nav-icon"></i>
+											<p class="trn">Instrument Report</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("CalibrationLab","InstrumentReport")' class="nav-link">
+											<i class="fas fa-sign-in-alt nav-icon"></i>
+											<p class="trn">Calibration Lab - KPI</p>
+										</a>
+									</li>
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("CustomerReport","InstrumentReport")' class="nav-link">
+											<i class="fas fa-sign-in-alt nav-icon"></i>
+											<p class="trn">Customer Feedback</p>
+										</a>
+									</li>
 								</ul>
 							</li>
 						}
+
+
+
+						
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3")
 						{
@@ -478,34 +504,32 @@
 							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 							{
 								<li class="nav-item has-treeview">
+
 									<a href="#" class="nav-link">
-										<i class="fas fa-chart-pie"></i>
+										<i class="nav-icon fas fa-address-book"></i>
 										<p>
-											<span class="trn">Chart</span>
+											<span class="trn">Contact</span>
 											<i class="fas fa-angle-left right"></i>
 										</p>
 									</a>
 									<ul class="nav nav-treeview">
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("donutchart","InstrumentReport")' class="nav-link">
-												<i class="fas fa-sign-in-alt nav-icon"></i>
-												<p class="trn">Instrument Report</p>
+											<a href='@Url.Action("Index","Contact")' class="nav-link">
+												<i class="fas fa-id-card nav-icon"></i>
+												<p class="trn">Contact List</p>
 											</a>
 										</li>
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("CalibrationLab","InstrumentReport")' class="nav-link">
-												<i class="fas fa-sign-in-alt nav-icon"></i>
-												<p class="trn">Calibration Lab - KPI</p>
+											<a href='@Url.Action("Create","Contact")' class="nav-link">
+												<i class="far fa-id-badge nav-icon"></i>
+												<p class="trn">New Contact</p>
 											</a>
 										</li>
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("CustomerReport","InstrumentReport")' class="nav-link">
-												<i class="fas fa-sign-in-alt nav-icon"></i>
-												<p class="trn">Customer Feedback</p>
-											</a>
-										</li>
+
 									</ul>
 								</li>
+
+								
 							}
 						}
 					</ul>
@@ -960,7 +984,7 @@
 					"General": { jp: "全般的", en: "General" },
 					"Observation Sheet<br> General": { jp: "観察シート<br> 一般", en: "Observation Sheet<br> General" },
 					"Format No.": { jp: "フォーマット番号", en: "Format No." },
-					"RevNo &  Date": { jp: "RevNo &", en: "RevNo &  Date" },
+					"Rev No &  Date": { jp: "リビジョン番号と日付", en: "Rev No &  Date" },
 					"Serial No.": { jp: "シリアル番号。", en: "Serial No." },
 					"ID No.": { jp: "アイディー番号。", en: "ID No." },
 					"Ref Std": { jp: "参照基準", en: "Ref Std" },
@@ -975,6 +999,9 @@
 					"Trial-1": { jp: "試行-1", en: "Trial-1" },
 					"Trial-2": { jp: "試行-2", en: "Trial-2" },
 					"Trial-3": { jp: "試行-3", en: "Trial-3" },
+					"Nominal": { jp: "公称", en: "Nominal" },
+						
+					
 					"Average": { jp: "平均", en: "Average" },
 					"Calibration Performed By": { jp: "キャリブレーション実施者", en: "Calibration Performed By" },
 					"Reviewed By": { jp: "によってレビュー", en: "Reviewed By" },
@@ -1044,7 +1071,7 @@
 					"Accuracy Overall": { jp: "精度全体", en: "Accuracy Overall" },
 					" ± 3 counts": { jp: "±3カウント", en: " ± 3 counts" },
 					"Accuracy Micro calibration": { jp: "精度 マイクロキャリブレーション", en: "Accuracy Micro calibration" },
-					//"Remarks : ": { jp: "備考 ：", en: "Remarks : " },
+					"SI.No": { jp: "SI.No", en: "SI.No" },
 					"Daimler": { jp: "ダイムラー", en: "Daimler" },
 					"Rev.No & Date": { jp: "Rev.No & Date", en: "Rev.No & Date" },
 					"Designation:": { jp: "指定：", en: "Designation:" },
@@ -1307,15 +1334,24 @@
 
 					// Lever Type Dial Template Observation Sheet
 					"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial"},
-"Format No": { jp: "フォーマット番号", en: "Format No"},
-"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator"},
-
+					"Format No": { jp: "フォーマット番号", en: "Format No"},
+					"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator"},
+					"Specification": { jp: "仕様", en: "Specification" },
+					"Direction A": { jp: "方向 あ", en: "Direction A" },
+					"Direction B": { jp: "方向 B", en: "Direction B" },
+					"Indication Error": { jp: "表示エラー", en: "Indication Error" },
+					"Measuring Range": { jp: "測定範囲", en: "Measuring Range" },
+					"10 scale Division": { jp: "10スケールディビジョン", en: "10 scale Division" },
+					//"Hysteresis": { jp: "ヒステリシス", en: "Hysteresis" },
+					"Repeatability": { jp: "再現性", en: "Repeatability" },
+					
+					
 					// Dial Indicators(PlungerDial) Template Observation Sheet
 					"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators"},
 "Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :"},
-"Mechanical Plunger Dial Indicator": { jp: "メカニカルプランジャーダイヤルインジケーター", en: "Mechanical Plunger Dial Indicator"},
+//"Mechanical Plunger Dial Indicator": { jp: "メカニカルプランジャーダイヤルインジケーター", en: "Mechanical Plunger Dial Indicator"},
 "Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error"},
-"Digital Plunger Dial Indicator": { jp: "デジタルプランジャーダイヤルインジケーター", en: "Digital Plunger Dial Indicator"},
+//"Digital Plunger Dial Indicator": { jp: "デジタルプランジャーダイヤルインジケーター", en: "Digital Plunger Dial Indicator"},
 
 
 					// Vernier Caliper Template Observation Sheet
@@ -1355,10 +1391,11 @@
 					"ULR No": { jp: "ULRいいえ", en: "ULR No" },
 					"Date of Calibration": { jp: "キャリブレーションの日付", en: "Date of Calibration" },
 					"Next Calibration Due": { jp: "次のキャリブレーション", en: "Next Calibration Due" },
+					"Calibration Due": { jp: "次の校正期限", en: "Calibration Due" },
+					
 					"Name of the Customer": { jp: "顧客の名前", en: "Name of the Customer" },
-					"Department": { jp: "デパートメント", en: "Department" },
 					"Date of Receipt": { jp: "領収書の日付", en: "Date of Receipt" },
-					"Description of Equipment": { jp: "機器の説明", en: "Description of Equipment" },
+					"Description of Equipment": { jp: "設備の説明", en: "Description of Equipment" }, 
 					"Range": { jp: "範囲", en: "Range" },
 					"Least Count": { jp: "最小数", en: "Least Count" },
 					"Serial No": { jp: "シリアル番号", en: "Serial No" },
@@ -1377,22 +1414,23 @@
 					"Uncertainty Of Measurement": { jp: "測定の不確かさ", en: "Uncertainty Of Measurement" },
 					"The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2": { jp: "記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 95% の信頼水準で推定されます。", en: "The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2" },
 					"Calibrated By": { jp: "校正者", en: "Calibrated By" },
+					"Authorized Signatory": { jp: "承認された署名者", en: "Authorized Signatory" },
+					
 					"Lab admin": { jp: "ラボ管理者", en: "Lab admin" },
 					"Technical Manager": { jp: "技術管理者", en: "Technical Manager" },
-					"Authorized Signatory": { jp: "承認された署名者", en: "Authorized Signatory" },
+					
 					"III. Mechanical Calibration Results": { jp: "Ⅲ．機械的校正結果", en: "III. Mechanical Calibration Results" },
 					"Report Issue Date :": { jp: "レポート発行日 :", en: "Report Issue Date :" },
 					"Nominal": { jp: "公称", en: "Nominal"},
 					"All Values are in": { jp: "すべての値が入っています", en: "All Values are in" },
-					//"Certificate No": { jp: "証明書の番号 ：", en: "Certificate No"},
 					"Trial-1": { jp: "トライアル-1", en: "Trial-1"},
 					"Trial-2": { jp: "トライアル-1", en: "Trial-2"},
 					"Trial-3": { jp: "トライアル-1", en: "Trial-3" },
-					"Average": { jp: "平均", en: "Average" },
+					//"Average": { jp: "平均", en: "Average" },
 					"IV. Result Of Calibration :": { jp: "IV.キャリブレーションの結果:", en: "IV. Result Of Calibration :" },
 					"V. Remarks :": { jp: "V. 備考:", en: "V. Remarks :" },
 					"***End of Certificate***": { jp: "***証明書の終わり***", en: "***End of Certificate***" },
-						"Format No : 365.QM.D.16, Rev No : 02": { jp: "フォーマット番号 : 365.QM.D.16、リビジョン番号 : 02", en: "Format No : 365.QM.D.16, Rev No : 02" },
+					"Format No : 365.QM.D.16, Rev No : 02": { jp: "フォーマット番号 : 365.QM.D.16、リビジョン番号 : 02", en: "Format No : 365.QM.D.16, Rev No : 02" },
 					"Page 2 of 2": { jp: "2/2 ページ", en: "Page 2 of 2" },
 					"Page 1 of 2": { jp: "1/2 ページ", en: "Page 1 of 2" },
 					"Daimler India Commercial Vehicles Pvt. Ltd -Central Lab": { jp: "ダイムラー・インド商用車社株式会社 - 中央研究所", en: "Daimler India Commercial Vehicles Pvt. Ltd -Central Lab"},
@@ -1409,13 +1447,14 @@
 					"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard" },
 					"II. Master & Equipment Used For Calibration & Traceability": { jp: "II.校正とトレーサビリティに使用されるマスターと機器", en: "II. Master & Equipment Used For Calibration & Traceability" },
 					"2. The report shoult not be reproduced either in full or in part without out permission in writing.": { jp: "2. レポートの全部または一部を書面による許可なく複製することはできません。", en: "2. The report shoult not be reproduced either in full or in part without out permission in writing." },
-					"3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.": { jp: "3. IMTE のステータスや状態に関係なく、顧客の要求に応じてこの証明書に記載されている次回の校正期日。", en: "3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE." },
-								"Certificate No": { jp: "証明書の番号", en: "Certificate No" },
+					"3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.": { jp: "3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。。", en: "3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE." },
+					"Certificate No": { jp: "証明書の番号", en: "Certificate No" },
 					"1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement.": { jp: "1. キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。", en: "1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement." },
 								"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability" },
-					"Remarks": { jp: "備考", en: "Remarks"}
-
-				}
+					//"Remarks": { jp: "備考", en: "Remarks"},
+					
+					"Master & Equipment Used For Calibration & Traceability": { jp: "校正とトレーサビリティに使用されるマスターと機器", en: "Master & Equipment Used For Calibration & Traceability" }
+							}
 
 				return dicts;
 			}

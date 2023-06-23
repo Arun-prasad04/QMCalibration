@@ -4,6 +4,9 @@ using WEB.Models;
 using WEB.Services.Interface;
 using System;
 using System.Collections.Generic;
+using WEB.Services;
+using Org.BouncyCastle.Bcpg.Sig;
+
 namespace WEB.Controllers;
 
 public class DepartmentController : BaseController
@@ -18,25 +21,33 @@ public class DepartmentController : BaseController
         ViewBag.PageTitle="Department List";
         ViewBag.ResponseCode=TempData["ResponseCode"];
         ViewBag.ResponseMessage=TempData["ResponseMessage"];
-        ResponseViewModel<DepartmentViewModel>response=_departmentService.GetAllDepartmentList();
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<DepartmentViewModel>response=_departmentService.GetAllDepartmentList();
         return View(response.ResponseDataList);
     }
     public IActionResult Create()
-    {
-        ViewBag.PageTitle="Department Create";
-        return View(new DepartmentViewModel());  
-    } 
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ViewBag.PageTitle="Department Create";
+        ResponseViewModel<DepartmentViewModel> response = _departmentService.CreateNewDepartment();
+		ViewBag.Location = response.ResponseData.locationList;
+		return View(response.ResponseData);
+
+		//return View(new DepartmentViewModel());  
+	} 
     public IActionResult InsertDepartment(DepartmentViewModel department)
     {
-         ResponseViewModel<DepartmentViewModel>response;
-        if(department.Id !=null && department.Id>0){ 
-            department.ModifiedBy=1;
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<DepartmentViewModel>response;
+        if(department.Id != null && department.Id>0){ 
+            department.ModifiedBy= userId;
             department.ModifiedOn=DateTime.Now;
             response=_departmentService.UpdateDepartment(department); 
         }else{
             department.ActiveStatus=true; 
-            department.CreatedBy=1;
-            department.ModifiedBy=1;
+            department.CreatedBy= userId;
+            department.ModifiedBy= userId;
             department.CreatedOn=DateTime.Now;
             department.ModifiedOn=DateTime.Now;
             response=_departmentService.InsertDepartment(department);
@@ -52,8 +63,13 @@ public class DepartmentController : BaseController
     public ActionResult DepartmentEdit(int departmentId)
     {
         ViewBag.PageTitle="Department Edit";
+
       ResponseViewModel<DepartmentViewModel>response= _departmentService.GetDepartmentById(departmentId);
-        return View("Create",response.ResponseData);
+        ViewBag.Location = response.ResponseData.locationList;
+		
+
+		return View("Create",response.ResponseData);
+
     }
     public ActionResult DepartmentDelete(int departmentId)
     {
