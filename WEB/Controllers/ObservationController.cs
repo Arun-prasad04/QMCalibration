@@ -10,61 +10,57 @@ using AutoMapper;
 namespace WEB.Controllers;
 public class ObservationController : BaseController
 {
-	private readonly IMapper _mapper;
-	private IUnitOfWork _unitOfWork { get; set; }
-	private IRequestService _requestService { get; set; }
-	private IObservationTemplateService _ObservationTemplateService { get; set; }
-	private IInstrumentService _instrumentService { get; set; }
-	private IMasterService _iMasterService { get; set; }
-	public ObservationController(IObservationTemplateService observationTemplateService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IInstrumentService instrumentService, IUnitOfWork unitOfWork) : base(logger, contextAccessor)
-	{
-		_ObservationTemplateService = observationTemplateService;
-		_requestService = requestService;
-		_instrumentService = instrumentService;
-		_unitOfWork = unitOfWork;
-	}
-	public IActionResult ViewObservation(int requestId, int instrumentId)
-	{
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-		string templateName = "Gentral";
-		if (response.ResponseData != null)
-		{
-			if (response.ResponseData.ObservationTemplate == 71)
-			{
-				templateName = "General";
-			}
+    private IRequestService _requestService { get; set; }
+    private IObservationTemplateService _ObservationTemplateService { get; set; }
+    private IInstrumentService _instrumentService { get; set; }
+    public ObservationController(IObservationTemplateService observationTemplateService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IInstrumentService instrumentService) : base(logger, contextAccessor)
+    {
+        _ObservationTemplateService = observationTemplateService;
+        _requestService = requestService;
+        _instrumentService = instrumentService;
+    }
+    public IActionResult ViewObservation(int requestId, int instrumentId)
+    {
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+        string templateName = "Gentral";
+        if (response.ResponseData != null)
+        {
+            if (response.ResponseData.ObservationTemplate == 71)
+            {
+                templateName = "General";
+            }
 
-			else if (response.ResponseData.ObservationTemplate == 72)
-			{
-				templateName = "LeverDial";
-			}
-			else if (response.ResponseData.ObservationTemplate == 73)
-			{
-				templateName = "Micrometer";
-			}
-			else if (response.ResponseData.ObservationTemplate == 74)
-			{
-				templateName = "PlungerDial";
-			}
-			else if (response.ResponseData.ObservationTemplate == 75)
-			{
-				templateName = "ThreadGauges";
-			}
-			else if (response.ResponseData.ObservationTemplate == 76)
-			{
-				templateName = "TWObs";
-			}
-			else if (response.ResponseData.ObservationTemplate == 77)
-			{
-				templateName = "VernierCaliper";
-			}
-			if (response.ResponseData.ObservationTemplate == 155)
-			{
-				templateName = "GeneralNew";
-			}
-		}
-		return RedirectToAction(templateName, new { requestId = requestId, instrumentId = instrumentId });
-	}
+            else if (response.ResponseData.ObservationTemplate == 72)
+            {  
+                templateName = "LeverDial";
+            }
+            else if (response.ResponseData.ObservationTemplate == 73)
+            {
+                templateName = "Micrometer";
+            }
+            else if (response.ResponseData.ObservationTemplate == 74)
+            {
+                templateName = "PlungerDial";
+            }
+            else if (response.ResponseData.ObservationTemplate == 75)
+            {
+                templateName = "ThreadGauges";
+            }
+            else if (response.ResponseData.ObservationTemplate == 76)
+            {
+                templateName = "TWObs";
+            }
+            else if (response.ResponseData.ObservationTemplate == 77)
+            {
+                templateName = "VernierCaliper";
+            }
+            if (response.ResponseData.ObservationTemplate == 155)
+            {
+                templateName = "GeneralNew";
+            }
+        }
+        return RedirectToAction(templateName, new { requestId = requestId, instrumentId = instrumentId });
+    }
 
 	#region "Lever Dial Type"
 	public IActionResult LeverDial(int requestId, int instrumentId)

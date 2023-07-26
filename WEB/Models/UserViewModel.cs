@@ -42,7 +42,13 @@ namespace WEB.Models
         public int DeletingID { get; set; }
 
 		public string? subSection { get; set; }
-	}
+
+        public string? SubSectionCode { get; set; }
+
+        public string? DeptCordShortId { get; set; }
+        public string? DeptCordName { get; set; }
+        public string? DeptCordEmail { get; set; }
+    }
     public class InviteUsers
     {
         public string? Email { get; set; }

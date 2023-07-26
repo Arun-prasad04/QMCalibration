@@ -42,5 +42,11 @@ namespace CMT.DATAMODELS
         public virtual List<TemplateObservation> TemplateObservatinoCreateData {get; set;}
         public virtual List<TemplateObservation> TemplateObservationsREviewData {get; set;}
 
+        public string? SubSectionCode { get; set; }
+
+        public string? DeptCordShortId { get; set; }
+        public string? DeptCordName { get; set; }
+        public string? DeptCordEmail { get; set; }
+
     }
 }

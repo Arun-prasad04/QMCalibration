@@ -1,3 +1,5 @@
+using CMT.DATAMODELS;
+
 namespace WEB.Models;
 public partial class RequestViewModel
 {

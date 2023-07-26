@@ -766,10 +766,14 @@ function ReqEnableReason() {
 }
 
 function AcceptRejectRequest(lang) {
+    debugger;
     if ($('input[name="ReqAcceptReject"]:checked').val() == undefined || $('input[name="ReqAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="ReqAcceptReject"]:checked').val() == 'Accept') {
-        AcceptRequest(2);
+        if (ValidateCheck() >= 1) {
+            AcceptRequest(2);
+        }
+        
     } else {
         if ($('#reason').val() != '') {
             $('#reason').removeClass('is-invalid');
@@ -779,6 +783,47 @@ function AcceptRejectRequest(lang) {
             showWarning("Please enter reason for rejection and try again.", lang);
         }
     }
+}
+
+function ValidateCheck() {
+    debugger;
+    var errCount = 0;
+    //alert('NewObservation' + $('#NewObservation').val())
+    if (($('#InstrumentCondition').val()) == '') {        
+        errCount = errCount + 1;
+    }
+    else {
+        //$('#').hide();
+    }
+
+    if (($('#StandardReffered').val()) == '') {        
+        errCount = errCount + 1;
+    }
+    else {
+        //$('#DeptShortNameError').hide();
+    }
+
+    if (($('#NewObservation').val()) == '') {        
+        errCount = errCount + 1;
+    }
+    else {
+        //$('#SourcePlantError').hide();
+    }
+
+    if (($('#NewMU').val()) == '') {        
+        errCount = errCount + 1;
+    }
+    else {
+        //$('#CountryError').hide();
+    }
+    if (($('#NewCertification').val()) == '') {
+        errCount = errCount + 1;
+    }
+    else {
+        //$('#CountryError').hide();
+    }
+
+    return errCount;
 }
 
 function AcceptRequest(type, lang) {
@@ -791,6 +836,7 @@ function AcceptRequest(type, lang) {
         Feasiblity: $('#Feasiblity').val(),
         TentativeCompletionDate: $('#TentativeCompletionDate').val(),
         newNABL: $('#IsNABL').val(),
+        InstrumentIdNo: $('#txtIdNo').val(),
         newObservation: $('#NewObservation').val(),
         newObservationType: $('#NewObservationType').val(),
         newMU: $('#NewMU').val(),
@@ -1098,11 +1144,18 @@ function NewReqEnableReason() {
 }
 
 function AcceptRejectNewRequest(lang) {
+    debugger;
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        AcceptRequest(type, lang);
+        if (ValidateCheck() == 0) {
+            AcceptRequest(type, lang);
+        }
+        else {
+            alert('Please Select Observation Templates...');
+        }
+        
     } else {
         if ($('#Newreason').val() != '') {
             $('#Newreason').removeClass('is-invalid');
@@ -1512,7 +1565,7 @@ function SaveMicrometer(lang) {
 
 
 function SaveGeneral(lang) {
-
+    //debugger;
     var GeneralResult = new Array();
     $('#Generaladd tbody tr').each(function (row, tr) {
 
@@ -2133,19 +2186,62 @@ function showfeasibleservice() {
     }
 }
 
-function LoadObservationTypePopup() {
+function LoadObservationTypePopup(lang) {
     $.ajax({
         url: '../Tracker/LoadObservationType',
         type: 'POST',
-        data: { attrType: '', attrsubType: $('#NewObservation option:selected').text() }
+        data: { attrType: '', attrsubType: $('#NewObservation option:selected').text(), langtype: lang }
     }).done(function (resultObject) {
         $('#NewObservationType')
             .find('option')
             .remove();
+       
+        $('#NewObservationType').empty();
+        $('#NewObservationType').append(`<option value="0">--Select--</option>`);
         for (let index = 0; index < resultObject.length; index++) {
-            optText = resultObject[index].attrValue;
-            optValue = resultObject[index].id;;
-            $('#NewObservationType').append(`<option value="${optValue}">${optText}</option>`);
+            if (lang == 'en') {
+               
+                optText = resultObject[index].attrValue;
+                optValue = resultObject[index].id;;
+                $('#NewObservationType').append(`<option value="${optValue}">${optText}</option>`);
+            }
+            else {               
+                optTextjp = resultObject[index].attrValueJp;
+                optValuejp = resultObject[index].id;;
+                $('#NewObservationType').append(`<option value="${optValuejp}">${optTextjp}</option>`);
+            }
+        }
+    });
+
+}
+
+
+
+function LoadObservationTypePopupEd(lang) {
+    $.ajax({
+        url: '../Tracker/LoadObservationType',
+        type: 'POST',
+        data: { attrType: '', attrsubType: $('#NewObservationEd option:selected').text(), langtype: lang }
+    }).done(function (resultObject) {
+        $('#NewObservationTypeEd')
+            .find('option')
+            .remove();
+      
+        $('#NewObservationTypeEd').empty();
+        $('#NewObservationTypeEd').append(`<option value="0">--Select--</option>`);
+        for (let index = 0; index < resultObject.length; index++) {
+            if (lang == 'en') {
+                console.log(1)
+                optText = resultObject[index].attrValue;
+                optValue = resultObject[index].id;;
+                $('#NewObservationTypeEd').append(`<option value="${optValue}">${optText}</option>`);
+            }
+            else {
+                console.log(2)
+                optTextjp = resultObject[index].attrValueJp;
+                optValuejp = resultObject[index].id;;
+                $('#NewObservationTypeEd').append(`<option value="${optValuejp}">${optTextjp}</option>`);
+            }
         }
     });
 
@@ -2440,11 +2536,15 @@ function getrequest(type) {
    
     if ($('input[name="ReqTracker"]:checked').val() == 'New') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
+        //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'Regular') {
-        window.location.href = '../Tracker/Request?reqType=' + type + '';
+       window.location.href = '../Tracker/Request?reqType=' + type + '';
+        //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'ReCalibration') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
+        //GetAllRequest(type) 
     } else {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
+        //GetAllRequest(type) 
     }
 }

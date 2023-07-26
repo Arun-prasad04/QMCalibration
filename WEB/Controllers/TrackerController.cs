@@ -1,5 +1,7 @@
 
 using System.Diagnostics;
+using CMT.DATAMODELS;
+using System.Drawing.Drawing2D;
 using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services;
@@ -71,27 +73,52 @@ public class TrackerController : BaseController
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string SessionLang = base.SessionGetString("Language");
-		ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
-		ViewBag.MasterData = masterResponse.ResponseDataList;
-		ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+		//ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
+		//ViewBag.MasterData = masterResponse.ResponseDataList;
+		//ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
 
-		if (reqType == 1 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
-		}
-		else if (reqType == 2 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
-		}
-		else if (reqType == 3 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
-		}
-		else
-		{
-			return View(response.ResponseDataList);
-		}
-	}
+		//if (reqType == 1 && response.ResponseDataList != null)
+		//{
+		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
+		//}
+		//else if (reqType == 2 && response.ResponseDataList != null)
+		//{
+		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+		//}
+		//else if (reqType == 3 && response.ResponseDataList != null)
+		//{
+		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+		//}
+		//else
+		//{
+		//	return View(response.ResponseDataList);
+		//}
+		return View();
+    }
+    public IActionResult GetAllRequestList(int reqType)
+	{
+		//int reqType = 4;
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+
+        if (reqType == 1 && response.ResponseDataList != null)
+        {
+            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
+        }
+        else if (reqType == 2 && response.ResponseDataList != null)
+        {
+            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+        }
+        else if (reqType == 3 && response.ResponseDataList != null)
+        {
+            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+        }
+        else
+        {
+            return Json(response.ResponseDataList);
+        }
+    }
 	public IActionResult GetRequestById(int requestId)
 	{
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
@@ -107,18 +134,22 @@ public class TrackerController : BaseController
 	{
 		int requestId = int.Parse(HttpContext.Request.Query["ID"].ToString());
 		string SessionLang = base.SessionGetString("Language");
+        ViewBag.SessionLang = base.SessionGetString("Language");
 		ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
 		ViewBag.MasterData = masterResponse.ResponseDataList;
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
+		ViewBag.ObservationType = response.ResponseData.ObservationType;
+		ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+
 		return View(response.ResponseData);
 	}
 
 	public IActionResult AcceptRequest(int requestId, string InstrumentCondition
-	, string Feasiblity, DateTime TentativeCompletionDate, int newObservation
-	, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
+	, string Feasiblity, DateTime TentativeCompletionDate, int newObservation, string InstrumentIdNo
+    , int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.AcceptRequest(requestId, userId, InstrumentCondition, Feasiblity, TentativeCompletionDate, newObservation, newObservationType, newMU, newCertification, standardReffered, newNABL, MasterInstrument1, MasterInstrument2, MasterInstrument3, MasterInstrument4);
+		ResponseViewModel<RequestViewModel> response = _requestService.AcceptRequest(requestId, userId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, newObservation, newObservationType, newMU, newCertification, standardReffered, newNABL, MasterInstrument1, MasterInstrument2, MasterInstrument3, MasterInstrument4);
 		return Json(response.ResponseData);
 	}
 	public IActionResult AcceptRequestReCalibration(int requestId, int AcceptValue, int departmentId)

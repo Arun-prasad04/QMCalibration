@@ -53,7 +53,7 @@ public class HomeController : BaseController
 		}
 		if (userRoleId == 2 || userRoleId == 4)
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && Q.ActiveStatus == true).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
+			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && Q.ActiveStatus == true).ToList();//.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
 			if (InstrumentList != null)
 			{
 				ViewBag.InstrumentCount = InstrumentList.Count;
@@ -66,7 +66,7 @@ public class HomeController : BaseController
 		}
 		else
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).ToList();
+			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).ToList(); //.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel)
 			if (InstrumentList != null)
 			{
 				ViewBag.InstrumentCount = InstrumentList.Count;
@@ -176,6 +176,63 @@ public class HomeController : BaseController
 		}
 		return Json(DepartTranslater);
 		
+	}
+
+	public IActionResult ObservationTypeTranslation()
+	{
+		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
+		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.IsActive == true).ToList());
+		
+
+		var ObservationType = new List<ObservationTypeModel>();
+		foreach (var item in lovsList)
+		{
+
+			ObservationType.Add(new ObservationTypeModel
+			{
+				Id = item.Id,
+				AttrName = item.AttrName,
+				AttrValue = item.AttrValue,
+				Attrform = item.Attrform,
+				AttrNameJp = item.AttrNameJp,
+				AttrValueJp = item.AttrValueJp,
+				AttrformJp = item.AttrformJp,
+
+			});
+		}
+		return Json(ObservationType);
+	}
+
+
+	public IActionResult DepartmentTranslate()
+
+	{
+		List<Department> DepartmentList = _unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList();
+		//var DepartmentData
+		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
+		//MasterLangTranslate MStranslater = new MasterLangTranslate();
+		var DepartTranslater = new List<DepartmentLangTranslate>();
+		foreach (var item in DepartmentList)
+		{
+
+			DepartTranslater.Add(new DepartmentLangTranslate
+			{
+				id = item.Id,
+				Name = item.Name,
+				NameJp = item.NameJP,
+
+			});
+		}
+		return Json(DepartTranslater);
+
+	}
+	public class DepartmentLangTranslate
+	{
+		public int id { get; set; }
+		public string? Name { get; set; }
+
+		public string? NameJp { get; set; }
+
 	}
 
 	public class MasterLangTranslate

@@ -8,7 +8,7 @@ public interface IRequestService
  ResponseViewModel<RequestViewModel> InsertRequest(int instrumentId,int userId,int typeId);
  ResponseViewModel<RequestViewModel> UpdateRequest(RequestViewModel Request);
  ResponseViewModel<RequestViewModel> DeleteRequest(RequestViewModel Request);
- ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate,int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
+ ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate, string InstrumentIdNo, int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
  ResponseViewModel<RequestViewModel> AcceptRequestRecalibration(int requestId, int userId,int AcceptValue,int departmentId);
  ResponseViewModel<RequestViewModel> RejectRequest(int requestId, string RejectReason, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate,string standardReffered);
  ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId,string CollectedBy);

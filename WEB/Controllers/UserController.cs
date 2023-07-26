@@ -8,8 +8,6 @@ using System.DirectoryServices;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
 using WEB.Services;
-
-
 namespace WEB.Controllers;
 
 public class UserController : BaseController
@@ -49,8 +47,9 @@ public class UserController : BaseController
 		
 		ResponseViewModel<UserViewModel> response = _userService.GetUserById(userId);
 		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
-		ViewBag.UserDept = response.ResponseData.DepartmentId;
-		return View("Create", response.ResponseData);
+		ViewBag.SubSectCode = response.ResponseData.SubSectionCode;
+        ViewBag.SessionLang = base.SessionGetString("Language");
+        return View("Create", response.ResponseData);
 	}
 	public class CurrentUserInfo
 	{
@@ -96,7 +95,7 @@ public class UserController : BaseController
 	}
 	public IActionResult GetUserInfoFromLDAPData(string ShortId, string Level)
 	{
-		User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == ShortId && Q.Level == Level).SingleOrDefault();
+		User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == ShortId).SingleOrDefault();
 		return Json(userById);
 	}
 	public IActionResult Create()
@@ -152,7 +151,6 @@ public class UserController : BaseController
 		return Json("Success");
 	}
 
-
 	public IActionResult PasswordUpdate(UserViewModel user)
 	{
 		ResponseViewModel<UserViewModel> response;
@@ -170,6 +168,7 @@ public class UserController : BaseController
 	}
 	public IActionResult InsertUser(UserViewModel user)
 	{
+		
 		ResponseViewModel<UserViewModel> response;
 		if (user.Id != null && user.Id > 0)
 		{
@@ -265,6 +264,12 @@ public class UserController : BaseController
 		TempData["DeletingError"] = 500;
 		return RedirectToAction("Index", "User");
 
+	}
+
+	public IActionResult GetDepartmentDetails(string SubSectCode)
+	{
+		Department Deptdata = _unitOfWork.Repository<Department>().GetQueryAsNoTracking(d => d.SubSectionCode == SubSectCode && d.ActiveStatus == true).FirstOrDefault();
+		return Json(Deptdata);
 	}
 
 

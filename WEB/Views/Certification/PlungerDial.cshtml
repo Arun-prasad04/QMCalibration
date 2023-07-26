@@ -519,149 +519,152 @@
 
 <div id="Pdfhtml" style="display: none;">
 
-	<body style="font-family: Calibri;">
-		<!-- page1 start-->
-		<!--<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%">-->
-		<table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small;">
-			<tr>
-				<td>
-					<table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
-						<tr>
-							<td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
-								@if (Model.IsNABL ?? false)
-								{
-									<img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%" />
-								}
-								else
-								{
-									<img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:75%" />
-								}
-							</td>
-							<td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
-								<h5 style="margin: 5px; font-family:Arial ;font-size: 12px; ">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab / >ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
-								<p style="margin: 5px; font-family:Arial;font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road / SIPCOT工業団地、オラガダム村、シンガポール・コイル・ロード</p>
-								<p style="margin: 5px; font-family:Arial;font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India / マトゥール (PO)、スリペルンバドゥル タルク、カンチプラム -602105、タミル ナードゥ州、インド。</p>
-								<p style="margin: 5px; font-size: 12px;">Phone / 電話: +91 44 4969 4456,</p>
-								<p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com / Webサイト：www.ダイムラー--インドアック。コム / ..バラトベンツ。コム</p>
+    <body style="font-family: Calibri;">
+        <!-- page1 start-->
+        <!--<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%">-->
+            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small;">
+                <tr>
+                    <td>
+                        <table style="border-collapse: collapse; border:1px solid #000; text-align: center; width:100%">
+                        <tr>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:300px">
+                               @if(Model.IsNABL ?? false)
+                                {
+                                    <img src="./wwwroot/image/NABL.png" style="padding-top:5%;width:60%" />
+                                }
+                                else
+                                {
+                                    <img src="./wwwroot/image/Bharat_Benz.png" style="padding-top:5%;width:75%" />
+                                }
+                            </td>
+                            <td style="border-collapse: collapse; border-right:1px solid #000; text-align: center; width:800px">
+                                <h5 style="margin: 5px; font-family:Arial ;font-size: 12px; ">Daimler India Commercial Vehicles Pvt. Ltd -Central Lab / >ダイムラー・インド商用車社株式会社 - 中央研究所</h5>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road / SIPCOT工業団地、オラガダム村、シンガポール・コイル・ロード</p>
+                                <p style="margin: 5px; font-family:Arial;font-size: 12px;">Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India / マトゥール (PO)、スリペルンバドゥル タルク、カンチプラム -602105、タミル ナードゥ州、インド。</p>
+                                <p style="margin: 5px; font-size: 12px;">Phone / 電話: +91 44 4969 4456,</p>
+                                <p style="margin: 5px; font-size: 12px;">Website: www.daimler-indiacv.com / .bharatbenz.com / Webサイト：www.ダイムラー--インドアック。コム / ..バラトベンツ。コム</p>
 
-							</td>
-							<td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
-								<img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;" alt="logo" />
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-		<div style=" height:50px;">
-			<h3 style="text-align: center; padding: 2px;height:30px;">CERTIFICATE OF CALIBRATION / / キャリブレーションの証明書</h3>
-		</div>
-		<table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small;">
-			<tr>
-				<td>
-					<table style="font-size:x-small;padding:5px;">
-						<tr style="font-size:x-small">
-							<th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC / DUCの説明</th>
-						</tr>
-						<tr style="font-size:x-small">
-							<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate No / 証明書の番号</td>
+                            </td>
+                            <td style="border-collapse: collapse; border:0px solid #000; text-align: center; width:300px">
+                                <img id="imgQRCodeHtml" src="./wwwroot/Certification/tempQRCode.png" style="padding-top:5%;width: 75%;"  alt="logo" />
+                            </td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+            </table>
+            <div style=" height:50px;">
+            <h3 style="text-align: center; padding: 2px;height:30px;">CERTIFICATE OF CALIBRATION / / キャリブレーションの証明書</h3>
+            </div>
+            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse; font-size:x-small;">
+                <tr>
+                    <td>
+                        <table style="font-size:x-small;padding:5px;">
+                            <tr style="font-size:x-small">
+                            <th style="font-size: x-small;text-align:left;padding:10px">I. Descriptions of DUC / DUCの説明</th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px;">Certificate No / 証明書の番号</td>
+                                    
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CertificateFormat</td>
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report Issues Date / 発行日を報告します</td>
+                                    
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            @if(Model.IsNABL ?? false)
+                            {
+                                <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No / ULRいいえ</td>
+                                    <td style="width:400px;padding-bottom: 15px;padding:10px">:  @Model.PlungerDialData.ULRFormat</td>
+                                    <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
+                                    <td style="width:400px;padding-bottom: 15px;"></td>
+                                </tr>
+                            }
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration / キャリブレーションの日付</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Next
+                                    Calibration Due / 次回の校正期限</td>
+                                    @if(Model.Result == "Rejected")
+                                    {
+                                        <td style="width:400px; padding-bottom: 15px;padding:10px">: --</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DueDate.ToString("MMM-yyyy")</td>
+                                    }
+                            </tr>
+                            <tr style="font-size:x-small">
+                            <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The Customer / 顧客の名前</td>
+                                    
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of Receipt / 領収書の日付</td>
+                                    
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                            <td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department / デパートメント</td>
+                                
+                                <td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description of Equipment / 設備の説明</td>
+                                    
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
+                            </tr>
+                            @* <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date of
+                                    Receipt</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
+                                    of Equipment</td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
+                                <td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
+                                <td style="width:400px; padding-bottom: 15px;padding:10px"></td>
+                            </tr> *@
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="center"  style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;height:100px;">
 
-							<td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CertificateFormat</td>
-							<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Report Issues Date / 発行日を報告します</td>
-
-							<td style="width:400px;padding-bottom: 15px;padding:10px">:@DateTime.Now.ToString("dd-MM-yyyy")</td>
-						</tr>
-						@if (Model.IsNABL ?? false)
-						{
-							<tr style="font-size:x-small">
-								<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">ULR No / ULRいいえ</td>
-								<td style="width:400px;padding-bottom: 15px;padding:10px">:  @Model.PlungerDialData.ULRFormat</td>
-								<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px"></td>
-								<td style="width:400px;padding-bottom: 15px;"></td>
-							</tr>
-						}
-						<tr style="font-size:x-small">
-							<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date Of Calibration / キャリブレーションの日付</td>
-							<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.PlungerDialData.CalibrationPerformedDate.ToString("dd-MM-yyyy")</td>
-							<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">
-								Next
-								Calibration Due / 次回の校正期限
-							</td>
-							@if (Model.Result == "Rejected")
-							{
-								<td style="width:400px; padding-bottom: 15px;padding:10px">: --</td>
-							}
-							else
-							{
-								<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DueDate.ToString("MMM-yyyy")</td>
-							}
-						</tr>
-						<tr style="font-size:x-small">
-							<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Name Of The Customer / 顧客の名前</td>
-
-							<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-							<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Date of Receipt / 領収書の日付</td>
-
-							<td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
-						</tr>
-						<tr style="font-size:x-small">
-							<td style="width:400px; font-weight: 900;padding-bottom: 15px;padding:10px">Department / デパートメント</td>
-
-							<td style="width:400px;padding-bottom: 15px;padding:10px">: @Model.DepartmentName</td>
-							<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description of Equipment / 設備の説明</td>
-
-							<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
-						</tr>
-						@* <tr style="font-size:x-small">
-						<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Date of
-						Receipt</td>
-						<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.DateOfReceipt.ToString("dd-MM-yyyy")</td>
-						<td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
-						<td style="width:400px; padding-bottom: 15px;padding:10px"></td>
-						</tr>
-						<tr style="font-size:x-small">
-						<td style="width:400px; font-weight: 900; padding-bottom: 15px;padding:10px">Description
-						of Equipment</td>
-						<td style="width:400px; padding-bottom: 15px;padding:10px">: @Model.InstrumentName</td>
-						<td style="width:400px; font-weight: 900; padding-bottom: 15px;"></td>
-						<td style="width:400px; padding-bottom: 15px;padding:10px"></td>
-						</tr> *@
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<table align="center" style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:98%;font-size:x-small;height:100px;">
-
-						<tr style="font-size:x-small">
-							<th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								Range/ 範囲
-							</th>
-							<th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								Least Count / 最小数
-							</th>
-							<th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								Serial No / シリアル番号。
-							</th>
-							<th style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								Make /  作る
-							</th>
-						</tr>
-						<tr style="font-size:x-small">
-							<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								<p>@Model.Range</p>
-							</td>
-							<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								<p>@Model.LC</p>
-							</td>
-							<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								<p>@Model.SlNo</p>
-							</td>
-							<td style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
-								<p>@Model.Make</p>
-							</td>
-
-						</tr>
+                            <tr style="font-size:x-small">
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Range/ 範囲</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Least Count / 最小数</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    Serial No / シリアル番号。</th>
+                                <th
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                Make /  作る
+                            </th>
+                            </tr>
+                            <tr style="font-size:x-small">
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Range</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.LC</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.SlNo</p>
+                                </td>
+                                <td
+                                    style="border-collapse: collapse; border:0.5px solid #000; text-align: center; width:825px; padding: 5px;">
+                                    <p>@Model.Make</p>
+                                </td>
+                                
+                            </tr>
 
 					</table>
 				</td>

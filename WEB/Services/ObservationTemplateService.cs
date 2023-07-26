@@ -4545,7 +4545,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TextReader reader = new StringReader(ExportData);
 			//PageSize.A4, 10.0F, 10.0F, 100.0F, 0.0F)PageSize.A4, 10, 10, 10, 20
 
-			Document PdfFile = new Document(PageSize.LETTER.Rotate(), 2, 2, 5, 2);
+			Document PdfFile = new Document(PageSize.LETTER.Rotate(), 10, 10, 10, 20);
 			PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);
 			//  String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2 strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 26pt;font-weight: 900; }";
 			String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2, strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody1 { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 16pt; }";

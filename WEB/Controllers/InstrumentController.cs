@@ -23,23 +23,33 @@ public class InstrumentController : BaseController
         ViewBag.PageTitle="Instrument List";
         ViewBag.ResponseCode = TempData["ResponseCode"];  
         ViewBag.ResponseMessage = TempData["ResponseMessage"];
-        int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-        int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		string SessionLang = base.SessionGetString("Language");
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId,userRoleId);
-        return View(response.ResponseDataList);
+        //int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        //int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        //ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
+        //return View(response.ResponseDataList);
+        return View();
     }
+
+    public JsonResult GetAllInstrumentList()
+    {
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);        
+		return Json(response.ResponseDataList);
+	}
 
      public IActionResult Create()
     {
         ViewBag.PageTitle="Instrument Create";
         ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument();
-        return View(response.ResponseData);
+		//ViewBag.ObservationType = response.ResponseData.ObservationType;
+		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		return View(response.ResponseData);
     }
 
     public IActionResult InsertInstrument(InstrumentViewModel instrument)
-    {
-        int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
+    {		
+		int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
         int UserDeptId = Convert.ToInt32(base.SessionGetString("DepartmentId"));
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
         ResponseViewModel<InstrumentViewModel> response;
@@ -87,19 +97,7 @@ public class InstrumentController : BaseController
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
         
         ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-        ViewBag.ObservationType = response.ResponseData.ObservationType;
-		ViewBag.UserDept = response.ResponseData.UserDept;
-        ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
-        ViewBag.CalibFreq = response.ResponseData.CalibFreq;
-        ViewBag.MUTemplates = response.ResponseData.MUTemplate;
-        ViewBag.Observation = response.ResponseData.ObservationTemplate;
-		
-
-
-		
-		
-
-		if (userRoleId==1 || userRoleId==3){
+        if(userRoleId==1 || userRoleId==3){
             response.ResponseData.IsDisabled="readonly";
         }
         return View("Create", response.ResponseData);
