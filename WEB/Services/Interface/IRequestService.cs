@@ -16,7 +16,7 @@ public interface IRequestService
 ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int ObservationTemplate, int ObservationTemplateType, int MUTemplate, int CertificationTemplate);
  ResponseViewModel<RequestViewModel> SubmitNewRequest(int requestId,int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate);
  ResponseViewModel<RequestViewModel> SubmitQuarantineRequest(int requestId,int userId);
- ResponseViewModel<LovsViewModel> GetLovs(string attrType,string attrsubType);
+ ResponseViewModel<LovsViewModel> GetLovs(string attrType,string attrsubType, string LangType);
  bool SaveQRFile(QRCodeFilesViewModel qrCodeFilesViewModel, string instrumentId);
  ResponseViewModel<RequestViewModel> SaveInstrumentData(int requestId,string newLabId,
             bool newNABL,

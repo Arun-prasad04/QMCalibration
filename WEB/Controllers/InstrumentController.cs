@@ -2,7 +2,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
+using WEB.Services;
 using WEB.Services.Interface;
+using static iTextSharp.text.pdf.PdfDocument;
+
 namespace WEB.Controllers;
 
 public class InstrumentController : BaseController
@@ -22,7 +25,8 @@ public class InstrumentController : BaseController
         ViewBag.ResponseMessage = TempData["ResponseMessage"];
         int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId,userRoleId);
+		string SessionLang = base.SessionGetString("Language");
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId,userRoleId);
         return View(response.ResponseDataList);
     }
 
@@ -83,7 +87,19 @@ public class InstrumentController : BaseController
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
         
         ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-        if(userRoleId==1 || userRoleId==3){
+        ViewBag.ObservationType = response.ResponseData.ObservationType;
+		ViewBag.UserDept = response.ResponseData.UserDept;
+        ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
+        ViewBag.CalibFreq = response.ResponseData.CalibFreq;
+        ViewBag.MUTemplates = response.ResponseData.MUTemplate;
+        ViewBag.Observation = response.ResponseData.ObservationTemplate;
+		
+
+
+		
+		
+
+		if (userRoleId==1 || userRoleId==3){
             response.ResponseData.IsDisabled="readonly";
         }
         return View("Create", response.ResponseData);

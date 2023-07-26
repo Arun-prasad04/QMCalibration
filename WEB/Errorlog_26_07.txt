@@ -1,0 +1,8 @@
+[26:07:2023] [13:20:08:2171]	RequestService - AcceptRequest Method
+[26:07:2023] [13:20:08:2240]	exception - Sequence contains more than one element
+[26:07:2023] [13:32:46:4905]	RequestService - AcceptRequest Method
+[26:07:2023] [13:32:46:4915]	exception - Sequence contains more than one element
+[26:07:2023] [13:47:33:1811]	RequestService - AcceptRequest Method
+[26:07:2023] [13:47:33:1824]	exception - Sequence contains more than one element
+[26:07:2023] [13:58:04:5958]	RequestService - AcceptRequest Method
+[26:07:2023] [13:58:04:5964]	exception - Sequence contains more than one element

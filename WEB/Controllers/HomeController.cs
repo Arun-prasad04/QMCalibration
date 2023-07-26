@@ -33,6 +33,14 @@ public class HomeController : BaseController
 		ViewBag.PageTitle = "DashBoard";
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));		
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		string SessionLang = base.SessionGetString("Language");
+		ViewBag.RoleId= Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		//var objtype = 1159;
+		//Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == objtype).SingleOrDefault();
+
+		//Convert.ToInt32(instrumentresponse.ResponseData.ObservationType) 1159
+		
+
 		UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
 		if (MasterList != null)
@@ -54,6 +62,7 @@ public class HomeController : BaseController
 			{
 				ViewBag.InstrumentCount = 0;
 			}
+
 		}
 		else
 		{
@@ -144,6 +153,29 @@ public class HomeController : BaseController
 			});
 		}
 		return Json(MStranslater);
+		
+	}
+	public IActionResult DepartmentTranslate()
+
+	{
+		List<Department> DepartmentList = _unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList();
+		//var DepartmentData
+		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
+		//MasterLangTranslate MStranslater = new MasterLangTranslate();
+		var DepartTranslater = new List<DepartmentLangTranslate>();
+		foreach (var item in DepartmentList)
+		{
+
+			DepartTranslater.Add(new DepartmentLangTranslate
+			{
+				id = item.Id,
+				Name = item.Name,
+				NameJp = item.NameJP,
+
+			});
+		}
+		return Json(DepartTranslater);
+		
 	}
 
 	public class MasterLangTranslate
@@ -154,4 +186,60 @@ public class HomeController : BaseController
 		public string? NameJp { get; set; }
 
 	}
+	public class DepartmentLangTranslate
+	{
+		public int id { get; set; }
+		public string? Name { get; set; }
+
+		public string? NameJp { get; set; }
+
+	}
+
+	public IActionResult ObservationTypeTranslation()
+	{
+		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
+		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking().ToList());
+		//ViewBag.ObservationTypeMicro = lovsList;
+		//List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
+		//instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
+		//instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
+		//instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
+		//RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
+		//instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
+		//RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
+		//RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
+		//RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
+
+		var ObservationType = new List<ObservationTypeModel>();
+		foreach (var item in lovsList)
+		{
+
+			ObservationType.Add(new ObservationTypeModel
+			{
+				Id = item.Id,
+				AttrName = item.AttrName,
+				AttrValue = item.AttrValue,
+				Attrform = item.Attrform,
+				AttrNameJp = item.AttrNameJp,
+				AttrValueJp = item.AttrValueJp,
+				AttrformJp = item.AttrformJp,
+
+			});
+		}
+		//ViewBag.ObservationTypeList = ObservationType;
+		return Json(ObservationType);
+	}
+
+	public class ObservationTypeModel
+	{
+		public int Id { get; set; }
+		public string AttrName { get; set; }
+		public string AttrValue { get; set; }
+		public string Attrform { get; set; }
+		public string AttrNameJp { get; set; }
+
+		public string AttrformJp { get; set; }
+		public string AttrValueJp { get; set; }
+	}
+
 }

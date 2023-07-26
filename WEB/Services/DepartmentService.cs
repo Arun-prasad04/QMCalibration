@@ -121,7 +121,9 @@ public class DepartmentService : IDepartmentService
 					SectionJP = S.SectionJP,
 					SubSectionJP = S.SubSectionJP,
 					PlantId = S.PlantId,
-					CreatedOn = S.CreatedOn
+					CreatedOn = S.CreatedOn,
+                    SectionCode=S.SectionCode,
+                    SubSectionCode=S.SubSectionCode
 
 					//Id = S.Id,
 					//PlantLocation = S.Location.PlantLocation,
@@ -188,10 +190,23 @@ public class DepartmentService : IDepartmentService
         try{
 
             Department departmentById=_unitOfWork.Repository<Department>().GetQueryAsNoTracking(Q=>Q.Id==department.Id).SingleOrDefault();
+            departmentById.PlantId=department.PlantId;
             departmentById.Name=department.Name;
+            departmentById.NameJP=department.NameJP;
+            departmentById.DeptCode=department.DeptCode;
+            departmentById.Section=department.Section;
+            departmentById.SectionJP= department.SectionJP;
+            departmentById.SectionCode = department.SectionCode;
+            departmentById.SubSection = department.SubSection;
+            departmentById.SubSectionJP = department.SubSectionJP;
+            departmentById.SubSectionCode = department.SubSectionCode;
             departmentById.Description=department.Description;
+            departmentById.DescriptionJP=department.DescriptionJP;
+
+
             departmentById.ModifiedBy=1;
             departmentById.ModifiedOn=DateTime.Now;
+
             _unitOfWork.BeginTransaction();
             _unitOfWork.Repository<Department>().Update(departmentById);
             _unitOfWork.SaveChanges();

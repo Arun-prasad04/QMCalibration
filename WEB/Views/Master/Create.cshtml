@@ -46,7 +46,7 @@
 								<div class="col-sm-6">
 									<!-- text input -->
 									<div class="form-group">
-										<label class="required trn">Equipment Name</label>
+										<label class="required trn">Equipment Name (EN)</label>
 										<input type="text" id="EquipName" name="EquipName" value="@Model.EquipName" class="form-control"
 											   placeholder="" alt="Please enter Equipment Name">
 									</div>
@@ -54,7 +54,7 @@
 								<div class="col-sm-6">
 									<!-- text input -->
 									<div class="form-group">
-										<label class="required trn">Equipment Name Japanese</label>
+										<label class="required trn">Equipment Name (JP)</label>
 										<input type="text" id="EquipName" name="EquipNameJP" value="@Model.EquipNameJP" class="form-control"
 											   placeholder="" alt="Please enter Equipment Name">
 									</div>
@@ -116,7 +116,7 @@
 										<label for="CurrencyId" class="text-white">.</label>
 										<select id="CurrencyId" name="CurrencyId" class="form-control">
 
-
+											<option value="">--Select Currency</option>
 
 											@foreach (var currency in @Model.CurrencyList)
 											{
@@ -138,9 +138,7 @@
 									<div class="form-group">
 										<label for="CalibrationSourceId" class="required trn">Calibration Source</label>
 										<select id="CalibrationSourceId" name="CalibrationSourceId" class="form-control">
-
-
-
+											<option value="">--Select Calibration Source--</option>
 											@foreach (var source in @Model.CalibrationSourceList)
 											{
 												if (source.Id == Model.CalibrationSourceId)
@@ -161,7 +159,7 @@
 									<div class="form-group">
 										<label for="LocationId" class="required trn">Location</label>
 										<select id="LocationId" name="LocationId" class="form-control">
-
+											<option value="">--Select Location --</option>
 											@foreach (var location in @Model.LocationList)
 											{
 												if (location.Id == Model.LocationId)
@@ -206,10 +204,9 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label for="CalibFreqId" class="required trn">Calibration Frequency</label>
+										<label for="CalibFreq" class="required trn">Calibration Frequency</label>
 										<select id="CalibFreqId" name="CalibFreqId" class="form-control">
-
-
+											<option value="">--Select Calibration Frequency --</option>
 
 											@foreach (var freq in @Model.CalibrationFreq)
 											{

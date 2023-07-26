@@ -917,7 +917,8 @@ function SaveLABAdminUpdates(lang) {
     }).done(function (resultObject) {
         AssignRequestValues(resultObject);
         showSuccess("Certificate Updated Successfully", lang);
-        disableFields();
+        window.location.href = '../Tracker/Request?reqType=4';
+       // disableFields();
     });
 }
 function SubmitReqLABVisual(lang) {
@@ -1243,21 +1244,74 @@ function RejecttQuarRequest() {
 
     });
 }
+//function LoadObservationTypePopup(lang) {
+//    $.ajax({
+//        url: '../Tracker/LoadObservationType',
+//        type: 'POST',
+//        data: { attrType: '', attrsubType: $('#NewObservation option:selected').text(), langtype: lang }
+//    }).done(function (resultObject) {
+//        $('#NewObservationType')
+//            .find('option')
+//            .remove();
 
-function LoadObservationType() {
+//        $('#NewObservationType').empty();
+//        $('#NewObservationType').append(<option value="0">--Select--</option>);
+//        for (let index = 0; index < resultObject.length; index++) {
+//            if (lang == 'en') {
+//                optText = resultObject[index].attrValue;
+//                optValue = resultObject[index].id;
+//                $('#NewObservationType').append(<option value="${optValue}">${optText}</option>);
+//            }
+//            else {
+//                optTextjp = resultObject[index].attrValueJp;
+//                optValuejp = resultObject[index].id;;
+//                $('#NewObservationType').append(<option value="${optValuejp}">${optTextjp}</option>);
+//            }
+//        }
+//    });
+
+//}
+
+
+function LoadObservationType(lang) {
+    
+    var optionhtmlOBType;
     $.ajax({
         url: '../Tracker/LoadObservationType',
         type: 'POST',
-        data: { attrType: '', attrsubType: $('#ObservationTemplate option:selected').text() }
+        data: { attrType: '', attrsubType: $('#ObservationTemplate option:selected').text(), LangType: lang }
     }).done(function (resultObject) {
         $('#ObservationType')
             .find('option')
             .remove();
-        for (let index = 0; index < resultObject.length; index++) {
-            optText = resultObject[index].attrValue;
-            optValue = resultObject[index].id;;
-            $('#ObservationType').append(`<option value="${optValue}">${optText}</option>`);
+        $('#ObservationType').empty();
+        if (lang == 'en') {
+            optionhtmlOBType = '<option value="">--Select Observation Type--</option>';
         }
+        else {
+            optionhtmlOBType = '<option value="">--観測タイプの選択--</option>';
+        }
+        $('#ObservationType').append(optionhtmlOBType);
+        for (let index = 0; index < resultObject.length; index++) {
+           
+            optText = resultObject[index].attrValue;
+            optValue = resultObject[index].id;
+           
+            optTextJp = resultObject[index].attrValueJp;
+            
+
+            if (lang == 'en')
+            {
+                
+                $('#ObservationType').append(`<option value="${optValue}">${optText}</option>`);
+            }
+            else {
+                
+                $('#ObservationType').append(`<option value="${optValue}">${optTextJp}</option>`);
+            }
+            
+        }
+        
     });
 
 }
@@ -1297,104 +1351,161 @@ function SaveLeverDial(lang) {
         data: { levertypedial: data }
 
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
 
 function SaveMicrometer(lang) {
+    var MicroResult;
+    var ObjParent='';
+    //var ObservationType = @Json.Serialize(@ViewBag.ObservationTypeMicro);
+    MicroResult = new Array();
+    $('#Microadd tbody tr').each(function (row, tr) {
+        
+       
+        
+        if ($('#Microadd >tbody >tr').length > 2) {
+
+            if ($(tr).index() > 2)
+            {
+            ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();
+            
+      
+           if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
+                console.log("New value");
+                var MicroData = {
+                    SNO: $(tr).find("td:eq(0) input[type='text']").val(),
+                    MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
+                    ActualsT1: $(tr).find("td:eq(2) input[type='text']").val(),
+                    Diff1: $(tr).find("td:eq(3) input[type='text']").val(),
+                    Id: $(tr).find("td:eq(4) input[type='hidden']").val(),
+                    ParentId: ObjParent,
+                    InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
+                    
+               }
+                //MicroResult.push(MicroData);
+            }
+            MicroResult.push(MicroData);
+            }
+
+        }
+        else
+        {
+            MicroResult.pop(MicroData); 
+        }
+       
+
+        console.log("Micro Result");
+        console.log(MicroResult);
+      
+    });
+  
+    console.log("Micro Micro Result");
+    console.log(MicroResult);
     var data = {
-        Id: $('#Id').val(),
+        Id: $('#IdMicro').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
         TempStart: $('#TempStart').val(),
-        TempEnd: $('#TempEnd').val(),
+      //  TempEnd: $('#TempEnd').val(),
         Humidity: $('#Humidity').val(),
         RefWi: $('#RefWi').val(),
         Allvalues: $('#Allvalues').val(),
         InstrumentId: $('#instrumentId').val(),
         RequestId: $('#requestId').val(),
         MicrometerCondition: $('#MicrometerCondition').val(),
-        ActualsT11: $('#ActualsT11').val(),
-        ActualsT21: $('#ActualsT21').val(),
-        ActualsT31: $('#ActualsT31').val(),
+
         Avg1: $('#Avg1').val(),
+        ActualsT11: $('#ActualsT11').val(),
         MuInterval1: $('#MuInterval1').val(),
-        ActualsT12: $('#ActualsT12').val(),
-        ActualsT22: $('#ActualsT22').val(),
-        ActualsT32: $('#ActualsT32').val(),
+        //ActualsT21: $('#ActualsT21').val(),
+        //ActualsT31: $('#ActualsT31').val(),
+       
+       
+        //ActualsT22: $('#ActualsT22').val(),
+        //ActualsT32: $('#ActualsT32').val(),
         Avg2: $('#Avg2').val(),
+        ActualsT12: $('#ActualsT12').val(),
         MuInterval2: $('#MuInterval2').val(),
-        ActualsT13: $('#ActualsT13').val(),
-        ActualsT23: $('#ActualsT23').val(),
-        ActualsT33: $('#ActualsT33').val(),
+      
+        //ActualsT23: $('#ActualsT23').val(),
+        //ActualsT33: $('#ActualsT33').val(),
         Avg3: $('#Avg3').val(),
-        MuInterval3: $('#MuInterval3').val(),
         ActualsT13: $('#ActualsT13').val(),
-        ActualsT23: $('#ActualsT23').val(),
-        ActualsT33: $('#ActualsT33').val(),
-        Avg3: $('#Avg3').val(),
         MuInterval3: $('#MuInterval3').val(),
-        ActualsT14: $('#ActualsT14').val(),
-        ActualsT24: $('#ActualsT24').val(),
-        ActualsT34: $('#ActualsT34').val(),
-        Avg4: $('#Avg4').val(),
-        MuInterval4: $('#MuInterval4').val(),
-        ActualsT15: $('#ActualsT15').val(),
-        ActualsT25: $('#ActualsT25').val(),
-        ActualsT35: $('#ActualsT35').val(),
-        Avg5: $('#Avg5').val(),
-        MuInterval5: $('#MuInterval5').val(),
-        ActualsT16: $('#ActualsT16').val(),
-        ActualsT26: $('#ActualsT26').val(),
-        ActualsT36: $('#ActualsT36').val(),
-        Avg6: $('#Avg6').val(),
-        ActualsT17: $('#ActualsT17').val(),
-        ActualsT27: $('#ActualsT27').val(),
-        ActualsT37: $('#ActualsT37').val(),
-        Avg7: $('#Avg7').val(),
-        ActualsT18: $('#ActualsT18').val(),
-        ActualsT28: $('#ActualsT28').val(),
-        ActualsT38: $('#ActualsT38').val(),
-        Avg8: $('#Avg8').val(),
-        ActualsT19: $('#ActualsT19').val(),
-        ActualsT29: $('#ActualsT29').val(),
-        ActualsT39: $('#ActualsT39').val(),
-        Avg9: $('#Avg9').val(),
-        ActualsT110: $('#ActualsT110').val(),
-        ActualsT210: $('#ActualsT210').val(),
-        ActualsT310: $('#ActualsT310').val(),
-        Avg10: $('#Avg10').val(),
-        ActualsT111: $('#ActualsT111').val(),
-        ActualsT211: $('#ActualsT211').val(),
-        ActualsT311: $('#ActualsT311').val(),
-        Avg11: $('#Avg11').val(),
-        Flatness1: $('#Flatness1').val(),
-        Flatness2: $('#Flatness2').val(),
-        ParallelismSpec: $('#ParallelismSpec').val(),
-        Actuals: $('#Actuals').val(),
+        //ActualsT13: $('#ActualsT13').val(),
+        //ActualsT23: $('#ActualsT23').val(),
+        //ActualsT33: $('#ActualsT33').val(),
+        //Avg3: $('#Avg3').val(),
+        //MuInterval3: $('#MuInterval3').val(),
+        //ActualsT14: $('#ActualsT14').val(),
+        //ActualsT24: $('#ActualsT24').val(),
+        //ActualsT34: $('#ActualsT34').val(),
+        //Avg4: $('#Avg4').val(),
+        //MuInterval4: $('#MuInterval4').val(),
+        //ActualsT15: $('#ActualsT15').val(),
+        //ActualsT25: $('#ActualsT25').val(),
+        //ActualsT35: $('#ActualsT35').val(),
+        //Avg5: $('#Avg5').val(),
+        //MuInterval5: $('#MuInterval5').val(),
+        //ActualsT16: $('#ActualsT16').val(),
+        //ActualsT26: $('#ActualsT26').val(),
+        //ActualsT36: $('#ActualsT36').val(),
+        //Avg6: $('#Avg6').val(),
+        //ActualsT17: $('#ActualsT17').val(),
+        //ActualsT27: $('#ActualsT27').val(),
+        //ActualsT37: $('#ActualsT37').val(),
+        //Avg7: $('#Avg7').val(),
+        //ActualsT18: $('#ActualsT18').val(),
+        //ActualsT28: $('#ActualsT28').val(),
+        //ActualsT38: $('#ActualsT38').val(),
+        //Avg8: $('#Avg8').val(),
+        //ActualsT19: $('#ActualsT19').val(),
+        //ActualsT29: $('#ActualsT29').val(),
+        //ActualsT39: $('#ActualsT39').val(),
+        //Avg9: $('#Avg9').val(),
+        //ActualsT110: $('#ActualsT110').val(),
+        //ActualsT210: $('#ActualsT210').val(),
+        //ActualsT310: $('#ActualsT310').val(),
+        //Avg10: $('#Avg10').val(),
+        //ActualsT111: $('#ActualsT111').val(),
+        //ActualsT211: $('#ActualsT211').val(),
+        //ActualsT311: $('#ActualsT311').val(),
+        //Avg11: $('#Avg11').val(),
+       // Flatness1: $('#Flatness1').val(),
+       // Flatness2: $('#Flatness2').val(),
+       // ParallelismSpec: $('#ParallelismSpec').val(),
+       // Actuals: $('#Actuals').val(),
         ReviewedBy: $('#ReviewedBy').val(),
         CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
         CalibrationPerformedDate: $('#CalibrationPerformedDate').val(),
         ReveiwedByDate: $('#ReveiwedByDate').val(),
-        Measurement1: $('#Measurement1').val(),
-        Measurement2: $('#Measurement2').val(),
-        Measurement3: $('#Measurement3').val(),
-        Measurement4: $('#Measurement4').val(),
-        Measurement5: $('#Measurement5').val(),
-        Measurement6: $('#Measurement6').val(),
-        Measurement7: $('#Measurement7').val(),
-        Measurement8: $('#Measurement8').val(),
-        Measurement9: $('#Measurement9').val(),
-        Measurement10: $('#Measurement10').val(),
-        Measurement11: $('#Measurement11').val(),
-        MURemarks: $('#MURemarks').val(),
-
+        //Measurement1: $('#Measurement1').val(),
+        //Measurement2: $('#Measurement2').val(),
+        //Measurement3: $('#Measurement3').val(),
+        //Measurement4: $('#Measurement4').val(),
+        //Measurement5: $('#Measurement5').val(),
+        //Measurement6: $('#Measurement6').val(),
+        //Measurement7: $('#Measurement7').val(),
+        //Measurement8: $('#Measurement8').val(),
+        //Measurement9: $('#Measurement9').val(),
+        //Measurement10: $('#Measurement10').val(),
+        //Measurement11: $('#Measurement11').val(),
+        //MURemarks: $('#MURemarks').val(),
+        
+        InstrumentErrValue: $('#InstrumentErrValue').val(),
+        FlatnessMeasure: $('#tablerowFlatness').find("td:eq(0) input[type='text']").val(),
+        FlatnessActual: $('#tablerowFlatness').find("td:eq(1) input[type='text']").val(),
+        FlatnessInserr: $('#tablerowFlatness').find("td:eq(2) input[type='text']").val(),
+        MicrometerAddResultViewModelList: MicroResult,
 
     }
     $.ajax({
-        url: '../Observation/InsertMicrometer',
+        url:'../Observation/InsertMicrometer',
         type: 'POST',
         data: { micrometer: data }
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1457,6 +1568,7 @@ function SaveGeneral(lang) {
         data: { general: data },
         dataType: "json",
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1650,6 +1762,7 @@ function SaveVernierCaliper(lang) {
         type: 'POST',
         data: { verniercaliper: data }
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1707,15 +1820,10 @@ function SaveGeneralNew(lang) {
         type: 'POST',
         data: { GeneralNew: data }
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
-
-
-
-
-
-
 
 
 function SavePlungerDial(lang) {
@@ -1829,10 +1937,10 @@ function SavePlungerDial(lang) {
         data: { plungerDial: data }
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
+        window.location.href = '../Tracker/Request?reqType=4';
+        
     });
 }
-
-
 function SaveThreadGauges(lang) {
 
     var RefWi = '';
@@ -1929,6 +2037,7 @@ function SaveThreadGauges(lang) {
         type: 'POST',
         data: { threadGauges: data }
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -1994,6 +2103,7 @@ function SaveTWobs(lang) {
         type: 'POST',
         data: { torquewrenches: data }
     }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
 }
@@ -2140,12 +2250,14 @@ function SaveInstrumentDetails(lang) {
             calibDate: $('#CalibDate').val(),
             dueDate: $('#DueDate').val(),
             dateOfReceipt: $('#DateOfReceipt').val(),
-
+           // Grade: $('#Grade').val(),
         }
     }).done(function (resultObject) {
         showSuccess("Certificate Updated Successfully", lang);
         window.location.reload();
     });
+    console.log(" $('#Grade').val()");
+    console.log($('#Grade').val());
 }
 
 

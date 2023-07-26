@@ -167,11 +167,12 @@ public class TrackerController : BaseController
 		ResponseViewModel<RequestViewModel> response = _requestService.SubmitQuarantineRequest(requestId, userId);
 		return Json(response.ResponseData);
 	}
-	public IActionResult LoadObservationType(string attrType, string attrsubType)
+	public IActionResult LoadObservationType(string attrType, string attrsubType, string LangType)
 	{
-		ResponseViewModel<LovsViewModel> response = _requestService.GetLovs(attrType, attrsubType);
-		return Json(response.ResponseDataList);
+		ResponseViewModel<LovsViewModel> response = _requestService.GetLovs(attrType, attrsubType, LangType);
+		   return Json(response.ResponseDataList);
 	}
+	
 	public IActionResult SaveInstrumentFromRequest(int requestId,
 			string newLabId,
 			bool newNABL,

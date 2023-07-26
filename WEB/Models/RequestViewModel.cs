@@ -93,7 +93,12 @@ public partial class RequestViewModel
     public List<LovsViewModel> ObservationTemplateList{get;set;}
     public List<LovsViewModel> MUTemplateList{get;set;}
     public List<LovsViewModel> CertificationTemplateList{get;set;}
+	//To Bind and Display Master Data
+	public List<MasterViewModel> MasterData { get; set; }
+	public List<MasterViewModel> MasterEqiupmentList { get; set; }
 
+	//To Display Instrument Id Number
+	public string? IdNo { get; set; }
 }
 public class UploadFile
     {

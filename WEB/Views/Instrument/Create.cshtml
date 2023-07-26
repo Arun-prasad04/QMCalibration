@@ -48,13 +48,13 @@
 									<div class="form-group">
 										<label class="required trn">Instrument Name</label>
 										<input type="text" id="InstrumentName" name="InstrumentName" value="@Model.InstrumentName"
-											   class="form-control" placeholder="" alt="Please enter Instrument Name">
+											   class="form-control trn" placeholder="Instrument Name" alt="Please enter Instrument Name">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Instrument Serial Number</label>
-										<input type="text" id="SlNo" name="SlNo" value="@Model.SlNo" class="form-control" placeholder=""
+										<input type="text" id="SlNo" name="SlNo" value="@Model.SlNo" class="form-control trn" placeholder="Instrument Serial Number"
 											   alt="Please enter the Serial Number">
 									</div>
 								</div>
@@ -65,13 +65,13 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Range</label>
-										<input type="text" id="Range" name="Range" value="@Model.Range" class="form-control" placeholder="" alt="Please enter Range">
+										<input  type="text" id="Range" name="Range" value="@Model.Range" class="form-control trn" placeholder="Range" alt="Please enter Range">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Unit</label>
-										<input type="text" alt="Please enter Unit" id="Unit1" name="Unit1" value="@Model.Unit1" class="form-control" placeholder="">
+										<input type="text" alt="Please enter Unit" id="Unit1" name="Unit1" value="@Model.Unit1" class="form-control trn" placeholder="Unit">
 									</div>
 								</div>
 							</div>
@@ -81,13 +81,13 @@
 									<!-- text input -->
 									<div class="form-group">
 										<label class="trn">Least Count</label>
-										<input type="text" id="LC" name="LC" value="@Model.LC" class="form-control" placeholder="">
+										<input type="text" id="LC" name="LC" value="@Model.LC" class="form-control trn" placeholder="Least Count">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Unit</label>
-										<input type="text" alt="Please enter Unit" id="Unit2" name="Unit2" value="@Model.Unit2" class="form-control" placeholder="">
+										<input type="text" alt="Please enter Unit" id="Unit2" name="Unit2" value="@Model.Unit2" class="form-control trn" placeholder="Unit">
 									</div>
 								</div>
 							</div>
@@ -96,14 +96,14 @@
 									<!-- text input -->
 									<div class="form-group">
 										<label class="trn">Set Value for TW</label>
-										<input type="text" id="TW_Type" name="TW_Type" value="@Model.TW_Type" class="form-control"
-											   placeholder="">
+										<input type="text" id="TW_Type" name="TW_Type" value="@Model.TW_Type" class="form-control trn"
+											   placeholder="Set Value for TW">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Unit</label>
-										<input type="text" alt="Please enter Unit" id="Unit3" name="Unit3" value="@Model.Unit3" class="form-control" placeholder="">
+										<input type="text" alt="Please enter Unit" id="Unit3" name="Unit3" value="@Model.Unit3" class="form-control trn" placeholder="Unit">
 									</div>
 								</div>
 							</div>
@@ -114,6 +114,7 @@
 										<div class="form-group">
 											<label class="required trn">User Department</label>
 											<select class="form-control" name="UserDept" id="UserDept">
+												@*<option class="trn" value=" ">--Select User Department--</option>
 												@foreach (var department in @Model.Departments)
 												{
 													if (department.Id == Model.UserDept)
@@ -124,7 +125,7 @@
 													{
 														<option value="@department.Id">@department.Name</option>
 													}
-												}
+												}*@
 											</select>
 										</div>
 									}
@@ -176,7 +177,7 @@
 									<!-- text input -->
 									<div class="form-group">
 										<label class="required trn">Make</label>
-										<input type="text" id="Make" name="Make" value="@Model.Make" class="form-control" placeholder="" alt="Please fill this field">
+										<input type="text" id="Make" name="Make" value="@Model.Make" class="form-control trn" placeholder="Make" alt="Please fill this field">
 									</div>
 								</div>
 							</div>
@@ -186,14 +187,18 @@
 									<div class="form-group">
 										<label class="trn">Ref Standard/Calibration Method</label>
 										<input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.StandardReffered1"
-											   class="form-control" placeholder="" alt="Please fill this field">
+											   class="form-control trn" placeholder="Ref Standard/Calibration Method" alt="Please fill this field">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="required trn">Instrument Id Number</label>
-										<input type="text" id="txtIdNo" name="IdNo" value="@Model.IdNo"
-											   class="form-control" placeholder="" alt="Please fill this field">
+										@*<label class="required trn">Instrument Id Number</label>*@
+										@*<input type="text" id="txtIdNo" name="IdNo" value="@Model.IdNo"
+											   class="form-control trn" placeholder="Instrument Id Number" alt="Please fill this field">*@
+											   <label class="required trn">Grade</label>
+										<input type="text" id="Grade" name="Grade" value="@Model.Grade"
+											   class="form-control trn" placeholder="Grade">
+
 									</div>
 								</div>
 							</div>
@@ -203,29 +208,30 @@
 									<div class="form-group">
 										<label class="trn">Type of Instrument</label>
 										<select id="Instrument_Type" name="Instrument_Type" class="form-control">
+											<option value=" " class="trn">--Select Type Of Instrument--</option>
 											@if (Model.Instrument_Type == 1)
 											{
-												<option value="1" selected="true">Dial</option>
+												<option value="1" selected="true" class="trn">Dial</option>
 											}
 											else
 											{
-												<option value="1">Dial</option>
+												<option value="1" class="trn">Dial</option>
 											}
 											@if (Model.Instrument_Type == 2)
 											{
-												<option value="2" selected="true">Digital</option>
+												<option value="2" selected="true" class="trn">Digital</option>
 											}
 											else
 											{
-												<option value="2">Digital</option>
+												<option value="2" class="trn">Digital</option>
 											}
 											@if (Model.Instrument_Type == 3)
 											{
-												<option value="3" selected="true">Analog</option>
+												<option value="3" selected="true" class="trn">Analog</option>
 											}
 											else
 											{
-												<option value="3">Analog</option>
+												<option value="3" class="trn">Analog</option>
 											}
 										</select>
 									</div>
@@ -234,21 +240,22 @@
 									<div class="form-group">
 										<label class="required trn">Drawing is attached</label>
 										<select id="Drawing_Attached" name="Drawing_Attached" class="form-control">
+											<option value=" " class="trn">--Select Drawing Attached--</option>
 											@if (Model.Drawing_Attached == "Yes")
 											{
-												<option value="Yes" selected="true">Yes</option>
+												<option value="Yes" selected="true" class="trn">Yes</option>
 											}
 											else
 											{
-												<option value="Yes">Yes</option>
+												<option value="Yes" class="trn">Yes</option>
 											}
 											@if (Model.Drawing_Attached == "No")
 											{
-												<option value="No" selected="true">No</option>
+												<option value="No" selected="true" class="trn">No</option>
 											}
 											else
 											{
-												<option value="No">No</option>
+												<option value="No" class="trn">No</option>
 											}
 										</select>
 									</div>
@@ -260,21 +267,22 @@
 									<div class="form-group">
 										<label class="trn">Decision rule for statement of Confirmity</label>
 										<select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control">
+											<option value="" selected="true" class="trn">--Select Rule Confirmity--</option>
 											@if (Model.Rule_Confirmity == "Include MU")
 											{
-												<option value="Include MU" selected="true">Include MU</option>
+												<option value="Include MU" selected="true" class="trn">Include MU</option>
 											}
 											else
 											{
-												<option value="Include MU">Include MU</option>
+												<option value="Include MU" class="trn">Include MU</option>
 											}
 											@if (Model.Rule_Confirmity == "Exclude MU")
 											{
-												<option value="Exclude MU" selected="true">Exclude MU</option>
+												<option value="Exclude MU" selected="true" class="trn">Exclude MU</option>
 											}
 											else
 											{
-												<option value="Exclude MU">Exclude MU</option>
+												<option value="Exclude MU" class="trn">Exclude MU</option>
 											}
 										</select>
 									</div>
@@ -282,7 +290,8 @@
 								<div class="col-sm-6">								
 										<div class="form-group">
 											<label class="trn">Calibration Frequency</label>
-											<select id="CalibFreq" name="CalibFreq" class="form-control">
+										<select id="CalibFreq" name="CalibFreq" class="form-control">
+											@*<option value="">--Calibration Frequency--</option>
 												@foreach (var freq in @Model.CalibFreqList)
 												{
 													if (freq.Id == Model.CalibFreq)
@@ -293,7 +302,7 @@
 													{
 														<option value="@freq.Id">@freq.AttrValue</option>
 													}
-												}
+												}*@
 											</select>
 										</div>									
 								</div>
@@ -304,8 +313,8 @@
 								<!-- text input -->
 								<div class="form-group">
 									<label class="trn">Remarks</label>
-									<input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control"
-										   placeholder="">
+									<input type="text" id="Remarks" name="Remarks" value="@Model.Remarks" class="form-control trn"
+											   placeholder="Remarks">
 								</div>
 								</div>
 								<div class="col-sm-6">
@@ -390,70 +399,89 @@
 									</div>
 								</div>
 								<!-- /.card-header -->
-								<div class="card-body">
-									<div class="row">
-										<div class="col-sm-3">
-											<div class="form-group">
-												<label class="trn">Master Instrument Name</label>
-												<select id="MasterInstrument" name="MasterInstrument" class="form-control" @Model.IsDisabled>
-													<option>--Select Master--</option>
-													@foreach (var master in @Model.MasterData)
-													{
 
-														<option value="@master.Id">@master.EquipName</option>
+								<div class="card-body">
+									
+									<div class="row" >
+										@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+										{*@
+											<div class="col-sm-3" >
+												<div class="form-group">
+													<label class="trn">Master Instrument Name</label>
+													<select id="MasterInstrument" name="MasterInstrument" class="form-control" @Model.IsDisabled>
+														<option>--Select Master--</option>
+														@foreach (var master in @Model.MasterData)
+														{
+														
+															<option value="@master.Id">@master.EquipName</option>
+														}
 													}
-												</select>
+													</select>
+												</div>
 											</div>
-										</div>
+										@*}*@
 										<div class="col-sm-1" style="top: 36px;">
+											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+												{*@
 											<input type="button" class="btn-primary" value="Add"
 												   onclick="AddNewInstrumentMaster(language)">
+												@*}*@
 										</div>
+												
 										<div class="col-sm-2">
-											<input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
-												   value="@Model.MasterInstrument1">
-											<input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
-												   value="@Model.MasterInstrument2">
-											<input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
-												   value="@Model.MasterInstrument3">
-											<input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
-												   value="@Model.MasterInstrument4">
+											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+											{*@
+												<input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
+												value="@Model.MasterInstrument1">
+												<input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
+												value="@Model.MasterInstrument2">
+												<input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
+												value="@Model.MasterInstrument3">
+												<input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
+												value="@Model.MasterInstrument4">
 
-											<div id="masterEquipmentValue">
-												@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
-												{
-													int i = 1;
-													@foreach (var master in Model.MasterEqiupmentList)
+												<div id="masterEquipmentValue">
+													@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
 													{
-														string identifier = "masvalue" + @i;
-														<div id='@identifier'>
-															@master.EquipName <i class="fas fa-trash"
-																	 onclick="DeleteMasterEqiupment(@i)"></i><br>
-														</div>
-														;
-														i = i + 1;
+														int i = 1;
+														@foreach (var master in Model.MasterEqiupmentList)
+													{
+																										
+														
+																string identifier = "masvalue" + @i;
+															<div id='@identifier'>
+															
+																@master.EquipName <i class="fas fa-trash"
+																onclick="DeleteMasterEqiupment(@i)"></i><br>
+															
+															</div>
+															;
+															i = i + 1;
+														}
 													}
-												}
-											</div>
+												</div>
+											 
 										</div>
+
 										<div class="col-sm-6">
 											<!-- text input -->
-											<div class="form-group">
-												<label class="trn">Instrument Id Number</label>
+											<div class="form-group" style="display: none;">
 												@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 												{
-													<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder=""
+												<label class="trn">Instrument Id Number</label>
+												
+													<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder="Instrument Id Number"
 													@Model.IsDisabled>
 												}
 												else
 												{
-													<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder=""
+													<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder="Instrument Id Number"
 														   disabled>
 												}
 											</div>
 										</div>
 									</div>
-
+									
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="form-group">
@@ -543,25 +571,28 @@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Is NABL</label>
+													
 													<select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)">
+														<option value="" class="trn">--Select Is NABL--</option>
 														@if (Model.IsNABL == false)
 														{
-															<option value="false" selected>No</option>
-															<option value="true">Yes</option>
+															<option value="false" selected class="trn">No</option>
+															<option value="true" class="trn">Yes</option>
 														}
 														else if (Model.IsNABL == true)
 														{
-															<option value="true" selected>Yes</option>
-															<option value="false">No</option>
+															<option value="true" selected class="trn">Yes</option>
+															<option value="false" class="trn">No</option>
 														}
 													</select>
 												</div>
-											</div>
+											</div>@*//@HttpContextAccessor.HttpContext.Session.GetString("Language")*@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Observation Template</label>
 													<select id="ObservationTemplate" name="ObservationTemplate" class="form-control"
-															onchange="LoadObservationType()" @Model.IsDisabled>
+															onchange="LoadObservationType(language)" @Model.IsDisabled>
+														@*<option value=""> -- Select Observation Template --</option>
 														@foreach (var observation in @Model.ObservationTemplateList)
 														{
 															if (observation.Id == Model.ObservationTemplate)
@@ -574,7 +605,7 @@
 															{
 																<option value="@observation.Id">@observation.AttrValue</option>
 															}
-														}
+														}*@
 
 													</select>
 												</div>
@@ -584,7 +615,8 @@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Observation Type</label>
-													<select id="ObservationType" name="ObservationType" class="form-control" @Model.IsDisabled>
+													<select id="ObservationType" name="ObservationType" class="form-control" @Model.IsDisabled value=@Model.ObservationType>
+														@*value=@Model.ObservationType*@
 													</select>
 
 												</div>
@@ -594,19 +626,19 @@
 													<label class="required trn">MU Template</label>
 
 													<select id="MUTemplate" name="MUTemplate" class="form-control" @Model.IsDisabled>
-														@foreach (var mu in @Model.MUTemplateList)
+														@*@foreach (var mu in @model.mutemplatelist)
 														{
-															if (mu.Id == Model.MUTemplate)
+															if (mu.id == model.mutemplate)
 															{
-																<option value="@mu.Id" selected="selected">
-																	@mu.AttrValue
+																<option value="@mu.id" selected="selected">
+																	@mu.attrvalue
 																</option>
 															}
 															else
 															{
-																<option value="@mu.Id">@mu.AttrValue</option>
+																<option value="@mu.id">@mu.attrvalue</option>
 															}
-														}
+														}*@
 
 													</select>
 
@@ -619,7 +651,7 @@
 													<label class="required trn">Certification Template</label>
 													<select id="CertificationTemplate" name="CertificationTemplate" class="form-control"
 													@Model.IsDisabled>
-														@foreach (var certificate in @Model.CertificationTemplateList)
+														@*@foreach (var certificate in @Model.CertificationTemplateList)
 														{
 															if (certificate.Id == Model.CertificationTemplate)
 															{
@@ -631,7 +663,7 @@
 															{
 																<option value="@certificate.Id">@certificate.AttrValue</option>
 															}
-														}
+														}*@
 													</select>
 												</div>
 											</div>
@@ -663,6 +695,9 @@
 </form>
 
 <script>
+	console.log("Grade");
+	//console.log(document.getElementById("Garde").value);
+	console.log($("#Garde").val());
 	setTimeout(function () {
 
 		$('#reservationdate').datetimepicker({
@@ -684,7 +719,7 @@
 						required: true,
 					},
 					Range: {
-						required: true,
+						required: true,  
 					},
 					Unit1: {
 						required: true,
@@ -722,7 +757,7 @@
 				},
 				messages: {
 					InstrumentName: {
-						required: "Please enter Instrument  Name",
+						required: "Please enter Instrument Name",
 					},
 					SlNo: {
 						required: "Please enter the Serial Number",

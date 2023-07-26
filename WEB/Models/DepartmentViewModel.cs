@@ -19,8 +19,11 @@ public int? ModifiedBy {get;set;}
 public DateTime? CreatedOn {get;set;}
 public DateTime? ModifiedOn {get;set;}
 public List<LocationViewModel> locationList{ get; set; }
-//public virtual Location LocationModel { get; set; }
+public string? SectionCode { get; set; }
+public string? SubSectionCode { get; set; }
+		//public virtual Location LocationModel { get; set; }
 public string? PlantLocation { get; set; }
 public string? PlantCode { get; set; }
+
 	}
 }

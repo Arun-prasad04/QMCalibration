@@ -1,4 +1,5 @@
 using System;
+using DATAMODELS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -53,9 +54,11 @@ namespace CMT.DATAMODELS
         public virtual DbSet<ObsGeneralDynamicValues> ObsGeneralDynamicValues { get; set; }
         public virtual DbSet<MasterEquipmentHistory> MasterEquipmentHistory { get; set; }
         public virtual DbSet<ObsTemplateGeneralNew> ObsTemplateGeneralNew { get; set; }
+		public virtual DbSet<ObsMicrometerValues> ObsMicrometerValues { get; set; }
+		public virtual DbSet<QRCodeFiles> QRCodeFiles {get;set;}
+		
 
-        public virtual DbSet<QRCodeFiles> QRCodeFiles {get;set;}
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Master>()
             .HasOne(p => p.SupplierModel)

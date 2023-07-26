@@ -57,7 +57,7 @@
                             <tr>
                                 <td class="trn"  style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @Model.LeverDialData.CertificateFormat</td>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
+                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report Issues Date</td>
                                 <td style="width:400px;padding-bottom: 25px;">: @DateTime.Now.ToString("dd-MM-yyyy")</td>
                             </tr>
                             @if(Model.IsNABL ?? false)
@@ -449,8 +449,8 @@
                 {
                     <input type="button" value="ReGenerate" onclick="SaveCertificate('LeverDial',language)" class="btn btn-primary trn">
                 }
-                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
-                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId = @ViewBag.InstrumentId })'>Print QR Code</a>
+                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
+                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId = @ViewBag.InstrumentId })'>PrintQR Code</a>
              }
              else
              {
@@ -466,7 +466,8 @@
 
 @* ********************************************************************************************************************* *@
 
-<div id="Pdfhtml" style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+<div id="Pdfhtml" style="display: none;">
+    @*style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">*@
 
     @*<body style="font-family: Calibri;">*@
         <!-- page1 start-->

@@ -637,7 +637,40 @@ public class MasterService : IMasterService
 		}
 
 	}
+	
+	//	public ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
+	//{
+	//	try
+	//	{
+	//		List<MasterViewModel> masterViewModelList = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>()
+	//			.GetQueryAsNoTracking(Q => Q.Id == MasterInstrument1 || Q.Id ==MasterInstrument2 || Q.Id ==MasterInstrument3 || Q.Id == MasterInstrument4).ToList());
+			
 
+	//		return new ResponseViewModel<MasterViewModel>
+	//		{
+	//			ResponseCode = 200,
+	//			ResponseMessage = "Success",
+	//			ResponseData = null,
+	//			ResponseDataList = masterViewModelList
+	//		};
+	//	}
+	//	catch (Exception e)
+	//	{
+	//		ErrorViewModelTest.Log("MasterService - GetEquipmentListByLabId Method");
+	//		ErrorViewModelTest.Log("exception - " + e.Message);
+	//		return new ResponseViewModel<MasterViewModel>
+	//		{
+	//			ResponseCode = 500,
+	//			ResponseMessage = "Failure",
+	//			ErrorMessage = e.Message,
+	//			ResponseData = null,
+	//			ResponseDataList = null,
+	//			ResponseService = "Master",
+	//			ResponseServiceMethod = "GetEquipmentListByLabId"
+	//		};
+	//	}
+
+	//}
 	public ResponseViewModel<MasterViewModel> GetEquipmentListByLabId(string labId)
 	{
 		try

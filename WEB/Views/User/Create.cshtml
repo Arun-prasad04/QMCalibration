@@ -1,7 +1,8 @@
-@{
+﻿@{
 	ViewData["Title"] = "User Create";
 }
-
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!-- Content Header (Page header) -->
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <!-- Main content -->
@@ -53,40 +54,62 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
+									
 									<label class="required trn">Role</label>
-									<select class="form-control" name="UserRoleId" id="UserRoleId">
+
+									<select class="form-control" name="UsrRoleId" id="UsrRoleId">
+										
+										<option value="" selected="true" class="trn">Select User Role</option>
 										@if (Model.UserRoleId == 1)
 										{
-											<option value="1" selected="true">Department User</option>
+											<option value="1" selected="true" class="trn">Department User</option>
+											
+											
+
 										}
 										else
 										{
-											<option value="1">Department User</option>
+											<option value="1" class="trn">Department User</option>
+
 										}
 										@if (Model.UserRoleId == 2)
 										{
-											<option value="2" selected="true">LAB Admin</option>
+
+											<option value="2" selected="true" class="trn">LAB Admin</option>
+
 										}
 										else
 										{
-											<option value="2">LAB Admin</option>
+
+											<option value="2" class="trn">LAB Admin</option>
+
 										}
 										@if (Model.UserRoleId == 3)
 										{
-											<option value="3" selected="true">Facility Manager</option>
+											
+											<option value="3" selected="true" class="trn">Facility Manager</option>
+											
 										}
 										else
 										{
-											<option value="3">Facility Manager</option>
+											
+											<option value="3" class="trn">Facility Manager</option>
+											
 										}
 										@if (Model.UserRoleId == 4)
 										{
-											<option value="4" selected="true">LAB Technical Manager</option>
+											
+											<option value="4" selected="true" class="trn">LAB Technical Manager</option>
+											
 										}
 										else
 										{
-											<option value="4">LAB Technical Manager</option>
+											
+											<option value="4" class="trn">LAB Technical Manager</option>
+											
 										}
+										
+
 									</select>
 								</div>
 							</div>
@@ -97,24 +120,44 @@
 								</div>
 							</div>
 							@*<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Mobile No</label>
-									<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
-								</div>
+							<div class="form-group">
+							<label class="required trn">Mobile No</label>
+							<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+							</div>
 							</div>*@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label class="required trn">Designation</label>
 									<select class="form-control" name="Designation" id="Designation">
+										<option value="">---Select User Designation---</option>
 										@foreach (var designation in @Model.DesignationList)
 										{
 											if (designation.Id == Model.Designation)
 											{
 												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+												@*@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+										{
+										<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+										}
+										else
+										{
+
+										<option value="@designation.Id" selected="selected">@designation.AttrValueJp</option>
+										}*@
 											}
 											else
 											{
 												<option value="@designation.Id">@designation.AttrValue</option>
+
+												@*	@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+										{
+										<option value="@designation.Id">@designation.AttrValue</option>
+										}
+										else
+										{
+										<option value="@designation.Id">@designation.AttrValueJp</option>
+
+										}*@
 											}
 										}
 									</select>
@@ -126,16 +169,35 @@
 								<div class="form-group">
 									<label class="required trn">Department Name</label>
 									<select class="form-control" name="DepartmentId" id="DepartmentId">
-										<option value="">--Select--</option>
+										<option value="">--- Select User Department ---</option>
 										@foreach (var department in @Model.DepartmentList)
 										{
 											if (department.Id == Model.DepartmentId)
 											{
-												<option value="@department.Id" selected="selected">@department.Name</option>
+												@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+												{
+													<option value="@department.Id" selected="selected">@department.Name</option>
+												}
+												else
+												{
+
+													<option value="@department.Id" selected="selected">@department.NameJP</option>
+												}
+
 											}
 											else
 											{
-												<option value="@department.Id">@department.Name</option>
+												@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+												{
+													<option value="@department.Id">@department.Name</option>
+												}
+												else
+												{
+
+													<option value="@department.Id">@department.NameJP</option>
+												}
+
+
 											}
 										}
 									</select>
@@ -145,10 +207,10 @@
 								<div class="form-group">
 									<label class="required trn">Sub Department</label>
 									<select class="form-control" name="SubDepartment" id="SubDepartment">
-
-										@*@foreach (var designation in @Model.DesignationList)
+										<option value="">--Select User Sub Department--</option>
+										@foreach (var designation in @Model.DesignationList)
 										{
-											if (designation.Id == Model.Designation)
+											@if (designation.Id == Model.Designation)
 											{
 												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
 											}
@@ -156,7 +218,7 @@
 											{
 												<option value="@designation.Id">@designation.AttrValue</option>
 											}
-										}*@
+										}
 									</select>
 								</div>
 							</div>
@@ -164,6 +226,7 @@
 								<div class="form-group">
 									<label class="required trn">Level</label>
 									<select class="form-control" name="Level" id="Level">
+										<option value="">--- Select Level---</option>
 										@if (Model.Level == "L10")
 										{
 											<option value="L10" selected="true">L10</option>
@@ -374,7 +437,7 @@
 					},
 					DepartmentId: {
 						required: "Please provide the department name",
-					},					
+					},
 				},
 				errorElement: 'span',
 				errorPlacement: function (error, element) {
@@ -411,11 +474,11 @@
 						$('#LastName').val('');
 						$('#Email').val('');
 						$('#MobileNo').val('');
-						@* $('#FirstName').removeAttr('disabled');
+	@* $('#FirstName').removeAttr('disabled');
 							$('#LastName').removeAttr('disabled');
 							$('#Email').removeAttr('disabled');
 							$('#MobileNo').removeAttr('disabled'); *@
-					  }
+										  }
 					else {
 						console.log(data);
 						instList = data;
@@ -429,11 +492,11 @@
 						//	if ($(this).text() == instList.DepartmentId) return this;
 						//}).attr('selected', 'selected');
 
-						@* $('#FirstName').attr('disabled','disabled');
+	@* $('#FirstName').attr('disabled','disabled');
 							$('#LastName').attr('disabled','disabled');
 							$('#Email').attr('disabled','disabled');
 							$('#MobileNo').attr('disabled','disabled'); *@
-					  }
+										  }
 				}
 			}
 		});
@@ -507,20 +570,18 @@
 </script>
 
 <script>
-	
+
 	var sourcearray = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.DepartmentList))');
-	//alert(sourcearray);
 
 	var selectDept = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.UserDept))');
-	//alert(selectDept);
+
 	var eddata = [];
 	$.each(sourcearray, function (key, value) {
 		console.log(value);
 		if (jQuery.inArray(value.id, selectDept) == -1 && value.id == selectDept) {
-			eddata.push({ Id: value.id, Name: value.name, Section: value.section });
-			//alert(value.ShippingMode);
-			//$("#DepartmentId").
-			console.log(eddata);
+			eddata.push({
+				Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP
+			});
 
 		}
 	});
@@ -528,11 +589,21 @@
 
 
 	function BindEditSubDepartment(data) {
+		console.log('Arry value');
 		console.log(data);
 		$("#SubDepartment").empty();
 		//$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
 		$.each(data, function (key, value) {
-			$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
+
+
+			if (language == "en") {
+				$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section);
+			}
+			else {
+				$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.SectionJP);
+
+			}
+			//$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
 		});
 	}
 
@@ -540,8 +611,8 @@
 
 	$("#DepartmentId").change(function () {
 		var val = this.value;
-		//alert(val);
-		if (val == 66){
+
+		if (val == 66) {
 			$("#divSign").show();
 		}
 		else {
@@ -549,14 +620,16 @@
 		}
 		var data = [];
 		$.each(sourcearray, function (key, value) {
-			//console.log(value);
 
-			debugger;
+			//debugger;
 			if (jQuery.inArray(value.id, val) == -1 && value.id == val && value.section != null) {
-				data.push({ Id: value.id, Name: value.name, Section: value.section });
-				//alert(value.ShippingMode);
+				data.push({
+					Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP
 
+				});
 			}
+
+
 		});
 
 		BindSubDepartment(data);
@@ -564,29 +637,36 @@
 
 
 	function BindSubDepartment(data) {
-		console.log(data);
 		$("#SubDepartment").empty();
 		$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
-		$.each(data, function (key, value) {		
+		$.each(data, function (key, value) {
 			if (value.Section != null) {
-				$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
+
+				if (language == "en") {
+					$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section);
+				}
+				else {
+					$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.SectionJP);
+
+				}
 			}
-				
+
 		});
 	}
-	
+
 
 	$(document).ready(function () {
-		
-		var dptid = $("#DepartmentId").val();
-		//alert(dptid);
+
+		var dptid = $("#UserDept").val();
+
 		if (dptid == 66) {
 			$("#divSign").show();
 		}
 		else {
 			$("#divSign").hide();
 		}
-		
+
+		//}
 	});
 
 	function checkFileSize(element, maxSize, event) {
@@ -603,4 +683,5 @@
 		output.innerHTML = result;
 	}
 </script>
+
 
