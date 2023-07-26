@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddMvc().AddRazorRuntimeCompilation();
 builder.Services.AddControllers();
 var mapperConfig = new MapperConfiguration(mc =>
      {
@@ -29,7 +30,10 @@ string connString = builder.Configuration.GetSection("ConnectionStrings").GetSec
 
 builder.Services.AddDbContext<CMTDatabaseContext>(options =>
 {
-  options.UseSqlServer(connString);
+  options.UseSqlServer(connString, providerOptions =>
+  {
+	  providerOptions.CommandTimeout(700);  //Timeout in seconds
+  });
 
 }, ServiceLifetime.Scoped);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

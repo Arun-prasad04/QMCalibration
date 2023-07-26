@@ -3,6 +3,7 @@
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 <section class="content">
 	<div class="row">
 		<div class="col-12">
@@ -25,7 +26,7 @@
 				</div>
 				<!-- /.card-header -->
 				<div class="card-body">
-					<table id="example1" class="table table-bordered table-striped">
+					<table id="example1" class="table table-bordered table-striped" style="width:100%">
 						<thead>
 							<tr>
 								<th class="trn">Instrument Name</th>
@@ -46,7 +47,7 @@
 						</thead>
 						<tbody>
 
-							@foreach (var item in Model)
+							@*@foreach (var item in Model)
 							{
 								<tr>
 									<td>@item.InstrumentName</td>
@@ -91,7 +92,7 @@
 										<td></td>
 									}
 								</tr>
-							}
+							}*@
 						</tbody>
 					</table>
 				</div>
@@ -103,18 +104,107 @@
 	</div>
 	<!-- /.row -->
 </section>
+
 <script>
 	setTimeout(function () {
 
-		$("#example1").DataTable({
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true,
-			"responsive": true,
-		});
-		Conversion();
+		
+		//Conversion();		
+		GetAllInstrument();
 	}, 500);
+
+	
+</script>
+
+<script>
+	//$(document).ready(function () {
+	//	//GetAllInstrument();
+	//});
+	function GetAllInstrument(){
+		$('#dvload').show();
+		
+		$.ajax({
+		type: 'GET',
+			url: '../Instrument/GetAllInstrumentList',
+			dataType: 'json',
+			success: function (data) {
+				$('#example1 tbody').empty();
+				console.log(data);
+				$.each(data, function (i, item) {
+					//console.log(item.dueDate);
+					var tdRequest = '';
+					var d = new Date($.now());
+					if (item.userRoleId == 1) {
+						if (item.dueDate != null) {
+							if ((d.getMonth() + 1) == item.dueDate.Month && d.getFullYear() == item.dueDate.Year) {
+								if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+									tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=2' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
+									//< a href = 'Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=2})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
+								}
+
+							}
+							else if (item.dueDate.Month < (d.getMonth() + 1) && d.getFullYear() >= item.dueDate.Year) {
+								if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+									tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=3' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
+									//<a href='Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=3})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
+								}
+
+							}
+							else {
+								tdRequest = "<td> </td>"
+							}
+						}
+						else {
+							tdRequest = "<td> </td>"
+						}
+
+					}
+
+
+					var tdQuarantine = '';
+					if (item.userRoleId == 2) {
+						tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id='+item.id+' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
+					}
+					else {
+						tdQuarantine = "<td> </td>"
+					}
+					
+					var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
+					var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
+
+						var rows = "<tr>"
+							+ "<td>" + item.instrumentName + "</td>"
+							+ "<td>" + item.slNo + "</td>"
+							+ "<td>" + item.idNo + "</td>"
+							+ "<td>" + item.range + "</td>"
+							+ "<td>" + item.departmentName + "</td>"
+							+ "<td>" + calibDate + "</td>"
+							+ "<td>" + dueDate + "</td>"
+							+ "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
+							+ tdRequest
+							+ tdQuarantine
+							+ "</tr>";
+						$('#example1 tbody').append(rows);
+					$('#dvload').hide();
+				});
+
+				$("#example1").DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				});
+				
+				//$('.overlay').hide();
+			},
+			error: function (emp) {
+				$('#dvload').hide();
+			alert('error');
+			}
+		});
+	}
+	
 </script>

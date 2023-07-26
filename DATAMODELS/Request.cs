@@ -30,7 +30,9 @@ namespace CMT.DATAMODELS
     public DateTime? ReceivedDate {get;set;}
     public DateTime? InstrumentReturnedOn {get;set;}
 
-    
-    
+    //public List<Lovs> LovsList { get; set; }
+
+
+
     }
 }
