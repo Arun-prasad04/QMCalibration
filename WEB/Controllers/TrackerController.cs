@@ -201,8 +201,9 @@ public class TrackerController : BaseController
 	public IActionResult LoadObservationType(string attrType, string attrsubType, string LangType)
 	{
 		ResponseViewModel<LovsViewModel> response = _requestService.GetLovs(attrType, attrsubType, LangType);
-		return Json(response.ResponseDataList);
+		   return Json(response.ResponseDataList);
 	}
+	
 	public IActionResult SaveInstrumentFromRequest(int requestId,
 			string newLabId,
 			bool newNABL,

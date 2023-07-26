@@ -3,129 +3,144 @@
 }
 <!-- Content Header (Page header) -->
 <!-- Main content -->
-  @*<%@ Page Language="C#" Debug="true" %>*@
+@*<%@ Page Language="C#" Debug="true" %>*@
 <form name="frm" id="departmentform" action='@Url.Action("InsertDepartment","Department")' method="post" enctype="multipart/form-data">
 
 	<section class="content">
-	<div class="row">
-		<div class="col-12">
-			<div class="card card-primary">
-				<div class="card-header"> 
-					<div class="row">
-						<div class="col-md-6">
-							<h3 class="card-title trn">New Department</h3>
-						</div>
-						<div class="col-md-6 text-right">
-							<a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default trn" value="Department List"></a>
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-primary">
+					<div class="card-header">
+						<div class="row">
+							<div class="col-md-6">
+								<h3 class="card-title trn">New Department</h3>
+							</div>
+							<div class="col-md-6 text-right">
+								<a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-sm btn-default trn" value="Department List"></a>
+							</div>
+
 						</div>
 
 					</div>
-
-				</div>
-				<!-- /.card-header -->
-				<!-- form start -->
+					<!-- /.card-header -->
+					<!-- form start -->
 					<input type="hidden" name="Id" value="@Model.Id">
 					<div class="card-body">
-
-					<div class="row">
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label for="Name" class="required trn">Department Name </label>
-									<input type="text" class="form-control trn" id="Name" placeholder=" Department Name" alt="Please enter Department Name" name="Name" value="@Model.Name">
-						</div>
-					</div>
-						<div class="col-sm-6">
-							<!-- text input -->
-							<div class="form-group">
-								<label class="required trn">Department Name Japanese</label>
-									<input type="text" id="NameJP" name="NameJP" value="@Model.NameJP" class="form-control"
-										   placeholder=" Please enter Department Name in Japanese" alt="Please enter Department Name Japanese">
-							</div>
-						</div>
-					</div>
-						<div class="row">
-						<div class="col-sm-6">
-						<div class="form-group">
-							<label for="Description" class="required trn">Department Description</label>
-									<input type="text" class="form-control trn" id="Description" placeholder=" Description" alt="Please provide Department Description" name="Description" value="@Model.Description">
-						</div>
-						</div>
-							<div class="col-sm-6">
-						<div class="form-group">
-									<label for="DescriptionJP" class="required trn">Department Description Japanese</label>
-									<input type="text" class="form-control trn" id="Description" placeholder="Department Description Japanese" alt="Please provide Department Description Japanese" name="DescriptionJP" value="@Model.DescriptionJP">
-						</div>
-						</div>
-						</div>
 						<div class="row">
 							<div class="col-sm-6">
-						<div class="form-group">
-							<label for="DescriptionCode" class="required trn">Department Code</label>
-							<input type="text" class="form-control trn" id="DeptCode" placeholder="Description Code" alt="Please provide Department Code" name="DeptCode" value="@Model.DeptCode">
-						</div>
-						</div>
-						</div>
-						<div class="row">
-						<div class="col-sm-6">
-						<div class="form-group">
-							<label class="trn">Plant Location</label>
-							<select class="form-control" name="PlantId" id="PlantId" onchange="InsertPlantCode(this.value)" >
-								@foreach (var TempLocation in @Model.locationList)
-								{
-									
-									if (TempLocation.Id == Model.PlantId)//onkeydown="InsertPlantCode(language)">
-									{
-										<option value="@TempLocation.Id" selected="selected">@TempLocation.PlantLocation</option>
-									}
-									else
-									{
-										<option value="@TempLocation.Id" itemid="@TempLocation.PlantCode">@TempLocation.PlantLocation</option>
-									}
-									
-								}
-								
-							</select>
-						</div>
-						</div>
-						<div class="col-sm-6">
-						<div class="form-group">
-							<label for="PlantCode" class="required trn">Plant Code</label>
-							<input type="text" class="form-control trn" id="PlantCode" placeholder="PlantCode" alt="Please Enter PlantCode" name="PlantCode" value="@Model.PlantCode" disabled>
-						</div>
-						</div>
-				</div>
-						<div class="row">
-						<div class="col-sm-6">
-
-							<div class="form-group">
-							<label for="Section" class="required trn">Section</label>
-							<input type="text" class="form-control trn" id="Section" placeholder="Section" alt="Please provide Department Section" name="Section" value="@Model.Section">
-						</div>
-						</div>
-						<div class="col-sm-6">
-
-							<div class="form-group">
-									<label for="Section" class="required trn">Section Japanese</label>
-									<input type="text" class="form-control trn" id="SectionJP" placeholder="Section Japanese" alt="Please provide Japanese Department Section" name="SectionJP" value="@Model.SectionJP">
-						</div>
-						</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-6">
-
-						<div class="form-group">
-							<label for="SubSection" class="required trn">Sub Section </label>
-							<input type="text" class="form-control trn" id="SubSection" placeholder="Sub Section" alt="Please provide Department Sub Section" name="SubSection" value="@Model.SubSection">
-						</div>
-						</div>
-							<div class="col-sm-6">
-
 								<div class="form-group">
-									<label for="SubSectionJP" class="required trn">Sub Section Japanese</label>
-									<input type="text" class="form-control trn" id="SubSectionJP" placeholder=" Sub Section Japanese" alt="Please provide Department Sub Section Japanese" name="SubSectionJP" value="@Model.SubSectionJP">
+									<label class="trn">Plant / Location</label>
+									<select class="form-control" name="PlantId" id="PlantId" onchange="InsertPlantCode(this.value)">
+										<option value="" selected="selected" class="trn">--Select Plant Location--</option>
+										@foreach (var TempLocation in @Model.locationList)
+										{
+
+											if (TempLocation.Id == Model.PlantId)//onkeydown="InsertPlantCode(language)">
+											{
+												<option value="@TempLocation.Id" selected="selected">@TempLocation.PlantLocation</option>
+											}
+											else
+											{
+												<option value="@TempLocation.Id" itemid="@TempLocation.PlantCode">@TempLocation.PlantLocation</option>
+											}
+
+										}
+
+									</select>
 								</div>
 							</div>
-					</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="PlantCode" class="required trn">Plant Code</label>
+									<input type="text" class="form-control" id="PlantCode" placeholder="Plant Code" alt="Please Enter PlantCode" name="PlantCode" value="@Model.PlantCode" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+								<div class="form-group">
+									<label for="DescriptionCode" class="required trn">Department Code</label>
+									<input type="text" class="form-control" id="DeptCode" placeholder="Department Code" alt="Please provide Department Code" name="DeptCode" value="@Model.DeptCode">
+								</div>
+							</div>
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label for="Name" class="required trn">Department (EN)</label>
+									<input type="text" class="form-control trn" id="Name" placeholder="Department Name" alt="Please enter Department Name" name="Name" value="@Model.Name">
+								</div>
+							</div>
+
+							<div class="col-sm-5">
+								<!-- text input -->
+								<div class="form-group">
+									<label class="required trn">Department (JP)</label>
+									<input type="text" id="NameJP" name="NameJP" value="@Model.NameJP" class="form-control trn"
+										   placeholder="Department Name Japanese" alt="Please enter Department Name Japanese">
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="row">
+							<div class="col-sm-2">
+								<div class="form-group">
+									<label for="Section Code" class="required trn">Section Code</label>
+									<input type="text" class="form-control" id="SectionCode" placeholder="Section Code" alt="Please provide Department Section Code" name="SectionCode" value="@Model.SectionCode">
+								</div>
+							</div>
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label for="Section" class="required trn">Section (EN)</label>
+									<input type="text" class="form-control" id="Section" placeholder="Section" alt="Please provide Department Section" name="Section" value="@Model.Section">
+								</div>
+							</div>
+							
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label for="Section" class="required trn">Section (JP)</label>
+									<input type="text" class="form-control" id="SectionJP" placeholder="Section Japanese" alt="Please provide Japanese Department Section" name="SectionJP" value="@Model.SectionJP">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+
+								<div class="form-group">
+									<label for="SubSection Code" class="required trn">Sub Section Code</label>
+									<input type="text" class="form-control" id="SubSectionCode" placeholder="Sub Section Code" alt="Please provide Department Sub Section Code" name="SubSectionCode" value="@Model.SubSectionCode">
+								</div>
+							</div>
+							<div class="col-sm-5">
+
+								<div class="form-group">
+									<label for="SubSection " class="required trn">Sub Section (EN)</label>
+									<input type="text" class="form-control" id="SubSection" placeholder="Sub Section" alt="Please provide Department Sub Section" name="SubSection" value="@Model.SubSection">
+								</div>
+							</div>
+							
+							<div class="col-sm-5">
+
+								<div class="form-group">
+									<label for="SubSectionJP" class="required trn">Sub Section (JP)</label>
+									<input type="text" class="form-control" id="SubSectionJP" placeholder="Sub Section Japanese" alt="Please provide Department Sub Section Japanese" name="SubSectionJP" value="@Model.SubSectionJP">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="Description" class="required trn">Department Description (EN)</label>
+									<input type="text" class="form-control" id="Description" placeholder="Department Description" alt="Please provide Department Description" name="Description" value="@Model.Description">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="DescriptionJP" class="required trn">Department Description (JP)</label>
+									<input type="text" class="form-control" id="Description" placeholder="Department Description Japanese" alt="Please provide Department Description Japanese" name="DescriptionJP" value="@Model.DescriptionJP">
+								</div>
+							</div>
+						</div>
 					</div>
 					<!-- /.card-body -->
 
@@ -135,17 +150,17 @@
 						<button type="submit" id="btnsubmit" class="btn btn-primary trn">Submit</button>
 						<a href='@Url.Action("Index","Department")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
 					</div>
-				
+
+				</div>
 			</div>
 		</div>
-	</div>
 
-</section>
+	</section>
 </form>
 <!-- /.content -->
 <script type="text/javascript">
 	setTimeout(function () {
-		
+
 		$(function () {
 			$('#departmentform').validate({
 				rules: {
@@ -180,24 +195,22 @@
 					},
 					SubSection: {
 						required: "Please enter Department Sub Section",
-				},
-				errorElement: 'span',				
-				errorPlacement: function (error, element) {
-					error.addClass('invalid-feedback');
-					element.closest('.form-group').append(error);
-				},
-				highlight: function (element, errorClass, validClass) {
-					$(element).addClass('is-invalid');
-				},
-				unhighlight: function (element, errorClass, validClass) {
-					$(element).removeClass('is-invalid');
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+
+
+
 				}
-
-
-
-	//DeptCode
-	//Section
-	//SubSection
 			});
 		});
 	}, 1000);
@@ -205,23 +218,21 @@
 @*<script src="~/js/3.3.1Version/jquery.min.js"></script>
 *@
 <script>
-		var TmpLocation = @Json.Serialize(@ViewBag.Location);
-		function InsertPlantCode(val) 
-	{
-		
+	var TmpLocation = @Json.Serialize(@ViewBag.Location);
+	function InsertPlantCode(val) {
 
-		var filterLine = $.grep(TmpLocation, function (element, index)
-			{
-						
+
+		var filterLine = $.grep(TmpLocation, function (element, index) {
+
 			return element.id == val;
-			});
-			
-			if(filterLine.length > 0) {
+		});
+
+		if (filterLine.length > 0) {
 			console.log(filterLine[0].plantCode);
 			$('#PlantCode').val(filterLine[0].plantCode);
-				
-			}
-			
-		
+
 		}
+
+
+	}
 </script>

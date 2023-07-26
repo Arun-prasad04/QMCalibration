@@ -62,7 +62,7 @@ public class InstrumentViewModel
     public List<LovsViewModel> MUTemplateList{get;set;}
     public List<LovsViewModel> CertificationTemplateList{get;set;}
     public List<MasterViewModel> MasterData{get;set;}
-
+    
     public int? MasterInstrument1 {get;set;}
     public int? MasterInstrument2 {get;set;}
     public int? MasterInstrument3 {get;set;}
@@ -84,6 +84,6 @@ public class InstrumentViewModel
     public List<DepartmentViewModel> Departments{get; set;}
     public int? UserRoleId {get; set;}
     public int? RequestStatus {get; set;}
-
-}
+	public string? Grade { get; set; }
+	}
 }

@@ -171,7 +171,7 @@ public class RequestService : IRequestService
 									   .Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
 									   .Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
 									   {
-										   Id = s.Id,  
+										   Id = s.Id,
 										   ReqestNo = s.ReqestNo,
 										   InstrumentName = s.InstrumentModel.InstrumentName,
 										   InstrumentIdNo = s.InstrumentModel.IdNo,
@@ -282,6 +282,7 @@ public class RequestService : IRequestService
 			{
 				Id = s.Id,
 				ReqestNo = s.ReqestNo,
+				//IdNo = s.InstrumentModel.IdNo,
 				InstrumentName = s.InstrumentModel.InstrumentName,
 				InstrumentIdNo = s.InstrumentModel.IdNo,
 				InstrumentId = s.InstrumentId,
@@ -355,11 +356,11 @@ public class RequestService : IRequestService
 				List<TemplateObservation> TemplateObservationList = _unitOfWork.Repository<TemplateObservation>().GetQueryAsNoTracking(g => g.RequestId == RequestById.Id).ToList();
 				RequestById.ReviewedStatus = TemplateObservationList.Where(w => w.RequestId == RequestById.Id).Select(q => q.ReviewStatus).FirstOrDefault();
 			}
-			List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
-			RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
-			RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
-			RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
-			RequestById.MasterInstrumentName4 = MasterList.Where(w => w.Id == RequestById.MasterInstrument4).Select(q => q.EquipName).SingleOrDefault();
+			//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
+			//RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
+			//RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
+			//RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
+			//RequestById.MasterInstrumentName4 = MasterList.Where(w => w.Id == RequestById.MasterInstrument4).Select(q => q.EquipName).SingleOrDefault();
 
 			InstrumentViewModel instrumentEmptyViewModel = new InstrumentViewModel();
 			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
@@ -372,10 +373,8 @@ public class RequestService : IRequestService
 			RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
 			RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
 			RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
-			RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList()); ;
-            instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
-           // RequestById.MasterEqiupmentList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList(); ;
-            var CFreq = RequestById.CalibFreq;
+			instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
+			var CFreq = RequestById.CalibFreq;
 			RequestById.CalibFrequency = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq" && W.Id == CFreq).Select(x => x.AttrValue).SingleOrDefault();
 			List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == RequestId).ToList();
 			if (UploadList.Count > 0)
@@ -1605,7 +1604,6 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SubmitNewRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
-			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1713,7 +1711,6 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SubmitQuarantineRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
-			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1733,10 +1730,7 @@ public class RequestService : IRequestService
 			List<LovsViewModel> lovsList = new List<LovsViewModel>();
 			if (attrsubType != null && attrsubType != "")
 			{
-				if (LangType == "en")				
-                    lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == attrsubType).ToList());                
-				else				
-                    lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrformJp == attrsubType).ToList());                
+				lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == attrsubType).ToList());
 			}
 			else
 			{
@@ -1745,7 +1739,6 @@ public class RequestService : IRequestService
 				else
                     lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrNameJp == attrType).ToList());
             }
-
 
 			return new ResponseViewModel<LovsViewModel>
 			{

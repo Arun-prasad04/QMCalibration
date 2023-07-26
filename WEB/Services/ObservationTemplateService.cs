@@ -11,7 +11,7 @@ using iTextSharp.text.html.simpleparser;
 using Microsoft.Extensions.Options;
 using System.Text;
 using HtmlAgilityPack;
-
+using DATAMODELS;
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -123,7 +123,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				}
 			}
 			
-			if (levertypedial.Id == 0)
+			if (levertypedial.Id == 0)// && (levertypedial == null))
 			{
 				if (observationById != null)
 				{
@@ -340,6 +340,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		{
 			_unitOfWork.BeginTransaction();
 			int tempobsId = 0;
+			int ObjMicroData = 0;
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 																 .GetQueryAsNoTracking(Q => Q.RequestId == micrometer.RequestId
 																  && Q.InstrumentId == micrometer.InstrumentId).SingleOrDefault();
@@ -407,11 +408,12 @@ public class ObservationTemplateService : IObservationTemplateService
 					{
 						observationById.Allvalues = micrometer.Allvalues;
 					}
-					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
 
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+					_unitOfWork.SaveChanges();
 				}
 			}
-			_unitOfWork.SaveChanges();
+
 			if (micrometer.Id == 0)
 			{
 				if (observationById != null)
@@ -423,78 +425,114 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 
 					ObservationId = tempobsId,
-					Flatness1 = micrometer.Flatness1,
-					Flatness2 = micrometer.Flatness2,
-					ParallelismSpec = micrometer.ParallelismSpec,
-					Actuals = micrometer.Actuals,
+					
+					Flatness1 = micrometer.Flatness1, //  To check the Flatness
+					//Flatness2 = micrometer.Flatness2,
+					ParallelismSpec = micrometer.ParallelismSpec, //  To check the Parallelism
+
+					Actuals = micrometer.Actuals, // To check the Instrument Error
+
 					ActualsT11 = micrometer.ActualsT11,
-					ActualsT21 = micrometer.ActualsT21,
-					ActualsT31 = micrometer.ActualsT31,
 					Avg1 = micrometer.Avg1,
 					MuInterval1 = micrometer.MuInterval1,
+					
+					//ActualsT21 = micrometer.ActualsT21,
+					//ActualsT31 = micrometer.ActualsT31,
 					ActualsT12 = micrometer.ActualsT12,
-					ActualsT22 = micrometer.ActualsT22,
-					ActualsT32 = micrometer.ActualsT32,
 					Avg2 = micrometer.Avg2,
 					MuInterval2 = micrometer.MuInterval2,
+					//ActualsT22 = micrometer.ActualsT22,
+					//ActualsT32 = micrometer.ActualsT32,
+
 					ActualsT13 = micrometer.ActualsT13,
-					ActualsT23 = micrometer.ActualsT23,
-					ActualsT33 = micrometer.ActualsT33,
 					Avg3 = micrometer.Avg3,
 					MuInterval3 = micrometer.MuInterval3,
-					ActualsT14 = micrometer.ActualsT14,
-					ActualsT24 = micrometer.ActualsT24,
-					ActualsT34 = micrometer.ActualsT34,
-					Avg4 = micrometer.Avg4,
-					MuInterval4 = micrometer.MuInterval4,
-					ActualsT15 = micrometer.MuInterval4,
-					ActualsT25 = micrometer.ActualsT25,
-					ActualsT35 = micrometer.ActualsT35,
-					Avg5 = micrometer.Avg5,
-					MuInterval5 = micrometer.MuInterval5,
-					ActualsT16 = micrometer.ActualsT16,
-					ActualsT26 = micrometer.ActualsT26,
-					ActualsT36 = micrometer.ActualsT36,
-					Avg6 = micrometer.Avg6,
-					ActualsT17 = micrometer.ActualsT17,
-					ActualsT27 = micrometer.ActualsT27,
-					ActualsT37 = micrometer.ActualsT37,
-					Avg7 = micrometer.Avg7,
-					ActualsT18 = micrometer.ActualsT18,
-					ActualsT28 = micrometer.ActualsT28,
-					ActualsT38 = micrometer.ActualsT38,
-					Avg8 = micrometer.Avg8,
-					ActualsT19 = micrometer.ActualsT19,
-					ActualsT29 = micrometer.ActualsT29,
-					ActualsT39 = micrometer.ActualsT39,
-					Avg9 = micrometer.Avg9,
-					ActualsT110 = micrometer.ActualsT110,
-					ActualsT210 = micrometer.ActualsT210,
-					ActualsT310 = micrometer.ActualsT310,
-					Avg10 = micrometer.Avg10,
-					ActualsT111 = micrometer.ActualsT111,
-					ActualsT211 = micrometer.ActualsT211,
-					ActualsT311 = micrometer.ActualsT311,
-					Avg11 = micrometer.Avg11,
-					Measurement1 = micrometer.Measurement1,
-					Measurement2 = micrometer.Measurement2,
-					Measurement3 = micrometer.Measurement3,
-					Measurement4 = micrometer.Measurement4,
-					Measurement5 = micrometer.Measurement5,
-					Measurement6 = micrometer.Measurement6,
-					Measurement7 = micrometer.Measurement7,
-					Measurement8 = micrometer.Measurement8,
-					Measurement9 = micrometer.Measurement9,
-					Measurement10 = micrometer.Measurement10,
-					Measurement11 = micrometer.Measurement11,
-					MURemarks = micrometer.MURemarks,
+					//ActualsT23 = micrometer.ActualsT23,
+					//ActualsT33 = micrometer.ActualsT33,
+
+					//ActualsT14 = micrometer.ActualsT14,
+					//ActualsT24 = micrometer.ActualsT24,
+					//ActualsT34 = micrometer.ActualsT34,
+					//Avg4 = micrometer.Avg4,
+					//MuInterval4 = micrometer.MuInterval4,
+					//ActualsT15 = micrometer.MuInterval4,
+					//ActualsT25 = micrometer.ActualsT25,
+					//ActualsT35 = micrometer.ActualsT35,
+					//Avg5 = micrometer.Avg5,
+					//MuInterval5 = micrometer.MuInterval5,
+					//ActualsT16 = micrometer.ActualsT16,
+					//ActualsT26 = micrometer.ActualsT26,
+					//ActualsT36 = micrometer.ActualsT36,
+					//Avg6 = micrometer.Avg6,
+					//ActualsT17 = micrometer.ActualsT17,
+					//ActualsT27 = micrometer.ActualsT27,
+					//ActualsT37 = micrometer.ActualsT37,
+					//Avg7 = micrometer.Avg7,
+					//ActualsT18 = micrometer.ActualsT18,
+					//ActualsT28 = micrometer.ActualsT28,
+					//ActualsT38 = micrometer.ActualsT38,
+					//Avg8 = micrometer.Avg8,
+					//ActualsT19 = micrometer.ActualsT19,
+					//ActualsT29 = micrometer.ActualsT29,
+					//ActualsT39 = micrometer.ActualsT39,
+					//Avg9 = micrometer.Avg9,
+					//ActualsT110 = micrometer.ActualsT110,
+					//ActualsT210 = micrometer.ActualsT210,
+					//ActualsT310 = micrometer.ActualsT310,
+					//Avg10 = micrometer.Avg10,
+					//ActualsT111 = micrometer.ActualsT111,
+					//ActualsT211 = micrometer.ActualsT211,
+					//ActualsT311 = micrometer.ActualsT311,
+					//Avg11 = micrometer.Avg11,
+					//Measurement1 = micrometer.Measurement1,
+					//Measurement2 = micrometer.Measurement2,
+					//Measurement3 = micrometer.Measurement3,
+					//Measurement4 = micrometer.Measurement4,
+					//Measurement5 = micrometer.Measurement5,
+					//Measurement6 = micrometer.Measurement6,
+					//Measurement7 = micrometer.Measurement7,
+					//Measurement8 = micrometer.Measurement8,
+					//Measurement9 = micrometer.Measurement9,
+					//Measurement10 = micrometer.Measurement10,
+					//Measurement11 = micrometer.Measurement11,
+					//MURemarks = micrometer.MURemarks,
 					CreatedOn = DateTime.Now,
 					CreatedBy = micrometer.CreatedBy,
 					//CalibrationReviewedBy = labTechnicalManager.Id,
-					CalibrationReviewedDate = DateTime.Now
-
+					CalibrationReviewedDate = DateTime.Now,
+					FlatnessMeasure = micrometer.FlatnessMeasure,
+					FlatnessInserr = micrometer.FlatnessInserr,
+					FlatnessActual = micrometer.FlatnessActual
 				};
 				_unitOfWork.Repository<ObsTemplateMicrometer>().Insert(obsTemplateMicrometer);
+				_unitOfWork.SaveChanges();
+				if (observationById != null)
+				{
+
+					tempobsId = observationById.Id;
+				}
+				if (micrometer.MicrometerAddResultViewModelList != null)
+				{
+					micrometer.MicrometerAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+					var detailData = _mapper.Map<ObsMicrometerValues[]>(micrometer.MicrometerAddResultViewModelList
+											.Where(x => x.Id > 0).ToList());
+					if (detailData.Any())
+					{
+						foreach (var updateData in detailData)
+						{
+							_unitOfWork.Repository<ObsMicrometerValues>().Update(updateData);
+							_unitOfWork.SaveChanges();
+						}
+					}
+
+					detailData = _mapper.Map<ObsMicrometerValues[]>(micrometer.MicrometerAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+					if (detailData.Any())
+					{
+						_unitOfWork.Repository<ObsMicrometerValues>().InsertRange(detailData);
+						_unitOfWork.SaveChanges();
+					}
+				}
 			}
 			else
 			{
@@ -505,26 +543,26 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (micrometer.ActualsT11 != null)
 					micrometerById.ActualsT11 = micrometer.ActualsT11;
 
-				if (micrometer.ActualsT21 != null)
-					micrometerById.ActualsT21 = micrometer.ActualsT21;
-
-				if (micrometer.ActualsT31 != null)
-					micrometerById.ActualsT31 = micrometer.ActualsT31;
-
 				if (micrometer.Avg1 != null)
 					micrometerById.Avg1 = micrometer.Avg1;
 
 				if (micrometer.MuInterval1 != null)
 					micrometerById.MuInterval1 = micrometer.MuInterval1;
 
-				if (micrometer.ActualsT12 != null)
-					micrometerById.ActualsT12 = micrometer.ActualsT12;
 
-				if (micrometer.ActualsT22 != null)
-					micrometerById.ActualsT22 = micrometer.ActualsT22;
+				//if (micrometer.ActualsT21 != null)
+				//	micrometerById.ActualsT21 = micrometer.ActualsT21;
 
-				if (micrometer.ActualsT32 != null)
-					micrometerById.ActualsT32 = micrometer.ActualsT32;
+				//if (micrometer.ActualsT31 != null)
+				//	micrometerById.ActualsT31 = micrometer.ActualsT31;
+
+
+
+				//if (micrometer.ActualsT22 != null)
+				//	micrometerById.ActualsT22 = micrometer.ActualsT22;
+
+				//if (micrometer.ActualsT32 != null)
+				//	micrometerById.ActualsT32 = micrometer.ActualsT32;
 
 				if (micrometer.Avg2 != null)
 					micrometerById.Avg2 = micrometer.Avg2;
@@ -532,14 +570,16 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (micrometer.MuInterval2 != null)
 					micrometerById.MuInterval2 = micrometer.MuInterval2;
 
-				if (micrometer.ActualsT13 != null)
-					micrometerById.ActualsT13 = micrometer.ActualsT13;
+				if (micrometer.ActualsT12 != null)
+					micrometerById.ActualsT12 = micrometer.ActualsT12;
 
-				if (micrometer.ActualsT23 != null)
-					micrometerById.ActualsT23 = micrometer.ActualsT23;
 
-				if (micrometer.ActualsT33 != null)
-					micrometerById.ActualsT33 = micrometer.ActualsT33;
+
+				//if (micrometer.ActualsT23 != null)
+				//	micrometerById.ActualsT23 = micrometer.ActualsT23;
+
+				//if (micrometer.ActualsT33 != null)
+				//	micrometerById.ActualsT33 = micrometer.ActualsT33;
 
 				if (micrometer.Avg3 != null)
 					micrometerById.Avg3 = micrometer.Avg3;
@@ -547,161 +587,204 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (micrometer.MuInterval3 != null)
 					micrometerById.MuInterval3 = micrometer.MuInterval3;
 
-				if (micrometer.ActualsT14 != null)
-					micrometerById.ActualsT14 = micrometer.ActualsT14;
+				if (micrometer.ActualsT13 != null)
+					micrometerById.ActualsT13 = micrometer.ActualsT13;
 
-				if (micrometer.ActualsT24 != null)
-					micrometerById.ActualsT24 = micrometer.ActualsT24;
+				//if (micrometer.ActualsT14 != null)
+				//	micrometerById.ActualsT14 = micrometer.ActualsT14;
 
-				if (micrometer.ActualsT34 != null)
-					micrometerById.ActualsT34 = micrometer.ActualsT34;
+				//if (micrometer.ActualsT24 != null)
+				//	micrometerById.ActualsT24 = micrometer.ActualsT24;
 
-				if (micrometer.Avg4 != null)
-					micrometerById.Avg4 = micrometer.Avg4;
+				//if (micrometer.ActualsT34 != null)
+				//	micrometerById.ActualsT34 = micrometer.ActualsT34;
 
-				if (micrometer.MuInterval4 != null)
-					micrometerById.MuInterval4 = micrometer.MuInterval4;
+				//if (micrometer.Avg4 != null)
+				//	micrometerById.Avg4 = micrometer.Avg4;
 
-				if (micrometer.ActualsT15 != null)
-					micrometerById.ActualsT15 = micrometer.MuInterval4;
+				//if (micrometer.MuInterval4 != null)
+				//	micrometerById.MuInterval4 = micrometer.MuInterval4;
 
-				if (micrometer.ActualsT25 != null)
-					micrometerById.ActualsT25 = micrometer.ActualsT25;
+				//if (micrometer.ActualsT15 != null)
+				//	micrometerById.ActualsT15 = micrometer.MuInterval4;
 
-				if (micrometer.ActualsT35 != null)
-					micrometerById.ActualsT35 = micrometer.ActualsT35;
+				//if (micrometer.ActualsT25 != null)
+				//	micrometerById.ActualsT25 = micrometer.ActualsT25;
 
-				if (micrometer.Avg5 != null)
-					micrometerById.Avg5 = micrometer.Avg5;
+				//if (micrometer.ActualsT35 != null)
+				//	micrometerById.ActualsT35 = micrometer.ActualsT35;
 
-				if (micrometer.MuInterval5 != null)
-					micrometerById.MuInterval5 = micrometer.MuInterval5;
+				//if (micrometer.Avg5 != null)
+				//	micrometerById.Avg5 = micrometer.Avg5;
 
-				if (micrometer.ActualsT16 != null)
-					micrometerById.ActualsT16 = micrometer.ActualsT16;
+				//if (micrometer.MuInterval5 != null)
+				//	micrometerById.MuInterval5 = micrometer.MuInterval5;
 
-				if (micrometer.ActualsT26 != null)
-					micrometerById.ActualsT26 = micrometer.ActualsT26;
+				//if (micrometer.ActualsT16 != null)
+				//	micrometerById.ActualsT16 = micrometer.ActualsT16;
 
-				if (micrometer.ActualsT36 != null)
-					micrometerById.ActualsT36 = micrometer.ActualsT36;
+				//if (micrometer.ActualsT26 != null)
+				//	micrometerById.ActualsT26 = micrometer.ActualsT26;
 
-				if (micrometer.Avg6 != null)
-					micrometerById.Avg6 = micrometer.Avg6;
+				//if (micrometer.ActualsT36 != null)
+				//	micrometerById.ActualsT36 = micrometer.ActualsT36;
 
-				if (micrometer.ActualsT17 != null)
-					micrometerById.ActualsT17 = micrometer.ActualsT17;
+				//if (micrometer.Avg6 != null)
+				//	micrometerById.Avg6 = micrometer.Avg6;
 
-				if (micrometer.ActualsT27 != null)
-					micrometerById.ActualsT27 = micrometer.ActualsT27;
+				//if (micrometer.ActualsT17 != null)
+				//	micrometerById.ActualsT17 = micrometer.ActualsT17;
 
-				if (micrometer.ActualsT37 != null)
-					micrometerById.ActualsT37 = micrometer.ActualsT37;
+				//if (micrometer.ActualsT27 != null)
+				//	micrometerById.ActualsT27 = micrometer.ActualsT27;
 
-				if (micrometer.Avg7 != null)
-					micrometerById.Avg7 = micrometer.Avg7;
+				//if (micrometer.ActualsT37 != null)
+				//	micrometerById.ActualsT37 = micrometer.ActualsT37;
 
-				if (micrometer.ActualsT18 != null)
-					micrometerById.ActualsT18 = micrometer.ActualsT18;
+				//if (micrometer.Avg7 != null)
+				//	micrometerById.Avg7 = micrometer.Avg7;
 
-				if (micrometer.ActualsT28 != null)
-					micrometerById.ActualsT28 = micrometer.ActualsT28;
+				//if (micrometer.ActualsT18 != null)
+				//	micrometerById.ActualsT18 = micrometer.ActualsT18;
 
-				if (micrometer.ActualsT38 != null)
-					micrometerById.ActualsT38 = micrometer.ActualsT38;
+				//if (micrometer.ActualsT28 != null)
+				//	micrometerById.ActualsT28 = micrometer.ActualsT28;
 
-				if (micrometer.Avg8 != null)
-					micrometerById.Avg8 = micrometer.Avg8;
+				//if (micrometer.ActualsT38 != null)
+				//	micrometerById.ActualsT38 = micrometer.ActualsT38;
 
-				if (micrometer.ActualsT19 != null)
-					micrometerById.ActualsT19 = micrometer.ActualsT19;
+				//if (micrometer.Avg8 != null)
+				//	micrometerById.Avg8 = micrometer.Avg8;
 
-				if (micrometer.ActualsT29 != null)
-					micrometerById.ActualsT29 = micrometer.ActualsT29;
+				//if (micrometer.ActualsT19 != null)
+				//	micrometerById.ActualsT19 = micrometer.ActualsT19;
 
-				if (micrometer.ActualsT39 != null)
-					micrometerById.ActualsT39 = micrometer.ActualsT39;
+				//if (micrometer.ActualsT29 != null)
+				//	micrometerById.ActualsT29 = micrometer.ActualsT29;
 
-				if (micrometer.Avg9 != null)
-					micrometerById.Avg9 = micrometer.Avg9;
+				//if (micrometer.ActualsT39 != null)
+				//	micrometerById.ActualsT39 = micrometer.ActualsT39;
 
-				if (micrometer.ActualsT110 != null)
-					micrometerById.ActualsT110 = micrometer.ActualsT110;
+				//if (micrometer.Avg9 != null)
+				//	micrometerById.Avg9 = micrometer.Avg9;
+
+				//if (micrometer.ActualsT110 != null)
+				//	micrometerById.ActualsT110 = micrometer.ActualsT110;
 
 
-				if (micrometer.ActualsT210 != null)
-					micrometerById.ActualsT210 = micrometer.ActualsT210;
+				//if (micrometer.ActualsT210 != null)
+				//	micrometerById.ActualsT210 = micrometer.ActualsT210;
 
-				if (micrometer.ActualsT310 != null)
-					micrometerById.ActualsT310 = micrometer.ActualsT310;
+				//if (micrometer.ActualsT310 != null)
+				//	micrometerById.ActualsT310 = micrometer.ActualsT310;
 
-				if (micrometer.Avg10 != null)
-					micrometerById.Avg10 = micrometer.Avg10;
+				//if (micrometer.Avg10 != null)
+				//	micrometerById.Avg10 = micrometer.Avg10;
 
-				if (micrometer.ActualsT111 != null)
-					micrometerById.ActualsT111 = micrometer.ActualsT111;
+				//if (micrometer.ActualsT111 != null)
+				//	micrometerById.ActualsT111 = micrometer.ActualsT111;
 
-				if (micrometer.ActualsT211 != null)
-					micrometerById.ActualsT211 = micrometer.ActualsT211;
+				//if (micrometer.ActualsT211 != null)
+				//	micrometerById.ActualsT211 = micrometer.ActualsT211;
 
-				if (micrometer.ActualsT311 != null)
-					micrometerById.ActualsT311 = micrometer.ActualsT311;
+				//if (micrometer.ActualsT311 != null)
+				//	micrometerById.ActualsT311 = micrometer.ActualsT311;
 
-				if (micrometer.Avg11 != null)
-					micrometerById.Avg11 = micrometer.Avg11;
+				//if (micrometer.Avg11 != null)
+				//	micrometerById.Avg11 = micrometer.Avg11;
 
-				if (micrometer.Measurement1 != null)
-					micrometerById.Measurement1 = micrometer.Measurement1;
+				//if (micrometer.Measurement1 != null)
+				//	micrometerById.Measurement1 = micrometer.Measurement1;
 
-				if (micrometer.Measurement2 != null)
-					micrometerById.Measurement2 = micrometer.Measurement2;
+				//if (micrometer.Measurement2 != null)
+				//	micrometerById.Measurement2 = micrometer.Measurement2;
 
-				if (micrometer.Measurement3 != null)
-					micrometerById.Measurement3 = micrometer.Measurement3;
+				//if (micrometer.Measurement3 != null)
+				//	micrometerById.Measurement3 = micrometer.Measurement3;
 
-				if (micrometer.Measurement4 != null)
-					micrometerById.Measurement4 = micrometer.Measurement4;
+				//if (micrometer.Measurement4 != null)
+				//	micrometerById.Measurement4 = micrometer.Measurement4;
 
-				if (micrometer.Measurement5 != null)
-					micrometerById.Measurement5 = micrometer.Measurement5;
+				//if (micrometer.Measurement5 != null)
+				//	micrometerById.Measurement5 = micrometer.Measurement5;
 
-				if (micrometer.Measurement6 != null)
-					micrometerById.Measurement6 = micrometer.Measurement6;
+				//if (micrometer.Measurement6 != null)
+				//	micrometerById.Measurement6 = micrometer.Measurement6;
 
-				if (micrometer.Measurement7 != null)
-					micrometerById.Measurement7 = micrometer.Measurement7;
+				//if (micrometer.Measurement7 != null)
+				//	micrometerById.Measurement7 = micrometer.Measurement7;
 
-				if (micrometer.Measurement8 != null)
-					micrometerById.Measurement8 = micrometer.Measurement8;
+				//if (micrometer.Measurement8 != null)
+				//	micrometerById.Measurement8 = micrometer.Measurement8;
 
-				if (micrometer.Measurement9 != null)
-					micrometerById.Measurement9 = micrometer.Measurement9;
+				//if (micrometer.Measurement9 != null)
+				//	micrometerById.Measurement9 = micrometer.Measurement9;
 
-				if (micrometer.Measurement10 != null)
-					micrometerById.Measurement10 = micrometer.Measurement10;
+				//if (micrometer.Measurement10 != null)
+				//	micrometerById.Measurement10 = micrometer.Measurement10;
 
-				if (micrometer.Measurement11 != null)
-					micrometerById.Measurement11 = micrometer.Measurement11;
+				//if (micrometer.Measurement11 != null)
+				//	micrometerById.Measurement11 = micrometer.Measurement11;
 
 				if (micrometer.Flatness1 != null)
-					micrometerById.Flatness1 = micrometer.Flatness1;
+					micrometerById.Flatness1 = "1";//micrometer.Flatness1; have to change the value according to the micro type
 
-				if (micrometer.Flatness2 != null)
-					micrometerById.Flatness2 = micrometer.Flatness2;
+				//if (micrometer.Flatness2 != null)
+				//	micrometerById.Flatness2 = micrometer.Flatness2;
 
 				if (micrometer.ParallelismSpec != null)
-					micrometerById.ParallelismSpec = micrometer.ParallelismSpec;
-
-				if (micrometer.Actuals != null)
-					micrometerById.Actuals = micrometer.Actuals;
+					micrometerById.ParallelismSpec = "0"; //micrometer.ParallelismSpec; have to change the value according to the micro type
+				
+				//if (micrometer.Actuals != null)
+				//	micrometerById.Actuals = micrometer.Actuals;
 
 				if (micrometer.MURemarks != null)
 					micrometerById.MURemarks = micrometer.MURemarks;
 
+				//FlatnessMeasure,FlatnessInserr,FlatnessActual,InstrumentErrValue
+				if (micrometer.FlatnessMeasure != null)
+					micrometerById.FlatnessMeasure = micrometer.FlatnessMeasure;
+
+				if (micrometer.FlatnessInserr != null)
+					micrometerById.FlatnessInserr = micrometer.FlatnessInserr;
+
+				if (micrometer.FlatnessActual != null)
+					micrometerById.FlatnessActual = micrometer.FlatnessActual;
+
+				if (micrometer.InstrumentErrValue != null)
+					micrometerById.InstrumentErrValue = "1";//micrometer.InstrumentErrValue;have to change the value according to the micro type
 
 				_unitOfWork.Repository<ObsTemplateMicrometer>().Update(micrometerById);
-			}
+				_unitOfWork.SaveChanges();
 
+				if (observationById != null)
+				{
+
+					tempobsId = observationById.Id;
+				}
+				if (micrometer.MicrometerAddResultViewModelList != null)
+				{
+					micrometer.MicrometerAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+					var detailData = _mapper.Map<ObsMicrometerValues[]>(micrometer.MicrometerAddResultViewModelList
+											.Where(x => x.Id > 0).ToList());//x.Id > 0 && 
+					if (detailData.Any())
+					{
+						foreach (var updateData in detailData)
+						{
+							_unitOfWork.Repository<ObsMicrometerValues>().Update(updateData);
+							_unitOfWork.SaveChanges();
+						}
+					}
+					//micrometer.MicrometerAddResultViewModelList.ForEach()
+					detailData = _mapper.Map<ObsMicrometerValues[]>(micrometer.MicrometerAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+					if (detailData.Any())
+					{
+						_unitOfWork.Repository<ObsMicrometerValues>().InsertRange(detailData);
+						_unitOfWork.SaveChanges();
+					}
+				}
+			}
 			_unitOfWork.SaveChanges();
 			_unitOfWork.Commit();
 			return new ResponseViewModel<MicrometerViewModel>
@@ -729,6 +812,39 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
+	public ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4)
+	{
+		try
+		{
+			List<MasterViewModel> masterViewModelList = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>()
+				.GetQueryAsNoTracking(Q => Q.Id ==MasterInstrument1 || Q.Id == MasterInstrument2 || Q.Id == MasterInstrument3 || Q.Id == MasterInstrument4).ToList());
+
+
+			return new ResponseViewModel<MasterViewModel>
+			{ 
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = masterViewModelList
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("MasterService - GetEquipmentListByLabId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<MasterViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Master",
+				ResponseServiceMethod = "GetEquipmentListByLabId"
+			};
+		}
+
+	}
 	public ResponseViewModel<MicrometerViewModel> GetMicrometerById(int requestId, int instrumentId)
 	{
 		try
@@ -736,8 +852,10 @@ public class ObservationTemplateService : IObservationTemplateService
 			MicrometerViewModel micrometer = _unitOfWork.Repository<TemplateObservation>()
 			.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 			.Include(I => I.MicromerterModel)
+			
 			.Select(s => new MicrometerViewModel()
 			{
+				InstrumentId=s.InstrumentId,
 				TemplateObservationId = s.Id,
 				TempStart = s.TempStart,
 				TempEnd = s.TempEnd,
@@ -754,78 +872,92 @@ public class ObservationTemplateService : IObservationTemplateService
 				CertificateNumber = s.CertificateNumber,
 				Id = s.MicromerterModel.Select(s => s.Id).FirstOrDefault(),
 				Flatness1 = s.MicromerterModel.Select(s => s.Flatness1).FirstOrDefault(),
-				Flatness2 = s.MicromerterModel.Select(s => s.Flatness2).FirstOrDefault(),
-				ParallelismSpec = s.MicromerterModel.Select(s => s.ParallelismSpec).FirstOrDefault(),
-				Actuals = s.MicromerterModel.Select(s => s.Actuals).FirstOrDefault(),
+				FlatnessMeasure=s.MicromerterModel.Select(s => s.FlatnessMeasure).FirstOrDefault(),
+				FlatnessInserr = s.MicromerterModel.Select(s => s.FlatnessInserr).FirstOrDefault(),
+				FlatnessActual = s.MicromerterModel.Select(s => s.FlatnessActual).FirstOrDefault(),
+				
+				//Flatness2 = s.MicromerterModel.Select(s => s.Flatness2).FirstOrDefault(),
+				//ParallelismSpec = s.MicromerterModel.Select(s => s.ParallelismSpec).FirstOrDefault(),
+				//Actuals = s.MicromerterModel.Select(s => s.Actuals).FirstOrDefault(),
 				ActualsT11 = s.MicromerterModel.Select(s => s.ActualsT11).SingleOrDefault(),
-				ActualsT21 = s.MicromerterModel.Select(s => s.ActualsT21).FirstOrDefault(),
-				ActualsT31 = s.MicromerterModel.Select(s => s.ActualsT31).FirstOrDefault(),
+				//ActualsT21 = s.MicromerterModel.Select(s => s.ActualsT21).FirstOrDefault(),
+				//ActualsT31 = s.MicromerterModel.Select(s => s.ActualsT31).FirstOrDefault(),
 				Avg1 = s.MicromerterModel.Select(s => s.Avg1).FirstOrDefault(),
 				MuInterval1 = s.MicromerterModel.Select(s => s.MuInterval1).FirstOrDefault(),
 				ActualsT12 = s.MicromerterModel.Select(s => s.ActualsT12).FirstOrDefault(),
-				ActualsT22 = s.MicromerterModel.Select(s => s.ActualsT22).FirstOrDefault(),
-				ActualsT32 = s.MicromerterModel.Select(s => s.ActualsT32).FirstOrDefault(),
+				//ActualsT22 = s.MicromerterModel.Select(s => s.ActualsT22).FirstOrDefault(),
+				//ActualsT32 = s.MicromerterModel.Select(s => s.ActualsT32).FirstOrDefault(),
 				Avg2 = s.MicromerterModel.Select(s => s.Avg2).FirstOrDefault(),
 				MuInterval2 = s.MicromerterModel.Select(s => s.MuInterval2).FirstOrDefault(),
 				ActualsT13 = s.MicromerterModel.Select(s => s.ActualsT13).FirstOrDefault(),
-				ActualsT23 = s.MicromerterModel.Select(s => s.ActualsT23).FirstOrDefault(),
-				ActualsT33 = s.MicromerterModel.Select(s => s.ActualsT33).FirstOrDefault(),
+				//ActualsT23 = s.MicromerterModel.Select(s => s.ActualsT23).FirstOrDefault(),
+				//ActualsT33 = s.MicromerterModel.Select(s => s.ActualsT33).FirstOrDefault(),
 				Avg3 = s.MicromerterModel.Select(s => s.Avg3).FirstOrDefault(),
 				MuInterval3 = s.MicromerterModel.Select(s => s.MuInterval3).FirstOrDefault(),
-				ActualsT14 = s.MicromerterModel.Select(s => s.ActualsT14).FirstOrDefault(),
-				ActualsT24 = s.MicromerterModel.Select(s => s.ActualsT24).FirstOrDefault(),
-				ActualsT34 = s.MicromerterModel.Select(s => s.ActualsT34).FirstOrDefault(),
-				Avg4 = s.MicromerterModel.Select(s => s.Avg4).FirstOrDefault(),
-				MuInterval4 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
-				ActualsT15 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
-				ActualsT25 = s.MicromerterModel.Select(s => s.ActualsT25).FirstOrDefault(),
-				ActualsT35 = s.MicromerterModel.Select(s => s.ActualsT35).FirstOrDefault(),
-				Avg5 = s.MicromerterModel.Select(s => s.Avg5).FirstOrDefault(),
-				MuInterval5 = s.MicromerterModel.Select(s => s.MuInterval5).FirstOrDefault(),
-				ActualsT16 = s.MicromerterModel.Select(s => s.ActualsT16).FirstOrDefault(),
-				ActualsT26 = s.MicromerterModel.Select(s => s.ActualsT26).FirstOrDefault(),
-				ActualsT36 = s.MicromerterModel.Select(s => s.ActualsT36).FirstOrDefault(),
-				Avg6 = s.MicromerterModel.Select(s => s.Avg6).FirstOrDefault(),
-				ActualsT17 = s.MicromerterModel.Select(s => s.ActualsT17).FirstOrDefault(),
-				ActualsT27 = s.MicromerterModel.Select(s => s.ActualsT27).FirstOrDefault(),
-				ActualsT37 = s.MicromerterModel.Select(s => s.ActualsT37).FirstOrDefault(),
-				Avg7 = s.MicromerterModel.Select(s => s.Avg7).FirstOrDefault(),
-				ActualsT18 = s.MicromerterModel.Select(s => s.ActualsT18).FirstOrDefault(),
-				ActualsT28 = s.MicromerterModel.Select(s => s.ActualsT28).FirstOrDefault(),
-				ActualsT38 = s.MicromerterModel.Select(s => s.ActualsT38).FirstOrDefault(),
-				Avg8 = s.MicromerterModel.Select(s => s.Avg8).FirstOrDefault(),
-				ActualsT19 = s.MicromerterModel.Select(s => s.ActualsT19).FirstOrDefault(),
-				ActualsT29 = s.MicromerterModel.Select(s => s.ActualsT29).FirstOrDefault(),
-				ActualsT39 = s.MicromerterModel.Select(s => s.ActualsT39).FirstOrDefault(),
-				Avg9 = s.MicromerterModel.Select(s => s.Avg9).FirstOrDefault(),
-				ActualsT110 = s.MicromerterModel.Select(s => s.ActualsT110).FirstOrDefault(),
-				ActualsT210 = s.MicromerterModel.Select(s => s.ActualsT210).FirstOrDefault(),
-				ActualsT310 = s.MicromerterModel.Select(s => s.ActualsT310).FirstOrDefault(),
-				Avg10 = s.MicromerterModel.Select(s => s.Avg10).FirstOrDefault(),
-				ActualsT111 = s.MicromerterModel.Select(s => s.ActualsT111).FirstOrDefault(),
-				ActualsT211 = s.MicromerterModel.Select(s => s.ActualsT211).FirstOrDefault(),
-				ActualsT311 = s.MicromerterModel.Select(s => s.ActualsT311).FirstOrDefault(),
-				Avg11 = s.MicromerterModel.Select(s => s.Avg11).FirstOrDefault(),
-				Measurement1 = s.MicromerterModel.Select(s => s.Measurement1).FirstOrDefault(),
-				Measurement2 = s.MicromerterModel.Select(s => s.Measurement2).FirstOrDefault(),
-				Measurement3 = s.MicromerterModel.Select(s => s.Measurement3).FirstOrDefault(),
-				Measurement4 = s.MicromerterModel.Select(s => s.Measurement4).FirstOrDefault(),
-				Measurement5 = s.MicromerterModel.Select(s => s.Measurement5).FirstOrDefault(),
-				Measurement6 = s.MicromerterModel.Select(s => s.Measurement6).FirstOrDefault(),
-				Measurement7 = s.MicromerterModel.Select(s => s.Measurement7).FirstOrDefault(),
-				Measurement8 = s.MicromerterModel.Select(s => s.Measurement8).FirstOrDefault(),
-				Measurement9 = s.MicromerterModel.Select(s => s.Measurement9).FirstOrDefault(),
-				Measurement10 = s.MicromerterModel.Select(s => s.Measurement10).FirstOrDefault(),
-				Measurement11 = s.MicromerterModel.Select(s => s.Measurement11).FirstOrDefault(),
-				MURemarks = s.MicromerterModel.Select(s => s.MURemarks).FirstOrDefault(),
+				//ActualsT14 = s.MicromerterModel.Select(s => s.ActualsT14).FirstOrDefault(),
+				//ActualsT24 = s.MicromerterModel.Select(s => s.ActualsT24).FirstOrDefault(),
+				//ActualsT34 = s.MicromerterModel.Select(s => s.ActualsT34).FirstOrDefault(),
+				//Avg4 = s.MicromerterModel.Select(s => s.Avg4).FirstOrDefault(),
+				//MuInterval4 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
+				//ActualsT15 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
+				//ActualsT25 = s.MicromerterModel.Select(s => s.ActualsT25).FirstOrDefault(),
+				//ActualsT35 = s.MicromerterModel.Select(s => s.ActualsT35).FirstOrDefault(),
+				//Avg5 = s.MicromerterModel.Select(s => s.Avg5).FirstOrDefault(),
+				//MuInterval5 = s.MicromerterModel.Select(s => s.MuInterval5).FirstOrDefault(),
+				//ActualsT16 = s.MicromerterModel.Select(s => s.ActualsT16).FirstOrDefault(),
+				//ActualsT26 = s.MicromerterModel.Select(s => s.ActualsT26).FirstOrDefault(),
+				//ActualsT36 = s.MicromerterModel.Select(s => s.ActualsT36).FirstOrDefault(),
+				//Avg6 = s.MicromerterModel.Select(s => s.Avg6).FirstOrDefault(),
+				//ActualsT17 = s.MicromerterModel.Select(s => s.ActualsT17).FirstOrDefault(),
+				//ActualsT27 = s.MicromerterModel.Select(s => s.ActualsT27).FirstOrDefault(),
+				//ActualsT37 = s.MicromerterModel.Select(s => s.ActualsT37).FirstOrDefault(),
+				//Avg7 = s.MicromerterModel.Select(s => s.Avg7).FirstOrDefault(),
+				//ActualsT18 = s.MicromerterModel.Select(s => s.ActualsT18).FirstOrDefault(),
+				//ActualsT28 = s.MicromerterModel.Select(s => s.ActualsT28).FirstOrDefault(),
+				//ActualsT38 = s.MicromerterModel.Select(s => s.ActualsT38).FirstOrDefault(),
+				//Avg8 = s.MicromerterModel.Select(s => s.Avg8).FirstOrDefault(),
+				//ActualsT19 = s.MicromerterModel.Select(s => s.ActualsT19).FirstOrDefault(),
+				//ActualsT29 = s.MicromerterModel.Select(s => s.ActualsT29).FirstOrDefault(),
+				//ActualsT39 = s.MicromerterModel.Select(s => s.ActualsT39).FirstOrDefault(),
+				//Avg9 = s.MicromerterModel.Select(s => s.Avg9).FirstOrDefault(),
+				//ActualsT110 = s.MicromerterModel.Select(s => s.ActualsT110).FirstOrDefault(),
+				//ActualsT210 = s.MicromerterModel.Select(s => s.ActualsT210).FirstOrDefault(),
+				//ActualsT310 = s.MicromerterModel.Select(s => s.ActualsT310).FirstOrDefault(),
+				//Avg10 = s.MicromerterModel.Select(s => s.Avg10).FirstOrDefault(),
+				//ActualsT111 = s.MicromerterModel.Select(s => s.ActualsT111).FirstOrDefault(),
+				//ActualsT211 = s.MicromerterModel.Select(s => s.ActualsT211).FirstOrDefault(),
+				//ActualsT311 = s.MicromerterModel.Select(s => s.ActualsT311).FirstOrDefault(),
+				//Avg11 = s.MicromerterModel.Select(s => s.Avg11).FirstOrDefault(),
+				//Measurement1 = s.MicromerterModel.Select(s => s.Measurement1).FirstOrDefault(),
+				//Measurement2 = s.MicromerterModel.Select(s => s.Measurement2).FirstOrDefault(),
+				//Measurement3 = s.MicromerterModel.Select(s => s.Measurement3).FirstOrDefault(),
+				//Measurement4 = s.MicromerterModel.Select(s => s.Measurement4).FirstOrDefault(),
+				//Measurement5 = s.MicromerterModel.Select(s => s.Measurement5).FirstOrDefault(),
+				//Measurement6 = s.MicromerterModel.Select(s => s.Measurement6).FirstOrDefault(),
+				//Measurement7 = s.MicromerterModel.Select(s => s.Measurement7).FirstOrDefault(),
+				//Measurement8 = s.MicromerterModel.Select(s => s.Measurement8).FirstOrDefault(),
+				//Measurement9 = s.MicromerterModel.Select(s => s.Measurement9).FirstOrDefault(),
+				//Measurement10 = s.MicromerterModel.Select(s => s.Measurement10).FirstOrDefault(),
+				//Measurement11 = s.MicromerterModel.Select(s => s.Measurement11).FirstOrDefault(),
+				//MURemarks = s.MicromerterModel.Select(s => s.MURemarks).FirstOrDefault(),
 				EnvironmentCondition = s.MicromerterModel.Select(S => S.EnvironmentCondition).SingleOrDefault(),
-				Uncertainity = s.MicromerterModel.Select(S => S.Uncertainity).SingleOrDefault(),
-				CalibrationResult = s.MicromerterModel.Select(S => S.CalibrationResult).SingleOrDefault(),
-				Remarks = s.MicromerterModel.Select(S => S.Remarks).SingleOrDefault(),
+				//Uncertainity = s.MicromerterModel.Select(S => S.Uncertainity).SingleOrDefault(),
+				//CalibrationResult = s.MicromerterModel.Select(S => S.CalibrationResult).SingleOrDefault(),
+				//Remarks = s.MicromerterModel.Select(S => S.Remarks).SingleOrDefault(),
+				
+
 			}).SingleOrDefault();
-
-
-			if (micrometer != null)
+			if (micrometer == null)
+			{
+				return new ResponseViewModel<MicrometerViewModel>
+				{
+					ResponseCode = 200,
+					ResponseMessage = "No records found",
+					ResponseData = null,
+					ResponseDataList = null
+				};
+			}
+			else if (micrometer != null)
 			{
 
 				List<string> performedUserData = GetUserName(micrometer.CreatedBy);
@@ -838,6 +970,8 @@ public class ObservationTemplateService : IObservationTemplateService
 				}
 
 				List<string> reviewedUserData = GetUserName(micrometer.CalibrationReviewedBy);
+			
+				//List<string> MasterEqiupmentList = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.Id == micrometer.MasterInstrument1 || Q.Id == instrumentById.MasterInstrument2 || Q.Id == instrumentById.MasterInstrument3 || Q.Id == instrumentById.MasterInstrument4).ToList());
 
 				if (reviewedUserData.Count >= 3)
 				{
@@ -855,8 +989,15 @@ public class ObservationTemplateService : IObservationTemplateService
 					micrometer.ULRFormat = formatList[0];
 					micrometer.CertificateFormat = formatList[1];
 				}
-			}
 
+				
+			}
+			var parentVM = _mapper.Map<MicrometerViewModel>(micrometer);
+			var childData1 = _unitOfWork.Repository<ObsMicrometerValues>()
+									.GetQueryAsNoTracking(x => x.ParentId == parentVM.TemplateObservationId);
+			var childListVM1 = _mapper.Map<List<MicrometerResultViewModel>>(childData1);
+
+			micrometer.MicrometerAddResultViewModelList = childListVM1;
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 200,
@@ -961,7 +1102,8 @@ public class ObservationTemplateService : IObservationTemplateService
 					_unitOfWork.SaveChanges();
 				}
 			}
-			if (plungerDial.Id == 0)
+			
+			if (plungerDial.Id == 0)//((plungerDial.Id == 0) && (plungerDial == null))
 			{
 				if (observationById != null)
 				{

@@ -156,7 +156,7 @@ public class UserService : IUserService
 	}
 
 
-	public ResponseViewModel<UserViewModel> InsertUser(UserViewModel User)
+	public ResponseViewModel<UserViewModel>  InsertUser(UserViewModel User)
 	{
 		try
 		{
@@ -167,6 +167,7 @@ public class UserService : IUserService
 				string filePath = _utilityService.UploadImage(User.ImageUpload, Constants.Signature_FolderName);
 				IFormFile fileobj = User.ImageUpload;
 				User.SignImageName = fileobj.FileName;
+				
 			}
 
 			_unitOfWork.Repository<User>().Insert(_mapper.Map<User>(User));

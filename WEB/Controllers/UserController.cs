@@ -30,7 +30,7 @@ public class UserController : BaseController
 		ViewBag.ResponseCode = TempData["ResponseCode"];
 		ViewBag.ResponseMessage = TempData["ResponseMessage"];
 		ViewBag.UserDeleteResponse = TempData["UserDeleteResponseData"];
-		ViewBag.UserDeleteFinalResponse = TempData["UserDeleteFinalResponseCode"];
+		ViewBag.UserDeleteFinalResponse = TempData["Use rDeleteFinalResponseCode"];
 		ViewBag.DeletingUserIdLast = TempData["DeletingUserId"];
 		ViewBag.DeletingError = TempData["DeletingError"];
 		ViewBag.FinalUserDeleteResponseData = TempData["FinalUserDeleteResponseData"];
@@ -44,6 +44,7 @@ public class UserController : BaseController
 	public IActionResult UserEdit(int userId)
 	{
 		ViewBag.PageTitle = "User Edit";
+		
 		ResponseViewModel<UserViewModel> response = _userService.GetUserById(userId);
 		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
 		ViewBag.SubSectCode = response.ResponseData.SubSectionCode;
@@ -102,6 +103,7 @@ public class UserController : BaseController
 		ViewBag.PageTitle = "User Create";
 		ResponseViewModel<UserViewModel> response = _userService.CreateNewUser();
 		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
+		
 		return View(response.ResponseData);
 	}
 	//public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)

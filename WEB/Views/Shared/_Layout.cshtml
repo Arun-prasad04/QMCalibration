@@ -710,7 +710,8 @@
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
 			var UserId = '@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'
 
-
+				console.log("language origin");
+					console.log(language);
 			var dict = diction();
 
 			MasterTranslate(language);
@@ -732,13 +733,16 @@
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
 				var dict = diction();
-				//console.log(dict);
+				console.log("On Change");
 				MasterTranslate(selected);
 				DepartmentTranslate(selected);
 				ObservationTypeTranslation(selected);
 				
 
 				console.log(dict);
+				console.log("language select");
+				language=selected;
+				console.log(language);
 
 
 				language = selected;
@@ -759,6 +763,7 @@
 						console.log(response.responseText);
 					}
 				});
+				
 				if (selected == "en") {
 					var translator = $('body').translate({ lang: "en", t: dict });
 				}
@@ -1604,12 +1609,19 @@
 					"Department coordinator Email": { jp: "部門コーディネーターのメールアドレス", en: "Department coordinator Email"},
 
 
+					"--Select User Department--": { jp: "いいえ", en: "--Select User Department--" },
+					"Instrument Serial Number": { jp: "機器のシリアル番号", en: "Instrument Serial Number" },
+					"Equipment Name (EN)": { jp: "機器名(英語)", en: "Equipment Name (EN)" },
+					"Equipment Name (JP)": { jp: "機器名(JP)", en: "Equipment Name (JP)" }
 				}
+
 
 				return dicts;
 			}
 
 			function MasterTranslate(lang) {
+
+				var selectedMasterInstrument = $('#MasterInstrument').find("option:selected").val();
 				$.ajax({
 					url: '../Home/MasterTranslate',
 					type: 'POST',
@@ -1643,17 +1655,20 @@
 						$("#MasterInstrument").append(optionhtml);
 
 					});
-
+					$('#MasterInstrument').val(selectedMasterInstrument).prop("selected", true);
 				});
 				return dict;
 			}
-
 			
 			function DepartmentTranslate(lang) {
 				//DepartmentId
 				var selectedUserDept = $('#UserDept').find("option:selected").val();
+				
 				var selectedDepartmentId = $('#DepartmentId').find("option:selected").val();
-
+			
+				var test='';
+				console.log("test");
+				console.log(test);
 				$.ajax({
 					url: '../Home/DepartmentTranslate',
 					type: 'POST',
@@ -1670,10 +1685,10 @@
 					$("#DepartmentId").empty();
 
 					if (lang == 'jp') {
-						optionhtml = '<option value=""> -- 部門を選択してください -- </option>';
+						optionhtml = '<option value=""> -- マスターを選択 -- </option>';
 					}
 					else {
-						optionhtml = '<option value="">--- Select Department ---</option>';
+						optionhtml = '<option value="">--- Select User Department ---</option>';
 					}
 					$("#UserDept").append(optionhtml);
 					$("#DepartmentId").append(optionhtml);
@@ -1694,8 +1709,19 @@
 						$("#DepartmentId").append(optionhtml);
 					});
 					/////////////Code for select the value
+						if (selectedUserDept == null) 
+						{
+
+						
+						selectedUserDept = @Json.Serialize(@ViewBag.UserDept);
+					}
+					
 					$('#UserDept').val(selectedUserDept).prop("selected", true);
+					
 					$('#DepartmentId').val(selectedDepartmentId).prop("selected", true);
+
+
+
 
 
 
@@ -1733,16 +1759,37 @@
 
 
 			/////////////TEMPLATE PART START ////////////////////////
-			function ObservationTypeTranslation(lang) {
-				var SelectObservation = $('#NewObservation').find("option:selected").val();;
-				var SelectMU = $('#NewMU').find("option:selected").val();
-				var SelectCertification = $('#NewCertification').find("option:selected").val();
+			function InstrumentObservationTypeTranslation(lang) {
+
+			
+				
+				
+				var SelectObservation = $('#ObservationTemplate').find("option:selected").val();
+				var SelectMU = $('#MUTemplte').find("option:selected").val();
+				var SelectCertification = $('#CertificationTemplate').find("option:selected").val();
+				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Master
+
+
+				
+				
+				var SelectObservationType = @Json.Serialize(@ViewBag.ObservationType); //For Instrument Maste
+
 				var SelectCalibrationStatus = $('#CalibrationStatus').find("option:selected").val();
 				var SelectCalibFreqId = $('#CalibFreqId').find("option:selected").val(); //For Equipment Master
 				var SelectCalibrationSourceId = $('#CalibrationSourceId').find("option:selected").val();
 				var SelectLocationId = $('#LocationId').find("option:selected").val();
 				var SelectDesignation = $('#Designation').find("option:selected").val();
-				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Mastr
+			
+				if(SelectObservation==null)
+				{
+
+					 SelectObservation = @Json.Serialize(@ViewBag.Observation);
+				}
+					
+				
+				var TmpOBStype = @Json.Serialize(@ViewBag.ObservationType);
+				
+				console.log(TmpOBStype);
 				$.ajax({
 					url: '../Home/ObservationTypeTranslation',
 					type: 'POST',
@@ -1750,7 +1797,7 @@
 				}).done(function (resultObject) {
 					//debugger;
 					GlDicts = resultObject;
-					//console.log(resultObject);
+					console.log(resultObject);
 					var optionhtml;
 					var optionhtmlMU;
 					var optionhtmlCT;
@@ -1759,20 +1806,24 @@
 					var optionhtmlCalibSource;
 					var optionhtmlLocation;
 					var optionhtmlDesignation;
+					var optionhtmlOBType;
+					var optionhtmlCalibFreqId;
 
-
-					$("#NewObservation").empty();
-					$("#NewMU").empty();
-					$("#NewCertification").empty();
+					$("#ObservationTemplate").empty();
+					$("#MUTemplate").empty();
+					$("#CertificationTemplate").empty();
 					$("#CalibFreqId").empty();
 					$("#CalibrationStatus").empty();
 					$("#CalibrationSourceId").empty();
 					$("#LocationId").empty();
 					$("#Designation").empty();
 					$("#CalibFreq").empty();
+					$("#ObservationType").empty();
 
 
 					if (lang == 'jp') {
+
+						optionhtmlOBType = '<option value="">--観測タイプの選択--</option>';
 						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
 						optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
 						optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
@@ -1781,9 +1832,10 @@
 						optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
 						optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
 						optionhtmlDesignation = '<option value=""> -- 指定 -- </option>';
-
+						optionhtmlCalibFreqId = '<option value=""> -- 校正周波数の選択-- </option>';
 					}
 					else {
+						optionhtmlOBType = '<option value=""> -- Select Observation Type -- </option>';
 						optionhtml = '<option value=""> -- Select Observation Template -- </option>';
 						optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
 						optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
@@ -1792,96 +1844,117 @@
 						optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
 						optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
 						optionhtmlDesignation = '<option value=""> -- Select User Designation -- </option>';
+						optionhtmlCalibFreqId = '<option value=""> -- Select Calibration Frequency -- </option>';
 					}
-					$("#NewObservation").append(optionhtml);
-					$("#NewMU").append(optionhtmlMU);
-					$("#NewCertification").append(optionhtmlCT);
-					$("#CalibFreqId").append(optionhtmlCalibFreq);//For Equipment Master
+					$("#ObservationTemplate").append(optionhtml);
+					$("#MUTemplate").append(optionhtmlMU);
+					$("#CertificationTemplate").append(optionhtmlCT);
+					$("#CalibFreqId").append(optionhtmlCalibFreqId);//For Equipment Master
 					$("#CalibrationStatus").append(optionhtmlCalibStatus);
 					$("#CalibrationSourceId").append(optionhtmlCalibSource);
 					$("#LocationId").append(optionhtmlLocation);
 					$("#Designation").append(optionhtmlDesignation);
 					$("#CalibFreq").append(optionhtmlCalibFreq);//For Instrument Master
+					$("#ObservationType").append(optionhtmlOBType);
+					
 
-
-
-					$.each(resultObject, function (index, item) {						
-						if (item.attrName == 'ObservationTemplate') {							
+					$.each(resultObject, function (index, item) {
+						
+						console.log(SelectObservationTxt);
+						if (item.attrName == 'ObservationTemplate') {
+							
 							optionhtml = '';
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtml = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtml = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
-							$("#NewObservation").append(optionhtml);
+							$("#ObservationTemplate").append(optionhtml);
 						}
+						
+						$('#ObservationTemplate').val(SelectObservation).prop("selected", true);
+						var SelectObservationTxt = $('#ObservationTemplate').find("option:selected").text();
+						SelectObservationTxt=$.trim(SelectObservationTxt);
+						
+						if (item.attrform == $.trim(SelectObservationTxt)) {
+							
+							optionhtmlOBType = '';
+							
+							if (lang == 'jp') {
+								
+								optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								 	optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+
+							}
+
+							$("#ObservationType").append(optionhtmlOBType);
+						}
+						
 
 						if (item.attrName == 'MUTemplate') {
 							optionhtmlMU = '';
-							//console.log("MUTemplate");
-							//console.log(item.attrName);
+							
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
-
-							$("#NewMU").append(optionhtmlMU);
+							$("#MUTemplate").append(optionhtmlMU);
+							
 						}
 
 						if (item.attrName == 'CerTemplate') {
-							//console.log("CerTemplate");
-							//console.log(item.attrName);
-
+							
 							optionhtmlCT = '';
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
-							$("#NewCertification").append(optionhtmlCT);
+							$("#CertificationTemplate").append(optionhtmlCT);
 						}
 
 						if (item.attrName == 'CalibrationFreq') {
 							optionhtmlCalibFreq = '';
-							//console.log("Frequency");
-							//console.log(item.attrName);
+							
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
-							//$("#CalibFreqId").append(optionhtmlCalibFreq);
+							
 							$("#CalibFreq").append(optionhtmlCalibFreq);
+							$("#CalibFreqId").append(optionhtmlCalibFreq);
+
 
 						}
 
 						if (item.attrName == 'CalibrationStatus') {
-							//console.log("CalibrationStatus");
-							//console.log(item.attrName);
-
+							
 							optionhtmlCalibStatus = '';
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -1890,64 +1963,100 @@
 
 						//////////For Master////////////
 						if (item.attrName == 'CalibrationSource') {
-							//console.log("CalibrationSource");
-							//console.log(item.attrName);
+							
 							optionhtmlCalibSource = '';
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
 							$("#CalibrationSourceId").append(optionhtmlCalibSource);
 						}
 						if (item.attrName == 'Location') {
-							//console.log("Location");
-							//console.log(item.attrName);
+							
 							optionhtmlLocation = '';
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
 							$("#LocationId").append(optionhtmlLocation);
 						}
-						//Designation
+						//////////For Master End////////////
 
+
+						//Designation
+						
 						if (item.attrName == 'Designation') {
 							optionhtmlDesignation = '';
-							
+							console.log("Location");
+							console.log(item.attrName);
 							if (lang == 'jp') {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
 							else {
-								//optionhtml = '<option value=""> -- Select -- </option>';
+								
 								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
 							$("#Designation").append(optionhtmlDesignation);
 						}
 					});
-					$('#NewObservation').val(SelectObservation).prop("selected", true);
-					$('#NewMU').val(SelectMU).prop("selected", true);
-					$('#NewCertification').val(SelectCertification).prop("selected", true);
-					$('#CalibFreqId').val(SelectCalibFreqId).prop("selected", true);
+					
+						
+			
+					
+					
+
+					if (SelectCalibFreq == null) {
+
+
+						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
+					}
+					 //For Instrument 
+					 SelectObservationType = @Json.Serialize(@ViewBag.ObservationType);
+					
+
+					if (SelectMU == null) 
+					{
+					SelectMU = @Json.Serialize(@ViewBag.MUTemplates);
+					}
+					if (SelectCertification == null)
+					{
+
+						 SelectCertification = @Json.Serialize(@ViewBag.CertificationTemplate);
+					}
+					if (SelectObservation == null) {
+						 SelectObservation = @Json.Serialize(@ViewBag.Observation);
+						
+					}
+
+					$('#MUTemplate').val(SelectMU).prop("selected", true);
+					$('#CertificationTemplate').val(SelectCertification).prop("selected", true);
 					$('#CalibrationStatus').val(SelectCalibrationStatus).prop("selected", true);
 					$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);
-					$('#LocationId').val(SelectLocationId).prop("selected", true);
-					$('#Designation').val(SelectDesignation).prop("selected", true);
 					$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
+					$('#ObservationType').val(TmpOBStype).prop("selected", true);
+					
+
+					//For Master
+					$('#CalibFreqId').val(SelectCalibFreqId).prop("selected", true);
+					$('#LocationId').val(SelectLocationId).prop("selected", true);
+					//For User
+					$('#Designation').val(SelectDesignation).prop("selected", true);
+					
 				});
 			}
-																								/////////////TEMPLATE PART END ////////////////////////
+																					/////////////TEMPLATE PART END ////////////////////////
 
 		</script>
 	</div>

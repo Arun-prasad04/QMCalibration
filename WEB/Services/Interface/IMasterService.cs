@@ -14,7 +14,7 @@ public interface IMasterService
 	ResponseViewModel<MasterViewModel> MasterRemoveQuarantine(int masterId);
 	ResponseViewModel<MasterViewModel> GetEquipmentListByName(string equipmentName);
 	ResponseViewModel<MasterViewModel> GetEquipmentListByLabId(string labId);
-
+	//ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1, int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
 
 
 }

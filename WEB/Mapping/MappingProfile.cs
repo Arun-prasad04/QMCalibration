@@ -1,6 +1,8 @@
 using AutoMapper;
 using WEB.Models;
 using CMT.DATAMODELS;
+using DATAMODELS;
+
 namespace WEB.Mapping;
 public class MappingProfile : Profile
 {
@@ -86,6 +88,8 @@ public class MappingProfile : Profile
         CreateMap<QRCodeFilesViewModel, QRCodeFiles>();
         CreateMap<QRCodeFiles, QRCodeFilesViewModel>();
 
-        //This comment added For Git merge conflict issue   
-    }
+		CreateMap<MicrometerResultViewModel, ObsMicrometerValues>();
+		CreateMap<ObsMicrometerValues, MicrometerResultViewModel>();
+		//This comment added For Git merge conflict issue   
+	}
 }

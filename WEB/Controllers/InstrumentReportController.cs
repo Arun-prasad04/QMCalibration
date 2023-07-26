@@ -2,8 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services.Interface;
-using System;
-using System.Collections.Generic;
+
 namespace WEB.Controllers;
 
 public class InstrumentReportController : BaseController

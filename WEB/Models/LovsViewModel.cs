@@ -6,9 +6,8 @@ public class LovsViewModel{
 	 public string? Attrform{get;set;}
 	 public bool IsActive{get;set;}
 	 public int SortOrder{get;set;}
-
-	 public string? AttrNameJp { get; set; }
-	 public string? AttrformJp { get; set; }
+     public string? AttrNameJp { get; set; }
 	 public string? AttrValueJp { get; set; }
-	}
+	 public string? AttrformJp { get; set; }
+}
 }

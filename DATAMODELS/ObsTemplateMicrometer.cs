@@ -84,5 +84,14 @@ namespace CMT.DATAMODELS
         public string? Measurement11 { get; set; }
         public string? MURemarks { get; set; }
        public virtual TemplateObservation Observation{get;set;}
-    }
+		public string? FlatnessMeasure { get; set; }
+		public string? FlatnessInserr { get; set; }
+		public string? FlatnessActual { get; set; }
+		public string? InstrumentErrValue { get; set; }
+
+
+
+
+
+	}
 }
