@@ -26,8 +26,8 @@
                 <div class="form-group">
                                 <label class="trn">Department</label>
                     <select class="form-control" name="DepartmentId" id="DepartmentId">
-                        <option value="0" selected>All</option>
-                        @foreach (var department in @ViewBag.departmentList)
+                        @*<option value="0" selected>All</option>*@
+                        @*@foreach (var department in @ViewBag.departmentList)
                         {
                             if (department.Id == @ViewBag.departmentId)
                             {
@@ -37,7 +37,7 @@
                             {
                                 <option value="@department.Id">@department.Name</option>
                             }
-                        }
+                        }*@
                     </select>
                 </div>
             </div>

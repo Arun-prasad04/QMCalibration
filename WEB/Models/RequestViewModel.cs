@@ -1,3 +1,5 @@
+using CMT.DATAMODELS;
+
 namespace WEB.Models;
 public partial class RequestViewModel
 {
@@ -93,6 +95,10 @@ public partial class RequestViewModel
     public List<LovsViewModel> ObservationTemplateList{get;set;}
     public List<LovsViewModel> MUTemplateList{get;set;}
     public List<LovsViewModel> CertificationTemplateList{get;set;}
+
+    public List<LovsViewModel> LovsList { get; set; }
+
+   // public List<Master> MasterEqiupmentList { get; set; }
 
 }
 public class UploadFile

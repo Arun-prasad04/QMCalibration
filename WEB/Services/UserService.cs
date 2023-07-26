@@ -51,7 +51,8 @@ public class UserService : IUserService
 				KakarichoEmail = S.KakarichoEmail,
 				ManagerEmail = S.ManagerEmail,
 				DepartmentId = S.DepartmentId,
-				subSection = S.Department.Section
+				subSection = S.Department.Section,
+				DeptCordEmail = S.DeptCordEmail
 			}).ToList();
 
 			return new ResponseViewModel<UserViewModel>
@@ -295,8 +296,24 @@ public class UserService : IUserService
 			{
 				userById.ManagerEmail = user.ManagerEmail;
 			}
+			if(user.SubSectionCode != null)
+			{
+                userById.SubSectionCode = user.SubSectionCode;
+            }
+            if (user.DeptCordShortId != null)
+            {
+                userById.DeptCordShortId = user.DeptCordShortId;
+            }
+            if (user.DeptCordName != null)
+            {
+                userById.DeptCordName = user.DeptCordName;
+            }
+            if (user.DeptCordEmail != null)
+            {
+                userById.DeptCordEmail = user.DeptCordEmail;
+            }
 
-			if (user.ImageUpload != null)
+            if (user.ImageUpload != null)
 			{
 				string filePath = _utilityService.UploadImage(user.ImageUpload, Constants.Signature_FolderName);
 				IFormFile fileobj = user.ImageUpload;
@@ -634,7 +651,7 @@ public class UserService : IUserService
 		try
 		{
 			List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
-			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation").ToList());
+			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation" && Q.IsActive == true).ToList());
 			UserViewModel userEmptyViewModel = new UserViewModel();
 			userEmptyViewModel.DepartmentList = departmentList;
 			userEmptyViewModel.DesignationList = lovsList;

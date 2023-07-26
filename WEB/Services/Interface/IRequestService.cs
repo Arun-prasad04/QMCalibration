@@ -8,7 +8,7 @@ public interface IRequestService
  ResponseViewModel<RequestViewModel> InsertRequest(int instrumentId,int userId,int typeId);
  ResponseViewModel<RequestViewModel> UpdateRequest(RequestViewModel Request);
  ResponseViewModel<RequestViewModel> DeleteRequest(RequestViewModel Request);
- ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate,int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
+ ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate, string InstrumentIdNo, int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
  ResponseViewModel<RequestViewModel> AcceptRequestRecalibration(int requestId, int userId,int AcceptValue,int departmentId);
  ResponseViewModel<RequestViewModel> RejectRequest(int requestId, string RejectReason, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate,string standardReffered);
  ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId,string CollectedBy);
@@ -16,7 +16,7 @@ public interface IRequestService
 ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int ObservationTemplate, int ObservationTemplateType, int MUTemplate, int CertificationTemplate);
  ResponseViewModel<RequestViewModel> SubmitNewRequest(int requestId,int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate);
  ResponseViewModel<RequestViewModel> SubmitQuarantineRequest(int requestId,int userId);
- ResponseViewModel<LovsViewModel> GetLovs(string attrType,string attrsubType);
+ ResponseViewModel<LovsViewModel> GetLovs(string attrType,string attrsubType, string LangType);
  bool SaveQRFile(QRCodeFilesViewModel qrCodeFilesViewModel, string instrumentId);
  ResponseViewModel<RequestViewModel> SaveInstrumentData(int requestId,string newLabId,
             bool newNABL,

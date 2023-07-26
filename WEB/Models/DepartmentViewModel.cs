@@ -22,5 +22,7 @@ public List<LocationViewModel> locationList{ get; set; }
 //public virtual Location LocationModel { get; set; }
 public string? PlantLocation { get; set; }
 public string? PlantCode { get; set; }
+		public string? SectionCode { get; set; }
+		public string? SubSectionCode { get; set; }
 	}
 }

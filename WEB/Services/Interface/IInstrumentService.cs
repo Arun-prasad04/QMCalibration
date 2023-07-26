@@ -5,6 +5,7 @@ public interface IInstrumentService
 {
  ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId);
  ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId);
+ int GetObservationTemplateId(int instrumentId, string Type);
  ResponseViewModel<InstrumentViewModel> InsertInstrument(InstrumentViewModel instrument);
  ResponseViewModel<InstrumentViewModel> UpdateInstrument(InstrumentViewModel  instrument);
  ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId);

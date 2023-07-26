@@ -95,7 +95,7 @@
 								<div class="col-sm-6">
 									<!-- text input -->
 									<div class="form-group">
-										<label class="trn">Set Value for TW</label>
+										<label class="trn">Set Value for Torque Wrench</label>
 										<input type="text" id="TW_Type" name="TW_Type" value="@Model.TW_Type" class="form-control"
 											   placeholder="">
 									</div>
@@ -283,7 +283,7 @@
 										<div class="form-group">
 											<label class="trn">Calibration Frequency</label>
 											<select id="CalibFreq" name="CalibFreq" class="form-control">
-												@foreach (var freq in @Model.CalibFreqList)
+												@*@foreach (var freq in @Model.CalibFreqList)
 												{
 													if (freq.Id == Model.CalibFreq)
 													{
@@ -293,7 +293,7 @@
 													{
 														<option value="@freq.Id">@freq.AttrValue</option>
 													}
-												}
+												}*@
 											</select>
 										</div>									
 								</div>

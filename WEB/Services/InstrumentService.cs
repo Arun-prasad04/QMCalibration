@@ -7,6 +7,12 @@ using AutoMapper;
 using WEB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Data;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
+using System.Data.SqlTypes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 namespace WEB.Services;
 
 
@@ -36,11 +42,85 @@ public class InstrumentService : IInstrumentService
     {
       UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
       List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
-      //if (userRoleId == 2 || userRoleId == 4)
-       if (userRoleId == 2 || labUserById.DepartmentId == 66)
-      {
 
-				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+			DataSet ds = GetInstruentList(userId, userRoleId, labUserById.DepartmentId);
+			//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in ds.Tables[0].Rows)
+				{
+					InstrumentViewModel inst = new InstrumentViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						InstrumentName = dr["InstrumentName"].ToString(),
+						SlNo = dr["SlNo"].ToString(),
+						IdNo = dr["IdNo"].ToString(),
+						Range = dr["Range"].ToString(),
+						LC = dr["LC"].ToString(),
+						CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+						CalibDate = Convert.ToDateTime(dr["CalibDate"]),
+						DueDate = Convert.ToDateTime(dr["DueDate"]),
+						Make = dr["Make"].ToString(),
+						CalibSource = dr["CalibSource"].ToString(),
+						StandardReffered = dr["StandardReffered"].ToString(),
+						Remarks = dr["Remarks"].ToString(),
+						Status = Convert.ToInt16(dr["Status"]),
+						//FileList = 
+						//CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
+						//InstrumentStatus = Convert.ToInt16(dr["InstrumentStatus"]),
+						//DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
+						DepartmentName = dr["deptName"].ToString(),
+						//NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
+						RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						UserRoleId = userRoleId,
+					};
+					instrumentList.Add(inst);
+
+				}
+			}
+
+
+
+
+			#region
+			/*
+			//if (userRoleId == 2 || userRoleId == 4)
+			if (userRoleId == 2 || labUserById.DepartmentId == 66)
+			{
+
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel)
+					.Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+					{
+						Id = s.Id,
+						InstrumentName = s.InstrumentName,
+						SlNo = s.SlNo,
+						IdNo = s.IdNo,
+						Range = s.Range,
+						LC = s.LC,
+						CalibFreq = s.CalibFreq,
+						CalibDate = s.CalibDate,
+						DueDate = s.DueDate,
+						Make = s.Make,
+						CalibSource = s.CalibSource,
+						StandardReffered = s.StandardReffered,
+						Remarks = s.Remarks,
+						Status = s.Status,
+						FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+						CalibrationStatus = s.CalibrationStatus,
+						InstrumentStatus = s.InstrumentStatus,
+						DateOfReceipt = s.DateOfReceipt,
+						DepartmentName = s.DepartmenttModel.Name,
+						NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+						RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault()
+
+					}
+					).ToList();
+				
+			}
+			else if (userRoleId == 1)
+			{
+
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
 				{
 					Id = s.Id,
 					InstrumentName = s.InstrumentName,
@@ -62,69 +142,41 @@ public class InstrumentService : IInstrumentService
 					DateOfReceipt = s.DateOfReceipt,
 					DepartmentName = s.DepartmenttModel.Name,
 					NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
-					RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault()
+					RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
+				}
+				).ToList();
 
-        }
-        ).ToList();
-      }
-      else if (userRoleId == 1)
-      {
-         
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
-        {
-          Id = s.Id,
-          InstrumentName = s.InstrumentName,
-          SlNo = s.SlNo,
-          IdNo = s.IdNo,
-          Range = s.Range,
-          LC = s.LC,
-          CalibFreq = s.CalibFreq,
-          CalibDate = s.CalibDate,
-          DueDate = s.DueDate,
-          Make = s.Make,
-          CalibSource = s.CalibSource,
-          StandardReffered = s.StandardReffered,
-          Remarks = s.Remarks,
-          Status = s.Status,
-          FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
-          CalibrationStatus = s.CalibrationStatus,
-          InstrumentStatus = s.InstrumentStatus,
-          DateOfReceipt = s.DateOfReceipt,
-          DepartmentName = s.DepartmenttModel.Name,
-          NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
-          RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
-        }
-        ).ToList();
-
-      }
-            else if (userRoleId == 4)
-            {
-                instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
-                {
-                    Id = s.Id,
-                    InstrumentName = s.InstrumentName,
-                    SlNo = s.SlNo,
-                    IdNo = s.IdNo,
-                    Range = s.Range,
-                    LC = s.LC,
-                    CalibFreq = s.CalibFreq,
-                    CalibDate = s.CalibDate,
-                    DueDate = s.DueDate,
-                    Make = s.Make,
-                    CalibSource = s.CalibSource,
-                    StandardReffered = s.StandardReffered,
-                    Remarks = s.Remarks,
-                    Status = s.Status,
-                    FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
-                    CalibrationStatus = s.CalibrationStatus,
-                    InstrumentStatus = s.InstrumentStatus,
-                    DateOfReceipt = s.DateOfReceipt,
-                    DepartmentName = s.DepartmenttModel.Name,
-                    NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
-                    RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
-                }
-                ).ToList();
-
+			}
+			else if (userRoleId == 4)
+			{
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+				{
+					Id = s.Id,
+					InstrumentName = s.InstrumentName,
+					SlNo = s.SlNo,
+					IdNo = s.IdNo,
+					Range = s.Range,
+					LC = s.LC,
+					CalibFreq = s.CalibFreq,
+					CalibDate = s.CalibDate,
+					DueDate = s.DueDate,
+					Make = s.Make,
+					CalibSource = s.CalibSource,
+					StandardReffered = s.StandardReffered,
+					Remarks = s.Remarks,
+					Status = s.Status,
+					FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+					CalibrationStatus = s.CalibrationStatus,
+					InstrumentStatus = s.InstrumentStatus,
+					DateOfReceipt = s.DateOfReceipt,
+					DepartmentName = s.DepartmenttModel.Name,
+					NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+					RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
+				}
+				).ToList();
+			}
+			*/
+			#endregion
 			return new ResponseViewModel<InstrumentViewModel>
 			{
 				ResponseCode = 200,
@@ -149,6 +201,33 @@ public class InstrumentService : IInstrumentService
 			};
 		}
 	}
+	//public static ConnectionStringSettings sql_cs = ConfigurationManager.ConnectionStrings["dbConnectionString"];
+	
+
+	public DataSet GetInstruentList(int userid, int userroleid, int deptid)
+    {
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetInstrumentList");
+        cmd.CommandType = CommandType.StoredProcedure;
+		cmd.Parameters.AddWithValue("@userid", userid);
+		cmd.Parameters.AddWithValue("@userroleid", userroleid);
+		cmd.Parameters.AddWithValue("@deptid", deptid);
+		//SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+        SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+        cmd.Connection = sqlConn; 
+		cmd.CommandTimeout = 2000;
+        sqlAdapter.SelectCommand = cmd;
+        sqlAdapter.Fill(dsResults);
+        
+		return dsResults;
+    }
+
+
+	
+
+
 	public ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId)
 	{
 		try
@@ -618,7 +697,7 @@ public class InstrumentService : IInstrumentService
       List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
       if (userRoleId == 2 || labUserById.DepartmentId == 66)
       {
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
+        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && Convert.ToInt16(Q.ActiveStatus) == 1).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
         {
           Id = s.Id,
           InstrumentName = s.InstrumentName,
@@ -647,7 +726,7 @@ public class InstrumentService : IInstrumentService
       }
       else if (userRoleId == 1)//And 
       {
-        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Select(s => new InstrumentViewModel()
+        instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Select(s => new InstrumentViewModel()
         {
           Id = s.Id,
           InstrumentName = s.InstrumentName,
@@ -676,7 +755,7 @@ public class InstrumentService : IInstrumentService
          }
             if (userRoleId == 4)
             {
-                instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
+                instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 1 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(I => I.DepartmenttModel).Select(s => new InstrumentViewModel()
                 {
                     Id = s.Id,
                     InstrumentName = s.InstrumentName,
@@ -713,7 +792,9 @@ public class InstrumentService : IInstrumentService
     }
     catch (Exception e)
     {
-      return new ResponseViewModel<InstrumentViewModel>
+			ErrorViewModelTest.Log("InstrumentService - GetAllInstrumentQuarantineList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<InstrumentViewModel>
       {
         ResponseCode = 500,
         ResponseMessage = "Failure",
@@ -721,8 +802,8 @@ public class InstrumentService : IInstrumentService
         ResponseData = null,
         ResponseDataList = null,
         ResponseServiceMethod = "Instrument",
-        ResponseService = "GetAllInstrumentList"
-      };
+        ResponseService = "GetAllInstrumentQuarantineList"
+			};
     }
   }
   public ResponseViewModel<InstrumentViewModel> InstrumentQuarantine(int instrumentId, string reason, int userId, int statusId)
@@ -1030,5 +1111,27 @@ public class InstrumentService : IInstrumentService
 				ResponseService = "GetAllInstrumentList"
 			};
 		}
+	}
+
+	//int IInstrumentService.ObservationTemplateId(int instrumentId)
+	//{
+	//	throw new NotImplementedException();
+	//}
+	
+
+	int IInstrumentService.GetObservationTemplateId(int instrumentId, string Type)
+	{
+		Instrument row = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
+		int? ObservationTemplateId = 0;
+		if (Type == "Certification")
+		{
+			ObservationTemplateId = row != null ? row.CertificationTemplate : 0;
+		}
+		else if (Type == "Observation")
+		{
+		    ObservationTemplateId = row != null ? row.ObservationTemplate : 0;
+		}
+					
+		return (int)ObservationTemplateId;
 	}
 }
