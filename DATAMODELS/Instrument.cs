@@ -50,6 +50,7 @@ namespace CMT.DATAMODELS
     public int? MasterInstrument3 {get;set;}
     public int? MasterInstrument4 {get;set;}
     public virtual User UserModel{get;set;}
-    
-    }
+	public string? Grade { get; set; }
+		
+	}
 }

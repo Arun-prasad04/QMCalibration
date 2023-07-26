@@ -127,9 +127,16 @@ namespace WEB.Models
     public string PdfUncertainity{get;set;}
     public string PdfCalibrationResult{get;set;}
     public string PdfRemarks{get;set;}
+		
+	public int? CertificateNumber {get;set;}
+    public List<MasterViewModel> MasterEqiupmentList { get; set; }
+		public string? Grade { get; set; }
+		public List<MicrometerResultViewModel> MicrometerAddResultViewModelList { get; set; }
+		public string FlatnessMeasure { get; set; }
+		public string FlatnessInserr { get; set; }
+		public string FlatnessActual { get; set; }
+		public string InstrumentErrValue { get; set; }
+		
+	}
 
-    public int? CertificateNumber {get;set;}
-
-    }
- 
 }

@@ -2,7 +2,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
+using WEB.Services;
 using WEB.Services.Interface;
+using static iTextSharp.text.pdf.PdfDocument;
+
 namespace WEB.Controllers;
 
 public class InstrumentController : BaseController

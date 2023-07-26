@@ -1,0 +1,2 @@
+[23:06:2023] [16:27:01:8184]	UserService - ValidateUser Method
+[23:06:2023] [16:27:04:8257]	exception - An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure' to the 'UseSqlServer' call.

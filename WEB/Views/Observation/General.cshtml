@@ -89,7 +89,7 @@
                 <td class="textleftborder trn">Range</td>
                 <td>@Model.Range</td>
                 <td class="textleftborder trn">Make</td>
-                <td>@Model.Make</td>
+                <td>@Model.Make</td> 
             </tr>
             <tr>
                 <td class="textleftborder trn">Serial No.</td>
@@ -128,7 +128,7 @@
         <br>
         <tr>
             <p align="right">
-                <button style="align-content: right: ;;" id="add" name="add" type="button" class="btn btn-primary trn">Add New Row</button>
+                <button style="align-content:right;" id="add" name="add" type="button" class="btn btn-primary trn">Add New Row</button>
             </p>
         </tr>
 
@@ -148,7 +148,7 @@
                     @foreach (var item in @Model.GeneralAddResultViewModelList)
                     {
                         <tr id="tablerow0">
-                            <td><input value="@item.MeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+                            <td><input value="@item.MeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text" 
                                 required="required" class="TableWidth"></td>
                             <td><input value="@item.Trial1" id="Trial1" name="Trial1" type="text" class="TableWidth"
                                 required="required" onkeyup="GetValue('0');"></td>
@@ -171,7 +171,7 @@
         <br>
         <tr>
             <p align="right">
-                <button style="align-content: right: ;;" id="addManual" name="addManual" type="button"
+                <button style="align-content: right;" id="addManual" name="addManual" type="button"
                     class="btn btn-primary trn">Add New Row</button>
             </p>
         </tr>
@@ -476,7 +476,9 @@
     });
 
     function removeMu(index) {
+       
         if (counter > 1) {
+       
             $('#tablerow' + index).remove();
             counter--;
         }
