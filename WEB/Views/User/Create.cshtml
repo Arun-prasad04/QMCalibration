@@ -1,606 +1,843 @@
-@{
-	ViewData["Title"] = "User Create";
+﻿@{
+    ViewData["Title"] = "User Create";
 }
-
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!-- Content Header (Page header) -->
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <!-- Main content -->
 <section class="content">
-	<div class="row">
-		<div class="col-12">
+    <div class="row">
+        <div class="col-12">
 
-			<!-- general form elements -->
-			<div class="card card-primary">
-				<div class="card-header">
-					<div class="row">
-						<div class="col-md-6">
-							<h3 class="card-title trn">User Creation</h3>
-						</div>
-						<div class="col-md-6 text-right">
-							<a href='@Url.Action("Index","User")'>
-								<input type="button" class="btn btn-sm btn-default trn" value="User List">
-							</a>
-						</div>
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="card-title trn">User Creation</h3>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href='@Url.Action("Index","User")'>
+                                <input type="button" class="btn btn-sm btn-default trn" value="User List">
+                            </a>
+                        </div>
 
-					</div>
+                    </div>
 
-				</div>
-				<!-- /.card-header -->
-				<!-- form start -->
-				<form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post" enctype="multipart/form-data">
-					<div class="card-body">
-						<input type="hidden" name="Id" value="@Model.Id">
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ShortId" class="required trn">User Name</label>
-									<input type="text" class="form-control trn" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="FirstName" class="required trn">First Name</label>
-									<input type="text" alt="Please enter your first name" class="form-control trn" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="LastName" class="required trn">Last Name</label>
-									<input type="text" alt="Please enter your last name" class="form-control trn" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Role</label>
-									<select class="form-control" name="UserRoleId" id="UserRoleId">
-										@if (Model.UserRoleId == 1)
-										{
-											<option value="1" selected="true">Department User</option>
-										}
-										else
-										{
-											<option value="1">Department User</option>
-										}
-										@if (Model.UserRoleId == 2)
-										{
-											<option value="2" selected="true">LAB Admin</option>
-										}
-										else
-										{
-											<option value="2">LAB Admin</option>
-										}
-										@if (Model.UserRoleId == 3)
-										{
-											<option value="3" selected="true">Facility Manager</option>
-										}
-										else
-										{
-											<option value="3">Facility Manager</option>
-										}
-										@if (Model.UserRoleId == 4)
-										{
-											<option value="4" selected="true">LAB Technical Manager</option>
-										}
-										else
-										{
-											<option value="4">LAB Technical Manager</option>
-										}
-									</select>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Email Id</label>
-									<input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
-								</div>
-							</div>
-							@*<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Mobile No</label>
-									<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
-								</div>
-							</div>*@
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Designation</label>
-									<select class="form-control" name="Designation" id="Designation">
-										@foreach (var designation in @Model.DesignationList)
-										{
-											if (designation.Id == Model.Designation)
-											{
-												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
-											}
-											else
-											{
-												<option value="@designation.Id">@designation.AttrValue</option>
-											}
-										}
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Department Name</label>
-									<select class="form-control" name="DepartmentId" id="DepartmentId">
-										<option value="">--Select--</option>
-										@foreach (var department in @Model.DepartmentList)
-										{
-											if (department.Id == Model.DepartmentId)
-											{
-												<option value="@department.Id" selected="selected">@department.Name</option>
-											}
-											else
-											{
-												<option value="@department.Id">@department.Name</option>
-											}
-										}
-									</select>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Sub Department</label>
-									<select class="form-control" name="SubDepartment" id="SubDepartment">
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <input type="hidden" name="Id" value="@Model.Id">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ShortId" class="required trn">User Name</label>
+                                    <input type="text" class="form-control trn" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="FirstName" class="required trn">First Name</label>
+                                    <input type="text" alt="Please enter your first name" class="form-control trn" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="LastName" class="required trn">Last Name</label>
+                                    <input type="text" alt="Please enter your last name" class="form-control trn" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="required trn">Mobile No</label>
+                                    <input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @*<option value="" selected="true">Select User Role</option>*@
+                                    <label class="required trn">Role</label>
+                                    <select class="form-control" name="UserRoleId" id="UserRoleId">
+                                        <option value="0" class="trn required">--- Select User Role ---</option>
+                                        @if (Model.UserRoleId == 1)
+                                        {
+                                            <option value="1" selected="true" class="trn">Department User</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1" class="trn">Department User</option>
+                                        }
+                                        @if (Model.UserRoleId == 2)
+                                        {
+                                            <option value="2" selected="true" class="trn">LAB Admin</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="2" class="trn">LAB Admin</option>
+                                        }
+                                        @if (Model.UserRoleId == 3)
+                                        {
+                                            <option value="3" selected="true" class="trn">Lab inspector</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="3" class="trn">Lab inspector</option>
+                                        }
+                                        @if (Model.UserRoleId == 4)
+                                        {
+                                            <option value="4" selected="true" class="trn">LAB Technical</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="4" class="trn">LAB Technical</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Email Id</label>
+                                    <input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
+                                </div>
+                            </div>
+                            @*<div class="col-md-4">
+                            <div class="form-group">
+                            <label class="required trn">Mobile No</label>
+                            <input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                            </div>
+                            </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Designation</label>
+                                    <select class="form-control" name="Designation" id="Designation">
+                                        <option value="">---Select User Designation---</option>
+                                        @foreach (var designation in @Model.DesignationList)
+                                        {
+                                            if (designation.Id == Model.Designation)
+                                            {
+                                                <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                                                @*@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+                                        {
+                                        <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                                        }
+                                        else
+                                        {
 
-										@*@foreach (var designation in @Model.DesignationList)
-										{
-											if (designation.Id == Model.Designation)
-											{
-												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
-											}
-											else
-											{
-												<option value="@designation.Id">@designation.AttrValue</option>
-											}
-										}*@
-									</select>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Level</label>
-									<select class="form-control" name="Level" id="Level">
-										@if (Model.Level == "L10")
-										{
-											<option value="L10" selected="true">L10</option>
-										}
-										else
-										{
-											<option value="L10">L10</option>
-										}
-										@if (Model.Level == "L9")
-										{
-											<option value="L9" selected="true">L9</option>
-										}
-										else
-										{
-											<option value="L9">L9</option>
-										}
-										@if (Model.Level == "L8")
-										{
-											<option value="L8" selected="true">L8</option>
-										}
-										else
-										{
-											<option value="L8">L8</option>
-										}
-										@if (Model.Level == "L7")
-										{
-											<option value="L7" selected="true">L7</option>
-										}
-										else
-										{
-											<option value="L7">L7</option>
-										}
-										@if (Model.Level == "L6")
-										{
-											<option value="L6" selected="true">L6</option>
-										}
-										else
-										{
-											<option value="L6">L6</option>
-										}
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="AsstForemanShortId" class="trn">Asst.Foreman ShortID</label>
-									<input type="text" class="form-control trn" id="AsstForemanShortId" placeholder="ShortID" name="AsstForemanShortId" value="@Model.AsstForemanShortId" maxlength="7" onblur="GetUserDetailsData('L3')">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="AsstForemanName" class="trn">Asst.Foreman Name</label>
-									<input type="text" class="form-control trn" id="AsstForemanName" placeholder="Name" name="AsstForemanName" value="@Model.AsstForemanName">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="AsstForemanEmail" class="trn">Asst.Foreman Email</label>
-									<input type="text" alt="Please provide the L3 Email Id" class="form-control trn" id="AsstForemanEmail" placeholder="Email" name="AsstForemanEmail" value="@Model.AsstForemanEmail">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ForemanShortId" class="trn">Foreman ShortID</label>
-									<input type="text" class="form-control trn" id="ForemanShortId" placeholder="ShortID" name="ForemanShortId" value="@Model.ForemanShortId" maxlength="7" onblur="GetUserDetailsData('L4')">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ForemanName" class="trn">Foreman Name</label>
-									<input type="text" class="form-control trn" id="ForemanName" placeholder="Name" name="ForemanName" value="@Model.ForemanName">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ForemanEmail" class="trn">Foreman Email</label>
-									<input type="text" alt="Please provide the L4 Email Id" class="form-control trn" id="ForemanEmail" placeholder="Email" name="ForemanEmail" value="@Model.ForemanEmail">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="KakarichoShortId" class="trn">Kakaricho ShortID</label>
-									<input type="text" class="form-control trn" id="KakarichoShortId" placeholder="ShortID" name="KakarichoShortId" value="@Model.KakarichoShortId" maxlength="7" onblur="GetUserDetailsData('L5')">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="KakarichoName" class="trn">Kakaricho Name</label>
-									<input type="text" class="form-control trn" id="KakarichoName" placeholder="Name" name="KakarichoName" value="@Model.KakarichoName">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="KakarichoEmail" class="trn">Kakaricho Email</label>
-									<input type="text" alt="Please provide the L5 Email Id" class="form-control trn" id="KakarichoEmail" placeholder="Email" name="KakarichoEmail" value="@Model.KakarichoEmail">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ManagerShortId" class="trn">Manager ShortID</label>
-									<input type="text" class="form-control trn" id="ManagerShortId" placeholder="ShortID" name="ManagerShortId" value="@Model.ManagerShortId" maxlength="7" onblur="GetUserDetailsData('L6')">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ManagerName" class="trn">Manager Name</label>
-									<input type="text" class="form-control trn" id="ManagerName" placeholder="Name" name="ManagerName" value="@Model.ManagerName">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ManagerEmail" class="trn">Manager Email</label>
-									<input type="text" alt="Please provide the L6 Email Id" class="form-control trn" id="ManagerEmail" placeholder="Email" name="ManagerEmail" value="@Model.ManagerEmail">
-								</div>
-							</div>
-						</div>
-						<div class="row" id="divSign">
-							<div class="col-md-4">
-								<div class="form-group">
-									<div class="custom-file">
-										<label class="custom-file-label" for="exampleInputFile"><span class="trn">Choose Signature</span></label>
-										<input type="file" class="custom-file-input"
-											   accept="image/png, image/gif, image/jpeg"
-											   onchange="checkFileSize(this,4,event)" value="@Model.SignImageName" name="ImageUpload"
-											   id="ImageUpload" />
-									</div>
-								</div>
-							</div>
+                                        <option value="@designation.Id" selected="selected">@designation.AttrValueJp</option>
+                                        }*@
+                                            }
+                                            else
+                                            {
+                                                <option value="@designation.Id">@designation.AttrValue</option>
 
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="ManagerEmail" class="trn">Signature Image</label>
-									<p id="SignImageName"></p>
-									@if (@Model.SignImageName != null)
-									{
-										<a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
-									}
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /.card-body -->
+                                                @*	@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+                                        {
+                                        <option value="@designation.Id">@designation.AttrValue</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@designation.Id">@designation.AttrValueJp</option>
 
-					<div class="card-footer">
-						<button type="submit" class="btn btn-primary trn">Submit</button>
-						<a href='@Url.Action("Index","User")'>
-							<input type="button" class="btn btn-default trn" value="Cancel">
-						</a>
-					</div>
-				</form>
-			</div>
-			<!-- /.card -->
-		</div>
-	</div>
-	<!-- /.col -->
-	</div>
-	<!-- /.row -->
+                                        }*@
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Sub Section Code</label>
+                                    <input type="text" alt="Please provide the Sub Section Code" class="form-control trn" placeholder="Sub Section Code" id="SubSectionCode" name="SubSectionCode" onblur="GetDepartmentDetails()" value="@Model.SubSectionCode">
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Sub Section Name</label>
+                                    <input type="text" alt="Please provide the Sub Section Name" class="form-control" placeholder="" id="SubSectionName" readonly name="SubSectionName">
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Section Name</label>
+                                    <input type="text" alt="Please provide the Section Name" class="form-control" placeholder="" id="SectionName" readonly name="SectionName">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Section Code</label>
+                                    <input type="text" alt="Please provide the Section Code" class="form-control" placeholder="" id="SectionCode" readonly name="SectionCode">
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Department Name</label>
+                                    <input type="text" alt="Please provide the Department Name" class="form-control" placeholder="" id="DepartmentName" readonly name="DepartmentName">
+                                    <input type="hidden" id="DepartmentNameid" name="DepartmentId" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Department Code</label>
+                                    <input type="text" alt="Please provide the Department Code" class="form-control " placeholder="" id="DepartmentCode" readonly name="DepartmentCode">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="DepartmentcoordinatorID" class="trn">Department coordinator ID</label>
+                                    @*<input type="text" class="form-control trn" id="DeptCordId" placeholder="ShortID" name="DepartmentcoordinatorID" maxlength="7" onblur="GetUserDetailsData('Dp')">*@
+                                    <input type="text" class="form-control trn" id="DeptCordShortId" placeholder="ShortID" name="DeptCordShortId" maxlength="7" value="@Model.DeptCordShortId">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="DepartmentcoordinatorName" class="trn">Department coordinator Name</label>
+                                    <input type="text" class="form-control trn" id="DeptCordName" placeholder="Name" name="DeptCordName" value="@Model.DeptCordName">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="DepartmentcoordinatorEmail" class="trn">Department coordinator Email</label>
+                                    <input type="text" alt="" class="form-control trn" id="DeptCordEmail" placeholder="Email" name="DeptCordEmail" value="@Model.DeptCordEmail">
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Department Name</label>
+                        <select class="form-control" name="DepartmentId" id="DepartmentId">
+                        <option value="">--- Select User Department ---</option>
+                        @foreach (var department in @Model.DepartmentList)
+                        {
+                        if (department.Id == Model.DepartmentId)
+                        {
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+                        {
+                        <option value="@department.Id" selected="selected">@department.Name</option>
+                        }
+                        else
+                        {
+
+                        <option value="@department.Id" selected="selected">@department.NameJP</option>
+                        }
+
+                        }
+                        else
+                        {
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+                        {
+                        <option value="@department.Id">@department.Name</option>
+                        }
+                        else
+                        {
+
+                        <option value="@department.Id">@department.NameJP</option>
+                        }
+
+
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Sub Department</label>
+                        <select class="form-control" name="SubDepartment" id="SubDepartment">
+                        <option value="">--Select User Sub Department--</option>
+                        @foreach (var designation in @Model.DesignationList)
+                        {
+                        @if (designation.Id == Model.Designation)
+                        {
+                        <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                        }
+                        else
+                        {
+                        <option value="@designation.Id">@designation.AttrValue</option>
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Level</label>
+                        <select class="form-control" name="Level" id="Level">
+                        <option value="" class="trn">--- Select Level ---</option>
+                        @if (Model.Level == "L10")
+                        {
+                        <option value="L10" selected="true">L10</option>
+                        }
+                        else
+                        {
+                        <option value="L10">L10</option>
+                        }
+                        @if (Model.Level == "L9")
+                        {
+                        <option value="L9" selected="true">L9</option>
+                        }
+                        else
+                        {
+                        <option value="L9">L9</option>
+                        }
+                        @if (Model.Level == "L8")
+                        {
+                        <option value="L8" selected="true">L8</option>
+                        }
+                        else
+                        {
+                        <option value="L8">L8</option>
+                        }
+                        @if (Model.Level == "L7")
+                        {
+                        <option value="L7" selected="true">L7</option>
+                        }
+                        else
+                        {
+                        <option value="L7">L7</option>
+                        }
+                        @if (Model.Level == "L6")
+                        {
+                        <option value="L6" selected="true">L6</option>
+                        }
+                        else
+                        {
+                        <option value="L6">L6</option>
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        </div>*@
+                        @*<div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="AsstForemanShortId" class="trn">Asst.Foreman ShortID</label>
+                        <input type="text" class="form-control trn" id="AsstForemanShortId" placeholder="ShortID" name="AsstForemanShortId" value="@Model.AsstForemanShortId" maxlength="7" onblur="GetUserDetailsData('L3')">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="AsstForemanName" class="trn">Asst.Foreman Name</label>
+                        <input type="text" class="form-control trn" id="AsstForemanName" placeholder="Name" name="AsstForemanName" value="@Model.AsstForemanName">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="AsstForemanEmail" class="trn">Asst.Foreman Email</label>
+                        <input type="text" alt="Please provide the L3 Email Id" class="form-control trn" id="AsstForemanEmail" placeholder="Email" name="AsstForemanEmail" value="@Model.AsstForemanEmail">
+                        </div>
+                        </div>
+                        </div>*@
+                        @*<div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ForemanShortId" class="trn">Foreman ShortID</label>
+                        <input type="text" class="form-control trn" id="ForemanShortId" placeholder="ShortID" name="ForemanShortId" value="@Model.ForemanShortId" maxlength="7" onblur="GetUserDetailsData('L4')">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ForemanName" class="trn">Foreman Name</label>
+                        <input type="text" class="form-control trn" id="ForemanName" placeholder="Name" name="ForemanName" value="@Model.ForemanName">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ForemanEmail" class="trn">Foreman Email</label>
+                        <input type="text" alt="Please provide the L4 Email Id" class="form-control trn" id="ForemanEmail" placeholder="Email" name="ForemanEmail" value="@Model.ForemanEmail">
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="KakarichoShortId" class="trn">Kakaricho ShortID</label>
+                        <input type="text" class="form-control trn" id="KakarichoShortId" placeholder="ShortID" name="KakarichoShortId" value="@Model.KakarichoShortId" maxlength="7" onblur="GetUserDetailsData('L5')">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="KakarichoName" class="trn">Kakaricho Name</label>
+                        <input type="text" class="form-control trn" id="KakarichoName" placeholder="Name" name="KakarichoName" value="@Model.KakarichoName">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="KakarichoEmail" class="trn">Kakaricho Email</label>
+                        <input type="text" alt="Please provide the L5 Email Id" class="form-control trn" id="KakarichoEmail" placeholder="Email" name="KakarichoEmail" value="@Model.KakarichoEmail">
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ManagerShortId" class="trn">Manager ShortID</label>
+                        <input type="text" class="form-control trn" id="ManagerShortId" placeholder="ShortID" name="ManagerShortId" value="@Model.ManagerShortId" maxlength="7" onblur="GetUserDetailsData('L6')">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ManagerName" class="trn">Manager Name</label>
+                        <input type="text" class="form-control trn" id="ManagerName" placeholder="Name" name="ManagerName" value="@Model.ManagerName">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="ManagerEmail" class="trn">Manager Email</label>
+                        <input type="text" alt="Please provide the L6 Email Id" class="form-control trn" id="ManagerEmail" placeholder="Email" name="ManagerEmail" value="@Model.ManagerEmail">
+                        </div>
+                        </div>
+                        </div>*@
+                        <div class="row" id="divSign">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" for="exampleInputFile"><span class="trn">Choose Signature</span></label>
+                                        <input type="file" class="custom-file-input"
+                                               accept="image/png, image/gif, image/jpeg"
+                                               onchange="checkFileSize(this,4,event)" value="@Model.SignImageName" name="ImageUpload"
+                                               id="ImageUpload" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ManagerEmail" class="trn">Signature Image</label>
+                                    <p id="SignImageName"></p>
+                                    @if (@Model.SignImageName != null)
+                                    {
+                                        <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary trn">Submit</button>
+                        <a href='@Url.Action("Index","User")'>
+                            <input type="button" class="btn btn-default trn" value="Cancel">
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <!-- /.col -->
+    </div>
+    <!-- /.row -->
 </section>
 <!-- /.content -->
 <script>
-	setTimeout(function () {
-		$(function () {
-			$('#userform').validate({
-				rules: {
-					FirstName: {
-						required: true,
-					},
-					LastName: {
-						required: true,
-					},
-					UserRoleId: {
-						required: true,
-					},
-					Email: {
-						required: true,
-					},
-					MobileNo: {
-						required: true,
-					},
-					DepartmentId: {
-						required: true,
-					},
 
-				},
-				messages: {
-					FirstName: {
-						required: "Please enter your first name",
-					},
-					LastName: {
-						required: "Please enter your last name",
-					},
-					UserRoleId: {
-						required: "Please provide user role",
-					},
-					Email: {
-						required: "Please provide the Email address",
-					},
-					MobileNo: {
-						required: "Please provide the mobile number",
-					},
-					DepartmentId: {
-						required: "Please provide the department name",
-					},					
-				},
-				errorElement: 'span',
-				errorPlacement: function (error, element) {
-					error.addClass('invalid-feedback');
-					element.closest('.form-group').append(error);
-				},
-				highlight: function (element, errorClass, validClass) {
-					$(element).addClass('is-invalid');
-				},
-				unhighlight: function (element, errorClass, validClass) {
-					$(element).removeClass('is-invalid');
-				}
-			});
-		});
-	}, 1000);
+
+    setTimeout(function () {
+
+        $.validator.addMethod('UserRoleId', function (value, element) {
+            if ($('#UserRoleId').val() == '0') {
+                return false;
+            } else {
+                return true;
+            }
+        }, 'Please select User Role');
+
+
+        $(function () {
+
+            $('#userform').validate({
+                rules: {
+                    FirstName: {
+                        required: true,
+                    },
+                    LastName: {
+                        required: true,
+                    },
+                    UserRoleId: {
+                        UserRoleId: true,
+                        required: true,
+                    },
+                    Email: {
+                        required: true,
+                    },
+                    MobileNo: {
+                        required: true,
+                    },
+                    DepartmentId: {
+                        required: true,
+
+                    },
+                    SubSectionCode: {
+                        required: true,
+                    },
+
+                },
+                messages: {
+                    FirstName: {
+                        required: "Please enter your first name",
+                    },
+                    LastName: {
+                        required: "Please enter your last name",
+                    },
+                    UserRoleId: {
+                        required: "Please provide user role",
+                    },
+                    Email: {
+                        required: "Please provide the Email address",
+                    },
+                    MobileNo: {
+                        required: "Please provide the mobile number",
+                    },
+                    DepartmentId: {
+                        required: "Please provide the department name",
+                    },
+                    SubSectionCode: {
+                        required: "Please provide the Sub Section Code",
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    }, 1000);
 </script>
 <script>
-	var instList = "";
-	function GetUserDetails() {
-		var ShortId = $('#ShortId').val();
-		if ((ShortId == null || ShortId == '') && ShortId.length > 6)
-			return;
+    var instList = "";
+    function GetUserDetails() {
+        var ShortId = $('#ShortId').val();
+        if ((ShortId == null || ShortId == '') && ShortId.length > 6)
+            return;
 
-		$.ajax({
-			type: "POST",
-			url: "../User/GetUserInfoFromLDAP",
-			data: { ShortId: ShortId },
-			dataType: "json",
-			success: function (data) {
-				// Transform JS object to an array
-				if (data != null) {
-					if (data.length == 0) {
-						$('#FirstName').val('');
-						$('#LastName').val('');
-						$('#Email').val('');
-						$('#MobileNo').val('');
-						@* $('#FirstName').removeAttr('disabled');
-							$('#LastName').removeAttr('disabled');
-							$('#Email').removeAttr('disabled');
-							$('#MobileNo').removeAttr('disabled'); *@
-					  }
-					else {
-						console.log(data);
-						instList = data;
-						console.log(instList);
-						$('#FirstName').val(instList.firstName);
-						$('#LastName').val(instList.lastName);
-						$('#Email').val(instList.emailId);
-						$('#MobileNo').val(instList.mobile);
-						$('#DepartmentId option:contains(' + instList.DepartmentId + ')').attr('selected', 'selected');
-						//$('#DepartmentId option').map(function () {
-						//	if ($(this).text() == instList.DepartmentId) return this;
-						//}).attr('selected', 'selected');
+        $.ajax({
+            type: "POST",
+            url: "../User/GetUserInfoFromLDAP",
+            data: { ShortId: ShortId },
+            dataType: "json",
+            success: function (data) {
+                // Transform JS object to an array
+                if (data != null) {
+                    if (data.length == 0) {
+                        $('#FirstName').val('');
+                        $('#LastName').val('');
+                        $('#Email').val('');
+                        $('#MobileNo').val('');
+    @* $('#FirstName').removeAttr('disabled');
+                            $('#LastName').removeAttr('disabled');
+                            $('#Email').removeAttr('disabled');
+                            $('#MobileNo').removeAttr('disabled'); *@
+                                                      }
+                    else {
+                        console.log(data);
+                        instList = data;
+                        console.log(instList);
+                        $('#FirstName').val(instList.firstName);
+                        $('#LastName').val(instList.lastName);
+                        $('#Email').val(instList.emailId);
+                        $('#MobileNo').val(instList.mobile);
+                        // $('#DepartmentId option:contains(' + instList.DepartmentId + ')').attr('selected', 'selected');
+                        //$('#DepartmentId option').map(function () {
+                        //	if ($(this).text() == instList.DepartmentId) return this;
+                        //}).attr('selected', 'selected');
 
-						@* $('#FirstName').attr('disabled','disabled');
-							$('#LastName').attr('disabled','disabled');
-							$('#Email').attr('disabled','disabled');
-							$('#MobileNo').attr('disabled','disabled'); *@
-					  }
-				}
-			}
-		});
-	}
-	function GetUserDetailsData(Level) {
-		var ShortId;
-		if (Level == "L6") {
-			ShortId = $('#ManagerShortId').val();
-		}
-		else if (Level == "L5") {
-			ShortId = $('#KakarichoShortId').val();
-		}
-		else if (Level == "L4") {
-			ShortId = $('#ForemanShortId').val();
-		}
-		else if (Level == "L3") {
-			ShortId = $('#AsstForemanShortId').val();
-		}
-		if ((ShortId == null || ShortId == '')) {
-			return;
-		}
-		else {
-			$.ajax({
-				type: "POST",
-				url: "../User/GetUserInfoFromLDAPData",
-				data: { ShortId: ShortId, Level: Level },
-				dataType: "json",
-				success: function (data) {
-					// Transform JS object to an array
-					if (data != null) {
-						if (Level == "L3") {
-							$('#AsstForemanName').val(data.firstName);
-							$('#AsstForemanEmail').val(data.email);
-						}
-						else if (Level == "L4") {
-							$('#ForemanName').val(data.firstName);
-							$('#ForemanEmail').val(data.email);
+    @* $('#FirstName').attr('disabled','disabled');
+                            $('#LastName').attr('disabled','disabled');
+                            $('#Email').attr('disabled','disabled');
+                            $('#MobileNo').attr('disabled','disabled'); *@
+                                                      }
+                }
+            }
+        });
+    }
+    function GetUserDetailsData(Level) {
+        var ShortId;
+        if (Level == "Dp") {
+            ShortId = $('#DeptCordShortId').val();
+        }
+        //else if (Level == "L5") {
+        //	ShortId = $('#KakarichoShortId').val();
+        //}
+        //else if (Level == "L4") {
+        //	ShortId = $('#ForemanShortId').val();
+        //}
+        //else if (Level == "L3") {
+        //	ShortId = $('#AsstForemanShortId').val();
+        //}
+        if ((ShortId == null || ShortId == '')) {
+            return;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "../User/GetUserInfoFromLDAP",
+                data: { ShortId: ShortId },
+                dataType: "json",
+                success: function (data) {
+                    // Transform JS object to an array
+                    if (data != null) {
+                        if (data.length != 0) {
+                            if (Level == "Dp") {
+                                //instList = data;
+                                $('#DeptCordName').val(data.firstName);
+                                $('#DeptCordEmail').val(data.emailId);
+                            }
+                            //else if (Level == "L4") {
+                            //	$('#ForemanName').val(data.firstName);
+                            //	$('#ForemanEmail').val(data.email);
 
-						}
-						else if (Level == "L5") {
-							$('#KakarichoName').val(data.firstName);
-							$('#KakarichoEmail').val(data.email);
+                            //}
+                            //else if (Level == "L5") {
+                            //	$('#KakarichoName').val(data.firstName);
+                            //	$('#KakarichoEmail').val(data.email);
 
-						}
-						else if (Level == "L6") {
-							$('#ManagerName').val(data.firstName);
-							$('#ManagerEmail').val(data.email);
+                            //}
+                            //else if (Level == "L6") {
+                            //	$('#ManagerName').val(data.firstName);
+                            //	$('#ManagerEmail').val(data.email);
 
-						}
-					}
-					else {
-						if (Level == "L3") {
-							$('#AsstForemanShortId').val('');
-						}
-						else if (Level == "L4") {
-							$('#ForemanShortId').val('');
-						}
-						else if (Level == "L5") {
-							$('#KakarichoShortId').val('');
-						}
-						else if (Level == "L6") {
-							$('#ManagerShortId').val('');
-						}
-						alert("Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.");
-						return;
-					}
-				}
-			});
-		}
-	}
+                            //}
+                        }
+                        else {
+                            $('#DeptCordShortId').val('');
+                        }
+                    }
+                    else {
+                        if (Level == "Dp") {
+                            $('#DeptCordShortId').val('');
+                        }
+                        //else if (Level == "L4") {
+                        //	$('#ForemanShortId').val('');
+                        //}
+                        //else if (Level == "L5") {
+                        //	$('#KakarichoShortId').val('');
+                        //}
+                        //else if (Level == "L6") {
+                        //	$('#ManagerShortId').val('');
+                        //}
+                        alert("Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.");
+                        return;
+                    }
+                }
+            });
+        }
+    }
+
+    //$("#SubSectionCode").change(function ()
+    function GetDepartmentDetails() {
+        //alert($('#SubSectionCode').val());
+        var SubSectCode = $('#SubSectionCode').val();
+        if ((SubSectCode == null || SubSectCode == ''))
+            return;
+        $.ajax({
+            type: "POST",
+            url: "../User/GetDepartmentDetails",
+            //contentType: "application/json; charset=utf-8",
+            data: { SubSectCode: SubSectCode },
+            //dataType: "json",
+            success: function (data) {
+                console.log('data');
+                console.log(data);
+                if (data != null) {
+                    //if ('HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en'){
+                    if (language == 'en') {
+                        $('#SubSectionName').val(data.subSection);
+                        $('#SectionName').val(data.section);
+                        $('#DepartmentName').val(data.name);
+                        $('#DepartmentNameid').val(data.id);
+                    }
+                    else {
+                        $('#SubSectionName').val(data.subSectionJP);
+                        $('#SectionName').val(data.sectionJP);
+                        $('#DepartmentName').val(data.nameJP);
+                        $('#DepartmentNameid').val(data.id);
+                    }
+                    $('#DepartmentCode').val(data.deptCode);
+                    $('#SectionCode').val(data.sectionCode);
+                }
+                else {
+                    //showWarning("Sub Section Code Not Found...!", 'HttpContextAccessor.HttpContext.Session.GetString("Language")');
+                    showWarning("Sub Section Code Not Found...!", language);
+                    $('#SubSectionName').val('');
+                    $('#SectionName').val('');
+                    $('#SectionCode').val('');
+                    $('#DepartmentName').val('');
+                    $('#DepartmentCode').val('');
+                    $('#SubSectionCode').val('');
+                }
+            },
+            error: function (req, status, error) {
+                alert("ERROR:" + error.toString() + " " + status + " " + req.responseText);
+            }
+        });
+    }
+    //});
 </script>
 
 <script>
-	
-	var sourcearray = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.DepartmentList))');
-	//alert(sourcearray);
+    
+   // var sourcearray = JSON.parse('Html.Raw(Json.Serialize(ViewBag.DepartmentList))');
+    let sourcearray = @Html.Raw(Json.Serialize(Model.DepartmentList))
+    
+    //var sourcearray = '@Html.Raw((Model.DepartmentList))';
 
-	var selectDept = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.UserDept))');
-	//alert(selectDept);
-	var eddata = [];
-	$.each(sourcearray, function (key, value) {
-		console.log(value);
-		if (jQuery.inArray(value.id, selectDept) == -1 && value.id == selectDept) {
-			eddata.push({ Id: value.id, Name: value.name, Section: value.section });
-			//alert(value.ShippingMode);
-			//$("#DepartmentId").
-			console.log(eddata);
+    var selectSubSectCode = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.SubSectCode))');
+    var SessionLang = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.SessionLang))');
 
-		}
-	});
-	BindEditSubDepartment(eddata);
+    console.log('Dept List');
+    console.log(sourcearray);
+    console.log(selectSubSectCode);
+    console.log(SessionLang);
 
-
-	function BindEditSubDepartment(data) {
-		console.log(data);
-		$("#SubDepartment").empty();
-		//$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
-		$.each(data, function (key, value) {
-			$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
-		});
-	}
-
-
-
-	$("#DepartmentId").change(function () {
-		var val = this.value;
-		//alert(val);
-		if (val == 66){
-			$("#divSign").show();
-		}
-		else {
-			$("#divSign").hide();
-		}
-		var data = [];
-		$.each(sourcearray, function (key, value) {
-			//console.log(value);
-
-			debugger;
-			if (jQuery.inArray(value.id, val) == -1 && value.id == val && value.section != null) {
-				data.push({ Id: value.id, Name: value.name, Section: value.section });
-				//alert(value.ShippingMode);
-
-			}
-		});
-
-		BindSubDepartment(data);
-	});
+    //alert($("#UserDept").val());
+    var eddata = [];
+   if (selectSubSectCode != null) {
+    $.each(sourcearray, function (key, value) {
+       
+        if (jQuery.inArray(value.subSectionCode, selectSubSectCode) == -1 && value.subSectionCode == selectSubSectCode) {
+            //eddata.push({
+            //    Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP, subSection: value.subSection, subSectionJP: value.subSectionJP, subSectionCode: value.subSectionCode, SectionCode: value.sectionCode, DeptCode: value.deptCode, NameJP: value.nameJP
+            //});
+           
+            if (SessionLang == 'en') {
+                $('#SubSectionName').val(value.subSection);
+                $('#SectionName').val(value.section);
+                $('#DepartmentName').val(value.name);
+                $('#DepartmentNameid').val(value.id);
+            }
+            else {
+                    $('#SubSectionName').val(value.subSectionJP);
+                $('#SectionName').val(value.sectionJP);
+                $('#DepartmentName').val(value.nameJP);
+                $('#DepartmentNameid').val(value.id);
+            }
+            $('#DepartmentCode').val(value.deptCode);
+            $('#SectionCode').val(value.sectionCode);
+        }
+        
+    });
+    }
+    //BindEditSubDepartment(eddata);
 
 
-	function BindSubDepartment(data) {
-		console.log(data);
-		$("#SubDepartment").empty();
-		$("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
-		$.each(data, function (key, value) {		
-			if (value.Section != null) {
-				$("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
-			}
-				
-		});
-	}
-	
+    //function BindEditSubDepartment(data) {
+    //    console.log('\\\\\\\\\\');
+    //    console.log(data);
+    //    $.each(data, function (key, value) {            
+           
+    //        if (language == 'en') {
+    //            $('#SubSectionName').val(value.subSection);
+    //            $('#SectionName').val(value.Section);
+    //            $('#DepartmentName').val(value.Name);
+    //            $('#DepartmentNameid').val(value.Id);
+    //        }
+    //        else {
+    //            $('#SubSectionName').val(value.subSectionJP);
+    //            $('#SectionName').val(value.SectionJP);
+    //            $('#DepartmentName').val(value.NameJP);
+    //            $('#DepartmentNameid').val(value.Id);
+    //        }
+    //        $('#DepartmentCode').val(value.DeptCode);
+    //        $('#SectionCode').val(value.SectionCode);
+    //    });
+    //}
 
-	$(document).ready(function () {
-		
-		var dptid = $("#DepartmentId").val();
-		//alert(dptid);
-		if (dptid == 66) {
-			$("#divSign").show();
-		}
-		else {
-			$("#divSign").hide();
-		}
-		
-	});
 
-	function checkFileSize(element, maxSize, event) {
-		var val = $(element).val(); //get file value
-		var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
-		if (fileSize > maxSize) {
-			alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
-			$("#ImageUpload").val("");
-		}
-		var input = document.getElementById('ImageUpload')
-		var output = document.getElementById('SignImageName')
-		var result = "";
-		result += input.files.item(0).name;
-		output.innerHTML = result;
-	}
+
+    $("#DepartmentId").change(function () {
+        var val = this.value;
+
+        if (val == 66) {
+            $("#divSign").show();
+        }
+        else {
+            $("#divSign").hide();
+        }
+        var data = [];
+        $.each(sourcearray, function (key, value) {
+            //debugger;
+            if (jQuery.inArray(value.id, val) == -1 && value.id == val && value.section != null) {
+                data.push({
+                    Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP
+
+                });
+            }
+        });
+
+        BindSubDepartment(data);
+    });
+
+
+    function BindSubDepartment(data) {
+        $("#SubDepartment").empty();
+        $("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
+        $.each(data, function (key, value) {
+            if (value.Section != null) {
+
+                if (language == "en") {
+                    $("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
+                }
+                else {
+                    $("#SubDepartment").append($("<option></option>").val(value.Id).html(value.SectionJP));
+
+                }
+            }
+
+        });
+    }
+
+
+    //$(document).ready(function () {
+
+    //	var dptid = $("#UserDept").val();
+
+    //	if (dptid == 66) {
+    //		$("#divSign").show();
+    //	}
+    //	else {
+    //		$("#divSign").hide();
+    //	}
+
+    //	//}
+    //});
+
+    function checkFileSize(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload").val("");
+        }
+        var input = document.getElementById('ImageUpload')
+        var output = document.getElementById('SignImageName')
+        var result = "";
+        result += input.files.item(0).name;
+        output.innerHTML = result;
+    }
 </script>
 

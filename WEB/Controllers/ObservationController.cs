@@ -16,40 +16,43 @@ public class ObservationController : BaseController
     }
     public IActionResult ViewObservation(int requestId, int instrumentId)
     {
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+        //ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+        int ObservationTemplateId = _instrumentService.GetObservationTemplateId(instrumentId, "Observation");
+        
+
         string templateName = "Gentral";
-        if (response.ResponseData != null)
+        if (ObservationTemplateId != null)
         {
-            if (response.ResponseData.ObservationTemplate == 71)
+            if (ObservationTemplateId == 71)
             {
                 templateName = "General";
             }
 
-            else if (response.ResponseData.ObservationTemplate == 72)
-            {  
+            else if (ObservationTemplateId == 72)
+            {
                 templateName = "LeverDial";
             }
-            else if (response.ResponseData.ObservationTemplate == 73)
+            else if (ObservationTemplateId == 73)
             {
                 templateName = "Micrometer";
             }
-            else if (response.ResponseData.ObservationTemplate == 74)
+            else if (ObservationTemplateId == 74)
             {
                 templateName = "PlungerDial";
             }
-            else if (response.ResponseData.ObservationTemplate == 75)
+            else if (ObservationTemplateId == 75)
             {
                 templateName = "ThreadGauges";
             }
-            else if (response.ResponseData.ObservationTemplate == 76)
+            else if (ObservationTemplateId == 76)
             {
                 templateName = "TWObs";
             }
-            else if (response.ResponseData.ObservationTemplate == 77)
+            else if (ObservationTemplateId == 77)
             {
                 templateName = "VernierCaliper";
             }
-            if (response.ResponseData.ObservationTemplate == 155)
+            if (ObservationTemplateId == 155)
             {
                 templateName = "GeneralNew";
             }

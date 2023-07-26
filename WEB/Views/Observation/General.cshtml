@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <style>
@@ -358,7 +358,7 @@
 
 
 <script>
-    debugger
+    //debugger
     var counter = 1;
     $(function () {
         $('#add').click(function () {
@@ -401,7 +401,7 @@
     }
     function GetValue(Id) {
         $('#tablerow' + Id + '').each(function () {
-            debugger;
+            //debugger;
             var ActualsT1 = $(this).find("td:eq(1) input[type='text']").val();
             var ActualsT2 = $(this).find("td:eq(2) input[type='text']").val();
             var ActualsT3 = $(this).find("td:eq(3) input[type='text']").val();
@@ -438,7 +438,7 @@
 }
 </script>
 <script>
-    debugger
+    //debugger
     var counter = 1;
     $(function () {
         $('#addManual').click(function () {

@@ -45,10 +45,11 @@
                                     <th class="trn">Phone No</th>
                                     <th class="trn">Login Name</th>
                                     <th class="trn">CreatedDate</th>
-                                    <th class="trn">Asst.Foreman Contact</th>
+                                    @*<th class="trn">Asst.Foreman Contact</th>
                                     <th class="trn">Foreman Contact</th>
                                     <th class="trn">Kakaricho Contact</th>
-                                    <th class="trn">Manager Contact</th>
+                                    <th class="trn">Manager Contact</th>*@
+                                    <th class="trn">Department coordinator Contact</th>
                                     <th class="trn">Edit</th>
                                     <th class="trn">Delete</th>
                                 </tr>
@@ -67,10 +68,11 @@
                                         <td>@item.MobileNo</td>
                                         <td>@item.ShortId</td>
                                         <td>@item.CreatedOn.ToString("dd-MM-yyyy")</td>
-                                        <td>@item.AsstForemanEmail</td>
+                                        @*<td>@item.AsstForemanEmail</td>
                                         <td>@item.ForemanEmail</td>
                                         <td>@item.KakarichoEmail</td>
-                                        <td>@item.ManagerEmail</td>
+                                        <td>@item.ManagerEmail</td>*@
+                                        <td>@item.DeptCordEmail</td>
                                         <td><a href='@Url.Action("UserEdit","User",new {userId=@item.Id})'><i
                                                 class="fas fa-edit"></i></a></td>
                                         <td><a href='@Url.Action("UserDelete","User",new {userId=@item.Id})'

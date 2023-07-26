@@ -102,10 +102,59 @@
 			background: transparent;
 			border: none;
 		}
+
+	.loader {
+		border: 16px solid #f3f3f3;
+		border-radius: 50%;
+		border-top: 16px solid #3498db;
+		/*width: 120px;
+		height: 120px;*/		   
+		display: block;		
+		position: fixed;
+		top: 0;                 
+			right: 0;               
+			bottom: 0;
+			left: 0;
+			margin: auto;
+		z-index: 99;
+		background-position: center;   
+		width: 105px;
+		height: 105px;
+		-webkit-animation: spin 2s linear infinite; /* Safari */
+		animation: spin 2s linear infinite;			
+
+		
+	}
+
+		.overlay {
+			/*/*background-color:darkgrey ; 	*/*/		       
+			position: absolute; 
+			top: 0;                 
+			right: 0;               
+			bottom: 0;
+			left: 0;
+			opacity: 0.5;
+			z-index: -1;
+			backdrop-filter: blur(3px);
+		}
+	
+	
+
+	/* Safari */
+	/*webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+
+	keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}*/
 	</style>
 
 	<div class="wrapper">
 
+		
 		<!-- Navbar -->
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light navbg">
 			<!-- Left navbar links -->
@@ -168,29 +217,37 @@
 					</div>
 					<div class="info">
 						<a href="#" class="d-block">
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
+							@HttpContextAccessor.HttpContext.Session.GetString("LastName")
+							<br />
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
 							{
 								<label id="lblUserType1" name="UserType1">Department User</label>
 
 								<br />
 							}
-						@if( @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 							{
-								<label id="lblUserType2" name="UserType2">Lab Admin</label><br />
-						}
-						@if(  @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+								<label id="lblUserType2" name="UserType2">Lab Admin</label>
+
+								<br />
+							}
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 							{
-								<label id="lblUserType3" name="UserType3">Facility Manager</label><br />
+								<label id="lblUserType3" name="UserType3">Facility Manager</label>
+
+								<br />
 							}
 							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 							{
-								<label id="lblUserType4" name="UserType4">Technical Manager</label><br />
+								<label id="lblUserType4" name="UserType4">Technical Manager</label>
+
+								<br />
 							}
 
-							@HttpContextAccessor.HttpContext.Session.GetString("FirstName")
-							@HttpContextAccessor.HttpContext.Session.GetString("LastName") 
+
 						</a>
-					</div>					
+					</div>
 				</div>
 
 				<!-- Sidebar Menu -->
@@ -380,7 +437,7 @@
 
 								</ul>
 							</li>
-	
+
 							<li class="nav-item has-treeview">
 								<a href="#" class="nav-link">
 									<i class="nav-icon fas fa-chart-pie"></i>
@@ -414,7 +471,7 @@
 
 
 
-						
+
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3")
 						{
@@ -529,7 +586,7 @@
 									</ul>
 								</li>
 
-								
+
 							}
 						}
 					</ul>
@@ -561,6 +618,10 @@
 
 			<div class="container">
 				<main role="main" style="background-color: white;" class="pb-3">
+					<div id="dvload" class="loader justify-content-center align-items-center" style="display:none"></div>
+					@*<div class="overlay" style="display:none">
+						
+					</div>*@
 					@RenderBody()
 					<!-- Button trigger modal -->
 					<!-- Modal l̥-->
@@ -639,26 +700,23 @@
 		<script src="~/js/jquery.translate.js"></script>
 		<script src="~/js/jquery.swaltranslate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
-		<script src="~/js/TranslateValidation.js"></script>
+		@*	<script src="~/js/TranslateValidation.js"></script>*@
 		<script src="~/js/daimler.js"></script>
 
 		<script type="text/javascript">
 			var dicts;
 			var GlDicts;
-			//$(document).ready(function() {
-			//alert(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId"));
 			validateSession('@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")');
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
+			var UserId = '@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'
 
-			//setTimeout(function(){  }, 2000);
-			//var dict = diction();
-			//var dict;
 
 			var dict = diction();
-			//dict = MasterTranslate(dict)
-			MasterTranslate(language)
-			console.log(dict);
-		
+
+			MasterTranslate(language);
+			DepartmentTranslate(language);
+			ObservationTypeTranslation(language);
+
 			var respmsg = '@ViewBag.ResponseMessage';
 
 			showPopup('@ViewBag.ResponseCode', respmsg, language);
@@ -676,10 +734,12 @@
 				var dict = diction();
 				//console.log(dict);
 				MasterTranslate(selected);
-				//dict = MasterTranslate(dict);
+				DepartmentTranslate(selected);
+				ObservationTypeTranslation(selected);
+				
 
-				//dict["2D Linear Height Gauge"] = { jp: "2Dリニアハイトゲージ", en: "2D Linear Height Gauge" };
 				console.log(dict);
+
 
 				language = selected;
 				$('#hdnLanguage').val(selected);
@@ -1000,17 +1060,17 @@
 					"Trial-2": { jp: "試行-2", en: "Trial-2" },
 					"Trial-3": { jp: "試行-3", en: "Trial-3" },
 					"Nominal": { jp: "公称", en: "Nominal" },
-						
-					
+
+
 					"Average": { jp: "平均", en: "Average" },
 					"Calibration Performed By": { jp: "キャリブレーション実施者", en: "Calibration Performed By" },
 					"Reviewed By": { jp: "によってレビュー", en: "Reviewed By" },
 					"Date:": { jp: "日にち：", en: "Date:" },
 					"Cancel": { jp: "キャンセル", en: "Cancel" },
-					"Submit Review": { jp: "レビュー送信", en: "Submit Review"},
+					"Submit Review": { jp: "レビュー送信", en: "Submit Review" },
 					"Temp@Start ": { jp: "温度@開始", en: "Temp@Start " },
-					"Temp@End ": { jp: "温度@終了", en: "Temp@End "},
-					"Approve": { jp: "承認", en: "Approve"},
+					"Temp@End ": { jp: "温度@終了", en: "Temp@End " },
+					"Approve": { jp: "承認", en: "Approve" },
 					"Type / Model": { jp: "種類・型式", en: "Type / Model" },
 					"Range/LC:": { jp: "範囲/LC:", en: "Range/LC:" },
 					"Make:": { jp: "作る：", en: "Make:" },
@@ -1304,40 +1364,40 @@
 
 
 					//Micrometer Template Observation Sheet
-					"Micrometer": { jp: "マイクロメータ", en: "Micrometer"},
-					"Range/LC": { jp: "範囲/LC", en: "Range/LC"},
-					"Actuals": { jp: "実績", en: "Actuals"},
-					"Save": { jp: "保存", en: "Save"},
+					"Micrometer": { jp: "マイクロメータ", en: "Micrometer" },
+					"Range/LC": { jp: "範囲/LC", en: "Range/LC" },
+					"Actuals": { jp: "実績", en: "Actuals" },
+					"Save": { jp: "保存", en: "Save" },
 
 
 					// Torque Wrenches  Template Observation Sheet
-					"Torque Wrenches": { jp: "トルクレンチ", en: "Torque Wrenches"},
-					"Type / Model": { jp: "種類・型式", en: "Type / Model"},
-					"Condition of Torque Wrench & observations if any:": { jp: "トルクレンチの状態と観察結果 (ある場合):", en: "Condition of Torque Wrench & observations if any:"},
-					"WI no :  ": { jp: "WI いいえ:", en: "WI no :  "},
-					"Master used :": { jp: "マスター使用:", en: "Master used :"},
-					"AWS TWC with Transducers": { jp: "AWS TWC とトランスデューサー", en: "AWS TWC with Transducers"},
-					"Norbar TWC with Transducers": { jp: "Norbar TWC トランスデューサ付き", en: "Norbar TWC with Transducers"},
-					"All Values Are In ": { jp: "すべての値が入っています", en: "All Values Are In "},
-					"Fixed Type Wrenches": { jp: "固定式レンチ", en: "Fixed Type Wrenches"},
-					"Nominal Set Value": { jp: "公称設定値", en: "Nominal Set Value"},
-					"Si No": { jp: "シノ", en: "Si No"},
-					"Actual Values": { jp: "実際の値", en: "Actual Values"},
-					"Spec Max(include MU)": { jp: "スペックマックス(MU含む)", en: "Spec Max(include MU)"},
-					"Spec Min(include MU)": { jp: "スペック最小(MUを含む)", en: "Spec Min(include MU)"},
-					"Adjustable Torque Wrenches": { jp: "調整式トルクレンチ", en: "Adjustable Torque Wrenches"},
-					"Measuring Interval": { jp: "測定間隔", en: "Measuring Interval"},
-					"Nominal Value": { jp: "公称値", en: "Nominal Value"},
-					"Spec (Include MU)": { jp: "スペック（MU含む）", en: "Spec (Include MU)"},
-					"Actual Values": { jp: "実際の値", en: "Actual Values"},
-					"SI No": { jp: "SI いいえ", en: "SI No"},
-					"Values": { jp: "価値観", en: "Values"},
-					"Any Other Comments": { jp: "その他のコメント", en: "Any Other Comments"},
+					"Torque Wrenches": { jp: "トルクレンチ", en: "Torque Wrenches" },
+					"Type / Model": { jp: "種類・型式", en: "Type / Model" },
+					"Condition of Torque Wrench & observations if any:": { jp: "トルクレンチの状態と観察結果 (ある場合):", en: "Condition of Torque Wrench & observations if any:" },
+					"WI no :  ": { jp: "WI いいえ:", en: "WI no :  " },
+					"Master used :": { jp: "マスター使用:", en: "Master used :" },
+					"AWS TWC with Transducers": { jp: "AWS TWC とトランスデューサー", en: "AWS TWC with Transducers" },
+					"Norbar TWC with Transducers": { jp: "Norbar TWC トランスデューサ付き", en: "Norbar TWC with Transducers" },
+					"All Values Are In ": { jp: "すべての値が入っています", en: "All Values Are In " },
+					"Fixed Type Wrenches": { jp: "固定式レンチ", en: "Fixed Type Wrenches" },
+					"Nominal Set Value": { jp: "公称設定値", en: "Nominal Set Value" },
+					"Si No": { jp: "シノ", en: "Si No" },
+					"Actual Values": { jp: "実際の値", en: "Actual Values" },
+					"Spec Max(include MU)": { jp: "スペックマックス(MU含む)", en: "Spec Max(include MU)" },
+					"Spec Min(include MU)": { jp: "スペック最小(MUを含む)", en: "Spec Min(include MU)" },
+					"Adjustable Torque Wrenches": { jp: "調整式トルクレンチ", en: "Adjustable Torque Wrenches" },
+					"Measuring Interval": { jp: "測定間隔", en: "Measuring Interval" },
+					"Nominal Value": { jp: "公称値", en: "Nominal Value" },
+					"Spec (Include MU)": { jp: "スペック（MU含む）", en: "Spec (Include MU)" },
+					"Actual Values": { jp: "実際の値", en: "Actual Values" },
+					"SI No": { jp: "SI いいえ", en: "SI No" },
+					"Values": { jp: "価値観", en: "Values" },
+					"Any Other Comments": { jp: "その他のコメント", en: "Any Other Comments" },
 					"Condition of Torque Wrench &amp; observations if any:": { jp: "トルクレンチとトルクレンチの状態観察結果がある場合:", en: "Condition of Torque Wrench &amp; observations if any:" },
 
 					// Thread gauges Template Observation Sheet
-					"Thread Gauges": { jp: "ねじゲージ", en: "Thread Gauges"},
-					"Condition of Thread Gauge": { jp: "ねじゲージの状態", en: "Condition of Thread Gauge"},
+					"Thread Gauges": { jp: "ねじゲージ", en: "Thread Gauges" },
+					"Condition of Thread Gauge": { jp: "ねじゲージの状態", en: "Condition of Thread Gauge" },
 					"Thread Plug Gauge: Go": { jp: "ねじプラグゲージ：GO", en: "Thread Plug Gauge: Go" },
 					"Thread Plug Gauge: NoGo": { jp: "ねじプラグゲージ: NoGo", en: "Thread Plug Gauge: NoGo" },
 					"Effective Diameter Spec.": { jp: "有効径仕様", en: "Effective Diameter Spec." },
@@ -1351,9 +1411,9 @@
 					"Thread Ring Gauge: NoGo": { jp: "スレッドリングゲージ: NoGo", en: "Thread Ring Gauge: NoGo" },
 
 					// Lever Type Dial Template Observation Sheet
-					"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial"},
-					"Format No": { jp: "フォーマット番号", en: "Format No"},
-					"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator"},
+					"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial" },
+					"Format No": { jp: "フォーマット番号", en: "Format No" },
+					"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator" },
 					"Specification": { jp: "仕様", en: "Specification" },
 					"Direction A": { jp: "方向 あ", en: "Direction A" },
 					"Direction B": { jp: "方向 B", en: "Direction B" },
@@ -1362,26 +1422,26 @@
 					"10 scale Division": { jp: "10スケールディビジョン", en: "10 scale Division" },
 					//"Hysteresis": { jp: "ヒステリシス", en: "Hysteresis" },
 					"Repeatability": { jp: "再現性", en: "Repeatability" },
-					
-					
+
+
 					// Dial Indicators(PlungerDial) Template Observation Sheet
-					"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators"},
-"Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :"},
-//"Mechanical Plunger Dial Indicator": { jp: "メカニカルプランジャーダイヤルインジケーター", en: "Mechanical Plunger Dial Indicator"},
-"Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error"},
-//"Digital Plunger Dial Indicator": { jp: "デジタルプランジャーダイヤルインジケーター", en: "Digital Plunger Dial Indicator"},
+					"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators" },
+					"Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :" },
+					//"Mechanical Plunger Dial Indicator": { jp: "メカニカルプランジャーダイヤルインジケーター", en: "Mechanical Plunger Dial Indicator"},
+					"Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error" },
+					//"Digital Plunger Dial Indicator": { jp: "デジタルプランジャーダイヤルインジケーター", en: "Digital Plunger Dial Indicator"},
 
 
 					// Vernier Caliper Template Observation Sheet
-					"Vernier Caliper": { jp: "ノギス", en: "Vernier Caliper"},
-"Condition of Vernier Caliper :": { jp: "ノギスの状態：", en: "Condition of Vernier Caliper :"},
-"ExternalJaw": { jp: "外部顎", en: "ExternalJaw"},
-"Parallelism Details :": { jp: "並列処理の詳細:", en: "Parallelism Details :"},
-"InternalJaw": { jp: "内部顎", en: "InternalJaw"},
-"Depth": { jp: "深さ", en: "Depth"},
-"For MUcalculation": { jp: "MU計算用", en: "For MUcalculation"},
+					"Vernier Caliper": { jp: "ノギス", en: "Vernier Caliper" },
+					"Condition of Vernier Caliper :": { jp: "ノギスの状態：", en: "Condition of Vernier Caliper :" },
+					"ExternalJaw": { jp: "外部顎", en: "ExternalJaw" },
+					"Parallelism Details :": { jp: "並列処理の詳細:", en: "Parallelism Details :" },
+					"InternalJaw": { jp: "内部顎", en: "InternalJaw" },
+					"Depth": { jp: "深さ", en: "Depth" },
+					"For MUcalculation": { jp: "MU計算用", en: "For MUcalculation" },
 
-				
+
 
 					// Only for Place Holder Jp to EN
 					"説明": { jp: "説明", en: "Description" },
@@ -1400,6 +1460,7 @@
 					"L5 マネージャーの電子メール": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email" },
 					"L6 マネージャーの電子メール": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email" },
 					"署名を選択": { jp: "署名を選択", en: "Choose Signature" },
+					"サブセクションコード": { jp: "サブセクションコード", en: "Sub Section Code" },
 
 					//for General Certificate
 
@@ -1410,10 +1471,10 @@
 					"Date of Calibration": { jp: "キャリブレーションの日付", en: "Date of Calibration" },
 					"Next Calibration Due": { jp: "次のキャリブレーション", en: "Next Calibration Due" },
 					"Calibration Due": { jp: "次の校正期限", en: "Calibration Due" },
-					
+
 					"Name of the Customer": { jp: "顧客の名前", en: "Name of the Customer" },
 					"Date of Receipt": { jp: "領収書の日付", en: "Date of Receipt" },
-					"Description of Equipment": { jp: "設備の説明", en: "Description of Equipment" }, 
+					"Description of Equipment": { jp: "設備の説明", en: "Description of Equipment" },
 					"Range": { jp: "範囲", en: "Range" },
 					"Least Count": { jp: "最小数", en: "Least Count" },
 					"Serial No": { jp: "シリアル番号", en: "Serial No" },
@@ -1433,16 +1494,16 @@
 					"The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2": { jp: "記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 95% の信頼水準で推定されます。", en: "The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2" },
 					"Calibrated By": { jp: "校正者", en: "Calibrated By" },
 					"Authorized Signatory": { jp: "承認された署名者", en: "Authorized Signatory" },
-					
+
 					"Lab admin": { jp: "ラボ管理者", en: "Lab admin" },
 					"Technical Manager": { jp: "技術管理者", en: "Technical Manager" },
-					
+
 					"III. Mechanical Calibration Results": { jp: "Ⅲ．機械的校正結果", en: "III. Mechanical Calibration Results" },
 					"Report Issue Date :": { jp: "レポート発行日 :", en: "Report Issue Date :" },
-					"Nominal": { jp: "公称", en: "Nominal"},
+					"Nominal": { jp: "公称", en: "Nominal" },
 					"All Values are in": { jp: "すべての値が入っています", en: "All Values are in" },
-					"Trial-1": { jp: "トライアル-1", en: "Trial-1"},
-					"Trial-2": { jp: "トライアル-1", en: "Trial-2"},
+					"Trial-1": { jp: "トライアル-1", en: "Trial-1" },
+					"Trial-2": { jp: "トライアル-1", en: "Trial-2" },
 					"Trial-3": { jp: "トライアル-1", en: "Trial-3" },
 					//"Average": { jp: "平均", en: "Average" },
 					"IV. Result Of Calibration :": { jp: "IV.キャリブレーションの結果:", en: "IV. Result Of Calibration :" },
@@ -1451,28 +1512,28 @@
 					"Format No : 365.QM.D.16, Rev No : 02": { jp: "フォーマット番号 : 365.QM.D.16、リビジョン番号 : 02", en: "Format No : 365.QM.D.16, Rev No : 02" },
 					"Page 2 of 2": { jp: "2/2 ページ", en: "Page 2 of 2" },
 					"Page 1 of 2": { jp: "1/2 ページ", en: "Page 1 of 2" },
-					"Daimler India Commercial Vehicles Pvt. Ltd -Central Lab": { jp: "ダイムラー・インド商用車社株式会社 - 中央研究所", en: "Daimler India Commercial Vehicles Pvt. Ltd -Central Lab"},
+					"Daimler India Commercial Vehicles Pvt. Ltd -Central Lab": { jp: "ダイムラー・インド商用車社株式会社 - 中央研究所", en: "Daimler India Commercial Vehicles Pvt. Ltd -Central Lab" },
 					"SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,": { jp: "SIPCOT工業団地、オラガダム村、シンガポール・コイル・ロード、", en: "SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road," },
 					"Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.": { jp: "マトゥール (PO)、スリペルンバドゥル タルク、カンチプラム -602105、タミル ナードゥ州、インド。", en: "Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India." },
-					"Phone: +91 44 4969 4456,": { jp: "電話: +91 44 4969 4456、", en: "Phone: +91 44 4969 4456,"},
+					"Phone: +91 44 4969 4456,": { jp: "電話: +91 44 4969 4456、", en: "Phone: +91 44 4969 4456," },
 					"Website: www.daimler-indiacv.com / .bharatbenz.com": { jp: "Webサイト：www.ダイムラー--インドアック。コム / ..バラトベンツ。コム", en: "Website: www.daimler-indiacv.com / .bharatbenz.com" },
 					"Print": { jp: "印刷する", en: "Print" },
 					"Export": { jp: "輸出", en: "Export" },
 					"ReGenerate": { jp: "再生", en: "ReGenerate" },
 					"Cancel": { jp: "キャンセル", en: "Cancel" },
 					"PrintQR Code": { jp: "QRコードを印刷する", en: "PrintQR Code" },
-					"Save": { jp: "保存", en: "Save"},
+					"Save": { jp: "保存", en: "Save" },
 					"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard" },
 					"II. Master & Equipment Used For Calibration & Traceability": { jp: "II.校正とトレーサビリティに使用されるマスターと機器", en: "II. Master & Equipment Used For Calibration & Traceability" },
 					"2. The report shoult not be reproduced either in full or in part without out permission in writing.": { jp: "2. レポートの全部または一部を書面による許可なく複製することはできません。", en: "2. The report shoult not be reproduced either in full or in part without out permission in writing." },
 					"3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.": { jp: "3. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。。", en: "3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE." },
 					"Certificate No": { jp: "証明書の番号", en: "Certificate No" },
 					"1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement.": { jp: "1. キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。", en: "1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement." },
-								"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability" },
-					"Remarks": { jp: "備考", en: "Remarks"},
+					"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability" },
+					"Remarks": { jp: "備考", en: "Remarks" },
 					"Calibration Procedure / <br> Reference Standard :": { jp: "校正手順 / <br> 基準標準 :", en: "Calibration Procedure / <br> Reference Standard :" },
 					"Format No :": { jp: "形式番号:", en: "Format No :" },
-				
+
 					// VernierCaliper Certification Template
 					"External Measurement": { jp: "外部測定", en: "External Measurement" },
 					"Deviation": { jp: "偏差", en: "Deviation" },
@@ -1492,7 +1553,55 @@
 					"Thread Plug Gauge : NoGo": { jp: "ねじプラグゲージ : NoGo", en: "Thread Plug Gauge : NoGo" },
 					"Effective Diameter Max": { jp: "有効径最大値", en: "Effective Diameter Max" },
 					"Effective Diameter Min": { jp: "最小有効径", en: "Effective Diameter Min" },
-					"Effective Diameter Wear limit": { jp: "有効直径 摩耗限界", en: "Effective Diameter Wear limit" }
+					"Effective Diameter Wear limit": { jp: "有効直径 摩耗限界", en: "Effective Diameter Wear limit" },
+
+					//User Creation	
+					"Department User": { jp: "部門ユーザー", en: "Department User" },
+					"LAB Admin": { jp: "ラボ管理者", en: "LAB Admin" },
+					"Facility Manager": { jp: "施設管理者", en: "Facility Manager" },
+					"Technical Manager": { jp: "技術管理者", en: "Technical Manager" },
+					"--- Select User Role ---": { jp: "--- ユーザー役割の選択 ---", en: "--- Select User Role ---" },
+					"--- Select Level ---": { jp: "--- レベルを選択 ---", en: "--- Select Level ---" },
+					"Lab inspector": { jp: "研究所の検査官", en: "Lab inspector" },
+					"LAB Technical": { jp: "ラボテクニカル", en: "LAB Technical" },
+
+					// InstrumentReport page
+					"Active": { jp: "アクティブ", en: "Active" },
+
+					// Calibration Lab Page 
+					"All": { jp: "全て", en: "All" },
+					"January": { jp: "1月", en: "January" },
+					"February": { jp: "2月", en: "February" },
+					"March": { jp: "行進", en: "March" },
+					"April": { jp: "4月", en: "April" },
+					"May": { jp: "5月", en: "May" },
+					"June": { jp: "六月", en: "June" },
+					"July": { jp: "7月", en: "July" },
+					"August": { jp: "8月", en: "August" },
+					"September": { jp: "9月", en: "September" },
+					"October": { jp: "10月", en: "October" },
+					"November": { jp: "11月", en: "November" },
+					"December": { jp: "12月", en: "December" },
+					"New": { jp: "新しい", en: "New" },
+					"Regular": { jp: "通常", en: "Regular" },
+					"Recalibration": { jp: "再校正", en: "Recalibration" },
+
+					//Feedback Invite page
+					"Materials Lab": { jp: "材料研究室", en: "Materials Lab" },
+					"Polymer Lab": { jp: "ポリマーラボ", en: "Polymer Lab" },
+					"Calibration Lab": { jp: "校正ラボ", en: "Calibration Lab" },
+
+					// User Creation Page
+					"Sub Section Code Not Found...!": { jp: "サブセクションコードが見つかりません...!", en: "Sub Section Code Not Found...!" },
+					"Sub Section Code": { jp: "サブセクションコード", en: "Sub Section Code" },
+					"Sub Section Name": { jp: "サブセクション名", en: "Sub Section Name"},
+					"Section Name": { jp: "セクション名", en: "Section Name"},
+					"Section Code": { jp: "セクションコード", en: "Section Code"},
+					"Department Name": { jp: "部署名", en: "Department Name"},
+					"Department Code": { jp: "部門コード", en: "Department Code"},
+					"Department coordinator ID": { jp: "部門コーディネーターID", en: "Department coordinator ID"},
+					"Department coordinator Name": { jp: "部門コーディネーター名", en: "Department coordinator Name"},
+					"Department coordinator Email": { jp: "部門コーディネーターのメールアドレス", en: "Department coordinator Email"},
 
 
 				}
@@ -1521,15 +1630,6 @@
 					$("#MasterInstrument").append(optionhtml);
 
 					$.each(resultObject, function (index, item) {
-						////console.log(item.nameEng)
-						////console.log(item.nameJp)
-
-						//dict[item.nameEng] = { jp: item.nameJp, en: item.nameEng };
-						////dicts = {
-						////	item.nameEng: { jp: item.nameJp, en:item.nameEng };
-						////}
-
-						//$("#MasterInstrument").append($("<option></option>").val(value.CountryId).html(value.CountryName));
 						optionhtml = '';
 						if (lang == 'jp') {
 							//optionhtml = '<option value=""> -- Select -- </option>';
@@ -1545,6 +1645,63 @@
 					});
 
 				});
+				return dict;
+			}
+
+			
+			function DepartmentTranslate(lang) {
+				//DepartmentId
+				var selectedUserDept = $('#UserDept').find("option:selected").val();
+				var selectedDepartmentId = $('#DepartmentId').find("option:selected").val();
+
+				$.ajax({
+					url: '../Home/DepartmentTranslate',
+					type: 'POST',
+					data: ''
+				}).done(function (resultObject) {
+					GlDicts = resultObject;
+
+					var optionhtml;
+					var optionhtmlRole;
+					var optiinhtmlDeptId;
+
+
+					$("#UserDept").empty();
+					$("#DepartmentId").empty();
+
+					if (lang == 'jp') {
+						optionhtml = '<option value=""> -- 部門を選択してください -- </option>';
+					}
+					else {
+						optionhtml = '<option value="">--- Select Department ---</option>';
+					}
+					$("#UserDept").append(optionhtml);
+					$("#DepartmentId").append(optionhtml);
+
+					$.each(resultObject, function (index, item) {
+
+						optionhtml = '';
+						if (lang == 'jp') {
+
+							optionhtml = '<option value="' + item.id + '">' + item.nameJp + '</option>';
+						}
+						else {
+
+							optionhtml = '<option value="' + item.id + '">' + item.name + '</option>';
+						}
+
+						$("#UserDept").append(optionhtml);
+						$("#DepartmentId").append(optionhtml);
+					});
+					/////////////Code for select the value
+					$('#UserDept').val(selectedUserDept).prop("selected", true);
+					$('#DepartmentId').val(selectedDepartmentId).prop("selected", true);
+
+
+
+
+				});
+
 				return dict;
 			}
 
@@ -1574,6 +1731,223 @@
 				var translator = $('body').translate({ lang: language, t: dict });
 			}
 
+
+			/////////////TEMPLATE PART START ////////////////////////
+			function ObservationTypeTranslation(lang) {
+				var SelectObservation = $('#NewObservation').find("option:selected").val();;
+				var SelectMU = $('#NewMU').find("option:selected").val();
+				var SelectCertification = $('#NewCertification').find("option:selected").val();
+				var SelectCalibrationStatus = $('#CalibrationStatus').find("option:selected").val();
+				var SelectCalibFreqId = $('#CalibFreqId').find("option:selected").val(); //For Equipment Master
+				var SelectCalibrationSourceId = $('#CalibrationSourceId').find("option:selected").val();
+				var SelectLocationId = $('#LocationId').find("option:selected").val();
+				var SelectDesignation = $('#Designation').find("option:selected").val();
+				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Mastr
+				$.ajax({
+					url: '../Home/ObservationTypeTranslation',
+					type: 'POST',
+					data: ''
+				}).done(function (resultObject) {
+					//debugger;
+					GlDicts = resultObject;
+					//console.log(resultObject);
+					var optionhtml;
+					var optionhtmlMU;
+					var optionhtmlCT;
+					var optionhtmlCalibFreq;
+					var optionhtmlCalibStatus;
+					var optionhtmlCalibSource;
+					var optionhtmlLocation;
+					var optionhtmlDesignation;
+
+
+					$("#NewObservation").empty();
+					$("#NewMU").empty();
+					$("#NewCertification").empty();
+					$("#CalibFreqId").empty();
+					$("#CalibrationStatus").empty();
+					$("#CalibrationSourceId").empty();
+					$("#LocationId").empty();
+					$("#Designation").empty();
+					$("#CalibFreq").empty();
+
+
+					if (lang == 'jp') {
+						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
+						optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
+						optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
+						optionhtmlCalibFreq = '<option value=""> -- 校正周波数の選択-- </option>';
+						optionhtmlCalibStatus = '<option value=""> -- 校正ステータスの選択 -- </option>';
+						optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
+						optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
+						optionhtmlDesignation = '<option value=""> -- 指定 -- </option>';
+
+					}
+					else {
+						optionhtml = '<option value=""> -- Select Observation Template -- </option>';
+						optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
+						optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
+						optionhtmlCalibFreq = '<option value=""> -- Select Calibration Frequency -- </option>';
+						optionhtmlCalibStatus = '<option value=""> -- Select Calibration Status -- </option>';
+						optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
+						optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
+						optionhtmlDesignation = '<option value=""> -- Select User Designation -- </option>';
+					}
+					$("#NewObservation").append(optionhtml);
+					$("#NewMU").append(optionhtmlMU);
+					$("#NewCertification").append(optionhtmlCT);
+					$("#CalibFreqId").append(optionhtmlCalibFreq);//For Equipment Master
+					$("#CalibrationStatus").append(optionhtmlCalibStatus);
+					$("#CalibrationSourceId").append(optionhtmlCalibSource);
+					$("#LocationId").append(optionhtmlLocation);
+					$("#Designation").append(optionhtmlDesignation);
+					$("#CalibFreq").append(optionhtmlCalibFreq);//For Instrument Master
+
+
+
+					$.each(resultObject, function (index, item) {						
+						if (item.attrName == 'ObservationTemplate') {							
+							optionhtml = '';
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtml = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtml = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#NewObservation").append(optionhtml);
+						}
+
+						if (item.attrName == 'MUTemplate') {
+							optionhtmlMU = '';
+							//console.log("MUTemplate");
+							//console.log(item.attrName);
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#NewMU").append(optionhtmlMU);
+						}
+
+						if (item.attrName == 'CerTemplate') {
+							//console.log("CerTemplate");
+							//console.log(item.attrName);
+
+							optionhtmlCT = '';
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#NewCertification").append(optionhtmlCT);
+						}
+
+						if (item.attrName == 'CalibrationFreq') {
+							optionhtmlCalibFreq = '';
+							//console.log("Frequency");
+							//console.log(item.attrName);
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							//$("#CalibFreqId").append(optionhtmlCalibFreq);
+							$("#CalibFreq").append(optionhtmlCalibFreq);
+
+						}
+
+						if (item.attrName == 'CalibrationStatus') {
+							//console.log("CalibrationStatus");
+							//console.log(item.attrName);
+
+							optionhtmlCalibStatus = '';
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#CalibrationStatus").append(optionhtmlCalibStatus);
+						}
+
+						//////////For Master////////////
+						if (item.attrName == 'CalibrationSource') {
+							//console.log("CalibrationSource");
+							//console.log(item.attrName);
+							optionhtmlCalibSource = '';
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#CalibrationSourceId").append(optionhtmlCalibSource);
+						}
+						if (item.attrName == 'Location') {
+							//console.log("Location");
+							//console.log(item.attrName);
+							optionhtmlLocation = '';
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#LocationId").append(optionhtmlLocation);
+						}
+						//Designation
+
+						if (item.attrName == 'Designation') {
+							optionhtmlDesignation = '';
+							
+							if (lang == 'jp') {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+							}
+							else {
+								//optionhtml = '<option value=""> -- Select -- </option>';
+								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+
+							$("#Designation").append(optionhtmlDesignation);
+						}
+					});
+					$('#NewObservation').val(SelectObservation).prop("selected", true);
+					$('#NewMU').val(SelectMU).prop("selected", true);
+					$('#NewCertification').val(SelectCertification).prop("selected", true);
+					$('#CalibFreqId').val(SelectCalibFreqId).prop("selected", true);
+					$('#CalibrationStatus').val(SelectCalibrationStatus).prop("selected", true);
+					$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);
+					$('#LocationId').val(SelectLocationId).prop("selected", true);
+					$('#Designation').val(SelectDesignation).prop("selected", true);
+					$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
+				});
+			}
+																								/////////////TEMPLATE PART END ////////////////////////
 
 		</script>
 	</div>

@@ -11,6 +11,8 @@ using System.Net.Mail;
 using System.Drawing;
 using System.Linq;
 using System;
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace WEB.Services;
 
@@ -42,10 +44,44 @@ public class RequestService : IRequestService
 	}
 
 	public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId)
-	  {
+	{
 		try
-		{
+		{			
+			UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 			List<RequestViewModel> RequestList = new List<RequestViewModel>();
+
+			DataSet ds = GetRequestList(userId, userRoleId, labUserById.DepartmentId);
+			//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in ds.Tables[0].Rows)
+				{
+					RequestViewModel REQlist = new RequestViewModel
+					{
+						Id = Convert.ToInt32(dr["RequestId"]),
+						ReqestNo = dr["ReqestNo"].ToString(),
+						InstrumentName = dr["InstrumentName"].ToString(),
+						InstrumentId = Convert.ToInt32(dr["InstruementId"]),
+						InstrumentIdNo = dr["IdNo"].ToString(),
+						Range = dr["Range"].ToString(),
+						InstrumentSerialNumber = dr["SlNo"].ToString(),
+						RequestDate = Convert.ToDateTime(dr["RequestDate"]),
+						TypeOfRequest = Convert.ToInt32(dr["TypeOfReqest"]),
+						Status = Convert.ToInt16(dr["StatusId"]),
+						UserDept = Convert.ToInt16(dr["UserDept"]),
+						CertificationTemplate = Convert.ToInt16(dr["CertificationTemplate"]),
+						UserRoleId = userRoleId,
+					};
+					RequestList.Add(REQlist);
+
+				}
+			}
+
+
+
+			#region MyRegion
+			/*
+			
 			if (userRoleId == 2)
 			{
 				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking()
@@ -61,81 +97,36 @@ public class RequestService : IRequestService
 					TypeOfRequest = s.TypeOfReqest,
 					Range = s.InstrumentModel.Range,
 					InstrumentSerialNumber = s.InstrumentModel.SlNo,
-					CalibDate = s.InstrumentModel.CalibDate,
-					DueDate = s.InstrumentModel.DueDate,
+					//CalibDate = s.InstrumentModel.CalibDate,
+					//DueDate = s.InstrumentModel.DueDate,
 					UserDept = s.InstrumentModel.UserDept,
-					SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
-					RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+					//SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+					//RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
 					Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-					ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
-					ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
-					RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-					Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
-					ReceivedBy = s.ReceivedBy,
-					InstrumentCondition = s.InstrumentCondition,
-					Feasiblity = s.Feasiblity,
-					TentativeCompletionDate = s.TentativeCompletionDate,
-					ReceivedDate = s.ReceivedDate,
-					IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
-					ObservationTemplate = s.InstrumentModel.ObservationTemplate,
-					ObservationType = s.InstrumentModel.ObservationType,
-					MUTemplate = s.InstrumentModel.MUTemplate,
+					//ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
+					//ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
+					//RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+					//Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
+					Status = s.StatusId,
+					//ReceivedBy = s.ReceivedBy,
+					//InstrumentCondition = s.InstrumentCondition,
+					//Feasiblity = s.Feasiblity,
+					//TentativeCompletionDate = s.TentativeCompletionDate,
+					//ReceivedDate = s.ReceivedDate,
+					//IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+					//ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+					//ObservationType = s.InstrumentModel.ObservationType,
+					//MUTemplate = s.InstrumentModel.MUTemplate,
 					CertificationTemplate = s.InstrumentModel.CertificationTemplate,
 					UserRoleId = userRoleId,
 					LabResult = s.Result
 				}).ToList();
 			}
-			else if (userRoleId == 4)
+            else if (userRoleId == 4)
 			{
-				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.StatusId == (int)EnumRequestStatus.Approved)
+				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.StatusId== (int)EnumRequestStatus.Approved)
 				.Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
 				.Include(I => I.RequestStatusModel).Where(t => t.StatusId == (int)EnumRequestStatus.Approved)
-				//.Include(r => r.RequestStatusModel.OrderByDescending(k => k.CreatedOn)).Where(rs => rs.RequestStatusModel.Any(d => d.StatusId == 27))
-				//.Include(r => r.RequestStatusModel.GroupBy(j => j.RequestId))
-				//.Include(r => r.RequestStatusModel.Where(rs => rs.StatusId == 27)
-				
-				//.Where(rs => rs.StatusId == 27)) //.Where(rs=>rs.StatusId == 27)//.GroupBy(s => s.RequestStatusModel.FirstOrDefault().RequestId)
-				.Select(s => new RequestViewModel()
-				{
-					Id = s.Id,
-					ReqestNo = s.ReqestNo,
-					InstrumentName = s.InstrumentModel.InstrumentName,
-					InstrumentIdNo = s.InstrumentModel.IdNo,
-					InstrumentId = s.InstrumentId,
-					RequestDate = s.RequestDate,
-					TypeOfRequest = s.TypeOfReqest,
-					Range = s.InstrumentModel.Range,
-					InstrumentSerialNumber = s.InstrumentModel.SlNo,
-					CalibDate = s.InstrumentModel.CalibDate,
-					DueDate = s.InstrumentModel.DueDate,
-					UserDept = s.InstrumentModel.UserDept,
-					SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
-					RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-					Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-					ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
-					ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
-					RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-					Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
-					//Status = (int)EnumRequestStatus.Approved,
-					ReceivedBy = s.ReceivedBy,
-					InstrumentCondition = s.InstrumentCondition,
-					Feasiblity = s.Feasiblity,
-					TentativeCompletionDate = s.TentativeCompletionDate,
-					ReceivedDate = s.ReceivedDate,
-					IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
-					ObservationTemplate = s.InstrumentModel.ObservationTemplate,
-					ObservationType = s.InstrumentModel.ObservationType,
-					MUTemplate = s.InstrumentModel.MUTemplate,
-					CertificationTemplate = s.InstrumentModel.CertificationTemplate,
-					UserRoleId = userRoleId,
-					LabResult = s.Result
-				}).ToList();				
-			}
-           else if (userRoleId == 4)
-			{//Where(t => t.RequestStatus.StatusId == (int)EnumRequestStatus.Approved))
-			 //RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking()
-				RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.StatusId== (int)EnumRequestStatus.Approved)
-				.Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1)).Include(I => I.RequestStatusModel).Where(t => t.StatusId == (int)EnumRequestStatus.Approved)
                 .Select(s => new RequestViewModel()
                 {
                     Id = s.Id,
@@ -147,27 +138,27 @@ public class RequestService : IRequestService
                     TypeOfRequest = s.TypeOfReqest,
                     Range = s.InstrumentModel.Range,
                     InstrumentSerialNumber = s.InstrumentModel.SlNo,
-                    CalibDate = s.InstrumentModel.CalibDate,
-                    DueDate = s.InstrumentModel.DueDate,
+                    //CalibDate = s.InstrumentModel.CalibDate,
+                    //DueDate = s.InstrumentModel.DueDate,
                     UserDept = s.InstrumentModel.UserDept,
-                    SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
-                    RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                    //SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+                    //RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
                     Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.Comment).FirstOrDefault(),
-                    ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
-                    ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
-                    RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-					 Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId ).FirstOrDefault(),
-					//Status = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.StatusId).FirstOrDefault(),
-
-					ReceivedBy = s.ReceivedBy,
-                    InstrumentCondition = s.InstrumentCondition,
-                    Feasiblity = s.Feasiblity,
-                    TentativeCompletionDate = s.TentativeCompletionDate,
-                    ReceivedDate = s.ReceivedDate,
-                    IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
-                    ObservationTemplate = s.InstrumentModel.ObservationTemplate,
-                    ObservationType = s.InstrumentModel.ObservationType,
-                    MUTemplate = s.InstrumentModel.MUTemplate,
+      //              ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
+      //              ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
+      //              RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+					 //Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId ).FirstOrDefault(),
+                    //Status = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.StatusId).FirstOrDefault(),
+                    Status = s.StatusId,
+                    //ReceivedBy = s.ReceivedBy,
+                    //InstrumentCondition = s.InstrumentCondition,
+                    //Feasiblity = s.Feasiblity,
+                    //TentativeCompletionDate = s.TentativeCompletionDate,
+                    //ReceivedDate = s.ReceivedDate,
+                    //IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+                    //ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+                    //ObservationType = s.InstrumentModel.ObservationType,
+                    //MUTemplate = s.InstrumentModel.MUTemplate,
                     CertificationTemplate = s.InstrumentModel.CertificationTemplate,
                     UserRoleId = userRoleId,
                     LabResult = s.Result
@@ -189,31 +180,33 @@ public class RequestService : IRequestService
 										   TypeOfRequest = s.TypeOfReqest,
 										   Range = s.InstrumentModel.Range,
 										   InstrumentSerialNumber = s.InstrumentModel.SlNo,
-										   CalibDate = s.InstrumentModel.CalibDate,
-										   DueDate = s.InstrumentModel.DueDate,
+										   //CalibDate = s.InstrumentModel.CalibDate,
+										   //DueDate = s.InstrumentModel.DueDate,
 										   UserDept = s.InstrumentModel.UserDept,
-										   SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
-										   RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+										   //SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+										   //RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
 										   Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-										   ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
-										   ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
-										   RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-										   Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
-										   ReceivedBy = s.ReceivedBy,
-										   InstrumentCondition = s.InstrumentCondition,
-										   Feasiblity = s.Feasiblity,
-										   TentativeCompletionDate = s.TentativeCompletionDate,
-										   ReceivedDate = s.ReceivedDate,
-										   IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
-										   ObservationTemplate = s.InstrumentModel.ObservationTemplate,
-										   ObservationType = s.InstrumentModel.ObservationType,
-										   MUTemplate = s.InstrumentModel.MUTemplate,
+										   //ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
+										   //ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
+										   //RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+										   //Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
+                                           Status = s.StatusId,
+             //                              ReceivedBy = s.ReceivedBy,
+										   //InstrumentCondition = s.InstrumentCondition,
+										   //Feasiblity = s.Feasiblity,
+										   //TentativeCompletionDate = s.TentativeCompletionDate,
+										   //ReceivedDate = s.ReceivedDate,
+										   //IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+										   //ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+										   //ObservationType = s.InstrumentModel.ObservationType,
+										   //MUTemplate = s.InstrumentModel.MUTemplate,
 										   CertificationTemplate = s.InstrumentModel.CertificationTemplate,
 										   UserRoleId = userRoleId,
 										   LabResult = s.Result
 									   }).ToList();
 			}
-
+			*/
+			#endregion
 			if (RequestList.Any())
 			{
 				var templateObservationList = GetTemplateObservations();
@@ -256,6 +249,27 @@ public class RequestService : IRequestService
 			};
 		}
 	}
+
+	public DataSet GetRequestList(int userid, int userroleid, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetRequestList");
+		cmd.CommandType = CommandType.StoredProcedure;
+		cmd.Parameters.AddWithValue("@userid", userid);
+		cmd.Parameters.AddWithValue("@userroleid", userroleid);
+		cmd.Parameters.AddWithValue("@deptid", deptid);
+		//SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+
+		return dsResults;
+	}
+
 	public ResponseViewModel<RequestViewModel> GetRequestById(int RequestId)
 	{
 		try
@@ -358,8 +372,10 @@ public class RequestService : IRequestService
 			RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
 			RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
 			RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
-			instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
-			var CFreq = RequestById.CalibFreq;
+			RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList()); ;
+            instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
+           // RequestById.MasterEqiupmentList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList(); ;
+            var CFreq = RequestById.CalibFreq;
 			RequestById.CalibFrequency = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq" && W.Id == CFreq).Select(x => x.AttrValue).SingleOrDefault();
 			List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == RequestId).ToList();
 			if (UploadList.Count > 0)
@@ -512,6 +528,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - InsertRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -589,11 +606,11 @@ public class RequestService : IRequestService
 			};
 		}
 	}
-	public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
+	public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
 	{
 		try
 		{
-			_unitOfWork.BeginTransaction();
+            _unitOfWork.BeginTransaction();
 
 			RequestStatus reqestStatus = new RequestStatus();
 			reqestStatus.RequestId = requestId;
@@ -631,7 +648,8 @@ public class RequestService : IRequestService
 
 			Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
 			instrumentById.IsNABL = newNABL;
-			instrumentById.ObservationTemplate = newObservation;
+			instrumentById.IdNo = InstrumentIdNo;
+            instrumentById.ObservationTemplate = newObservation;
 			instrumentById.ObservationType = newObservationType;
 			instrumentById.MUTemplate = newMU;
 			instrumentById.CertificationTemplate = newCertification;
@@ -752,6 +770,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - AcceptRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -998,6 +1017,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - RejectRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1417,6 +1437,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SubmitLABRequestVisual Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1584,6 +1605,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SubmitNewRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1691,6 +1713,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SubmitQuarantineRequest Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,
@@ -1703,19 +1726,25 @@ public class RequestService : IRequestService
 			};
 		}
 	}
-	public ResponseViewModel<LovsViewModel> GetLovs(string attrType, string attrsubType)
+	public ResponseViewModel<LovsViewModel> GetLovs(string attrType, string attrsubType, string LangType)
 	{
 		try
 		{
 			List<LovsViewModel> lovsList = new List<LovsViewModel>();
 			if (attrsubType != null && attrsubType != "")
 			{
-				lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == attrsubType).ToList());
+				if (LangType == "en")				
+                    lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == attrsubType).ToList());                
+				else				
+                    lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrformJp == attrsubType).ToList());                
 			}
 			else
 			{
-				lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == attrType).ToList());
-			}
+				if(LangType == "en")
+					lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == attrType).ToList());
+				else
+                    lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrNameJp == attrType).ToList());
+            }
 
 
 			return new ResponseViewModel<LovsViewModel>
@@ -1864,6 +1893,7 @@ public class RequestService : IRequestService
 		{
 			ErrorViewModelTest.Log("RequestService - SaveInstrumentData Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 500,

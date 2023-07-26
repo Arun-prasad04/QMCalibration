@@ -459,8 +459,8 @@
                     border-block-width: 2px; border: 2px solid #000; display: flex;">
             <div style="padding:10px">
                 <p style="margin: 0px; font-size: 12px;" class="trn">1. The Calibration results are valid at the time of & under the stated conditions of measurement.</p>
-                <p style="margin: 0px; font-size: 12px;" class="trn"> 2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
-                <p style="margin: 0px; font-size: 12px;" class="trn"> 3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">2. The report shoult not be reproduced either in full or in part without out permission in writing.</p>
+                <p style="margin: 0px; font-size: 12px;" class="trn">3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.</p>
             </div>
             <div><img style="padding:10px;" src="../image/footer1.png" alt="" height="60px" width="250px"></div>
         </div>
@@ -469,7 +469,7 @@
                     <tr style="font-size: small;">
                         <td style="width:325px; padding-bottom: 25px; width: 800px;">
                             <div >
-                                <h4 style="font-size: small;" class="trn"> Format No : 365.QM.D.16, Rev No : 02</h4>
+                                <h4 style="font-size: small;" class="trn">Format No : 365.QM.D.16, Rev No : 02</h4>
                             </div>
                         </td>
                         <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
@@ -487,16 +487,16 @@
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
 
-                    <input type="button" value="ReGenerate" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary">
+                    <input type="button" value="ReGenerate" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary trn">
                 }
-                <input type="button" class="btn btn-primary" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
-                <a class="btn btn-primary" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
+                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />	
+                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification",new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>Print QR Code</a>
              }
              else
              {
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
-                    <input type="button" value="Save" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary">
+                    <input type="button" value="Save" onclick="SaveCertificate('PlungerDail',language)" class="btn btn-primary trn">
 
                 }
              }
@@ -506,7 +506,7 @@
 </body>
 @* ************************************************************************* *@
 
-<div id="Pdfhtml" style="display: block;">
+<div id="Pdfhtml" style="display: none;">
 
     <body style="font-family: Calibri;">
         <!-- page1 start-->

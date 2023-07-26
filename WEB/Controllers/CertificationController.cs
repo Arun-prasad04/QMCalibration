@@ -39,39 +39,40 @@ public class CertificationController : BaseController
   }
   public IActionResult ViewCertification(int requestId, int instrumentId)
   {
-    ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-    string templateName = "Gentral";
-    if (response.ResponseData != null)
+    //ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+		int CertificationTemplateId = _instrumentService.GetObservationTemplateId(instrumentId, "Certification");
+		string templateName = "Gentral";
+    if (CertificationTemplateId != null)
     {
-      if (response.ResponseData.CertificationTemplate == 99)
+      if (CertificationTemplateId == 99)
       {
         templateName = "General";
       }
-      else if (response.ResponseData.CertificationTemplate == 156)
+      else if (CertificationTemplateId == 156)
       {
         templateName = "GeneralNew";
       }
-      else if (response.ResponseData.CertificationTemplate == 88)
+      else if (CertificationTemplateId == 88)
       {
         templateName = "LeverDial";
       }
-      else if (response.ResponseData.CertificationTemplate == 89)
+      else if (CertificationTemplateId == 89)
       {
         templateName = "Micrometer";
       }
-      else if (response.ResponseData.CertificationTemplate == 98)
+      else if (CertificationTemplateId == 98)
       {
         templateName = "PlungerDial";
       }
-      else if (response.ResponseData.CertificationTemplate == 100)
+      else if (CertificationTemplateId == 100)
       {
         templateName = "ThreadGauges";
       }
-      else if (response.ResponseData.CertificationTemplate == 101)
+      else if (CertificationTemplateId == 101)
       {
         templateName = "TWObs";
       }
-      else if (response.ResponseData.CertificationTemplate == 102)
+      else if (CertificationTemplateId == 102)
       {
         templateName = "VernierCaliper";
       }

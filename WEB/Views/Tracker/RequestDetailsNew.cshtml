@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "Request Details";
 }
 @using Microsoft.AspNetCore.Http
@@ -52,6 +52,7 @@
                             <input type="hidden" name="IsNABL" id="IsNABL" value="@Model.IsNABL">
                             <input type="hidden" id="hdnInstrumentId" value="@Model.InstrumentId">
                             <input type="hidden" id="hdnDepartmentId" value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentId")'>
+                            <input type="hidden" id="hdnLanguage" value=''>
                             @* <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default"
                             value="Instrument List"></a> *@
                         </div>
@@ -154,7 +155,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="trn">Set Value for TW</label>
+                                <label class="trn">Set Value for Torque Wrench</label>
                                 <input type="text" class="form-control" id="NewTW_Type" value="@Model.TW" disabled>
                             </div>
                         </div>
@@ -378,8 +379,8 @@
                                 <div class="form-group">
                                     <label class="trn">Feasiblity</label>
                                     <select id="Feasiblity" class="form-control">
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
+                                        <option value="Yes" class="trn">Yes</option>
+                                        <option value="No" class="trn">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -398,13 +399,13 @@
                                     <select id="NewNABL" name="NewNABL" class="form-control" onchange="getNABLValue(this)">
                                         @if (Model.IsNABL == false)
                                         {
-                                            <option value="false" selected>No</option>
-                                            <option value="true">Yes</option>
+                                            <option value="false" class="trn" selected>No</option>
+                                            <option value="true" class="trn">Yes</option>
                                         }
                                         else if (Model.IsNABL == true)
                                         {
-                                            <option value="true" selected>Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" class="trn" selected>Yes</option>
+                                            <option value="false" class="trn">No</option>
                                         }
                                     </select>
                                 </div>
@@ -589,11 +590,11 @@
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-5">
                                     <div class="form-group">
                                         <label class="trn">Master Instrument Name</label>
                                         <select id="MasterInstrument" name="MasterInstrument" class="form-control">
-                                            <option class="trn">--Select Master--</option>
+                                            <option class="trn">-- Select Master --</option>
                                             @*@if(@ViewBag.MasterData!=null)
                                         {
                                         @foreach (var master in @ViewBag.MasterData)
@@ -613,7 +614,42 @@
 
                                     <div id="masterEquipmentValue">
                                     </div>
+
+                                    @*<div class="col-sm-5">
+                                        <input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
+                                               value="@Model.MasterInstrument1">
+                                        <input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
+                                               value="@Model.MasterInstrument2">
+                                        <input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
+                                               value="@Model.MasterInstrument3">
+                                        <input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
+                                               value="@Model.MasterInstrument4">
+
+                                        <div id="masterEquipmentValue">
+                                            @if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+                                            {
+                                                int i = 1;
+                                                @foreach (var master in Model.MasterEqiupmentList)
+                                                {
+                                                    string identifier = "masvalue" + @i;
+                                                    <div id='@identifier'>
+                                                        @master.EquipName <i class="fas fa-trash"
+                                                                             onclick="DeleteMasterEqiupment(@i)"></i><br>
+                                                    </div>
+                                                    ;
+                                                    i = i + 1;
+                                                }
+                                            }
+                                        </div>
+                                    </div>*@
                                 </div>
+                                <div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Instrument Id Number</label>
+                                        <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
+											   class="form-control" placeholder="" alt="Please fill this field">
+									</div>
+								</div>
                             </div>
 
                             <div class="row">
@@ -621,18 +657,19 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template</label>
-                                        <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control">
-                                            @foreach (var freq in @Model.ObservationTemplateList)
-                                            {
-                                                if (freq.Id == Model.ObservationTemplate)
-                                                {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
-                                                }
-                                            }
+                                        <select id="NewObservation" onchange="LoadObservationTypePopup(language)" class="form-control">
+                                           @* <option>-- Select Observation Template --</option>*@
+                                            @*@foreach (var freq in @Model.ObservationTemplateList)
+                                        {
+                                        if (freq.Id == Model.ObservationTemplate)
+                                        {
+                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                        }
+                                        }*@
                                         </select>
                                     </div>
                                 </div>
@@ -652,17 +689,18 @@
                                     <div class="form-group">
                                         <label class="trn">MU Template</label>
                                         <select id="NewMU" class="form-control">
-                                            @foreach (var freq in @Model.MUTemplateList)
-                                            {
-                                                if (freq.Id == Model.MUTemplate)
-                                                {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
-                                                }
-                                            }
+                                            @*<option class="trn">-- Select MU Template --</option>*@
+                                            @*@foreach (var freq in @Model.MUTemplateList)
+                                        {
+                                        if (freq.Id == Model.MUTemplate)
+                                        {
+                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                        }
+                                        }*@
                                         </select>
 
                                     </div>
@@ -672,17 +710,18 @@
                                     <div class="form-group">
                                         <label class="trn">Certification Template</label>
                                         <select id="NewCertification" class="form-control">
-                                            @foreach (var freq in @Model.CertificationTemplateList)
-                                            {
-                                                if (freq.Id == Model.CertificationTemplate)
-                                                {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
-                                                }
-                                            }
+                                            @*<option class="trn">-- Select Certification Template --</option>*@
+                                            @*@foreach (var freq in @Model.CertificationTemplateList)
+                                        {
+                                        if (freq.Id == Model.CertificationTemplate)
+                                        {
+                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                        }
+                                        }*@
                                         </select>
                                     </div>
                                 </div>
@@ -708,17 +747,32 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template</label>
-                                        <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control" disabled>
+                                        <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled>
                                             @foreach (var freq in @Model.ObservationTemplateList)
                                             {
-                                                if (freq.Id == Model.ObservationTemplate)
+                                                if (@ViewBag.SessionLang == "en")
                                                 {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    if (freq.Id == Model.ObservationTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
+                                                    if (freq.Id == Model.ObservationTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
+                                                    }
                                                 }
+
                                             }
                                         </select>
                                     </div>
@@ -727,7 +781,7 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template Type</label>
-                                        <select id="NewObservationType" class="form-control" disabled>
+                                        <select id="NewObservationTypeEd" class="form-control" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -738,16 +792,30 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">MU Template</label>
-                                        <select id="NewMU" class="form-control" disabled>
+                                        <select id="NewMUEd" class="form-control" disabled>
                                             @foreach (var freq in @Model.MUTemplateList)
                                             {
-                                                if (freq.Id == Model.MUTemplate)
+                                                if (@ViewBag.SessionLang == "en")
                                                 {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    if (freq.Id == Model.MUTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
+                                                    if (freq.Id == Model.MUTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
+                                                    }
                                                 }
                                             }
                                         </select>
@@ -757,16 +825,30 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Certification Template</label>
-                                        <select id="NewCertification" class="form-control" disabled>
+                                        <select id="NewCertificationEd" class="form-control" disabled>
                                             @foreach (var freq in @Model.CertificationTemplateList)
                                             {
-                                                if (freq.Id == Model.CertificationTemplate)
+                                                if (@ViewBag.SessionLang == "en")
                                                 {
-                                                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    if (freq.Id == Model.CertificationTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
+                                                    if (freq.Id == Model.CertificationTemplate)
+                                                    {
+                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
+                                                    }
                                                 }
                                             }
                                         </select>
@@ -1442,15 +1524,49 @@
 </section>
 <script>
     function enableFields() {
-        document.getElementById("NewObservation").disabled = false;
-        document.getElementById("NewObservationType").disabled = false;
-        document.getElementById("NewMU").disabled = false;
-        document.getElementById("NewCertification").disabled = false;
+        document.getElementById("NewObservationEd").disabled = false;
+        document.getElementById("NewObservationTypeEd").disabled = false;
+        document.getElementById("NewMUEd").disabled = false;
+        document.getElementById("NewCertificationEd").disabled = false;
         document.getElementById("newSubmitLABAdmin").disabled = false;
     }
 
 </script>
+
 <script>
+    var selectlang;
+    $(document).ready(function(){
+        //selectlang = $('#hdnLanguage').val();
+        console.log('language');
+        console.log(selectlang);
+
+
+        var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
+        var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
+
+        if ('@HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en') {
+            $.each(ObservationTypeList, function (index, item) {
+
+                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
+                }
+            });
+        }
+        else {
+            $.each(ObservationTypeList, function (index, item) {
+            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+                $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
+            }
+        });
+        }
+    })
+
+    
+
+</script>
+
+<script>
+
     function getNABLValue(option) {
         document.getElementById("IsNABL").value = option.value;
     }
