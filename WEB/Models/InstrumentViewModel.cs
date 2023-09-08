@@ -85,5 +85,22 @@ public class InstrumentViewModel
     public int? UserRoleId {get; set;}
     public int? RequestStatus {get; set;}
 	public string? Grade { get; set; }
+	public int? RequestId { get; set; }
+		public string? TypeOfEquipment { get; set; }
+		public string? ToolInventory { get; set; }
+		public int? ToolInventoryStatus { get; set; }
+		public int? InstrumentCount { get; set; }
+		public string? ReplacementLabID { get; set; }
+		public int? ToolRoomStatus { get; set; }
+
+
+	}
+	public class Instrumentids
+	{
+		public string InstrumentId { get; set; }
+		
+		public string ReplacementLabId { get; set; }
+		
+
 	}
 }

@@ -33,4 +33,5 @@ ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int 
             DateTime calibDate,
             DateTime dueDate,
             DateTime dateOfReceipt);
+	ResponseViewModel<RequestViewModel> InsertDueRequest(string[] Request, int userId);
 }

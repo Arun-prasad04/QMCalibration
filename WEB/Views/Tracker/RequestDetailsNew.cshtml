@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Request Details";
+	ViewData["Title"] = "Request--- Details";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -373,6 +373,7 @@
                                 <div class="form-group">
                                     <label class="trn">Instrument Condition</label>
                                     <input type"text" id="InstrumentCondition" class="form-control" value="">
+									<label id="InstrumentConditionError" class="" style="display:none; color: red;">Please Enter Instrument Condition</label>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -390,6 +391,7 @@
                                     <label class="required trn">Standard Reffered/Calibration Method</label>
                                     <input type="text" id="StandardReffered" name="StandardReffered" value=""
                                            class="form-control" placeholder="">
+									<label id="StandardRefferedError" class="" style="display:none; color: red;">Please Enter Standard Reffered/Calibration Method</label>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -594,8 +596,8 @@
                                     <div class="form-group">
                                         <label class="trn">Master Instrument Name</label>
                                         <select id="MasterInstrument" name="MasterInstrument" class="form-control">
-                                            <option class="trn">-- Select Master --</option>
-                                            @*@if(@ViewBag.MasterData!=null)
+											@* <option class="trn">-- Select Master --</option>
+                                           @if(@ViewBag.MasterData!=null)
                                         {
                                         @foreach (var master in @ViewBag.MasterData)
                                         {
@@ -1494,7 +1496,7 @@
 									<div class="form-group" style="text-align:right;">
 										<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
 											   onclick="newSubmitReqDepVisual(language)">
-										<a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+										<a href='@Url.Action("Request","Tracker")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
 									</div>
 								</div>
 							</div>

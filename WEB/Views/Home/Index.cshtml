@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
 	ViewData["Title"] = "Home Page";
 }
 @using Microsoft.AspNetCore.Http
@@ -8,6 +10,8 @@
 	<div class="container-fluid">
 		<!-- Small boxes (Stat box) -->
 		<div class="row">
+			@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) != 5)
+			{
 			<div class="col-lg-4 col-6">
 				<!-- small box -->
 				<div class="small-box bg-warning">
@@ -23,12 +27,13 @@
 					{
 						<a href="../Tracker/ExternalRequest" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
 					}
-					else
+					else 
 					{
 						<a href="../Tracker/Request" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
 					}
 				</div>
 			</div>
+			}
 			
 			<!-- ./col -->
 			@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 || Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 1)
@@ -67,7 +72,24 @@
 					</div>
 				</div>
 			}
+			@* @if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 5 )
+			{
+				<div class="col-lg-4 col-6">
+					<!-- small box -->
+					<div class="small-box bg-success">
+						<div class="inner">
+							<h3>@ViewBag.InstrumentCount<sup style="font-size: 20px"></sup></h3>
 
+							<p class="trn">Tool Room Instruments</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-stats-bars"></i>
+							
+						</div>
+						<a href="../Instrument/ToolInventory" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			} *@
 			<!-- ./col -->
 			<!-- ./col -->
 		</div>

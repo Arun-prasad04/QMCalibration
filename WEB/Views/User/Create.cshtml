@@ -96,6 +96,14 @@
                                         {
                                             <option value="4" class="trn">LAB Technical</option>
                                         }
+                                        @if (Model.UserRoleId == 5)
+                                        {
+                                            <option value="5" selected="true" class="trn">Tool Inventory Manager</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="5" selected="true" class="trn">Tool Inventory Manager</option>
+                                        }
                                     </select>
                                 </div>
                             </div>

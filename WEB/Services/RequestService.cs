@@ -13,6 +13,8 @@ using System.Linq;
 using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.CodeAnalysis;
+
 
 namespace WEB.Services;
 
@@ -373,6 +375,7 @@ public class RequestService : IRequestService
 			RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
 			RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
 			RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
+			RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList());
 			instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
 			var CFreq = RequestById.CalibFreq;
 			RequestById.CalibFrequency = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq" && W.Id == CFreq).Select(x => x.AttrValue).SingleOrDefault();
@@ -407,6 +410,129 @@ public class RequestService : IRequestService
 		}
 
 	}
+	//public ResponseViewModel<RequestViewModel> InsertDueRequest(string[] Request, int userId)
+	//{
+	//	//try
+	//	//{
+	//		for (var i = 0; i < Request.Length; i++)
+	//		{
+	//			var item = Request[i];
+	//			// work with item here
+
+	//			_unitOfWork.BeginTransaction();
+	//			User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
+	//			User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId && Q.DepartmentId == userById.DepartmentId).FirstOrDefault();
+	//			User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).FirstOrDefault();
+	//			//Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == Request[i]).SingleOrDefault();
+	//			//Request newRequest = new Request();
+	//			//Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
+	//			//long maxId = 1;
+	//			//if (getMaxId != null)
+	//			//{
+	//			//	maxId = getMaxId.Id + 1;
+	//			//}
+	//			//string requestNumberFormat = maxId.ToString().PadLeft(4, '0');
+	//			//newRequest.ReqestNo = "CR" + DateTime.Now.Year + requestNumberFormat;
+	//			//newRequest.InstrumentId = instrumentById.Id;
+	//			//newRequest.RequestDate = DateTime.Now;
+	//			//newRequest.TypeOfReqest = typeId;
+	//			//newRequest.CreatedBy = userId;
+	//			//if (typeId == 3)
+	//			//{
+	//			//	newRequest.UserL4 = DeptuserByL4Id.Id;
+	//			//	newRequest.LabL4 = LabuserByL4Id.Id;
+	//			//}
+	//			//newRequest.CreatedOn = DateTime.Now;
+	//			//newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
+	//			//_unitOfWork.Repository<Request>().Insert(newRequest);
+	//			//_unitOfWork.SaveChanges();
+	//			//RequestStatus ReqestStatus = new RequestStatus();
+	//			//ReqestStatus.RequestId = newRequest.Id;
+	//			//ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
+	//			//ReqestStatus.CreatedOn = DateTime.Now;
+	//			//ReqestStatus.CreatedBy = userId;
+	//			//_unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
+	//			//_unitOfWork.SaveChanges();
+	//			//_unitOfWork.Commit();
+	//			//string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+	//			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(UserId)).SingleOrDefault());
+	//			//List<UserViewModel> fmUserById = _mapper.Map<List<UserViewModel>>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2 && Q.Level != "L4").ToList());
+	//			//List<string> emailList = new List<string>();
+	//			//string RequestType = string.Empty;
+	//		}
+	//	//}
+	//}
+
+	public ResponseViewModel<RequestViewModel> InsertDueRequest(string[] Request, int userId)
+	{
+		try
+		{
+			//_unitOfWork.BeginTransaction();
+			//User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
+			//User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId && Q.DepartmentId == userById.DepartmentId).FirstOrDefault();
+			//User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).FirstOrDefault();
+			//Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
+			//Request newRequest = new Request();
+			//Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
+			//long maxId = 1;
+			//if (getMaxId != null)
+			//{
+			//	maxId = getMaxId.Id + 1;
+			//}
+			//string requestNumberFormat = maxId.ToString().PadLeft(4, '0');
+			//newRequest.ReqestNo = "CR" + DateTime.Now.Year + requestNumberFormat;
+			//newRequest.InstrumentId = instrumentById.Id;
+			//newRequest.RequestDate = DateTime.Now;
+			//newRequest.TypeOfReqest = typeId;
+			//newRequest.CreatedBy = userId;
+			//if (typeId == 3)
+			//{
+			//	newRequest.UserL4 = DeptuserByL4Id.Id;
+			//	newRequest.LabL4 = LabuserByL4Id.Id;
+			//}
+			//newRequest.CreatedOn = DateTime.Now;
+			//newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
+			//_unitOfWork.Repository<Request>().Insert(newRequest);
+			//_unitOfWork.SaveChanges();
+			//RequestStatus ReqestStatus = new RequestStatus();
+			//ReqestStatus.RequestId = newRequest.Id;
+			//ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
+			//ReqestStatus.CreatedOn = DateTime.Now;
+			//ReqestStatus.CreatedBy = userId;
+			//_unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
+			//_unitOfWork.SaveChanges();
+			//_unitOfWork.Commit();
+			//string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(UserId)).SingleOrDefault());
+			//List<UserViewModel> fmUserById = _mapper.Map<List<UserViewModel>>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2 && Q.Level != "L4").ToList());
+			//List<string> emailList = new List<string>();
+			//string RequestType = string.Empty;
+			return new ResponseViewModel<RequestViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("RequestService - InsertRequest Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
+			return new ResponseViewModel<RequestViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Request",
+				ResponseServiceMethod = "InsertRequest"
+			};
+		}
+	}
+
 	public ResponseViewModel<RequestViewModel> InsertRequest(int instrumentId, int userId, int typeId)
 	{
 		try
@@ -628,7 +754,7 @@ public class RequestService : IRequestService
 
 
 			int Tyear = TentativeCompletionDate.Year;
-			//int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
+	
 
 			if (Tyear.Equals(1))
 			{

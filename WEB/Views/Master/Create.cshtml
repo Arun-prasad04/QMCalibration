@@ -141,7 +141,7 @@
 											<option value="">--Select Calibration Source--</option>
 											@foreach (var source in @Model.CalibrationSourceList)
 											{
-												if (source.Id == Model.CalibrationSourceId)
+												@if(source.Id == Model.CalibrationSourceId)
 												{
 													<option value="@source.Id" selected="selected">@source.AttrValue</option>
 												}
@@ -149,7 +149,7 @@
 												{
 													<option value="@source.Id">@source.AttrValue</option>
 												}
-											}*@
+											}
 
 										</select>
 									</div>
@@ -162,7 +162,7 @@
 											<option value="">--Select Location --</option>
 											@foreach (var location in @Model.LocationList)
 											{
-												if (location.Id == Model.LocationId)
+												@if(location.Id == Model.LocationId)
 												{
 													<option value="@location.Id" selected="selected">@location.AttrValue</option>
 												}
@@ -170,7 +170,7 @@
 												{
 													<option value="@location.Id">@location.AttrValue</option>
 												}
-											}*@
+											}
 
 
 										</select>
@@ -205,8 +205,8 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="CalibFreq" class="required trn">Calibration Frequency</label>
-										<select id="CalibFreqId" name="CalibFreqId" class="form-control">
-											<option value="">--Select Calibration Frequency --</option>
+										<select id="CalibFreqMaster" name="CalibFreqMaster" class="form-control">
+										@*	<option value="">--Select Calibration Frequency --</option>
 
 											@foreach (var freq in @Model.CalibrationFreq)
 											{
@@ -218,7 +218,7 @@
 												{
 													<option value="@freq.Id">@freq.AttrValue</option>
 												}
-											}
+											}*@
 
 										</select>
 									</div>

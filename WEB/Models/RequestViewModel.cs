@@ -98,7 +98,7 @@ public partial class RequestViewModel
 	//To Bind and Display Master Data
 	public List<MasterViewModel> MasterData { get; set; }
 	public List<MasterViewModel> MasterEqiupmentList { get; set; }
-
+	public List<LovsViewModel> LovsList { get; set; }
 	//To Display Instrument Id Number
 	public string? IdNo { get; set; }
 }

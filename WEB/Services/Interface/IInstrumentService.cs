@@ -1,4 +1,6 @@
+using System.Diagnostics.Metrics;
 using CMT.DATAMODELS;
+using Org.BouncyCastle.Asn1.Ocsp;
 using WEB.Models;
 namespace WEB.Services.Interface; 
 public interface IInstrumentService
@@ -16,4 +18,10 @@ public interface IInstrumentService
  ResponseViewModel<InstrumentViewModel> GetInstrumentListByName(string instrumentName);
  ResponseViewModel<InstrumentViewModel> GetInstrumentListByIdNo(string idNo);
  ResponseViewModel<InstrumentViewModel> GetCurrentMonthDueList();
+	ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept);
+	ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int userId);
+	ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument();
+	ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId);
+
+
 }

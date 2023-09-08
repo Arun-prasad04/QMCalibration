@@ -51,6 +51,11 @@ namespace CMT.DATAMODELS
     public int? MasterInstrument4 {get;set;}
     public virtual User UserModel{get;set;}
 	public string? Grade { get; set; }
-		
+	public string? TypeOfEquipment { get; set; }
+	public string? ToolInventory { get; set; }
+	public int? ToolInventoryStatus { get; set; }
+    public string? ReplacementLabID { get; set; }
+	public int? ToolRoomStatus { get; set; }
+
 	}
 }

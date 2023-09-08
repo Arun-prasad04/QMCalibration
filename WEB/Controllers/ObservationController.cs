@@ -5,62 +5,72 @@ using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services.Interface;
 using AutoMapper;
-
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace WEB.Controllers;
 public class ObservationController : BaseController
 {
-    private IRequestService _requestService { get; set; }
-    private IObservationTemplateService _ObservationTemplateService { get; set; }
-    private IInstrumentService _instrumentService { get; set; }
-    public ObservationController(IObservationTemplateService observationTemplateService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IInstrumentService instrumentService) : base(logger, contextAccessor)
-    {
-        _ObservationTemplateService = observationTemplateService;
-        _requestService = requestService;
-        _instrumentService = instrumentService;
-    }
-    public IActionResult ViewObservation(int requestId, int instrumentId)
-    {
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-        string templateName = "Gentral";
-        if (response.ResponseData != null)
-        {
-            if (response.ResponseData.ObservationTemplate == 71)
-            {
-                templateName = "General";
-            }
+	private readonly IMapper _mapper;
+	private IUnitOfWork _unitOfWork { get; set; }
+	private IRequestService _requestService { get; set; }
+	private IObservationTemplateService _ObservationTemplateService { get; set; }
+	private IInstrumentService _instrumentService { get; set; }
+	private IMasterService _iMasterService { get; set; }
+	public ObservationController(IObservationTemplateService observationTemplateService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IInstrumentService instrumentService, IUnitOfWork unitOfWork) : base(logger, contextAccessor)
+	{
+		_ObservationTemplateService = observationTemplateService;
+		_requestService = requestService;
+		_instrumentService = instrumentService;
+		_unitOfWork = unitOfWork;
+	}
+	public IActionResult ViewObservation(int requestId, int instrumentId)
+	{
+		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+		int ObservationTemplateId = _instrumentService.GetObservationTemplateId(instrumentId, "Observation");
 
-            else if (response.ResponseData.ObservationTemplate == 72)
-            {  
-                templateName = "LeverDial";
-            }
-            else if (response.ResponseData.ObservationTemplate == 73)
-            {
-                templateName = "Micrometer";
-            }
-            else if (response.ResponseData.ObservationTemplate == 74)
-            {
-                templateName = "PlungerDial";
-            }
-            else if (response.ResponseData.ObservationTemplate == 75)
-            {
-                templateName = "ThreadGauges";
-            }
-            else if (response.ResponseData.ObservationTemplate == 76)
-            {
-                templateName = "TWObs";
-            }
-            else if (response.ResponseData.ObservationTemplate == 77)
-            {
-                templateName = "VernierCaliper";
-            }
-            if (response.ResponseData.ObservationTemplate == 155)
-            {
-                templateName = "GeneralNew";
-            }
-        }
-        return RedirectToAction(templateName, new { requestId = requestId, instrumentId = instrumentId });
-    }
+
+		string templateName = "Gentral";
+		if (ObservationTemplateId != null)
+		{
+			if (ObservationTemplateId == 71)
+			{
+				templateName = "General";
+			}
+
+			else if (ObservationTemplateId == 72)
+			{
+				templateName = "LeverDial";
+			}
+			else if (ObservationTemplateId == 73)
+			{
+				templateName = "Micrometer";
+			}
+			else if (ObservationTemplateId == 74)
+			{
+				templateName = "PlungerDial";
+			}
+			else if (ObservationTemplateId == 75)
+			{
+				templateName = "ThreadGauges";
+			}
+			else if (ObservationTemplateId == 76)
+			{
+				templateName = "TWObs";
+			}
+			else if (ObservationTemplateId == 77)
+			{
+				templateName = "VernierCaliper";
+			}
+			if (ObservationTemplateId == 155)
+			{
+				templateName = "GeneralNew";
+			}
+		}
+		return RedirectToAction(templateName, new { requestId = requestId, instrumentId = instrumentId });
+	}
+
+
+
 
 	#region "Lever Dial Type"
 	public IActionResult LeverDial(int requestId, int instrumentId)
@@ -186,25 +196,19 @@ public class ObservationController : BaseController
 		if (ViewBag.ObservationTypeMicro == "Depth micrometer")//For Depth micrometer
 		{
 			micrometer.Flatness1 = "1";
+			micrometer.InstrumentErrValue = "1";
 		}
-		response = _ObservationTemplateService.InsertMicrometer(micrometer);
-
-
-		TempData["ResponseCode"] = response.ResponseCode;
-		TempData["ResponseMessage"] = response.ResponseMessage;
-		//return Json(response.ResponseData);
-
-		if (response.ResponseMessage == "Success")
+		if (ViewBag.ObservationTypeMicro == "Depth micrometer")//For Depth micrometer
 		{
-			return RedirectToAction("Request", "Tracker", new { reqType = 4 });
-
 		}
+			
+			response = _ObservationTemplateService.InsertMicrometer(micrometer);
+		
 
-		else
-		{
-			return View(response.ResponseData);
-		}
-
+		//TempData["ResponseCode"] = response.ResponseCode;
+		//TempData["ResponseMessage"] = response.ResponseMessage;
+		return Json(response.ResponseData);
+				
 	}
 
 	public IActionResult InsertVernierCaliper(VernierCaliperViewModel verniercaliper)
@@ -495,18 +499,24 @@ public class ObservationController : BaseController
 		string firstName = base.SessionGetString("FirstName");
 		string lastName = base.SessionGetString("LastName");
 		ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-		
+
 		ResponseViewModel<MasterViewModel> MasterEqiupmentList = _ObservationTemplateService.GetEquipmentListByInstrumentId(Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument1), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument2), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument3), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument4));
 		ViewBag.ObservationTypeMicro = "";
 		var objtype = instrumentresponse.ResponseData.ObservationType;
-		
+
 		if (!(objtype.Equals(0) || objtype.Equals(null)))
 		{
-			Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id ==Convert.ToInt32(objtype)).SingleOrDefault();
-		
-			ViewBag.ObservationTypeMicro = objlovs.AttrValue;
-			//intConvert.ToInt32(base.SessionGetString("ObservationMicro"));
-			HttpContext.Session.SetString("ObservationMicro", objlovs.AttrValue);//@Accessor.HttpContext.Session.GetString("ObservationMicro")
+
+			Lovs objlovsModel = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(objtype)).SingleOrDefault();
+
+			if (objlovsModel != null)
+			{
+				if (objlovsModel.Id != 0)
+				{
+					ViewBag.ObservationTypeMicro = objlovsModel.AttrValue;
+				}
+			}
+			//HttpContext.Session.SetString("ObservationMicro", objlovsModel.AttrValue);
 		}
 		ResponseViewModel<MicrometerViewModel> response = _ObservationTemplateService.GetMicrometerById(requestId, instrumentId);
 		if (response.ResponseData != null)
@@ -527,9 +537,9 @@ public class ObservationController : BaseController
 			response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
 			response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
 			// instrumentresponse.ResponseData.ObservationType = 1159)
-			 
-			
-			
+
+
+
 			if (userRoleId == 1)
 			{
 				response.ResponseData.IsDisabled = "disabled";
@@ -565,6 +575,21 @@ public class ObservationController : BaseController
 				MicroResultList.Add(MicroResultViewModel);
 				response.ResponseData.MicrometerAddResultViewModelList = MicroResultList;
 			}
+			//if (response.ResponseData.MicrometerAddResultViewModelTwoList == null
+			//	 || response.ResponseData.MicrometerAddResultViewModelTwoList.Count() == 0)
+			//{
+			//	MicrometerResultViewModel MicroResultViewModel = new MicrometerResultViewModel()
+			//	{
+			//		SNO = 5,
+			//		MeasuedValue = "0",
+			//		ActualsT1 = "0",
+			//		Diff1 = "0",
+			//	};
+
+			//	List<MicrometerResultViewModel> MicroResultList = new List<MicrometerResultViewModel>();
+			//	MicroResultList.Add(MicroResultViewModel);
+			//	response.ResponseData.MicrometerAddResultViewModelTwoList = MicroResultList;
+			//}
 		}
 		else
 		{
@@ -615,7 +640,18 @@ public class ObservationController : BaseController
 			List<MicrometerResultViewModel> MicroResultList = new List<MicrometerResultViewModel>();
 			MicroResultList.Add(MicroResultViewModel);
 			micrometer.MicrometerAddResultViewModelList = MicroResultList;
+			//For Parallelism Check Add New Row Option
+			//MicrometerResultViewModel MicroResultViewModelTwo = new MicrometerResultViewModel()
+			//{
+			//	SNO = 5,
+			//	MeasuedValue = "0",
+			//	ActualsT1 = "0",
+			//	Diff1 = "0",
+			//};
 
+			//List<MicrometerResultViewModel> MicroResultListTwo = new List<MicrometerResultViewModel>();
+			//MicroResultListTwo.Add(MicroResultViewModelTwo);
+			//response.ResponseData.MicrometerAddResultViewModelTwoList = MicroResultListTwo;
 			responseempty.ResponseData = micrometer;
 			return View(responseempty.ResponseData);
 		}
