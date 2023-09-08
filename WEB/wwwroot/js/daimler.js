@@ -773,7 +773,7 @@ function AcceptRejectRequest(lang) {
         if (ValidateCheck() >= 1) {
             AcceptRequest(2);
         }
-        
+
     } else {
         if ($('#reason').val() != '') {
             $('#reason').removeClass('is-invalid');
@@ -786,31 +786,35 @@ function AcceptRejectRequest(lang) {
 }
 
 function ValidateCheck() {
-    debugger;
+    //debugger;
     var errCount = 0;
+    $('#StandardRefferedError').hide();
+    $('#InstrumentConditionError').hide();
     //alert('NewObservation' + $('#NewObservation').val())
-    if (($('#InstrumentCondition').val()) == '') {        
+    if (($('#InstrumentCondition').val()) == '') {
         errCount = errCount + 1;
+        $('#InstrumentConditionError').show();
     }
     else {
         //$('#').hide();
     }
 
-    if (($('#StandardReffered').val()) == '') {        
+    if (($('#StandardReffered').val()) == '') {
         errCount = errCount + 1;
+        $('#StandardRefferedError').show();
     }
     else {
         //$('#DeptShortNameError').hide();
     }
 
-    if (($('#NewObservation').val()) == '') {        
+    if (($('#NewObservation').val()) == '') {
         errCount = errCount + 1;
     }
     else {
         //$('#SourcePlantError').hide();
     }
 
-    if (($('#NewMU').val()) == '') {        
+    if (($('#CalibFreq').val()) == '') {
         errCount = errCount + 1;
     }
     else {
@@ -826,17 +830,100 @@ function ValidateCheck() {
     return errCount;
 }
 
+
+function DudeDateCalculation(dt) {
+
+    var duedate;
+    if (dt == 13) {
+        duedate = getduedate(30);
+    }
+    else if (dt == 14) {
+        duedate = getduedate(60);
+    }
+    else if (dt == 15) {
+        duedate = getduedate(90);
+    }
+    else if (dt == 16) {
+        duedate = getduedate(120);
+    }
+    else if (dt == 17) {
+        duedate = getduedate(150);
+    }
+    else if (dt == 18) {
+        duedate = getduedate(180);
+    }
+    else if (dt == 19) {
+        duedate = getduedate(210);
+    }
+    else if (dt == 20) {
+        duedate = getduedate(240);
+    }
+    else if (dt == 21) {
+        duedate = getduedate(270);
+    }
+    else if (dt == 22) {
+        duedate = getduedate(300);
+    }
+    else if (dt == 23) {
+        duedate = getduedate(330);
+    }
+    else if (dt == 24) {
+        duedate = getduedate(365);
+    }
+    else if (dt == 25) {
+        duedate = getduedate(730);
+    }
+    else if (dt == 111) {
+        duedate = getduedate(1095);
+    }
+    else if (dt == 154) {
+        duedate = getduedate(1460);
+    }
+    else {
+        duedate = getduedate(0);
+    }
+    return duedate;
+}
+
+function getduedate(dt) {
+    debugger;
+    var nowDate = new Date();
+    //console.log(nowDate);
+    var addDate = new Date(nowDate.setDate(nowDate.getDate() + dt));
+    //console.log(addDate);			
+    let lastDay = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0);
+    //console.log(lastDay);
+    var nowDay = (lastDay.getDate());
+    //var nowDay = ((lastDay.getDate().toString().length) == 1) ? '0' + (lastDay.getDate()) : (lastDay.getDate());
+    //var nowMonth = ((lastDay.getMonth().toString().length) == 1) ? '0' + (lastDay.getMonth() + 1) : (lastDay.getMonth() + 1);
+    var nowMonth = (lastDay.getMonth() + 1);
+    var nowYear = lastDay.getFullYear();
+    var formatDate = nowYear + "-" + nowMonth + "-" + nowDay + " " + addDate.getHours() + ":" + addDate.getMinutes() + ":" + addDate.getSeconds();
+
+    //console.log(formatDate);
+    return formatDate;
+}
+
 function AcceptRequest(type, lang) {
+    debugger;
     var data;
     var Id = $('#RequestCalibId').val();
+    
+    var dueDate;      
+    var dt = $('#CalibFreq').val();
+    dueDate = DudeDateCalculation(dt);
+    console.log('duedate');
+    console.log(dueDate);
+    
     data = {
         requestId: $('#RequestCalibId').val(),
         ReceivedBy: $('#ReceivedBy').val(),
         InstrumentCondition: $('#InstrumentCondition').val(),
-        Feasiblity: $('#Feasiblity').val(),
+        ToolInventory: $('#ToolInventory').val(),
+        Scope: $('#Scope').val(),
         TentativeCompletionDate: $('#TentativeCompletionDate').val(),
         newNABL: $('#IsNABL').val(),
-        InstrumentIdNo: $('#txtIdNo').val(),
+        CalibFreq: $('#CalibFreq').val(),
         newObservation: $('#NewObservation').val(),
         newObservationType: $('#NewObservationType').val(),
         newMU: $('#NewMU').val(),
@@ -845,7 +932,8 @@ function AcceptRequest(type, lang) {
         MasterInstrument1: $('#MasterInstrument1').val(),
         MasterInstrument2: $('#MasterInstrument2').val(),
         MasterInstrument3: $('#MasterInstrument3').val(),
-        MasterInstrument4: $('#MasterInstrument4').val()
+        MasterInstrument4: $('#MasterInstrument4').val(),
+        DueDate: dueDate
     }
     $.ajax({
         url: '../Tracker/AcceptRequest',
@@ -889,7 +977,8 @@ function RejecttRequest(type, lang) {
             requestId: $('#RequestCalibId').val(),
             ReceivedBy: $('#ReceivedBy').val(),
             InstrumentCondition: $('#InstrumentCondition').val(),
-            Feasiblity: $('#Feasiblity').val(),
+            Scope: $('#Scope').val(),
+            ToolInventory: $('#ToolInventory').val(),
             TentativeCompletionDate: $('#TentativeCompletionDate').val(),
             rejectReason: $('#Newreason').val(),
             standardReffered: $('#StandardReffered').val()
@@ -899,7 +988,8 @@ function RejecttRequest(type, lang) {
             requestId: $('#RequestCalibId').val(),
             ReceivedBy: $('#ReceivedBy').val(),
             InstrumentCondition: $('#InstrumentCondition').val(),
-            Feasiblity: $('#Feasiblity').val(),
+            Scope: $('#Scope').val(),
+            ToolInventory: $('#ToolInventory').val(),
             TentativeCompletionDate: $('#TentativeCompletionDate').val(),
             rejectReason: $('#Newreason').val(),
             standardReffered: $('#StandardReffered').val()
@@ -964,7 +1054,7 @@ function SaveLABAdminUpdates(lang) {
         AssignRequestValues(resultObject);
         showSuccess("Certificate Updated Successfully", lang);
         window.location.href = '../Tracker/Request?reqType=4';
-       // disableFields();
+        // disableFields();
     });
 }
 function SubmitReqLABVisual(lang) {
@@ -1136,15 +1226,19 @@ function NewReqEnableReason() {
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         $('#NewReasonSection').css('display', 'none');
         $('#NewacceptSection').css('display', 'block');
+        //$('#ExternalRejectSection').css('display', 'none');
+        $('#ExternalAcceptSection').css('display', 'block');
     } else {
 
         $('#NewReasonSection').css('display', 'block');
         $('#NewacceptSection').css('display', 'none');
+        $('#ExternalRejectSection').css('display', 'block');
+
     }
 }
 
 function AcceptRejectNewRequest(lang) {
-    debugger;
+    
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
@@ -1153,9 +1247,9 @@ function AcceptRejectNewRequest(lang) {
             AcceptRequest(type, lang);
         }
         else {
-            alert('Please Select Observation Templates...');
+            showWarning('Please Select Observation Templates, Observation Template Type, Certification Template Values...!', lang);
         }
-        
+
     } else {
         if ($('#Newreason').val() != '') {
             $('#Newreason').removeClass('is-invalid');
@@ -1166,6 +1260,138 @@ function AcceptRejectNewRequest(lang) {
         }
     }
 }
+
+function AcceptRejectExternalRequest(lang) {
+    var type = $('#hdntype').val();
+    if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
+        showWarning("Please choose either Accept / Reject and try again.", lang);
+    } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
+        if ($('#txtIdNo').val() != '') {
+            ExternalAcceptRequest(type, lang);
+        }
+        else {
+            showWarning('Please Enter Instrument Id Number...!', lang);
+        }
+
+    } else {
+        if ($('#Newreason').val() != '') {
+            $('#Newreason').removeClass('is-invalid');
+            ExternalRejecttRequest(type, lang);
+        } else {
+            $('#Newreason').addClass('is-invalid');
+            showWarning("Please enter reason for rejection and try again.", lang);
+        }
+    }
+}
+
+function ExternalRejecttRequest(type, lang)
+{
+    console.log($('#TentativeCompletionDate').val());
+    var data1;
+    if (type == 1) {
+        data1 = {
+            requestId: $('#RequestCalibId').val(),
+            ReceivedBy: $('#ReceivedBy').val(),
+            InstrumentCondition: $('#InstrumentCondition').val(),
+            Feasiblity: $('#Feasiblity').val(),
+            TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+            rejectReason: $('#Newreason').val(),
+            standardReffered: $('#StandardReffered').val()
+        };
+    } else if (type == 2) {
+        data1 = {
+            requestId: $('#RequestCalibId').val(),
+            ReceivedBy: $('#ReceivedBy').val(),
+            InstrumentCondition: $('#InstrumentCondition').val(),
+            Feasiblity: $('#Feasiblity').val(),
+            TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+            rejectReason: $('#Newreason').val(),
+            standardReffered: $('#StandardReffered').val()
+        }
+    }
+    console.log(data1);
+    $.ajax({
+        type: 'POST',
+        url: '../Tracker/ExternalRejectRequest',
+        data: data1,
+        dataType: 'json',
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+
+function ExternalAcceptRequest(type, lang) {
+    var data1;
+    var formData = new FormData();
+    var Id = $('#RequestCalibId').val();
+    //var files = $("#ImageUpload")[0].files;
+
+    var file = $('#ImageUpload')[0].files[0];
+    //formData.append("file", file);
+    //data1 = {
+    //    requestId: $('#RequestCalibId').val(),
+    //    ReceivedBy: $('#ReceivedBy').val(),
+    //    InstrumentCondition: $('#InstrumentCondition').val(),
+    //    Feasiblity: $('#Feasiblity').val(),
+    //    TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+    //    newNABL: $('#IsNABL').val(),
+    //    InstrumentIdNo: $('#txtIdNo').val(),
+    //    rejectReason: $('#Newreason').val(),
+    //    photo: FileData
+    //}
+
+    formData.append("requestId", $('#RequestCalibId').val());
+    formData.append("ReceivedBy", $('#ReceivedBy').val());
+    formData.append("InstrumentCondition", $('#InstrumentCondition').val());
+    formData.append("Feasiblity", $('#Feasiblity').val());
+    formData.append("TentativeCompletionDate", $('#TentativeCompletionDate').val());
+    formData.append("newNABL", $('#IsNABL').val());
+    formData.append("InstrumentIdNo", $('#txtIdNo').val());
+    formData.append("acceptReason", $('#Acceptreason').val());
+    formData.append("httpPostedFileBase", file);
+
+    ////formData.append("data", JSON.stringify(data1));
+
+    //formData.append("httpPostedFileBase", $("#ImageUpload")[0].files[0]);
+    //var totalFiles = document.getElementById('ImageUpload').files.length;
+    //for (var i = 0; i < totalFiles; i++) {
+    //    var file = document.getElementById('ImageUpload').files[i];
+    //    formData.append("httpPostedFileBase", file);
+    //}
+    $.ajax({
+        type: 'POST',
+        url: '../Tracker/ExternalAcceptRequest',
+        data: formData,
+        dataType: 'json',
+        processData: false,
+        contentType: false, 
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+function ValidateCheckForExternal() {
+    debugger;
+    var errCount = 0;
+    $('#txtIdNoError').hide();        
+    if (($('#txtIdNo').val()) == '') {
+        errCount = errCount + 1;
+        $('#txtIdNoError').show();
+    }    
+    return errCount;
+}
+
 
 function AcceptRejectReCalibrationRequest(lang) {
     var type = $('#hdntype').val();
@@ -1327,7 +1553,7 @@ function RejecttQuarRequest() {
 
 
 function LoadObservationType(lang) {
-    
+
     var optionhtmlOBType;
     $.ajax({
         url: '../Tracker/LoadObservationType',
@@ -1346,25 +1572,24 @@ function LoadObservationType(lang) {
         }
         $('#ObservationType').append(optionhtmlOBType);
         for (let index = 0; index < resultObject.length; index++) {
-           
+
             optText = resultObject[index].attrValue;
             optValue = resultObject[index].id;
-           
-            optTextJp = resultObject[index].attrValueJp;
-            
 
-            if (lang == 'en')
-            {
-                
+            optTextJp = resultObject[index].attrValueJp;
+
+
+            if (lang == 'en') {
+
                 $('#ObservationType').append(`<option value="${optValue}">${optText}</option>`);
             }
             else {
-                
+
                 $('#ObservationType').append(`<option value="${optValue}">${optTextJp}</option>`);
             }
-            
+
         }
-        
+
     });
 
 }
@@ -1411,56 +1636,79 @@ function SaveLeverDial(lang) {
 
 function SaveMicrometer(lang) {
     var MicroResult;
-    var ObjParent='';
+    var ObjParent = '';
+    var Unit = $('#Allvalues').val();
+    if (Unit == null || Unit == "") {
+        showWarning("Please enter the Unit !!!", lang);
+        return true;
+    }
+
+    var Temprature = $('#TempStart').val();
+    if (Temprature == null || Temprature == "") {
+        showWarning("Please enter the Temprature !!!", lang);
+        return true;
+    }
+    var Humidity = $('#Humidity').val();
+    if (Humidity == null || Humidity == "") {
+        showWarning("Please enter the Humidity !!!", lang);
+        return true;
+    }
+    var MicrometerCondition = $('#MicrometerCondition').val();
+    if (MicrometerCondition == null || MicrometerCondition == "") {
+        showWarning("Please enter the Visual Check !!!", lang);
+        return true;
+    }
     //var ObservationType = @Json.Serialize(@ViewBag.ObservationTypeMicro);
     MicroResult = new Array();
     $('#Microadd tbody tr').each(function (row, tr) {
-        
-       
-        
+
+
+
         if ($('#Microadd >tbody >tr').length > 2) {
 
-            if ($(tr).index() > 2)
-            {
-            ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();
-            
-      
-           if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
-                console.log("New value");
-                var MicroData = {
-                    SNO: $(tr).find("td:eq(0) input[type='text']").val(),
-                    MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
-                    ActualsT1: $(tr).find("td:eq(2) input[type='text']").val(),
-                    Diff1: $(tr).find("td:eq(3) input[type='text']").val(),
-                    Id: $(tr).find("td:eq(4) input[type='hidden']").val(),
-                    ParentId: ObjParent,
-                    InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
-                    
-               }
-                //MicroResult.push(MicroData);
-            }
-            MicroResult.push(MicroData);
+            if ($(tr).index() > 2) {
+                ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();
+
+
+                if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
+                    console.log("New value");
+                    var MicroData = {
+                        SNO: $(tr).find("td:eq(0) input[type='text']").val(),
+                        MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
+                        ActualsT1: $(tr).find("td:eq(2) input[type='text']").val(),
+                        Diff1: $(tr).find("td:eq(3) input[type='text']").val(),
+                        Id: $(tr).find("td:eq(4) input[type='hidden']").val(),
+                        ParentId: ObjParent,
+                        InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
+
+                    }
+                    //MicroResult.push(MicroData);
+                }
+                MicroResult.push(MicroData);
             }
 
         }
-        else
-        {
-            MicroResult.pop(MicroData); 
+        else {
+            MicroResult.pop(MicroData);
         }
-       
+
 
         console.log("Micro Result");
         console.log(MicroResult);
-      
+
     });
-  
+
     console.log("Micro Micro Result");
     console.log(MicroResult);
+    console.log("Micro Micro Values");
+    console.log($('#tablerowFlatness').find("td:eq(0) input[type='text']").val());
+    console.log($('#tablerowFlatness').find("td:eq(1) input[type='text']").val());
+    console.log($('#tablerowFlatness').find("td:eq(2) input[type='text']").val());
     var data = {
         Id: $('#IdMicro').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
         TempStart: $('#TempStart').val(),
-      //  TempEnd: $('#TempEnd').val(),
+        //  TempEnd: $('#TempEnd').val(),
         Humidity: $('#Humidity').val(),
         RefWi: $('#RefWi').val(),
         Allvalues: $('#Allvalues').val(),
@@ -1473,14 +1721,14 @@ function SaveMicrometer(lang) {
         MuInterval1: $('#MuInterval1').val(),
         //ActualsT21: $('#ActualsT21').val(),
         //ActualsT31: $('#ActualsT31').val(),
-       
-       
+
+
         //ActualsT22: $('#ActualsT22').val(),
         //ActualsT32: $('#ActualsT32').val(),
         Avg2: $('#Avg2').val(),
         ActualsT12: $('#ActualsT12').val(),
         MuInterval2: $('#MuInterval2').val(),
-      
+
         //ActualsT23: $('#ActualsT23').val(),
         //ActualsT33: $('#ActualsT33').val(),
         Avg3: $('#Avg3').val(),
@@ -1525,10 +1773,10 @@ function SaveMicrometer(lang) {
         //ActualsT211: $('#ActualsT211').val(),
         //ActualsT311: $('#ActualsT311').val(),
         //Avg11: $('#Avg11').val(),
-       // Flatness1: $('#Flatness1').val(),
-       // Flatness2: $('#Flatness2').val(),
-       // ParallelismSpec: $('#ParallelismSpec').val(),
-       // Actuals: $('#Actuals').val(),
+        // Flatness1: $('#Flatness1').val(),
+        // Flatness2: $('#Flatness2').val(),
+        // ParallelismSpec: $('#ParallelismSpec').val(),
+        // Actuals: $('#Actuals').val(),
         ReviewedBy: $('#ReviewedBy').val(),
         CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
         CalibrationPerformedDate: $('#CalibrationPerformedDate').val(),
@@ -1545,7 +1793,7 @@ function SaveMicrometer(lang) {
         //Measurement10: $('#Measurement10').val(),
         //Measurement11: $('#Measurement11').val(),
         //MURemarks: $('#MURemarks').val(),
-        
+
         InstrumentErrValue: $('#InstrumentErrValue').val(),
         FlatnessMeasure: $('#tablerowFlatness').find("td:eq(0) input[type='text']").val(),
         FlatnessActual: $('#tablerowFlatness').find("td:eq(1) input[type='text']").val(),
@@ -1554,13 +1802,146 @@ function SaveMicrometer(lang) {
 
     }
     $.ajax({
-        url:'../Observation/InsertMicrometer',
+        url: '../Observation/InsertMicrometer',
         type: 'POST',
         data: { micrometer: data }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
+}
+
+
+function SaveMetalRule(lang) {
+    debugger;
+    var MicroResult;
+    var validationcheck = true;
+    var ObjParent = '';
+
+    var Unit = $('#Allvalues').val();
+    if (Unit == null || Unit == "") {
+        showWarning("Please enter the Unit !!!", lang);
+        return true;
+    }
+
+    var Temprature = $('#TempStart').val();
+    if (Temprature == null || Temprature == "") {
+        showWarning("Please enter the Temprature !!!", lang);
+        return true;
+    }
+    var Humidity = $('#Humidity').val();
+    if (Humidity == null || Humidity == "") {
+        showWarning("Please enter the Humidity !!!", lang);
+        return true;
+    }
+    var MicrometerCondition = $('#MetalRulesCondition').val();
+    if (MicrometerCondition == null || MicrometerCondition == "") {
+        showWarning("Please enter the Visual Check !!!", lang);
+        return true;
+    }
+    MicroResult = new Array();
+
+    $('#MetalRule1 tbody tr').each(function (row, tr) {
+
+        if ($('#MetalRule1 >tbody >tr').length > 0) {
+            console.log("0000000000-------ididididi");
+            console.log($(tr).index());
+            // if ($(tr).index() >= 0) {
+            //ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();
+            console.log("0000000000");
+
+            if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
+                var MicroData = {
+                    Id: $(tr).find("td:eq(0) input[id='id']").val(),
+                    SNO: $(tr).find("td:eq(0) input[type='text']").val(),
+                    MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
+                    Actuals: $(tr).find("td:eq(2) input[type='text']").val(),
+                    InstrumentError: $(tr).find("td:eq(3) input[type='text']").val(),
+                    MasterView1: 1
+                    // Id: $(tr).find("td:eq(4) input[type='hidden']").val(),
+                    // ParentId: ObjParent,
+                    // InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
+                }
+                //MicroResult.push(MicroData);
+            }
+            else {
+                validationcheck = false;
+                showWarning('Enter the Squareness values....', lang)
+
+            }
+            MicroResult.push(MicroData);
+            // }
+
+        }
+        else {
+            MicroResult.pop(MicroData);
+        }
+    });
+
+    var obsType = $('#ObservationTypeMetalId').val();
+    if (obsType != 165) {
+
+        $('#MetalRule2 tbody tr').each(function (row, tr) {       
+            if ($('#MetalRule2 >tbody >tr').length > 0) {                
+                if ($(tr).index() >= 0) {
+                    //ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();                   
+                    if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {                        
+                        var MicroData = {
+                            Id: $(tr).find("td:eq(0) input[id='id']").val(),
+                            SNO: $(tr).find("td:eq(0) input[type='text']").val(),
+                            MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
+                            Actuals: $(tr).find("td:eq(2) input[type='text']").val(),
+                            InstrumentError: $(tr).find("td:eq(3) input[type='text']").val(),
+                            MasterView2: 1
+                            // Id: $(tr).find("td:eq(4) input[type='hidden']").val(),
+                            // ParentId: ObjParent,
+                            // InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
+
+                        }
+                        //MicroResult.push(MicroData);
+                    }
+                    else {
+                        showWarning('Enter the Straightness values....', lang)
+                        validationcheck = false;
+                    }
+                    MicroResult.push(MicroData);
+                }
+
+            }
+            else {
+                MicroResult.pop(MicroData);
+            }
+        });
+    }
+    if (validationcheck) {
+        var data = {
+            Id: $('#IdMicro').val(),
+            TemplateObservationId: $('#TemplateObservationId').val(),
+            RefWi: $('#RefWi').val(),
+            InstrumentId: $('#instrumentId').val(),
+            RequestId: $('#requestId').val(),
+
+            TempStart: $('#TempStart').val(),
+            Humidity: $('#Humidity').val(),
+            Allvalues: $('#Allvalues').val(),
+            MetalRulesCondition: $('#MetalRulesCondition').val(),
+
+            ReviewedBy: $('#ReviewedBy').val(),
+            CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
+            CalibrationPerformedDate: $('#CalibrationPerformedDate').val(),
+            ReveiwedByDate: $('#ReveiwedByDate').val(),
+            MetalRuleAddResultViewModelList: MicroResult,
+
+        }
+        $.ajax({
+            url: '../Observation/InsertMetalRule',
+            type: 'POST',
+            data: { metalrule: data }
+        }).done(function (resultObject) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("Data Saved Successfully", lang);
+        });
+    }
 }
 
 
@@ -1991,7 +2372,7 @@ function SavePlungerDial(lang) {
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully", lang);
         window.location.href = '../Tracker/Request?reqType=4';
-        
+
     });
 }
 function SaveThreadGauges(lang) {
@@ -2195,17 +2576,17 @@ function LoadObservationTypePopup(lang) {
         $('#NewObservationType')
             .find('option')
             .remove();
-       
+        console.log(resultObject);
         $('#NewObservationType').empty();
         $('#NewObservationType').append(`<option value="0">--Select--</option>`);
         for (let index = 0; index < resultObject.length; index++) {
             if (lang == 'en') {
-               
+
                 optText = resultObject[index].attrValue;
                 optValue = resultObject[index].id;;
                 $('#NewObservationType').append(`<option value="${optValue}">${optText}</option>`);
             }
-            else {               
+            else {
                 optTextjp = resultObject[index].attrValueJp;
                 optValuejp = resultObject[index].id;;
                 $('#NewObservationType').append(`<option value="${optValuejp}">${optTextjp}</option>`);
@@ -2226,7 +2607,7 @@ function LoadObservationTypePopupEd(lang) {
         $('#NewObservationTypeEd')
             .find('option')
             .remove();
-      
+
         $('#NewObservationTypeEd').empty();
         $('#NewObservationTypeEd').append(`<option value="0">--Select--</option>`);
         for (let index = 0; index < resultObject.length; index++) {
@@ -2283,7 +2664,7 @@ function DeleteMasterEqiupment(id) {
 
 
 function SaveCertificate(templtatename, lang) {
-    
+
     var temptName = templtatename;
     var result = $('#CalibrationResult').val();
     if (result == null || result == "") {
@@ -2346,7 +2727,7 @@ function SaveInstrumentDetails(lang) {
             calibDate: $('#CalibDate').val(),
             dueDate: $('#DueDate').val(),
             dateOfReceipt: $('#DateOfReceipt').val(),
-           // Grade: $('#Grade').val(),
+            // Grade: $('#Grade').val(),
         }
     }).done(function (resultObject) {
         showSuccess("Certificate Updated Successfully", lang);
@@ -2410,11 +2791,22 @@ function newSubmitReqDepVisual(lang) {
         $('#newResultDEP').removeClass('is-invalid');
 
     }
+    if ($('#IdNo').val() == '' || $('#IdNo').val() == undefined) {
+        $('#IdNo').addClass('is-invalid');
+        return false;
+    } else {
+        $('#IdNo').removeClass('is-invalid');
+
+    }
+
+    var dueDate;
+    var dt = $('#CalibFreqDue').val();
+    dueDate = DudeDateCalculation(dt);
 
     $.ajax({
         url: '../Tracker/SubmitDepartmentRequestVisual',
         type: 'POST',
-        data: { requestId: $('#RequestCalibId').val(), Result: $('#newResultDEP').val(), CollectedBy: $('#CollectedBy').val() }
+        data: { requestId: $('#RequestCalibId').val(), Result: $('#newResultDEP').val(), CollectedBy: $('#CollectedBy').val(), InstrumentIdNo: $('#IdNo').val(), DueDate: dueDate }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         //AssignNewRequestValues(resultObject);
@@ -2533,12 +2925,12 @@ function FileUpload(filedata, filename, filesize) {
 }
 
 function getrequest(type) {
-   
+
     if ($('input[name="ReqTracker"]:checked').val() == 'New') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
         //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'Regular') {
-       window.location.href = '../Tracker/Request?reqType=' + type + '';
+        window.location.href = '../Tracker/Request?reqType=' + type + '';
         //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'ReCalibration') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
@@ -2547,4 +2939,95 @@ function getrequest(type) {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
         //GetAllRequest(type) 
     }
+}
+
+
+function DueForCalibrationInstrumentsss() {
+    debugger;
+    var tblRowsCoun = $("#example1 th").length;
+    if (tblRowsCoun > 0) {
+        $('#example1 > tbody > tr').each(function (row, tr) {
+            var currentRow = $(this).closest("tr");
+            //console.log(currentRow)
+            if (currentRow.find("td:eq(9)").text() != " ") {
+                alert(currentRow.find("td:eq(9)").text());
+                console.log(currentRow.find("td:eq(9)").text());
+                var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
+                currentRow.show();
+            }
+            else {
+                currentRow.hide();
+            }
+        });
+    }
+    else {
+        window.location.href = '../Instrument/Index';
+    }
+}
+
+
+
+function DueForCalibrationInstruments() {
+    //debugger;
+    if ($("#checkdueonly").is(":checked")) {
+        var tblRowsCoun = $("#example1 th").length;
+        if (tblRowsCoun > 0) {
+            $('#example1 > tbody > tr').each(function (row, tr) {
+                var currentRow = $(this).closest("tr");
+                //console.log(currentRow)
+                if (currentRow.find("td:eq(9)").text() != " ") {
+                    //alert(currentRow.find("td:eq(9)").text());
+                    //console.log(currentRow.find("td:eq(9)").text());
+                    var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
+                    currentRow.show();
+                }
+                else {
+                    currentRow.hide();
+                }
+            });
+        }
+    }
+    else {
+        window.location.href = '../Instrument/Index';
+    }
+    
+}
+
+
+function InsertRequestList() {
+    debugger;
+    var Request = new Array();
+    $('#example1 > tbody > tr').each(function (row, tr) {
+        var currentRow = $(this).closest("tr");
+        if (currentRow.find("td:eq(9)").text() != " ") {
+            var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
+            if (checkedvalue == true) {
+                //var instrumentId = $(tr).find("td:eq(9) input[type='checkbox']").val();
+                //var TypeValue = $(tr).find("td:eq(9) input[type='hidden']").val();
+                //var RequestData = { instrumentId: instrumentId, typeId: TypeValue }
+                //Request.push(RequestData);
+
+                var UserView = {
+                    instrumentId: $(tr).find("td:eq(9) input[type='checkbox']").val(),
+                    TypeValue: $(tr).find("td:eq(9) input[type='hidden']").val()                   
+                }
+
+                Request.push(UserView);
+            }
+
+
+
+        }
+    });
+    console.log(Request);
+    $.ajax({
+        url: '../Instrument/DueRequest',
+        type: 'POST',
+        data: { userViewModelList: Request },
+        dataType: "json",
+        // JSON.stringify(ToolInventoryList);//{ ToolInventoryList: ToolInventoryList }    
+    }).done(function (resultObject) {
+        showSuccess("Data Saved Successfully");
+        window.location.href = '../Instrument/Index';
+    });
 }

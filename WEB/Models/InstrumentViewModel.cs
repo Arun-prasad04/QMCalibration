@@ -10,12 +10,12 @@ public class InstrumentViewModel
     public string? LC {get;set;}
     public string? Unit1 {get;set;}
     public string? Unit2 {get;set;}
-    public string? Unit3 {get;set;}
-    public string? TW_Type {get;set;}
-    public string? Drawing_Attached {get;set;}
+    public string? AmountJPY { get;set;}
+    public string? Capacity { get;set;}
+    public string? EquipmentStation { get;set;}
     public string? Rule_Confirmity {get;set;}
     public string? Remarks1 {get;set;}
-    public string? StandardReffered1 {get;set;}
+    public string? Comment { get;set;}
     public int? Instrument_Type {get; set;}
     public int CalibFreq {get; set;}
     public DateTime? CalibDate {get; set;}
@@ -85,5 +85,33 @@ public class InstrumentViewModel
     public int? UserRoleId {get; set;}
     public int? RequestStatus {get; set;}
 	public string? Grade { get; set; }
+	public string? TypeOfEquipment { get; set; }
+	public string? ToolInventory { get; set; }
+        public int ToolRoomStatus { get; set; }
+        public int ToolInventoryStatus { get; set; }
+        public int RequestId { get; set; }
+    }
+
+	public class RequestAllView
+	{
+		public int instrumentId { get; set; }
+		public int TypeValue { get; set; }
+		
 	}
+
+    public class RequestMailList 
+    {
+        public int SNo { get; set; }
+        public string? RequestNo { get; set; }
+        public string? LabId { get; set; }
+        public string? EquipmentType { get; set; }
+        public string? EquipmentName { get; set; }
+        public string? SubsectionCode { get; set; }
+        public string? CalibrationType { get; set; }
+
+        public string? CreaterFirstName { get; set; }
+        public string? CreaterLastName { get; set; }
+        public string? CreaterEmail { get; set; }
+
+    }
 }

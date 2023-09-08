@@ -56,6 +56,11 @@ namespace CMT.DATAMODELS
         public virtual DbSet<ObsTemplateGeneralNew> ObsTemplateGeneralNew { get; set; }
 		public virtual DbSet<ObsMicrometerValues> ObsMicrometerValues { get; set; }
 		public virtual DbSet<QRCodeFiles> QRCodeFiles {get;set;}
+		public virtual DbSet<ObsTemplateMetalRules> ObsTemplateMetalRules { get;set;}
+		public virtual DbSet<ObsTemplateValues> ObsTemplateValues { get;set;}
+		public virtual DbSet<UserDepartmentMapping> UserDepartmentMapping { get;set;}
+		public virtual DbSet<UserRoleMapping> UserRoleMapping { get;set;}
+		public virtual DbSet<UserRoles> UserRoles { get;set;}
 		
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

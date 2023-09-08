@@ -144,12 +144,12 @@ public class TrackerController : BaseController
 		return View(response.ResponseData);
 	}
 
-	public IActionResult AcceptRequest(int requestId, string InstrumentCondition
-	, string Feasiblity, DateTime TentativeCompletionDate, int newObservation, string InstrumentIdNo
+	public IActionResult AcceptRequest(int requestId, string InstrumentCondition, DateTime DueDate
+    , string Scope, DateTime TentativeCompletionDate, int newObservation, int CalibFreq, string ToolInventory
     , int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
-	{
+	{		
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.AcceptRequest(requestId, userId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, newObservation, newObservationType, newMU, newCertification, standardReffered, newNABL, MasterInstrument1, MasterInstrument2, MasterInstrument3, MasterInstrument4);
+		ResponseViewModel<RequestViewModel> response = _requestService.AcceptRequest(requestId, userId, InstrumentCondition, Scope, TentativeCompletionDate, CalibFreq, ToolInventory, newObservation, newObservationType, newMU, newCertification, standardReffered, newNABL, MasterInstrument1, MasterInstrument2, MasterInstrument3, MasterInstrument4, DueDate);
 		return Json(response.ResponseData);
 	}
 	public IActionResult AcceptRequestReCalibration(int requestId, int AcceptValue, int departmentId)
@@ -158,17 +158,19 @@ public class TrackerController : BaseController
 		ResponseViewModel<RequestViewModel> response = _requestService.AcceptRequestRecalibration(requestId, userId, AcceptValue, departmentId);
 		return Json(response.ResponseData);
 	}
-	public IActionResult RejectRequest(int requestId, string rejectReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string standardReffered)
+	public IActionResult RejectRequest(int requestId, string rejectReason, string InstrumentCondition, string Scope,string ToolInventory, DateTime TentativeCompletionDate, string standardReffered)
 	{
+		//return View();
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.RejectRequest(requestId, rejectReason, userId, InstrumentCondition, Feasiblity, TentativeCompletionDate, standardReffered);
+		ResponseViewModel<RequestViewModel> response = _requestService.RejectRequest(requestId, rejectReason, userId, InstrumentCondition, Scope, ToolInventory, TentativeCompletionDate, standardReffered);
 		return Json(response.ResponseData);
 	}
 
-	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy)
+	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy, string InstrumentIdNo, DateTime DueDate)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy);
+		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy, InstrumentIdNo, DueDate);
+		//return RedirectToAction("Index", "Home"); 
 		return Json(response.ResponseData);
 	}
 
@@ -239,4 +241,21 @@ public class TrackerController : BaseController
 		dateOfReceipt);
 		return Json(response.ResponseData);
 	}
+
+    public IActionResult ExternalRejectRequest(int requestId, string rejectReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string standardReffered)
+    {
+        //return View();
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalRejectRequest(requestId, rejectReason, userId, InstrumentCondition, Feasiblity, TentativeCompletionDate, standardReffered);
+        return Json(response.ResponseData);
+    }
+
+	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase)	
+	{
+		//return Json(true);
+        int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase);
+        return Json(response.ResponseData);
+    }
+
 }

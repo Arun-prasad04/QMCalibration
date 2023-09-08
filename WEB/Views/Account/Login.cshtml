@@ -28,7 +28,6 @@
 	<link rel="stylesheet" href="~/css/bootstrap-select.min.css">
 
 
-
 	<!-- /.login-box -->
 	<!-- jQuery -->
 	<!-- Bootstrap 4 -->
@@ -121,7 +120,7 @@
 					<div class="card">
 
 						<div class="card-body login-card-body" style="border-radius: 10px;  padding-left: 15px;">
-							<select class="Languagepicker daimler_language" data-width="fit">
+							<select class="Languagepicker daimler_language" id="langdrp" data-width="fit">
 								<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span>  English' style="padding-left: 15px;">
 									English
 								</option>
@@ -187,7 +186,8 @@
 
 	<script>
 
-		$(function () {
+		$(function () {			
+
 			$('#loginform').validate({
 				rules: {
 					userName: {

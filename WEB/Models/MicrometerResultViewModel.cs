@@ -11,5 +11,6 @@
 		public int? Flatness { get; set; }
 		public int? Parallelism { get; set; }
 		public int? SNO { get; set; }
+
 	}
 }

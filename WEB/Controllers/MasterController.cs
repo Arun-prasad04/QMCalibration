@@ -81,6 +81,7 @@ public class MasterController : BaseController
 	{
 		ViewBag.PageTitle = "Master Edit";
 		ResponseViewModel<MasterViewModel> response = _masterService.GetMasterById(masterId);
+		ViewBag.CalibFreqMaster = response.ResponseData.CalibFreqId;
 		return View("Create", response.ResponseData);
 	}
 	public ActionResult MasterDelete(int masterId)

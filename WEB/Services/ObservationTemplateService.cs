@@ -337,7 +337,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	public ResponseViewModel<MicrometerViewModel> InsertMicrometer(MicrometerViewModel micrometer)
 	{
 		try
-		{
+		{			
 			_unitOfWork.BeginTransaction();
 			int tempobsId = 0;
 			int ObjMicroData = 0;
@@ -503,9 +503,9 @@ public class ObservationTemplateService : IObservationTemplateService
 					FlatnessMeasure = micrometer.FlatnessMeasure,
 					FlatnessInserr = micrometer.FlatnessInserr,
 					FlatnessActual = micrometer.FlatnessActual
-				};
+				};				
 				_unitOfWork.Repository<ObsTemplateMicrometer>().Insert(obsTemplateMicrometer);
-				_unitOfWork.SaveChanges();
+				_unitOfWork.SaveChanges();				
 				if (observationById != null)
 				{
 
@@ -787,6 +787,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			}
 			_unitOfWork.SaveChanges();
 			_unitOfWork.Commit();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method One");
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 200,
@@ -4330,9 +4331,10 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
-			_unitOfWork.RollBack();
+			
 			ErrorViewModelTest.Log("ObservationTemplateService - SubmitReview Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 500,
@@ -4627,4 +4629,303 @@ public class ObservationTemplateService : IObservationTemplateService
 
 		}
 	}
+
+
+	public ResponseViewModel<MetalRulesViewModel> GetMetalRulesId(int requestId, int instrumentId)
+	{
+		try
+		{
+			MetalRulesViewModel metalViewModel = _unitOfWork.Repository<TemplateObservation>()
+			.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+			.Include(I => I.MetalRulesModel)
+			.Select(s => new MetalRulesViewModel()
+			{
+				Id = s.Id,
+				TempStart = s.TempStart,
+				TempEnd = s.TempEnd,
+				Humidity = s.Humidity,
+				RefWi = s.RefWi,
+				Allvalues = s.Allvalues,
+				CalibrationPerformedDate = s.CreatedOn,
+				CreatedBy = s.CreatedBy,
+				CalibrationReviewedBy = s.CalibrationReviewedBy,
+				CalibrationReviewedDate = s.CalibrationReviewedDate,
+				MetalRulesCondition = s.InstrumentCondition,
+				ReviewStatus = s.ReviewStatus,
+				ULRNumber = s.ULRNumber,
+				CertificateNumber = s.CertificateNumber,
+				Uncertainity = s.GeneralModel.Select(x => x.Uncertainity).SingleOrDefault(),
+				CalibrationResult = s.GeneralModel.Select(x => x.CalibrationResult).SingleOrDefault(),
+				Remarks = s.GeneralModel.Select(x => x.Remarks).SingleOrDefault()
+			}).SingleOrDefault();
+
+			if (metalViewModel == null)
+			{
+				return new ResponseViewModel<MetalRulesViewModel>
+				{
+					ResponseCode = 200,
+					ResponseMessage = "No records found",
+					ResponseData = null,
+					ResponseDataList = null
+				};
+			}
+			else
+			{
+
+				List<string> performedUserData = GetUserName(metalViewModel.CreatedBy);
+
+				if (performedUserData.Count >= 3)
+				{
+					metalViewModel.CalibrationPerformedBy = performedUserData[0];
+					metalViewModel.PerformedBySign = performedUserData[1];
+					metalViewModel.PerformedByDesignation = performedUserData[2];
+				}
+
+				List<string> reviewedUserData = GetUserName(metalViewModel.CalibrationReviewedBy);
+
+				if (reviewedUserData.Count >= 3)
+				{
+					metalViewModel.ReviewedBy = reviewedUserData[0];
+					metalViewModel.ReviewedBySign = reviewedUserData[1];
+					metalViewModel.ReviewedByDesignation = reviewedUserData[2];
+				}
+
+				int? ulrNumber = metalViewModel.ULRNumber == null ? 0 : metalViewModel.ULRNumber;
+				int? certificateNumber = metalViewModel.CertificateNumber == null ? 0 : metalViewModel.CertificateNumber;
+				List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+
+				if (formatList.Count >= 2)
+				{
+					metalViewModel.ULRFormat = formatList[0];
+					metalViewModel.CertificateFormat = formatList[1];
+				}
+			}
+
+			var parentVM = _mapper.Map<MetalRulesViewModel>(metalViewModel);
+
+			var childData1 = _unitOfWork.Repository<ObsTemplateValues>()
+										.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView1 == 1);
+            var childListVM = _mapper.Map<List<MetalRuleResultViewModel>>(childData1);
+
+            metalViewModel.MetalRuleAddResultViewModelList1 = childListVM;
+
+            var childData2 = _unitOfWork.Repository<ObsTemplateValues>()
+                                        .GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView2 == 1);
+            var childListVM2 = _mapper.Map<List<MetalRuleResultViewModel>>(childData2);
+
+            metalViewModel.MetalRuleAddResultViewModelList2 = childListVM2;
+
+
+
+
+            //var parentVM1 = _mapper.Map<MetalRulesViewModel>(metalViewModel);
+
+            //var childData1 = _unitOfWork.Repository<ObsGeneralDynamicValues>()
+            //							.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id);
+            //var childListVM1 = _mapper.Map<List<GeneralManualResultViewModel>>(childData1);
+
+            //metalViewModel.GeneralManualAddResultViewModelList = childListVM1;
+
+            return new ResponseViewModel<MetalRulesViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = metalViewModel,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("ObservationTemplateService - GetMetalRulesId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<MetalRulesViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "GetMetalRulesId"
+            };
+		}
+	}
+
+    public ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel metalrule)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            int tempobsId = 0;
+            int ObjMicroData = 0;
+            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == metalrule.RequestId
+                                                                  && Q.InstrumentId == metalrule.InstrumentId).SingleOrDefault();
+			
+            if ((metalrule.TemplateObservationId == 0) && (observationById == null))
+
+            {
+                TemplateObservation templateObservation = new TemplateObservation()
+                {
+                    InstrumentId = metalrule.InstrumentId,
+                    RequestId = metalrule.RequestId,
+                    TempStart = metalrule.TempStart,
+                    TempEnd = metalrule.TempEnd,
+                    Humidity = metalrule.Humidity,
+                    InstrumentCondition = metalrule.MetalRulesCondition,
+                    RefWi = metalrule.RefWi,
+                    Allvalues = metalrule.Allvalues,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = metalrule.CreatedBy,                    
+                    CalibrationReviewedDate = DateTime.Now
+                };                
+                _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+                _unitOfWork.SaveChanges();
+                tempobsId = templateObservation.Id;               
+            }
+            else
+            {                
+                if (observationById != null)
+                {
+
+
+                    if (metalrule.TempStart != null)
+                    {
+                        observationById.TempStart = metalrule.TempStart;
+                    }
+
+                    if (metalrule.TempEnd != null)
+                    {
+                        observationById.TempEnd = metalrule.TempEnd;
+                    }
+
+                    if (metalrule.Humidity != null)
+                    {
+                        observationById.Humidity = metalrule.Humidity;
+                    }
+
+                    if (metalrule.MetalRulesCondition != null)
+                    {
+                        observationById.InstrumentCondition = metalrule.MetalRulesCondition;
+                    }
+                    if (metalrule.RefWi != null)
+                    {
+                        observationById.RefWi = metalrule.RefWi;
+                    }
+                    if (metalrule.Allvalues != null)
+                    {
+                        observationById.Allvalues = metalrule.Allvalues;
+                    }
+
+                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+
+            if (metalrule.Id == 0)
+            {
+                if (observationById != null)
+                {
+                    tempobsId = observationById.Id;
+                }
+
+                ObsTemplateMetalRules obsTemplateMetalRules = new ObsTemplateMetalRules()
+                {
+
+                    ParentId = tempobsId,                                       
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = metalrule.CreatedBy,                                  
+                };
+                _unitOfWork.Repository<ObsTemplateMetalRules>().Insert(obsTemplateMetalRules);
+                _unitOfWork.SaveChanges();
+                if (observationById != null)
+                {
+
+                    tempobsId = observationById.Id;
+                }
+                if (metalrule.MetalRuleAddResultViewModelList != null)
+                {
+                    metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+                    var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
+                                            .Where(x => x.Id > 0).ToList());
+                    if (detailData.Any())
+                    {
+                        foreach (var updateData in detailData)
+                        {
+                            _unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
+                            _unitOfWork.SaveChanges();
+                        }
+                    }
+
+                    detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+                    if (detailData.Any())
+                    {
+                        _unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                ObsTemplateMetalRules micrometerById = _unitOfWork.Repository<ObsTemplateMetalRules>()
+                                                                .GetQueryAsNoTracking(Q => Q.ParentId == metalrule.Id)
+                                                                .SingleOrDefault();                
+
+                if (observationById != null)
+                {
+
+                    tempobsId = observationById.Id;
+                }
+                if (metalrule.MetalRuleAddResultViewModelList != null)
+                {
+                    metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+                    var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
+                                            .Where(x => x.Id > 0).ToList());//x.Id > 0 && 
+                    if (detailData.Any())
+                    {
+                        foreach (var updateData in detailData)
+                        {
+                            _unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
+                            _unitOfWork.SaveChanges();
+                        }
+                    }
+                    //micrometer.MicrometerAddResultViewModelList.ForEach()
+                    detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+                    if (detailData.Any())
+                    {
+                        _unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+            }
+            _unitOfWork.SaveChanges();
+            _unitOfWork.Commit();
+            //ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method One");
+            return new ResponseViewModel<MetalRulesViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            _unitOfWork.RollBack();
+            ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<MetalRulesViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = metalrule,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateService",
+                ResponseServiceMethod = "InsertMicrometer"
+            };
+        }
+    }
 }

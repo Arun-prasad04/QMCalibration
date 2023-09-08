@@ -618,13 +618,13 @@
 			$('#Microadd tbody tr').each(function (row, tr) {
 
 
-				if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
+			//	//if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
 
-					$(tr).remove();
-					counter--;
-					SNo--;
-				}
-			});
+			//	//	$(tr).remove();
+			//	//	counter--;
+			//	//	SNo--;
+			//	//}
+			//});
 
 			$('<tr id="tablerowIns' + counter + '"><td>' +
 				'<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value=' + SNo + ' disabled="disabled" />' +
@@ -655,7 +655,9 @@
 			//InstrumentError have been added as 1 above
 			counter++;
 			SNo++;
+			
 			return false;
+			});
 		});
 	});
 

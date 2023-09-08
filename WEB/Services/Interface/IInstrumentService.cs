@@ -9,7 +9,7 @@ public interface IInstrumentService
  ResponseViewModel<InstrumentViewModel> InsertInstrument(InstrumentViewModel instrument);
  ResponseViewModel<InstrumentViewModel> UpdateInstrument(InstrumentViewModel  instrument);
  ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId);
- ResponseViewModel<InstrumentViewModel> CreateNewInstrument();
+ ResponseViewModel<InstrumentViewModel> CreateNewInstrument(int userId, int userRoleId);
  ResponseViewModel<InstrumentViewModel> GetAllInstrumentQuarantineList(int userId, int userRoleId);
  ResponseViewModel<InstrumentViewModel> InstrumentQuarantine(int instrumentId, string reason,int userId,int statusId);
  ResponseViewModel<InstrumentViewModel> InstrumentRemoveQuarantine(int instrumentId,int statusId,int userId);
