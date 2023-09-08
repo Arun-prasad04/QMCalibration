@@ -3,6 +3,7 @@
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
 
 <section class="content">
 	<div class="row">
@@ -50,7 +51,7 @@
 								<th class="trn">Department</th>
 								<th class="trn">Scope</th>
 								<th class="trn">Calibration Date</th>
-								<th class="trn">Due Date</th>
+								<th class="trn">DueDate</th>
 								<th class="trn">Edit</th>
 								<!--<th>Delete</th>-->
 								@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
@@ -114,7 +115,29 @@
 										<td></td>
 									}
 								</tr>
+
+
 							}*@
+
+							@*		Reference
+								
+							<tr><td>INTINS002</td><td>INTINST002</td><td></td><td>1-10</td><td>LAB</td><td>21-08-2023</td><td>21-08-2023</td><td style='text-align: center;'><a href='/Instrument/InstrumentEdit?instrumentId=1138'><i class='fas fa-edit'></i></a></td><td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td><td><input id="typeId" name="typeId" type="hidden" value="2" /></td><td> </td></tr>
+							<tr>
+								1<td>INTINS004</td>
+								2<td>INTINST004</td>
+								3<td>IDN004</td>
+								4<td>1-10</td>
+								5<td>LAB</td>
+								6<td>26-08-2023</td>
+								7<td>13-09-2024</td>
+								8<td style='text-align: center;'><a href='/Instrument/InstrumentEdit?instrumentId=1140'><i class='fas fa-edit'></i></a></td><td> </td><td> </td></tr>
+						9<td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td>
+						10<td><input id="typeId" name="typeId" type="hidden" value="2" /></td>
+						11<td> </td> *@
+					@* 	<td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td>
+						<td><input id="typeId" name="typeId" type="hidden" value="2" /></td> *@
+
+
 						</tbody>
 					</table>
 				</div>
@@ -139,36 +162,6 @@
 		//Conversion();		
 		GetAllInstrument();
 	}, 500);
-
-
-	
-	</script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script>
-	//$(document).ready(function () {
-	//	debugger;
-	//	//For Select All CheckBox Functionality
-	//	$('#selectAll').click(function (e) {
-
-	//		var table = $(e.target).closest('table');
-	//		if (this.checked) {
-
-	//			$('td input:checkbox', table).prop('checked', true);
-
-	//		} else {
-
-	//			$('td input:checkbox', table).prop('checked', false);
-	//		}
-
-	//	});
-	//});
-
-	$(document).ready(function () {
-		$('#selectAll').click(function () {
-			$('.chkBox').prop('checked', $(this).prop('checked'));
-		});
-	});
-
 
 	
 </script>
@@ -205,6 +198,8 @@
 							//if ((d.getMonth() + 1) == item.dueDate.Month && d.getFullYear() == item.dueDate.Year) {
 							if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
 								if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+									
+
 									//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=2' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
 									//< a href = 'Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=2})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
 
@@ -240,11 +235,10 @@
 							}
 						}
 						else {
-							tdRequest = "<td> </td>"
+							tdRequest = "<td></td>"
 						}
 
 					}
-
 
 					var tdQuarantine = '';
 					if (item.userRoleId == 2) {
@@ -253,7 +247,8 @@
 					else {
 						tdQuarantine = "<td> </td>"
 					}
-					
+					console.log("tdRequest");
+					console.log(tdRequest);
 					var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
 					var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
 
@@ -272,6 +267,7 @@
 							+ "</tr>";
 						$('#example1 tbody').append(rows);
 					$('#dvload').hide();
+					
 				});
 				}
 				else {				

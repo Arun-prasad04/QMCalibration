@@ -284,7 +284,12 @@
 
 								<br />
 							}
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
+							{
+								<label id="lblUserType5" name="UserType5">Tool Inventory Manager</label>
 
+								<br />
+							}
 
 						</a>
 					</div>
@@ -297,16 +302,18 @@
 						   with font-awesome or any other icon font library -->
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"
 								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+								//|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("HomePage","Home")' class="nav-link">
+								@* <a href='@Url.Action("ToolInventory","Instrument")' class="nav-link"> *@
 									<i class="nav-icon fas fa-home"></i>
 									<p class="trn">Home</p>
 								</a>
 							</li>
 						}
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+					@* 	@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("Index","Home")' class="nav-link">
@@ -314,7 +321,26 @@
 									<p class="trn">Dashboard</p>
 								</a>
 							</li>
+						} *@
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
+						{
+							<li class="nav-item has-treeview">
+								<a href='@Url.Action("ToolRoomDepartment","Instrument")' class="nav-link">
+									<i class="nav-icon fas fa-compass"></i>
+									<p class="trn">Request Tracker</p>
+								</a>
+							</li>
 						}
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
+						{
+							<li class="nav-item has-treeview">
+								<a href='#' class="nav-link">
+									<i class="nav-icon fas fa-compass"></i>
+									<p class="trn">Tool Inventory</p>
+								</a>
+							</li>
+						}
+						
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
@@ -512,54 +538,59 @@
 
 
 
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3")
+						@if ( @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+								//|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "5" ||)
 						{
+							
+								<li class="nav-item has-treeview">
+									<a href="#" class="nav-link">
+										<i class="nav-icon fas fa-comment-dots"></i>
+										<p>
+											<span class="trn">Customer Feedback</span>
+											<i class="fas fa-angle-left right"></i>
+										</p>
+									</a>
 
-							<li class="nav-item has-treeview">
-								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-comment-dots"></i>
-									<p>
-										<span class="trn">Customer Feedback</span>
-										<i class="fas fa-angle-left right"></i>
-									</p>
-								</a>
+									<ul class="nav nav-treeview">
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+										{
+											<li class="nav-item navIndend">
+												<a href='@Url.Action("FeedbackInvite","Feedback")' class="nav-link">
+													<i class="nav-icon fas fa-clipboard-check"></i>
+													<p class="trn">Feedback Invite</p>
+												</a>
+											</li>
+										}
 
-								<ul class="nav nav-treeview">
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-									{
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("FeedbackInvite","Feedback")' class="nav-link">
-												<i class="nav-icon fas fa-clipboard-check"></i>
-												<p class="trn">Feedback Invite</p>
+											<a href='@Url.Action("Index","Feedback", new {FeedbackInviteId = 0})' class="nav-link">
+												<i class="nav-icon fas fa-clipboard"></i>
+												<p class="trn">Feedback Form</p>
 											</a>
 										</li>
-									}
 
-									<li class="nav-item navIndend">
-										<a href='@Url.Action("Index","Feedback", new {FeedbackInviteId = 0})' class="nav-link">
-											<i class="nav-icon fas fa-clipboard"></i>
-											<p class="trn">Feedback Form</p>
-										</a>
-									</li>
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+										{
+											<li class="nav-item navIndend">
+												<a href='@Url.Action("SubmittedList","Feedback")' class="nav-link">
+													<i class="nav-icon fas fa-clipboard-list "></i>
+													<p class="trn">Submitted List</p>
+												</a>
+											</li>
+											<li class="nav-item navIndend">
+												<a href='@Url.Action("ReviewedList","Feedback")' class="nav-link">
+													<i class="nav-icon fas fa-clipboard-list "></i>
+													<p class="trn">Reviewed List</p>
+												</a>
+											</li>
+										}
 
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-									{
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("SubmittedList","Feedback")' class="nav-link">
-												<i class="nav-icon fas fa-clipboard-list "></i>
-												<p class="trn">Submitted List</p>
-											</a>
-										</li>
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("ReviewedList","Feedback")' class="nav-link">
-												<i class="nav-icon fas fa-clipboard-list "></i>
-												<p class="trn">Reviewed List</p>
-											</a>
-										</li>
-									}
-								</ul>
-							</li>
+									</ul>
+
+
+
+								</li>
+							
 							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 							{
 								<li class="nav-item has-treeview">
@@ -625,9 +656,9 @@
 
 									</ul>
 								</li>
-
-
+							
 							}
+
 						}
 					</ul>
 				</nav>
@@ -646,10 +677,7 @@
 							<h1 class="m-0 text-dark"></h1>
 						</div><!-- /.col -->
 						<div class="col-sm-6">
-							@* <ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item"><a href='@Url.Action("Index","Home")'>Home</a></li>
-							<li class="breadcrumb-item active">@ViewBag.PageTitle</li>
-							</ol> *@
+							
 						</div><!-- /.col -->
 					</div><!-- /.row -->
 				</div><!-- /.container-fluid -->
@@ -659,9 +687,7 @@
 			<div class="container">
 				<main role="main" style="background-color: white;" class="pb-3">
 					<div id="dvload" class="loader justify-content-center align-items-center" style="display:none"></div>
-					@*<div class="overlay" style="display:none">
-						
-					</div>*@
+					
 					@RenderBody()
 					<!-- Button trigger modal -->
 					<!-- Modal l̥-->
@@ -1524,14 +1550,26 @@
 					"サブセクションコード": { jp: "サブセクションコード", en: "Sub Section Code" },
 					// Instrument page
 					"楽器名": { jp: "楽器名", en: "Instrument Name" },
-					"機器のシリアル番号": { jp: "機器のシリアル番号", en: "Instrument Serial Number" },
-					"範囲": { jp: "範囲", en: "Range" },
-					"ユニット": { jp: "ユニット", en: "Unit" },
-					"最小数": { jp: "最小数", en: "Least Count" },
-					"作る": { jp: "作る", en: "Make" },
-					"学年": { jp: "学年", en: "Grade" },
-					"備考": { jp: "備考", en: "Remarks" },
-					"参照標準/校正方法": { jp: "参照標準/校正方法", en: "Reference standard/calibration method" },
+                    "機器のシリアル番号": { jp: "機器のシリアル番号", en: "Instrument Serial Number" },
+                    "範囲": { jp: "範囲", en: "Range" },
+                    "ユニット": { jp: "ユニット", en: "Unit" },
+                    "最小数": { jp: "最小数", en: "Least Count" },
+                    "作る": { jp: "作る", en: "Make" },
+                    "学年": { jp: "学年", en: "Grade" },
+                    "備考": { jp: "備考", en: "Remarks" },
+                    "参照標準/校正方法": { jp: "参照標準/校正方法", en: "Reference standard/calibration method" },
+					//Department Page
+					"部門コード": { jp: "部門コード", en: "Department Code" },
+					"工場・所在地": { jp: "工場・所在地", en: "Plant / Location" },
+					"工場コード": { jp: "工場コード", en: "Plant Code" },
+					"部門 (英語)": { jp: "部門 (英語)", en: "Department (EN)" },
+					"部門（日本": { jp: "部門（日本", en: "Department (JP)" },
+					"セクション (英語)": { jp: "セクション (英語)", en: "Section (EN)" },
+					"セクション（日本）": { jp: "セクション（日本）", en: "Section (JP)" },
+					"サブセクション (英語)": { jp: "サブセクション (英語)", en: "Sub Section (EN)" },
+					"サブセクション（JP）": { jp: "サブセクション（JP）", en: "Sub Section (JP)" },
+					"部門の説明 (英語)": { jp: "部門の説明 (英語)", en: "Department Description (EN)" },
+					"部門の説明 (日本語)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" },
 
 					//for General Certificate
 
@@ -1676,63 +1714,46 @@
 					"Sub Section": { jp: "サブセクション", en: "Sub Section"},
 					"Department coordinator Contact": { jp: "部門コーディネーター連絡先", en: "Department coordinator Contact" },
 
-
 					"--Select User Department--": { jp: "いいえ", en: "--Select User Department--" },
 					"Instrument Serial Number": { jp: "機器のシリアル番号", en: "Instrument Serial Number" },
 					"Equipment Name (EN)": { jp: "機器名(英語)", en: "Equipment Name (EN)" },
 					"Equipment Name (JP)": { jp: "機器名(JP)", en: "Equipment Name (JP)" },
 
+					//Translation layout
 					"--Select Drawing Attached--": { jp: "--添付された図面を選択--", en: "--Select Drawing Attached--" },
-                    "Yes": { jp: "はい", en: "Yes" },
-                    "No": { jp: "いいえ", en: "No" },                    
-                    "--Select Rule Confirmity--": { jp: "--ルールの確認を選択してください--", en: "--Select Rule Confirmity--" },
-                    "Include MU": { jp: "MUを含む", en: "Include MU" },
-                    "Exclude MU": { jp: "MUを除", en: "Exclude MU" },                    
-                    "--Select Type Of Instrument--": { jp: "--楽器の種類--", en: "--Select Type Of Instrument--" },
-                    "Dial": { jp: ">デジタル<", en: "Dial" },
-                    "Digital": { jp: "デジタル", en: "Digital" },
-                    "Analog": { jp: "アナログ", en: "Analog" },                    
-                    "--Select Is NABL--": { jp: "--NABL を選択--", en: "--Select Is NABL--" },
-                    "--Select Plant Location--": { jp: "--工場所在地の選択--", en: "--Select Plant Location--" },
+					"Yes": { jp: "はい", en: "Yes" },
+					"No": { jp: "いいえ", en: "No" },
+					//
+					"--Select Rule Confirmity--": { jp: "--ルールの確認を選択してください--", en: "--Select Rule Confirmity--" },
+					"Include MU": { jp: "MUを含む", en: "Include MU" },
+					"Exclude MU": { jp: "MUを除", en: "Exclude MU" },
+					//
+					"--Select Type Of Instrument--": { jp: "--楽器の種類--", en: "--Select Type Of Instrument--" },
+					"Dial": { jp: ">デジタル<", en: "Dial" },
+					"Digital": { jp: "デジタル", en: "Digital" },
+					"Analog": { jp: "アナログ", en: "Analog" },
+					//
+					"--Select Is NABL--": { jp: "--NABL を選択--", en: "--Select Is NABL--" },
+					"--Select Plant Location--": { jp: "--工場所在地の選択--", en: "--Select Plant Location--" },
+					//
+
 					"Set Value for Torque Wrench": { jp: "トルクレンチの設定値", en: "Set Value for Torque Wrench" },
 					"Grade": { jp: "学年", en: "Grade" },
 
 					//Department
-                    "Plant / Location": { jp: "工場・所在地", en: "Plant / Location" },
-                    "Plant Code": { jp: "工場コード", en: "Plant Code" },
-                    "Department (EN)": { jp: "部門 (英語)", en: "Department (EN)" },
-                    "Department (JP)": { jp: "部門（日本）", en: "Department (JP)" },
-                    "Section (EN)": { jp: "セクション (英語)", en: "Section (EN)" },
-                    "Section (JP)": { jp: "セクション（日本）", en: "Section (JP)" },
-                    "Sub Section (EN)": { jp: "サブセクション (英語)", en: "Sub Section (EN)" },
-                    "Sub Section (JP)": { jp: "サブセクション（JP）", en: "Sub Section (JP)" },
-                    "Department Description (EN)": { jp: "部門の説明 (英語)", en: "Department Description (EN)" },
-                    "Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" },
-
-					"Type Of Instrument": { jp: "楽器の種類", en: "Type Of Instrument"},
-					"--Select Type Of Instrument--": { jp: "--楽器の種類を選択してください--", en: "--Select Type Of Instrument--"},
-					"Internal Instrument": { jp: "内部計器", en: "Internal Instrument"},
-					"External Instrument": { jp: "外部機器", en: "External Instrument"},
-					"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory"},
-					"--Select Tool Inventory--": { jp: "--ツールインベントリの選択--", en: "--Select Tool Inventory--"},
-
-					//Last changes
-					"Due For Calibration": { jp: "校正期限", en: "Due For Calibration"},
-					"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request"},
-					"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity"},
-					"Amount in JPY": { jp: "日本円での金額", en: "Amount in JPY"},
-					"Comment": { jp: "コメント", en: "Comment"},
-					"Equipment Station": { jp: "機器ステーション", en: "Equipment Station"},
-					"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--"},
-					"Inline": { jp: "列をなして", en: "Inline"},
-					"Lab": { jp: "研究室", en: "Lab"},
-					"Scope": { jp: "範囲", en: "Scope"},
-					"--Select Type Of Scope--": { jp: "--スコープのタイプを選択してください--", en: "--Select Type Of Scope--"},
-					"Internal Instrument": { jp: "内部計器", en: "Internal Instrument"},
-					"External Instrument": { jp: "外部機器", en: "External Instrument"},
-					"Type Of Scope": { jp: "スコープの種類", en: "Type Of Scope"}
+					"Plant / Location": { jp: "工場・所在地", en: "Plant / Location" },
+					"Plant Code": { jp: "工場コード", en: "Plant Code" },
+					"Department (EN)": { jp: "部門 (英語)", en: "Department (EN)" },
+					"Department (JP)": { jp: "部門（日本）", en: "Department (JP)" },
+					"Section (EN)": { jp: "セクション (英語)", en: "Section (EN)" },
+					"Section (JP)": { jp: "セクション（日本", en: "Section (JP)" },
+					"Sub Section (EN)": { jp: "サブセクション (英語)", en: "Sub Section (EN)" },
+					"Sub Section (JP)": { jp: "サブセクション（JP）", en: "Sub Section (JP)" },
+					"Department Description (EN)": { jp: "部門の説明 (英語)", en: "Department Description (EN)" },
+					"Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" }
 
 
+				}
 
 
 				}
@@ -1836,11 +1857,6 @@
 					$('#UserDept').val(selectedUserDept).prop("selected", true);
 					
 					$('#DepartmentId').val(selectedDepartmentId).prop("selected", true);
-
-
-
-
-
 
 
 				});
@@ -2339,6 +2355,15 @@
 						SelectObservation = @Json.Serialize(@ViewBag.Observation);
 
 					}
+					if (SelectCalibFreq == null) {
+						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
+
+					}
+
+					if (SelectCalibFreqId == null) {
+						SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
+
+					}
 
 					if (SelectCalibFreq == null) {
 						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
@@ -2358,12 +2383,13 @@
 					$('#ObservationType').val(TmpOBStype).prop("selected", true);
 
 
-					//For Master					
+					//For Master
+					
 					$('#CalibFreqMaster').val(SelectCalibFreqId).prop("selected", true);
 					$('#LocationId').val(SelectLocationId).prop("selected", true);
 					//For User
 					$('#Designation').val(SelectDesignation).prop("selected", true);
-
+					
 				});
 			}
 																					/////////////TEMPLATE PART END ////////////////////////

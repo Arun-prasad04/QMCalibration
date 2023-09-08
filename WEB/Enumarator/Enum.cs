@@ -34,18 +34,18 @@ public enum ReplicateTestStatus
 		Approved = 3,
 		Rejected = 4
 }
+public enum ToolInventoryStatus
+{
+	UserTool = 1,
+	RequestTool = 2,
+	CalibrationTool = 3,
+	RejctedTool = 4,
+	ClosedTool = 5,
+	SentTool = 6
+}
+public enum ToolRoomStatus
+{
+	Completed = 1,
+	Pending = 0
+}
 
-public enum ToolInventoryStatus 
-{ 
-	UserTool = 1, 
-	RequestTool = 2, 
-	CalibrationTool = 3, 
-	RejctedTool = 4, 
-	ClosedTool = 5, 
-	SentTool = 6 
-}
-public enum ToolRoomStatus 
-{ 
-	Completed = 1, 
-	Pending = 2 
-}

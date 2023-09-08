@@ -447,6 +447,23 @@ public class ObservationTemplateService : IObservationTemplateService
 					ActualsT13 = micrometer.ActualsT13,
 					Avg3 = micrometer.Avg3,
 					MuInterval3 = micrometer.MuInterval3,
+
+					ActualsT14 = micrometer.ActualsT14,
+					Avg4 = micrometer.Avg4,
+					Measurement4 = micrometer.Measurement4,
+
+					ActualsT15 = micrometer.ActualsT15,
+					Avg5 = micrometer.Avg5,
+					Measurement5 = micrometer.Measurement5,
+
+					ActualsT16 = micrometer.ActualsT16,
+					Avg6 = micrometer.Avg6,
+					Measurement6 = micrometer.Measurement6,
+
+					ActualsT17 = micrometer.ActualsT17,
+					Avg7 = micrometer.Avg7,
+					Measurement7 = micrometer.Measurement7,
+
 					//ActualsT23 = micrometer.ActualsT23,
 					//ActualsT33 = micrometer.ActualsT33,
 
@@ -521,6 +538,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						foreach (var updateData in detailData)
 						{
 							_unitOfWork.Repository<ObsMicrometerValues>().Update(updateData);
+							
 							_unitOfWork.SaveChanges();
 						}
 					}
@@ -590,8 +608,47 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (micrometer.ActualsT13 != null)
 					micrometerById.ActualsT13 = micrometer.ActualsT13;
 
-				//if (micrometer.ActualsT14 != null)
-				//	micrometerById.ActualsT14 = micrometer.ActualsT14;
+
+
+				if (micrometer.Avg4 != null)
+					micrometerById.Avg4 = micrometer.Avg4;
+
+				if (micrometer.Measurement4 != null)
+					micrometerById.Measurement4 = micrometer.Measurement4;
+
+				if (micrometer.ActualsT14 != null)
+					micrometerById.ActualsT14 = micrometer.ActualsT14;
+
+
+
+				if (micrometer.Avg5 != null)
+					micrometerById.Avg5 = micrometer.Avg5;
+
+				if (micrometer.Measurement5 != null)
+					micrometerById.Measurement5 = micrometer.Measurement5;
+
+				if (micrometer.ActualsT15 != null)
+					micrometerById.ActualsT15 = micrometer.ActualsT15;
+
+
+				if (micrometer.Avg6 != null)
+					micrometerById.Avg6 = micrometer.Avg6;
+
+				if (micrometer.Measurement6 != null)
+					micrometerById.Measurement6 = micrometer.Measurement6;
+
+				if (micrometer.ActualsT16 != null)
+					micrometerById.ActualsT16 = micrometer.ActualsT16;
+
+
+				if (micrometer.Avg7 != null)
+					micrometerById.Avg7 = micrometer.Avg7;
+
+				if (micrometer.Measurement7 != null)
+					micrometerById.Measurement7 = micrometer.Measurement7;
+
+				if (micrometer.ActualsT17 != null)
+					micrometerById.ActualsT17 = micrometer.ActualsT17;
 
 				//if (micrometer.ActualsT24 != null)
 				//	micrometerById.ActualsT24 = micrometer.ActualsT24;
@@ -727,7 +784,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				//	micrometerById.Measurement11 = micrometer.Measurement11;
 
 				if (micrometer.Flatness1 != null)
-					micrometerById.Flatness1 = "1";//micrometer.Flatness1; have to change the value according to the micro type
+					//micrometerById.Flatness1 = "1";//micrometer.Flatness1; have to change the value according to the micro type
 
 				//if (micrometer.Flatness2 != null)
 				//	micrometerById.Flatness2 = micrometer.Flatness2;
@@ -801,15 +858,20 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.RollBack();
 			ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
+			//ErrorViewModelTest.Log("FlatnessActual - " + micrometer.FlatnessActual);
+			//ErrorViewModelTest.Log("FlatnessMeasure - " + micrometer.FlatnessMeasure);
+			//ErrorViewModelTest.Log("FlatnessInserr - " + micrometer.FlatnessInserr);
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 500,
 				ResponseMessage = "Failure",
 				ErrorMessage = e.Message,
-				ResponseData = micrometer,
+				ResponseData = micrometer, 
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
 				ResponseServiceMethod = "InsertMicrometer"
+
+
 			};
 		}
 	}
@@ -881,31 +943,47 @@ public class ObservationTemplateService : IObservationTemplateService
 				//ParallelismSpec = s.MicromerterModel.Select(s => s.ParallelismSpec).FirstOrDefault(),
 				//Actuals = s.MicromerterModel.Select(s => s.Actuals).FirstOrDefault(),
 				ActualsT11 = s.MicromerterModel.Select(s => s.ActualsT11).SingleOrDefault(),
-				//ActualsT21 = s.MicromerterModel.Select(s => s.ActualsT21).FirstOrDefault(),
-				//ActualsT31 = s.MicromerterModel.Select(s => s.ActualsT31).FirstOrDefault(),
 				Avg1 = s.MicromerterModel.Select(s => s.Avg1).FirstOrDefault(),
 				MuInterval1 = s.MicromerterModel.Select(s => s.MuInterval1).FirstOrDefault(),
+
+				//ActualsT21 = s.MicromerterModel.Select(s => s.ActualsT21).FirstOrDefault(),
+				//ActualsT31 = s.MicromerterModel.Select(s => s.ActualsT31).FirstOrDefault(),
+
 				ActualsT12 = s.MicromerterModel.Select(s => s.ActualsT12).FirstOrDefault(),
-				//ActualsT22 = s.MicromerterModel.Select(s => s.ActualsT22).FirstOrDefault(),
-				//ActualsT32 = s.MicromerterModel.Select(s => s.ActualsT32).FirstOrDefault(),
 				Avg2 = s.MicromerterModel.Select(s => s.Avg2).FirstOrDefault(),
 				MuInterval2 = s.MicromerterModel.Select(s => s.MuInterval2).FirstOrDefault(),
+				//ActualsT22 = s.MicromerterModel.Select(s => s.ActualsT22).FirstOrDefault(),
+				//ActualsT32 = s.MicromerterModel.Select(s => s.ActualsT32).FirstOrDefault(),
+
+
 				ActualsT13 = s.MicromerterModel.Select(s => s.ActualsT13).FirstOrDefault(),
-				//ActualsT23 = s.MicromerterModel.Select(s => s.ActualsT23).FirstOrDefault(),
-				//ActualsT33 = s.MicromerterModel.Select(s => s.ActualsT33).FirstOrDefault(),
 				Avg3 = s.MicromerterModel.Select(s => s.Avg3).FirstOrDefault(),
 				MuInterval3 = s.MicromerterModel.Select(s => s.MuInterval3).FirstOrDefault(),
-				//ActualsT14 = s.MicromerterModel.Select(s => s.ActualsT14).FirstOrDefault(),
+
+				//ActualsT23 = s.MicromerterModel.Select(s => s.ActualsT23).FirstOrDefault(),
+				//ActualsT33 = s.MicromerterModel.Select(s => s.ActualsT33).FirstOrDefault(),
+
+				ActualsT14 = s.MicromerterModel.Select(s => s.ActualsT14).FirstOrDefault(),
+				Avg4 = s.MicromerterModel.Select(s => s.Avg4).FirstOrDefault(),
+				Measurement4 = s.MicromerterModel.Select(s => s.Measurement4).FirstOrDefault(),
+
 				//ActualsT24 = s.MicromerterModel.Select(s => s.ActualsT24).FirstOrDefault(),
 				//ActualsT34 = s.MicromerterModel.Select(s => s.ActualsT34).FirstOrDefault(),
-				//Avg4 = s.MicromerterModel.Select(s => s.Avg4).FirstOrDefault(),
-				//MuInterval4 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
-				//ActualsT15 = s.MicromerterModel.Select(s => s.MuInterval4).FirstOrDefault(),
+
+				ActualsT15 = s.MicromerterModel.Select(s => s.ActualsT15).FirstOrDefault(),
+				Avg5 = s.MicromerterModel.Select(s => s.Avg5).FirstOrDefault(),
+				Measurement5 = s.MicromerterModel.Select(s => s.Measurement5).FirstOrDefault(),
+
 				//ActualsT25 = s.MicromerterModel.Select(s => s.ActualsT25).FirstOrDefault(),
 				//ActualsT35 = s.MicromerterModel.Select(s => s.ActualsT35).FirstOrDefault(),
-				//Avg5 = s.MicromerterModel.Select(s => s.Avg5).FirstOrDefault(),
-				//MuInterval5 = s.MicromerterModel.Select(s => s.MuInterval5).FirstOrDefault(),
-				//ActualsT16 = s.MicromerterModel.Select(s => s.ActualsT16).FirstOrDefault(),
+				Avg6 = s.MicromerterModel.Select(s => s.Avg6).FirstOrDefault(),
+				ActualsT16 = s.MicromerterModel.Select(s => s.ActualsT16).FirstOrDefault(),
+				Measurement6 = s.MicromerterModel.Select(s => s.Measurement6).FirstOrDefault(),
+
+				Avg7 = s.MicromerterModel.Select(s => s.Avg7).FirstOrDefault(),
+				ActualsT17 = s.MicromerterModel.Select(s => s.ActualsT17).FirstOrDefault(),
+				Measurement7 = s.MicromerterModel.Select(s => s.Measurement7).FirstOrDefault(),
+
 				//ActualsT26 = s.MicromerterModel.Select(s => s.ActualsT26).FirstOrDefault(),
 				//ActualsT36 = s.MicromerterModel.Select(s => s.ActualsT36).FirstOrDefault(),
 				//Avg6 = s.MicromerterModel.Select(s => s.Avg6).FirstOrDefault(),
@@ -934,7 +1012,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				//Measurement3 = s.MicromerterModel.Select(s => s.Measurement3).FirstOrDefault(),
 				//Measurement4 = s.MicromerterModel.Select(s => s.Measurement4).FirstOrDefault(),
 				//Measurement5 = s.MicromerterModel.Select(s => s.Measurement5).FirstOrDefault(),
-				//Measurement6 = s.MicromerterModel.Select(s => s.Measurement6).FirstOrDefault(),
+
 				//Measurement7 = s.MicromerterModel.Select(s => s.Measurement7).FirstOrDefault(),
 				//Measurement8 = s.MicromerterModel.Select(s => s.Measurement8).FirstOrDefault(),
 				//Measurement9 = s.MicromerterModel.Select(s => s.Measurement9).FirstOrDefault(),
@@ -995,10 +1073,18 @@ public class ObservationTemplateService : IObservationTemplateService
 			}
 			var parentVM = _mapper.Map<MicrometerViewModel>(micrometer);
 			var childData1 = _unitOfWork.Repository<ObsMicrometerValues>()
-									.GetQueryAsNoTracking(x => x.ParentId == parentVM.TemplateObservationId);
+									.GetQueryAsNoTracking(x => x.ParentId == parentVM.TemplateObservationId && x.InstrumentError == 1);
 			var childListVM1 = _mapper.Map<List<MicrometerResultViewModel>>(childData1);
-
 			micrometer.MicrometerAddResultViewModelList = childListVM1;
+
+
+			//var parentVM2 = _mapper.Map<MicrometerViewModel>(micrometer);
+			//var childData2 = _unitOfWork.Repository<ObsMicrometerValues>()
+			//						.GetQueryAsNoTracking(x => x.ParentId == parentVM.TemplateObservationId && x.Parallelism == 1);
+			//var childListVM2 = _mapper.Map<List<MicrometerResultViewModel>>(childData1);
+
+			//micrometer.MicrometerAddResultViewModelTwoList = childListVM2;
+
 			return new ResponseViewModel<MicrometerViewModel>
 			{
 				ResponseCode = 200,

@@ -766,7 +766,7 @@ function ReqEnableReason() {
 }
 
 function AcceptRejectRequest(lang) {
-    debugger;
+    // debugger;
     if ($('input[name="ReqAcceptReject"]:checked').val() == undefined || $('input[name="ReqAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="ReqAcceptReject"]:checked').val() == 'Accept') {
@@ -1523,33 +1523,7 @@ function RejecttQuarRequest() {
 
     });
 }
-//function LoadObservationTypePopup(lang) {
-//    $.ajax({
-//        url: '../Tracker/LoadObservationType',
-//        type: 'POST',
-//        data: { attrType: '', attrsubType: $('#NewObservation option:selected').text(), langtype: lang }
-//    }).done(function (resultObject) {
-//        $('#NewObservationType')
-//            .find('option')
-//            .remove();
 
-//        $('#NewObservationType').empty();
-//        $('#NewObservationType').append(<option value="0">--Select--</option>);
-//        for (let index = 0; index < resultObject.length; index++) {
-//            if (lang == 'en') {
-//                optText = resultObject[index].attrValue;
-//                optValue = resultObject[index].id;
-//                $('#NewObservationType').append(<option value="${optValue}">${optText}</option>);
-//            }
-//            else {
-//                optTextjp = resultObject[index].attrValueJp;
-//                optValuejp = resultObject[index].id;;
-//                $('#NewObservationType').append(<option value="${optValuejp}">${optTextjp}</option>);
-//            }
-//        }
-//    });
-
-//}
 
 
 function LoadObservationType(lang) {
@@ -1633,10 +1607,163 @@ function SaveLeverDial(lang) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
+function SaveInventoryCalibration(lang) {
 
+
+    var InstrumentDataList = new Array();
+    var CheckedCount = 0;
+    var UNCheckedCount = 0;
+   
+    var tblLength = $('#tblTool tbody tr').length;
+    if ($('#tblTool tbody tr').length > 0) {
+        $('#tblTool tbody tr').each(function (row, tr) {
+
+            var checkedvalue = $(tr).find("input[name=ChkInput]").prop('checked');
+
+            var objInstrumentId = $(tr).find("input[name=instrumentid]").val();//$(tr).find("td[id='instrumentid'] input[type='hidden']").val();
+            var Masterid = "ReplacementLabID_" + objInstrumentId;
+            var POPoutId = "popupcount_" + objInstrumentId;
+            var CHKoutId = "ChkInput_" + objInstrumentId;
+            var objReplacementLabId = $(tr).find("td[id='" + Masterid + "']").text().trim();
+            var objPopUpRecordCount = $(tr).find("input[id='" + POPoutId + "']").val(); // $(tr).find("input[id= '" + ChkoutId + "']").val().trim();
+            var objChkRecordCount = $(tr).find("input[id='" + CHKoutId + "']").prop('checked');
+        
+            if (checkedvalue == true) {
+
+
+                if ((objReplacementLabId == "") && (objPopUpRecordCount > 0)) {
+
+                    CheckedCount += 1;
+
+
+
+                }
+                else if ((objReplacementLabId == "") && (objPopUpRecordCount == "")) {
+                  
+                    CheckedCount += 1;
+                }
+                else
+                {
+                    var InstrumentData =
+                    {
+                        InstrumentId: objInstrumentId,
+                        ReplacementLabId: objReplacementLabId
+
+                    }
+
+                    InstrumentDataList.push(InstrumentData);
+                }
+            }
+            //else if ((checkedvalue == false) && (objPopUpRecordCount != 0))
+            //{
+             
+            //    CheckedCount +=  1;
+            //}
+            else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 0) ) {
+          //alert("false,noRP,noPOP")
+                UNCheckedCount += 1;
+            }
+            
+        });
+        console.log("$('#tblTool tbody tr').length");
+        console.log($('#tblTool tbody tr').length);
+        console.log("CheckedCount");
+        console.log(CheckedCount);
+    }
+    if ((InstrumentDataList.length > 0) && (CheckedCount == 0)){
+       // debugger;
+        $.ajax({
+            dataType: 'json',
+            url: '../Instrument/SaveInventoryCalibration',
+            type: 'POST',
+            data: { InstrumentList: InstrumentDataList },
+            success: function () {
+
+                showSuccess("Data Saved Successfully", lang);
+                window.location.href = '../Instrument/ToolInventory';
+
+            },
+            failure: function (response) {
+                showWarning("Try Again Process Failed", lang);
+
+            }
+
+        });
+    }
+    if (CheckedCount > 0) {
+        showWarning("Please Select the ReplacementLabId", lang);
+        return false;
+    }
+    if (UNCheckedCount == tblLength) {
+        showWarning("Please Select the ReplacementLabId", lang);
+        return false;
+    }
+}
+function DueForCalibrationInstruments() {
+
+    var tblRowsCoun = $("#example1 th").length;
+    if (tblRowsCoun > 0) {
+        $('#example1 > tbody > tr').each(function (row, tr) {
+            var currentRow = $(this).closest("tr");
+
+
+
+            if (currentRow.find("td:eq(8)").text() != " ") {
+                var checkedvalue = $(tr).find("td:eq(8) input[type='checkbox']")[0].checked;
+
+                currentRow.show();
+            }
+            else {
+                currentRow.hide();
+            }
+
+        });
+    }
+
+}
+function InsertRequestList() {
+    var Request = new Array();
+    $('#example1 > tbody > tr').each(function (row, tr) {
+
+        var currentRow = $(this).closest("tr");
+
+
+        if (currentRow.find("td:eq(8)").text() != " ") {
+
+            var checkedvalue = $(tr).find("td:eq(8) input[type='checkbox']")[0].checked;
+
+            if (checkedvalue == true) {
+
+
+                var TypeValue = $(tr).find("td:eq(9) input[type='hidden']").val();
+
+
+                var RequestData = {
+                    instrumentId: checkedvalue,
+                    typeId: TypeValue
+                }
+                Request.push(RequestData);
+            }
+
+        }
+
+
+    });
+    $.ajax({
+        url: '../Instrument/DueRequest',
+        type: 'POST',
+        data: { Request }// JSON.stringify(ToolInventoryList);//{ ToolInventoryList: ToolInventoryList }
+    }).done(function (resultObject) {
+
+        showSuccess("Data Saved Successfully", lang);
+        window.location.href = '../Instrument/ToolInventory';
+
+    });
+}
 function SaveMicrometer(lang) {
     var MicroResult;
     var ObjParent = '';
+
     var Unit = $('#Allvalues').val();
     if (Unit == null || Unit == "") {
         showWarning("Please enter the Unit !!!", lang);
@@ -1658,20 +1785,30 @@ function SaveMicrometer(lang) {
         showWarning("Please enter the Visual Check !!!", lang);
         return true;
     }
-    //var ObservationType = @Json.Serialize(@ViewBag.ObservationTypeMicro);
+    var MeasuredValue;
+    var Actualvalue;
+
     MicroResult = new Array();
     $('#Microadd tbody tr').each(function (row, tr) {
 
 
+
+        if ($(tr).find("td:eq(1) input[type='text']").val() == 0 || $(tr).find("td:eq(1) input[type='text']").val() == '') {
+            MeasuredValue = 1;
+
+        }
+        if ($(tr).find("td:eq(2) input[type='text']").val() == 0 || $(tr).find("td:eq(1) input[type='text']").val() == '') {
+            Actualvalue = 1;
+
+        }
 
         if ($('#Microadd >tbody >tr').length > 2) {
 
             if ($(tr).index() > 2) {
                 ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();
 
-
                 if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
-                    console.log("New value");
+
                     var MicroData = {
                         SNO: $(tr).find("td:eq(0) input[type='text']").val(),
                         MeasuedValue: $(tr).find("td:eq(1) input[type='text']").val(),
@@ -1682,7 +1819,7 @@ function SaveMicrometer(lang) {
                         InstrumentError: 1//$(tr).find("td:eq(6) input[type='hidden']").val()
 
                     }
-                    //MicroResult.push(MicroData);
+
                 }
                 MicroResult.push(MicroData);
             }
@@ -1693,17 +1830,21 @@ function SaveMicrometer(lang) {
         }
 
 
-        console.log("Micro Result");
-        console.log(MicroResult);
+
 
     });
+    //To validated the tbl values
+    //if (MeasuredValue == 1)
+    //{
+    //showWarning("Please enter the MeasuedValue in the Table!!!", lang);
+    //return true;
+    //}
+    //if (Actualvalue == 1)
+    //{
+    //showWarning("Please enter the Actual Value in the Table!!!", lang);
+    //    return true;
+    //}
 
-    console.log("Micro Micro Result");
-    console.log(MicroResult);
-    console.log("Micro Micro Values");
-    console.log($('#tablerowFlatness').find("td:eq(0) input[type='text']").val());
-    console.log($('#tablerowFlatness').find("td:eq(1) input[type='text']").val());
-    console.log($('#tablerowFlatness').find("td:eq(2) input[type='text']").val());
     var data = {
         Id: $('#IdMicro').val(),
         TemplateObservationId: $('#TemplateObservationId').val(),
@@ -1734,6 +1875,23 @@ function SaveMicrometer(lang) {
         Avg3: $('#Avg3').val(),
         ActualsT13: $('#ActualsT13').val(),
         MuInterval3: $('#MuInterval3').val(),
+
+        Avg4: $('#Avg4').val(),
+        ActualsT14: $('#ActualsT14').val(),
+        Measurement4: $('#Measurement4').val(),
+
+        Avg5: $('#Avg5').val(),
+        ActualsT15: $('#ActualsT15').val(),
+        Measurement5: $('#Measurement5').val(),
+
+        Avg6: $('#Avg6').val(),
+        ActualsT16: $('#ActualsT16').val(),
+        Measurement6: $('#Measurement6').val(),
+
+        Avg7: $('#Avg7').val(),
+        ActualsT17: $('#ActualsT17').val(),
+        Measurement7: $('#Measurement7').val(),
+
         //ActualsT13: $('#ActualsT13').val(),
         //ActualsT23: $('#ActualsT23').val(),
         //ActualsT33: $('#ActualsT33').val(),
@@ -1784,10 +1942,7 @@ function SaveMicrometer(lang) {
         //Measurement1: $('#Measurement1').val(),
         //Measurement2: $('#Measurement2').val(),
         //Measurement3: $('#Measurement3').val(),
-        //Measurement4: $('#Measurement4').val(),
-        //Measurement5: $('#Measurement5').val(),
-        //Measurement6: $('#Measurement6').val(),
-        //Measurement7: $('#Measurement7').val(),
+
         //Measurement8: $('#Measurement8').val(),
         //Measurement9: $('#Measurement9').val(),
         //Measurement10: $('#Measurement10').val(),
@@ -1806,8 +1961,10 @@ function SaveMicrometer(lang) {
         type: 'POST',
         data: { micrometer: data }
     }).done(function (resultObject) {
-        window.location.href = '../Tracker/Request?reqType=4';
+
         showSuccess("Data Saved Successfully", lang);
+        window.location.href = '../Tracker/Request?reqType=4';
+
     });
 }
 
@@ -2576,7 +2733,7 @@ function LoadObservationTypePopup(lang) {
         $('#NewObservationType')
             .find('option')
             .remove();
-        console.log(resultObject);
+
         $('#NewObservationType').empty();
         $('#NewObservationType').append(`<option value="0">--Select--</option>`);
         for (let index = 0; index < resultObject.length; index++) {

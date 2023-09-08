@@ -1,0 +1,231 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+	table,
+	th,
+	td,
+	tr {
+		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.wd100 {
+		width: 100%;
+	}
+
+	.wd25 {
+		width: 25%;
+	}
+
+	.wd5 {
+		width: 5%;
+	}
+
+	.wd20 {
+		width: 20%;
+	}
+
+	.wd100ht60 {
+		width: 100%;
+		height: 60px;
+	}
+
+	.wd100ht150 {
+		width: 100%;
+		height: 150px;
+	}
+
+	.ht150 {
+		height: 150px;
+	}
+
+	.textcenterborder {
+		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.textleftborder {
+		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: left;
+	}
+
+	.sizeborder {
+		width: 100%;
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+
+	.Border0px {
+		width: 100%;
+	}
+</style>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
+
+		<table class="Tables-AndTablesTextBox" id="tblHeader">
+
+
+			@*@if (@HttpContextAccessor.HttpContext.Session.GetString("ObservationMicro") == "V-anvil Micrometer")
+			{*@
+
+			<tr style="font-weight: bold;" class="sizeborder" id="RowHeaderAnvil">
+				<td colspan="4">
+					<span> 観察シート / Observation sheet -</span><span>マイクロメータ／V-anvil Micrometer /Special/Pipe type/Caliper type</span>
+
+				</td>
+			</tr>
+
+
+			<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
+				<td colspan="4">
+					<span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span>
+
+				</td>
+
+			</tr>
+
+			<tr id="RowHeaderExternal" style="font-weight: bold;" class="sizeborder">
+				<td colspan="4">
+					<span>観察シート/ Observation Sheet - </span><span> 標準型外側マイクロメータ／Micrometer for External Measurements and Span Measurement of Teeth</span>
+
+				</td>
+
+			</tr>
+
+			@*}*@
+			<tr class="sizeborder">
+				<td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="20">
+					<img src="../image/Fuso.png" alt="" style="width: 40%;" />
+				</td>
+				@*@if (@HttpContextAccessor.HttpContext.Session.GetString("ObservationTypeMicro") == "V-anvil Micrometer")
+				{*@
+
+				<td id="tdHeaderAnvil" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
+
+					<span class="trn">外側　V溝・３溝・５溝マイクロメータ V-anvil Micrometer </span> </br> <span class="trn"> 特殊外側マイクロメータ／Special micro.,内側マイクロメータ／</span> </br> <span class="trn">Inside micro.,内側マイクロメータ／Inside  (Caliper type）</span>
+
+				</td>
+
+
+
+				<td id="tdHeaderDepth" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
+					<span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span>
+				</td>
+
+				<td id="tdHeaderExternal" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
+					<span class="trn">
+						標準型外側マイクロメータ & 歯厚マイクロメータ／
+					</span> </br> <span class="trn">Micrometer for external and span measurements of teeth</span>
+
+
+				</td>
+
+
+				<td class="textleftborder trn" height="10">
+					フォーマット番号/Format No.
+				</td>
+
+				<td id="tdFormatAnvil" class="textcenterborder">A-20-1</td>
+
+				<td id="tdFormatDepth" class="textcenterborder">A-27</td>
+				<td id="tdFormatExternal" class="textcenterborder">A-02</td>
+
+
+			</tr>
+			<tr>
+				<td class="textleftborder" height="20">
+					リビジョン番号／Revision No.
+				</td>
+				<td class="textcenterborder">0</td>
+			</tr>
+		</table>
+		<br>
+
+		<table id="TblInstrument" class="Tables-AndTablesTextBox">
+			<tr>
+				<td colspan="2" class="textcenterborder"><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
+				<td colspan="1">@Model.IdNo</td>
+				<td colspan="2" class="textcenterborder"><span>品名   ／</span><br /><span>Instrument name</span></td>
+				<td colspan="3">@Model.Name</td>
+				<td colspan="2" class="textcenterborder"><span>製造者／</span><br /><span> Make</span></td>
+				<td colspan="2">@Model.Make</td>
+			</tr>
+			<tr>
+				<td class="textcenterborder" colspan="2">
+					<span>製造番号 /Serial Number</span>
+				</td>
+				<td colspan="1">@Model.SerialNo</td>
+				<td class="textcenterborder" colspan="2">
+					<span>等級   ／</span><br /><span>Grade</span>
+				</td>
+				<td colspan="3">@Model.Grade</td>
+				<td colspan="2" class="textcenterborder">
+					<span>能力(測定範囲）／</span><br /> <span>Range</span>
+				</td>
+				<td colspan="2">@Model.Range</td>
+			</tr>
+			<tr>
+				<td class="textcenterborder" colspan="6">
+					<span>基準器・標準器・検査設備機器／</span><br /><span> Standard instruments (Master instrument)</span>
+				</td>
+
+				<td class="textcenterborder" colspan="3">
+					<span>参照基準／</span><br /><span>Reference standards</span>
+				</td>
+				<td colspan="3"> @Model.RefStd</td>
+
+			</tr>
+			<tr>
+
+				<td colspan="6">
+					<div id="masterEquipmentValue" class="Tables-AndTablesTextBox">
+						@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+						{
+							int i = 1;
+
+							@foreach (var master in Model.MasterEqiupmentList)
+							{
+								<label>
+
+									@i
+									.
+									@master.EquipName
+									&nbsp;
+
+								</label>
+
+								i = i + 1;
+							}
+
+						}
+					</div>
+				</td>
+
+				<td class="textcenterborder" colspan="3">
+					<span>単位／ Unit</span>
+				</td>
+				<td colspan="3"><input type="text" style="height: 50px;" value="@Model.Allvalues" class="Tables-AndTablesTextBox" id="Allvalues" @Model.IsDisabled></td>
+			</tr>
+			<tr>
+				<td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
+				<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+				<td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
+				<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+				<td colspan=2">
+					<span>外観・機能／Visual Check</span>
+				</td>
+				<td colspan="4">
+
+					<textarea name="MicrometerCondition" id="MicrometerCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.MicrometerCondition</textarea>
+				</td>
+
+		</table>
+		<br>
+	</div>
+
+</div>

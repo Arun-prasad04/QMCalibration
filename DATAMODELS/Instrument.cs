@@ -53,9 +53,9 @@ namespace CMT.DATAMODELS
 	public string? Grade { get; set; }
 	public string? TypeOfEquipment { get; set; }
 	public string? ToolInventory { get; set; }
-
-	public int? ToolRoomStatus { get; set; }
 	public int? ToolInventoryStatus { get; set; }
+    public string? ReplacementLabID { get; set; }
+	public int? ToolRoomStatus { get; set; }
 
 	}
 }
