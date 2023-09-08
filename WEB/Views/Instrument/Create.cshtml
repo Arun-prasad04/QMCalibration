@@ -95,15 +95,15 @@
 								<div class="col-sm-6">
 									<!-- text input -->
 									<div class="form-group">
-										<label class="trn">Set Value for Torque Wrench</label>
-										<input type="text" id="TW_Type" name="TW_Type" value="@Model.TW_Type" class="form-control"
+										<label class="trn">Model/Capacity</label>
+										<input type="text" id="Capacity" name="Capacity" value="@Model.Capacity" class="form-control"
 											   placeholder="">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="required trn">Unit</label>
-										<input type="text" alt="Please enter Unit" id="Unit3" name="Unit3" value="@Model.Unit3" class="form-control trn" placeholder="Unit">
+										<label class="required trn">Amount in JPY</label>
+										<input type="text" alt="Please enter Amount JPY" id="AmountJPY" name="AmountJPY" value="@Model.AmountJPY" class="form-control trn" placeholder="Amount in JPY">
 									</div>
 								</div>
 							</div>
@@ -128,33 +128,12 @@
 												}*@
 											</select>
 										</div>
-									}
-									@* @if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
-									{
-									<div class="form-group">
-									<label class="required">User Department</label>
-									<select class="form-control" name="UserDept" id="UserDept" disabled>
-
-									@foreach (var department in @Model.Departments)
-									{
-									if (department.Id ==
-									Convert.ToInt16(@HttpContextAccessor.HttpContext.Session.GetString("DepartmentId")))
-									{
-									<option value="@department.Id" selected="selected" >@department.Name</option>
-									}
-									else
-									{
-									<option value="@department.Id" >@department.Name</option>
-									}
-									}
-									</select>
-									</div>
-									} *@
+									}									
 									@if (@Model.Id != 0 && @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
 									{
 										<div class="form-group">
 											<label class="required trn">User Department</label>
-											<input type="text" id="UserDept" name="UserDept" value='@Model.DepartmentName' class="form-control"
+											<input type="text" id="UserDept1" name="UserDept" value='@Model.DepartmentName' class="form-control"
 												   placeholder="" disabled>
 										</div>
 									}
@@ -163,9 +142,23 @@
 									{
 										<div class="form-group">
 											<label class="required trn">User Department</label>
-											<input type="text" id="UserDept" name="UserDept"
+											@*<input type="text" id="UserDept1" name="UserDept"
 												   value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentName")' class="form-control"
-												   placeholder="" disabled>
+												   placeholder="" disabled>*@
+												   <select class="form-control" name="UserDept" id="UserDept1">
+												<option class="trn" selected="true" value="">--Select User Department--</option>
+												@foreach (var department in @Model.Departments)
+												{
+													if (department.Id == Model.UserDept)
+													{
+														<option value="@department.Id" selected="selected">@department.Name</option>
+													}
+													else
+													{
+														<option value="@department.Id">@department.Name</option>
+													}
+												}
+											</select>
 										</div>
 									}
 
@@ -185,9 +178,9 @@
 								<div class="col-sm-6">
 									<!-- text input -->
 									<div class="form-group">
-										<label class="trn">Ref Standard/Calibration Method</label>
-										<input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.StandardReffered1"
-											   class="form-control trn" placeholder="Ref Standard/Calibration Method" alt="Please fill this field">
+										<label class="trn">Comment</label>
+										<input type="text" id="Comment" name="Comment" value="@Model.Comment"
+											   class="form-control trn" placeholder="" alt="Please fill this field">
 									</div>
 								</div>
 								<div class="col-sm-6">
@@ -238,24 +231,24 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="required trn">Drawing is attached</label>
-										<select id="Drawing_Attached" name="Drawing_Attached" class="form-control">
-											<option value=" " class="trn">--Select Drawing Attached--</option>
-											@if (Model.Drawing_Attached == "Yes")
+										<label class="required trn">Equipment Station</label>
+										<select id="EquipmentStation" name="EquipmentStation" class="form-control">
+											<option value=" " class="trn">--Select Equipment Station--</option>
+											@if (Model.EquipmentStation == "Inline")
 											{
-												<option value="Yes" selected="true" class="trn">Yes</option>
+												<option value="Inline" selected="true" class="trn">Inline</option>
 											}
 											else
 											{
-												<option value="Yes" class="trn">Yes</option>
+												<option value="Inline" class="trn">Inline</option>
 											}
-											@if (Model.Drawing_Attached == "No")
+											@if (Model.EquipmentStation == "Lab")
 											{
-												<option value="No" selected="true" class="trn">No</option>
+												<option value="Lab" selected="true" class="trn">Lab</option>
 											}
 											else
 											{
-												<option value="No" class="trn">No</option>
+												<option value="Lab" class="trn">Lab</option>
 											}
 										</select>
 									</div>
@@ -263,7 +256,7 @@
 							</div>
 							<div class="row">
 
-								<div class="col-sm-6">
+								@*<div class="col-sm-6">
 									<div class="form-group">
 										<label class="trn">Decision rule for statement of Confirmity</label>
 										<select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control">
@@ -286,8 +279,8 @@
 											}
 										</select>
 									</div>
-								</div>
-								<div class="col-sm-6">								
+								</div>*@
+								@*<div class="col-sm-6">								
 										<div class="form-group">
 											<label class="trn">Calibration Frequency</label>
 										<select id="CalibFreq" name="CalibFreq" class="form-control">
@@ -302,9 +295,61 @@
 													{
 														<option value="@freq.Id">@freq.AttrValue</option>
 													}
-												}*@
+												}
 											</select>
 										</div>									
+								</div>*@
+
+							</div>
+							<div class="row">
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Scope</label>
+										<select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
+											<option value="" selected="true" class="trn">--Select Type Of Scope--</option>
+											@if (Model.TypeOfEquipment == "Internal Instrument")
+											{
+												<option value="Internal Instrument" selected="true" class="trn">Internal Instrument</option>
+											}
+											else
+											{
+												<option value="Internal Instrument" class="trn">Internal Instrument</option>
+											}
+											@if (Model.TypeOfEquipment == "External Instrument")
+											{
+												<option value="External Instrument" selected="true" class="trn">External Instrument</option>
+											}
+											else
+											{
+												<option value="External Instrument" class="trn">External Instrument</option>
+											}
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Applicable for Tool Inventory</label>
+										<select id="ToolInventory" name="ToolInventory" class="form-control">
+											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
+											@if (Model.ToolInventory == "Yes")
+											{
+												<option value="Yes" selected="true" class="trn">Yes</option>
+											}
+											else
+											{
+												<option value="Yes" class="trn">Yes</option>
+											}
+											@if (Model.ToolInventory == "No")
+											{
+												<option value="No" selected="true" class="trn">No</option>
+											}
+											else
+											{
+												<option value="No" class="trn">No</option>
+											}
+										</select>
+									</div>
 								</div>
 
 							</div>
@@ -317,7 +362,7 @@
 											   placeholder="Remarks">
 								</div>
 								</div>
-								<div class="col-sm-6">
+								@*<div class="col-sm-6">
 									<div class="form-group">
 										<label for="exampleInputFile" class="trn">If yes provision for standard/drawing attachment</label>
 										<div class="input-group">
@@ -330,7 +375,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>*@
 							</div>
 							<div class="row">
 								<div class="col-sm-6">
@@ -621,29 +666,29 @@
 
 												</div>
 											</div>
-											<div class="col-sm-6">
+											@*<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">MU Template</label>
 
 													<select id="MUTemplate" name="MUTemplate" class="form-control" @Model.IsDisabled>
-														@*@foreach (var mu in @model.mutemplatelist)
+														@*foreach (var mu in model.mutemplatelist)
 														{
 															if (mu.id == model.mutemplate)
 															{
-																<option value="@mu.id" selected="selected">
-																	@mu.attrvalue
+																<option value="mu.id" selected="selected">
+																	mu.attrvalue
 																</option>
 															}
 															else
 															{
-																<option value="@mu.id">@mu.attrvalue</option>
+																<option value="mu.id">mu.attrvalue</option>
 															}
-														}*@
+														}
 
 													</select>
 
 												</div>
-											</div>
+											</div>*@
 										</div>
 										<div class="row">
 											<div class="col-sm-6">
@@ -694,10 +739,7 @@
 	<!-- /.content -->
 </form>
 
-<script>
-	console.log("Grade");
-	//console.log(document.getElementById("Garde").value);
-	console.log($("#Garde").val());
+<script>	
 	setTimeout(function () {
 
 		$('#reservationdate').datetimepicker({
@@ -754,6 +796,12 @@
 					CalibFreq: {
 						required: true,
 					},
+					TypeOfEquipment: {
+						required: true,
+					},
+					ToolInventory: {
+						required: true,
+					},
 				},
 				messages: {
 					InstrumentName: {
@@ -797,6 +845,12 @@
 					},
 					CalibFreq: {
 						required: "Please provide The Calibration Frequency",
+					},
+					TypeOfEquipment: {
+						required: "Please Select Scope Of Instrument",
+					},
+					ToolInventory: {
+						required: "Please Select the Tool Inventory",
 					},
 				},
 

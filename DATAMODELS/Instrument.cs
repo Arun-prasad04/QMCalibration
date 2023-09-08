@@ -10,12 +10,12 @@ namespace CMT.DATAMODELS
     public string? LC {get;set;}
     public string? Unit1 {get;set;}
     public string? Unit2 {get;set;}
-    public string? Unit3 {get;set;}
-    public string? TW_Type {get;set;}
-    public string? Drawing_Attached {get;set;}
+    public string? AmountJPY { get;set;}
+    public string? Capacity { get;set;}
+    public string? EquipmentStation { get;set;}
     public string? Rule_Confirmity {get;set;}
     public string? Remarks1 {get;set;}
-    public string? StandardReffered1 {get;set;}
+    public string? Comment { get;set;}
     public int? Instrument_Type {get; set;}
     public int CalibFreq {get; set;}
     public DateTime? CalibDate {get; set;}
@@ -51,6 +51,11 @@ namespace CMT.DATAMODELS
     public int? MasterInstrument4 {get;set;}
     public virtual User UserModel{get;set;}
 	public string? Grade { get; set; }
-		
+	public string? TypeOfEquipment { get; set; }
+	public string? ToolInventory { get; set; }
+
+	public int? ToolRoomStatus { get; set; }
+	public int? ToolInventoryStatus { get; set; }
+
 	}
 }

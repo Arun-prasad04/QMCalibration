@@ -164,10 +164,16 @@
 		$(function () {
 			$('#departmentform').validate({
 				rules: {
+					PlantId: {
+						required: true,
+					},
+					PlantCode: {
+						required: true,
+					},
 					Name: {
 						required: true,
 					},
-					Description: {
+					NameJP: {
 						required: true,
 					},
 					DeptCode: {
@@ -176,40 +182,80 @@
 					Section: {
 						required: true,
 					},
+					SectionJP: {
+						required: true,
+					},
+					SubSectionCode: {
+						required: true,
+					},
 					SubSection: {
+						required: true,
+					},
+					SubSectionJP: {
+						required: true,
+					},
+					Description: {
+						required: true,
+					},
+					DescriptionJP: {
+						required: true,
+					},
+					SectionCode: {
 						required: true,
 					},
 				},
 				messages: {
-					Name: {
-						required: "Please enter Department Name",
+					PlantId: {
+						required: "Please Select the Plant Location",
 					},
-					Description: {
-						required: "Please provide Department Description",
+					PlantCode: {
+						required: "Please Select the Plant Location",
+					},
+					Name: {
+						required: "Please enter Department Name EN",
+					},
+					NameJP: {
+						required: "Please enter Department Name JP",
 					},
 					DeptCode: {
 						required: "Please enter Department Code",
 					},
 					Section: {
-						required: "Please enter Department Section",
+						required: "Please enter Department Section EN",
+					},
+					SectionJP: {
+						required: "Please enter Section JP",
+					},
+					SubSectionCode: {
+						required: "Please enter SubSection Code",
 					},
 					SubSection: {
-						required: "Please enter Department Sub Section",
+						required: "Please enter Sub Section EN",
 					},
-					errorElement: 'span',
-					errorPlacement: function (error, element) {
-						error.addClass('invalid-feedback');
-						element.closest('.form-group').append(error);
+					SubSectionJP: {
+						required: "Please enter Sub Section JP",
 					},
-					highlight: function (element, errorClass, validClass) {
-						$(element).addClass('is-invalid');
+					Description: {
+						required: "Please enter Description EN",
 					},
-					unhighlight: function (element, errorClass, validClass) {
-						$(element).removeClass('is-invalid');
-					}
-
-
-
+					DescriptionJP: {
+						required: "Please enter Description JP",
+					},
+					SectionCode: {
+						required: "Please enter Section Code",
+					},
+					
+				},
+				errorElement: 'span',
+				errorPlacement: function (error, element) {
+					error.addClass('invalid-feedback');
+					element.closest('.form-group').append(error);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).addClass('is-invalid');
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).removeClass('is-invalid');
 				}
 			});
 		});

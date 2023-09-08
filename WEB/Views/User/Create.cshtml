@@ -1,12 +1,28 @@
 ﻿@{
     ViewData["Title"] = "User Create";
+    //Layout = "_Layout";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!-- Content Header (Page header) -->
-<script src="~/js/3.3.1Version/jquery.min.js"></script>
 <!-- Main content -->
-<section class="content">
+
+
+<style>
+    .button, input, optgroup, select, textarea {
+        margin: 8px;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        width: inherit;
+    }
+</style>
+
+<div class="content">
     <div class="row">
         <div class="col-12">
 
@@ -30,30 +46,34 @@
                 <!-- form start -->
                 <form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post" enctype="multipart/form-data">
                     <div class="card-body">
-                        <input type="hidden" name="Id" value="@Model.Id">
+                        <input type="hidden" name="Id" id="userId" value="@Model.Id">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="ShortId" class="required trn">User Name</label>
                                     <input type="text" class="form-control trn" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()">
+                                    <a style="display:none;color: red;" id="ShortIdError" class="field-validation-error">Please Enter Short ID</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="FirstName" class="required trn">First Name</label>
                                     <input type="text" alt="Please enter your first name" class="form-control trn" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
+                                    <a style="display:none;color: red;" id="FirstNameError" class="field-validation-error">Please Enter First Name</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="LastName" class="required trn">Last Name</label>
                                     <input type="text" alt="Please enter your last name" class="form-control trn" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName">
+                                    <a style="display:none;color: red;" id="LastNameError" class="field-validation-error">Please Enter Last Name</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="required trn">Mobile No</label>
                                     <input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                                    <a style="display:none;color: red;" id="MobileNoError" class="field-validation-error">Please Enter Mobile Number</a>
                                 </div>
                             </div>
                         </div>
@@ -62,47 +82,78 @@
                                 <div class="form-group">
                                     @*<option value="" selected="true">Select User Role</option>*@
                                     <label class="required trn">Role</label>
-                                    <select class="form-control" name="UserRoleId" id="UserRoleId">
-                                        <option value="0" class="trn required">--- Select User Role ---</option>
+                                    <select name="RoleSelect" id="RoleSelect" class="form-control muldrop" multiple="multiple">
+                                        @foreach (var role in @Model.RoleList)
+                                        {
+                                            if (@Model.RoleSelectVal != null)
+                                            {
+                                                var check = false;
+                                                @foreach (var sel in @Model.RoleSelectVal)
+                                                {
+                                                    //if(SubSectionCode.)
+                                                    if (role.Id == sel.RoleId)
+                                                    {
+                                                        check = true;
+                                                        @*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
+                                                    }
+                                                }
+                                                if (check == true)
+                                                {
+                                                    <option value="@role.Id" selected="check">@role.RoleName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@role.Id">@role.RoleName</option>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Id">@role.RoleName</option>
+                                            }
+                                        }
+                                        @*<option value="0" class="trn required">--- Select User Role ---</option>
                                         @if (Model.UserRoleId == 1)
                                         {
-                                            <option value="1" selected="true" class="trn">Department User</option>
+                                        <option value="1" selected="true" class="trn">Department User</option>
                                         }
                                         else
                                         {
-                                            <option value="1" class="trn">Department User</option>
+                                        <option value="1" class="trn">Department User</option>
                                         }
                                         @if (Model.UserRoleId == 2)
                                         {
-                                            <option value="2" selected="true" class="trn">LAB Admin</option>
+                                        <option value="2" selected="true" class="trn">LAB Admin</option>
                                         }
                                         else
                                         {
-                                            <option value="2" class="trn">LAB Admin</option>
+                                        <option value="2" class="trn">LAB Admin</option>
                                         }
                                         @if (Model.UserRoleId == 3)
                                         {
-                                            <option value="3" selected="true" class="trn">Lab inspector</option>
+                                        <option value="3" selected="true" class="trn">Lab inspector</option>
                                         }
                                         else
                                         {
-                                            <option value="3" class="trn">Lab inspector</option>
+                                        <option value="3" class="trn">Lab inspector</option>
                                         }
                                         @if (Model.UserRoleId == 4)
                                         {
-                                            <option value="4" selected="true" class="trn">LAB Technical</option>
+                                        <option value="4" selected="true" class="trn">LAB Technical</option>
                                         }
                                         else
                                         {
-                                            <option value="4" class="trn">LAB Technical</option>
-                                        }
+                                        <option value="4" class="trn">LAB Technical</option>
+                                        }*@
                                     </select>
+                                    <a style="display:none;color: red;" id="UserRoleIdError" class="field-validation-error">Please Select Role</a>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="required trn">Email Id</label>
                                     <input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
+                                    <a style="display:none;color: red;" id="EmailError" class="field-validation-error">Please Enter Email Address</a>
                                 </div>
                             </div>
                             @*<div class="col-md-4">
@@ -147,6 +198,7 @@
                                             }
                                         }
                                     </select>
+                                    <a style="display:none;color: red;" id="DesignationError" class="field-validation-error">Please Select Designation</a>
                                 </div>
                             </div>
                         </div>
@@ -154,49 +206,68 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="required trn">Sub Section Code</label>
-                                    <input type="text" alt="Please provide the Sub Section Code" class="form-control trn" placeholder="Sub Section Code" id="SubSectionCode" name="SubSectionCode" onblur="GetDepartmentDetails()" value="@Model.SubSectionCode">
+                                    @* <input type="text" alt="Please provide the Sub Section Code" class="form-control trn" placeholder="Sub Section Code" id="SubSectionCode" name="SubSectionCode" onblur="GetDepartmentDetails()" value="@Model.SubSectionCode">*@
+                                    @* @Html.DropDownListFor(M => Model.DepartmentId, new MultiSelectList(Model.DepartmentList, "Value", "Text"), "--Select--", new { @class = "js-example-basic-single form-control form-control-kdqr",multiple = "multiple", @id = "SubSectionCode_drop" })*@
+                                    <select id="SubSectionCodeval" name="SubSectionCodeval" class="form-control muldrop" multiple="multiple">
+                                        @* <option value="cheese">Cheese</option>
+                                        <option value="tomatoes">Tomatoes</option>
+                                        <option value="mozarella">Mozzarella</option>
+                                        <option value="mushrooms">Mushrooms</option>
+                                        <option value="pepperoni">Pepperoni</option>
+                                        <option value="onions">Onions</option>*@
+                                        @foreach (var department in @Model.DepartmentList)
+                                        {
+                                            if (@Model.SubSectionCodeName1 != null)
+                                            {
+                                                var check = false;
+                                                @foreach (var sel in @Model.SubSectionCodeName1)
+                                                {
+                                                    //if(SubSectionCode.)
+                                                    if (department.Id == sel.DepartmentId)
+                                                    {
+                                                        check = true;
+                                                        @*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
+                                                    }
+                                                    @*else
+                                        {
+                                        <option value="@department.Id">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>
+                                        } *@
+                                                }
+                                                if (check == true)
+                                                {
+                                                    <option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+                                                }
 
+                                            }
+                                            else
+                                            {
+                                                <option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                    <a style="display:none;color: red;" id="SubSectionCodeError" class="field-validation-error">Please Select Sub Section Code</a>
                                 </div>
+                            </div>
+                            @*<div class="col-md-4">
+                            <div class="form-group">
+                            <label class="required trn">Sub Section Name</label>
+                            <input type="text" alt="Please provide the Sub Section Name" class="form-control" placeholder="" id="SubSectionName" readonly name="SubSectionName">
+
+                            </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="required trn">Sub Section Name</label>
-                                    <input type="text" alt="Please provide the Sub Section Name" class="form-control" placeholder="" id="SubSectionName" readonly name="SubSectionName">
+                            <div class="form-group">
+                            <label class="required trn">Section Name</label>
+                            <input type="text" alt="Please provide the Section Name" class="form-control" placeholder="" id="SectionName" readonly name="SectionName">
 
-                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="required trn">Section Name</label>
-                                    <input type="text" alt="Please provide the Section Name" class="form-control" placeholder="" id="SectionName" readonly name="SectionName">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="required trn">Section Code</label>
-                                    <input type="text" alt="Please provide the Section Code" class="form-control" placeholder="" id="SectionCode" readonly name="SectionCode">
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="required trn">Department Name</label>
-                                    <input type="text" alt="Please provide the Department Name" class="form-control" placeholder="" id="DepartmentName" readonly name="DepartmentName">
-                                    <input type="hidden" id="DepartmentNameid" name="DepartmentId" value="">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="required trn">Department Code</label>
-                                    <input type="text" alt="Please provide the Department Code" class="form-control " placeholder="" id="DepartmentCode" readonly name="DepartmentCode">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
+                            </div>*@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="DepartmentcoordinatorID" class="trn">Department coordinator ID</label>
@@ -210,12 +281,64 @@
                                     <input type="text" class="form-control trn" id="DeptCordName" placeholder="Name" name="DeptCordName" value="@Model.DeptCordName">
                                 </div>
                             </div>
+                        </div>
+                        @*<div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Section Code</label>
+                        <input type="text" alt="Please provide the Section Code" class="form-control" placeholder="" id="SectionCode" readonly name="SectionCode">
+
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Department Name</label>
+                        <input type="text" alt="Please provide the Department Name" class="form-control" placeholder="" id="DepartmentName" readonly name="DepartmentName">
+                        <input type="hidden" id="DepartmentNameid" name="DepartmentId" value="">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label class="required trn">Department Code</label>
+                        <input type="text" alt="Please provide the Department Code" class="form-control " placeholder="" id="DepartmentCode" readonly name="DepartmentCode">
+
+                        </div>
+                        </div>
+                        </div>*@
+                        <div class="row">
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="DepartmentcoordinatorEmail" class="trn">Department coordinator Email</label>
                                     <input type="text" alt="" class="form-control trn" id="DeptCordEmail" placeholder="Email" name="DeptCordEmail" value="@Model.DeptCordEmail">
                                 </div>
                             </div>
+
+                            @*<div class="row" id="divSign">*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="Signature" class="trn">Signature</label>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" for="exampleInputFile"><span class="trn">Choose Signature</span></label>
+                                        <input type="file" class="custom-file-input"
+                                               accept="image/png, image/gif, image/jpeg"
+                                               onchange="checkFileSize(this,4,event)" value="@Model.SignImageName" name="ImageUpload"
+                                               id="ImageUpload" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ManagerEmail" class="trn">Signature Image</label>
+                                    <p id="SignImageName"></p>
+                                    @if (@Model.SignImageName != null)
+                                    {
+                                        <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                    }
+                                </div>
+                            </div>
+                            @*</div>*@
                         </div>
                         @*<div class="row">
                         <div class="col-md-4">
@@ -404,35 +527,12 @@
                         </div>
                         </div>
                         </div>*@
-                        <div class="row" id="divSign">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="exampleInputFile"><span class="trn">Choose Signature</span></label>
-                                        <input type="file" class="custom-file-input"
-                                               accept="image/png, image/gif, image/jpeg"
-                                               onchange="checkFileSize(this,4,event)" value="@Model.SignImageName" name="ImageUpload"
-                                               id="ImageUpload" />
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ManagerEmail" class="trn">Signature Image</label>
-                                    <p id="SignImageName"></p>
-                                    @if (@Model.SignImageName != null)
-                                    {
-                                        <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary trn">Submit</button>
+                        <button type="submit" id="saveUser" class="btn btn-primary trn">Submit</button>
                         <a href='@Url.Action("Index","User")'>
                             <input type="button" class="btn btn-default trn" value="Cancel">
                         </a>
@@ -443,388 +543,307 @@
         </div>
     </div>
     <!-- /.col -->
-    </div>
+    @*</div>*@
     <!-- /.row -->
-</section>
+</div>
 <!-- /.content -->
-<script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
 
 
-    setTimeout(function () {
+    //setTimeout(function () {
 
-        $.validator.addMethod('UserRoleId', function (value, element) {
-            if ($('#UserRoleId').val() == '0') {
+
+
+
+    $(function () {
+
+        $.validator.addMethod('Designation', function (value, element) {           
+            if ($('#Designation').val() == '0') {
                 return false;
-            } else {
+            } else {                
                 return true;
             }
-        }, 'Please select User Role');
+    }, 'Please select User Designation');
 
-
-        $(function () {
-
-            $('#userform').validate({
-                rules: {
-                    FirstName: {
-                        required: true,
-                    },
-                    LastName: {
-                        required: true,
-                    },
-                    UserRoleId: {
-                        UserRoleId: true,
-                        required: true,
-                    },
-                    Email: {
-                        required: true,
-                    },
-                    MobileNo: {
-                        required: true,
-                    },
-                    DepartmentId: {
-                        required: true,
-
-                    },
-                    SubSectionCode: {
-                        required: true,
-                    },
-
-                },
-                messages: {
-                    FirstName: {
-                        required: "Please enter your first name",
-                    },
-                    LastName: {
-                        required: "Please enter your last name",
-                    },
-                    UserRoleId: {
-                        required: "Please provide user role",
-                    },
-                    Email: {
-                        required: "Please provide the Email address",
-                    },
-                    MobileNo: {
-                        required: "Please provide the mobile number",
-                    },
-                    DepartmentId: {
-                        required: "Please provide the department name",
-                    },
-                    SubSectionCode: {
-                        required: "Please provide the Sub Section Code",
-                    },
-                },
-                errorElement: 'span',
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
+        $.validator.addMethod("RoleSelect", function (value, element) {
+            return $(element).multiselect("getChecked").length > 0;
         });
-    }, 1000);
-</script>
-<script>
-    var instList = "";
-    function GetUserDetails() {
-        var ShortId = $('#ShortId').val();
-        if ((ShortId == null || ShortId == '') && ShortId.length > 6)
-            return;
 
-        $.ajax({
-            type: "POST",
-            url: "../User/GetUserInfoFromLDAP",
-            data: { ShortId: ShortId },
-            dataType: "json",
-            success: function (data) {
-                // Transform JS object to an array
-                if (data != null) {
-                    if (data.length == 0) {
-                        $('#FirstName').val('');
-                        $('#LastName').val('');
-                        $('#Email').val('');
-                        $('#MobileNo').val('');
-    @* $('#FirstName').removeAttr('disabled');
-                            $('#LastName').removeAttr('disabled');
-                            $('#Email').removeAttr('disabled');
-                            $('#MobileNo').removeAttr('disabled'); *@
-                                                      }
-                    else {
-                        console.log(data);
-                        instList = data;
-                        console.log(instList);
-                        $('#FirstName').val(instList.firstName);
-                        $('#LastName').val(instList.lastName);
-                        $('#Email').val(instList.emailId);
-                        $('#MobileNo').val(instList.mobile);
-                        // $('#DepartmentId option:contains(' + instList.DepartmentId + ')').attr('selected', 'selected');
-                        //$('#DepartmentId option').map(function () {
-                        //	if ($(this).text() == instList.DepartmentId) return this;
-                        //}).attr('selected', 'selected');
+        $.validator.addMethod("SubSectionCodeval", function (value, element) {
+            var count = $(element).find('option:selected').length;
+            return count > 0;
+        })
 
-    @* $('#FirstName').attr('disabled','disabled');
-                            $('#LastName').attr('disabled','disabled');
-                            $('#Email').attr('disabled','disabled');
-                            $('#MobileNo').attr('disabled','disabled'); *@
-                                                      }
-                }
-            }
-        });
-    }
-    function GetUserDetailsData(Level) {
-        var ShortId;
-        if (Level == "Dp") {
-            ShortId = $('#DeptCordShortId').val();
-        }
-        //else if (Level == "L5") {
-        //	ShortId = $('#KakarichoShortId').val();
-        //}
-        //else if (Level == "L4") {
-        //	ShortId = $('#ForemanShortId').val();
-        //}
-        //else if (Level == "L3") {
-        //	ShortId = $('#AsstForemanShortId').val();
-        //}
-        if ((ShortId == null || ShortId == '')) {
-            return;
-        }
-        else {
-            $.ajax({
-                type: "POST",
-                url: "../User/GetUserInfoFromLDAP",
-                data: { ShortId: ShortId },
-                dataType: "json",
-                success: function (data) {
-                    // Transform JS object to an array
-                    if (data != null) {
-                        if (data.length != 0) {
-                            if (Level == "Dp") {
-                                //instList = data;
-                                $('#DeptCordName').val(data.firstName);
-                                $('#DeptCordEmail').val(data.emailId);
-                            }
-                            //else if (Level == "L4") {
-                            //	$('#ForemanName').val(data.firstName);
-                            //	$('#ForemanEmail').val(data.email);
+        $('#userform').validate({
+            rules: {
+                FirstName: {
+                    required: true,
+                },
+                LastName: {
+                    required: true,
+                },
+                RoleSelect: {
+                    RoleSelect: true,
+                    required: true,
+                },
+                Email: {
+                    required: true,
+                },
+                MobileNo: {
+                    required: true,
+                },
+                Designation: {
+                    Designation: true,
+                    required: true,
 
-                            //}
-                            //else if (Level == "L5") {
-                            //	$('#KakarichoName').val(data.firstName);
-                            //	$('#KakarichoEmail').val(data.email);
-
-                            //}
-                            //else if (Level == "L6") {
-                            //	$('#ManagerName').val(data.firstName);
-                            //	$('#ManagerEmail').val(data.email);
-
-                            //}
-                        }
-                        else {
-                            $('#DeptCordShortId').val('');
-                        }
-                    }
-                    else {
-                        if (Level == "Dp") {
-                            $('#DeptCordShortId').val('');
-                        }
-                        //else if (Level == "L4") {
-                        //	$('#ForemanShortId').val('');
-                        //}
-                        //else if (Level == "L5") {
-                        //	$('#KakarichoShortId').val('');
-                        //}
-                        //else if (Level == "L6") {
-                        //	$('#ManagerShortId').val('');
-                        //}
-                        alert("Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.");
-                        return;
-                    }
-                }
-            });
-        }
-    }
-
-    //$("#SubSectionCode").change(function ()
-    function GetDepartmentDetails() {
-        //alert($('#SubSectionCode').val());
-        var SubSectCode = $('#SubSectionCode').val();
-        if ((SubSectCode == null || SubSectCode == ''))
-            return;
-        $.ajax({
-            type: "POST",
-            url: "../User/GetDepartmentDetails",
-            //contentType: "application/json; charset=utf-8",
-            data: { SubSectCode: SubSectCode },
-            //dataType: "json",
-            success: function (data) {
-                console.log('data');
-                console.log(data);
-                if (data != null) {
-                    //if ('HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en'){
-                    if (language == 'en') {
-                        $('#SubSectionName').val(data.subSection);
-                        $('#SectionName').val(data.section);
-                        $('#DepartmentName').val(data.name);
-                        $('#DepartmentNameid').val(data.id);
-                    }
-                    else {
-                        $('#SubSectionName').val(data.subSectionJP);
-                        $('#SectionName').val(data.sectionJP);
-                        $('#DepartmentName').val(data.nameJP);
-                        $('#DepartmentNameid').val(data.id);
-                    }
-                    $('#DepartmentCode').val(data.deptCode);
-                    $('#SectionCode').val(data.sectionCode);
-                }
-                else {
-                    //showWarning("Sub Section Code Not Found...!", 'HttpContextAccessor.HttpContext.Session.GetString("Language")');
-                    showWarning("Sub Section Code Not Found...!", language);
-                    $('#SubSectionName').val('');
-                    $('#SectionName').val('');
-                    $('#SectionCode').val('');
-                    $('#DepartmentName').val('');
-                    $('#DepartmentCode').val('');
-                    $('#SubSectionCode').val('');
-                }
+                },
+                SubSectionCodeval: {
+                    SubSectionCodeval: true,
+                    //minlength: 0,
+                    required: true,
+                },
+                //ignore: ':hidden:not("#SubSectionCodeval")',
             },
-            error: function (req, status, error) {
-                alert("ERROR:" + error.toString() + " " + status + " " + req.responseText);
+            //ignore: ':hidden:not("#RoleSelect")',
+            ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
+            messages: {
+                FirstName: {
+                    required: "Please enter your first name",
+                },
+                LastName: {
+                    required: "Please enter your last name",
+                },
+                RoleSelect: {
+                    required: "Please select user role",
+                },
+                Email: {
+                    required: "Please provide the Email address",
+                },
+                MobileNo: {
+                    required: "Please provide the mobile number",
+                },
+                Designation: {
+                    required: "Please select the Designation",
+                },
+                SubSectionCodeval: {
+                    required: "Please select the Sub Section Code",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
             }
         });
-    }
-    //});
-</script>
 
-<script>
-    
-   // var sourcearray = JSON.parse('Html.Raw(Json.Serialize(ViewBag.DepartmentList))');
-    let sourcearray = @Html.Raw(Json.Serialize(Model.DepartmentList))
-    
-    //var sourcearray = '@Html.Raw((Model.DepartmentList))';
-
-    var selectSubSectCode = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.SubSectCode))');
-    var SessionLang = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.SessionLang))');
-
-    console.log('Dept List');
-    console.log(sourcearray);
-    console.log(selectSubSectCode);
-    console.log(SessionLang);
-
-    //alert($("#UserDept").val());
-    var eddata = [];
-   if (selectSubSectCode != null) {
-    $.each(sourcearray, function (key, value) {
-       
-        if (jQuery.inArray(value.subSectionCode, selectSubSectCode) == -1 && value.subSectionCode == selectSubSectCode) {
-            //eddata.push({
-            //    Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP, subSection: value.subSection, subSectionJP: value.subSectionJP, subSectionCode: value.subSectionCode, SectionCode: value.sectionCode, DeptCode: value.deptCode, NameJP: value.nameJP
-            //});
-           
-            if (SessionLang == 'en') {
-                $('#SubSectionName').val(value.subSection);
-                $('#SectionName').val(value.section);
-                $('#DepartmentName').val(value.name);
-                $('#DepartmentNameid').val(value.id);
-            }
-            else {
-                    $('#SubSectionName').val(value.subSectionJP);
-                $('#SectionName').val(value.sectionJP);
-                $('#DepartmentName').val(value.nameJP);
-                $('#DepartmentNameid').val(value.id);
-            }
-            $('#DepartmentCode').val(value.deptCode);
-            $('#SectionCode').val(value.sectionCode);
-        }
-        
-    });
-    }
-    //BindEditSubDepartment(eddata);
-
-
-    //function BindEditSubDepartment(data) {
-    //    console.log('\\\\\\\\\\');
-    //    console.log(data);
-    //    $.each(data, function (key, value) {            
-           
-    //        if (language == 'en') {
-    //            $('#SubSectionName').val(value.subSection);
-    //            $('#SectionName').val(value.Section);
-    //            $('#DepartmentName').val(value.Name);
-    //            $('#DepartmentNameid').val(value.Id);
+    //    $('#saveUser').click(function () {
+    //        var errCount = 0;
+    //        if (($('#ShortId').val()) == '') {
+    //            $('#ShortIdError').show();
+    //            errCount = errCount + 1;
     //        }
     //        else {
-    //            $('#SubSectionName').val(value.subSectionJP);
-    //            $('#SectionName').val(value.SectionJP);
-    //            $('#DepartmentName').val(value.NameJP);
-    //            $('#DepartmentNameid').val(value.Id);
+    //            $('#ShortIdError').hide();
     //        }
-    //        $('#DepartmentCode').val(value.DeptCode);
-    //        $('#SectionCode').val(value.SectionCode);
+
+    //        if (($('#FirstName').val()) == '') {
+    //            $('#FirstNameError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#FirstNameError').hide();
+    //        }
+
+    //        if (($('#LastName').val()) == '') {
+    //            $('#LastNameError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#LastNameError').hide();
+    //        }
+    //        if (($('#MobileNo').val()) == '') {
+    //            $('#MobileNoError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#MobileNoError').hide();
+    //        }
+
+
+    //        if (($('#RoleSelect').val()) == '') {
+    //            $('#UserRoleIdError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#UserRoleIdError').hide();
+    //        }
+
+    //        if (($('#Email').val()) == '') {
+    //            $('#EmailError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#EmailError').hide();
+    //        }
+
+    //        if (($('#Designation').val()) == '') {
+    //            $('#DesignationError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#DesignationError').hide();
+    //        }
+
+    //        if (($('#SubSectionCodeval').val()) == '') {
+    //            $('#SubSectionCodeError').show();
+    //            errCount = errCount + 1;
+    //        }
+    //        else {
+    //            $('#SubSectionCodeError').hide();
+    //        }
+
+    //    if (errCount == 0) {
+    //            var formData = new FormData();
+    //    var file = $('#ImageUpload')[0].files[0];
+        
+    //    formData.append("ShortId", $('#ShortId').val());
+    //    formData.append("FirstName", $('#FirstName').val());
+    //    formData.append("LastName", $('#LastName').val());
+    //    formData.append("MobileNo", $('#MobileNo').val());
+    //    formData.append("RoleSelect", $('#RoleSelect').val().join(','));
+    //    formData.append("Email", $('#Email').val());
+    //    formData.append("Designation", $('#Designation').val());
+    //    formData.append("SubSectionCodeval", $('#SubSectionCodeval').val().join(','));
+    //    formData.append("DeptCordShortId", $('#DeptCordShortId').val());
+    //    formData.append("DeptCordName", $('#DeptCordName').val());
+    //    formData.append("DeptCordEmail", $('#DeptCordEmail').val());
+    //    formData.append("ImageUpload", file);
+    //    formData.append("userId", $('#userId').val());
+
+
+
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '../User/InsertUser',
+    //                data: formData,
+    //        dataType: 'json',
+    //        success: function (data) { }
     //    });
     //}
+    //        });
 
+    //$("#example-getting-started").multipleSelect({
+    //    placeholder: "select",
+    //    filter: true,
+    //    width: "100%",
+    //    multiple: true,
+    //    //            dropUp: true,
+    //    onCheckAll: function () {
+    //        //('#Addlpageaccess').val("All");
+    //        //$('#Addlpageaccess').css('border', '1px solid #ccc');
+    //    }
+    //    ,
+    //    onUncheckAll: function () {
+    //        //$('#Addlpageaccess').val("");
+    //    },
+    //    onClick: function (view) {
+    //        view = $("#example-getting-started").multipleSelect("getSelects", "value").join(',');
+    //        //$("#Addlpageaccess").val(view);
+    //    }
 
-
-    $("#DepartmentId").change(function () {
-        var val = this.value;
-
-        if (val == 66) {
-            $("#divSign").show();
-        }
-        else {
-            $("#divSign").hide();
-        }
-        var data = [];
-        $.each(sourcearray, function (key, value) {
-            //debugger;
-            if (jQuery.inArray(value.id, val) == -1 && value.id == val && value.section != null) {
-                data.push({
-                    Id: value.id, Name: value.name, Section: value.section, SectionJP: value.sectionJP
-
-                });
-            }
-        });
-
-        BindSubDepartment(data);
-    });
-
-
-    function BindSubDepartment(data) {
-        $("#SubDepartment").empty();
-        $("#SubDepartment").append('<option selected="selected" value="0">--Select--</option>');
-        $.each(data, function (key, value) {
-            if (value.Section != null) {
-
-                if (language == "en") {
-                    $("#SubDepartment").append($("<option></option>").val(value.Id).html(value.Section));
-                }
-                else {
-                    $("#SubDepartment").append($("<option></option>").val(value.Id).html(value.SectionJP));
-
-                }
-            }
-
-        });
-    }
-
-
-    //$(document).ready(function () {
-
-    //	var dptid = $("#UserDept").val();
-
-    //	if (dptid == 66) {
-    //		$("#divSign").show();
-    //	}
-    //	else {
-    //		$("#divSign").hide();
-    //	}
-
-    //	//}
     //});
+
+    //$('#example-getting-started').multiselect({
+    //        includeSelectAllOption: true
+    //    });
+
+
+    //var statesAvailable = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.DepartmentList))')
+    //var SelectedVAl = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.SubSectCode))')
+
+
+    //$.each(statesAvailable, function (index, item) {
+    //    $.each(SelectedVAl, function (index, items) {
+    //        if (item.Id == items.SubSectionCode) {
+    //            $('#SubSectionCode > option[value="+items.SubSectionCode+"]').attr("selected", 'selected');
+    //        }
+    //    });
+    //});
+
+
+    $('#SubSectionCodeval').multiselect({
+        allSelectedText: 'All',
+        maxHeight: 200,
+        width: "100%",
+        buttonWidth: '100%',
+        inheritClass: true,
+        enableFiltering: true,
+        // buttonContainer: '<div class="btn-group me-2" style="border:ridge;"/>',
+        includeSelectAllOption: true,
+        templates: {
+            filter: '<li class="multiselect-item multiselect-filter"><div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div><input class="form-control multiselect-search" type="text" /></div></li>',
+            filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="fa fa-times-circle"></i></button></span>'
+
+        },
+
+        buttonText: function (options, select) {
+            if (options.length == 0) {
+                return 'Select all';
+            }
+            else {
+                var selected = '';
+
+                options.each(function () {
+                    selected += $(this).text() + ', ';
+                });
+
+                return selected.substr(0, selected.length - 2);
+            }
+        }
+    });//.multiselect('updateButtonText');
+
+
+    $('#RoleSelect').multiselect({
+        allSelectedText: 'All',
+        maxHeight: 200,
+        width: "100%",
+        buttonWidth: '100%',
+        inheritClass: true,
+        enableFiltering: true,
+        includeFilterClearBtn: true,
+        //filterClearBtn: '<i class="nav-icon fas fa-home"></i>',
+        // buttonContainer: '<div class="btn-group me-2" style="border:ridge;"/>',
+        includeSelectAllOption: true,
+        templates: {
+            filter: '<li class="multiselect-item multiselect-filter"><div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div><input class="form-control multiselect-search" type="text" /></div></li>',
+            filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="fa fa-times-circle"></i></button></span>'
+
+        },
+        buttonText: function (options, select) {
+            if (options.length == 0) {
+                return 'Select all';
+            }
+            else {
+                var selected = '';
+
+                options.each(function () {
+                    selected += $(this).text() + ', ';
+                });
+
+                return selected.substr(0, selected.length - 2);
+            }
+        }
+    });//.multiselect('updateButtonText');
+        });
+    // }, 1000);
 
     function checkFileSize(element, maxSize, event) {
         var val = $(element).val(); //get file value

@@ -1,3 +1,7 @@
+
+
+using System.Runtime.Serialization;
+
 namespace WEB.Models
 {
 
@@ -15,7 +19,7 @@ namespace WEB.Models
         public int ModifiedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public int UserRoleId { get; set; }
+        public int? UserRoleId { get; set; }
         public string? Password { get; set; }
         public string? AsstForemanShortId { get; set; }
         public string? AsstForemanName { get; set; }
@@ -43,14 +47,65 @@ namespace WEB.Models
 
 		public string? subSection { get; set; }
 
-        public string? SubSectionCode { get; set; }
+        public string? SubSectionCodes { get; set; }
+        public List<int> SubSectionCodeval { get; set; }
+        //public List<string> SubSectionCodeName { get; set; }
+        public List<UserDepartmentMappingView> SubSectionCodeName1 { get; set; }
+        public List<UserDepartmentMappingView> SubSectionCodeList { get; set; }
 
         public string? DeptCordShortId { get; set; }
         public string? DeptCordName { get; set; }
         public string? DeptCordEmail { get; set; }
+
+        public List<UserRolesView> RoleList { get; set; }
+
+        public List<int> RoleSelect { get; set; }
+        public List<UserRoleMappingView> RoleSelectVal { get; set; }
+
     }
     public class InviteUsers
     {
         public string? Email { get; set; }
+    }
+
+    public class UserDepartmentMappingView
+    {        
+        public int? Id { get; set; }        
+        public int? UserId { get; set; }        
+        public int? DepartmentId { get; set; }        
+        public DateTime CreatedDate { get; set; }
+        public int? CreatedOn { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+    public class UserRoleMappingView
+    {
+        [DataMember]
+        public int? Id { get; set; }
+        [DataMember]
+        public int UserId { get; set; }
+        [DataMember]
+        public int RoleId { get; set; }
+        
+        [DataMember]
+        public bool IsActive { get; set; }
+        public int? CreatedOn { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class UserRolesView
+    {
+        [DataMember]
+        public int Id { get; set; }
+              
+        [DataMember]
+        public string RoleName { get; set; }
+        [DataMember]
+        public bool IsActive { get; set; }
+
+        public int CreatedOn { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }
