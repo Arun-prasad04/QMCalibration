@@ -40,8 +40,8 @@ namespace CMT.DAL
         
         public virtual void RollBack()
         {
-            //Context.Dispose();
-            Transaction.Rollback();
+            Context.Dispose();
+          //  Transaction.Rollback();
         }
 
         public virtual void BeginTransaction()

@@ -166,7 +166,7 @@ namespace CMT.DAL
             if (filter != null)
             {
                 query = query.Where(filter).AsNoTracking();
-              }
+               }
 
             if (includeProperties != null)
             {

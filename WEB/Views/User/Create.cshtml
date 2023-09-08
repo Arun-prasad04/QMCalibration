@@ -82,37 +82,8 @@
                                 <div class="form-group">
                                     @*<option value="" selected="true">Select User Role</option>*@
                                     <label class="required trn">Role</label>
-                                    <select name="RoleSelect" id="RoleSelect" class="form-control muldrop" multiple="multiple">
-                                        @foreach (var role in @Model.RoleList)
-                                        {
-                                            if (@Model.RoleSelectVal != null)
-                                            {
-                                                var check = false;
-                                                @foreach (var sel in @Model.RoleSelectVal)
-                                                {
-                                                    //if(SubSectionCode.)
-                                                    if (role.Id == sel.RoleId)
-                                                    {
-                                                        check = true;
-                                                        @*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
-                                                    }
-                                                }
-                                                if (check == true)
-                                                {
-                                                    <option value="@role.Id" selected="check">@role.RoleName</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@role.Id">@role.RoleName</option>
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                <option value="@role.Id">@role.RoleName</option>
-                                            }
-                                        }
-                                        @*<option value="0" class="trn required">--- Select User Role ---</option>
+                                    <select class="form-control" name="UserRoleId" id="UserRoleId">
+                                        <option value="0" class="trn required">--- Select User Role ---</option>
                                         @if (Model.UserRoleId == 1)
                                         {
                                         <option value="1" selected="true" class="trn">Department User</option>

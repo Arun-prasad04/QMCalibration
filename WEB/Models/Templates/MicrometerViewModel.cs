@@ -132,6 +132,7 @@ namespace WEB.Models
     public List<MasterViewModel> MasterEqiupmentList { get; set; }
 		public string? Grade { get; set; }
 		public List<MicrometerResultViewModel> MicrometerAddResultViewModelList { get; set; }
+		public List<MicrometerResultViewModel> MicrometerAddResultViewModelTwoList { get; set; }
 		public string FlatnessMeasure { get; set; }
 		public string FlatnessInserr { get; set; }
 		public string FlatnessActual { get; set; }

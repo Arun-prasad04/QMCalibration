@@ -52,7 +52,7 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="PlantCode" class="required trn">Plant Code</label>
-									<input type="text" class="form-control" id="PlantCode" placeholder="Plant Code" alt="Please Enter PlantCode" name="PlantCode" value="@Model.PlantCode" disabled>
+									<input type="text" class="form-control trn" id="PlantCode" placeholder="Plant Code" alt="Please Select the Plant Location" name="PlantCode" value="@Model.PlantCode" disabled>
 								</div>
 							</div>
 						</div>
@@ -60,13 +60,13 @@
 							<div class="col-sm-2">
 								<div class="form-group">
 									<label for="DescriptionCode" class="required trn">Department Code</label>
-									<input type="text" class="form-control" id="DeptCode" placeholder="Department Code" alt="Please provide Department Code" name="DeptCode" value="@Model.DeptCode">
+									<input type="text" class="form-control trn" id="DeptCode" placeholder="Department Code" alt="Please provide Department Code" name="DeptCode" value="@Model.DeptCode">
 								</div>
 							</div>
 							<div class="col-sm-5">
 								<div class="form-group">
 									<label for="Name" class="required trn">Department (EN)</label>
-									<input type="text" class="form-control trn" id="Name" placeholder="Department Name" alt="Please enter Department Name" name="Name" value="@Model.Name">
+									<input type="text" class="form-control trn" id="Name" placeholder="Department (EN)" alt="Please enter Department Name" name="Name" value="@Model.Name">
 								</div>
 							</div>
 
@@ -75,7 +75,7 @@
 								<div class="form-group">
 									<label class="required trn">Department (JP)</label>
 									<input type="text" id="NameJP" name="NameJP" value="@Model.NameJP" class="form-control trn"
-										   placeholder="Department Name Japanese" alt="Please enter Department Name Japanese">
+										   placeholder="Department (JP)" alt="Please enter Department Name JP">
 								</div>
 							</div>
 						</div>
@@ -92,14 +92,14 @@
 							<div class="col-sm-5">
 								<div class="form-group">
 									<label for="Section" class="required trn">Section (EN)</label>
-									<input type="text" class="form-control" id="Section" placeholder="Section" alt="Please provide Department Section" name="Section" value="@Model.Section">
+									<input type="text" class="form-control" id="Section" placeholder="Section (EN)" alt="Please provide Department Section" name="Section" value="@Model.Section">
 								</div>
 							</div>
-							
+
 							<div class="col-sm-5">
 								<div class="form-group">
 									<label for="Section" class="required trn">Section (JP)</label>
-									<input type="text" class="form-control" id="SectionJP" placeholder="Section Japanese" alt="Please provide Japanese Department Section" name="SectionJP" value="@Model.SectionJP">
+									<input type="text" class="form-control trn" id="SectionJP" placeholder="Section (JP)" alt="Please provide Japanese Department Section" name="SectionJP" value="@Model.SectionJP">
 								</div>
 							</div>
 						</div>
@@ -108,22 +108,22 @@
 
 								<div class="form-group">
 									<label for="SubSection Code" class="required trn">Sub Section Code</label>
-									<input type="text" class="form-control" id="SubSectionCode" placeholder="Sub Section Code" alt="Please provide Department Sub Section Code" name="SubSectionCode" value="@Model.SubSectionCode">
+									<input type="text" class="form-control trn" id="SubSectionCode" placeholder="Sub Section Code" alt="Please provide Department Sub Section Code" name="SubSectionCode" value="@Model.SubSectionCode">
 								</div>
 							</div>
 							<div class="col-sm-5">
 
 								<div class="form-group">
 									<label for="SubSection " class="required trn">Sub Section (EN)</label>
-									<input type="text" class="form-control" id="SubSection" placeholder="Sub Section" alt="Please provide Department Sub Section" name="SubSection" value="@Model.SubSection">
+									<input type="text" class="form-control trn" id="SubSection" placeholder="Sub Section (EN)" alt="Please provide Department Sub Section" name="SubSection" value="@Model.SubSection">
 								</div>
 							</div>
-							
+
 							<div class="col-sm-5">
 
 								<div class="form-group">
 									<label for="SubSectionJP" class="required trn">Sub Section (JP)</label>
-									<input type="text" class="form-control" id="SubSectionJP" placeholder="Sub Section Japanese" alt="Please provide Department Sub Section Japanese" name="SubSectionJP" value="@Model.SubSectionJP">
+									<input type="text" class="form-control trn" id="SubSectionJP" placeholder="Sub Section (JP)" alt="Please provide Department Sub Section Japanese" name="SubSectionJP" value="@Model.SubSectionJP">
 								</div>
 							</div>
 						</div>
@@ -131,13 +131,13 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="Description" class="required trn">Department Description (EN)</label>
-									<input type="text" class="form-control" id="Description" placeholder="Department Description" alt="Please provide Department Description" name="Description" value="@Model.Description">
+									<input type="text" class="form-control trn" id="Description" placeholder="Department Description (EN)" alt="Please provide Department Description" name="Description" value="@Model.Description">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="DescriptionJP" class="required trn">Department Description (JP)</label>
-									<input type="text" class="form-control" id="Description" placeholder="Department Description Japanese" alt="Please provide Department Description Japanese" name="DescriptionJP" value="@Model.DescriptionJP">
+									<input type="text" class="form-control trn" id="DescriptionJP" placeholder="Department Description (JP)" alt="Please provide Department Description Japanese" name="DescriptionJP" value="@Model.DescriptionJP">
 								</div>
 							</div>
 						</div>
@@ -159,6 +159,60 @@
 </form>
 <!-- /.content -->
 <script type="text/javascript">
+	//setTimeout(function () {
+	//	setTimeout(function () {
+
+	//		$(function () {
+	//			$('#departmentform').validate({
+	//				rules: {
+	//					Name: {
+	//						required: true,
+	//					},
+	//					Description: {
+	//						required: true,
+	//					},
+	//					DeptCode: {
+	//						required: true,
+	//					},
+	//					Section: {
+	//						required: true,
+	//					},
+	//					SubSection: {
+	//						required: true,
+	//					},
+	//				},
+	//				messages: {
+	//					Name: {
+	//						required: "Please enter Department Name",
+	//					},
+	//					Description: {
+	//						required: "Please provide Department Description",
+	//					},
+	//					DeptCode: {
+	//						required: "Please enter Department Code",
+	//					},
+	//					Section: {
+	//						required: "Please enter Department Section",
+	//					},
+	//					SubSection: {
+	//						required: "Please enter Department Sub Section",
+	//					},
+	//				},
+	//				errorElement: 'span',
+	//				errorPlacement: function (error, element) {
+	//					error.addClass('invalid-feedback');
+	//					element.closest('.form-group').append(error);
+	//				},
+	//				highlight: function (element, errorClass, validClass) {
+	//					$(element).addClass('is-invalid');
+	//				},
+	//				unhighlight: function (element, errorClass, validClass) {
+	//					$(element).removeClass('is-invalid');
+	//				}
+	//			});
+	//		});
+	//	}, 1000);
+
 	setTimeout(function () {
 
 		$(function () {
@@ -244,7 +298,7 @@
 					SectionCode: {
 						required: "Please enter Section Code",
 					},
-					
+
 				},
 				errorElement: 'span',
 				errorPlacement: function (error, element) {
@@ -260,9 +314,105 @@
 			});
 		});
 	}, 1000);
+	//	$(function () {
+	//		$('#departmentform').validate({
+	//			rules: {
+	//				PlantId: {
+	//					required: true,
+	//				},
+	//				PlantCode: {
+	//					required: true,
+	//				},
+	//				Name: {
+	//					required: true,
+	//				},
+	//				NameJP: {
+	//					required: true,
+	//				},
+	//				DeptCode: {
+	//					required: true,
+	//				},
+	//				Section: {
+	//					required: true,
+	//				},
+	//				SectionJP: {
+	//					required: true,
+	//				},
+	//				SubSectionCode: {
+	//					required: true,
+	//				},
+	//				SubSection: {
+	//					required: true,
+	//				},
+	//				SubSectionJP: {
+	//					required: true,
+	//				},
+	//				Description: {
+	//					required: true,
+	//				},
+	//				DescriptionJP: {
+	//					required: true,
+	//				},
+	//				SectionCode: {
+	//					required: true,
+	//				},
+	//			},
+	//			messages: {
+	//				PlantId: {
+	//					required: "Please Select the Plant Location",
+	//				},
+	//				PlantCode: {
+	//					required: "Please Select the Plant Location",
+	//				},
+	//				Name: {
+	//					required: "Please enter Department Name EN",
+	//				},
+	//				NameJP: {
+	//					required: "Please enter Department Name JP",
+	//				},
+	//				DeptCode: {
+	//					required: "Please enter Department Code",
+	//				},
+	//				Section: {
+	//					required: "Please enter Department Section EN",
+	//				},
+	//				SectionJP: {
+	//					required: "Please enter Section JP",
+	//				},
+	//				SubSectionCode: {
+	//					required: "Please enter SubSection Code",
+	//				},
+	//				SubSection: {
+	//					required: "Please enter Sub Section EN",
+	//				},
+	//				SubSectionJP: {
+	//					required: "Please enter Sub Section JP",
+	//				},
+	//				Description: {
+	//					required: "Please enter Description EN",
+	//				},
+	//				DescriptionJP: {
+	//					required: "Please enter Description JP",
+	//				},
+	//				SectionCode: {
+	//					required: "Please enter Section Code",
+	//				},
+	//				errorElement: 'span',
+	//				errorPlacement: function (error, element) {
+	//					error.addClass('invalid-feedback');
+	//					element.closest('.form-group').append(error);
+	//				},
+	//				highlight: function (element, errorClass, validClass) {
+	//					$(element).addClass('is-invalid');
+	//				},
+	//				unhighlight: function (element, errorClass, validClass) {
+	//					$(element).removeClass('is-invalid');
+	//				}
+	//			}
+	//		});
+	//	});
+	//}, 1000);
 </script>
-@*<script src="~/js/3.3.1Version/jquery.min.js"></script>
-*@
 <script>
 	var TmpLocation = @Json.Serialize(@ViewBag.Location);
 	function InsertPlantCode(val) {

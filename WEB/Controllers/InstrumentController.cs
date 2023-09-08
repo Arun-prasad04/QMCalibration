@@ -1,7 +1,14 @@
 
+using System;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Net.NetworkInformation;
 using CMT.DATAMODELS;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Nancy.Json;
+using Newtonsoft.Json.Linq;
 using WEB.Models;
 using WEB.Services;
 using WEB.Services.Interface;
@@ -48,7 +55,7 @@ public class InstrumentController : BaseController
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 		return View(response.ResponseData);
-     }
+    }
 
     public IActionResult InsertInstrument(InstrumentViewModel instrument)
     {		
@@ -100,12 +107,14 @@ public class InstrumentController : BaseController
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
         
         ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+
 		ViewBag.ObservationType = response.ResponseData.ObservationType;
 		ViewBag.UserDept = response.ResponseData.UserDept;
 		ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
 		ViewBag.CalibFreq = response.ResponseData.CalibFreq;
 		ViewBag.MUTemplates = response.ResponseData.MUTemplate;
 		ViewBag.Observation = response.ResponseData.ObservationTemplate;
+
 		if (userRoleId==1 || userRoleId==3){
             response.ResponseData.IsDisabled="readonly";
         }
@@ -151,7 +160,7 @@ public class InstrumentController : BaseController
         return Json(response.ResponseData);
     }
 
-    public ActionResult Request(int instrumentId, int typeId)
+    public IActionResult Request(int instumentId, int typeId)
     {
      int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
       ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instrumentId, userId,typeId);
@@ -159,22 +168,49 @@ public class InstrumentController : BaseController
         TempData["ResponseMessage"]=response.ResponseMessage;
         return RedirectToAction("Index","Instrument");
     }
+    //Due For Calibration 
 
-
-	public ActionResult DueRequest(List<RequestAllView> userViewModelList) 
+    public JsonResult PopUpInstrumentList(string InstrumentName,int InstrumentId)
     {
-        //return Json(true);
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response;
-        response = _requestService.InsertDueRequest(userViewModelList, userId);
-
-		//response = _requestService.InsertDueRequest(userViewModelList, userId);
-
-		//foreach (var user in userViewModelList)
-		//      {
-		//	
-		//}
-		//ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
-		return Json(true); 
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.PopUpList( InstrumentName, InstrumentId);
+		
+		return Json(response.ResponseDataList);
 	}
+ 
+
+	public IActionResult DueRequest(string[] Request)
+    {
+        
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId);
+		return RedirectToAction("Index", "Instrument");
+	}
+		//For Tool Inventory Manager
+		public IActionResult ToolInventory(int UserDept)
+    {
+		
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolInventoryInstrumentList(UserDept);
+
+		return View(response.ResponseDataList);
+	}
+	public JsonResult SaveInventoryCalibration(List<Instrumentids> InstrumentList)
+	{
+		
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.SaveInventoryCalibration(InstrumentList, userId);
+
+		return Json(response.ResponseData);
+		 
+	}
+	public IActionResult ToolRoomDepartment()
+	{
+        ViewBag.PageTitle = "Replacement Due List Details";
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomDepartmentwiseInstrument();
+
+		return View(response.ResponseDataList);
+	}
+	//For Tool Inventory Manager
+
 }

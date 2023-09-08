@@ -41,7 +41,8 @@
 		border-collapse: collapse;
 	}
 </style>
-<div class="row">
+
+ <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
 
@@ -53,7 +54,7 @@
 
 			<tr style="font-weight: bold;" class="sizeborder" id="RowHeaderAnvil">
 				<td colspan="4">
-					<span> 観察シート / Observation sheet -</span> </br> <span>マイクロメータ／V-anvil Micrometer /Special/Pipe type/Caliper type</span>
+					<span> 観察シート / Observation sheet -</span><span>マイクロメータ／V-anvil Micrometer /Special/Pipe type/Caliper type</span>
 
 				</td>
 			</tr>
@@ -65,12 +66,19 @@
 
 			<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
 				<td colspan="4">
-					<span> 観察シート / Observation sheet -</span> </br> <span>ディップスマイクロメータ／Depth micrometer</span>
+					<span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span>
 
 				</td>
 
 			</tr>
 
+			<tr id="RowHeaderExternal" style="font-weight: bold;" class="sizeborder">
+				<td colspan="4">
+					<span>観察シート/ Observation Sheet - </span><span> 標準型外側マイクロメータ／Micrometer for External Measurements and Span Measurement of Teeth</span>
+
+				</td>
+
+			</tr>
 
 			@*}*@
 			<tr class="sizeborder">
@@ -81,24 +89,36 @@
 				{*@
 
 				<td id="tdHeaderAnvil" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
-					<span class="trn">外側　V溝・３溝・５溝マイクロメータ V-anvil Micrometer </span> </br> <span class="trn"> 特殊外側マイクロメータ／Special micro.,内側マイクロメータ／Inside micro.,内側マイクロメータ／Inside  (Caliper type）</span>
+
+					<span class="trn">外側　V溝・３溝・５溝マイクロメータ V-anvil Micrometer </span> </br> <span class="trn"> 特殊外側マイクロメータ／Special micro.,内側マイクロメータ／</span> </br> <span class="trn">Inside micro.,内側マイクロメータ／Inside  (Caliper type）</span>
 
 				</td>
 
 
-				
+
 				<td id="tdHeaderDepth" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
 					<span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span>
 				</td>
-				
+
+				<td id="tdHeaderExternal" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
+					<span class="trn">
+						標準型外側マイクロメータ & 歯厚マイクロメータ／
+					</span> </br> <span class="trn">Micrometer for external and span measurements of teeth</span>
+
+
+				</td>
+
+
 				<td class="textleftborder trn" height="10">
 					フォーマット番号/Format No.
 				</td>
-				
+
 				<td id="tdFormatAnvil" class="textcenterborder">A-20-1</td>
-				
+
 				<td id="tdFormatDepth" class="textcenterborder">A-27</td>
-				
+				<td id="tdFormatExternal" class="textcenterborder">A-02</td>
+
+
 			</tr>
 			<tr>
 				<td class="textleftborder" height="20">
@@ -109,7 +129,7 @@
 		</table>
 		<br>
 
-		<table class="Tables-AndTablesTextBox">
+		<table id="TblInstrument" class="Tables-AndTablesTextBox">
 			<tr>
 				<td colspan="2" class="textcenterborder"><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
 				<td colspan="1">@Model.IdNo</td>
@@ -165,9 +185,6 @@
 								@*<br>
 						<i class="fas fa-trash" onclick="DeleteMasterEqiupment(@i)"></i>*@
 
-
-
-
 								i = i + 1;
 							}
 
@@ -182,14 +199,15 @@
 			</tr>
 			<tr>
 				<td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
-				<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;"></td>
+				<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
 				<td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
-				<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;"></td>
+				<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
 				<td colspan=2">
 					<span>外観・機能／Visual Check</span>
 				</td>
 				<td colspan="4">
-					<textarea name="MicrometerCondition" id="MicrometerCondition" style="width: 500px;" class="Tables-AndTablesTextBox">@Model.MicrometerCondition</textarea>
+
+					<textarea name="MicrometerCondition" id="MicrometerCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.MicrometerCondition</textarea>
 				</td>
 				@*<tr>
 				<td colspan="3"><span>検査室温度 °C／ Temperature °C</span></td>
@@ -261,7 +279,7 @@
 						</td>
 						<td>
 							<input value="@Model.Avg1" id="Avg1" name="Avg1" type="text" class="Tables-AndTablesTextBox"
-								   required="required">
+								   disabled="disabled">
 						</td>
 
 				@*<td>
@@ -287,7 +305,7 @@
 						</td>
 						<td>
 							<input value="@Model.Avg2" id="Avg2" name="Avg2" type="text" class="Tables-AndTablesTextBox"
-								   required="required">
+								   disabled="disabled">
 						</td>
 
 				@*<td>
@@ -312,7 +330,7 @@
 						</td>
 						<td>
 							<input value="@Model.Avg3" id="Avg3" name="Avg3" type="text" class="Tables-AndTablesTextBox"
-								   required="required">
+								   disabled="disabled">
 						</td>
 
 				@*<td>
@@ -340,7 +358,7 @@
 							</td>
 							<td>
 								<input value="@item.Diff1" id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox"
-									   required="required">
+									   disabled="disabled">
 							</td>
 
 						@*<td>
@@ -357,170 +375,304 @@
 		</div>
 
 		<br>
-		<table id="tblrowFlat" class="Tables-AndTablesTextBox">
-			<tr>
-				<td colspan="4" class="Tables-AndTablesTextBox trn">基準面の平面度／Flatness</td>
-			</tr>
-			<tr>
-				<td>
-					測定値／Measured value
-				</td>
+				@*------------------Parallelism Check----------------------*@
+		<div class="Tables-AndTablesTextBox">
+			<table id="tblMicroParallel" class="Tables-AndTablesTextBox">
+				<thead>
+					<tr><td colspan="4" class="Tables-AndTablesTextBox trn">測定面の平行度／Parallelism degree of the measurement side</td></tr>
+					<tr>
+						<td>
+							いいえ／No.
+						</td>
+						<td>
+							測定値／Measured value
+						</td>
 
-				<td>
-					実測／
-					Actual value
-				</td>
-				<td>
-					器差／
-					Instrumental error
-				</td>
-			</tr>
-			<tr id="tablerowFlatness">
-				<td>
-					<input name="Measurement1Fl1" id="Measurement1Fl1" style="text-align: center;" value="@Model.FlatnessMeasure" type="text" onkeyup="GetFlatness('0');" class="Tables-AndTablesTextBox">
-				</td>
-				<td><input name="ActualsTFl" id="ActualsTFl" value="@Model.FlatnessActual" onkeyup="GetFlatness('0');" type="text" class="Tables-AndTablesTextBox"></td>
+						<td>
+							実測／
+							Actual value
+						</td>
+						<td>
+							器差／
+							Instrumental error
+						</td>
+				@*<td style="width: 40px;" class="trn">Delete</td>*@
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="tablerowParallel0">
 
-				<td><input name="AvgFl1" id="AvgFl1" value="@Model.FlatnessInserr" type="text" class="Tables-AndTablesTextBox"></td>
+						<td>
+							<input id="SNO" name="SNO" type="text" class="Tables-AndTablesTextBox" value="1" disabled="disabled" />
 
-			</tr>
-				@*<tr style="font-weight: bold;">
-			<td colspan="2" class="trn">Flatness1</td>
+						</td>
+						<td>
+							<input value="@Model.Measurement4" id="Measurement4" name="Measurement4" type="text"
+								   required="required" class="Tables-AndTablesTextBox GetValue" onkeyup="GetValueParallelism(this,'0');">
+						</td>
+						<td>
+							<input value="@Model.ActualsT14" id="ActualsT14" name="ActualsT14" type="text" class="Tables-AndTablesTextBox"
+								   required="required" onkeyup="GetValueParallelism(this,'0');">
+						</td>
+						<td>
+							<input value="@Model.Avg4" id="Avg4" name="Avg4" type="text" class="Tables-AndTablesTextBox"
+								   disabled="disabled">
+						</td>
 
-			<td colspan="2" class="trn">Flatness2</td>
-			</tr>
-			<tr>
-			<td colspan="2" class="FlatNess1and2-TextBox">
-			<input type="text" value="@Model.Flatness1" class="Tables-AndTablesTextBox" onkeypress="ValidateFlatness1(language)"
-			id="Flatness1" name="Flatness1">
-			</td>
+				@*<td>
+						<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(0);"></i>
+						</td>*@
 
-			<td colspan="2" class="FlatNess1and2-TextBox">
-			<input type="text" value="@Model.Flatness2" onkeypress="ValidateFlatness2(language)" class="Tables-AndTablesTextBox"
-			id="Flatness2" name="Flatness2">
-			</td>
-			</tr>
-			<tr>
-			<td class="ParallelismSpec-Actual-AndItstextBox trn" style="font-weight: bold;">Parallelism Spec:</td>
-			<td class="ParallelismSpec-Actual-AndItstextBox">
-			<input type="text" value="@Model.ParallelismSpec"
-			class="Tables-AndTablesTextBox" id="ParallelismSpec" name="ParallelismSpec">
-			</td>
-			<td class="ParallelismSpec-Actual-AndItstextBox trn" style="font-weight: bold;">Actual :</td>
-			<td class="ParallelismSpec-Actual-AndItstextBox">
-			<input type="text" value="@Model.Actuals"
-			class="Tables-AndTablesTextBox" id="Actuals" name="Actuals">
-			</td>*@
-			</tr>
+					</tr>
+					<tr id="tablerowParallel1">
+
+						<td>
+							<input id="SNO" name="SNO" type="text" class="Tables-AndTablesTextBox" value="2" disabled="disabled" />
+
+						</td>
+						<td>
+							<input value="@Model.Measurement5" id="Measurement5" name="Measurement5" type="text"
+								   required="required" class="Tables-AndTablesTextBox" onkeyup="GetValueParallelism('1');">
+						</td>
+						<td>
+							<input value="@Model.ActualsT15" id="ActualsT15" name="ActualsT15" type="text" class="Tables-AndTablesTextBox"
+								   required="required" onkeyup="GetValueParallelism('1');">
+						</td>
+						<td>
+							<input value="@Model.Avg5" id="Avg5" name="Avg5" type="text" class="Tables-AndTablesTextBox"
+								   disabled="disabled">
+						</td>
+
+				@*<td>
+						<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(0);"></i>
+						</td>*@
+
+					</tr>
+
+					<tr id="tablerowParallel2">
+
+						<td>
+							<input id="SNO" name="SNO" type="text" class="Tables-AndTablesTextBox" value="3" disabled="disabled" />
+
+						</td>
+						<td>
+							<input value="@Model.Measurement6" id="Measurement6" name="Measurement6" type="text"
+								   required="required" class="Tables-AndTablesTextBox" onkeyup="GetValueParallelism('2');">
+						</td>
+						<td>
+							<input value="@Model.ActualsT16" id="ActualsT16" name="ActualsT16" type="text" class="Tables-AndTablesTextBox"
+								   required="required" onkeyup="GetValueParallelism('2');">
+						</td>
+						<td>
+							<input value="@Model.Avg6" id="Avg6" name="Avg6" type="text" class="Tables-AndTablesTextBox"
+								   disabled="disabled">
+						</td>
+					</tr>
+
+					<tr id="tablerowParallel3">
+
+						<td>
+							<input id="SNO" name="SNO" type="text" class="Tables-AndTablesTextBox" value="4" disabled="disabled" />
+
+						</td>
+						<td>
+							<input value="@Model.Measurement7" id="Measurement7" name="Measurement7" type="text"
+								   required="required" class="Tables-AndTablesTextBox" onkeyup="GetValueParallelism('3');">
+						</td>
+						<td>
+							<input value="@Model.ActualsT17" id="ActualsT17" name="ActualsT17" type="text" class="Tables-AndTablesTextBox"
+								   required="required" onkeyup="GetValueParallelism('3');">
+						</td>
+						<td>
+							<input value="@Model.Avg7" id="Avg7" name="Avg7" type="text" class="Tables-AndTablesTextBox"
+								   disabled="disabled">
+						</td>
+
+				@*<td>
+						<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(2);"></i>
+						</td>*@
+
+					</tr>
 
 
 
-		</table>
-		<br>
-		<table class="Tables-AndTablesTextBox" id="TblMicro">
-			<tr>
-				<td class="trn">検査員／Inspector</td>
-				<td>
-					<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
-						   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
-				</td>
-				<td>検査日／Inspection date:</td>
+				@*	@foreach (var item in Model.MicrometerAddResultViewModelTwoList)
+					{
+
+					<tr id="tablerowIns4">
+
+					<td>
+					<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value="@item.SNO" disabled="disabled" />
+
+					</td>
+					<td>
+					<input value="@item.MeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+					required="required" class="Tables-AndTablesTextBox" onkeyup="GetValue('3');">
+					</td>
+					<td>
+					<input value="@item.ActualsT1" id="actualst1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"
+					required="required" onkeyup="GetValue('3');">
+					</td>
+					<td>
+					<input value="@item.Diff1" id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox"
+					required="required">
+					</td>
+
+					@*<td>
+					<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removemu(3);"></i> onkeyup="GetValue('3');"
+					</td>*@
+				@*<td><input value="@item.Id" id="id" name="Id" type="hidden"></td>
+					<td><input value="@item.ParentId" id="ParentId" name="parentid" type="hidden"></td>
+					<td><input value="@item.Parallelism" id="Parallelism" name="Parallelism" type="hidden"></td>
+					</tr>
+
+
+					</tbody>
+					</table>
+					</div>
+					}*@
+					<br>
+
+					<table id="tblrowFlat" class="Tables-AndTablesTextBox">
+						<tr>
+							<td colspan="4" class="Tables-AndTablesTextBox trn">基準面の平面度／Flatness</td>
+						</tr>
+						<tr>
+							<td>
+								測定値／Measured value
+							</td>
+
+							<td>
+								実測／
+								Actual value
+							</td>
+							<td>
+								器差／
+								Instrumental error
+							</td>
+						</tr>
+						<tr id="tablerowFlatness">
+							<td>
+								<input name="Measurement1Fl1" id="Measurement1Fl1" style="text-align: center;" value="@Model.FlatnessMeasure" type="text" onkeyup="GetFlatness('0');" class="Tables-AndTablesTextBox">
+							</td>
+							<td><input name="ActualsTFl" id="ActualsTFl" value="@Model.FlatnessActual" onkeyup="GetFlatness('0');" type="text" class="Tables-AndTablesTextBox"></td>
+
+							<td><input name="AvgFl1" id="AvgFl1" value="@Model.FlatnessInserr" type="text" class="Tables-AndTablesTextBox" disabled="disabled"></td>
+
+						</tr>
+
+						</tr>
+
+
+
+					</table>
+					<br>
+					<table class="Tables-AndTablesTextBox" id="TblMicro">
+						<tr>
+							<td class="trn">検査員／Inspector</td>
+							<td>
+								<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
+									   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
+							</td>
+							<td>検査日／Inspection date:</td>
 				@if (true)
 				{
 					var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
-					<td>
-						<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
-							   class="Tables-AndTablesTextBox" disabled>
-					</td>
+								<td>
+									<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+										   class="Tables-AndTablesTextBox" disabled>
+								</td>
 				}
-				
-			</tr>
 
-			<tr>
-				<td class="trn">承認者／Approver</td>
-				<td><input type="text" value="@Model.ReviewedBy" class="Tables-AndTablesTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
+						</tr>
 
-				<td>承認日／Approved date:</td>
+						<tr>
+							<td class="trn">承認者／Approver</td>
+							<td><input type="text" value="@Model.ReviewedBy" class="Tables-AndTablesTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
+
+							<td>承認日／Approved date:</td>
 				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
 						|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 				{
 
-					<td>
-						<input type="text" name="Review_Date" id="Review_Date"
-							   value="@Model.Review_Date" class="Tables-AndTablesTextBox" disabled>
-					</td>
+								<td>
+									<input type="text" name="Review_Date" id="Review_Date"
+										   value="@Model.Review_Date" class="Tables-AndTablesTextBox" disabled>
+								</td>
 
 				}
 				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 				{
 
-					<td>
-						<div class="form-group">
+								<td>
+									<div class="form-group">
 
-							<div class="input-group date" id="reservationdate" data-target-input="nearest"
-								 onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
-								<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
-									   id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate" @Model.IsDisabled>
-								<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-								</div>
-							</div>
-						</div>
-					</td>
+										<div class="input-group date" id="reservationdate" data-target-input="nearest"
+											 onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+											<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+												   id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate" @Model.IsDisabled>
+											<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+											</div>
+										</div>
+									</div>
+								</td>
 				}
-			</tr>
+						</tr>
 				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @Model.ReviewStatus != null)
 				{
-				<tr>
-					<td class="textcenterborder">判定／Judgement</td>
-					<td class="textcenterborder" colspan="3">
-						<div style="text-align: left;">
+							<tr>
+								<td class="textcenterborder">判定／Judgement</td>
+								<td class="textcenterborder" colspan="3">
+									<div style="text-align: left;">
 
-							<label class="trn">合格 / Pass</label>
-							<input type="radio" name="Approve" id="Approve">
-							<label class="trn">不合格 /Fail</label>
-							<input type="radio" name="Approve" id="Reject">
-						</div>
-					</td>
+										<label class="trn">合格 / Pass</label>
+										<input type="radio" name="Approve" id="Approve">
+										<label class="trn">不合格 /Fail</label>
+										<input type="radio" name="Approve" id="Reject">
+									</div>
+								</td>
 
-				</tr>
+							</tr>
 				}
 				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
 				{
-				<tr>
-					<td colspan="4">
+							<tr>
+								<td colspan="4">
 							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
 							{
-							<input type="button" class="btn btn-primary trn" value="Save" name="Save" id="Micrometer" onclick="SaveMicrometer(language)">
+										<input type="button" class="btn btn-primary trn" value="Save" name="Save" id="Micrometer" onclick="SaveMicrometer(language)">
 							}
-						<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-					</td>
-				</tr>
+									<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+								</td>
+							</tr>
 				}
 				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 				{
-				<tr>
-					<td colspan="4" style="text-align:center;">
+							<tr>
+								<td colspan="4" style="text-align:center;">
 							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
 							{
-							<input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+										<input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
 							}
-						<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-					</td>
-				</tr>
+									<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+								</td>
+							</tr>
 				}
 
-		</table>
+					</table>
+					
+					<input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+					<input type="hidden" id="requestId" value="@Model.RequestId">
+					<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+					<input type="hidden" name="IdMicro" id="IdMicro" value="@Model.Id">
+					<input type="hidden" name="TemplateObservationId" Id="TemplateObservationId" value="@Model.TemplateObservationId">
+					<input type="hidden" name="InstrumentErrValue" id="InstrumentErrValue" value="@Model.Id">
 
-		<input type="hidden" id="instrumentId" value="@Model.InstrumentId">
-		<input type="hidden" id="requestId" value="@Model.RequestId">
-		<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
-		<input type="hidden" name="IdMicro" id="IdMicro" value="@Model.Id">
-		<input type="hidden" name="TemplateObservationId" Id="TemplateObservationId" value="@Model.TemplateObservationId">
-		<input type="hidden" name="InstrumentErrValue" id="InstrumentErrValue" value="@Model.Id">
-
+		</div>
+		<div class="col-md-2"></div>
 	</div>
-	<div class="col-md-2"></div>
+
 </div>
 
 <script>
@@ -538,51 +690,54 @@
 
 			//if ($('tr').attr('id') == 'RowHeaderAnvil') {
 			tdFormatAnvil, tdFormatDepth
-				$('#RowHeaderAnvil').show();
-				$('#RowHeaderDepth').hide();
-				console.log("show anvil");
-			//}
-			//else {
-			//	$('#RowHeaderAnvil').hide();
-			//	$('#RowHeaderDepth').show();
-			//	console.log("hide Depth");
-			//}
+			$('#RowHeaderAnvil').show();
+			$('#RowHeaderDepth').hide();
+			$('#RowHeaderExternal').hide();
+
+			console.log("show anvil");
+
 			//if ($(this).find('td').attr('id') == 'tdHeaderAnvil') {
 
-				$(this).find('#tdHeaderAnvil').show();
-				$(this).find('#tdHeaderDepth').hide();
+			$(this).find('#tdHeaderAnvil').show();
+			$(this).find('#tdHeaderDepth').hide();
+			$(this).find('#tdHeaderExternal').hide();
 
 			$(this).find('#tdFormatDepth').hide();
 			$(this).find('#tdFormatAnvil').show();
-			//}
-			//else {
-			//	$(this).find('#tdHeaderAnvil').hide();
-			//	$(this).find('#tdHeaderDepth').show();
-			//}
-
-			//if ($('tr').attr('id') == 'RowHeaderDepth') {
-			//	if (ObservationType == 'V-anvil Micrometer')// To hide flatness  for 'V-anvil Micrometer'
-			//	{
-			//		$('#RowHeaderDepth').hide();
-			//		console.log("hide Depth");
-			//	}
-			//	else {
-			//		$('#RowHeaderDepth').show();
-			//		console.log("show Depth");
-			//	}
-			//}
+			$(this).find('#tdFormatExternal').hide();
+			$('#tblrowFlat').hide();
+			$('#tblMicroParallel').hide();
 		}
-		else
-		{
+		else if (ObservationType == 'Depth micrometer') {
 			$('#RowHeaderAnvil').hide();
 			$('#RowHeaderDepth').show();
+			$('#RowHeaderExternal').hide();
+
 			console.log("hide Depth");
 
 			$(this).find('#tdHeaderAnvil').hide();
 			$(this).find('#tdHeaderDepth').show();
+			$(this).find('#tdHeaderExternal').hide();
 
 			$(this).find('#tdFormatDepth').show();
 			$(this).find('#tdFormatAnvil').hide();
+			$(this).find('#tdFormatExternal').hide();
+			$('#tblrowFlat').show();
+			$('#tblMicroParallel').hide();
+		}
+		else if (ObservationType == 'External/Span Micrometer') {
+			$(this).find('#tdHeaderAnvil').hide();
+			$(this).find('#tdHeaderDepth').hide();
+			$(this).find('#tdHeaderExternal').show();
+			$(this).find('#tdFormatExternal').show();
+			$(this).find('#tdFormatDepth').hide();
+			$(this).find('#tdFormatAnvil').hide();
+
+			$('#RowHeaderAnvil').hide();
+			$('#RowHeaderDepth').hide();
+			$('#RowHeaderExternal').show();
+			$('#tblrowFlat').hide();
+			$('#tblMicroParallel').show();
 		}
 
 	});
@@ -600,7 +755,7 @@
 
 				$(tr).show();
 			}
-			else if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
+			else if (($(tr).find("td:eq(1) input[type='text']").val() == 0) || ($(tr).find("td:eq(1) input[type='text']").val() == '')) {
 				console.log("4th row");
 				$(tr).remove();
 				SNo--;
@@ -618,7 +773,7 @@
 			$('#Microadd tbody tr').each(function (row, tr) {
 
 
-			//	//if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
+				if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
 
 			//	//	$(tr).remove();
 			//	//	counter--;
@@ -744,6 +899,11 @@
 
 </script>
 <script type="text/javascript">
+	function isNumeric(value) {
+		return /^-?\d+(\.\d+)?$/.test(value);
+	}
+
+
 	$(function ValidateFlatness1(lang) {
 
 		$("#Flatness1").keypress(function (evt) {
@@ -790,5 +950,6 @@
 	}, 1000);
 
 </script>
+
 
 

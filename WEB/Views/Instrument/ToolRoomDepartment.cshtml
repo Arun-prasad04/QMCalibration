@@ -1,0 +1,151 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@* @{
+	ViewData["Title"] = "Replacement Due List Details";
+}
+ *@
+<section class="content">
+	<div class="row">
+		<div class="col-12">
+
+			<div class="card card-primary">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-6">
+							<h3 class="card-title trn">Replacment Due Instruments</h3>
+						</div>
+					</div>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<table id="tblToolDept" class="table table-bordered table-striped" style="width:100%">
+						<thead>
+							<tr>
+								<th class="trn">Department</th>
+								<th class="trn">Number Of Equipments</th>
+								<th class="trn">Due Date </th>
+								<th class="trn">
+									Status
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						@* 	<tr>
+								<td>
+									AAA
+								</td>
+								<td>
+									1
+								</td>
+								<td>
+										@DateTime.Now.ToString("dd-MM-yyyy")
+								</td>
+								<td>
+									Completed
+								</td>
+							</tr>
+							<tr>
+								<td>
+									BBB
+								</td>
+								<td>
+									2
+								</td>
+								<td>
+									@DateTime.Now.ToString("dd-MM-yyyy")
+								</td>
+								<td>
+									Pending
+								</td>
+							</tr>
+							<tr>
+								<td>
+									CCC
+								</td>
+								<td>
+									3
+								</td>
+								<td>
+										@DateTime.Now.ToString("dd-MM-yyyy")
+								</td>
+								<td>
+									Completed
+								</td>
+							</tr>
+							<tr>
+								<td>
+									DDD
+								</td>
+								<td>
+									4
+								</td>
+								<td>
+									@DateTime.Now.ToString("dd-MM-yyyy")
+								</td>
+								<td>
+									Pending
+								</td>
+							</tr>
+							 *@
+
+							@foreach (var item in Model)
+							{
+								<tr>
+								<td>
+								@item.DepartmentName
+								</td>
+								<td>
+								<a href='@Url.Action("ToolInventory","Instrument", new {UserDept= @item.UserDept})'> 
+								@item.InstrumentCount
+								</a>
+										<input type="hidden" id="UserDept" value="@item.UserDept">
+								</td>
+								<td>
+								@item.DueDate.ToString("dd-MM-yyyy")
+								</td>
+								@if (@item.InstrumentCount > @item.ToolRoomStatus)
+								{
+								<td>
+								Pending
+								</td>
+								}
+								@if (@item.InstrumentCount == @item.ToolRoomStatus)
+								{
+								<td>
+								Completed
+								</td>
+								}
+							@* 	<td style="display:none;">
+								<input type="hidden" id="UserDept" value="@item.UserDept">
+								</td> *@
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	setTimeout(function () {
+		$('#tblToolDept').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": true,
+			"responsive": true,
+		});
+
+
+	}, 500);
+		// function showAPopUp() {
+		// 	alert("Return");
+		// 	OpenWindow('../ Instrument / ToolInventory', 300, 300, true);
+</script>

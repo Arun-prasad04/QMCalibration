@@ -85,33 +85,22 @@ public class InstrumentViewModel
     public int? UserRoleId {get; set;}
     public int? RequestStatus {get; set;}
 	public string? Grade { get; set; }
-	public string? TypeOfEquipment { get; set; }
-	public string? ToolInventory { get; set; }
-        public int ToolRoomStatus { get; set; }
-        public int ToolInventoryStatus { get; set; }
-        public int RequestId { get; set; }
-    }
+	public int? RequestId { get; set; }
+		public string? TypeOfEquipment { get; set; }
+		public string? ToolInventory { get; set; }
+		public int? ToolInventoryStatus { get; set; }
+		public int? InstrumentCount { get; set; }
+		public string? ReplacementLabID { get; set; }
+		public int? ToolRoomStatus { get; set; }
 
-	public class RequestAllView
-	{
-		public int instrumentId { get; set; }
-		public int TypeValue { get; set; }
-		
+
 	}
+	public class Instrumentids
+	{
+		public string InstrumentId { get; set; }
+		
+		public string ReplacementLabId { get; set; }
+		
 
-    public class RequestMailList 
-    {
-        public int SNo { get; set; }
-        public string? RequestNo { get; set; }
-        public string? LabId { get; set; }
-        public string? EquipmentType { get; set; }
-        public string? EquipmentName { get; set; }
-        public string? SubsectionCode { get; set; }
-        public string? CalibrationType { get; set; }
-
-        public string? CreaterFirstName { get; set; }
-        public string? CreaterLastName { get; set; }
-        public string? CreaterEmail { get; set; }
-
-    }
+	}
 }
