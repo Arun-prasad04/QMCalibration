@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services.Interface;
 using AutoMapper;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Diagnostics.Metrics;
+
 
 namespace WEB.Controllers;
 public class ObservationController : BaseController
@@ -83,16 +85,16 @@ public class ObservationController : BaseController
 		ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
 		LeverTypeDialViewModel leverTypeDialViewModel = new LeverTypeDialViewModel();
 
-		leverTypeDialViewModel.InstrumentId = instrumentId;
-		leverTypeDialViewModel.RequestId = requestId;
-		leverTypeDialViewModel.Name = instrumentresponse.ResponseData.InstrumentName;
-		leverTypeDialViewModel.Range = instrumentresponse.ResponseData.Range;
-		leverTypeDialViewModel.Make = instrumentresponse.ResponseData.Make;
-		leverTypeDialViewModel.SerialNo = instrumentresponse.ResponseData.SlNo;
-		leverTypeDialViewModel.IDNo = instrumentresponse.ResponseData.IdNo;
-		leverTypeDialViewModel.RefStd = instrumentresponse.ResponseData.StandardReffered;
+        leverTypeDialViewModel.InstrumentId = instrumentId;
+        leverTypeDialViewModel.RequestId = requestId;
+        leverTypeDialViewModel.Name = instrumentresponse.ResponseData.InstrumentName;
+        leverTypeDialViewModel.Range = instrumentresponse.ResponseData.Range;
+        leverTypeDialViewModel.Make = instrumentresponse.ResponseData.Make;
+        leverTypeDialViewModel.SerialNo = instrumentresponse.ResponseData.SlNo;
+        leverTypeDialViewModel.IDNo = instrumentresponse.ResponseData.IdNo;
+        leverTypeDialViewModel.RefStd = instrumentresponse.ResponseData.StandardReffered;
 
-		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.GetLeverDialById(requestId, instrumentId);
+        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.GetLeverDialById(requestId, instrumentId);
 
 		if (response.ResponseData != null)
 		{
@@ -205,18 +207,30 @@ public class ObservationController : BaseController
 			response = _ObservationTemplateService.InsertMicrometer(micrometer);
 		
 
+        if (response.ResponseMessage == "Success")
+        {
+            return RedirectToAction("Request", "Tracker", new { reqType = 4 });
+
+        }
 		//TempData["ResponseCode"] = response.ResponseCode;
 		//TempData["ResponseMessage"] = response.ResponseMessage;
 		return Json(response.ResponseData);
 				
 	}
 
-	public IActionResult InsertVernierCaliper(VernierCaliperViewModel verniercaliper)
-	{
-		ResponseViewModel<VernierCaliperViewModel> response;
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		verniercaliper.CreatedBy = userId;
+        else
+        {
+            return View(response.ResponseData);
+        }
+
+    }
+
+    public IActionResult InsertVernierCaliper(VernierCaliperViewModel verniercaliper)
+    {
+        ResponseViewModel<VernierCaliperViewModel> response;
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        verniercaliper.CreatedBy = userId;
 
 		response = _ObservationTemplateService.InsertVernierCaliper(verniercaliper);
 
@@ -255,7 +269,7 @@ public class ObservationController : BaseController
 		//	return View(response.ResponseData);
 		//}
 
-		/*if(response.ResponseMessage=="Success"){
+        /*if(response.ResponseMessage=="Success"){
 		  return RedirectToAction("Index","Department");
 		 }else{
 			 return View(response.ResponseData);
@@ -756,349 +770,647 @@ public class ObservationController : BaseController
 			if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
 				response.ResponseData.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
 
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
 
-			response.ResponseData.InstrumentId = instrumentId;
-			response.ResponseData.RequestId = requestId;
-			response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
-			response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
-			response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
-			response.ResponseData.Range = instrumentresponse.ResponseData.Range;
-			response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			response.ResponseData.Make = instrumentresponse.ResponseData.Make;
-			response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
 
-			if (userRoleId == 1)
-			{
-				response.ResponseData.IsDisabled = "disabled";
-			}
-			else
-			{
-				response.ResponseData.IsDisabled = "";
-			}
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
 
-			if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
-			{
-				response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
-				response.ResponseData.CalibrationReviewedBy = userId;
-				response.ResponseData.CalibrationReviewedDate = DateTime.Now;
-			}
-			else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
-			{
-				response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
-			}
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
 
-		}
-		else
-		{
-			ResponseViewModel<ThreadGaugesViewModel> responseempty = new ResponseViewModel<ThreadGaugesViewModel>();
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			ThreadGaugesViewModel micrometer = new ThreadGaugesViewModel();
-			micrometer.InstrumentId = instrumentId;
-			micrometer.RequestId = requestId;
-			micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
-			micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
-			micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
-			micrometer.Range = instrumentresponse.ResponseData.Range;
-			micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			micrometer.Make = instrumentresponse.ResponseData.Make;
-			micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
-			micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
-			micrometer.CalibrationPerformedDate = DateTime.Now;
-			micrometer.CalibrationReviewedDate = DateTime.Now;
-			micrometer.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
-			if (userRoleId == 4)
-			{
-				micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
-				micrometer.CalibrationReviewedDate = DateTime.Now;
-			}
-			else
-			{
-				micrometer.ReviewedBy = string.Empty;
-				micrometer.Review_Date = string.Empty;
-			}
+        }
+        else
+        {
+            ResponseViewModel<ThreadGaugesViewModel> responseempty = new ResponseViewModel<ThreadGaugesViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            ThreadGaugesViewModel micrometer = new ThreadGaugesViewModel();
+            micrometer.InstrumentId = instrumentId;
+            micrometer.RequestId = requestId;
+            micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
+            micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
+            micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
+            micrometer.Range = instrumentresponse.ResponseData.Range;
+            micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            micrometer.Make = instrumentresponse.ResponseData.Make;
+            micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            micrometer.CalibrationPerformedDate = DateTime.Now;
+            micrometer.CalibrationReviewedDate = DateTime.Now;
+            micrometer.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
+                micrometer.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                micrometer.ReviewedBy = string.Empty;
+                micrometer.Review_Date = string.Empty;
+            }
 
-			if (userRoleId == 1)
-			{
-				micrometer.IsDisabled = "disabled";
-			}
-			else
-			{
-				micrometer.IsDisabled = "";
-			}
-			responseempty.ResponseData = micrometer;
-			return View(responseempty.ResponseData);
-		}
-		return View(response.ResponseData);
-	}
-	public IActionResult TWObs(int requestId, int instrumentId)
-	{
+            if (userRoleId == 1)
+            {
+                micrometer.IsDisabled = "disabled";
+            }
+            else
+            {
+                micrometer.IsDisabled = "";
+            }
+            responseempty.ResponseData = micrometer;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+    public IActionResult TWObs(int requestId, int instrumentId)
+    {
 
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		string firstName = base.SessionGetString("FirstName");
-		string lastName = base.SessionGetString("LastName");
-		ViewBag.ResponseCode = TempData["ResponseCode"];
-		ViewBag.ResponseMessage = TempData["ResponseMessage"];
-		ResponseViewModel<TorqueWrenchesViewModel> response = _ObservationTemplateService.GetTorqueWrenchesById(requestId, instrumentId);
-		if (response.ResponseData != null)
-		{
-			response.ResponseData.InstrumentId = instrumentId;
-			response.ResponseData.RequestId = requestId;
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
-			response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
-			response.ResponseData.Range = instrumentresponse.ResponseData.Range;
-			response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
-			response.ResponseData.Make = instrumentresponse.ResponseData.Make;
-			response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ViewBag.ResponseCode = TempData["ResponseCode"];
+        ViewBag.ResponseMessage = TempData["ResponseMessage"];
+        ResponseViewModel<TorqueWrenchesViewModel> response = _ObservationTemplateService.GetTorqueWrenchesById(requestId, instrumentId);
+        if (response.ResponseData != null)
+        {
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
 
-			if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
-				response.ResponseData.RefWi = Constants.TORQUE_WRENCH_REFERENCE_WITH_INDICATOR;
+            if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
+                response.ResponseData.RefWi = Constants.TORQUE_WRENCH_REFERENCE_WITH_INDICATOR;
 
-			if (userRoleId == 1)
-			{
-				response.ResponseData.IsDisabled = "disabled";
-			}
-			else
-			{
-				response.ResponseData.IsDisabled = "";
-			}
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
 
-			if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
-			{
-				response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
-				response.ResponseData.CalibrationReviewedBy = userId;
-				response.ResponseData.CalibrationReviewedDate = DateTime.Now;
-			}
-			else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
-			{
-				response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
-			}
-		}
-		else
-		{
-			ResponseViewModel<TorqueWrenchesViewModel> responseempty = new ResponseViewModel<TorqueWrenchesViewModel>();
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			TorqueWrenchesViewModel micrometer = new TorqueWrenchesViewModel();
-			micrometer.InstrumentId = instrumentId;
-			micrometer.RequestId = requestId;
-			micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
-			micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
-			micrometer.Range = instrumentresponse.ResponseData.Range;
-			micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
-			micrometer.Make = instrumentresponse.ResponseData.Make;
-			micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
-			micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
-			micrometer.CreatedOn = DateTime.Now;
-			micrometer.RefWi = Constants.TORQUE_WRENCH_REFERENCE_WITH_INDICATOR;
-			if (userRoleId == 4)
-			{
-				micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
-				micrometer.CalibrationReviewedDate = DateTime.Now;
-			}
-			else
-			{
-				micrometer.ReviewedBy = string.Empty;
-				micrometer.Review_Date = string.Empty;
-			}
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
+        }
+        else
+        {
+            ResponseViewModel<TorqueWrenchesViewModel> responseempty = new ResponseViewModel<TorqueWrenchesViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            TorqueWrenchesViewModel micrometer = new TorqueWrenchesViewModel();
+            micrometer.InstrumentId = instrumentId;
+            micrometer.RequestId = requestId;
+            micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
+            micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
+            micrometer.Range = instrumentresponse.ResponseData.Range;
+            micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
+            micrometer.Make = instrumentresponse.ResponseData.Make;
+            micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            micrometer.CreatedOn = DateTime.Now;
+            micrometer.RefWi = Constants.TORQUE_WRENCH_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
+                micrometer.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                micrometer.ReviewedBy = string.Empty;
+                micrometer.Review_Date = string.Empty;
+            }
 
-			if (userRoleId == 1)
-			{
-				micrometer.IsDisabled = "disabled";
-			}
-			else
-			{
-				micrometer.IsDisabled = "";
-			}
-			responseempty.ResponseData = micrometer;
-			return View(responseempty.ResponseData);
-		}
-		return View(response.ResponseData);
-	}
-	public IActionResult VernierCaliper(int requestId, int instrumentId)
-	{
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		string firstName = base.SessionGetString("FirstName");
-		string lastName = base.SessionGetString("LastName");
-		ResponseViewModel<VernierCaliperViewModel> response = _ObservationTemplateService.GetVernierCaliperById(requestId, instrumentId);
-		if (response.ResponseData != null)
-		{
-			if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
-				response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 1)
+            {
+                micrometer.IsDisabled = "disabled";
+            }
+            else
+            {
+                micrometer.IsDisabled = "";
+            }
+            responseempty.ResponseData = micrometer;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+    public IActionResult VernierCaliper(int requestId, int instrumentId)
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ResponseViewModel<VernierCaliperViewModel> response = _ObservationTemplateService.GetVernierCaliperById(requestId, instrumentId);
+        if (response.ResponseData != null)
+        {
+            if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
+                response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
 
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			response.ResponseData.InstrumentId = instrumentId;
-			response.ResponseData.RequestId = requestId;
-			response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
-			response.ResponseData.Range = instrumentresponse.ResponseData.Range;
-			response.ResponseData.Make = instrumentresponse.ResponseData.Make;
-			response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
-			response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
-			response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
 
-			if (userRoleId == 1)
-			{
-				response.ResponseData.IsDisabled = "disabled";
-			}
-			else
-			{
-				response.ResponseData.IsDisabled = "";
-			}
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
 
-			if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
-			{
-				response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
-				response.ResponseData.CalibrationReviewedBy = userId;
-				response.ResponseData.CalibrationReviewedDate = DateTime.Now;
-			}
-			else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
-			{
-				response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
-			}
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
 
-		}
-		else
-		{
-			ResponseViewModel<VernierCaliperViewModel> responseempty = new ResponseViewModel<VernierCaliperViewModel>();
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			VernierCaliperViewModel micrometer = new VernierCaliperViewModel();
-			micrometer.InstrumentId = instrumentId;
-			micrometer.RequestId = requestId;
-			micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
-			micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
-			micrometer.Range = instrumentresponse.ResponseData.Range;
-			micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
-			micrometer.Make = instrumentresponse.ResponseData.Make;
-			micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
-			micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
-			micrometer.CalibrationPerformedDate = DateTime.Now;
-			micrometer.CalibrationReviewedDate = DateTime.Now;
-			micrometer.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
-			if (userRoleId == 4)
-			{
-				micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
-				micrometer.CalibrationReviewedDate = DateTime.Now;
-			}
-			else
-			{
-				micrometer.ReviewedBy = string.Empty;
-				micrometer.Review_Date = string.Empty;
-			}
-
-
-			if (userRoleId == 1)
-			{
-				micrometer.IsDisabled = "disabled";
-			}
-			else
-			{
-				micrometer.IsDisabled = "";
-			}
-			responseempty.ResponseData = micrometer;
-			return View(responseempty.ResponseData);
-		}
-		return View(response.ResponseData);
-	}
-
-	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus)
-	{
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId);
-		return Json(response.ResponseData);
-	}
-	public IActionResult GeneralNew(int requestId, int instrumentId)
-	{
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		string firstName = base.SessionGetString("FirstName");
-		string lastName = base.SessionGetString("LastName");
-		ResponseViewModel<GeneralNewViewModel> response = _ObservationTemplateService.GetGeneralNewById(requestId, instrumentId);
-		if (response.ResponseData != null)
-		{
-			if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
-				response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
-
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			response.ResponseData.InstrumentId = instrumentId;
-			response.ResponseData.RequestId = requestId;
-			response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
-			response.ResponseData.Range = instrumentresponse.ResponseData.Range;
-			response.ResponseData.Make = instrumentresponse.ResponseData.Make;
-			response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
-			response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
-			response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
-
-			if (userRoleId == 1)
-			{
-				response.ResponseData.IsDisabled = "disabled";
-			}
-			else
-			{
-				response.ResponseData.IsDisabled = "";
-			}
-
-			if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
-			{
-				response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
-				response.ResponseData.CalibrationReviewedBy = userId;
-				response.ResponseData.CalibrationReviewedDate = DateTime.Now;
-			}
-			else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
-			{
-				response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
-			}
-
-		}
-		else
-		{
-			ResponseViewModel<GeneralNewViewModel> responseempty = new ResponseViewModel<GeneralNewViewModel>();
-			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-			GeneralNewViewModel micrometer = new GeneralNewViewModel();
-			micrometer.InstrumentId = instrumentId;
-			micrometer.RequestId = requestId;
-			micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
-			micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
-			micrometer.Range = instrumentresponse.ResponseData.Range;
-			micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
-			micrometer.Make = instrumentresponse.ResponseData.Make;
-			micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
-			micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
-			micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
-			micrometer.CalibrationPerformedDate = DateTime.Now;
-			micrometer.CalibrationReviewedDate = DateTime.Now;
-			// micrometer.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
-			if (userRoleId == 4)
-			{
-				micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
-				micrometer.CalibrationReviewedDate = DateTime.Now;
-			}
-			else
-			{
-				micrometer.ReviewedBy = string.Empty;
-				micrometer.Review_Date = string.Empty;
-			}
+        }
+        else
+        {
+            ResponseViewModel<VernierCaliperViewModel> responseempty = new ResponseViewModel<VernierCaliperViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            VernierCaliperViewModel micrometer = new VernierCaliperViewModel();
+            micrometer.InstrumentId = instrumentId;
+            micrometer.RequestId = requestId;
+            micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
+            micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
+            micrometer.Range = instrumentresponse.ResponseData.Range;
+            micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
+            micrometer.Make = instrumentresponse.ResponseData.Make;
+            micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            micrometer.CalibrationPerformedDate = DateTime.Now;
+            micrometer.CalibrationReviewedDate = DateTime.Now;
+            micrometer.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
+                micrometer.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                micrometer.ReviewedBy = string.Empty;
+                micrometer.Review_Date = string.Empty;
+            }
 
 
-			if (userRoleId == 1)
-			{
-				micrometer.IsDisabled = "disabled";
-			}
-			else
-			{
-				micrometer.IsDisabled = "";
-			}
-			responseempty.ResponseData = micrometer;
-			return View(responseempty.ResponseData);
-		}
-		return View(response.ResponseData);
-	}
+            if (userRoleId == 1)
+            {
+                micrometer.IsDisabled = "disabled";
+            }
+            else
+            {
+                micrometer.IsDisabled = "";
+            }
+            responseempty.ResponseData = micrometer;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+    public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus)
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId);
+        return Json(response.ResponseData);
+    }
+    public IActionResult GeneralNew(int requestId, int instrumentId)
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ResponseViewModel<GeneralNewViewModel> response = _ObservationTemplateService.GetGeneralNewById(requestId, instrumentId);
+        if (response.ResponseData != null)
+        {
+            if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
+                response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
+
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
+
+        }
+        else
+        {
+            ResponseViewModel<GeneralNewViewModel> responseempty = new ResponseViewModel<GeneralNewViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            GeneralNewViewModel micrometer = new GeneralNewViewModel();
+            micrometer.InstrumentId = instrumentId;
+            micrometer.RequestId = requestId;
+            micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
+            micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
+            micrometer.Range = instrumentresponse.ResponseData.Range;
+            micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
+            micrometer.Make = instrumentresponse.ResponseData.Make;
+            micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            micrometer.CalibrationPerformedDate = DateTime.Now;
+            micrometer.CalibrationReviewedDate = DateTime.Now;
+            // micrometer.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
+                micrometer.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                micrometer.ReviewedBy = string.Empty;
+                micrometer.Review_Date = string.Empty;
+            }
+
+
+            if (userRoleId == 1)
+            {
+                micrometer.IsDisabled = "disabled";
+            }
+            else
+            {
+                micrometer.IsDisabled = "";
+            }
+            responseempty.ResponseData = micrometer;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+
+    public IActionResult MetalRules(int requestId, int instrumentId)
+    {
+        
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ResponseViewModel<MetalRulesViewModel> response = _ObservationTemplateService.GetMetalRulesId(requestId, instrumentId);
+        ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+        ResponseViewModel<MasterViewModel> MasterEqiupmentList = _ObservationTemplateService.GetEquipmentListByInstrumentId(Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument1), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument2), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument3), Convert.ToInt32(instrumentresponse.ResponseData.MasterInstrument4));
+
+
+        if (instrumentresponse.ResponseData != null)
+        {
+            var observationyype = instrumentresponse.ResponseData.ObservationType;
+            if (!(observationyype.Equals(0) || observationyype.Equals(null)))
+            {
+
+                Lovs objlovsModel = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(observationyype)).SingleOrDefault();
+
+                if (objlovsModel != null)
+                {
+                    if (objlovsModel.Id != 0)
+                    {
+                        ViewBag.ObservationTypeMetal = objlovsModel.AttrValue;
+                        ViewBag.ObservationTypeMetalId = objlovsModel.Id;
+                    }
+                }               
+            }
+        }
+
+        if (response.ResponseData != null)
+        {
+
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+
+            if (instrumentresponse.ResponseData != null)
+            {
+                response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+                response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+                response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+                response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+                response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+                response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+                response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
+                response.ResponseData.Unit1 = instrumentresponse.ResponseData.Unit1;
+                response.ResponseData.MasterEqiupmentList = MasterEqiupmentList.ResponseDataList;
+                response.ResponseData.TemplateObservationId = response.ResponseData.Id;
+
+                //if (response.ResponseData.GeneralAddResultViewModelList == null
+                //   || response.ResponseData.GeneralAddResultViewModelList.Count() == 0)
+                //{
+                //	GeneralResultViewModel generalResultViewModel = new GeneralResultViewModel()
+                //	{
+                //		MeasuedValue = 0,
+                //		Trial1 = 0,
+                //		Trial2 = 0,
+                //		Trial3 = 0,
+                //		Average = 0
+                //	};
+                //	List<GeneralResultViewModel> generalResultList = new List<GeneralResultViewModel>();
+                //	generalResultList.Add(generalResultViewModel);
+                //	response.ResponseData.GeneralAddResultViewModelList = generalResultList;
+                //}
+
+                //if (response.ResponseData.GeneralManualAddResultViewModelList == null
+                //   || response.ResponseData.GeneralManualAddResultViewModelList.Count() == 0)
+                //{
+                //	GeneralManualResultViewModel generalManualResultViewModel = new GeneralManualResultViewModel()
+                //	{
+                //		Column1 = "0",
+                //		Column2 = "0",
+                //		Column3 = "0",
+                //		Column4 = "0",
+                //		Column5 = "0",
+                //		Column6 = "0"
+                //	};
+                //	List<GeneralManualResultViewModel> generalManualResultList = new List<GeneralManualResultViewModel>();
+                //	generalManualResultList.Add(generalManualResultViewModel);
+                //	response.ResponseData.GeneralManualAddResultViewModelList = generalManualResultList;
+                //}
+
+            }
+
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
+
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
+        }
+        else
+        {
+            ResponseViewModel<MetalRulesViewModel> responseempty = new ResponseViewModel<MetalRulesViewModel>();
+            //ResponseViewModel<InstrumentViewModel> instrumentresponse1 = _instrumentService.GetInstrumentById(instrumentId);
+            MetalRulesViewModel metalrule = new MetalRulesViewModel();
+            metalrule.InstrumentId = instrumentId;
+            metalrule.RequestId = requestId;
+
+            if (instrumentresponse.ResponseData != null)
+            {
+                metalrule.Name = instrumentresponse.ResponseData.InstrumentName;
+                metalrule.SerialNo = instrumentresponse.ResponseData.SlNo;
+                metalrule.Range = instrumentresponse.ResponseData.Range;
+                metalrule.IdNo = instrumentresponse.ResponseData.IdNo;
+                metalrule.Make = instrumentresponse.ResponseData.Make;
+                metalrule.RefStd = instrumentresponse.ResponseData.StandardReffered;
+                metalrule.Grade = instrumentresponse.ResponseData.Grade;
+                metalrule.MasterEqiupmentList = MasterEqiupmentList.ResponseDataList;
+            }
+
+            metalrule.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            metalrule.CalibrationPerformedDate = DateTime.Now;
+            metalrule.CalibrationReviewedDate = DateTime.Now;
+
+            if (userRoleId == 4)
+            {
+                metalrule.ReviewedBy = string.Concat(firstName, " ", lastName);
+                metalrule.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                metalrule.ReviewedBy = string.Empty;
+                metalrule.Review_Date = string.Empty;
+            }
+
+
+            MetalRuleResultViewModel MicroResultViewModel = new MetalRuleResultViewModel()
+            {
+                SNO = 1,
+                MeasuedValue = "0",
+                Actuals = "0",
+                InstrumentError = "0",
+                MasterView1 = 1
+            };
+
+            List<MetalRuleResultViewModel> MicroResultList = new List<MetalRuleResultViewModel>();
+            MicroResultList.Add(MicroResultViewModel);
+            metalrule.MetalRuleAddResultViewModelList1 = MicroResultList;
+
+            List<MetalRuleResultViewModel> items = new List<MetalRuleResultViewModel>()
+            {
+                new MetalRuleResultViewModel{ SNO=1, MeasuedValue="0", Actuals = "0",InstrumentError = "0",MasterView1 = 1 }
+            };
+
+            metalrule.MetalRuleAddResultViewModelList2 = items;
+
+
+            if (userRoleId == 1)
+            {
+                metalrule.IsDisabled = "disabled";
+            }
+            else
+            {
+                metalrule.IsDisabled = "";
+            }
+            responseempty.ResponseData = metalrule;
+
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+
+
+
+    public IActionResult InsertMetalRule(MetalRulesViewModel metalrule)
+    {
+        //return View();
+        ResponseViewModel<MetalRulesViewModel> response;
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        metalrule.CreatedBy = userId;
+        //if (ViewBag.ObservationTypeMicro == "Depth micrometer")//For Depth micrometer
+        //{
+        //    micrometer.Flatness1 = "1";
+        //}
+        response = _ObservationTemplateService.InsertMetalRule(metalrule);
+
+
+        TempData["ResponseCode"] = response.ResponseCode;
+        TempData["ResponseMessage"] = response.ResponseMessage;
+        //return Json(response.ResponseData);
+
+        if (response.ResponseMessage == "Success")
+        {
+            return RedirectToAction("Request", "Tracker", new { reqType = 4 });
+
+        }
+
+        else
+        {
+            return View(response.ResponseData);
+        }
+
+    }
+
+    public IActionResult VernierCaliperDepth(int requestId, int instrumentId) 
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ResponseViewModel<VernierCaliperViewModel> response = _ObservationTemplateService.GetVernierCaliperById(requestId, instrumentId);
+        if (response.ResponseData != null)
+        {
+            if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
+                response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
+
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
+
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
+
+        }
+        else
+        {
+            ResponseViewModel<VernierCaliperViewModel> responseempty = new ResponseViewModel<VernierCaliperViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            VernierCaliperViewModel micrometer = new VernierCaliperViewModel();
+            micrometer.InstrumentId = instrumentId;
+            micrometer.RequestId = requestId;
+            micrometer.Name = instrumentresponse.ResponseData.InstrumentName;
+            micrometer.SerialNo = instrumentresponse.ResponseData.SlNo;
+            micrometer.Range = instrumentresponse.ResponseData.Range;
+            micrometer.IdNo = instrumentresponse.ResponseData.IdNo;
+            micrometer.Make = instrumentresponse.ResponseData.Make;
+            micrometer.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            micrometer.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            micrometer.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            micrometer.CalibrationPerformedDate = DateTime.Now;
+            micrometer.CalibrationReviewedDate = DateTime.Now;
+            micrometer.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                micrometer.ReviewedBy = string.Concat(firstName, " ", lastName);
+                micrometer.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                micrometer.ReviewedBy = string.Empty;
+                micrometer.Review_Date = string.Empty;
+            }
+
+
+            if (userRoleId == 1)
+            {
+                micrometer.IsDisabled = "disabled";
+            }
+            else
+            {
+                micrometer.IsDisabled = "";
+            }
+            responseempty.ResponseData = micrometer;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
 }
 
 

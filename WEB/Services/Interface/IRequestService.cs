@@ -8,10 +8,10 @@ public interface IRequestService
  ResponseViewModel<RequestViewModel> InsertRequest(int instrumentId,int userId,int typeId);
  ResponseViewModel<RequestViewModel> UpdateRequest(RequestViewModel Request);
  ResponseViewModel<RequestViewModel> DeleteRequest(RequestViewModel Request);
- ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate, string InstrumentIdNo, int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4);
+ ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId,string InstrumentCondition,string Scope, DateTime TentativeCompletionDate, int CalibFreq, string ToolInventory, int newObservation,int newObservationType,int newMU,int newCertification,string standardReffered,bool newNABL,int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4, DateTime DueDate);
  ResponseViewModel<RequestViewModel> AcceptRequestRecalibration(int requestId, int userId,int AcceptValue,int departmentId);
- ResponseViewModel<RequestViewModel> RejectRequest(int requestId, string RejectReason, int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate,string standardReffered);
- ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId,string CollectedBy);
+ ResponseViewModel<RequestViewModel> RejectRequest(int requestId, string RejectReason, int userId,string InstrumentCondition,string Scope, string ToolInventory, DateTime TentativeCompletionDate,string standardReffered);
+ ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId,string CollectedBy, string InstrumentIdNo, DateTime DueDate);
  ResponseViewModel<RequestViewModel> SubmitLABRequestVisual(int requestId, string Result, int userId,string RecordBy,DateTime ClosedDate,string Remarks,DateTime InstrumentReturnedDate,string CollectedBy,string ReasonforRejection,string IsFeasibleService,string IsFeasibleYes,string ServiceResponsibility,int RequestType,int InstrumentId,DateTime CalibDate,DateTime DueDate, bool newNABL, List<UploadFile> FileData,string IdNo);
 ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int ObservationTemplate, int ObservationTemplateType, int MUTemplate, int CertificationTemplate);
  ResponseViewModel<RequestViewModel> SubmitNewRequest(int requestId,int userId,string InstrumentCondition,string Feasiblity,DateTime TentativeCompletionDate);
@@ -33,5 +33,9 @@ ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int 
             DateTime calibDate,
             DateTime dueDate,
             DateTime dateOfReceipt);
-	ResponseViewModel<RequestViewModel> InsertDueRequest(string[] Request, int userId);
+
+    ResponseViewModel<RequestViewModel> ExternalRejectRequest(int requestId, string RejectReason, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string standardReffered);
+    ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase);
+
+    ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId);
 }

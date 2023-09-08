@@ -6,6 +6,9 @@ using WEB.Models;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace WEB.Services;
 
@@ -17,6 +20,7 @@ public class UserService : IUserService
 	private IConfiguration _configuration;
 	private IEmailService _emailService;
 	IUtilityService _utilityService;
+	//private CMTDL _cmtdl { get; set; }
 	public UserService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, IUtilityService utilityService, IConfiguration Configuration)
 	{
 		_unitOfWork = unitOfWork;
@@ -24,12 +28,50 @@ public class UserService : IUserService
 		_emailService = emailService;
 		_utilityService = utilityService;
 		_configuration = Configuration;
+		//_cmtdl = cmtdl;
 	}
 	public ResponseViewModel<UserViewModel> GetAllUserList()
 	{
 		try
 		{
-			List<UserViewModel> userViewModelList = _unitOfWork.Repository<User>().GetQueryAsNoTracking(s => s.ActiveStatus == true).Include(I => I.Department).Select(S => new UserViewModel()
+            List<UserViewModel> userViewModelList = new List<UserViewModel>();
+
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			DataSet ds = _cmtdl.GetUserMasterList("AllUser");
+            //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    UserViewModel userlist = new UserViewModel
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        DepartmentName = dr["DeptName"].ToString(),
+                        FirstName = dr["FirstName"].ToString(),
+                        LastName = dr["LastName"].ToString(),
+                        subSection = dr["SubSectionCode"].ToString(),
+                        Email = dr["Email"].ToString(),
+                        MobileNo = dr["MobileNo"].ToString(),
+                        ShortId = dr["ShortId"].ToString(),
+                        CreatedOn = Convert.ToDateTime(dr["CreatedOn"]),
+                        DeptCordEmail = dr["DeptCordEmail"].ToString(),
+                        //CalibSource = dr["CalibSource"].ToString(),
+                        //StandardReffered = dr["StandardReffered"].ToString(),
+                        //Remarks = dr["Remarks"].ToString(),
+                        //Status = Convert.ToInt16(dr["Status"]),                       
+                        //DepartmentName = dr["deptName"].ToString(),
+                        ////NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
+                        //RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+                        //UserRoleId = userRoleId,
+                    };
+                    userViewModelList.Add(userlist);
+
+                }
+            }
+
+            #region Command
+            /*
+            List<UserViewModel> userViewModelList = _unitOfWork.Repository<User>().GetQueryAsNoTracking(s => s.ActiveStatus == true).Include(I => I.Department).Include(u => u.SubSectionCodeList).Select(S => new UserViewModel()
 			{
 				Id = S.Id,
 				DepartmentName = S.Department.Name,
@@ -51,11 +93,14 @@ public class UserService : IUserService
 				KakarichoEmail = S.KakarichoEmail,
 				ManagerEmail = S.ManagerEmail,
 				DepartmentId = S.DepartmentId,
-				subSection = S.Department.Section,
+				subSection = S.Department.SubSection,
+                SubSectionCodeName1 = S.SubSectionCodeList.Where(d => d.SubSectionCode == S.Department.Id).Select(S => new UserDepartmentMapping() { SubSectionCode = S.SubSectionCode }).ToList(),
 				DeptCordEmail = S.DeptCordEmail
 			}).ToList();
+			*/
+            #endregion
 
-			return new ResponseViewModel<UserViewModel>
+            return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",
@@ -79,21 +124,139 @@ public class UserService : IUserService
 			};
 		}
 	}
-	public ResponseViewModel<UserViewModel> GetUserById(int UserId)
+    
+    public ResponseViewModel<UserViewModel> GetUserById(int UserId)
 	{
 		try
 		{
-			UserViewModel userById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
-			List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
-			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation").ToList());
-			userById.DepartmentList = departmentList;
-			userById.DesignationList = lovsList;
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			UserViewModel uv = new UserViewModel();
+            DataSet ds = _cmtdl.GetUserMasterDetailById(UserId);
 
-			return new ResponseViewModel<UserViewModel>
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+			{ 
+				uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
+				uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
+				uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
+				uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+				uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
+				uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
+				uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
+				uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
+				uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
+				uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
+				uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
+				uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
+
+			}
+
+			//List<LovsViewModel> Lv = new List<LovsViewModel>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+            {
+                var Lovslist = new List<LovsViewModel>();
+                foreach (DataRow dr in ds.Tables[1].Rows)
+                {
+                    Lovslist.Add(new LovsViewModel
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        AttrName = Convert.ToString(dr["AttrName"]),
+                        Attrform = Convert.ToString(dr["Attrform"]),
+                        AttrValue = Convert.ToString(dr["AttrValue"]),
+                        AttrNameJp = Convert.ToString(dr["AttrNameJp"]),
+                        AttrformJp = Convert.ToString(dr["AttrformJp"]),
+                        AttrValueJp = Convert.ToString(dr["AttrValueJp"]),
+                        IsActive = Convert.ToBoolean(dr["IsActive"])
+                    });
+                }
+
+                uv.DesignationList = Lovslist;
+            }
+
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
+            {
+                var deptlist = new List<DepartmentViewModel>();
+                foreach (DataRow dr in ds.Tables[2].Rows)
+                {
+                    deptlist.Add(new DepartmentViewModel
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        Name = Convert.ToString(dr["Name"]),
+                        Section = Convert.ToString(dr["Section"]),
+                        SubSection = Convert.ToString(dr["SubSection"]),
+                        SectionCode = Convert.ToString(dr["SectionCode"]),
+                        SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
+                        Description = Convert.ToString(dr["Description"]),
+                        NameJP = Convert.ToString(dr["NameJP"]),
+                        DescriptionJP = Convert.ToString(dr["DescriptionJP"]),
+                        SectionJP = Convert.ToString(dr["SectionJP"]),
+                        SubSectionJP = Convert.ToString(dr["SubSectionJP"]),
+                        ActiveStatus = Convert.ToBoolean(dr["ActiveStatus"]),
+						DeptCode = Convert.ToString(dr["DeptCode"])
+                    });
+                }
+
+                uv.DepartmentList = deptlist;
+            }
+
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[3].Rows.Count > 0)
+			{
+				var urselectlist = new List<UserDepartmentMappingView>();
+				foreach (DataRow dr in ds.Tables[3].Rows)
+				{
+					urselectlist.Add(new UserDepartmentMappingView
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						UserId = Convert.ToInt32(dr["UserId"]),
+						DepartmentId = Convert.ToInt32(dr["DepartmentId"]),
+						IsActive = Convert.ToBoolean(dr["IsActive"])
+                    });
+				}
+
+				uv.SubSectionCodeName1 = urselectlist;
+			}
+
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[4].Rows.Count > 0)
+            {
+                var rolelist = new List<UserRolesView>();
+                foreach (DataRow dr in ds.Tables[4].Rows)
+                {
+                    rolelist.Add(new UserRolesView
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        RoleName = Convert.ToString(dr["RoleName"])                        
+                    });
+                }
+
+                uv.RoleList = rolelist;
+            }
+
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[5].Rows.Count > 0)
+            {
+                var roleselectlist = new List<UserRoleMappingView>();
+                foreach (DataRow dr in ds.Tables[5].Rows)
+                {
+                    roleselectlist.Add(new UserRoleMappingView
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        UserId = Convert.ToInt32(dr["UserId"]),
+                        RoleId = Convert.ToInt32(dr["RoleId"]),
+                        IsActive = Convert.ToBoolean(dr["IsActive"])
+                    });
+                }
+
+                uv.RoleSelectVal = roleselectlist;
+            }
+            //UserViewModel userById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
+            //List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+            //List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation").ToList());
+            //userById.DepartmentList = departmentList;
+            //userById.DesignationList = lovsList;
+
+            return new ResponseViewModel<UserViewModel>
 			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",
-				ResponseData = userById,
+				ResponseData = uv,
 				ResponseDataList = null
 			};
 		}
@@ -113,9 +276,9 @@ public class UserService : IUserService
 			};
 		}
 
-	}
+	}    
 
-	public ResponseViewModel<string> CheckEmailAddress(string userEmail)
+    public ResponseViewModel<string> CheckEmailAddress(string userEmail)
 	{
 		try
 		{
@@ -170,10 +333,76 @@ public class UserService : IUserService
 				
 			}
 
-			_unitOfWork.Repository<User>().Insert(_mapper.Map<User>(User));
-			_unitOfWork.SaveChanges();
+            User Userdata = _mapper.Map<User>(User);
+			Userdata.DepartmentId = 1;
+			Userdata.UserRoleId = User.RoleSelect[0];
+            _unitOfWork.Repository<User>().Insert(Userdata);
+            _unitOfWork.SaveChanges();
+
 			_unitOfWork.Commit();
-			List<string> emailList = new List<string>();
+
+			int userID = Userdata.Id;
+
+            List<UserDepartmentMappingView> deptList = new List<UserDepartmentMappingView>();
+            foreach (int dr in User.SubSectionCodeval)
+            {
+                UserDepartmentMappingView ud = new UserDepartmentMappingView
+                {
+                    UserId = userID,
+					DepartmentId = dr,
+                    CreatedDate = DateTime.Now,
+                    CreatedOn = User.CreatedBy,
+                    IsActive = true,
+
+                };
+                deptList.Add(ud);
+            }
+
+            if (deptList != null)
+            {                
+                var detailData = _mapper.Map<UserDepartmentMapping[]>(deptList
+                                        .Where(x => x.UserId > 0).ToList());
+				
+                detailData = _mapper.Map<UserDepartmentMapping[]>(deptList.Where(x => x.Id == null).ToList());
+
+                if (detailData.Any())
+                {
+                    _unitOfWork.Repository<UserDepartmentMapping>().InsertRange(detailData);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+
+
+            List<UserRoleMappingView> roleList = new List<UserRoleMappingView>();
+            foreach (int rl in User.RoleSelect)
+            {
+                UserRoleMappingView ud = new UserRoleMappingView
+                {
+                    UserId = userID,
+                    RoleId = rl,
+                    CreatedDate = DateTime.Now,
+                    CreatedOn = User.CreatedBy,
+                    IsActive = true,
+
+                };
+                roleList.Add(ud);
+            }
+
+            if (roleList != null)
+            {                
+                var detailData = _mapper.Map<UserRoleMapping[]>(roleList
+                                        .Where(x => x.UserId > 0).ToList());                
+
+                detailData = _mapper.Map<UserRoleMapping[]>(roleList.Where(x => x.Id == null).ToList());
+
+                if (detailData.Any())
+                {
+                    _unitOfWork.Repository<UserRoleMapping>().InsertRange(detailData);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+
+            List<string> emailList = new List<string>();
 			emailList.Add(User.Email);
 			EmailViewModel emailViewModel = new EmailViewModel()
 			{
@@ -193,6 +422,7 @@ public class UserService : IUserService
 		}
 		catch (Exception e)
 		{
+			_unitOfWork.RollBack();
 			ErrorViewModelTest.Log("UserService - InsertUser Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
 			return new ResponseViewModel<UserViewModel>
@@ -229,79 +459,85 @@ public class UserService : IUserService
 			{
 				userById.MobileNo = user.MobileNo;
 			}
-			if (user.DepartmentId != null && user.DepartmentId > 0)
-			{
-				userById.DepartmentId = user.DepartmentId;
-			}
-			if (user.ShortId != null)
-			{
-				userById.ShortId = user.ShortId;
-			}
-			if (user.UserRoleId != null)
-			{
-				userById.UserRoleId = user.UserRoleId;
-			}
-			if (user.Designation != null)
-			{
-				userById.Designation = user.Designation;
-			}
-			if (user.Level != null)
-			{
-				userById.Level = user.Level;
-			}
-			if (user.AsstForemanShortId != null)
-			{
-				userById.AsstForemanShortId = user.AsstForemanShortId;
-			}
-			if (user.AsstForemanName != null)
-			{
-				userById.AsstForemanName = user.AsstForemanName;
-			}
-			if (user.AsstForemanEmail != null)
-			{
-				userById.AsstForemanEmail = user.AsstForemanEmail;
-			}
-			if (user.ForemanShortId != null)
-			{
-				userById.ForemanShortId = user.ForemanShortId;
-			}
-			if (user.ForemanName != null)
-			{
-				userById.ForemanName = user.ForemanName;
-			}
-			if (user.ForemanEmail != null)
-			{
-				userById.ForemanEmail = user.ForemanEmail;
-			}
-			if (user.KakarichoShortId != null)
-			{
-				userById.KakarichoShortId = user.KakarichoShortId;
-			}
-			if (user.KakarichoName != null)
-			{
-				userById.KakarichoName = user.KakarichoName;
-			}
-			if (user.KakarichoEmail != null)
-			{
-				userById.KakarichoEmail = user.KakarichoEmail;
-			}
-			if (user.ManagerShortId != null)
-			{
-				userById.ManagerShortId = user.ManagerShortId;
-			}
-			if (user.ManagerName != null)
-			{
-				userById.ManagerName = user.ManagerName;
-			}
-			if (user.ManagerEmail != null)
-			{
-				userById.ManagerEmail = user.ManagerEmail;
-			}
-			if(user.SubSectionCode != null)
-			{
-                userById.SubSectionCode = user.SubSectionCode;
+            if (user.ShortId != null)
+            {
+                userById.ShortId = user.ShortId;
             }
-            if (user.DeptCordShortId != null)
+            if (user.Designation != null)
+            {
+                userById.Designation = user.Designation;
+            }
+			if (user.DepartmentId == 0)
+			{
+				userById.DepartmentId = user.SubSectionCodeval[0];
+			}
+			if (user.UserRoleId == null)
+			{
+				userById.UserRoleId = user.RoleSelect[0];
+			}
+
+
+			#region
+
+			//if (user.Level != null)
+			//{
+			//	userById.Level = user.Level;
+			//}
+			//if (user.AsstForemanShortId != null)
+			//{
+			//	userById.AsstForemanShortId = user.AsstForemanShortId;
+			//}
+			//if (user.AsstForemanName != null)
+			//{
+			//	userById.AsstForemanName = user.AsstForemanName;
+			//}
+			//if (user.AsstForemanEmail != null)
+			//{
+			//	userById.AsstForemanEmail = user.AsstForemanEmail;
+			//}
+			//if (user.ForemanShortId != null)
+			//{
+			//	userById.ForemanShortId = user.ForemanShortId;
+			//}
+			//if (user.ForemanName != null)
+			//{
+			//	userById.ForemanName = user.ForemanName;
+			//}
+			//if (user.ForemanEmail != null)
+			//{
+			//	userById.ForemanEmail = user.ForemanEmail;
+			//}
+			//if (user.KakarichoShortId != null)
+			//{
+			//	userById.KakarichoShortId = user.KakarichoShortId;
+			//}
+			//if (user.KakarichoName != null)
+			//{
+			//	userById.KakarichoName = user.KakarichoName;
+			//}
+			//if (user.KakarichoEmail != null)
+			//{
+			//	userById.KakarichoEmail = user.KakarichoEmail;
+			//}
+			//if (user.ManagerShortId != null)
+			//{
+			//	userById.ManagerShortId = user.ManagerShortId;
+			//}
+			//if (user.ManagerName != null)
+			//{
+			//	userById.ManagerName = user.ManagerName;
+			//}
+			//if (user.ManagerEmail != null)
+			//{
+			//	userById.ManagerEmail = user.ManagerEmail;
+			//}
+			//if(user.SubSectionCode != null)
+			//{
+			//             //userById.SubSectionCode = user.SubSectionCode;
+			//         }
+
+			#endregion
+			if (user.DeptCordShortId != null)
             {
                 userById.DeptCordShortId = user.DeptCordShortId;
             }
@@ -324,7 +560,92 @@ public class UserService : IUserService
 
 			_unitOfWork.Repository<User>().Update(userById);
 			_unitOfWork.SaveChanges();
-			_unitOfWork.Commit();
+
+			List<UserDepartmentMappingView> deptList = new List<UserDepartmentMappingView>();
+			foreach (int dr in user.SubSectionCodeval)
+			{
+				UserDepartmentMappingView ud = new UserDepartmentMappingView
+				{
+					UserId = userById.Id,
+					DepartmentId = dr,
+					CreatedDate = DateTime.Now,
+					CreatedOn = user.ModifiedBy,
+					IsActive = true,
+
+				};
+				deptList.Add(ud);
+			}
+
+			if (deptList != null)
+			{
+				//UserDepartmentMapping usersubsec = _unitOfWork.Repository<UserDepartmentMapping>().GetQueryAsNoTracking(Q => Q.UserId == user.Id).SingleOrDefault();
+				List<UserDepartmentMapping> requestUser = _unitOfWork.Repository<UserDepartmentMapping>().GetQueryAsNoTracking(Q => Q.UserId == user.Id).ToList();
+				// metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+				var detailData = _mapper.Map<UserDepartmentMapping[]>(deptList
+										.Where(x => x.UserId > 0).ToList());
+				if (detailData.Any())
+				{
+					foreach (var updateData in requestUser)
+					{
+						updateData.UserId = user.Id;
+						updateData.IsActive = false;
+						_unitOfWork.Repository<UserDepartmentMapping>().Update(updateData);
+						_unitOfWork.SaveChanges();
+					}
+				}
+
+				detailData = _mapper.Map<UserDepartmentMapping[]>(deptList.Where(x => x.UserId == user.Id && x.IsActive == true).ToList());
+
+				if (detailData.Any())
+				{
+					_unitOfWork.Repository<UserDepartmentMapping>().InsertRange(detailData);
+					_unitOfWork.SaveChanges();
+				}
+			}
+
+
+            List<UserRoleMappingView> roleList = new List<UserRoleMappingView>();
+            foreach (int dr in user.RoleSelect)
+            {
+                UserRoleMappingView ud = new UserRoleMappingView
+                {
+                    UserId = userById.Id,
+                    RoleId = dr,
+                    CreatedDate = DateTime.Now,
+                    CreatedOn = user.ModifiedBy,
+                    IsActive = true,
+
+                };
+                roleList.Add(ud);
+            }
+
+
+            if (roleList != null)
+            {                
+                List<UserRoleMapping> requestUser = _unitOfWork.Repository<UserRoleMapping>().GetQueryAsNoTracking(Q => Q.UserId == user.Id).ToList();                
+                var detailData = _mapper.Map<UserRoleMapping[]>(roleList
+                                        .Where(x => x.UserId > 0).ToList());
+                if (detailData.Any())
+                {
+                    foreach (var updateData in requestUser)
+                    {
+                        updateData.UserId = user.Id;
+                        updateData.IsActive = false;
+                        _unitOfWork.Repository<UserRoleMapping>().Update(updateData);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+
+                detailData = _mapper.Map<UserRoleMapping[]>(roleList.Where(x => x.UserId == user.Id && x.IsActive == true).ToList());
+
+                if (detailData.Any())
+                {
+                    _unitOfWork.Repository<UserRoleMapping>().InsertRange(detailData);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+
+            _unitOfWork.Commit();
 
 			return new ResponseViewModel<UserViewModel>
 			{
@@ -564,7 +885,7 @@ public class UserService : IUserService
 		{
 			UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
 			//(Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
-			(Q.Email.Trim() == email)).Include(I => I.Department).Select(S => new UserViewModel()
+			(Q.Email.Trim() == email && Q.ActiveStatus == true)).Include(I => I.Department).Select(S => new UserViewModel()
 			{
 				DepartmentName = S.Department.Name,
 				FirstName = S.FirstName,
@@ -651,11 +972,13 @@ public class UserService : IUserService
 	{
 		try
 		{
-			List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking(d => d.SubSectionCode != null).ToList());
 			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation" && Q.IsActive == true).ToList());
-			UserViewModel userEmptyViewModel = new UserViewModel();
+			List<UserRolesView> rolelist = _mapper.Map<List<UserRolesView>>(_unitOfWork.Repository<UserRoles>().GetQueryAsNoTracking(d => d.IsActive == true).ToList());
+            UserViewModel userEmptyViewModel = new UserViewModel();
 			userEmptyViewModel.DepartmentList = departmentList;
 			userEmptyViewModel.DesignationList = lovsList;
+			userEmptyViewModel.RoleList = rolelist;
 
 			return new ResponseViewModel<UserViewModel>
 			{

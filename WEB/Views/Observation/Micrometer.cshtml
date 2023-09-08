@@ -773,33 +773,45 @@
 			$('#Microadd tbody tr').each(function (row, tr) {
 
 
+				if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
 
-				$('<tr id="tablerowIns' + counter + '"><td>' +
-					'<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value=' + SNo + ' disabled="disabled" />' +
-					'</td>' +
-					'<td>' +
-					'<input id="MeasuedValue" name="MeasuedValue" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
-					'</td>' +
-					'<td>' +
-					'<input id="ActualsT1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
-					'</td>' +
-					'<td>' +
-					'<input id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox" value="" disabled="disabled" />' +
-					'</td>' +
-					'<input id="id" name="id" type="hidden" value="" />' +
-					'</td>' +
-					'<td>' +
-					'<input id="parentid" name="parentid" type="hidden" value="" />' +
-					'</td>' +
-					'<td>' +
-					'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
-					'</td>' +
-					'</tr>').appendTo('#Microadd');
-				//InstrumentError have been added as 1 above
-				counter++;
-				SNo++;
-				return false;
+			//	//	$(tr).remove();
+			//	//	counter--;
+			//	//	SNo--;
+			//	//}
+			//});
 
+			$('<tr id="tablerowIns' + counter + '"><td>' +
+				'<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value=' + SNo + ' disabled="disabled" />' +
+				'</td>' +
+				'<td>' +
+				'<input id="MeasuedValue" name="MeasuedValue" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+				'</td>' +
+				'<td>' +
+				'<input id="ActualsT1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+				'</td>' +
+				'<td>' +
+				'<input id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox" value="" required="required" />' +
+				'</td>' +
+
+				//'<td>' +
+				//'<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTr(' + counter + ');"></i>' +
+				//'</td>' +
+				//'<td>' +
+				'<input id="id" name="id" type="hidden" value="" />' +
+				'</td>' +
+				'<td>' +
+				'<input id="parentid" name="parentid" type="hidden" value="" />' +
+				'</td>' +
+				'<td>' +
+				'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+				'</td>' +
+				'</tr>').appendTo('#Microadd');
+			//InstrumentError have been added as 1 above
+			counter++;
+			SNo++;
+			
+			return false;
 			});
 		});
 	});
@@ -834,23 +846,6 @@
 
 		$('#Microadd tbody tr').each(function (row, tr) {
 
-			//alert$(this).attr('id'));
-			var Measured = $(this).find("td:eq(1) input[type='text']").val();
-			var ActualsT1 = $(this).find("td:eq(2) input[type='text']").val();
-			//alert(Measured);
-			ActualsT1 = isNaN(ActualsT1) || !ActualsT1.trim() || null ? 0 : parseFloat(ActualsT1);
-			Measured = isNaN(Measured) || !Measured.trim() || null ? 0 : parseFloat(Measured);
-
-			var sumofarray = (ActualsT1 - Measured);
-			$(this).find("td:eq(3) input[type='text']").val(sumofarray);
-
-		});
-	}
-	function GetValueParallelism(Id) {
-
-
-		$('#tblMicroParallel tbody tr').each(function (row, tr) {
-
 
 			var Measured = $(this).find("td:eq(1) input[type='text']").val();
 			var ActualsT1 = $(this).find("td:eq(2) input[type='text']").val();
@@ -860,10 +855,6 @@
 
 			var sumofarray = (ActualsT1 - Measured);
 			$(this).find("td:eq(3) input[type='text']").val(sumofarray);
-			//decimal validation
-			//const value = "3.14";
-			//const isNumber = isNumeric(ActualsT1);
-			//console.log(isNumber);
 
 		});
 	}
@@ -872,7 +863,8 @@
 		var ActualsT1 = $('#tablerowFlatness').find("td:eq(1) input[type='text']").val();
 		ActualsT1 = isNaN(ActualsT1) || !ActualsT1.trim() || null ? 0 : parseFloat(ActualsT1);
 		Measured = isNaN(Measured) || !Measured.trim() || null ? 0 : parseFloat(Measured);
-		if (ActualsT1 != '') {
+		if (ActualsT1 != '') //&& Measured !=''
+		{
 			var sumofarray = parseFloat(ActualsT1 - Measured);
 		}
 		$('#tablerowFlatness').find("td:eq(2) input[type='text']").val(sumofarray);

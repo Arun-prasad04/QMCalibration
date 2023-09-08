@@ -10,12 +10,12 @@ public class InstrumentViewModel
     public string? LC {get;set;}
     public string? Unit1 {get;set;}
     public string? Unit2 {get;set;}
-    public string? Unit3 {get;set;}
-    public string? TW_Type {get;set;}
-    public string? Drawing_Attached {get;set;}
+    public string? AmountJPY { get;set;}
+    public string? Capacity { get;set;}
+    public string? EquipmentStation { get;set;}
     public string? Rule_Confirmity {get;set;}
     public string? Remarks1 {get;set;}
-    public string? StandardReffered1 {get;set;}
+    public string? Comment { get;set;}
     public int? Instrument_Type {get; set;}
     public int CalibFreq {get; set;}
     public DateTime? CalibDate {get; set;}

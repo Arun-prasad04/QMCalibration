@@ -83,7 +83,6 @@ public class MasterController : BaseController
 		
 		ResponseViewModel<MasterViewModel> response = _masterService.GetMasterById(masterId);
 		ViewBag.CalibFreqMaster = response.ResponseData.CalibFreqId;
-		
 		return View("Create", response.ResponseData);
 	}
 	public ActionResult MasterDelete(int masterId)

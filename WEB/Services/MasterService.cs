@@ -112,6 +112,7 @@ public class MasterService : IMasterService
 				PhoneNo = s.SupplierModel.PhoneNo,
 				EmailId = s.SupplierModel.EmailId,
 				MobileNo = s.SupplierModel.MobileNo,
+				EquipmentMasterId = s.EquipmentMasterId,
 				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList()
 			}).FirstOrDefault();
 
@@ -313,6 +314,11 @@ public class MasterService : IMasterService
 			{
 				masterById.Traceability = master.Traceability;
 			}
+			if (master.EquipmentMasterId != null)
+			{
+				masterById.EquipmentMasterId = master.EquipmentMasterId;
+			}
+
 
 			Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
 			if (supplierById != null)

@@ -20,12 +20,10 @@ public class InstrumentController : BaseController
 {
     private IInstrumentService _instrumentService { get; set; }
     private IRequestService _requestService{get;set;}
-    private IConfiguration _configuration;
-    public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService, IConfiguration configuration) : base(logger, contextAccessor)
+    public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService) : base(logger, contextAccessor)
     {
         _instrumentService = instrumentService;
-        _requestService = requestService;
-        _configuration = configuration;
+        _requestService=requestService;
     }
 
     public IActionResult Index() 
@@ -44,16 +42,16 @@ public class InstrumentController : BaseController
     {
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
-
-        	
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);        
 		return Json(response.ResponseDataList);
 	}
 
      public IActionResult Create()
-    {
+     {
         ViewBag.PageTitle="Instrument Create";
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument();
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 		return View(response.ResponseData);
@@ -71,7 +69,7 @@ public class InstrumentController : BaseController
             instrument.ModifiedOn = DateTime.Now;
             instrument.CreatedOn = DateTime.Now;
             //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            instrument.UserRoleId = userRoleId;
+            instrument.UserRoleId = userRoleId;            
             response = _instrumentService.UpdateInstrument(instrument);
         }
         else
@@ -85,10 +83,10 @@ public class InstrumentController : BaseController
             instrument.DueDate = DateTime.Now;
             instrument.CalibDate=DateTime.Now;
             //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            if(userRoleId != 2)
-            {
-                instrument.UserDept = UserDeptId;
-            }
+            //if(userRoleId != 2)
+            //{
+            //    instrument.UserDept = UserDeptId;
+            //}
             response = _instrumentService.InsertInstrument(instrument);
         }
         TempData["ResponseCode"] = response.ResponseCode;
@@ -165,12 +163,10 @@ public class InstrumentController : BaseController
     public IActionResult Request(int instumentId, int typeId)
     {
      int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-      ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instumentId,userId,typeId);
+      ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instrumentId, userId,typeId);
         TempData["ResponseCode"]=response.ResponseCode;
         TempData["ResponseMessage"]=response.ResponseMessage;
         return RedirectToAction("Index","Instrument");
-
-
     }
     //Due For Calibration 
 

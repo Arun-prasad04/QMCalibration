@@ -134,6 +134,7 @@
 										</select>
 									</div>
 								</div>
+								
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="CalibrationSourceId" class="required trn">Calibration Source</label>
@@ -154,7 +155,8 @@
 										</select>
 									</div>
 								</div>
-
+							</div>
+							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="LocationId" class="required trn">Location</label>
@@ -174,6 +176,13 @@
 
 
 										</select>
+									</div>									
+								</div>
+								<div class="col-sm-6">
+									<!-- text input -->
+									<div class="form-group">
+										<label class="required trn">Equipment Master ID</label>
+										<input type="text" alt="Please fill this field" id="EquipmentMasterId" name="EquipmentMasterId" value="@Model.EquipmentMasterId" class="form-control" placeholder="">
 									</div>
 								</div>
 							</div>
@@ -208,7 +217,7 @@
 										<select id="CalibFreqMaster" name="CalibFreqMaster" class="form-control">
 										@*	<option value="">--Select Calibration Frequency --</option>
 
-											@foreach (var freq in @Model.CalibrationFreq)
+											@*@foreach (var freq in @Model.CalibrationFreq)
 											{
 												if (freq.Id == Model.CalibFreqId)
 												{
@@ -486,6 +495,9 @@
 					EmailId: {
 						required: true,
 					},
+					EquipmentMasterId: {
+						required: true,
+					},
 				},
 				messages: {
 					EquipName: {
@@ -526,6 +538,9 @@
 					},
 					EmailId: {
 						required: "Please provide supplier Email address",
+					},
+					EquipmentMasterId: {
+						required: "Please provide the Equipment Master ID",
 					},
 				},
 				errorElement: 'span',
