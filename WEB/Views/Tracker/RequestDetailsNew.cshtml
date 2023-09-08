@@ -1,39 +1,39 @@
 ﻿@{
-	ViewData["Title"] = "Request Details";
+    ViewData["Title"] = "Request Details";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <script>
-	function checkFileSize(element, maxSize, event) {
-		var val = $(element).val(); //get file value
-		var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
-		if (fileSize > maxSize) {
-			AlertPopup("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
-			$("#ImageUpload").val("");
-		}
-		var input = document.getElementById('ImageUpload')
-		var output = document.getElementById('FileList')
-		var result = "";
-		for (var i = 0; i < input.files.length; i++) {
-			result += input.files.item(i).name + '<br />';
-		}
-		output.innerHTML = result;
-	}
-	setTimeout(function () {
-		$('#reservationdate1').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#reservationdate7').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#reservationdate4').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#reservationdate5').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-	}, 1000);
+    function checkFileSize(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            AlertPopup("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload").val("");
+        }
+        var input = document.getElementById('ImageUpload')
+        var output = document.getElementById('FileList')
+        var result = "";
+        for (var i = 0; i < input.files.length; i++) {
+            result += input.files.item(i).name + '<br />';
+        }
+        output.innerHTML = result;
+    }
+    setTimeout(function () {
+        $('#reservationdate1').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate7').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate4').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate5').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+    }, 1000);
 
 </script>
 <section class="content">
@@ -53,6 +53,7 @@
                             <input type="hidden" id="hdnInstrumentId" value="@Model.InstrumentId">
                             <input type="hidden" id="hdnDepartmentId" value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentId")'>
                             <input type="hidden" id="hdnLanguage" value=''>
+                            <input type="hidden" id="CalibFreqDue" value='@Model.CalibFreq'>
                             @* <a href='@Url.Action("Index","Instrument")'><input type="button" class="btn btn-sm btn-default"
                             value="Instrument List"></a> *@
                         </div>
@@ -74,22 +75,22 @@
                         </div>
                     </div>
 
-					<div class="row">
-						<div class="col-sm-6">
-							<!-- text input -->
-							<div class="form-group">
-								<label class="trn">Instrument Name</label>
-								<input type="text" class="form-control" id="NewInstrumentName" value="@Model.InstrumentName" disabled>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<!-- text input -->
-							<div class="form-group">
-								<label class="trn">Instrument Serial Number</label>
-								<input type="text" class="form-control" id="NewInstrumentSerialNumber" value="@Model.InstrumentSerialNumber" disabled>
-							</div>
-						</div>
-					</div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label class="trn">Instrument Name</label>
+                                <input type="text" class="form-control" id="NewInstrumentName" value="@Model.InstrumentName" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label class="trn">Instrument Serial Number</label>
+                                <input type="text" class="form-control" id="NewInstrumentSerialNumber" value="@Model.InstrumentSerialNumber" disabled>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-sm-6">
@@ -155,15 +156,15 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="trn">Set Value for Torque Wrench</label>
-                                <input type="text" class="form-control" id="NewTW_Type" value="@Model.TW" disabled>
+                                <label class="trn">Model/Capacity</label>
+                                <input type="text" class="form-control" id="NewTW_Type" value="@Model.Capacity" disabled>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label class="trn">Unit</label>
-                                <input type="text" class="form-control" id="NewUnit3" value="@Model.Unit3" disabled>
+                                <label class="trn">Amount in JPY</label>
+                                <input type="text" class="form-control" id="NewUnit3" value="@Model.AmountJPY" disabled>
                             </div>
                         </div>
                     </div>
@@ -177,19 +178,26 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="trn">Status</label>
-                                @if (Model.Status == 26)
-                                {
-                                    <input type="text" class="form-control" id="status_newrejected" value="Awaiting for review" disabled>
-                                }
-                                else if (Model.Status == 27)
-                                {
-                                    <input type="text" class="form-control" id="status_newrejected" value="Calibration in progress" disabled>
-                                }
-                                else if (Model.Status == 28)
-                                {
-                                    <input type="text" class="form-control" id="status_newrejected" value="Request Rejected" disabled>
-                                }
+                                <label class="trn">Equipment Station</label>
+                                <select id="EquipmentStation" name="EquipmentStation" class="form-control" disabled>
+                                    <option value=" " class="trn">--Select Equipment Station--</option>
+                                    @if (Model.EquipmentStation == "Inline")
+                                    {
+                                        <option value="Inline" selected="true" class="trn">Inline</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Inline" class="trn">Inline</option>
+                                    }
+                                    @if (Model.EquipmentStation == "Lab")
+                                    {
+                                        <option value="Lab" selected="true" class="trn">Lab</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Lab" class="trn">Lab</option>
+                                    }
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -197,11 +205,11 @@
                         <div class="col-sm-6">
                             <!-- text input -->
                             <div class="form-group">
-                                <label class="trn">Ref Standard/Calibration Method</label>
-                                <input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.StandardReffered1" class="form-control" placeholder="" disabled>
+                                <label class="trn">Comment</label>
+                                <input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.Comment" class="form-control" placeholder="" disabled>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        @*<div class="col-sm-6">
                             <div class="form-group">
                                 <label class="trn">Calibration Frequency</label>
                                 <select id="CalibFreq" name="CalibFreq" class="form-control" disabled>
@@ -218,7 +226,31 @@
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
+                                <div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Applicable for Tool Inventory</label>
+										<select id="ToolInventory" name="ToolInventory" class="form-control">
+											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
+											@if (Model.ToolInventory == "Yes")
+											{
+												<option value="Yes" selected="true" class="trn">Yes</option>
+											}
+											else
+											{
+												<option value="Yes" class="trn">Yes</option>
+											}
+											@if (Model.ToolInventory == "No")
+											{
+												<option value="No" selected="true" class="trn">No</option>
+											}
+											else
+											{
+												<option value="No" class="trn">No</option>
+											}
+										</select>
+									</div>
+								</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -255,6 +287,29 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label class="trn">Scope</label>
+                                <select id="Scope" class="form-control" disabled>
+                                    @if (Model.TypeOfEquipment == "Internal Instrument")
+                                    {
+                                        <option value="Internal Instrument" selected=true>Internal Instrument</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Internal Instrument">Internal Instrument</option>
+                                    }
+                                    @if (Model.TypeOfEquipment == "External Instrument")
+                                    {
+                                        <option value="External Instrument" selected=true>External Instrument</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="External Instrument">External Instrument</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-6">
+                            <div class="form-group">
                                 <label class="required trn">Drawing is attached</label>
                                 <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
                                     @if (Model.Drawing_Attached == "Yes")
@@ -275,10 +330,10 @@
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        @*<div class="col-sm-6">
                             <div class="form-group">
                                 <label class="trn">Decision rule for statement of Confirmity</label>
                                 <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
@@ -300,7 +355,7 @@
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     @if (Model.TypeOfRequest == 3 && (Model.LabL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsLabL4Accepted == null) || (Model.UserL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsUserL4Accepted == null))
                     {
@@ -348,7 +403,8 @@
                             </div>
                         </div>
                     }
-                    @if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 && ((Model.TypeOfRequest == 1 || Model.TypeOfRequest == 2) && Model.Status == 26) || ((Model.TypeOfRequest == 3 && Model.IsLabL4Accepted == 1 && Model.IsUserL4Accepted == 1) && Model.Status == 26))
+                    @*@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 && ((Model.TypeOfRequest == 1 || Model.TypeOfRequest == 2) && Model.Status == 26) || ((Model.TypeOfRequest == 3 && Model.IsLabL4Accepted == 1 && Model.IsUserL4Accepted == 1) && Model.Status == 26))*@
+                    @if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 && ((Model.TypeOfRequest == 1 || Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3) && Model.Status == 26))
                     {
                         <div class="row">
                             <div class="col-sm-6">
@@ -369,27 +425,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                        </div>
+                            @*<div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Instrument Condition</label>
-                                    <input type"text" id="InstrumentCondition" class="form-control" value="">
+                                    <input type="text" id="InstrumentCondition" class="form-control" value="">
+                                    <label id="InstrumentConditionError" class="" style="display:none; color: red;">Please Enter Instrument Condition</label>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="trn">Feasiblity</label>
-                                    <select id="Feasiblity" class="form-control">
-                                        <option value="Yes" class="trn">Yes</option>
-                                        <option value="No" class="trn">No</option>
-                                    </select>
-                                </div>
-                            </div>
+                            </div>*@
+                            <div class="row">
+                            
 
-                            <div class="col-sm-6">
+                            @*<div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="required trn">Standard Reffered/Calibration Method</label>
                                     <input type="text" id="StandardReffered" name="StandardReffered" value=""
                                            class="form-control" placeholder="">
+                                    <label id="StandardRefferedError" class="" style="display:none; color: red;">Please Enter Standard Reffered/Calibration Method</label>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -409,7 +461,7 @@
                                         }
                                     </select>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
@@ -423,149 +475,289 @@
                                 </div>
                             </div>
 
-							<div class="col-sm-3" style="top: 35px;" id="AcceptSection">
-								<!-- text input -->
-								<div class="form-group">
-									<label class="trn">Accept</label>
-									<input type="radio" name="NewAcceptReject" value="Accept"
-										   onclick="NewReqEnableReason()">
-
-								</div>
-							</div>
-							<div class="col-sm-3" style="top: 35px;" id="RejectSection">
-								<div class="form-group">
-									<label class="trn">Reject</label>
-									<input type="radio" name="NewAcceptReject" value="Reject"
-										   onclick="NewReqEnableReason()">
-								</div>
-							</div>
-						</div>
-					}
-					@if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30)
-					{
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Received By</label>
-									<input type"text" id="ReceivedBy" class="form-control" value="@Model.ReceivedByName" disabled>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Received Date</label>
-									<div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
-										<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-											   id="ReceivedDate" name="ReceivedDate" value='@Model.ReceivedDate' disabled />
-										<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
-											<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Instrument Condition</label>
-									<input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Feasiblity</label>
-									<select id="Feasiblity" class="form-control" disabled>
-										@if (Model.Feasiblity == "Yes")
-										{
-											<option value="Yes" selected=true>Yes</option>
-										}
-										else
-										{
-											<option value="Yes">Yes</option>
-										}
-										@if (Model.Feasiblity == "No")
-										{
-											<option value="No" selected=true>No</option>
-										}
-										else
-										{
-											<option value="No">No</option>
-										}
-									</select>
-								</div>
-							</div>
-
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="required trn">Standard Reffered/Calibration Method</label>
-									<input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
-										   class="form-control" placeholder="" disabled>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<!-- text input -->
-								<div class="form-group">
-									<label class="trn">NABL</label>
-									<select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
-										@if (Model.IsNABL == false)
-										{
-											<option value="false" selected>No</option>
-											<option value="true">Yes</option>
-										}
-										else if (Model.IsNABL == true)
-										{
-											<option value="true" selected>Yes</option>
-											<option value="false">No</option>
-										}
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Tentative Closing Date</label>
-									<div class="input-group date" id="reservationdate7" data-target-input="nearest" onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">
-										<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
-											   id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate" disabled>
-										<div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
-											<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-sm-3" style="top: 35px;" id="AcceptSection">
-								<!-- text input -->
-								<div class="form-group">
-									<label class="trn">Accept</label>
-									@if (Model.Status == 27 || Model.Status == 29)
-									{
-										<input type="radio" name="NewAcceptReject" value="Accept" checked=true
-											   onclick="NewReqEnableReason()" disabled>
-									}
-									else
-									{
-										<input type="radio" name="NewAcceptReject" value="Accept"
-											   onclick="NewReqEnableReason()" disabled>
-									}
-								</div>
-							</div>
-							<div class="col-sm-3" style="top: 35px;" id="RejectSection">
-								<div class="form-group">
-									<label class="trn">Reject</label>
-
-									@if (Model.Status == 28)
-									{
-										<input type="radio" name="NewAcceptReject" value="Reject" checked=true
-											   onclick="NewReqEnableReason()" disabled>
-									}
-									else
-									{
-										<input type="radio" name="NewAcceptReject" value="Reject"
-											   onclick="NewReqEnableReason()" disabled>
-									}
+                            <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label class="trn">Accept</label>
+                                    <input type="radio" name="NewAcceptReject" value="Accept"
+                                           onclick="NewReqEnableReason()">
 
                                 </div>
                             </div>
+                            <div class="col-sm-3" style="top: 35px;" id="RejectSection">
+                                <div class="form-group">
+                                    <label class="trn">Reject</label>
+                                    <input type="radio" name="NewAcceptReject" value="Reject"
+                                           onclick="NewReqEnableReason()">
+                                </div>
+                            </div>
+
+                            </div>                            
+                    }
+                    @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30)
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Received By</label>
+                                    <input type"text" id="ReceivedBy" class="form-control" value="@Model.ReceivedByName" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Received Date</label>
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+                                               id="ReceivedDate" name="ReceivedDate" value='@Model.ReceivedDate' disabled />
+                                        <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Instrument Condition</label>
+                                    <input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
+                                </div>
+                            </div>*@
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Scope</label>
+                                    <select id="Scope" class="form-control" disabled>
+                                        @if (Model.Feasiblity == "Internal Instrument")
+                                        {
+                                            <option value="Internal Instrument" selected=true>Internal Instrument</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Internal Instrument">Internal Instrument</option>
+                                        }
+                                        @if (Model.Feasiblity == "External Instrument")
+                                        {
+                                            <option value="External Instrument" selected=true>External Instrument</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="External Instrument">External Instrument</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                           @* <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="required trn">Standard Reffered/Calibration Method</label>
+                                    <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
+                                           class="form-control" placeholder="" disabled>
+                                </div>
+                            </div>*@
+                           @* <div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label class="trn">NABL</label>
+                                    <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
+                                        @if (Model.IsNABL == false)
+                                        {
+                                            <option value="false" selected>No</option>
+                                            <option value="true">Yes</option>
+                                        }
+                                        else if (Model.IsNABL == true)
+                                        {
+                                            <option value="true" selected>Yes</option>
+                                            <option value="false">No</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>*@
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Tentative Closing Date</label>
+                                    <div class="input-group date" id="reservationdate7" data-target-input="nearest" onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
+                                               id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate" disabled>
+                                        <div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(Model.Status == 30 && Model.TypeOfEquipment != "External Instrument")
+                            {
+                            <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label class="trn">Accept</label>
+                                    @if (Model.Status == 27 || Model.Status == 29)
+                                    {
+                                        <input type="radio" name="NewAcceptReject" value="Accept" checked=true
+                                               onclick="NewReqEnableReason()" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="NewAcceptReject" value="Accept"
+                                               onclick="NewReqEnableReason()" disabled>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="top: 35px;" id="RejectSection">
+                                <div class="form-group">
+                                    <label class="trn">Reject</label>
+
+                                    @if (Model.Status == 28)
+                                    {
+                                        <input type="radio" name="NewAcceptReject" value="Reject" checked=true
+                                               onclick="NewReqEnableReason()" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="NewAcceptReject" value="Reject"
+                                               onclick="NewReqEnableReason()" disabled>
+                                    }
+
+                                </div>
+                            </div>
+                            }
                         </div>
                     }
-                    @if (Model.Status == 26)
+                    @if (Model.Status == 26 && Model.TypeOfEquipment == "External Instrument")
+                    {
+                        <div id="ExternalRejectSection" style="display:none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="trn">External Reject Reason</label>
+                                        <textarea id="Newreason" style="width: 100%;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="text-align:right;">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    }
+                    @if (Model.Status == 26 && Model.TypeOfEquipment == "External Instrument")
+                    {
+                        <div id="ExternalAcceptSection" style="display:none;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="required trn">Instrument Id Number</label>
+                                        <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
+                                               class="form-control" placeholder="" alt="Please fill this field">
+                                               <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="trn">External Accept Reason</label>
+                                        <textarea id="Acceptreason" style="width: 100%;" value="@Model.ReasonforRejection"></textarea>
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="row">                               
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile" class="trn">Upload Image</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input"
+                                                       accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                                       onchange="checkFileSize(this,MaxSize=4,event)" value="" name="ImageUpload"
+                                                       id="ImageUpload" multiple />
+                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="ManagerEmail" class="trn">Signature Image</label>
+                                        <p id="SignImageName"></p>
+                                        @*@if (@Model.SignImageName != null)
+                                        {
+                                            <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                        }*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6" style="text-align:right;">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                        <a href='@Url.Action("ExternalRequest","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }  
+                    @if (Model.Status == 30 && Model.TypeOfEquipment == "External Instrument")
+                    {
+                        <div id="ExternalAcceptSection">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="required trn">Instrument Id Number</label>
+                                        <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
+                                               class="form-control" placeholder="" alt="Please fill this field">
+                                        <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="trn">External Accept Reason</label>
+                                        <input id="Acceptreason" style="width: 100%;" value="@Model.AcceptReason" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile" class="trn">Upload Image</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input"
+                                                       accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                                       onchange="checkFileSize(this,MaxSize=4,event)" value="" name="ImageUpload"
+                                                       id="ImageUpload" multiple />
+                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="ManagerEmail" class="trn">Signature Image</label>
+                                        <p id="SignImageName"></p>
+                                        @if (@Model.SignImageName != null)
+                                        {
+                                            <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="row">
+                                <div class="col-sm-6" style="text-align:right;">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                        <a href='@Url.Action("ExternalRequest","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        </div>
+                    }
+                    @if (Model.Status == 26 && Model.TypeOfEquipment == "Internal Instrument")
                     {
                         <div id="NewReasonSection" style="display:none;">
                             <div class="row">
@@ -586,7 +778,7 @@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 26)
+                    @if (Model.Status == 26 && Model.TypeOfEquipment == "Internal Instrument")
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
@@ -594,7 +786,7 @@
                                     <div class="form-group">
                                         <label class="trn">Master Instrument Name</label>
                                         <select id="MasterInstrument" name="MasterInstrument" class="form-control">
-                                            <option class="trn">-- Select Master --</option>
+                                            @*<option class="trn">-- Select Master abc--</option>*@
                                             @*@if(@ViewBag.MasterData!=null)
                                         {
                                         @foreach (var master in @ViewBag.MasterData)
@@ -616,40 +808,51 @@
                                     </div>
 
                                     @*<div class="col-sm-5">
-                                        <input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
-                                               value="@Model.MasterInstrument1">
-                                        <input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
-                                               value="@Model.MasterInstrument2">
-                                        <input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
-                                               value="@Model.MasterInstrument3">
-                                        <input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
-                                               value="@Model.MasterInstrument4">
+                                <input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
+                                value="@Model.MasterInstrument1">
+                                <input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
+                                value="@Model.MasterInstrument2">
+                                <input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
+                                value="@Model.MasterInstrument3">
+                                <input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
+                                value="@Model.MasterInstrument4">
 
-                                        <div id="masterEquipmentValue">
-                                            @if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
-                                            {
-                                                int i = 1;
-                                                @foreach (var master in Model.MasterEqiupmentList)
-                                                {
-                                                    string identifier = "masvalue" + @i;
-                                                    <div id='@identifier'>
-                                                        @master.EquipName <i class="fas fa-trash"
-                                                                             onclick="DeleteMasterEqiupment(@i)"></i><br>
-                                                    </div>
-                                                    ;
-                                                    i = i + 1;
-                                                }
-                                            }
-                                        </div>
-                                    </div>*@
+                                <div id="masterEquipmentValue">
+                                @if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+                                {
+                                int i = 1;
+                                @foreach (var master in Model.MasterEqiupmentList)
+                                {
+                                string identifier = "masvalue" + @i;
+                                <div id='@identifier'>
+                                @master.EquipName <i class="fas fa-trash"
+                                onclick="DeleteMasterEqiupment(@i)"></i><br>
+                                </div>
+                                ;
+                                i = i + 1;
+                                }
+                                }
+                                </div>
+                                </div>*@
                                 </div>
                                 <div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Instrument Id Number</label>
-                                        <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
-											   class="form-control" placeholder="" alt="Please fill this field">
-									</div>
-								</div>
+                                    <div class="form-group">
+                                        <label class="trn">Calibration Frequency</label>
+                                        <select id="CalibFreq" name="CalibFreq" class="form-control">
+                                           @* @foreach (var freq in @Model.CalibFreqList)
+                                            {
+                                                if (freq.Id == Model.CalibFreq)
+                                                {
+                                                    <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@freq.Id">@freq.AttrValue</option>
+                                                }
+                                            }*@
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -658,7 +861,7 @@
                                     <div class="form-group">
                                         <label class="trn">Observation Template</label>
                                         <select id="NewObservation" onchange="LoadObservationTypePopup(language)" class="form-control">
-                                           @* <option>-- Select Observation Template --</option>*@
+                                            @* <option>-- Select Observation Template --</option>*@
                                             @*@foreach (var freq in @Model.ObservationTemplateList)
                                         {
                                         if (freq.Id == Model.ObservationTemplate)
@@ -684,7 +887,7 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                               @* <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">MU Template</label>
@@ -700,11 +903,11 @@
                                         {
                                         <option value="@freq.Id">@freq.AttrValue</option>
                                         }
-                                        }*@
+                                        }
                                         </select>
 
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -727,7 +930,7 @@
                                 </div>
                                 <div class="col-sm-6" style="text-align:right;">
                                     <!-- text input -->
-                                    <div class="form-group">
+                                    <div class="form-group mt-4">
                                         <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
                                                class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
@@ -736,13 +939,13 @@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 27 || Model.Status == 29 || Model.Status == 30)
+                    @if (Model.Status == 27 || Model.Status == 29 || Model.Status == 30 && Model.TypeOfEquipment != "External Instrument")
                     {
                         @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
                     { *@
                         <div>
 
-                            <div class="row">
+                            <div class="row mt-4">
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -788,7 +991,7 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                               @* <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">MU Template</label>
@@ -820,7 +1023,7 @@
                                             }
                                         </select>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -860,682 +1063,702 @@
                     else{
                     <div>
 
-					<div class="row">
-					<div class="col-sm-6">
-					<!-- text input -->
-					<div class="form-group">
-					<label>Observation Template</label>
-					<select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control">
-					@foreach (var freq in @Model.ObservationTemplateList)
-					{
-					if (freq.Id == Model.ObservationTemplate)
-					{
-					<option value="@freq.Id" selected>@freq.AttrValue</option>
-					}
-					else
-					{
-					<option value="@freq.Id">@freq.AttrValue</option>
-					}
-					}
-					</select>
-					</div>
-					</div>
-					<div class="col-sm-6">
-					<!-- text input -->
-					<div class="form-group">
-					<label>Observation Template Type</label>
-					<select id="NewObservationType" class="form-control">
-					</select>
-					</div>
-					</div>
+                    <div class="row">
+                    <div class="col-sm-6">
+                    <!-- text input -->
+                    <div class="form-group">
+                    <label>Observation Template</label>
+                    <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control">
+                    @foreach (var freq in @Model.ObservationTemplateList)
+                    {
+                    if (freq.Id == Model.ObservationTemplate)
+                    {
+                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                    }
+                    else
+                    {
+                    <option value="@freq.Id">@freq.AttrValue</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <!-- text input -->
+                    <div class="form-group">
+                    <label>Observation Template Type</label>
+                    <select id="NewObservationType" class="form-control">
+                    </select>
+                    </div>
+                    </div>
 
-					</div>
-					<div class="row">
-					<div class="col-sm-6">
-					<!-- text input -->
-					<div class="form-group">
-					<label>MU Template</label>
-					<select id="NewMU" class="form-control">
-					@foreach (var freq in @Model.MUTemplateList)
-					{
-					if (freq.Id == Model.MUTemplate)
-					{
-					<option value="@freq.Id" selected>@freq.AttrValue</option>
-					}
-					else
-					{
-					<option value="@freq.Id">@freq.AttrValue</option>
-					}
-					}
-					</select>
-					</div>
-					</div>
-					<div class="col-sm-6">
-					<!-- text input -->
-					<div class="form-group">
-					<label>Certification Tmeplate</label>
-					<select id="NewCertification" class="form-control">
-					@foreach (var freq in @Model.CertificationTemplateList)
-					{
-					if (freq.Id == Model.CertificationTemplate)
-					{
-					<option value="@freq.Id" selected>@freq.AttrValue</option>
-					}
-					else
-					{
-					<option value="@freq.Id">@freq.AttrValue</option>
-					}
-					}
-					</select>
-					</div>
-					</div>
-					</div>
-					</div>
-					}  *@
-					}
-					@if (Model.Status == 28)
-					{
-						<div>
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Rejected On</label>
-										<input type="text" class="form-control" id="NewrejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Rejected Reason</label>
-										<input type="text" class="form-control" id="NewrejectedReason" value="@Model.RejectReason" disabled>
-									</div>
-								</div>
-							</div>
-						</div>
-					}
-					@if (Model.Status == 27)
-					{
-						<div id="newfmVisualCheckSection" style="display: block;">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Closed Date</label>
-										<div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
-											<input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
-												   class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
-											<div class="input-group-append" data-target="#reservationdate2"
-												 data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Record By</label>
-										<input type="text" class="form-control" id="RecordBy"
-											   value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")'
-											   disabled>
-									</div>
-								</div>
-							</div>
-						</div>
-					}
-					@if (Model.Status == 27 && Model.ReviewedStatus == 1)
-					{
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="exampleInputFile" class="trn">MU Template</label>
-									<div class="input-group">
-										<div class="custom-file">
-											<input type="file" class="custom-file-input"
-												   accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
-												   onchange="checkFileSize(this,MaxSize=4,event)" name="ImageUpload"
-												   id="ImageUpload" multiple />
-											<label class="custom-file-label" for="exampleInputFile">Choose file</label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-6">
-							</div>
-							<div class="col-sm-6">
-								<div>
-									<p id="FileList"></p>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Calibration Date</label>
-									<div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
-										<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
-											   id="CalibDate" name="CalibDate" onloadeddata="" value="" />
-										<div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
-											<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Due Date</label>
-									<div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
-										<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
-											   id="DueDate" name="DueDate" value="" />
-										<div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
-											<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+                    </div>
+                    <div class="row">
+                    <div class="col-sm-6">
+                    <!-- text input -->
+                    <div class="form-group">
+                    <label>MU Template</label>
+                    <select id="NewMU" class="form-control">
+                    @foreach (var freq in @Model.MUTemplateList)
+                    {
+                    if (freq.Id == Model.MUTemplate)
+                    {
+                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                    }
+                    else
+                    {
+                    <option value="@freq.Id">@freq.AttrValue</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <!-- text input -->
+                    <div class="form-group">
+                    <label>Certification Tmeplate</label>
+                    <select id="NewCertification" class="form-control">
+                    @foreach (var freq in @Model.CertificationTemplateList)
+                    {
+                    if (freq.Id == Model.CertificationTemplate)
+                    {
+                    <option value="@freq.Id" selected>@freq.AttrValue</option>
+                    }
+                    else
+                    {
+                    <option value="@freq.Id">@freq.AttrValue</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    }  *@
+                    }
+                    @if (Model.Status == 28)
+                    {
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="trn">Rejected On</label>
+                                        <input type="text" class="form-control" id="NewrejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="trn">Rejected Reason</label>
+                                        <input type="text" class="form-control" id="NewrejectedReason" value="@Model.RejectReason" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Status == 27)
+                    {
+                        <div id="newfmVisualCheckSection" style="display: block;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Closed Date</label>
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
+                                            <input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
+                                                   class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
+                                            <div class="input-group-append" data-target="#reservationdate2"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Record By</label>
+                                        <input type="text" class="form-control" id="RecordBy"
+                                               value='@HttpContextAccessor.HttpContext.Session.GetString("FirstName")  @HttpContextAccessor.HttpContext.Session.GetString("LastName")'
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Status == 27 && Model.ReviewedStatus == 1)
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputFile" class="trn">MU Template</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input"
+                                                   accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
+                                                   onchange="checkFileSize(this,MaxSize=4,event)" name="ImageUpload"
+                                                   id="ImageUpload" multiple />
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-6">
+                                <div>
+                                    <p id="FileList"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Calibration Date</label>
+                                    <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
+                                               id="CalibDate" name="CalibDate" onloadeddata="" value="" />
+                                        <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Due Date</label>
+                                    <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
+                                               id="DueDate" name="DueDate" value="" />
+                                        <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
-						<div class="row">
-							<div class="col-sm-6">
-								<!-- text input -->
-								<div class="form-group">
-									<label class="trn">Instrument Id Number</label>
-									<input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Result</label>
-									<select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()">
-										<option value="0">Select</option>
-										<option value="Accepted">Accepted</option>
-										<option value="Rejected">Rejected</option>
-										<option value="Return without Calibration">Return without Calibration</option>
-										<option value="Others">Others</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="trn">Remarks</label>
-									<input type="text" class="form-control" id="newRemarks" value=''>
-								</div>
-							</div>
-						</div>
+                        <div class="row">
+                            @*<div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label class="trn">Instrument Id Number</label>
+                                    <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">
+                                </div>
+                            </div>*@
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Result</label>
+                                    <select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()">
+                                        <option value="0">Select</option>
+                                        <option value="Accepted">Accepted</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Return without Calibration">Return without Calibration</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="trn">Remarks</label>
+                                    <input type="text" class="form-control" id="newRemarks" value=''>
+                                </div>
+                            </div>
+                        </div>
 
-						<div id="dvnewrequestclosedAccept" style="display:none;">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Instument Returned On</label>
-										<div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
-											<input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
-												   class="form-control datetimepicker-input" data-target="#reservationdate3" />
-											<div class="input-group-append" data-target="#reservationdate3"
-												 data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Collected By</label>
-										<input type="text" class="form-control" id="CollectedBy">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="dvnewrequestclosedReject" style="display:none;">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Reason for Rejection</label>
-										<input type="text" class="form-control" id="newReasonRejection" value=''>
-									</div>
-								</div>
-								@if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
-								{
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Feasible to Service</label>
-											<select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()">
-												<option value="0">Select</option>
-												<option value="Yes">Yes</option>
-												<option value="No">No</option>
-											</select>
-										</div>
-									</div>
-								}
-							</div>
-							<div id="dvshowfeasibleserviceyes" style="display: none;">
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">If Feasible service, Yes </label>
-											<select id="newIsFeasibleService" class="form-control">
-												<option value="Internal">Internal</option>
-												<option value="External">External</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Service Responsibility</label>
-											<input type="text" class="form-control" id="newServiceResponsibility" value=''>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div id="dvshowfeasibleserviceno" style=" display:none;">
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Instument Returned On</label>
-											<div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
-												<input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
-													   class="form-control datetimepicker-input" data-target="#reservationdate3" />
-												<div class="input-group-append" data-target="#reservationdate3"
-													 data-toggle="datetimepicker">
-													<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Collected By</label>
-											<input type="text" class="form-control" id="CollectedBy">
-										</div>
-									</div>
-								</div>
+                        <div id="dvnewrequestclosedAccept" style="display:none;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Instument Returned On</label>
+                                        <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                            <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
+                                                   class="form-control datetimepicker-input" data-target="#reservationdate3" />
+                                            <div class="input-group-append" data-target="#reservationdate3"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Collected By</label>
+                                        <input type="text" class="form-control" id="CollectedBy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dvnewrequestclosedReject" style="display:none;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Reason for Rejection</label>
+                                        <input type="text" class="form-control" id="newReasonRejection" value=''>
+                                    </div>
+                                </div>
+                                @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Feasible to Service</label>
+                                            <select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()">
+                                                <option value="0">Select</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div id="dvshowfeasibleserviceyes" style="display: none;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">If Feasible service, Yes </label>
+                                            <select id="newIsFeasibleService" class="form-control">
+                                                <option value="Internal">Internal</option>
+                                                <option value="External">External</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Service Responsibility</label>
+                                            <input type="text" class="form-control" id="newServiceResponsibility" value=''>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dvshowfeasibleserviceno" style=" display:none;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Instument Returned On</label>
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                                <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
+                                                       class="form-control datetimepicker-input" data-target="#reservationdate3" />
+                                                <div class="input-group-append" data-target="#reservationdate3"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Collected By</label>
+                                            <input type="text" class="form-control" id="CollectedBy">
+                                        </div>
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Remarks</label>
-											<input type="text" class="form-control" id="newRejectionRemarks" value=''>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-9">
-								<!-- text input -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Remarks</label>
+                                            <input type="text" class="form-control" id="newRejectionRemarks" value=''>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <!-- text input -->
 
-							</div>
-							<div class="col-sm-3">
-								<!-- text input -->
-								<div class="form-group">
-									<input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
-										   value="Submit" onclick="newSubmitReqLABVisual(language)">
-									<a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
-								</div>
-							</div>
-						</div>
-					}
-					@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && Model.Status == 27 && Model.ReviewedStatus != 1)
-					{
-						<div class="row">
-							<div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-								<!-- text input -->
+                            </div>
+                            <div class="col-sm-3">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
+                                           value="Submit" onclick="newSubmitReqLABVisual(language)">
+                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && Model.Status == 27 && Model.ReviewedStatus != 1)
+                    {
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                                <!-- text input -->
 
-							</div>
-							<div class="col-sm-3 col-md-3 col-lg-3 col-xl-2">
-								<!-- text input -->
-								<div class="form-group">
-									<input type="button" class="btn btn-primary" name="newedit" id="newedit"
-										   value="Edit" onclick="enableFields()">
-									<input type="button" class="btn btn-primary trn" name="newSubmitLABAdmin" disabled id="newSubmitLABAdmin"
-										   value="Update" onclick="SaveLABAdminUpdates(language)">
-								</div>
-							</div>
-						</div>
-					}
+                            </div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-2">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-primary" name="newedit" id="newedit"
+                                           value="Edit" onclick="enableFields()">
+                                    <input type="button" class="btn btn-primary trn" name="newSubmitLABAdmin" disabled id="newSubmitLABAdmin"
+                                           value="Update" onclick="SaveLABAdminUpdates(language)">
+                                </div>
+                            </div>
+                        </div>
+                    }
 
-					@if (Model.Status == 29 || Model.Status == 30)
-					{
-						<div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Closed Date</label>
-										<div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
-											<input type="text" id="newClosedDate" name="newClosedDate" value="@Model.ClosedDate.ToShortDateString()"
-												   class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
-											<div class="input-group-append" data-target="#reservationdate2"
-												 data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Record By</label>
-										<input type="text" class="form-control" id="RecordBy"
-											   value="@Model.RecordBy"
-											   disabled>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">MU Template</label>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div id="imageSection">
-										@if (@Model.MUTemplateFileName != null)
-										{
-											<a href='~/MUTemplate/@Model.Id/@Model.MUTemplateFileName' target="_blank">@Model.MUTemplateFileName</a>
-										}
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Calibration Date</label>
-										<div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
-											<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
-												   id="CalibDate" name="CalibDate" onloadeddata="" value="@Model.CalibDate" disabled />
-											<div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Due Date</label>
-										<div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
-											<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
-												   id="DueDate" name="DueDate" value="@Model.DueDate" disabled />
-											<div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group">
-										<label class="trn">Instrument Id Number</label>
-										<input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Result</label>
-										<select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()" disabled>
-											<option value="0">Select</option>
-											@if (Model.LabResult == "Accepted")
-											{
-												<option value="Accepted" selected=true>Accepted</option>
-											}
-											else
-											{
-												<option value="Accepted">Accepted</option>
-											}
-											@if (Model.LabResult == "Rejected")
-											{
-												<option value="Rejected" selected=true>Rejected</option>
-											}
-											else
-											{
-												<option value="Rejected">Rejected</option>
-											}
-											@if (Model.LabResult == "Return without Calibration")
-											{
-												<option value="Return without Calibration" selected=true>Return without Calibration</option>
-											}
-											else
-											{
-												<option value="Return without Calibration">Return without Calibration</option>
-											}
-											@if (Model.LabResult == "Others")
-											{
-												<option value="Others" selected=true>Others</option>
-											}
-											else
-											{
-												<option value="Others">Others</option>
-											}
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Remarks</label>
-										<input type="text" class="form-control" id="newRemarks" value="@Model.Result" disabled>
-									</div>
-								</div>
-							</div>
+                    @if (Model.Status == 29 || Model.Status == 30 && Model.TypeOfEquipment != "External Instrument")
+                    {
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Closed Date</label>
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
+                                            <input type="text" id="newClosedDate" name="newClosedDate" value="@Model.ClosedDate.ToShortDateString()"
+                                                   class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
+                                            <div class="input-group-append" data-target="#reservationdate2"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Record By</label>
+                                        <input type="text" class="form-control" id="RecordBy"
+                                               value="@Model.RecordBy"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">MU Template</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div id="imageSection">
+                                        @if (@Model.MUTemplateFileName != null)
+                                        {
+                                            <a href='~/MUTemplate/@Model.Id/@Model.MUTemplateFileName' target="_blank">@Model.MUTemplateFileName</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Calibration Date</label>
+                                        <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
+                                                   id="CalibDate" name="CalibDate" onloadeddata="" value="@Model.CalibDate" disabled />
+                                            <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Due Date</label>
+                                        <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
+                                                   id="DueDate" name="DueDate" value="@Model.DueDate" disabled />
+                                            <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @*<div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="trn">Instrument Id Number</label>
+                                        <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>
+                                    </div>
+                                </div>*@
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Result</label>
+                                        <select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()" disabled>
+                                            <option value="0">Select</option>
+                                            @if (Model.LabResult == "Accepted")
+                                            {
+                                                <option value="Accepted" selected=true>Accepted</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Accepted">Accepted</option>
+                                            }
+                                            @if (Model.LabResult == "Rejected")
+                                            {
+                                                <option value="Rejected" selected=true>Rejected</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Rejected">Rejected</option>
+                                            }
+                                            @if (Model.LabResult == "Return without Calibration")
+                                            {
+                                                <option value="Return without Calibration" selected=true>Return without Calibration</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Return without Calibration">Return without Calibration</option>
+                                            }
+                                            @if (Model.LabResult == "Others")
+                                            {
+                                                <option value="Others" selected=true>Others</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Others">Others</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Remarks</label>
+                                        <input type="text" class="form-control" id="newRemarks" value="@Model.Result" disabled>
+                                    </div>
+                                </div>
+                            </div>
 
-							@if (Model.LabResult == "Accepted" || Model.LabResult == "Rejected")
-							{
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Instument Returned On</label>
-											<div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
-												<input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@Model.InstrumentReturnedOn.ToShortDateString()"
-													   class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
-												<div class="input-group-append" data-target="#reservationdate3"
-													 data-toggle="datetimepicker">
-													<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Collected By</label>
-											@if (Model.Status == 30)
-											{
-												<input type="text" class="form-control" id="CollectedBy" value="@Model.CollectedBy" disabled>
-											}
-											else
-											{
-												<input type="text" class="form-control" id="CollectedBy" value="@Model.CollectedBy">
-											}
-										</div>
-									</div>
-								</div>
-							}
-							@if (Model.LabResult == "Rejected")
-							{
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label class="trn">Reason for Rejection</label>
-											<input type="text" class="form-control" id="newReasonRejection" value="@Model.ReasonforRejection" disabled>
-										</div>
-									</div>
-									@if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
-									{
-										<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Feasible to Service</label>
-												<select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()" disabled>
-													<option value="0">Select</option>
-													@if (Model.IsFeasibleService == "Yes")
-													{
-														<option value="Yes" selected=true>Yes</option>
-													}
-													else
-													{
-														<option value="Yes">Yes</option>
-													}
-													@if (Model.IsFeasibleService == "No")
-													{
-														<option value="No" selected=true>No</option>
-													}
-													else
-													{
-														<option value="No">No</option>
-													}
-												</select>
-											</div>
-										</div>
-									}
-								</div>
-								@if (Model.IsFeasibleService == "Yes")
-								{
-									<div id="dvshowfeasibleserviceyes">
-										<div class="row">
-											<div class="col-sm-6">
-												<div class="form-group">
-													<label class="trn">If Feasible service, Yes </label>
-													<select id="newIsFeasibleService" class="form-control" disabled>
-														@if (Model.IsFeasibleYes == "Internal")
-														{
-															<option value="Internal" selected>Internal</option>
-														}
-														else
-														{
-															<option value="Internal">Internal</option>
-														}
-														@if (Model.IsFeasibleYes == "External")
-														{
-															<option value="External" selected>External</option>
-														}
-														else
-														{
-															<option value="External">External</option>
-														}
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-6">
-												<div class="form-group">
-													<label class="trn">Service Responsibility</label>
-													<input type="text" class="form-control" id="newServiceResponsibility" value="@Model.ServiceResponsibility">
-												</div>
-											</div>
-										</div>
-									</div>
-								}
-								<div id="dvshowfeasibleserviceno" style=" display:none;">
-									<div class="row">
-										<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Instument Returned On</label>
-												<div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
-													<input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
-														   class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
-													<div class="input-group-append" data-target="#reservationdate3"
-														 data-toggle="datetimepicker">
-														<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Collected By</label>
-												<input type="text" class="form-control" id="CollectedBy">
-											</div>
-										</div>
-									</div>
+                            @if (Model.LabResult == "Accepted" || Model.LabResult == "Rejected")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Instument Returned On</label>
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                                <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@Model.InstrumentReturnedOn.ToShortDateString()"
+                                                       class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
+                                                <div class="input-group-append" data-target="#reservationdate3"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Collected By</label>
+                                            @if (Model.Status == 30)
+                                            {
+                                                <input type="text" class="form-control" id="CollectedBy" value="@Model.CollectedBy" disabled>
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control" id="CollectedBy" value="@Model.CollectedBy">
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.LabResult == "Rejected")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Reason for Rejection</label>
+                                            <input type="text" class="form-control" id="newReasonRejection" value="@Model.ReasonforRejection" disabled>
+                                        </div>
+                                    </div>
+                                    @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                    {
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="trn">Feasible to Service</label>
+                                                <select id="newFeasibleService" class="form-control" onchange="showfeasibleservice()" disabled>
+                                                    <option value="0">Select</option>
+                                                    @if (Model.IsFeasibleService == "Yes")
+                                                    {
+                                                        <option value="Yes" selected=true>Yes</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="Yes">Yes</option>
+                                                    }
+                                                    @if (Model.IsFeasibleService == "No")
+                                                    {
+                                                        <option value="No" selected=true>No</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="No">No</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                @if (Model.IsFeasibleService == "Yes")
+                                {
+                                    <div id="dvshowfeasibleserviceyes">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="trn">If Feasible service, Yes </label>
+                                                    <select id="newIsFeasibleService" class="form-control" disabled>
+                                                        @if (Model.IsFeasibleYes == "Internal")
+                                                        {
+                                                            <option value="Internal" selected>Internal</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="Internal">Internal</option>
+                                                        }
+                                                        @if (Model.IsFeasibleYes == "External")
+                                                        {
+                                                            <option value="External" selected>External</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="External">External</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="trn">Service Responsibility</label>
+                                                    <input type="text" class="form-control" id="newServiceResponsibility" value="@Model.ServiceResponsibility">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div id="dvshowfeasibleserviceno" style=" display:none;">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="trn">Instument Returned On</label>
+                                                <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                                    <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
+                                                           class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
+                                                    <div class="input-group-append" data-target="#reservationdate3"
+                                                         data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="trn">Collected By</label>
+                                                <input type="text" class="form-control" id="CollectedBy">
+                                            </div>
+                                        </div>
+                                    </div>
 
-									<div class="row">
-										<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Remarks</label>
-												<input type="text" class="form-control" id="newRejectionRemarks" value=''>
-											</div>
-										</div>
-									</div>
-								</div>
-							}
-						</div>
-					}
-					@if (Model.LabResult != "Rejected" && Model.Status == 29)
-					{
-						<div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Return Date</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="trn">Remarks</label>
+                                                <input type="text" class="form-control" id="newRejectionRemarks" value=''>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    @if (Model.LabResult != "Rejected" && Model.Status == 29)
+                    {
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Return Date</label>
 
-										<div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
-											<input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now.AddHours(3).AddMinutes(30).ToString("yyyy/MM/dd HH:mm:ss") JST"
-												   class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
-											<div class="input-group-append" data-target="#newReturnDatePicker"
-												 data-toggle="datetimepicker">
-												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<div class="form-group">
-											<label class="trn">Result</label>
-											<input type="text" class="form-control" id="newResultDEP" value=''>
-										</div>
-									</div>
-								</div>
-							</div>
+                                        <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
+                                            <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now.AddHours(3).AddMinutes(30).ToString("yyyy/MM/dd HH:mm:ss") JST"
+                                                   class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
+                                            <div class="input-group-append" data-target="#newReturnDatePicker"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="trn">Result</label>
+                                            <input type="text" class="form-control" id="newResultDEP" value=''>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                 <div class="col-sm-6">
+                                <div class="form-group">
+                                        <label class="trn">Instrument Id Number</label>
+                                        <input type="text" class="form-control" id="IdNo" value=''>
+                                    </div>
+                                </div>
+                            </div>
 
-							<div class="row">
-								<div class="col-sm-6">
-								</div>
-								<div class="col-sm-6">
-									<!-- text input -->
-									<div class="form-group" style="text-align:right;">
-										<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-											   onclick="newSubmitReqDepVisual(language)">
-										<a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					}
-					@* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4" &&  Model.Status==27)
-					{
-					<div class="row">
-					<div class="col-sm-6">
-					</div>
-					<div class="col-sm-6">
-					<!-- text input -->
-					<div class="form-group" style="text-align:right;">
-					<input style="margin-top: 32px;" type="button" class="btn btn-primary"
-					name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-					onclick="newSubmitReqDepVisual()">
-					</div>
-					</div>
-					</div>
-					} *@
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	</div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group" style="text-align:right;">
+                                        <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                                               onclick="newSubmitReqDepVisual(language)">
+                                        <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4" &&  Model.Status==27)
+                    {
+                    <div class="row">
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
+                    <!-- text input -->
+                    <div class="form-group" style="text-align:right;">
+                    <input style="margin-top: 32px;" type="button" class="btn btn-primary"
+                    name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                    onclick="newSubmitReqDepVisual()">
+                    </div>
+                    </div>
+                    </div>
+                    } *@
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
 </section>
 <script>
     function enableFields() {
         document.getElementById("NewObservationEd").disabled = false;
         document.getElementById("NewObservationTypeEd").disabled = false;
-        document.getElementById("NewMUEd").disabled = false;
+        //document.getElementById("NewMUEd").disabled = false;
         document.getElementById("NewCertificationEd").disabled = false;
         document.getElementById("newSubmitLABAdmin").disabled = false;
     }
-
+    function checkFileSize(element, maxSize, event) {
+        var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            alert("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+            $("#ImageUpload").val("");
+        }
+        var input = document.getElementById('ImageUpload')
+        var output = document.getElementById('SignImageName')
+        var result = "";
+        result += input.files.item(0).name;
+        output.innerHTML = result;
+    }
 </script>
 
 <script>
     var selectlang;
-    $(document).ready(function(){
+    $(document).ready(function () {
         //selectlang = $('#hdnLanguage').val();
         console.log('language');
         console.log(selectlang);
@@ -1554,14 +1777,14 @@
         }
         else {
             $.each(ObservationTypeList, function (index, item) {
-            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
-            }
-        });
+                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
+                }
+            });
         }
     })
 
-    
+
 
 </script>
 <script>
@@ -1577,174 +1800,174 @@
         var datestr = (date1.split(" ")[0]).split("/");
         var newDate = new Date(datestr[2], datestr[1], datestr[0]);
 
-		if (type == "One Month") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 1));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Two Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 2));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Three Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 3));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Four Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 4));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Five Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 5));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Six Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 6));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Seven Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 7));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Eight Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 8));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Nine Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 9));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Ten Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 10));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Eleven Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 11));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "1 Year") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear() + 1;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "2 Years") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear() + 2;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "3 Years") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
-			}
-			var year = newDate.getFullYear() + 3;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-	}
+        if (type == "One Month") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 1));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Two Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 2));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Three Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 3));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Four Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 4));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Five Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 5));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Six Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 6));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Seven Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 7));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Eight Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 8));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Nine Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 9));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Ten Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 10));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "Eleven Months") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth() + 11));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear();
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "1 Year") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth()));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear() + 1;
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "2 Years") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth()));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear() + 2;
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+        if (type == "3 Years") {
+            var d = new Date(newDate);
+            var newDate = new Date(d.setMonth(d.getMonth()));
+            var day = newDate.getDate();
+            var month = newDate.getMonth();
+            if (month == 0) {
+                month = 12
+            }
+            var year = newDate.getFullYear() + 3;
+            var result3 = day + "/" + month + "/" + year;
+            document.getElementById("DueDate").value = result3;
+        }
+    }
 
 </script>

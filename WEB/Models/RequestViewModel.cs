@@ -19,14 +19,14 @@ public partial class RequestViewModel
     public string? LC { get; set; }
     public string? MUTemplateFileName { get; set; }
     public string? Make { get; set; }
-    public string? TW { get; set; }
+    public string? Capacity { get; set; }
     public string? Unit1 { get; set; }
     public string? Unit2 { get; set; }
-    public string? Unit3 { get; set; }
+    public string? AmountJPY { get; set; }
     public int? Instrument_Type { get; set; }
     public string? Rule_Confirmity { get; set; }
-    public string? Drawing_Attached { get; set; }
-    public string? StandardReffered1 { get; set; }
+    public string? EquipmentStation { get; set; }
+    public string? Comment { get; set; }
     public int CalibFreq { get; set; }
     public string? CalibFrequency { get; set; }
     public int UserDept { get; set; }
@@ -51,6 +51,7 @@ public partial class RequestViewModel
     public string? VisualCheckLab { get; set; }
     public string? RecodedByLAB { get; set; }
     public string? RejectReason { get; set; }
+    public string? AcceptReason { get; set; }
     public string? ReasonforRejection { get; set; }
     public string? IsFeasibleService { get; set; }
     public string? IsFeasibleYes { get; set; }
@@ -99,8 +100,14 @@ public partial class RequestViewModel
 	public List<MasterViewModel> MasterData { get; set; }
 	public List<MasterViewModel> MasterEqiupmentList { get; set; }
 
+	public List<LovsViewModel> LovsList { get; set; }
+
 	//To Display Instrument Id Number
 	public string? IdNo { get; set; }
+	public string? SubSectionCode { get; set; }
+	public string? TypeOfEquipment { get; set; }
+    public string? SignImageName { get; set; }
+    public string? ToolInventory { get; set; }
 }
 public class UploadFile
     {

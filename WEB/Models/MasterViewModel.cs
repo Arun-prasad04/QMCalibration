@@ -44,6 +44,7 @@ public class MasterViewModel
     public string? CalibrationFrequency {get;set;}
 
 	public string? EquipNameJP { get; set; }
+	public string? EquipmentMasterId { get; set; }
 
 	}
 }

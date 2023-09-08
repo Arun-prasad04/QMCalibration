@@ -1,4 +1,5 @@
 using CMT.DATAMODELS;
+
 public class TemplateObservation{
         public int Id { get; set; }
         public int RequestId { get; set; }
@@ -24,6 +25,7 @@ public class TemplateObservation{
         public virtual List<ObsTemplateGeneral> GeneralModel{get;set;}
         public virtual List<ObsTemplateVernierCaliper> VerniercaliperModel{get;set;}
         public virtual List<ObsTemplateGeneralNew> GeneralNewModel{get;set;}
+        public virtual List<ObsTemplateMetalRules> MetalRulesModel { get;set;}
         public virtual User CalibrationCreatedModel{get;set;}
         public virtual User CalibrationReviewedModel{get;set;}
        

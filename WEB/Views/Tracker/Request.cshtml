@@ -86,6 +86,7 @@
                             <tr>
                                 <th class="trn">Request No</th>
                                 <th class="trn">Request Date</th>
+                                <th class="trn">Sub Section Code</th>
                                 <th class="trn">Instrument Name</th>
                                 <th class="trn">Instrument Id</th>
                                 <th class="trn">Range</th>
@@ -94,6 +95,7 @@
                                 <th class="trn">View</th>
                                 <th class="trn">Test</th>
                                 <th class="trn">Certificate</th>
+                                <th class="trn">Type Of Scope</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,9 +253,9 @@
                 }
                 $('#example2 tbody').empty();
                 //console.log('Rqdata');
-                //console.log(data);
+                console.log(data);
                 //console.log(Object.keys(data).length);
-                
+                if (data.length>0){	
                 $.each(data, function (i, item) {
                     var tdTypeofRequest = '';
                     if (item.typeOfRequest == 1) {
@@ -290,7 +292,7 @@
                     }
 
                     var tdTest = '';
-                    if (((item.userRoleId == 2 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30))) {
+                    if ((item.userRoleId == 2 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
                         tdTest = "<td><a href='@Url.Action("ViewObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
                     }
                     else {
@@ -311,6 +313,7 @@
                     var rows = "<tr>"
                         + "<td>" + item.reqestNo + "</td>"                        
                         + "<td>" + date + "</td>"
+                        + "<td>" + item.subSectionCode + "</td>"
                         + "<td>" + item.instrumentName + "</td>"
                         + "<td>" + item.instrumentIdNo + "</td>"
                         + "<td>" + item.range + "</td>"
@@ -319,13 +322,17 @@
                         + "<td><i class='fas fa-eye' style = 'cursor:pointer' id = " + item.id + " onclick = 'GetRequestDetails(this)'></i></td>"
                         + tdTest
                         + tdCertificate
+                        + "<td>" + item.typeOfEquipment + "</td>"
                         + "</tr>";
 
                     $('#example2 tbody').append(rows);
                     $('#dvload').hide();
                     
                 });
-                
+                }
+                else {
+                    $('#dvload').hide();
+                }
                 
                 //$('#example2').destroy();
                 $('#example2').dataTable({                    

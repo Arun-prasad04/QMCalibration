@@ -11,6 +11,8 @@ namespace WEB.Models
         public string? SerialNo { get; set; }
         public string? IDNo { get; set; }
         public string? RefStd { get; set; }
+
+        public string? Grade { get; set; }
         public string? TempStart { get; set; }
         public string? TempEnd { get; set; }
         public string? Humidity { get; set; }

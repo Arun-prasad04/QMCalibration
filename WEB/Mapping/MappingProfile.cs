@@ -90,6 +90,19 @@ public class MappingProfile : Profile
 
 		CreateMap<MicrometerResultViewModel, ObsMicrometerValues>();
 		CreateMap<ObsMicrometerValues, MicrometerResultViewModel>();
-		//This comment added For Git merge conflict issue   
-	}
+
+		CreateMap<ObsTemplateValues, MetalRuleResultViewModel>();
+		CreateMap<MetalRuleResultViewModel, ObsTemplateValues>();
+
+        CreateMap<UserDepartmentMapping, UserDepartmentMappingView>();
+        CreateMap<UserDepartmentMappingView, UserDepartmentMapping>();
+
+        CreateMap<UserRoles, UserRolesView>();
+        CreateMap<UserRolesView, UserRoles>();
+
+        CreateMap<UserRoleMapping, UserRoleMappingView>();
+        CreateMap<UserRoleMappingView, UserRoleMapping>();
+
+        //This comment added For Git merge conflict issue   
+    }
 }

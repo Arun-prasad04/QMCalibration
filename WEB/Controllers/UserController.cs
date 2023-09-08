@@ -8,6 +8,8 @@ using System.DirectoryServices;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
 using WEB.Services;
+using static QRCoder.PayloadGenerator;
+
 namespace WEB.Controllers;
 
 public class UserController : BaseController
@@ -36,8 +38,8 @@ public class UserController : BaseController
 		ViewBag.FinalUserDeleteResponseData = TempData["FinalUserDeleteResponseData"];
 
 		ResponseViewModel<UserViewModel> response = _userService.GetAllUserList();
-		List<UserViewModel> userById = _mapper.Map<List<UserViewModel>>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2).ToList());
-		response.ResponseDataList.First().Labadminuserlist = userById;
+		//List<UserViewModel> userById = _mapper.Map<List<UserViewModel>>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2).ToList());
+		//response.ResponseDataList.First().Labadminuserlist = userById;
 		return View(response.ResponseDataList);
 	}
 
@@ -46,9 +48,9 @@ public class UserController : BaseController
 		ViewBag.PageTitle = "User Edit";
 		
 		ResponseViewModel<UserViewModel> response = _userService.GetUserById(userId);
-		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
-		ViewBag.SubSectCode = response.ResponseData.SubSectionCode;
-        ViewBag.SessionLang = base.SessionGetString("Language");
+		//ViewBag.DepartmentList = response.ResponseData.DepartmentList;
+		//ViewBag.SubSectCode = response.ResponseData.SubSectionCodeName1;
+  //      ViewBag.SessionLang = base.SessionGetString("Language");
         return View("Create", response.ResponseData);
 	}
 	public class CurrentUserInfo
@@ -102,20 +104,23 @@ public class UserController : BaseController
 	{
 		ViewBag.PageTitle = "User Create";
 		ResponseViewModel<UserViewModel> response = _userService.CreateNewUser();
-		ViewBag.DepartmentList = response.ResponseData.DepartmentList;
+		//ViewBag.DepartmentList = response.ResponseData.DepartmentList;
 		
 		return View(response.ResponseData);
 	}
 	//public IActionResult ValidateLogin(string userName, string userPassword, string ReturnUrl, string language)
 	public IActionResult ValidateLogin(string email, string ln)
 	{
+		#region
 		//language = HttpContext.Request.Query["ln"].ToString();
 		//ErrorViewModelTest.Log("Email - " + email);
 		//ResponseViewModel<UserViewModel> response = _userService.ValidateUser(userName, userPassword);
-		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
 		//ErrorViewModelTest.Log("response - " + response.ResponseMessage);
 		//ErrorViewModelTest.Log("responseData - " + response.ResponseData);
-		if (response.ResponseMessage == "Success")
+		#endregion
+		string roleurl = _configuration["RoleChangeURL"];
+		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
+        if (response.ResponseMessage == "Success")
 		{
 			if (response.ResponseData != null)
 			{				
@@ -124,9 +129,12 @@ public class UserController : BaseController
 				HttpContext.Session.SetString("LastName", response.ResponseData.LastName.ToString());
 				HttpContext.Session.SetString("ShortId", response.ResponseData.ShortId.ToString());
 				HttpContext.Session.SetString("LoggedId", response.ResponseData.Id.ToString());
+				HttpContext.Session.SetString("Email", response.ResponseData.Email.ToString());
 				HttpContext.Session.SetString("DepartmentName", response.ResponseData.DepartmentName.ToString());
 				HttpContext.Session.SetString("DepartmentId", response.ResponseData.DepartmentId.ToString());
+				HttpContext.Session.SetString("UserRoleLoad", response.ResponseData.UserRoleId.ToString());
 				HttpContext.Session.SetString("Language", ln.ToString());
+				HttpContext.Session.SetString("UserRoleURl", roleurl);
 			}
 
 			//if (!string.IsNullOrEmpty(ReturnUrl))
@@ -166,27 +174,34 @@ public class UserController : BaseController
 		return RedirectToAction("Login", "Account");
 
 	}
+	//public IActionResult InsertUser(UserViewModel user)
 	public IActionResult InsertUser(UserViewModel user)
 	{
-		
-		ResponseViewModel<UserViewModel> response;
+
+        //return Json(true);
+
+        int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<UserViewModel> response;
 		if (user.Id != null && user.Id > 0)
 		{
-			user.ModifiedBy = 1;
+			user.ModifiedBy = LoggedId;
 			user.ModifiedOn = DateTime.Now;
 			response = _userService.UpdateUser(user);
 		}
 		else
 		{
 			user.ActiveStatus = true;
-			user.CreatedBy = 1;
+			user.CreatedBy = LoggedId;
 			user.ModifiedBy = 1;
 			user.CreatedOn = DateTime.Now;
 			user.ModifiedOn = DateTime.Now;
 			user.ActivationGuid = Guid.NewGuid();
+			//user.UserRoleId = 1;
 			response = _userService.InsertUser(user);
 		}
-		TempData["ResponseCode"] = response.ResponseCode;
+		      
+
+        TempData["ResponseCode"] = response.ResponseCode;
 		TempData["ResponseMessage"] = response.ResponseMessage;
 		if (response.ResponseMessage == "Success")
 		{
@@ -271,6 +286,43 @@ public class UserController : BaseController
 		Department Deptdata = _unitOfWork.Repository<Department>().GetQueryAsNoTracking(d => d.SubSectionCode == SubSectCode && d.ActiveStatus == true).FirstOrDefault();
 		return Json(Deptdata);
 	}
+
+	public IActionResult ValidateLogins(string email, string ln, int role)
+	{
+        string urEmail = Convert.ToString(base.SessionGetString("Email"));
+        ResponseViewModel<UserViewModel> response = _userService.ValidateUser(urEmail);
+		string roleurl = _configuration["RoleChangeURL"];
+
+		if (response.ResponseMessage == "Success")
+        {
+            if (response.ResponseData != null)
+            {
+                HttpContext.Session.SetString("UserRoleId", role.ToString());
+                HttpContext.Session.SetString("FirstName", response.ResponseData.FirstName.ToString());
+                HttpContext.Session.SetString("LastName", response.ResponseData.LastName.ToString());
+                HttpContext.Session.SetString("ShortId", response.ResponseData.ShortId.ToString());
+                HttpContext.Session.SetString("LoggedId", response.ResponseData.Id.ToString());
+                HttpContext.Session.SetString("DepartmentName", response.ResponseData.DepartmentName.ToString());
+                HttpContext.Session.SetString("DepartmentId", response.ResponseData.DepartmentId.ToString());
+                HttpContext.Session.SetString("UserRoleLoad", role.ToString());
+                HttpContext.Session.SetString("UserRoleURl", roleurl);
+                //HttpContext.Session.SetString("Language", ln.ToString());
+
+            }
+
+            
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        else
+        {
+            TempData["ResponseCode"] = response.ResponseCode;
+            TempData["ResponseMessage"] = response.ResponseMessage;
+
+            return RedirectToAction("Logout", "Account");
+        }
+    }
 
 
 }

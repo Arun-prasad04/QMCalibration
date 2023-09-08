@@ -34,5 +34,6 @@ namespace CMT.DATAMODELS
         public virtual Lovs Lovs {get;set;}
 
 		public string? EquipNameJP { get; set; }
+		public string? EquipmentMasterId { get; set; }
 	}
 }

@@ -7,7 +7,9 @@ using CMT.DATAMODELS;
 using WEB.Services;
 using WEB.Services.Interface;
 using Microsoft.EntityFrameworkCore;
-
+using System.Data;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace WEB.Controllers;
 
@@ -20,12 +22,16 @@ public class HomeController : BaseController
 	private IMasterService _masterService { get; set; }
 
 	private IConfiguration _configuration;
-	public HomeController(IUnitOfWork unitOfWork, IMapper mapper, IMasterService masterService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration Configuration) : base(logger, contextAccessor)
+    private IUserService _userService { get; set; }
+	//private CMTDL _cmtdl { get; set; }
+	public HomeController(IUnitOfWork unitOfWork, IMapper mapper, IMasterService masterService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration Configuration, IUserService userService) : base(logger, contextAccessor)
 	{
 		_masterService = masterService;
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_configuration = Configuration;
+		_userService = userService;
+		//_cmtdl = cmtdl;
 	}
 
 	public IActionResult Index()
@@ -39,13 +45,15 @@ public class HomeController : BaseController
 		//Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == objtype).SingleOrDefault();
 
 		//Convert.ToInt32(instrumentresponse.ResponseData.ObservationType) 1159
-		
 
-		UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
-		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
-		if (MasterList != null)
+
+		//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+		//UserViewModel labUserById = GetUserById(userId);
+		CMTDL _cmtdl = new CMTDL(_configuration);
+		DataSet ds = _cmtdl.GetUserDashboardInfo(userId);
+		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
 		{
-			ViewBag.MasterCount = MasterList.Count;
+			ViewBag.MasterCount = Convert.ToString(ds.Tables[0].Rows[0]["MasterCount"]);
 		}
 		else
 		{
@@ -53,23 +61,20 @@ public class HomeController : BaseController
 		}
 		if (userRoleId == 2 || userRoleId == 4)
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && Q.ActiveStatus == true).ToList();//.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
-			if (InstrumentList != null)
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
 			{
-				ViewBag.InstrumentCount = InstrumentList.Count;
+				ViewBag.InstrumentCount = Convert.ToString(ds.Tables[1].Rows[0]["InstrumentCount"]);
 			}
 			else
 			{
 				ViewBag.InstrumentCount = 0;
 			}
-
 		}
 		else
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).ToList(); //.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel)
-			if (InstrumentList != null)
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
 			{
-				ViewBag.InstrumentCount = InstrumentList.Count;
+				ViewBag.InstrumentCount = Convert.ToString(ds.Tables[2].Rows[0]["InstrumentCount2"]);
 			}
 			else
 			{
@@ -80,22 +85,13 @@ public class HomeController : BaseController
 		{
 			if (userRoleId == 3)
 			{
-				List<ExternalRequest> RequestList = _unitOfWork.Repository<ExternalRequest>().GetQueryAsNoTracking().Include(I => I.MasterModel).Include(I => I.ExternalRequestStatusModal).Include(I => I.ExternalRequestStatusModal).ToList();
-				if (RequestList != null)
-				{
-					ViewBag.RequestCount = RequestList.Count;
-				}
-				else
-				{
-					ViewBag.RequestCount = 0;
-				}
+				ViewBag.RequestCount = 0;
 			}
 			else
 			{
-				List<Request> RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking().Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).ToList();
-				if (RequestList != null)
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[3].Rows.Count > 0)
 				{
-					ViewBag.RequestCount = RequestList.Count;
+					ViewBag.RequestCount = Convert.ToString(ds.Tables[3].Rows[0]["RequestCount"]);
 				}
 				else
 				{
@@ -105,16 +101,100 @@ public class HomeController : BaseController
 		}
 		else
 		{
-			List<Request> RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.CreatedBy == userId || x.LabL4 == userId || x.UserL4 == userId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).ToList();
-			if (RequestList != null)
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[4].Rows.Count > 0)
 			{
-				ViewBag.RequestCount = RequestList.Count;
+				ViewBag.RequestCount = Convert.ToString(ds.Tables[4].Rows[0]["RequestCount2"]);
+				//if (ds.Tables[4].Rows[0]["RequestCount"] != "0")
+				//{
+				//	ViewBag.RequestCount = Convert.ToString(ds.Tables[4].Rows[0]["RequestCount2"]);
+				//}
+				//else
+				//{
+				//	ViewBag.RequestCount = 0;
+				//}
+
 			}
 			else
 			{
 				ViewBag.RequestCount = 0;
 			}
 		}
+		#region Commented 
+
+		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
+		//if (MasterList != null)
+		//{
+		//	ViewBag.MasterCount = MasterList.Count;
+		//}
+		//else
+		//{
+		//	ViewBag.MasterCount = 0;
+		//}
+		//	if (userRoleId == 2 || userRoleId == 4)
+		//{
+		//	List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.IdNo != "" && Q.IdNo != null) && Q.ActiveStatus == true).ToList();//.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Include(G => G.DepartmenttModel).ToList();
+		//	if (InstrumentList != null)
+		//	{
+		//		ViewBag.InstrumentCount = InstrumentList.Count;
+		//	}
+		//	else
+		//	{
+		//		ViewBag.InstrumentCount = 0;
+		//	}
+
+		//}
+		//else
+		//{
+		//	List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).ToList(); //.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel)
+		//	if (InstrumentList != null)
+		//	{
+		//		ViewBag.InstrumentCount = InstrumentList.Count;
+		//	}
+		//	else
+		//	{
+		//		ViewBag.InstrumentCount = 0;
+		//	}
+		//}
+		//		if (userRoleId == 2 || userRoleId == 4 || userRoleId == 3)
+		//{
+		//	if (userRoleId == 3)
+		//	{
+		//		List<ExternalRequest> RequestList = _unitOfWork.Repository<ExternalRequest>().GetQueryAsNoTracking().Include(I => I.MasterModel).Include(I => I.ExternalRequestStatusModal).Include(I => I.ExternalRequestStatusModal).ToList();
+		//		if (RequestList != null)
+		//		{
+		//			ViewBag.RequestCount = RequestList.Count;
+		//		}
+		//		else
+		//		{
+		//			ViewBag.RequestCount = 0;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		List<Request> RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking().Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).ToList();
+		//		if (RequestList != null)
+		//		{
+		//			ViewBag.RequestCount = RequestList.Count;
+		//		}
+		//		else
+		//		{
+		//			ViewBag.RequestCount = 0;
+		//		}
+		//	}
+		//}
+		//else
+		//{
+		//	List<Request> RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.CreatedBy == userId || x.LabL4 == userId || x.UserL4 == userId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).ToList();
+		//	if (RequestList != null)
+		//	{
+		//		ViewBag.RequestCount = RequestList.Count;
+		//	}
+		//	else
+		//	{
+		//		ViewBag.RequestCount = 0;
+		//	}
+		//}
+		#endregion
 		return View();
 	}
 
@@ -149,34 +229,14 @@ public class HomeController : BaseController
 				id = item.Id,
 				NameEng = item.EquipName,
 				NameJp = item.EquipNameJP,
+				EquipmentMasterId = item.EquipmentMasterId,
 
 			});
 		}
 		return Json(MStranslater);
 		
 	}
-	public IActionResult DepartmentTranslate()
-
-	{
-		List<Department> DepartmentList = _unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList();
-		//var DepartmentData
-		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
-		//MasterLangTranslate MStranslater = new MasterLangTranslate();
-		var DepartTranslater = new List<DepartmentLangTranslate>();
-		foreach (var item in DepartmentList)
-		{
-
-			DepartTranslater.Add(new DepartmentLangTranslate
-			{
-				id = item.Id,
-				Name = item.Name,
-				NameJp = item.NameJP,
-
-			});
-		}
-		return Json(DepartTranslater);
-		
-	}
+	
 
 	public IActionResult ObservationTypeTranslation()
 	{
@@ -241,51 +301,9 @@ public class HomeController : BaseController
 		public string? NameEng { get; set; }
 
 		public string? NameJp { get; set; }
+		public string? EquipmentMasterId { get; set; }
 
-	}
-	public class DepartmentLangTranslate
-	{
-		public int id { get; set; }
-		public string? Name { get; set; }
-
-		public string? NameJp { get; set; }
-
-	}
-
-	public IActionResult ObservationTypeTranslation()
-	{
-		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking().ToList());
-		//ViewBag.ObservationTypeMicro = lovsList;
-		//List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
-		//instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
-		//instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
-		//instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
-		//RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
-		//instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
-		//RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
-		//RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
-		//RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
-
-		var ObservationType = new List<ObservationTypeModel>();
-		foreach (var item in lovsList)
-		{
-
-			ObservationType.Add(new ObservationTypeModel
-			{
-				Id = item.Id,
-				AttrName = item.AttrName,
-				AttrValue = item.AttrValue,
-				Attrform = item.Attrform,
-				AttrNameJp = item.AttrNameJp,
-				AttrValueJp = item.AttrValueJp,
-				AttrformJp = item.AttrformJp,
-
-			});
-		}
-		//ViewBag.ObservationTypeList = ObservationType;
-		return Json(ObservationType);
-	}
+	}	
 
 	public class ObservationTypeModel
 	{
@@ -298,5 +316,18 @@ public class HomeController : BaseController
 		public string AttrformJp { get; set; }
 		public string AttrValueJp { get; set; }
 	}
+
+	public IActionResult LoadRole()
+	{
+		int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+
+		//List<UserRoles> MasterList = _unitOfWork.Repository<UserRoles>().GetQueryAsNoTracking().Include(I => I.UserRoleMapping.);
+
+		CMTDL _cmtdl = new CMTDL(_configuration);
+		List<UserRolesView> UserRoles = _cmtdl.GetUserRoles(LoggedId);
+		return Json(UserRoles);
+	}
+
+
 
 }

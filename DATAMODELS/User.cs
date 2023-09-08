@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 namespace CMT.DATAMODELS
 {
     public partial class User
@@ -14,7 +16,7 @@ namespace CMT.DATAMODELS
         public int ModifiedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public int UserRoleId { get; set; }
+        public int? UserRoleId { get; set; }
         public string? Password { get; set; }
         public string? AsstForemanShortId  { get;set;}
     public string? AsstForemanName { get;set;}
@@ -44,9 +46,55 @@ namespace CMT.DATAMODELS
 
         public string? SubSectionCode { get; set; }
 
+        //public List<int> SubSectionCode1 { get; set; }
+        public virtual List<UserDepartmentMapping> SubSectionCodeList { get; set; }
         public string? DeptCordShortId { get; set; }
         public string? DeptCordName { get; set; }
         public string? DeptCordEmail { get; set; }
 
     }
+
+    public class UserDepartmentMapping
+    {
+        public int? Id { get; set; }
+        public int? UserId { get; set; }
+        public int? DepartmentId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int? CreatedOn { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+
+    public class UserRoleMapping
+    {
+        [DataMember]
+        public int Id { get; set; }
+        [DataMember]
+        public int UserId { get; set; }
+        [DataMember]
+        public int RoleId { get; set; }
+        
+        [DataMember]
+        public bool IsActive { get; set; }
+
+        public int? CreatedOn { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class UserRoles
+    {
+        [DataMember]
+        public int Id { get; set; }
+
+        [DataMember]
+        public string RoleName { get; set; }
+        [DataMember]
+        public bool IsActive { get; set; }
+
+        public int CreatedOn { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+		//public List<UserRoleMapping>? UserRoleMapping { get; set; }
+	}
 }

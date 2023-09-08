@@ -1,0 +1,447 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+        `
+    }
+
+    .Border0px {
+        width: 100%;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+
+    .TableDataCenter {
+        width: 100%;
+        text-align: center;
+    }
+
+    .MeasuredRow {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .Measuredcolumn {
+        float: left;
+        width: 100%;
+    }
+
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="TableWidth" style="width:100%;">
+
+            <td colspan="4" style="font-weight: bold;">観察シート/ Observation sheet - ノギス 300㎜以上/Vernier Caliper more than 300mm (Without depth)</td>
+            <tr class="sizeborder">
+                <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px"
+                    height="60">
+                    <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" />
+                </td>
+                <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">
+                    <span class="trn">ノギス／Vernier caliper アナログ／Analog・デジタル／Digital 300㎜以上／300㎜ or more</span>
+                </td>
+                <td class="textleftborder trn" height="30">フォーマット番号/Format No.</td>
+                <td class="textcenterborder trn">A-08a</td>
+            </tr>
+            <tr>
+                <td class="textleftborder" height="30">
+                    <span class="trn">リビジョン番号／Revision number</span>
+                </td>
+                <td class="textcenterborder trn">0</td>
+            </tr>
+        </table>
+        <br>
+
+        <table class="TableWidth" style="width:100%;">
+            <tr>
+                <td class="textleftborder trn">品名コード-社番／Instrument ID number</td>
+                <td>@Model.IdNo</td>
+                <td class="textleftborder trn">品名／Instrument name</td>
+                <td>@Model.Name</td>
+                <td class="textleftborder trn">製造者／Make</td>
+                <td>@Model.Make</td>
+            </tr>
+            <tr>
+                <td class="textleftborder trn">製造番号 / Serial Number</td>
+                <td>@Model.SerialNo</td>
+                <td class="textleftborder trn">等級／Grade</td>
+                <td>@Model.Grade</td>
+                <td class="textleftborder trn">能力(測定範囲）／Range</td>
+                <td>@Model.Range</td>
+            </tr>
+
+
+            <tr>
+                <td class=" trn center" colspan="4">　　基準器・標準器・検査設備機器／Standard instruments (Master instrument)</td>
+                <td class="textleftborder trn">参照基準／Reference standards</td>
+                <td>vName</td>
+
+            </tr>
+            <tr>
+                <td class="textleftborder trn " colspan="2">001-01079　標準直尺/Standard scale</td>
+                <td class="textleftborder trn" colspan="2">452-00003　万能投影機/Universal projector</td>
+                <td class="textleftborder trn">単位／Unit</td>
+                <td>vName</td>
+
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+
+        </table>
+        <table class="TableWidth">
+            <tr>
+                <td colspan="1" style="width: 12%;"><span class="trn">検査室温度 °C／ Temperature °C</span></td>
+                <td colspan="2" style="width: 15%;"><input type="text" value="vTempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 100px;width: 100%;"></td>
+                <td colspan="1" style="width: 12%;"><span class="trn">検査室湿度 %RH／Humidity %RH</span></td>
+                <td colspan="2" style="width: 15%;"><input type="text" value="vTempEnd" id="TempEnd" class="Tables-AndTablesTextBox" style="height: 100px;width: 100%;"></td>
+                <td colspan="1" style="width: 10%;" class="trn">外観・機能／Visual Check</td>
+                <td colspan="4" style="width: 40%;"><input type="text" value="vHumidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 100px;width: 100%;"></td>
+            </tr>
+        </table>
+        <br>
+
+
+        <tr>
+            <p align="right">
+                <button style="align-content: right;" id="addOutside" name="addOutside" type="button"
+                        class="btn btn-primary trn">
+                    Add New Row
+                </button>
+            </p>
+        </tr>
+
+        <div class="TableWidth">
+            <table id="Outsideadd" style="width:100%;">
+                <thead>
+                    <tr>
+                        <td colspan="5" style="font-weight: bold;">外側測定器差／The outside measurement instrument error</td>
+                    </tr>
+                    <tr>
+                        <td style="word-break: break-all;" class="trn">No.</td>
+                        <td style="word-break: break-all;" class="trn">測定値／Measured value</td>
+                        <td style="word-break: break-all;" class="trn">実測／Actual value</td>
+                        <td style="word-break: break-all;" class="trn">器差／Instrumental error</td>
+                        <td style="width: 40px;" class="trn">Delete</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr id="tablerow0">
+                        <td><input value="1" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                        <td>
+                            <input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+                                   required="required" class="TableWidth">
+                        </td>
+                        <td>
+                            <input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeOut(0);"></i>
+                        </td>
+                        <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                        <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                    </tr>
+                    <tr id="tablerow1">
+                        <td><input value="2" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                        <td>
+                            <input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+                                   required="required" class="TableWidth">
+                        </td>
+                        <td>
+                            <input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeOut(1);"></i>
+                        </td>
+                        <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                        <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                    </tr>
+                    <tr id="tablerow2">
+                        <td><input value="3" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                        <td>
+                            <input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
+                                   required="required" class="TableWidth">
+                        </td>
+                        <td>
+                            <input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth"
+                                   required="required" onkeyup="GetValue('0');">
+                        </td>
+                        <td>
+                            <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeOut(2);"></i>
+                        </td>
+                        <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                        <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <tr>
+            <p align="right">
+                <button style="align-content: right;" id="addInside" name="addInside" type="button"
+                        class="btn btn-primary trn">
+                    Add New Row
+                </button>
+            </p>
+        </tr>
+        <div class="TableWidth">
+            <div class="TableWidth">
+                <table id="Insideadd" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <td colspan="5" style="font-weight: bold;">内側測定器差／The inside measurement instrument error</td>
+                        </tr>
+                        <tr>
+                            <td style="word-break: break-all;" class="trn">No.</td>
+                            <td style="word-break: break-all;" class="trn">測定値／Measured value</td>
+                            <td style="word-break: break-all;" class="trn">実測／Actual value</td>
+                            <td style="word-break: break-all;" class="trn">器差／Instrumental error</td>
+                            <td style="width: 40px;" class="trn">Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr id="tablerow0">
+                            <td><input value="1" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                            <td><input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth"></td>
+                            <td><input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td>
+                                <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeIn(1);"></i>
+                            </td>
+                            <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                            <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                        </tr>
+                        <tr id="tablerow1">
+                            <td><input value="2" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                            <td><input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth"></td>
+                            <td><input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeIn(2);"></i></td>
+                            <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                            <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                        </tr>
+                        <tr id="tablerow2">
+                            <td><input value="3" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth" disabled="disabled"></td>
+                            <td><input value="vMeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text" required="required" class="TableWidth"></td>
+                            <td><input value="vTrial1" id="Trial1" name="Trial1" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td><input value="vTrial2" id="Trial2" name="Trial2" type="text" class="TableWidth" required="required" onkeyup="GetValue('0');"></td>
+                            <td>
+                                <i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeIn(3);"></i>
+                            </td>
+                            <td><input value="vId" id="Id" name="Id" type="hidden" class="TableWidth"></td>
+                            <td><input value="vParentId" id="ParentId" name="ParentId" type="hidden" class="TableWidth"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <table>
+            <br>
+
+        </table>
+        <br>
+        <table class="TableWidth">
+            <tr>
+                <td class="trn">検査員／Inspector</td>
+                <td>
+                    <input type="text" value="vCalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy"
+                           class="Border0px" disabled>
+                </td>
+
+                <td class="trn">検査日／Inspection date</td>
+                <td>
+                    <input type="text" value="vReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="trn">承認者／Approver</td>
+
+
+                <td>
+                    <input type="text" value="vperformDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                           class="Border0px" disabled>
+                </td>
+
+
+                <td class="trn">承認日／Approved date</td>
+
+
+                <td>
+                    <input type="text" name="Review_Date" id="Review_Date"
+                           value="vReview_Date" class="size" disabled>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td class="textleftborder trn">判定／Judgement</td>
+                <td class="textleftborder" colspan="3">
+                    <div style="text-align: left;">
+                        <label class="trn">合格/Pass</label>
+                        <input type="radio" name="Approve" id="Approve">
+                        <label class="trn">不合格/Fail</label>
+                        <input type="radio" name="Approve" id="Reject">
+                    </div>
+                </td>
+
+            </tr>
+
+
+
+        </table>
+    </div>
+</div>
+
+
+<script>
+    var TempRowIndex = $('#Outsideadd >tbody >tr').length;
+    var counter = $('#Outsideadd >tbody >tr').length;
+    var SNo = $('#Outsideadd >tbody >tr').length;
+    SNo = SNo + 1;
+
+    var TempRowIndex2 = $('#Insideadd >tbody >tr').length;
+    var counter2 = $('#Insideadd >tbody >tr').length;
+    var SNo2 = $('#Insideadd >tbody >tr').length;
+    SNo2 = SNo2 + 1;
+
+    $(function () {
+        $('#addOutside').click(function () {
+
+            $('#Outsideadd tbody tr').each(function (row, tr) {
+
+                $('<tr id="tablerowIns' + counter + '"><td>' +
+                    '<input id="sno" name="sno" type="text" class="TableWidth" value=' + SNo + ' disabled="disabled" />' +
+                    '<input id="id" name="id" type="hidden" value="" />' +
+                    '<input id="parentid" name="parentid" type="hidden" value="" />' +
+                    '<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="MeasuedValue" name="MeasuedValue" type="text" class="TableWidth"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="Actuals" name="Actuals" type="text" class="TableWidth"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="InstrumentError" name="InstrumentError" type="text" class="TableWidth" value="" required="required" />' +
+                    '</td>' +
+                    '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeOut(' + counter + ');"></i></td>' +
+                    //'<input id="id" name="id" type="hidden" value="" />' +
+                    //'</td>' +
+                    //'<td>' +
+                    //'<input id="parentid" name="parentid" type="hidden" value="" />' +
+                    //'</td>' +
+                    //'<td>' +
+                    //'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+                    //'</td>' +
+                    '</tr>').appendTo('#Outsideadd');
+                counter++;
+                SNo++;
+
+                return false;
+            });
+        });
+
+
+        $('#addInside').click(function () {
+
+            $('#Insideadd tbody tr').each(function (row, tr) {
+
+                $('<tr id="tablerowIns' + counter2 + '"><td>' +
+                    '<input id="sno" name="sno" type="text" class="TableWidth" value=' + SNo2 + ' disabled="disabled" />' +
+                    '<input id="id" name="id" type="hidden" value="" />' +
+                    '<input id="parentid" name="parentid" type="hidden" value="" />' +
+                    '<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="MeasuedValue" name="MeasuedValue" type="text" class="TableWidth"  value="" onkeyup="GetValue(' + counter2 + ');" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="Actuals" name="Actuals" type="text" class="TableWidth"  value="" onkeyup="GetValue(' + counter2 + ');" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input id="InstrumentError" name="InstrumentError" type="text" class="TableWidth" value="" required="required" />' +
+                    '</td>' +
+                    '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeIn(' + counter2 + ');"></i></td>' +
+                    //'<input id="id" name="id" type="hidden" value="" />' +
+                    //'</td>' +
+                    //'<td>' +
+                    //'<input id="parentid" name="parentid" type="hidden" value="" />' +
+                    //'</td>' +
+                    //'<td>' +
+                    //'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+                    //'</td>' +
+                    '</tr>').appendTo('#Insideadd');
+                counter2++;
+                SNo2++;
+
+                return false;
+            });
+        });
+    });
+
+    function removeOut(index) {
+        alert('kavi')
+        alert(index)
+        if (counter > 1) {
+            $('#Outsideadd' + index).remove();
+            counter--;
+        }
+        return false;
+    }
+
+    function removeIn(index) {
+        if (counter2 > 1) {
+            $('#Insideadd' + index).remove();
+            counter2--;
+        }
+        return false;
+    }
+</script>

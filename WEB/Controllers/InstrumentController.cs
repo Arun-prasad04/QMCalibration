@@ -1,5 +1,6 @@
 
 using System.Diagnostics;
+using CMT.DATAMODELS;
 using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services;
@@ -39,13 +40,15 @@ public class InstrumentController : BaseController
 	}
 
      public IActionResult Create()
-    {
+     {
         ViewBag.PageTitle="Instrument Create";
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument();
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 		return View(response.ResponseData);
-    }
+     }
 
     public IActionResult InsertInstrument(InstrumentViewModel instrument)
     {		
@@ -59,7 +62,7 @@ public class InstrumentController : BaseController
             instrument.ModifiedOn = DateTime.Now;
             instrument.CreatedOn = DateTime.Now;
             //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            instrument.UserRoleId = userRoleId;
+            instrument.UserRoleId = userRoleId;            
             response = _instrumentService.UpdateInstrument(instrument);
         }
         else
@@ -73,10 +76,10 @@ public class InstrumentController : BaseController
             instrument.DueDate = DateTime.Now;
             instrument.CalibDate=DateTime.Now;
             //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            if(userRoleId != 2)
-            {
-                instrument.UserDept = UserDeptId;
-            }
+            //if(userRoleId != 2)
+            //{
+            //    instrument.UserDept = UserDeptId;
+            //}
             response = _instrumentService.InsertInstrument(instrument);
         }
         TempData["ResponseCode"] = response.ResponseCode;
@@ -97,7 +100,13 @@ public class InstrumentController : BaseController
         int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
         
         ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-        if(userRoleId==1 || userRoleId==3){
+		ViewBag.ObservationType = response.ResponseData.ObservationType;
+		ViewBag.UserDept = response.ResponseData.UserDept;
+		ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
+		ViewBag.CalibFreq = response.ResponseData.CalibFreq;
+		ViewBag.MUTemplates = response.ResponseData.MUTemplate;
+		ViewBag.Observation = response.ResponseData.ObservationTemplate;
+		if (userRoleId==1 || userRoleId==3){
             response.ResponseData.IsDisabled="readonly";
         }
         return View("Create", response.ResponseData);
@@ -142,12 +151,30 @@ public class InstrumentController : BaseController
         return Json(response.ResponseData);
     }
 
-    public ActionResult Request(int instumentId, int typeId)
+    public ActionResult Request(int instrumentId, int typeId)
     {
      int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-      ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instumentId,userId,typeId);
+      ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instrumentId, userId,typeId);
         TempData["ResponseCode"]=response.ResponseCode;
         TempData["ResponseMessage"]=response.ResponseMessage;
         return RedirectToAction("Index","Instrument");
     }
+
+
+	public ActionResult DueRequest(List<RequestAllView> userViewModelList) 
+    {
+        //return Json(true);
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response;
+        response = _requestService.InsertDueRequest(userViewModelList, userId);
+
+		//response = _requestService.InsertDueRequest(userViewModelList, userId);
+
+		//foreach (var user in userViewModelList)
+		//      {
+		//	
+		//}
+		//ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
+		return Json(true); 
+	}
 }
