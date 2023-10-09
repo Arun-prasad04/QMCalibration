@@ -70,83 +70,87 @@
 						</thead>
 						<tbody>
 
-							@*@foreach (var item in Model)
+							@foreach (var item in Model)
 							{
-								<tr>
-									<td>@item.InstrumentName</td>
-									<td>@item.SlNo</td>
-									<td>@item.IdNo</td>
-									<td>@item.Range</td>
-									<td>@item.DepartmentName</td>
-									<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
-									<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
+								{
+									<tr>
+										<td class="one">@item.InstrumentName</td>
+										<td>@item.SlNo</td>
+										<td>@item.IdNo</td>
+										<td>@item.Range</td>
+										<td>@item.DepartmentName</td>
+										<td>@item.TypeOfEquipment</td>
+										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+										<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
 
-									<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-									{
-										<td>
-											@if (@item.DueDate != null)
-											{
-												@if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+										{
+											<td style="text-align:center;" class="chkpl">
+												@if (@item.DueDate != null)
 												{
-													@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
+													@if (DateTime.Now.Month + 1 == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+													@* @if (DateTime.Now.Month== @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year) *@
 													{
-														<a href='@Url.Action("Request","Instrument",new {instumentId=@item.Id,typeId=2})'><i class="fas fa-arrow-alt-circle-right"></i></a>
+														@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
+														{
+														@* @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
+														{ *@
+															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+															<input id="typeId" name="typeId" type="hidden" value="2" />
+															<input id="requestId" name="typeId" type="hidden" value='@item.RequestId' />
+														}
+														@* } *@
+													}
+													@* (@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) *@
+													else if (@item.DueDate.Month < DateTime.Now.Month + 1 && DateTime.Now.Year >= @item.DueDate.Year)
+													{
+
+														@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
+														{
+														@* @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
+														{ *@
+
+															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+															<input id="typeId" name="typeId" type="hidden" value="3" />
+															<input id="requestId" name="typeId" type="hidden" value='@item.RequestId' />
+														@* } *@
+													
 													}
 
 												}
-												else if (@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year)
+												else
 												{
-													@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
-													{
-														<a href='@Url.Action("Request","Instrument",new {instumentId=@item.Id,typeId=3})'><i class="fas fa-arrow-alt-circle-right"></i></a>
-													}
 
 												}
-											}
-										</td>
-									}
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-									{
-										<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
-									}
-									else
-									{
-										<td></td>
-									}
-								</tr>
+												}
+											</td>
+										}
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+										{
+											<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
+										}
+										else
+										{
+											<td></td>
+										}
+									</tr>
+								}
 
-
-							}*@
-
-							@*		Reference
-								
-							<tr><td>INTINS002</td><td>INTINST002</td><td></td><td>1-10</td><td>LAB</td><td>21-08-2023</td><td>21-08-2023</td><td style='text-align: center;'><a href='/Instrument/InstrumentEdit?instrumentId=1138'><i class='fas fa-edit'></i></a></td><td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td><td><input id="typeId" name="typeId" type="hidden" value="2" /></td><td> </td></tr>
-							<tr>
-								1<td>INTINS004</td>
-								2<td>INTINST004</td>
-								3<td>IDN004</td>
-								4<td>1-10</td>
-								5<td>LAB</td>
-								6<td>26-08-2023</td>
-								7<td>13-09-2024</td>
-								8<td style='text-align: center;'><a href='/Instrument/InstrumentEdit?instrumentId=1140'><i class='fas fa-edit'></i></a></td><td> </td><td> </td></tr>
-						9<td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td>
-						10<td><input id="typeId" name="typeId" type="hidden" value="2" /></td>
-						11<td> </td> *@
-					@* 	<td style="text-align:center;"><input id="instrumentId" name="instrumentId" type="checkbox" value="" /></td>
-						<td><input id="typeId" name="typeId" type="hidden" value="2" /></td> *@
-
-
+							}    
 						</tbody>
 					</table>
 				</div>
 
-				<div class="form-group" style="text-align:right;">
-					<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
-						   onclick="InsertRequestList();">
-					<a href='@Url.Action("Request","Tracker")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
-				</div>
+				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+				{
+					<div class="form-group" style="text-align:right;">
+						<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
+											   onclick="InsertRequestList();">
+						<a href='@Url.Action("Request","Tracker")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+					</div>
+				}
 
 				<!-- /.card-body -->
 			</div>
@@ -156,143 +160,165 @@
 	</div>
 	<!-- /.row -->
 </section>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 <script>
-	setTimeout(function () {		
-		//Conversion();		
-		GetAllInstrument();
-	}, 500);
 
-	
-</script>
+	$(function () {
+
+		var oTable = $('#example1').dataTable({
+			stateSave: true,
+			'columnDefs': [{
+				'targets': [9], /* column index */
+				'orderable': false, /* true or false */
+			}]
+		});
+
+		var allPages = oTable.fnGetNodes();
+
+		$('body').on('click', '#selectAll', function () {
+			if ($(this).hasClass('allChecked')) {
+				$('input[type="checkbox"]', allPages).prop('checked', false);
+			} else {
+				$('input[type="checkbox"]', allPages).prop('checked', true);
+			}
+			$(this).toggleClass('allChecked');
+		})
 
 
-<script>
-		//$(document).ready(function() {
-	//	//$.noConflict();
-	//	GetAllInstrument();
-	//});
-	function GetAllInstrument(){
-		$('#dvload').show();
+	});
+	// function GetAllInstrument(){
+	// 	$('#dvload').show();
 		
-		$.ajax({
-		type: 'GET',
-			url: '../Instrument/GetAllInstrumentList',
-			dataType: 'json',
-			success: function (data) {
-				$('#example1 tbody').empty();
-				console.log(data);
-				if (data.length>0){					
-				$.each(data, function (i, item) {					
-					//console.log(item.dueDate);
-					var date = new Date(item.dueDate)
-					//console.log(date);
-					month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
-						yr = date.getFullYear(),
-						console.log(yr);
-					
-					var tdRequest = '';
-					var d = new Date($.now());
-					if (item.userRoleId == 1) {
-						if (item.dueDate != null) {
-							//if ((d.getMonth() + 1) == item.dueDate.Month && d.getFullYear() == item.dueDate.Year) {
-							if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
-								if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+	// 	$.ajax({
+	// 	type: 'GET',
+	// 		url: '../Instrument/GetAllInstrumentList',
+	// 		dataType: 'json',
+	// 		success: function (data) {
+	// 			$('#example1 tbody').empty();
+	// 			console.log(data);
+	// 			if (data.length>0){					
+	// 			$.each(data, function (i, item) {					
+	// 				//console.log(item.dueDate);
+	// 				var date = new Date(item.dueDate)
+	// 				//console.log(date);
+	// 				month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
+	// 					yr = date.getFullYear(),
+	// 					console.log(yr);
+	// 					console.log("month");
+	// 					console.log(month);
+	// 				console.log(item.userRoleId);
+	// 				var tdRequest = '';
+	// 					var nowDate = new Date();
+	// 					console.log("-------nowDate m-----");
+	// 				console.log(nowDate.getMonth());
+						
+	// 				var d = new Date($.now());
+	// 				if (item.userRoleId == 1) {
+						
+	// 					if (item.dueDate != null) {
+	// 							console.log(item.dueDate);
+	// 							// console.log("-------Regular due date");
+	// 							// console.log(d);
+	// 							// console.log(d.getMonth());
+	// 							console.log("----Duemonth month ------");
+	// 							var Duemonth = new Date();
+	// 						console.log(Duemonth.getMonth());
+	// 						if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
+	// 							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
 									
 
-									//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=2' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
-									//< a href = 'Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=2})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
+	// 										console.log("-------Regular");
+	// 										consoe.log(item.id);
+	// 									tdRequest = '<td style="text-align:center;">' +
 
-										tdRequest = '<td style="text-align:center;">' +
-
-											'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
-											'<input id="typeId" name="typeId" type="hidden" value="2" />' +
-											'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
-											'</td>' 
+	// 										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
+	// 										'<input id="typeId" name="typeId" type="hidden" value="2" />' +
+	// 										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
+	// 										'</td>' 
 											
-									}
+	// 								}
 
-							}
-							//else if (item.dueDate.Month < (d.getMonth() + 1) && d.getFullYear() >= item.dueDate.Year) {
-							else if (month < (d.getMonth() + 1) && d.getFullYear() >= yr)
-							{
-								if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
-									//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=3' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"									
-									//<a href='Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=3})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
-
-										tdRequest = '<td style="text-align:center;">' +
-											'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
-											'<input id="typeId" name="typeId" type="hidden" value="3" />' +
-											'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
-											'</td>' 
+	// 						}
+							
+	// 						else if (month < (d.getMonth() + 1) && d.getFullYear() >= yr)
+	// 						{
+	// 							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+	// 									console.log("-------Recalibration");
+	// 									consoe.log(item.id);
+	// 									tdRequest = '<td style="text-align:center;">' +
+	// 										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
+	// 										'<input id="typeId" name="typeId" type="hidden" value="3" />' +
+	// 										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
+	// 										'</td>' 
 
 											
-									}
+	// 								}
 
-							}
-							else {
-								tdRequest = "<td> </td>"
-							}
-						}
-						else {
-							tdRequest = "<td></td>"
-						}
+	// 						}
+	// 						else {
+	// 							tdRequest = "<td> </td>"
+	// 						}
+	// 					}
+	// 					else {
+	// 						tdRequest = "<td></td>"
+	// 					}
 
-					}
+	// 				}
 
-					var tdQuarantine = '';
-					if (item.userRoleId == 2) {
-						tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id='+item.id+' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
-					}
-					else {
-						tdQuarantine = "<td> </td>"
-					}
-					console.log("tdRequest");
-					console.log(tdRequest);
-					var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
-					var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
+	// 				var tdQuarantine = '';
+	// 				if (item.userRoleId == 2) {
+	// 					tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id='+item.id+' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
+	// 				}
+	// 				else {
+	// 					tdQuarantine = "<td> </td>"
+	// 				}
+	// 				console.log("tdRequest");
+	// 				console.log(tdRequest);
+	// 				var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
+	// 				var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
 
-						var rows = "<tr>"
-							+ "<td>" + item.instrumentName + "</td>"
-							+ "<td>" + item.slNo + "</td>"
-							+ "<td>" + item.idNo + "</td>"
-							+ "<td>" + item.range + "</td>"
-							+ "<td>" + item.departmentName + "</td>"
-							+ "<td>" + item.typeOfEquipment + "</td>"
-							+ "<td>" + calibDate + "</td>"
-							+ "<td>" + dueDate + "</td>"
-							+ "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
-							+ tdRequest
-							+ tdQuarantine
-							+ "</tr>";
-						$('#example1 tbody').append(rows);
-					$('#dvload').hide();
+	// 					var rows = "<tr>"
+	// 						+ "<td>" + item.instrumentName + "</td>"
+	// 						+ "<td>" + item.slNo + "</td>"
+	// 						+ "<td>" + item.idNo + "</td>"
+	// 						+ "<td>" + item.range + "</td>"
+	// 						+ "<td>" + item.departmentName + "</td>"
+	// 						+ "<td>" + item.typeOfEquipment + "</td>"
+	// 						+ "<td>" + calibDate + "</td>"
+	// 						+ "<td>" + dueDate + "</td>"
+	// 						+ "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
+	// 						+ tdRequest
+	// 						+ tdQuarantine
+	// 						+ "</tr>";
+	// 					$('#example1 tbody').append(rows);
+	// 				$('#dvload').hide();
 					
-				});
-				}
-				else {				
-					$('#dvload').hide();
-				}
-				$("#example1").DataTable({
-					"paging": true,
-					"lengthChange": true,
-					"searching": true,
-					"ordering": true,
-					"info": true,
-					"autoWidth": true,
-					"responsive": true,
-					'columnDefs': [{
-						'targets': [9], /* column index */
-						'orderable': false, /* true or false */
-					}]
-				});
+	// 			});
+	// 			}
+	// 			else {				
+	// 				$('#dvload').hide();
+	// 			}
+	// 			$("#example1").DataTable({
+	// 				"paging": true,
+	// 				"lengthChange": true,
+	// 				"searching": true,
+	// 				"ordering": true,
+	// 				"info": true,
+	// 				"autoWidth": true,
+	// 				"responsive": true,
+	// 				'columnDefs': [{
+	// 					'targets': [9], /* column index */
+	// 					'orderable': false, /* true or false */
+	// 				}]
+	// 			});
 								
-			},
-			error: function (emp) {
-				$('#dvload').hide();
-				alert('error');
-			}
-		});
-	}
+	// 		},
+	// 		error: function (emp) {
+	// 			$('#dvload').hide();
+	// 			alert('error');
+	// 		}
+	// 	});
+	// }
 	
 </script>

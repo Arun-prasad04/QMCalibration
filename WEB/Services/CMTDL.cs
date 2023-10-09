@@ -4,6 +4,7 @@ using CMT.DATAMODELS;
 using Microsoft.Data.SqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Data;
+using System.Text;
 using WEB.Models;
 using WEB.Services.Interface;
 
@@ -11,13 +12,13 @@ namespace WEB.Services
 {
 	public class CMTDL
 	{
-		private IConfiguration _configuration;		
+		private IConfiguration _configuration;
 		public CMTDL(IConfiguration Configuration)
 		{
-			
-			_configuration = Configuration;			
+
+			_configuration = Configuration;
 		}
-		
+
 
 		public ResponseViewModel<UserViewModel> GetUserById(int UserId)
 		{
@@ -139,7 +140,7 @@ namespace WEB.Services
 
 		}
 
-		
+
 
 		//public UserViewModel GetUserById(int UserId)
 		//{
@@ -246,7 +247,7 @@ namespace WEB.Services
 		//	return uv;
 		//}
 
-		
+
 		public List<UserViewModel> GetLadAdminUsers()
 		{
 			try
@@ -326,7 +327,7 @@ namespace WEB.Services
 				ErrorViewModelTest.Log("exception - " + e.Message);
 				return null;
 			}
-		}	
+		}
 
 		public List<DepartmentViewModel> GetUserDepartment(int userId, int userRoleId)
 		{
@@ -375,7 +376,7 @@ namespace WEB.Services
 				return null;
 			}
 		}
-	
+
 		public UserViewModel GetUserMasterById(int UserId)
 		{
 			UserViewModel uv = new UserViewModel();
@@ -479,7 +480,7 @@ namespace WEB.Services
 				ErrorViewModelTest.Log("exception - " + e.Message);
 			}
 			return uv;
-		}		
+		}
 
 		public UserViewModel GetLadTechnicalManagerUsers()
 		{
@@ -504,7 +505,7 @@ namespace WEB.Services
 					uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
 					uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
 
-				}				
+				}
 			}
 			catch (Exception e)
 			{
@@ -514,72 +515,72 @@ namespace WEB.Services
 			return uv;
 		}
 
-        public UserViewModel GetLadInspectorUsers()
-        {
-            UserViewModel uv = new UserViewModel();
-            try
-            {
+		public UserViewModel GetLadInspectorUsers()
+		{
+			UserViewModel uv = new UserViewModel();
+			try
+			{
 
-                DataSet ds = GetUserMasterList("Facilitymanager");
+				DataSet ds = GetUserMasterList("Facilitymanager");
 
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
-                    uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
-                    uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
-                    uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
-                    uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
-                    uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
-                    uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
-                    uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
-                    uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
-                    uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
-                    uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
-                    uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
+					uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
+					uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
+					uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+					uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
+					uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
+					uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
+					uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
+					uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
+					uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
+					uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
+					uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
 
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorViewModelTest.Log("CMTDL - GetLadInspectorUsers Method");
-                ErrorViewModelTest.Log("exception - " + e.Message);
-            }
-            return uv;
-        }
+				}
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetLadInspectorUsers Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+			}
+			return uv;
+		}
 
 
 		public User GetCalibrationLabUsers()
 		{
-            User uv = new User();
-            try
-            {
+			User uv = new User();
+			try
+			{
 
-                DataSet ds = GetUserMasterList("CalibrationLab");
+				DataSet ds = GetUserMasterList("CalibrationLab");
 
 				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
-                    uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
-                    uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
-                    uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
-                    uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
-                    uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
-                    uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
-                    uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
-                    uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
-                    uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
-                    uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
-                    uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
+				{
+					uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
+					uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
+					uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
+					uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+					uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
+					uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
+					uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
+					uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
+					uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
+					uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
+					uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
+					uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
 
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorViewModelTest.Log("CMTDL - GetLadInspectorUsers Method");
-                ErrorViewModelTest.Log("exception - " + e.Message);
-            }
-            return uv;
-        }
+				}
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetLadInspectorUsers Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+			}
+			return uv;
+		}
 
 
 		public List<UserRolesView> GetUserRoles(int userid)
@@ -589,7 +590,7 @@ namespace WEB.Services
 				List<UserRolesView> UserRoleslList = new List<UserRolesView>();
 
 
-				DataSet ds = GetUserRoleslList(userid);				
+				DataSet ds = GetUserRoleslList(userid);
 				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
 				{
 					foreach (DataRow dr in ds.Tables[0].Rows)
@@ -597,14 +598,14 @@ namespace WEB.Services
 						UserRolesView userlist = new UserRolesView
 						{
 							Id = Convert.ToInt32(dr["Id"]),
-							RoleName = dr["RoleName"].ToString()											
+							RoleName = dr["RoleName"].ToString()
 						};
 						UserRoleslList.Add(userlist);
 
 					}
 				}
 
-				return UserRoleslList;				
+				return UserRoleslList;
 			}
 			catch (Exception e)
 			{
@@ -614,38 +615,38 @@ namespace WEB.Services
 			}
 		}
 
-        public RequestMailList GetDataForInstrumentRequest(int InstId, int reqtype)
-        {
-            RequestMailList uv = new RequestMailList();
-            try
-            {
+		public RequestMailList GetDataForInstrumentRequest(int InstId, int reqtype)
+		{
+			RequestMailList uv = new RequestMailList();
+			try
+			{
 
-                DataSet ds = GetDataForDetailRequest(InstId, reqtype);
+				DataSet ds = GetDataForDetailRequest(InstId, reqtype);
 
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    uv.SNo = Convert.ToInt16(ds.Tables[0].Rows[0]["S.No"]);
-                    uv.RequestNo = Convert.ToString(ds.Tables[0].Rows[0]["Request No"]);
-                    uv.LabId = Convert.ToString(ds.Tables[0].Rows[0]["Lab ID"]);
-                    uv.EquipmentType = Convert.ToString(ds.Tables[0].Rows[0]["Equipment Type"]);
-                    uv.EquipmentName = Convert.ToString(ds.Tables[0].Rows[0]["Equipment Name"]);
-                    uv.SubsectionCode = Convert.ToString(ds.Tables[0].Rows[0]["Sub Section Code"]);
-                    uv.CalibrationType = Convert.ToString(ds.Tables[0].Rows[0]["Calibration Type"]);      
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					uv.SNo = Convert.ToInt16(ds.Tables[0].Rows[0]["S.No"]);
+					uv.RequestNo = Convert.ToString(ds.Tables[0].Rows[0]["Request No"]);
+					uv.LabId = Convert.ToString(ds.Tables[0].Rows[0]["Lab ID"]);
+					uv.EquipmentType = Convert.ToString(ds.Tables[0].Rows[0]["Equipment Type"]);
+					uv.EquipmentName = Convert.ToString(ds.Tables[0].Rows[0]["Equipment Name"]);
+					uv.SubsectionCode = Convert.ToString(ds.Tables[0].Rows[0]["Sub Section Code"]);
+					uv.CalibrationType = Convert.ToString(ds.Tables[0].Rows[0]["Calibration Type"]);
 					uv.CreaterFirstName = Convert.ToString(ds.Tables[0].Rows[0]["CreaterFirstName"]);
 					uv.CreaterLastName = Convert.ToString(ds.Tables[0].Rows[0]["CreaterLastName"]);
 					uv.CreaterEmail = Convert.ToString(ds.Tables[0].Rows[0]["CreaterEmail"]);
 
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorViewModelTest.Log("CMTDL - GetDataForInstrumentRequest Method");
-                ErrorViewModelTest.Log("exception - " + e.Message);
-            }
-            return uv;
-        }
+				}
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetDataForInstrumentRequest Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+			}
+			return uv;
+		}
 
-        public DataSet GetUserRoleslList(int userid)
+		public DataSet GetUserRoleslList(int userid)
 		{
 			var connectionString = _configuration.GetConnectionString("CMTDatabase");
 			SqlCommand cmd = new SqlCommand("GetUserRoleslList");
@@ -663,210 +664,211 @@ namespace WEB.Services
 		}
 
 		public DataSet GetCalibrationLabUsersData()
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserMasterList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Type", "CalibrationLab");
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserMasterList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@Type", "CalibrationLab");
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
 
-        // GetUserMasterList
-        public DataSet GetUserMasterList(string typ)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserMasterList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Type", typ);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+		// GetUserMasterList
+		public DataSet GetUserMasterList(string typ)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserMasterList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@Type", typ);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
 
-        //GetRequestList
-        public DataSet GetRequestList(int userid, int userroleid)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetRequestList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", userid);
-            cmd.Parameters.AddWithValue("@userroleid", userroleid);
-            //cmd.Parameters.AddWithValue("@deptid", deptid);
-            //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+		//GetRequestList
+		public DataSet GetRequestList(int userid, int userroleid)
+		{
+			
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetRequestList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", userid);
+			cmd.Parameters.AddWithValue("@userroleid", userroleid);
+			//cmd.Parameters.AddWithValue("@deptid", deptid);
+			//SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
 
-        
-        //GetUserMasterDetailById
-        public DataSet GetUserMasterDetailById(int UserId)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserMasterDetailById");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", UserId);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
-        //GetUserDashboardInfo
-        public DataSet GetUserDashboardInfo(int UserId)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserDashboardInfo");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", UserId);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+		//GetUserMasterDetailById
+		public DataSet GetUserMasterDetailById(int UserId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserMasterDetailById");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
-        //GetInstrumentList
-        public DataSet GetInstruentList(int userid, int userroleid)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetInstrumentList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", userid);
-            cmd.Parameters.AddWithValue("@userroleid", userroleid);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+			return dsResults;
+		}
+		//GetUserDashboardInfo
+		public DataSet GetUserDashboardInfo(int UserId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserDashboardInfo");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
+		//GetInstrumentList
+		public DataSet GetInstruentList(int userid, int userroleid)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetInstrumentList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", userid);
+			cmd.Parameters.AddWithValue("@userroleid", userroleid);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-        // GetInstruentQuartineList
-        public DataSet GetInstruentQuartineList(int userid, int userroleid)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetInstruentQuartineList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", userid);
-            cmd.Parameters.AddWithValue("@userroleid", userroleid);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+			return dsResults;
+		}
 
-            return dsResults;
-        }
-        //GetUserDepartmentList
-        public DataSet GetUserdepartmentOnly(int userId, int userRoleId)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserDepartmentList");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", userId);
-            cmd.Parameters.AddWithValue("@userRoleid", userRoleId);
-            //cmd.Parameters.AddWithValue("@deptid", deptid);
-            //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+		// GetInstruentQuartineList
+		public DataSet GetInstruentQuartineList(int userid, int userroleid)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetInstruentQuartineList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", userid);
+			cmd.Parameters.AddWithValue("@userroleid", userroleid);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
-        //GetUserMasterDetailById
-        public DataSet GetUserMasterDetailByIds(int UserId)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetUserMasterDetailById");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", UserId);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+			return dsResults;
+		}
+		//GetUserDepartmentList
+		public DataSet GetUserdepartmentOnly(int userId, int userRoleId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserDepartmentList");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", userId);
+			cmd.Parameters.AddWithValue("@userRoleid", userRoleId);
+			//cmd.Parameters.AddWithValue("@deptid", deptid);
+			//SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
+		//GetUserMasterDetailById
+		public DataSet GetUserMasterDetailByIds(int UserId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserMasterDetailById");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-        public DataSet InsertDueRequest(string reqist, int userId)
-        {
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("InsertDueRequestlist");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@userid", userId);
-            cmd.Parameters.AddWithValue("@reqist", reqist);
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+			return dsResults;
+		}
 
-            return dsResults;
+		public DataSet InsertDueRequest(string reqist, int userId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("InsertDueRequestlist");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@userid", userId);
+			cmd.Parameters.AddWithValue("@reqist", reqist);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-        }
+			return dsResults;
+
+		}
 
 		public DataSet GetDataForDetailRequest(int InstId, int reqtype)
 		{
-            var connectionString = _configuration.GetConnectionString("CMTDatabase");
-            SqlCommand cmd = new SqlCommand("GetDataForDetailRequest");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@InstrumentId", InstId);            
-            cmd.Parameters.AddWithValue("@TypeReq", reqtype);            
-            SqlConnection sqlConn = new SqlConnection(connectionString);
-            DataSet dsResults = new DataSet();
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-            cmd.Connection = sqlConn;
-            cmd.CommandTimeout = 2000;
-            sqlAdapter.SelectCommand = cmd;
-            sqlAdapter.Fill(dsResults);
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetDataForDetailRequest");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@InstrumentId", InstId);
+			cmd.Parameters.AddWithValue("@TypeReq", reqtype);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-            return dsResults;
-        }
+			return dsResults;
+		}
 
-        #region
-        /*
+		#region
+		/*
         //GetUserMasterList
         public DataSet GetLadInspectorUsersData()
         {
@@ -920,6 +922,6 @@ namespace WEB.Services
             return dsResults;
         }
 		*/
-        #endregion`
-    }
+		#endregion`
+	}
 }

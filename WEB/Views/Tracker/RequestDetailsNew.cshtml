@@ -227,30 +227,35 @@
                                 </select>
                             </div>
                         </div>*@
-                                <div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Applicable for Tool Inventory</label>
-										<select id="ToolInventory" name="ToolInventory" class="form-control">
-											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
-											@if (Model.ToolInventory == "Yes")
-											{
-												<option value="Yes" selected="true" class="trn">Yes</option>
-											}
-											else
-											{
-												<option value="Yes" class="trn">Yes</option>
-											}
-											@if (Model.ToolInventory == "No")
-											{
-												<option value="No" selected="true" class="trn">No</option>
-											}
-											else
-											{
-												<option value="No" class="trn">No</option>
-											}
-										</select>
-									</div>
-								</div>
+                        @if (Model.TypeOfEquipment != "External Instrument")
+                        {
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="required trn">Applicable for Tool Inventory</label>
+                                    <select id="ToolInventory" name="ToolInventory" class="form-control">
+                                        <option value="" selected="true" class="trn">--Select Tool Inventory--</option>
+                                        @if (Model.ToolInventory == "Yes")
+                                        {
+                                            <option value="Yes" selected="true" class="trn">Yes</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Yes" class="trn">Yes</option>
+                                        }
+                                        @if (Model.ToolInventory == "No")
+                                        {
+                                            <option value="No" selected="true" class="trn">No</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="No" class="trn">No</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
+
+
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -859,7 +864,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template</label>
+                                        <label class="trn">Observation Template-i</label>
                                         <select id="NewObservation" onchange="LoadObservationTypePopup(language)" class="form-control">
                                             @* <option>-- Select Observation Template --</option>*@
                                             @*@foreach (var freq in @Model.ObservationTemplateList)
@@ -879,7 +884,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template Type</label>
+                                        <label class="trn">Observation Template Type-i</label>
                                         <select id="NewObservationType" class="form-control">
                                         </select>
                                     </div>
@@ -949,7 +954,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template</label>
+                                        <label class="trn">Observation Template-i-E</label>
                                         <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled>
                                             @foreach (var freq in @Model.ObservationTemplateList)
                                             {
@@ -983,7 +988,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template Type</label>
+                                        <label class="trn">Observation Template Type-IE</label>
                                         <select id="NewObservationTypeEd" class="form-control" disabled>
                                         </select>
                                     </div>
@@ -1688,15 +1693,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                 <div class="col-sm-6">
-                                <div class="form-group">
-                                        <label class="trn">Instrument Id Number</label>
-                                        <input type="text" class="form-control" id="IdNo" value=''>
+                           
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Instrument Id Number</label>
+                                        @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                        {
+                                            <input type="text" class="form-control" id="IdNo" value="@Model.InstrumentIdNo" disabled>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="IdNo" value=''>
+                                        }
+                                    </div>
                                     </div>
                                 </div>
-                            </div>
-
+                           
                             <div class="row">
                                 <div class="col-sm-6">
                                 </div>

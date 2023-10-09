@@ -94,6 +94,8 @@ public class InstrumentViewModel
 		public int? ToolRoomStatus { get; set; }
 
 
+
+
 	}
 	public class Instrumentids
 	{
@@ -103,4 +105,13 @@ public class InstrumentViewModel
 		
 
 	}
+	public class RequestAllView { 
+        public int instrumentId { get; set; } 
+        public int TypeValue { get; set; } }
+	public class RequestMailList { 
+        public int SNo { get; set; } public string? RequestNo { get; set; } public string? LabId { get; set; } public string? EquipmentType { get; set; } public string? EquipmentName { get; set; } public string? SubsectionCode { get; set; } public string? CalibrationType { get; set; } public string? CreaterFirstName { get; set; } public string? CreaterLastName { get; set; } public string? CreaterEmail { get; set; } }
+
+
+
+
 }

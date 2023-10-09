@@ -831,7 +831,7 @@ function ValidateCheck() {
 }
 
 
-function DudeDateCalculation(dt) {
+function DudeDateCalculation (dt) {
 
     var duedate;
     if (dt == 13) {
@@ -886,7 +886,7 @@ function DudeDateCalculation(dt) {
 }
 
 function getduedate(dt) {
-    debugger;
+    //debugger;
     var nowDate = new Date();
     //console.log(nowDate);
     var addDate = new Date(nowDate.setDate(nowDate.getDate() + dt));
@@ -905,7 +905,7 @@ function getduedate(dt) {
 }
 
 function AcceptRequest(type, lang) {
-    debugger;
+    //debugger;
     var data;
     var Id = $('#RequestCalibId').val();
     
@@ -1020,7 +1020,7 @@ function SubmitReqDepVisual(lang) {
         $('#ResultDEP').removeClass('is-invalid');
 
     }
-
+    debugger;
     $.ajax({
         url: '../Tracker/SubmitDepartmentRequestVisual',
         type: 'POST',
@@ -1223,13 +1223,14 @@ function CloseNewRequestPopup() {
 }
 
 function NewReqEnableReason() {
+   // debugger;
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         $('#NewReasonSection').css('display', 'none');
         $('#NewacceptSection').css('display', 'block');
-        //$('#ExternalRejectSection').css('display', 'none');
+        $('#ExternalRejectSection').css('display', 'none');
         $('#ExternalAcceptSection').css('display', 'block');
     } else {
-
+        $('#ExternalAcceptSection').css('display', 'none');
         $('#NewReasonSection').css('display', 'block');
         $('#NewacceptSection').css('display', 'none');
         $('#ExternalRejectSection').css('display', 'block');
@@ -1526,7 +1527,7 @@ function RejecttQuarRequest() {
 
 
 
-function LoadObservationType(lang) {
+ function LoadObservationType(lang) {
 
     var optionhtmlOBType;
     $.ajax({
@@ -1608,16 +1609,17 @@ function SaveLeverDial(lang) {
     });
 }
 function SaveInventoryCalibration(lang) {
-
-
+    var sPageURLPaarameter = window.location.search.substring(1);
+    
     var InstrumentDataList = new Array();
     var CheckedCount = 0;
-    var UNCheckedCount = 0;
-   
+    var UNCheckedCount = 0;   
     var tblLength = $('#tblTool tbody tr').length;
+    var UserDept = 0;
+   
     if ($('#tblTool tbody tr').length > 0) {
         $('#tblTool tbody tr').each(function (row, tr) {
-
+            
             var checkedvalue = $(tr).find("input[name=ChkInput]").prop('checked');
 
             var objInstrumentId = $(tr).find("input[name=instrumentid]").val();//$(tr).find("td[id='instrumentid'] input[type='hidden']").val();
@@ -1625,9 +1627,11 @@ function SaveInventoryCalibration(lang) {
             var POPoutId = "popupcount_" + objInstrumentId;
             var CHKoutId = "ChkInput_" + objInstrumentId;
             var objReplacementLabId = $(tr).find("td[id='" + Masterid + "']").text().trim();
+            //var objReplacementLabId = $(tr).find("input[id='" + Masterid + "']").text().trim();
             var objPopUpRecordCount = $(tr).find("input[id='" + POPoutId + "']").val(); // $(tr).find("input[id= '" + ChkoutId + "']").val().trim();
             var objChkRecordCount = $(tr).find("input[id='" + CHKoutId + "']").prop('checked');
-        
+                 
+          
             if (checkedvalue == true) {
 
 
@@ -1635,15 +1639,16 @@ function SaveInventoryCalibration(lang) {
 
                     CheckedCount += 1;
 
-
-
                 }
                 else if ((objReplacementLabId == "") && (objPopUpRecordCount == "")) {
-                  
+
                     CheckedCount += 1;
                 }
-                else
-                {
+                else if (objReplacementLabId == "") {
+
+                    CheckedCount += 1;
+                }
+                else {
                     var InstrumentData =
                     {
                         InstrumentId: objInstrumentId,
@@ -1654,24 +1659,20 @@ function SaveInventoryCalibration(lang) {
                     InstrumentDataList.push(InstrumentData);
                 }
             }
-            //else if ((checkedvalue == false) && (objPopUpRecordCount != 0))
-            //{
-             
-            //    CheckedCount +=  1;
-            //}
-            else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 0) ) {
-          //alert("false,noRP,noPOP")
+
+            else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 0)) {
                 UNCheckedCount += 1;
             }
-            
+            //else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 1)) {
+            //    UNCheckedCount += 1;
+            //}
         });
-        console.log("$('#tblTool tbody tr').length");
-        console.log($('#tblTool tbody tr').length);
-        console.log("CheckedCount");
-        console.log(CheckedCount);
+      
+
     }
+    
     if ((InstrumentDataList.length > 0) && (CheckedCount == 0)){
-       // debugger;
+      
         $.ajax({
             dataType: 'json',
             url: '../Instrument/SaveInventoryCalibration',
@@ -1679,9 +1680,10 @@ function SaveInventoryCalibration(lang) {
             data: { InstrumentList: InstrumentDataList },
             success: function () {
 
+               
+                window.location.href = '../Instrument/ToolInventory?' + sPageURLPaarameter + '';
+                
                 showSuccess("Data Saved Successfully", lang);
-                window.location.href = '../Instrument/ToolInventory';
-
             },
             failure: function (response) {
                 showWarning("Try Again Process Failed", lang);
@@ -1691,11 +1693,11 @@ function SaveInventoryCalibration(lang) {
         });
     }
     if (CheckedCount > 0) {
-        showWarning("Please Select the ReplacementLabId", lang);
+        showWarning("Please Select the Replacement-LabId", lang);
         return false;
     }
     if (UNCheckedCount == tblLength) {
-        showWarning("Please Select the ReplacementLabId", lang);
+        showWarning("Please Select the Replacement-LabId", lang);
         return false;
     }
 }
@@ -2958,6 +2960,7 @@ function newSubmitReqDepVisual(lang) {
 
     var dueDate;
     var dt = $('#CalibFreqDue').val();
+    //debugger;
     dueDate = DudeDateCalculation(dt);
 
     $.ajax({
@@ -2975,7 +2978,7 @@ function SubmitReview(lang) {
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#CalibrationReviewedDate').val(), reviewStatus: $('#ReviewStatus').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
@@ -3098,24 +3101,23 @@ function getrequest(type) {
     }
 }
 
-
-function DueForCalibrationInstrumentsss() {
-    debugger;
-    var tblRowsCoun = $("#example1 th").length;
-    if (tblRowsCoun > 0) {
-        $('#example1 > tbody > tr').each(function (row, tr) {
-            var currentRow = $(this).closest("tr");
-            //console.log(currentRow)
-            if (currentRow.find("td:eq(9)").text() != " ") {
-                alert(currentRow.find("td:eq(9)").text());
-                console.log(currentRow.find("td:eq(9)").text());
-                var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
-                currentRow.show();
-            }
-            else {
-                currentRow.hide();
-            }
-        });
+function DueForCalibrationInstruments() {
+    //debugger;
+    if ($("#checkdueonly").is(":checked")) {
+        var tblRowsCoun = $("#example1 td").length;
+        if (tblRowsCoun > 0) {
+            console.log('count');
+            var oTable = $("#example1").dataTable();
+            $(".one", oTable.fnGetNodes()).each(function (i, row) {
+                var currentRow3 = $(this).closest("tr");
+                if (typeof ($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") {
+                    currentRow3.hide();
+                }
+                else {
+                    currentRow3.show();
+                }
+            });
+        }
     }
     else {
         window.location.href = '../Instrument/Index';
@@ -3124,7 +3126,7 @@ function DueForCalibrationInstrumentsss() {
 
 
 
-function DueForCalibrationInstruments() {
+function DueForCalibrationInstruments_Old() {
     //debugger;
     if ($("#checkdueonly").is(":checked")) {
         var tblRowsCoun = $("#example1 th").length;
@@ -3147,44 +3149,106 @@ function DueForCalibrationInstruments() {
     else {
         window.location.href = '../Instrument/Index';
     }
-    
+
 }
 
 
 function InsertRequestList() {
-    debugger;
+    //debugger;
     var Request = new Array();
-    $('#example1 > tbody > tr').each(function (row, tr) {
-        var currentRow = $(this).closest("tr");
-        if (currentRow.find("td:eq(9)").text() != " ") {
-            var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
-            if (checkedvalue == true) {
-                //var instrumentId = $(tr).find("td:eq(9) input[type='checkbox']").val();
-                //var TypeValue = $(tr).find("td:eq(9) input[type='hidden']").val();
-                //var RequestData = { instrumentId: instrumentId, typeId: TypeValue }
-                //Request.push(RequestData);
 
-                var UserView = {
-                    instrumentId: $(tr).find("td:eq(9) input[type='checkbox']").val(),
-                    TypeValue: $(tr).find("td:eq(9) input[type='hidden']").val()                   
-                }
-
-                Request.push(UserView);
-            }
-
-
-
+    var oTable = $("#example1").dataTable();
+    $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
+        var UserView = {
+            instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
+            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val()
         }
+
+        Request.push(UserView);
     });
+    //$('#example1 > tbody > tr').each(function (row, tr) {
+    //    var currentRow = $(this).closest("tr");
+    //    if (currentRow.find("td:eq(9)").text() != " ") {
+    //        var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
+    //        if (checkedvalue == true) {               
+
+    //            var UserView = {
+    //                instrumentId: $(tr).find("td:eq(9) input[type='checkbox']").val(),
+    //                TypeValue: $(tr).find("td:eq(9) input[type='hidden']").val()                   
+    //            }
+
+    //            Request.push(UserView);
+    //        }
+    //    }
+    //});
     console.log(Request);
     $.ajax({
         url: '../Instrument/DueRequest',
         type: 'POST',
         data: { userViewModelList: Request },
         dataType: "json",
-        // JSON.stringify(ToolInventoryList);//{ ToolInventoryList: ToolInventoryList }    
     }).done(function (resultObject) {
-        showSuccess("Data Saved Successfully");
+        //showSuccess("Data Saved Successfully");
         window.location.href = '../Instrument/Index';
     });
 }
+
+function DueInstrumentList() {
+
+    var Request = new Array();
+    var id = "";
+    var oTable = $("#example2").dataTable();
+    $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
+        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+        var UserView = {
+            instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
+            InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
+            IdNo: $(this).closest('tr').find('td:eq(1)').html(),
+            SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
+            TypeofScope: $(this).closest('tr').find('td:eq(3)').html(),
+            DueDate: $(this).closest('tr').find('td:eq(4)').html(),
+            DeptId: $(this).closest('tr').find('td:eq(5) input[name="deptId"]').val(),
+            EquipmentType: $(this).closest('tr').find('td:eq(5) input[name="equipType"]').val(),
+            SectionName: $(this).closest('tr').find('td:eq(5) input[name="subname"]').val(),
+            Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
+            ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
+        }
+        Request.push(UserView);
+    });
+    console.log(Request);
+    $.ajax({
+        url: '../Tracker/DueInstrumentAdminApprove',
+        type: 'POST',
+        data: { DueList: Request },
+        dataType: "json",
+    }).done(function (resultObject) {
+        showSuccess("Data Saved Successfully");
+        window.location.href = '../Tracker/DueInstrument';
+    });
+}
+function ValidateObservation()
+{
+
+    var Unit = $('#Units').val();
+    if (Unit == null || Unit == "") {
+        showWarning("Please enter the Units", language);
+        return false;;
+    }
+    var Temprature = $('#TempStart').val();
+    if (Temprature == null || Temprature == "") {
+        showWarning("Please enter the Temprature !!!", language);
+        return false;
+    }
+    var Humidity = $('#Humidity').val();
+    if (Humidity == null || Humidity == "") {
+        showWarning("Please enter the Humidity", language);
+        return false;
+    }
+    var VisualCheckCondition = $('#VisualCheckCondition').val();
+    if (VisualCheckCondition == null || VisualCheckCondition == "") {
+        showWarning("Please enter the Visual Check", language);
+        return false;
+    }
+}
+
+

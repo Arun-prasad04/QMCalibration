@@ -1,10 +1,11 @@
 @{
-	ViewData["Title"] = "Instrument Create";
+	ViewData["PageTitle"] = "Instrument Create";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <form name="frm" id="instrumentform" enctype="multipart/form-data" method="post"
    action='@Url.Action("InsertInstrument","Instrument")'>
+	
 	<input type="hidden" name="Id" value="@Model.Id">
 	<input type="hidden" name="IsNABL" id="IsNABL" value="@Model.IsNABL">
 	<!-- Main content -->
@@ -25,7 +26,7 @@
 							</div>
 						</div>
 					</div>
-
+					<fieldset>
 					<div class="card card-default">
 						<div class="card-header">
 							<h3 class="card-title trn">Instrument Details</h3>
@@ -41,7 +42,7 @@
 						</div>
 						<!-- /.card-header -->
 
-						<div class="card-body">
+						<div id="myDivDivContent" class="card-body">
 							<div class="row">
 								<div class="col-sm-6">
 									<!-- text input -->
@@ -330,7 +331,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Applicable for Tool Inventory</label>
-										<select id="ToolInventory" name="ToolInventory" class="form-control">
+										<select id="ToolInventory" name="ToolInventory" class="form-control" disabled>
 											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
 											@if (Model.ToolInventory == "Yes")
 											{
@@ -430,7 +431,7 @@
 
 						@if (@Model.IdNo != null && @Model.IdNo != "")
 						{
-							<div class="card card-default">
+							<div id="myDivDivCaliration" class="card card-default">
 								<div class="card-header">
 									<h3 class="card-title trn">Calibration Details</h3>
 
@@ -466,11 +467,11 @@
 											</div>
 										@*}*@
 										<div class="col-sm-1" style="top: 36px;">
-											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-												{*@
+										@* 	@if (ViewBag.ShowDetails)
+											{ *@
 											<input type="button" class="btn-primary" value="Add"
 												   onclick="AddNewInstrumentMaster(language)">
-												@*}*@
+											@* 	} *@
 										</div>
 												
 										<div class="col-sm-2">
@@ -722,12 +723,15 @@
 
 							</div>
 						}
-						<div class="card-footer">
+						 @if (ViewBag.ShowDetails)
+					{ 
+						<div runat="server" id="myDivButtonDiv" class="card-footer">
 							<button type="submit" class="btn btn-primary trn">Submit</button>
 								<a href='@Url.Action("Index","Instrument")'>
 									<input type="button" class="btn btn-default trn" value="Cancel">
 								</a>
 						</div>
+					 }
 						<!-- /.card-body -->
 					</div>
 					<!-- /.card -->
@@ -737,9 +741,16 @@
 			<!-- /.row -->
 	</section>
 	<!-- /.content -->
+	</fieldset>
 </form>
-
-<script>	
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	var attrSubmitButton = @Json.Serialize(@ViewBag.ShowDetails);
+	if (attrSubmitButton == false) {
+	 
+		$('fieldset').attr('disabled', 'disabled');
+	}
 	setTimeout(function () {
 
 		$('#reservationdate').datetimepicker({
@@ -868,8 +879,20 @@
 			});
 		});
 	}, 1000);
-</script>
-<script>
+
+	$(function () {
+
+		$("#TypeOfEquipment").change(function () {
+			var eq = $('#TypeOfEquipment').val();
+			if (eq == 'External Instrument') {
+				$('#ToolInventory').prop("disabled", true);
+			} else {
+				$("#ToolInventory").prop("disabled", false);
+			}
+		});
+	});
+@* </script>
+<script> *@
 
 	function getNABLValue(option) {
 		document.getElementById("IsNABL").value = option.value;
@@ -892,8 +915,8 @@
 		output.innerHTML = result;
 
 	}
-</script>
-<script>
+@* </script>
+<script> *@
 	function loaddate() {
 		debugger;
 		var date1 = document.getElementById("CalibDate").value;

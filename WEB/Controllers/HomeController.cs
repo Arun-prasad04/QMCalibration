@@ -22,7 +22,7 @@ public class HomeController : BaseController
 	private IMasterService _masterService { get; set; }
 
 	private IConfiguration _configuration;
-    private IUserService _userService { get; set; }
+	private IUserService _userService { get; set; }
 	//private CMTDL _cmtdl { get; set; }
 	public HomeController(IUnitOfWork unitOfWork, IMapper mapper, IMasterService masterService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration Configuration, IUserService userService) : base(logger, contextAccessor)
 	{
@@ -35,12 +35,12 @@ public class HomeController : BaseController
 	}
 
 	public IActionResult Index()
-	{		
+	{
 		ViewBag.PageTitle = "DashBoard";
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));		
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string SessionLang = base.SessionGetString("Language");
-		ViewBag.RoleId= Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ViewBag.RoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		//var objtype = 1159;
 		//Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == objtype).SingleOrDefault();
 
@@ -72,8 +72,7 @@ public class HomeController : BaseController
 		}
 		else
 		{
-			List<Instrument> InstrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && (Q.CreatedBy == userId || Q.UserDept == labUserById.DepartmentId)).ToList(); //.Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel)
-			if (InstrumentList != null)
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
 			{
 				ViewBag.InstrumentCount = Convert.ToString(ds.Tables[2].Rows[0]["InstrumentCount2"]);
 			}
@@ -109,12 +108,11 @@ public class HomeController : BaseController
 				}
 			}
 		}
-
 		else
 		{
 			if (ds != null && ds.Tables.Count > 0 && ds.Tables[4].Rows.Count > 0)
 			{
-				ViewBag.RequestCount = RequestList.Count;
+				ViewBag.RequestCount = Convert.ToString(ds.Tables[4].Rows[0]["RequestCount2"]);
 			}
 			else
 			{
@@ -160,36 +158,14 @@ public class HomeController : BaseController
 			});
 		}
 		return Json(MStranslater);
-		
-	}
-	public IActionResult DepartmentTranslate()
 
+	}
+
+	public IActionResult ObservationTypeTranslation()
 	{
-		List<Department> DepartmentList = _unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList();
-		//var DepartmentData
-		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
-		//MasterLangTranslate MStranslater = new MasterLangTranslate();
-		var DepartTranslater = new List<DepartmentLangTranslate>();
-		foreach (var item in DepartmentList)
-		{
-
-			DepartTranslater.Add(new DepartmentLangTranslate
-			{
-				id = item.Id,
-				Name = item.Name,
-				NameJp = item.NameJP,
-
-			});
-		}
-		return Json(DepartTranslater);
-		
-	}
-
 		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-	{
-		
 		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.IsActive == true).ToList());
-		
+
 
 		var ObservationType = new List<ObservationTypeModel>();
 		foreach (var item in lovsList)
@@ -208,7 +184,7 @@ public class HomeController : BaseController
 			});
 		}
 		return Json(ObservationType);
-
+	}
 	public IActionResult DepartmentTranslate()
 
 	{
@@ -219,7 +195,7 @@ public class HomeController : BaseController
 		var DepartTranslater = new List<DepartmentLangTranslate>();
 		foreach (var item in DepartmentList)
 		{
-	}
+
 			DepartTranslater.Add(new DepartmentLangTranslate
 			{
 				id = item.Id,
@@ -230,38 +206,6 @@ public class HomeController : BaseController
 		}
 		return Json(DepartTranslater);
 
-	}
-
-	
-	public class DepartmentLangTranslate
-	{
-		public int id { get; set; }
-		public string? Name { get; set; }
-
-		public string? NameJp { get; set; }
-
-	}
-
-	public class MasterLangTranslate
-	{
-		public int id { get; set; }
-		public string? NameEng { get; set; }
-		public string? EquipmentMasterId { get; set; }
-
-	}	
-		return Json(ObservationType);
-	}
-
-	public class ObservationTypeModel
-	{
-		public int Id { get; set; }
-		public string AttrName { get; set; }
-		public string AttrValue { get; set; }
-		public string Attrform { get; set; }
-		public string AttrNameJp { get; set; }
-
-		public string AttrformJp { get; set; }
-		public string AttrValueJp { get; set; }
 	}
 
 	public IActionResult LoadRole()
@@ -275,6 +219,33 @@ public class HomeController : BaseController
 		return Json(UserRoles);
 	}
 
+	public class DepartmentLangTranslate
+	{
+		public int id { get; set; }
+		public string? Name { get; set; }
 
+		public string? NameJp { get; set; }
 
+	}
+
+	public class MasterLangTranslate
+	{
+		public int id { get; set; }
+		public string? NameEng { get; set; }
+		public string? NameJp { get; set; }
+		public string? EquipmentMasterId { get; set; }
+
+	}
+
+	public class ObservationTypeModel
+	{
+		public int Id { get; set; }
+		public string AttrName { get; set; }
+		public string AttrValue { get; set; }
+		public string Attrform { get; set; }
+		public string AttrNameJp { get; set; }
+
+		public string AttrformJp { get; set; }
+		public string AttrValueJp { get; set; }
+	}
 }

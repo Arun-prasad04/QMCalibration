@@ -253,6 +253,7 @@
                 }
                 $('#example2 tbody').empty();
                 //console.log('Rqdata');
+                console.log("-----data----------");
                 console.log(data);
                 //console.log(Object.keys(data).length);
                 if (data.length>0){	
@@ -293,7 +294,9 @@
 
                     var tdTest = '';
                     if ((item.userRoleId == 2 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
-                        tdTest = "<td><a href='@Url.Action("ViewObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+
+
+                            tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
                     }
                     else {
                         tdTest = "<td> </td>"

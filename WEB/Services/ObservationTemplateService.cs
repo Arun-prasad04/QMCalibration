@@ -12,6 +12,14 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using HtmlAgilityPack;
 using DATAMODELS;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using WEB.Controllers;
+using MathNet.Numerics;
+using System;
+
+//using System.Collections.Generic
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -56,31 +64,31 @@ public class ObservationTemplateService : IObservationTemplateService
 			//if (levertypedial.Id == 0)
 			if ((levertypedial.Id == 0) && (observationById == null))
 
-            {
+			{
 				//if (observationById == null)
 				//{
-					TemplateObservation templateObservation = new TemplateObservation()
-					{
-						InstrumentId = levertypedial.InstrumentId,
-						RequestId = levertypedial.RequestId,
-						TempStart = levertypedial.TempStart,
-						TempEnd = levertypedial.TempEnd,
-						Humidity = levertypedial.Humidity,
-						InstrumentCondition = levertypedial.DialIndicatiorCondition,
-						RefWi = levertypedial.RefWi,
-						Allvalues = levertypedial.Allvalues,
-						CreatedOn = DateTime.Now,
-						CreatedBy = levertypedial.CreatedBy,
-						// CalibrationReviewedBy = labTechnicalManager.Id,
-						CalibrationReviewedDate = DateTime.Now
-					};
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = levertypedial.InstrumentId,
+					RequestId = levertypedial.RequestId,
+					TempStart = levertypedial.TempStart,
+					TempEnd = levertypedial.TempEnd,
+					Humidity = levertypedial.Humidity,
+					InstrumentCondition = levertypedial.DialIndicatiorCondition,
+					RefWi = levertypedial.RefWi,
+					Allvalues = levertypedial.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = levertypedial.CreatedBy,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
 
-					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-					_unitOfWork.SaveChanges();
-					templateObservationId = templateObservation.Id;
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
 
 				//}
-				
+
 			}
 			else
 			{
@@ -122,7 +130,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					_unitOfWork.SaveChanges();
 				}
 			}
-			
+
 			if (levertypedial.Id == 0)// && (levertypedial == null))
 			{
 				if (observationById != null)
@@ -337,7 +345,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	public ResponseViewModel<MicrometerViewModel> InsertMicrometer(MicrometerViewModel micrometer)
 	{
 		try
-		{			
+		{
 			_unitOfWork.BeginTransaction();
 			int tempobsId = 0;
 			int ObjMicroData = 0;
@@ -347,28 +355,28 @@ public class ObservationTemplateService : IObservationTemplateService
 			//User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((micrometer.TemplateObservationId == 0) && (observationById == null))
 
-            {
+			{
 				//if (observationById == null)
 				//{
-					TemplateObservation templateObservation = new TemplateObservation()
-					{
-						InstrumentId = micrometer.InstrumentId,
-						RequestId = micrometer.RequestId,
-						TempStart = micrometer.TempStart,
-						TempEnd = micrometer.TempEnd,
-						Humidity = micrometer.Humidity,
-						InstrumentCondition = micrometer.MicrometerCondition,
-						RefWi = micrometer.RefWi,
-						Allvalues = micrometer.Allvalues,
-						CreatedOn = DateTime.Now,
-						CreatedBy = micrometer.CreatedBy,
-						//   CalibrationReviewedBy = labTechnicalManager.Id,
-						CalibrationReviewedDate = DateTime.Now
-					};
-					//tempobsId = templateObservation.Id;
-					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-					_unitOfWork.SaveChanges();
-					tempobsId = templateObservation.Id;
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = micrometer.InstrumentId,
+					RequestId = micrometer.RequestId,
+					TempStart = micrometer.TempStart,
+					TempEnd = micrometer.TempEnd,
+					Humidity = micrometer.Humidity,
+					InstrumentCondition = micrometer.MicrometerCondition,
+					RefWi = micrometer.RefWi,
+					Allvalues = micrometer.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = micrometer.CreatedBy,
+					//   CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				//tempobsId = templateObservation.Id;
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				tempobsId = templateObservation.Id;
 				//}
 			}
 			else
@@ -425,9 +433,9 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 
 					ObservationId = tempobsId,
-					
+
 					Flatness1 = micrometer.Flatness1, //  To check the Flatness
-					//Flatness2 = micrometer.Flatness2,
+													  //Flatness2 = micrometer.Flatness2,
 					ParallelismSpec = micrometer.ParallelismSpec, //  To check the Parallelism
 
 					Actuals = micrometer.Actuals, // To check the Instrument Error
@@ -435,7 +443,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					ActualsT11 = micrometer.ActualsT11,
 					Avg1 = micrometer.Avg1,
 					MuInterval1 = micrometer.MuInterval1,
-					
+
 					//ActualsT21 = micrometer.ActualsT21,
 					//ActualsT31 = micrometer.ActualsT31,
 					ActualsT12 = micrometer.ActualsT12,
@@ -520,9 +528,9 @@ public class ObservationTemplateService : IObservationTemplateService
 					FlatnessMeasure = micrometer.FlatnessMeasure,
 					FlatnessInserr = micrometer.FlatnessInserr,
 					FlatnessActual = micrometer.FlatnessActual
-				};				
+				};
 				_unitOfWork.Repository<ObsTemplateMicrometer>().Insert(obsTemplateMicrometer);
-				_unitOfWork.SaveChanges();				
+				_unitOfWork.SaveChanges();
 				if (observationById != null)
 				{
 
@@ -538,7 +546,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						foreach (var updateData in detailData)
 						{
 							_unitOfWork.Repository<ObsMicrometerValues>().Update(updateData);
-							
+
 							_unitOfWork.SaveChanges();
 						}
 					}
@@ -786,12 +794,12 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (micrometer.Flatness1 != null)
 					//micrometerById.Flatness1 = "1";//micrometer.Flatness1; have to change the value according to the micro type
 
-				//if (micrometer.Flatness2 != null)
-				//	micrometerById.Flatness2 = micrometer.Flatness2;
+					//if (micrometer.Flatness2 != null)
+					//	micrometerById.Flatness2 = micrometer.Flatness2;
 
-				if (micrometer.ParallelismSpec != null)
-					micrometerById.ParallelismSpec = "0"; //micrometer.ParallelismSpec; have to change the value according to the micro type
-				
+					if (micrometer.ParallelismSpec != null)
+						micrometerById.ParallelismSpec = "0"; //micrometer.ParallelismSpec; have to change the value according to the micro type
+
 				//if (micrometer.Actuals != null)
 				//	micrometerById.Actuals = micrometer.Actuals;
 
@@ -866,7 +874,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseCode = 500,
 				ResponseMessage = "Failure",
 				ErrorMessage = e.Message,
-				ResponseData = micrometer, 
+				ResponseData = micrometer,
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
 				ResponseServiceMethod = "InsertMicrometer"
@@ -875,16 +883,16 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
-	public ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1,int MasterInstrument2,int MasterInstrument3,int MasterInstrument4)
+	public ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
 	{
 		try
 		{
 			List<MasterViewModel> masterViewModelList = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>()
-				.GetQueryAsNoTracking(Q => Q.Id ==MasterInstrument1 || Q.Id == MasterInstrument2 || Q.Id == MasterInstrument3 || Q.Id == MasterInstrument4).ToList());
+				.GetQueryAsNoTracking(Q => Q.Id == MasterInstrument1 || Q.Id == MasterInstrument2 || Q.Id == MasterInstrument3 || Q.Id == MasterInstrument4).ToList());
 
 
 			return new ResponseViewModel<MasterViewModel>
-			{ 
+			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",
 				ResponseData = null,
@@ -915,10 +923,10 @@ public class ObservationTemplateService : IObservationTemplateService
 			MicrometerViewModel micrometer = _unitOfWork.Repository<TemplateObservation>()
 			.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 			.Include(I => I.MicromerterModel)
-			
+
 			.Select(s => new MicrometerViewModel()
 			{
-				InstrumentId=s.InstrumentId,
+				InstrumentId = s.InstrumentId,
 				TemplateObservationId = s.Id,
 				TempStart = s.TempStart,
 				TempEnd = s.TempEnd,
@@ -935,10 +943,10 @@ public class ObservationTemplateService : IObservationTemplateService
 				CertificateNumber = s.CertificateNumber,
 				Id = s.MicromerterModel.Select(s => s.Id).FirstOrDefault(),
 				Flatness1 = s.MicromerterModel.Select(s => s.Flatness1).FirstOrDefault(),
-				FlatnessMeasure=s.MicromerterModel.Select(s => s.FlatnessMeasure).FirstOrDefault(),
+				FlatnessMeasure = s.MicromerterModel.Select(s => s.FlatnessMeasure).FirstOrDefault(),
 				FlatnessInserr = s.MicromerterModel.Select(s => s.FlatnessInserr).FirstOrDefault(),
 				FlatnessActual = s.MicromerterModel.Select(s => s.FlatnessActual).FirstOrDefault(),
-				
+
 				//Flatness2 = s.MicromerterModel.Select(s => s.Flatness2).FirstOrDefault(),
 				//ParallelismSpec = s.MicromerterModel.Select(s => s.ParallelismSpec).FirstOrDefault(),
 				//Actuals = s.MicromerterModel.Select(s => s.Actuals).FirstOrDefault(),
@@ -1023,7 +1031,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				//Uncertainity = s.MicromerterModel.Select(S => S.Uncertainity).SingleOrDefault(),
 				//CalibrationResult = s.MicromerterModel.Select(S => S.CalibrationResult).SingleOrDefault(),
 				//Remarks = s.MicromerterModel.Select(S => S.Remarks).SingleOrDefault(),
-				
+
 
 			}).SingleOrDefault();
 			if (micrometer == null)
@@ -1049,7 +1057,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				}
 
 				List<string> reviewedUserData = GetUserName(micrometer.CalibrationReviewedBy);
-			
+
 				//List<string> MasterEqiupmentList = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.Id == micrometer.MasterInstrument1 || Q.Id == instrumentById.MasterInstrument2 || Q.Id == instrumentById.MasterInstrument3 || Q.Id == instrumentById.MasterInstrument4).ToList());
 
 				if (reviewedUserData.Count >= 3)
@@ -1069,7 +1077,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					micrometer.CertificateFormat = formatList[1];
 				}
 
-				
+
 			}
 			var parentVM = _mapper.Map<MicrometerViewModel>(micrometer);
 			var childData1 = _unitOfWork.Repository<ObsMicrometerValues>()
@@ -1126,27 +1134,27 @@ public class ObservationTemplateService : IObservationTemplateService
 			//  User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((plungerDial.TemplateObservationId == 0) && (observationById == null))
 
-            {
+			{
 				//if (observationById == null)
 				//{
-					TemplateObservation templateObservation = new TemplateObservation()
-					{
-						InstrumentId = plungerDial.InstrumentId,
-						RequestId = plungerDial.RequestId,
-						TempStart = plungerDial.TempStart,
-						TempEnd = plungerDial.TempEnd,
-						Humidity = plungerDial.Humidity,
-						InstrumentCondition = plungerDial.ConditionAndObservation,
-						RefWi = plungerDial.RefWi,
-						Allvalues = plungerDial.Allvalues,
-						CreatedOn = DateTime.Now,
-						CreatedBy = plungerDial.CreatedBy,
-						// CalibrationReviewedBy = labTechnicalManager.Id,
-						CalibrationReviewedDate = DateTime.Now
-					};
-					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-					_unitOfWork.SaveChanges();
-					templateObservationId = templateObservation.Id; 
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = plungerDial.InstrumentId,
+					RequestId = plungerDial.RequestId,
+					TempStart = plungerDial.TempStart,
+					TempEnd = plungerDial.TempEnd,
+					Humidity = plungerDial.Humidity,
+					InstrumentCondition = plungerDial.ConditionAndObservation,
+					RefWi = plungerDial.RefWi,
+					Allvalues = plungerDial.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = plungerDial.CreatedBy,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				templateObservationId = templateObservation.Id;
 				//}
 			}
 			else
@@ -1189,7 +1197,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					_unitOfWork.SaveChanges();
 				}
 			}
-			
+
 			if (plungerDial.Id == 0)//((plungerDial.Id == 0) && (plungerDial == null))
 			{
 				if (observationById != null)
@@ -1438,7 +1446,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((threadGauges.TemplateObservationId == 0) && (observationById == null))
 
-           {
+			{
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -1508,7 +1516,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 					templateObservationId = observationById.Id;
 				}
-					ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
+				ObsTemplateThreadGauges ObsTemplateThreadGauges = new ObsTemplateThreadGauges()
 				{
 					ObservationId = templateObservationId,
 					Max1 = threadGauges.Max1,
@@ -1737,7 +1745,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			//templateObservationId = observationById.Id;
 			if ((torquewrenches.TemplateObservationId == 0) && (observationById == null))
 
-            {
+			{
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -2143,7 +2151,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((verniercaliper.TemplateObservationId == 0) && (observationById == null))
 
-            {
+			{
 				//if(observationById == null)
 				//{ 
 				TemplateObservation templateObservation = new TemplateObservation()
@@ -2210,7 +2218,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 			if (verniercaliper.Id == 0)
 			{
-				if(observationById!= null)
+				if (observationById != null)
 				{
 					templateObservationId = observationById.Id;
 				}
@@ -3247,7 +3255,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 			if (GeneralNew.Id == 0)
 			{
-				if(observationById != null)
+				if (observationById != null)
 				{
 					templateObservationId = observationById.Id;
 				}
@@ -3555,27 +3563,27 @@ public class ObservationTemplateService : IObservationTemplateService
 			// User labTechnicalManager = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4).SingleOrDefault();
 			if ((general.TemplateObservationId == 0) && (observationById == null))
 
-            {
+			{
 				//if (observationById == null)
 				//{
-					TemplateObservation templateObservation = new TemplateObservation()
-					{
-						InstrumentId = general.InstrumentId,
-						RequestId = general.RequestId,
-						TempStart = general.TempStart,
-						TempEnd = general.TempEnd,
-						Humidity = general.Humidity,
-						RefWi = general.RefWi,
-						InstrumentCondition = general.DialIndicatiorCondition,
-						Allvalues = general.Allvalues,
-						CreatedBy = general.CreatedBy,
-						CreatedOn = DateTime.Now,
-						// CalibrationReviewedBy = labTechnicalManager.Id,
-						CalibrationReviewedDate = DateTime.Now
-					};
-					_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-					_unitOfWork.SaveChanges();
-					generalId = templateObservation.Id;
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = general.InstrumentId,
+					RequestId = general.RequestId,
+					TempStart = general.TempStart,
+					TempEnd = general.TempEnd,
+					Humidity = general.Humidity,
+					RefWi = general.RefWi,
+					InstrumentCondition = general.DialIndicatiorCondition,
+					Allvalues = general.Allvalues,
+					CreatedBy = general.CreatedBy,
+					CreatedOn = DateTime.Now,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				generalId = templateObservation.Id;
 				//}
 				ObsTemplateGeneral obsTemplateGeneral = new ObsTemplateGeneral()
 				{
@@ -3630,7 +3638,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				}
 			}
 			_unitOfWork.SaveChanges();
-			if(observationById != null)
+			if (observationById != null)
 			{
 
 				generalId = observationById.Id;
@@ -3825,7 +3833,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-			
+
 			_unitOfWork.BeginTransaction();
 
 
@@ -3968,7 +3976,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-			
+
 			ObsTemplatePlungerDial MicrometerById = _unitOfWork.Repository<ObsTemplatePlungerDial>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4029,7 +4037,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-			
+
 			_unitOfWork.BeginTransaction();
 
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
@@ -4095,7 +4103,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-			
+
 			_unitOfWork.BeginTransaction();
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
@@ -4166,7 +4174,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-			
+
 			ObsTemplateVernierCaliper MicrometerById = _unitOfWork.Repository<ObsTemplateVernierCaliper>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4234,7 +4242,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-		
+
 			ObsTemplateGeneralNew MicrometerById = _unitOfWork.Repository<ObsTemplateGeneralNew>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4305,7 +4313,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
 															 .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 															 .SingleOrDefault();
-		
+
 			ObsTemplateGeneral MicrometerById = _unitOfWork.Repository<ObsTemplateGeneral>()
 																	.GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
 																	.SingleOrDefault();
@@ -4402,10 +4410,35 @@ public class ObservationTemplateService : IObservationTemplateService
 			//Request Tempreqests = new Request();
 			ReqstData.Id = observationById.RequestId;
 			ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+
 			_unitOfWork.Repository<Request>().Update(ReqstData);
 			_unitOfWork.SaveChanges();
 			//----------------------New update for listing Approved Request end---------------------------
 
+			//To Update ToolInventory Status
+			if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
+			{
+				if (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)
+				{
+					if (reviewStatus == 1)
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
+						instrumentData.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
+						instrumentData.ReplacementLabID = null;
+					}
+					else
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.RejectedTool;
+
+					}
+				}
+				else if (ReqstData.TypeOfReqest == 1)
+				{
+					instrumentData.ToolInventoryStatus = reviewStatus == 1 ? (Int32)ToolInventoryStatus.SentTool : (Int32)ToolInventoryStatus.RejectedTool;
+				}
+			}
+			_unitOfWork.Repository<Instrument>().Update(instrumentData);
+			_unitOfWork.SaveChanges();
 			_unitOfWork.Commit();
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
@@ -4417,7 +4450,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 		catch (Exception e)
 		{
-			
+
 			ErrorViewModelTest.Log("ObservationTemplateService - SubmitReview Method");
 			ErrorViewModelTest.Log("exception - " + e.Message);
 			_unitOfWork.RollBack();
@@ -4677,7 +4710,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			// //XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
 			// PDFdoc.Close();
 
-            string uploadDirectoryName = Path.Combine(Constants.Certification_FolderName, newDirectoryName);
+			string uploadDirectoryName = Path.Combine(Constants.Certification_FolderName, newDirectoryName);
 			string filePath = Path.Combine(this._environment.WebRootPath, uploadDirectoryName);
 
 			if (!Directory.Exists(filePath))
@@ -4700,13 +4733,13 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		private string _configuration;
 		//var Path =  _configuration["UNICodeFontPath"];
-		
+
 		//private static readonly string FontPath = @"D:\CMTNEW\WEB\wwwroot\css\ARIALUNI.ttf";
 		private readonly BaseFont _baseFont;
 
 		public UnicodeFontFactory(string Fpath)
 		{
-			_baseFont = BaseFont.CreateFont(Fpath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);			
+			_baseFont = BaseFont.CreateFont(Fpath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		}
 		//private string FontPath1 = Path.Combine(_configuration["TempQRCodePath"], "ARIALUNI.TTF");
 		public override Font GetFont(string fontname, string encoding, bool embedded, float size, int style, BaseColor color, bool cached)
@@ -4721,102 +4754,102 @@ public class ObservationTemplateService : IObservationTemplateService
 	{
 		try
 		{
-			MetalRulesViewModel metalViewModel = _unitOfWork.Repository<TemplateObservation>()
-			.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
-			.Include(I => I.MetalRulesModel)
-			.Select(s => new MetalRulesViewModel()
-			{
-				Id = s.Id,
-				TempStart = s.TempStart,
-				TempEnd = s.TempEnd,
-				Humidity = s.Humidity,
-				RefWi = s.RefWi,
-				Allvalues = s.Allvalues,
-				CalibrationPerformedDate = s.CreatedOn,
-				CreatedBy = s.CreatedBy,
-				CalibrationReviewedBy = s.CalibrationReviewedBy,
-				CalibrationReviewedDate = s.CalibrationReviewedDate,
-				MetalRulesCondition = s.InstrumentCondition,
-				ReviewStatus = s.ReviewStatus,
-				ULRNumber = s.ULRNumber,
-				CertificateNumber = s.CertificateNumber,
-				Uncertainity = s.GeneralModel.Select(x => x.Uncertainity).SingleOrDefault(),
-				CalibrationResult = s.GeneralModel.Select(x => x.CalibrationResult).SingleOrDefault(),
-				Remarks = s.GeneralModel.Select(x => x.Remarks).SingleOrDefault()
-			}).SingleOrDefault();
+			//MetalRulesViewModel metalViewModel = _unitOfWork.Repository<TemplateObservation>()
+			//.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+			//.Include(I => I.MetalRulesModel)
+			//.Select(s => new MetalRulesViewModel()
+			//{
+			//	Id = s.Id,
+			//	TempStart = s.TempStart,
+			//	TempEnd = s.TempEnd,
+			//	Humidity = s.Humidity,
+			//	RefWi = s.RefWi,
+			//	Allvalues = s.Allvalues,
+			//	CalibrationPerformedDate = s.CreatedOn,
+			//	CreatedBy = s.CreatedBy,
+			//	CalibrationReviewedBy = s.CalibrationReviewedBy,
+			//	CalibrationReviewedDate = s.CalibrationReviewedDate,
+			//	MetalRulesCondition = s.InstrumentCondition,
+			//	ReviewStatus = s.ReviewStatus,
+			//	ULRNumber = s.ULRNumber,
+			//	CertificateNumber = s.CertificateNumber,
+			//	Uncertainity = s.GeneralModel.Select(x => x.Uncertainity).SingleOrDefault(),
+			//	CalibrationResult = s.GeneralModel.Select(x => x.CalibrationResult).SingleOrDefault(),
+			//	Remarks = s.GeneralModel.Select(x => x.Remarks).SingleOrDefault()
+			//}).SingleOrDefault();
 
-			if (metalViewModel == null)
-			{
-				return new ResponseViewModel<MetalRulesViewModel>
-				{
-					ResponseCode = 200,
-					ResponseMessage = "No records found",
-					ResponseData = null,
-					ResponseDataList = null
-				};
-			}
-			else
-			{
+			//if (metalViewModel == null)
+			//{
+			//	return new ResponseViewModel<MetalRulesViewModel>
+			//	{
+			//		ResponseCode = 200,
+			//		ResponseMessage = "No records found",
+			//		ResponseData = null,
+			//		ResponseDataList = null
+			//	};
+			//}
+			//else
+			//{
 
-				List<string> performedUserData = GetUserName(metalViewModel.CreatedBy);
+			//	List<string> performedUserData = GetUserName(metalViewModel.CreatedBy);
 
-				if (performedUserData.Count >= 3)
-				{
-					metalViewModel.CalibrationPerformedBy = performedUserData[0];
-					metalViewModel.PerformedBySign = performedUserData[1];
-					metalViewModel.PerformedByDesignation = performedUserData[2];
-				}
+			//	if (performedUserData.Count >= 3)
+			//	{
+			//		metalViewModel.CalibrationPerformedBy = performedUserData[0];
+			//		metalViewModel.PerformedBySign = performedUserData[1];
+			//		metalViewModel.PerformedByDesignation = performedUserData[2];
+			//	}
 
-				List<string> reviewedUserData = GetUserName(metalViewModel.CalibrationReviewedBy);
+			//	List<string> reviewedUserData = GetUserName(metalViewModel.CalibrationReviewedBy);
 
-				if (reviewedUserData.Count >= 3)
-				{
-					metalViewModel.ReviewedBy = reviewedUserData[0];
-					metalViewModel.ReviewedBySign = reviewedUserData[1];
-					metalViewModel.ReviewedByDesignation = reviewedUserData[2];
-				}
+			//	if (reviewedUserData.Count >= 3)
+			//	{
+			//		metalViewModel.ReviewedBy = reviewedUserData[0];
+			//		metalViewModel.ReviewedBySign = reviewedUserData[1];
+			//		metalViewModel.ReviewedByDesignation = reviewedUserData[2];
+			//	}
 
-				int? ulrNumber = metalViewModel.ULRNumber == null ? 0 : metalViewModel.ULRNumber;
-				int? certificateNumber = metalViewModel.CertificateNumber == null ? 0 : metalViewModel.CertificateNumber;
-				List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+			//	int? ulrNumber = metalViewModel.ULRNumber == null ? 0 : metalViewModel.ULRNumber;
+			//	int? certificateNumber = metalViewModel.CertificateNumber == null ? 0 : metalViewModel.CertificateNumber;
+			//	List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
 
-				if (formatList.Count >= 2)
-				{
-					metalViewModel.ULRFormat = formatList[0];
-					metalViewModel.CertificateFormat = formatList[1];
-				}
-			}
+			//	if (formatList.Count >= 2)
+			//	{
+			//		metalViewModel.ULRFormat = formatList[0];
+			//		metalViewModel.CertificateFormat = formatList[1];
+			//	}
+			//}
 
-			var parentVM = _mapper.Map<MetalRulesViewModel>(metalViewModel);
+			//var parentVM = _mapper.Map<MetalRulesViewModel>(metalViewModel);
 
-			var childData1 = _unitOfWork.Repository<ObsTemplateValues>()
-										.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView1 == 1);
-            var childListVM = _mapper.Map<List<MetalRuleResultViewModel>>(childData1);
+			//var childData1 = _unitOfWork.Repository<ObsTemplateValues>()
+			//							.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView1 == 1);
+			//         var childListVM = _mapper.Map<List<MetalRuleResultViewModel>>(childData1);
 
-            metalViewModel.MetalRuleAddResultViewModelList1 = childListVM;
+			//         metalViewModel.MetalRuleAddResultViewModelList1 = childListVM;
 
-            var childData2 = _unitOfWork.Repository<ObsTemplateValues>()
-                                        .GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView2 == 1);
-            var childListVM2 = _mapper.Map<List<MetalRuleResultViewModel>>(childData2);
+			//         var childData2 = _unitOfWork.Repository<ObsTemplateValues>()
+			//                                     .GetQueryAsNoTracking(x => x.ParentId == parentVM.Id && x.MasterView2 == 1);
+			//         var childListVM2 = _mapper.Map<List<MetalRuleResultViewModel>>(childData2);
 
-            metalViewModel.MetalRuleAddResultViewModelList2 = childListVM2;
-
-
+			//         metalViewModel.MetalRuleAddResultViewModelList2 = childListVM2;
 
 
-            //var parentVM1 = _mapper.Map<MetalRulesViewModel>(metalViewModel);
 
-            //var childData1 = _unitOfWork.Repository<ObsGeneralDynamicValues>()
-            //							.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id);
-            //var childListVM1 = _mapper.Map<List<GeneralManualResultViewModel>>(childData1);
 
-            //metalViewModel.GeneralManualAddResultViewModelList = childListVM1;
+			//var parentVM1 = _mapper.Map<MetalRulesViewModel>(metalViewModel);
 
-            return new ResponseViewModel<MetalRulesViewModel>
+			//var childData1 = _unitOfWork.Repository<ObsGeneralDynamicValues>()
+			//							.GetQueryAsNoTracking(x => x.ParentId == parentVM.Id);
+			//var childListVM1 = _mapper.Map<List<GeneralManualResultViewModel>>(childData1);
+
+			//metalViewModel.GeneralManualAddResultViewModelList = childListVM1;
+
+			return new ResponseViewModel<MetalRulesViewModel>
 			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",
-				ResponseData = metalViewModel,
+				//ResponseData = metalViewModel,
 				ResponseDataList = null
 			};
 		}
@@ -4833,185 +4866,793 @@ public class ObservationTemplateService : IObservationTemplateService
 				ResponseDataList = null,
 				ResponseService = "ObservationTemplateService",
 				ResponseServiceMethod = "GetMetalRulesId"
-            };
+			};
 		}
 	}
 
-    public ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel metalrule)
-    {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            int tempobsId = 0;
-            int ObjMicroData = 0;
-            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == metalrule.RequestId
-                                                                  && Q.InstrumentId == metalrule.InstrumentId).SingleOrDefault();
+	public ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel metalrule)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int tempobsId = 0;
+			int ObjMicroData = 0;
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == metalrule.RequestId
+																  && Q.InstrumentId == metalrule.InstrumentId).SingleOrDefault();
+
+			if ((metalrule.TemplateObservationId == 0) && (observationById == null))
+
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = metalrule.InstrumentId,
+					RequestId = metalrule.RequestId,
+					TempStart = metalrule.TempStart,
+					TempEnd = metalrule.TempEnd,
+					Humidity = metalrule.Humidity,
+					InstrumentCondition = metalrule.MetalRulesCondition,
+					RefWi = metalrule.RefWi,
+					Allvalues = metalrule.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = metalrule.CreatedBy,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				tempobsId = templateObservation.Id;
+			}
+			else
+			{
+				if (observationById != null)
+				{
+
+
+					if (metalrule.TempStart != null)
+					{
+						observationById.TempStart = metalrule.TempStart;
+					}
+
+					if (metalrule.TempEnd != null)
+					{
+						observationById.TempEnd = metalrule.TempEnd;
+					}
+
+					if (metalrule.Humidity != null)
+					{
+						observationById.Humidity = metalrule.Humidity;
+					}
+
+					if (metalrule.MetalRulesCondition != null)
+					{
+						observationById.InstrumentCondition = metalrule.MetalRulesCondition;
+					}
+					if (metalrule.RefWi != null)
+					{
+						observationById.RefWi = metalrule.RefWi;
+					}
+					if (metalrule.Allvalues != null)
+					{
+						observationById.Allvalues = metalrule.Allvalues;
+					}
+
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+					_unitOfWork.SaveChanges();
+				}
+			}
+
+			if (metalrule.Id == 0)
+			{
+				if (observationById != null)
+				{
+					tempobsId = observationById.Id;
+				}
+
+				ObsTemplateMetalRules obsTemplateMetalRules = new ObsTemplateMetalRules()
+				{
+
+					ParentId = tempobsId,
+					CreatedOn = DateTime.Now,
+					CreatedBy = metalrule.CreatedBy,
+				};
+				_unitOfWork.Repository<ObsTemplateMetalRules>().Insert(obsTemplateMetalRules);
+				_unitOfWork.SaveChanges();
+				if (observationById != null)
+				{
+
+					tempobsId = observationById.Id;
+				}
+				if (metalrule.MetalRuleAddResultViewModelList != null)
+				{
+					metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+					var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
+											.Where(x => x.Id > 0).ToList());
+					if (detailData.Any())
+					{
+						foreach (var updateData in detailData)
+						{
+							_unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
+							_unitOfWork.SaveChanges();
+						}
+					}
+
+					detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+					if (detailData.Any())
+					{
+						_unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
+						_unitOfWork.SaveChanges();
+					}
+				}
+			}
+			else
+			{
+				ObsTemplateMetalRules micrometerById = _unitOfWork.Repository<ObsTemplateMetalRules>()
+																.GetQueryAsNoTracking(Q => Q.ParentId == metalrule.Id)
+																.SingleOrDefault();
+
+				if (observationById != null)
+				{
+
+					tempobsId = observationById.Id;
+				}
+				if (metalrule.MetalRuleAddResultViewModelList != null)
+				{
+					metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
+					var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
+											.Where(x => x.Id > 0).ToList());//x.Id > 0 && 
+					if (detailData.Any())
+					{
+						foreach (var updateData in detailData)
+						{
+							_unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
+							_unitOfWork.SaveChanges();
+						}
+					}
+					//micrometer.MicrometerAddResultViewModelList.ForEach()
+					detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
+
+					if (detailData.Any())
+					{
+						_unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
+						_unitOfWork.SaveChanges();
+					}
+				}
+			}
+			_unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+			//ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method One");
+			return new ResponseViewModel<MetalRulesViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<MetalRulesViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = metalrule,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "InsertMicrometer"
+			};
+		}
+	}
+
+	#region "Dynamic Observation"
+	public ResponseViewModel<ObservationContentValuesViewModel> GetObservationContentValuesById (int ContentId)
+	{
+		try
+		{
+
+			List<ObservationContentValuesViewModel> ObservationInstrument = new List<ObservationContentValuesViewModel>();
+
+			DataSet dsObservationContent = GetContentValuesById(ContentId);
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
+				{
+					ObservationContentValuesViewModel dynamicViewModel = new ObservationContentValuesViewModel
+					{
+						
+						Id=Convert.ToInt32(dr["Id"]),
+						ParentId= Convert.ToInt32(dr["ParentId"]),
+						Sno = Convert.ToInt32(dr["Sno"]),
+						MeasuedValue =dr["MeasuedValue"].ToString(),
+						ActualValue = dr["ActualValue"].ToString(),
+						InstrumentError = dr["InstrumentError"].ToString(),
+						Diff = dr["Diff"].ToString(),
+						MeasuedValue1 = dr["MeasuedValue1"].ToString(),
+						MeasuedValue2 = dr["MeasuedValue2"].ToString(),
+						MeasuedValue3 = dr["MeasuedValue3"].ToString(),
+						Average = dr["Average"].ToString(),
+						Percent = dr["Percent"].ToString(),
+						ContentId = Convert.ToInt32(dr["ContentId"]),
+						ContentMappingId= Convert.ToInt32(dr["ContentMappingId"])
+
+					};
+					ObservationInstrument.Add(dynamicViewModel);
+				}
+			}
+			return new ResponseViewModel<ObservationContentValuesViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ObservationInstrument
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("DynamicObservationService - GetObservationContentValuesById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<ObservationContentValuesViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "DynamicObservationService",
+				ResponseServiceMethod = "GetObservationContentValuesById"
+			};
+		}
+	}
+
+	public DataSet GetContentValuesById(int ContentId)//, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetObservationContentValuesById");//GetObservationContentsById
+		cmd.CommandType = CommandType.StoredProcedure;
+		cmd.Parameters.AddWithValue("@ContentId", ContentId);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId)
+	{
+		try
+		{
+
+			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
+
+			DataSet dsObservationContent = GetObservationContent(InstrumentId);
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
+				{
+					ObservationContentViewModel dynamicViewModel = new ObservationContentViewModel
+					{
+
+						ObservationTemplate = Convert.ToInt32(dr["ObservationTemplate"]),
+						ObservationType = Convert.ToInt32(dr["ObservationType"]),
+						ContentName = dr["ContentName"].ToString(),
+						ContentValue = dr["ContentValue"].ToString(),
+						ContentCount = dr["ContentCount"].ToString(),
+						ContentTitle1 = dr["ContentTitle1"].ToString(),
+						ContentTitle2 = dr["ContentTitle2"].ToString(),
+						ContentSubTitle1 = dr["ContentSubTitle1"].ToString(),
+						ContentSubTitle2 = dr["ContentSubTitle2"].ToString(),
+						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
+						ContentSubTitle4= dr["ContentSubTitle4"].ToString(),
+						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
+						Id = Convert.ToInt32(dr["Id"]),
+
+					};
+					ObservationInstrument.Add(dynamicViewModel);
+				}
+			}
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ObservationInstrument
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("DynamicObservationService - GetObservationById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "DynamicObservationService",
+				ResponseServiceMethod = "GetObservationById"
+			};
+		}
+	}
+	public DataSet GetObservationContent(int InstrumentId)//, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetObservationContents");
+		cmd.CommandType = CommandType.StoredProcedure;
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+	public ResponseViewModel<DynamicViewModel> GetObservationInstrumentById(int InstrumentId, int RequestId)
+	{
+
+		try
+		{
+
+			//List<DynamicViewModel> ObservationInstrument = new List<DynamicViewModel>();
+			DynamicViewModel ObservationInstrument = new DynamicViewModel();
+			DataSet dsObservationContent = GetObservationInstrument(InstrumentId, RequestId);
+
+			//foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
+			//{
+			//	DynamicViewModel dynamicViewModel = new DynamicViewModel
+			//	{
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
+			{
+				DataRow dr = dsObservationContent.Tables[0].Rows[0];
+				ObservationInstrument.IdNo = dr["IdNo"].ToString();
+				ObservationInstrument.Title = dr["Title"].ToString();
+				ObservationInstrument.SubTitle = dr["SubTitle"].ToString();
+				ObservationInstrument.FormatNoTitle = dr["FormatNoTitle"].ToString();
+				ObservationInstrument.FormatNo = dr["FormatNo"].ToString();
+				//ObservationTemplate = Convert.ToInt32(dr["ObservationTemplate"]),
+				ObservationInstrument.Id = Convert.ToInt32(dr["Id"]);
+				//ObservationType = Convert.ToInt32(dr["ObservationTemplate"]),
+				ObservationInstrument.TempStart = dr["TempStart"].ToString();
+				//TempEnd = dr["TempEnd"].ToString(),
+				ObservationInstrument.Humidity = dr["Humidity"].ToString();
+				ObservationInstrument.RefStd = dr["StandardReffered"].ToString();
+				ObservationInstrument.Units = dr["Units"].ToString();
+				ObservationInstrument.ReviewStatus = Convert.ToInt32(dr["ReviewStatus"]);
+				ObservationInstrument.CalibrationPerformedDate = Convert.ToDateTime(dr["CalibrationPerformedDate"]);
+				ObservationInstrument.CalibrationReviewedDate = Convert.ToDateTime(dr["CalibrationReviewedDate"]);
+				ObservationInstrument.CalibrationPerformedBy = dr["CalibrationPerformedBy"].ToString();
+				ObservationInstrument.CalibrationReviewedBy = dr["CalibrationReviewedBy"].ToString();
+				ObservationInstrument.Condition = dr["Condition"].ToString();
+				ObservationInstrument.Name = dr["Name"].ToString();
+				ObservationInstrument.SlNo = dr["SlNo"].ToString();
+				ObservationInstrument.Range = dr["Range"].ToString();
+				ObservationInstrument.Make = dr["Make"].ToString();
+				ObservationInstrument.RequestId = Convert.ToInt32(dr["RequestId"]);
+				ObservationInstrument.Grade = dr["Grade"].ToString();
+				ObservationInstrument.TemplateObservationId = Convert.ToInt32(dr["TemplateObservationId"]);
+				//ObservationInstrument.SubTitle = dr["SubTitle"].ToString();
+			}
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
+			{
+
+				var ObservationContent = new List<ObservationContentViewModel>();
+				foreach (DataRow dr in dsObservationContent.Tables[1].Rows)
+				{
+					ObservationContent.Add(new ObservationContentViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						ContentName = Convert.ToString(dr["ContentName"])
+					});
+
+				}
+
+				ObservationInstrument.ObservationContentList = ObservationContent;
+			}
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[2].Rows.Count > 0)
+			{
+
+				var EqiupmentList = new List<MasterViewModel>();
+				foreach (DataRow dr in dsObservationContent.Tables[2].Rows)
+				{
+					EqiupmentList.Add(new MasterViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						EquipName = Convert.ToString(dr["EquipName"])
+					});
+
+				}
+
+				ObservationInstrument.MasterEqiupmentList = EqiupmentList;
+			}
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[3].Rows.Count > 0)
+			{
+				var UserContentMapping = new List<UserContentMappingView>();
+				foreach (DataRow dr in dsObservationContent.Tables[3].Rows)
+				{
+					UserContentMapping.Add(new UserContentMappingView
+					{
+					
+						Id = Convert.ToInt32(dr["Id"]),
+						ContentId = Convert.ToInt32(dr["ContentId"]),
+						ObservationId = Convert.ToInt32(dr["ObservationId"]),
+						InstrumentId = Convert.ToInt32(dr["InstrumentId"])
+					});
+				}
+
+				ObservationInstrument.UserContentMappingViewModel = UserContentMapping;
+			}
+
+			return new ResponseViewModel<DynamicViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = ObservationInstrument,
+				ResponseDataList = null,
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("DynamicObservationService - GetObservationInstrumentById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<DynamicViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "DynamicObservationService",
+				ResponseServiceMethod = "GetObservationInstrumentById"
+			};
+		}
+	}
+	public DataSet GetObservationInstrument(int InstrumentId, int RequestId)//, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetObservationInstrument");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		cmd.Parameters.AddWithValue("@RequestId", RequestId);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+	public ResponseViewModel<ObservationContentViewModel> GetSelectedObservationContentById(int ContentId,int InstrumentId)
+	{
+		try
+		{
+
+			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
+
+			DataSet dsObservationContent = GetSelectedObservationContent(ContentId, InstrumentId);
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
+				{
+					ObservationContentViewModel dynamicViewModel = new ObservationContentViewModel
+					{
+						ObservationTemplate = Convert.ToInt32(dr["ObservationTemplate"]),
+						ObservationType = Convert.ToInt32(dr["ObservationType"]),
+						ContentName = dr["ContentName"].ToString(),
+						ContentValue = dr["ContentValue"].ToString(),
+						ContentCount = dr["ContentCount"].ToString(),
+						ContentTitle1 = dr["ContentTitle1"].ToString(),
+						ContentTitle2 = dr["ContentTitle2"].ToString(),
+						ContentSubTitle1 = dr["ContentSubTitle1"].ToString(),
+						ContentSubTitle2 = dr["ContentSubTitle2"].ToString(),
+						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
+						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
+						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
+						Id = Convert.ToInt32(dr["Id"]),
+
+
+					};
+					ObservationInstrument.Add(dynamicViewModel);
+				}
+			}
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ObservationInstrument
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("DynamicObservationService - GetObservationById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "DynamicObservationService",
+				ResponseServiceMethod = "GetObservationById"
+			};
+		}
+	}
+	//[GetSelectedObservationContent]
+	public DataSet GetSelectedObservationContent(int ContentId,int InstrumentId)//, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetSelectedObservationContent");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		cmd.Parameters.AddWithValue("@ContentId", ContentId);
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
+	public ResponseViewModel<DynamicViewModel> InsertObservation(DynamicViewModel dynamic)
+	{
+
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int dynamicId = 0;
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == dynamic.RequestId
+																						&& Q.InstrumentId == dynamic.InstrumentId)
+																 .SingleOrDefault();
+
+			if ((dynamic.TemplateObservationId == null) && (observationById == null))
+
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = dynamic.InstrumentId,
+					RequestId = dynamic.RequestId,
+					TempStart = dynamic.TempStart,
+					Humidity = dynamic.Humidity,
+					//RefWi = general.RefWi,
+					InstrumentCondition = dynamic.Condition,
+					Allvalues = dynamic.Units,
+					CreatedBy = dynamic.CreatedBy,
+					CreatedOn = DateTime.Now,
+					// CalibrationReviewedBy = labTechnicalManager.Id,
+					CalibrationReviewedDate = DateTime.Now
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				dynamicId = templateObservation.Id;
+
+			}
+			else
+			{
+				if (observationById != null)
+				{
+
+					if (dynamic.TempStart != null)
+					{
+						observationById.TempStart = dynamic.TempStart;
+					}
+
+					if (dynamic.Humidity != null)
+					{
+						observationById.Humidity = dynamic.Humidity;
+					}
+
+					if (dynamic.Condition != null)
+					{
+						observationById.InstrumentCondition = dynamic.Condition;
+					}
+
+					if (dynamic.Units != null)
+					{
+						observationById.Allvalues = dynamic.Units;
+					}
+					//generalId = observationById.Id;
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+				}
+			}
+			_unitOfWork.SaveChanges();
+			if (observationById != null)
+			{
+
+				dynamicId = observationById.Id;
+			}
+
 			
-            if ((metalrule.TemplateObservationId == 0) && (observationById == null))
 
-            {
-                TemplateObservation templateObservation = new TemplateObservation()
-                {
-                    InstrumentId = metalrule.InstrumentId,
-                    RequestId = metalrule.RequestId,
-                    TempStart = metalrule.TempStart,
-                    TempEnd = metalrule.TempEnd,
-                    Humidity = metalrule.Humidity,
-                    InstrumentCondition = metalrule.MetalRulesCondition,
-                    RefWi = metalrule.RefWi,
-                    Allvalues = metalrule.Allvalues,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = metalrule.CreatedBy,                    
-                    CalibrationReviewedDate = DateTime.Now
-                };                
-                _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
-                _unitOfWork.SaveChanges();
-                tempobsId = templateObservation.Id;               
-            }
-            else
-            {                
-                if (observationById != null)
-                {
+			dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
+			var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+									.Where(x => x.Id > 0).ToList());
+			if (detailData.Any())
+			{
+				
+				foreach (var updateData in detailData)
+				{
+					_unitOfWork.Repository<ObservationContentValues>().Update(updateData);
+					_unitOfWork.SaveChanges();
+				}
+			}
+			//if (dynamicId == null )
+			//{ 
+			//dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
+			//}
+			detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+									.Where(x => x.Id == null).ToList());
+
+			if (detailData.Any())
+			{
+				
+				_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
+				_unitOfWork.SaveChanges();
+			}
+
+			//dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
+			
+			//To insert ObservationContentMapping
+			dynamic.ObservationContentMappingList.ForEach(x => x.ObservationId = dynamicId);
+			dynamic.ObservationContentMappingList.ForEach(x => x.CreatedOn = DateTime.Now);
+			dynamic.ObservationContentMappingList.ForEach(x => x.CreatedBy = dynamic.CreatedBy);
+
+			var MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
+									.Where(x => x.Id > 0).ToList());
+			if (MappingData.Any())
+			{
+				foreach (var updateData in MappingData)
+				{
+					_unitOfWork.Repository<ObservationContentMapping>().Update(updateData);
+					_unitOfWork.SaveChanges();
+				}
+			}
+
+			MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
+									.Where(x => x.Id == null).ToList());
+			if (MappingData.Any())
+			{
+				_unitOfWork.Repository<ObservationContentMapping>().InsertRange(MappingData);
+				_unitOfWork.SaveChanges();
+			}
+
+			_unitOfWork.Commit();
+			return new ResponseViewModel<DynamicViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertObservation Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<DynamicViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = dynamic,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "InsertObservation"
+			};
+		}
+	}
 
 
-                    if (metalrule.TempStart != null)
-                    {
-                        observationById.TempStart = metalrule.TempStart;
-                    }
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitObservationReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy)
+	{
+		try
+		{
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+															 .GetQueryAsNoTracking(Q => Q.Id == observationId)
+															 .SingleOrDefault();
 
-                    if (metalrule.TempEnd != null)
-                    {
-                        observationById.TempEnd = metalrule.TempEnd;
-                    }
+			Instrument instrumentData = _unitOfWork.Repository<Instrument>()
+																	.GetQueryAsNoTracking(Q => Q.Id == observationById.InstrumentId)
+																	.SingleOrDefault();
 
-                    if (metalrule.Humidity != null)
-                    {
-                        observationById.Humidity = metalrule.Humidity;
-                    }
+			Request ReqstData = _unitOfWork.Repository<Request>()
+																	.GetQueryAsNoTracking(Q => Q.Id == observationById.RequestId)
+																	.SingleOrDefault();
 
-                    if (metalrule.MetalRulesCondition != null)
-                    {
-                        observationById.InstrumentCondition = metalrule.MetalRulesCondition;
-                    }
-                    if (metalrule.RefWi != null)
-                    {
-                        observationById.RefWi = metalrule.RefWi;
-                    }
-                    if (metalrule.Allvalues != null)
-                    {
-                        observationById.Allvalues = metalrule.Allvalues;
-                    }
+			var numberList = GenerateULRAndCertificateNumber(instrumentData.IsNABL);
 
-                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
-                    _unitOfWork.SaveChanges();
-                }
-            }
 
-            if (metalrule.Id == 0)
-            {
-                if (observationById != null)
-                {
-                    tempobsId = observationById.Id;
-                }
+			_unitOfWork.BeginTransaction();
+			observationById.CalibrationReviewedDate = reviewDate;
+			observationById.ReviewStatus = reviewStatus;
+			observationById.ULRNumber = numberList[0];
+			observationById.CertificateNumber = numberList[1];
+			observationById.CalibrationReviewedBy = reviewedBy;
+			_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+			_unitOfWork.SaveChanges();
 
-                ObsTemplateMetalRules obsTemplateMetalRules = new ObsTemplateMetalRules()
-                {
+			RequestStatus reqestStatus = new RequestStatus();
+			reqestStatus.RequestId = observationById.RequestId;
+			reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+			reqestStatus.CreatedOn = DateTime.Now;
+			reqestStatus.CreatedBy = reviewedBy;
+			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+			_unitOfWork.SaveChanges();
 
-                    ParentId = tempobsId,                                       
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = metalrule.CreatedBy,                                  
-                };
-                _unitOfWork.Repository<ObsTemplateMetalRules>().Insert(obsTemplateMetalRules);
-                _unitOfWork.SaveChanges();
-                if (observationById != null)
-                {
+			//----------------------New update for listing Approved Request start---------------------------
+			//Request Tempreqests = new Request();
+			ReqstData.Id = observationById.RequestId;
+			ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
 
-                    tempobsId = observationById.Id;
-                }
-                if (metalrule.MetalRuleAddResultViewModelList != null)
-                {
-                    metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
-                    var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
-                                            .Where(x => x.Id > 0).ToList());
-                    if (detailData.Any())
-                    {
-                        foreach (var updateData in detailData)
-                        {
-                            _unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
-                            _unitOfWork.SaveChanges();
-                        }
-                    }
+			_unitOfWork.Repository<Request>().Update(ReqstData);
+			_unitOfWork.SaveChanges();
+			//----------------------New update for listing Approved Request end---------------------------
 
-                    detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
+			//To Update ToolInventory Status
+			if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
+			{
+				if (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)
+				{
+					if (reviewStatus == 1)
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
+						instrumentData.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
+						instrumentData.ReplacementLabID = null;
+					}
+					else
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.RejectedTool;
 
-                    if (detailData.Any())
-                    {
-                        _unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
-                        _unitOfWork.SaveChanges();
-                    }
-                }
-            }
-            else
-            {
-                ObsTemplateMetalRules micrometerById = _unitOfWork.Repository<ObsTemplateMetalRules>()
-                                                                .GetQueryAsNoTracking(Q => Q.ParentId == metalrule.Id)
-                                                                .SingleOrDefault();                
+					}
+				}
+				else if (ReqstData.TypeOfReqest == 1)
+				{
+					instrumentData.ToolInventoryStatus = reviewStatus == 1 ? (Int32)ToolInventoryStatus.SentTool : (Int32)ToolInventoryStatus.RejectedTool;
+				}
+			}
+			_unitOfWork.Repository<Instrument>().Update(instrumentData);
+			_unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+			return new ResponseViewModel<LeverTypeDialViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
 
-                if (observationById != null)
-                {
-
-                    tempobsId = observationById.Id;
-                }
-                if (metalrule.MetalRuleAddResultViewModelList != null)
-                {
-                    metalrule.MetalRuleAddResultViewModelList.ForEach(x => x.ParentId = tempobsId);
-                    var detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList
-                                            .Where(x => x.Id > 0).ToList());//x.Id > 0 && 
-                    if (detailData.Any())
-                    {
-                        foreach (var updateData in detailData)
-                        {
-                            _unitOfWork.Repository<ObsTemplateValues>().Update(updateData);
-                            _unitOfWork.SaveChanges();
-                        }
-                    }
-                    //micrometer.MicrometerAddResultViewModelList.ForEach()
-                    detailData = _mapper.Map<ObsTemplateValues[]>(metalrule.MetalRuleAddResultViewModelList.Where(x => x.Id == null).ToList());
-
-                    if (detailData.Any())
-                    {
-                        _unitOfWork.Repository<ObsTemplateValues>().InsertRange(detailData);
-                        _unitOfWork.SaveChanges();
-                    }
-                }
-            }
-            _unitOfWork.SaveChanges();
-            _unitOfWork.Commit();
-            //ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method One");
-            return new ResponseViewModel<MetalRulesViewModel>
-            {
-                ResponseCode = 200,
-                ResponseMessage = "Success",
-                ResponseData = null,
-                ResponseDataList = null
-            };
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.RollBack();
-            ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
-            ErrorViewModelTest.Log("exception - " + e.Message);
-            return new ResponseViewModel<MetalRulesViewModel>
-            {
-                ResponseCode = 500,
-                ResponseMessage = "Failure",
-                ErrorMessage = e.Message,
-                ResponseData = metalrule,
-                ResponseDataList = null,
-                ResponseService = "ObservationTemplateService",
-                ResponseServiceMethod = "InsertMicrometer"
-            };
-        }
-    }
+			ErrorViewModelTest.Log("ObservationTemplateService - SubmitObservationReview Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
+			return new ResponseViewModel<LeverTypeDialViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "SubmitObservationReview"
+			};
+		}
+	}
+	#endregion
 }

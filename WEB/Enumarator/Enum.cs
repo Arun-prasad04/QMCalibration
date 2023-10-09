@@ -38,10 +38,16 @@ public enum ToolInventoryStatus
 {
 	UserTool = 1,
 	RequestTool = 2,
-	CalibrationTool = 3,
-	RejctedTool = 4,
-	ClosedTool = 5,
-	SentTool = 6
+	AcceptTool=3,
+	RejectedTool = 4,
+	SentTool = 5,
+	ClosedTool = 6
+//  else if (item.status == 28) {
+//                        tdStatus = "<td>Request Rejected</td>"
+//}
+//                    else if (item.status == 29 && item.labResult == "Rejected") {
+//                        tdStatus = "<td>Calibration Rejected</td>"
+//                    }
 }
 public enum ToolRoomStatus
 {
