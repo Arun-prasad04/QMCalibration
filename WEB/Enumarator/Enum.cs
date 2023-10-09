@@ -36,12 +36,12 @@ public enum ReplicateTestStatus
 }
 public enum ToolInventoryStatus
 {
-	UserTool = 1,
-	RequestTool = 2,
-	CalibrationTool = 3,
-	RejctedTool = 4,
-	ClosedTool = 5,
-	SentTool = 6
+    UserTool = 1,
+    RequestTool = 2,
+    AcceptTool = 3,
+    RejectedTool = 4,
+    SentTool = 5,
+    ClosedTool = 6
 }
 public enum ToolRoomStatus
 {

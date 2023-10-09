@@ -1,0 +1,315 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+    table,
+    th,
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .Border0px {
+        width: 100%;
+    }
+
+    .TableWidth {
+        width: 100%;
+    }
+
+    .TableDataCenter {
+        width: 100%;
+        text-align: center;
+    }
+
+    .MeasuredRow {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .Measuredcolumn {
+        float: left;
+        width: 100%;
+    }
+
+    .textcenterborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .textleftborder {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .sizeborder {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+        <table class="TableWidth">
+            <tr class="sizeborder">
+                <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px"
+                    height="60">
+                    <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" />
+                </td>
+                <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">
+                    <span class="trn">Observation Sheet</span>
+                    </br> <span class="trn">External Calibration</span>
+                </td>
+                <td class="textleftborder trn" height="30">Format No.</td>
+                <td class="textcenterborder trn">365.QM.D.824</td>
+            </tr>
+            <tr>
+                <td class="textleftborder" height="30">
+                    <span class="trn">RevNo & </span></br> <span class="trn">Date</span>
+                </td>
+                <td class="textcenterborder trn">01/ 14.11.2018</td>
+            </tr>
+        </table>
+        <br>
+
+        <table class="TableWidth">
+            <tr>
+                <td class="textleftborder trn">Name</td>
+                <td>@Model.Name</td>
+                <td class="textleftborder trn">Range</td>
+                <td>@Model.Range</td>
+                <td class="textleftborder trn">Make</td>
+                <td>@Model.Make</td>
+            </tr>
+            <tr>
+                <td class="textleftborder trn">Serial No.</td>
+                <td>@Model.SerialNo</td>
+                <td class="textleftborder trn">ID No.</td>
+                <td>@Model.IdNo</td>
+                <td class="textleftborder trn">Ref Std</td>
+                <td>@Model.RefStd</td>
+            </tr>
+            <tr>
+                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
+                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
+                <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
+                <td class="trn">Humidity %RH</td>
+                <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+            </tr>
+
+            <tr>
+                <td rowspan="2" colspan="4" class="textleftborder">
+                    <span class="trn">Condition of the Instrument</span></br>
+                    <textarea name="ExtIndicatiorCondition" id="ExtIndicatiorCondition"
+                              style="height: 50px;width: 400px;">@Model.ExternalObsCondition</textarea>
+                </td>
+                <td class="textleftborder" colspan="2">
+                    <span class="trn">Ref WI: </span><input type="text" name="RefWi" id="RefWi"
+                                                            value="@Model.RefWi" class="size" style="width: 140px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="textleftborder" colspan="2">
+                    <span class="trn">All Values Are In</span><input type="text" style="width: 60px;"
+                                                                     name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size">
+                </td>
+            </tr>
+        </table>
+        <br>
+       
+
+        <div class="TableWidth">
+            <table align="center">
+                <tr>
+                    <th colspan="3" class="trn">External Calibration</th>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="width:180px" class="trn">External report status</td>
+                    <td style="width:80px" class="trn">Ok</td>
+                    <td style="width:80px" class="trn">Not Ok</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="checkOk" id="checkOk" /></td>
+                    <td><input type="radio" name="checkOk" id="checkNotOk" /></td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        
+        <br>
+        <table class="TableWidth">
+            <tr>
+                <td class="trn">Calibration Performed By</td>
+                <td>
+                    <input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy"
+                           class="Border0px" disabled>
+                </td>
+
+                <td class="trn">Reviewed By</td>
+                <td>
+                    <input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="textcenterborder trn">Date:</td>
+                @if (true)
+                {
+                    var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+                    <td>
+                        <input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                               class="Border0px" disabled>
+                    </td>
+                }
+
+                <td class="textcenterborder trn">Date:</td>
+
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
+                || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                    <td>
+                        <input type="text" name="Review_Date" id="Review_Date"
+                               value="@Model.Review_Date" class="size" disabled>
+                    </td>
+                }
+                else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+                {
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
+                                       id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate" @Model.IsDisabled>
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4") @*|| Model.ReviewStatus != null)*@
+            {
+                <tr>
+                    <td class="textleftborder trn">Status</td>
+                    <td class="textleftborder" colspan="3">
+                        <div style="text-align: left;">
+                            <label class="trn">Approve</label>
+                            <input type="radio" name="Approve" id="Approve">
+                            <label class="trn">Reject</label>
+                            <input type="radio" name="Approve" id="Reject">
+                        </div>
+                    </td>
+
+                </tr>
+            }
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
+            {
+                <tr>
+                    <td colspan="4">
+                        @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+                        {
+                            <input type="button" class="btn btn-primary trn" value="Save" name="Save" id="General" onclick="SaveExternalObservationSheet(language)">
+                        }
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                    </td>
+                </tr>
+            }
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+            {
+                <tr>
+                    <td colspan="4" style="text-align:center;">
+                        @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+                        {
+                            <input type="button" class="btn btn-primary trn" value="Submit Review" name="Submit" id="LeverDial" onclick="SubmitReview(language)" @Model.IsDisabled>
+                        }
+                        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <input type="hidden" id="instrumentId" value="@Model.InstrumentId">
+        <input type="hidden" id="requestId" value="@Model.RequestId">
+        <input type="hidden" name="Id" Id="Id" value="@Model.Id">
+        <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+        <input type="hidden" id="AdminReviewStatus" name="AdminReviewStatus" value="@Model.AdminReviewStatus">
+        <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.Id">
+
+
+
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#checkOk').on('change', function () {
+            if ($('#checkOk').not(this).prop('checked', false)) {
+                $('#AdminReviewStatus').val(1);
+            }
+        });
+
+        $('#checkNotOk').on('change', function () {
+            if ($('#checkNotOk').not(this).prop('checked', false)) {
+                $('#AdminReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#AdminReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#checkOk').prop('checked', true);
+            $('#checkNotOk').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#checkOk').prop('checked', false);
+            $('#checkNotOk').prop('checked', true);
+        }
+
+
+        $('#Approve').on('change', function () {
+            if ($('#Approve').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(1);
+            }
+        });
+
+        $('#Reject').on('change', function () {
+            if ($('#Reject').not(this).prop('checked', false)) {
+                $('#ReviewStatus').val(2);
+            }
+
+        });
+
+        var reviewStatus = $('#ReviewStatus').val();
+        if (reviewStatus == 1) {
+            $('#Approve').prop('checked', true);
+            $('#Reject').prop('checked', false);
+        }
+        else if (reviewStatus == 2) {
+            $('#Approve').prop('checked', false);
+            $('#Reject').prop('checked', true);
+        }
+    });
+
+
+    setTimeout(function () {
+
+        $('#reservationdate').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+    }, 1000);
+</script>
+
+
+
+

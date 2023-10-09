@@ -1,5 +1,7 @@
 using CMT.DATAMODELS;
 using WEB.Models;
+using WEB.Models.Templates;
+
 namespace WEB.Services.Interface
 {
 	public interface IObservationTemplateService
@@ -48,6 +50,9 @@ namespace WEB.Services.Interface
 		ResponseViewModel<MetalRulesViewModel> GetMetalRulesId(int requestId, int instrumentId);
 
         ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel micrometer);
+        ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId);
+
+        ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs);
 
     }
 

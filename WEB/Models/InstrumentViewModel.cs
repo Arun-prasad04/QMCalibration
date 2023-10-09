@@ -103,4 +103,45 @@ public class InstrumentViewModel
 		
 
 	}
+
+	public class RequestAllView
+	{
+		public int instrumentId { get; set; }
+		public int TypeValue { get; set; }
+
+	}
+
+	public class RequestMailList
+	{
+		public int SNo { get; set; }
+		public string? RequestNo { get; set; }
+		public string? LabId { get; set; }
+		public string? EquipmentType { get; set; }
+		public string? EquipmentName { get; set; }
+		public string? SubsectionCode { get; set; }
+		public string? CalibrationType { get; set; }
+
+		public string? CreaterFirstName { get; set; }
+		public string? CreaterLastName { get; set; }
+		public string? CreaterEmail { get; set; }
+
+	}
+
+    public class DueInstrument
+    {
+        public int Id { get; set; }
+        public int InstrumentId { get; set; }
+        public string IdNo { get; set; }
+        public string EquipmentType { get; set; }
+        public string InstrumentName { get; set; }
+        public string Class { get; set; }
+        public string Location { get; set; }
+        public string SubSectionCode { get; set; }
+        public string SectionName { get; set; }
+        public string TypeofScope { get; set; }
+        public DateTime DueDate { get; set; }
+        public string ToolRoom { get; set; }
+		public int DeptId { get; set; }
+		public int InstrumentCreatedBy { get; set; }
+	}
 }

@@ -45,6 +45,7 @@ public class MasterController : BaseController
 	}
 	public IActionResult MasterInsert(MasterViewModel master)
 	{
+		//return Json(true);
 		string SessionLang = base.SessionGetString("Language");
 		//return Json(true);
 		ResponseViewModel<MasterViewModel> response;
