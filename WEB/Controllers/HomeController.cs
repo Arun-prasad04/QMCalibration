@@ -22,7 +22,7 @@ public class HomeController : BaseController
 	private IMasterService _masterService { get; set; }
 
 	private IConfiguration _configuration;
-    private IUserService _userService { get; set; }
+	private IUserService _userService { get; set; }
 	//private CMTDL _cmtdl { get; set; }
 	public HomeController(IUnitOfWork unitOfWork, IMapper mapper, IMasterService masterService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IConfiguration Configuration, IUserService userService) : base(logger, contextAccessor)
 	{
@@ -35,12 +35,12 @@ public class HomeController : BaseController
 	}
 
 	public IActionResult Index()
-	{		
+	{
 		ViewBag.PageTitle = "DashBoard";
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));		
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string SessionLang = base.SessionGetString("Language");
-		ViewBag.RoleId= Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ViewBag.RoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		//var objtype = 1159;
 		//Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == objtype).SingleOrDefault();
 
@@ -169,12 +169,14 @@ public class HomeController : BaseController
 			});
 		}
 		return Json(MStranslater);
-		
+
 	}
 
 	public IActionResult ObservationTypeTranslation()
 	{
 		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
+	{
+		
 		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.IsActive == true).ToList());
 
 

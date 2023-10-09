@@ -41,76 +41,76 @@ public class InstrumentController : BaseController
 
     }
 
-    public JsonResult GetAllInstrumentList()
-    {
+	public JsonResult GetAllInstrumentList()
+	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);        
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
 		return Json(response.ResponseDataList);
 	}
 
-     public IActionResult Create()
-     {
-        ViewBag.PageTitle="Instrument Create";
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
+	public IActionResult Create()
+	{
+		ViewBag.PageTitle = "Instrument Create";
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		ViewBag.UserBaseDepartment = response.ResponseData.Departments;
 		ViewBag.ShowDetails = true;
 		return View(response.ResponseData);
-    }
+	}
 
-    public IActionResult InsertInstrument(InstrumentViewModel instrument)
-    {		
-		int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-        int UserDeptId = Convert.ToInt32(base.SessionGetString("DepartmentId"));
-        int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<InstrumentViewModel> response;
-        if (instrument.Id != null && instrument.Id > 0)
-        {
-            instrument.ModifiedBy = userId;
-            instrument.ModifiedOn = DateTime.Now;
-            instrument.CreatedOn = DateTime.Now;
-            //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            instrument.UserRoleId = userRoleId;            
-            response = _instrumentService.UpdateInstrument(instrument);
-        }
-        else
-        {
-            instrument.ActiveStatus = true;
-            instrument.CreatedBy = userId;
-            instrument.ModifiedBy = userId;
-            instrument.CreatedOn = DateTime.Now;
-            instrument.ModifiedOn = DateTime.Now;
-            instrument.DateOfReceipt = DateTime.Now;
-            instrument.DueDate = DateTime.Now;
-            instrument.CalibDate=DateTime.Now;
-            //instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-            //if(userRoleId != 2)
-            //{
-            //    instrument.UserDept = UserDeptId;
-            //}
-            response = _instrumentService.InsertInstrument(instrument);
-        }
-        TempData["ResponseCode"] = response.ResponseCode;
-        TempData["ResponseMessage"] = response.ResponseMessage;
-        if (response.ResponseMessage == "Success")
-        {
-            return RedirectToAction("Index", "Instrument");
-        }
-        else
-        {
-            return Json(response.ResponseData);
-        }
-    }
+	public IActionResult InsertInstrument(InstrumentViewModel instrument)
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int UserDeptId = Convert.ToInt32(base.SessionGetString("DepartmentId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<InstrumentViewModel> response;
+		if (instrument.Id != null && instrument.Id > 0)
+		{
+			instrument.ModifiedBy = userId;
+			instrument.ModifiedOn = DateTime.Now;
+			instrument.CreatedOn = DateTime.Now;
+			//instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
+			instrument.UserRoleId = userRoleId;
+			response = _instrumentService.UpdateInstrument(instrument);
+		}
+		else
+		{
+			instrument.ActiveStatus = true;
+			instrument.CreatedBy = userId;
+			instrument.ModifiedBy = userId;
+			instrument.CreatedOn = DateTime.Now;
+			instrument.ModifiedOn = DateTime.Now;
+			instrument.DateOfReceipt = DateTime.Now;
+			instrument.DueDate = DateTime.Now;
+			instrument.CalibDate = DateTime.Now;
+			//instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
+			//if(userRoleId != 2)
+			//{
+			//    instrument.UserDept = UserDeptId;
+			//}
+			response = _instrumentService.InsertInstrument(instrument);
+		}
+		TempData["ResponseCode"] = response.ResponseCode;
+		TempData["ResponseMessage"] = response.ResponseMessage;
+		if (response.ResponseMessage == "Success")
+		{
+			return RedirectToAction("Index", "Instrument");
+		}
+		else
+		{
+			return Json(response.ResponseData);
+		}
+	}
 
-    public ActionResult InstrumentEdit(int instrumentId)
-    {
-        ViewBag.PageTitle="Instrument Edit";
-        int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+	public ActionResult InstrumentEdit(int instrumentId)
+	{
+		ViewBag.PageTitle = "Instrument Edit";
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
 
 		ViewBag.ObservationType = response.ResponseData.ObservationType;
 		ViewBag.UserDept = response.ResponseData.UserDept;
@@ -119,73 +119,82 @@ public class InstrumentController : BaseController
 		ViewBag.MUTemplates = response.ResponseData.MUTemplate;
 		ViewBag.Observation = response.ResponseData.ObservationTemplate;
 
-		Request NewRequest = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId).OrderByDescending(O => O.Id).FirstOrDefault();
-		if (NewRequest.TypeOfReqest == 2 || NewRequest.TypeOfReqest == 3 || NewRequest.StatusId == 30)
+		if (userRoleId == 1 || userRoleId == 3)
 		{
-			ViewBag.ShowDetails = false;
 			response.ResponseData.IsDisabled = "readonly";
 		}
-		else
+
+		
+		Request NewRequest = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId).OrderByDescending(O => O.Id).FirstOrDefault();
+		if (NewRequest.TypeOfReqest == 2 || NewRequest.TypeOfReqest == 3 || NewRequest.StatusId == 30)
+		{ 
+		ViewBag.ShowDetails = false;
+			response.ResponseData.IsDisabled = "readonly";
+		}
+		else 
 		{
 			ViewBag.ShowDetails = true;
 		}
 		return View("Create", response.ResponseData);
-    }
+	}
 
-    public ActionResult InstrumentDelete(int instrumentId)
-    {
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.DeleteInstrument(instrumentId);
-        TempData["ResponseCode"] = response.ResponseCode;
-        TempData["ResponseMessage"] = response.ResponseMessage;
-        return RedirectToAction("Index", "Instrument");
-    }
-    public IActionResult QuratineList()
-    {
-        ViewBag.PageTitle="Instrument QuratineList";
-        ViewBag.ResponseCode = TempData["ResponseCode"];
-        ViewBag.ResponseMessage = TempData["ResponseMessage"];
-      int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-      int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentQuarantineList(userId,userRoleId);
-        return View(response.ResponseDataList);
-    }
-
-    public IActionResult InstrumentQuarantine(int instrumentId, string reason)
-    {
-      int statusId=1;
-      int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-      ResponseViewModel<InstrumentViewModel> response = _instrumentService.InstrumentQuarantine(instrumentId, reason,userId,statusId);
-      return Json(response.ResponseData);
-    }
-    public IActionResult InstrumentRemoveQuarantine(int instrumentId)
-    {
-        int userRoleId=Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<InstrumentViewModel> response=new ResponseViewModel<InstrumentViewModel>();
-        if(userRoleId==1){
-            response= _instrumentService.InstrumentRemoveQuarantine(instrumentId,3,userId);
-        }else if(userRoleId==2 || userRoleId==4){
-            response= _instrumentService.InstrumentRemoveQuarantine(instrumentId,2,userId);
-        }
-        return Json(response.ResponseData);
-    }
-
-    public IActionResult Request(int instumentId, int typeId)
-    {
-     int userId=Convert.ToInt32(base.SessionGetString("LoggedId"));
-      ResponseViewModel<RequestViewModel>response=_requestService.InsertRequest(instumentId, userId,typeId);
-        TempData["ResponseCode"]=response.ResponseCode;
-        TempData["ResponseMessage"]=response.ResponseMessage;
-        return RedirectToAction("Index","Instrument");
-    }
-    //Due For Calibration 
-
-    public JsonResult PopUpInstrumentList(string InstrumentName,int InstrumentId)
-    {
+	public ActionResult InstrumentDelete(int instrumentId)
+	{
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.DeleteInstrument(instrumentId);
+		TempData["ResponseCode"] = response.ResponseCode;
+		TempData["ResponseMessage"] = response.ResponseMessage;
+		return RedirectToAction("Index", "Instrument");
+	}
+	public IActionResult QuratineList()
+	{
+		ViewBag.PageTitle = "Instrument QuratineList";
+		ViewBag.ResponseCode = TempData["ResponseCode"];
+		ViewBag.ResponseMessage = TempData["ResponseMessage"];
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.PopUpList( InstrumentName, InstrumentId);
-		
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentQuarantineList(userId, userRoleId);
+		return View(response.ResponseDataList);
+	}
+
+	public IActionResult InstrumentQuarantine(int instrumentId, string reason)
+	{
+		int statusId = 1;
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.InstrumentQuarantine(instrumentId, reason, userId, statusId);
+		return Json(response.ResponseData);
+	}
+	public IActionResult InstrumentRemoveQuarantine(int instrumentId)
+	{
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<InstrumentViewModel> response = new ResponseViewModel<InstrumentViewModel>();
+		if (userRoleId == 1)
+		{
+			response = _instrumentService.InstrumentRemoveQuarantine(instrumentId, 3, userId);
+		}
+		else if (userRoleId == 2 || userRoleId == 4)
+		{
+			response = _instrumentService.InstrumentRemoveQuarantine(instrumentId, 2, userId);
+		}
+		return Json(response.ResponseData);
+	}
+
+	public IActionResult Request(int instumentId, int typeId)
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<RequestViewModel> response = _requestService.InsertRequest(instumentId, userId, typeId);
+		TempData["ResponseCode"] = response.ResponseCode;
+		TempData["ResponseMessage"] = response.ResponseMessage;
+		return RedirectToAction("Index", "Instrument");
+	}
+	//Due For Calibration 
+
+	public JsonResult PopUpInstrumentList(string InstrumentName, int InstrumentId)
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.PopUpList(InstrumentName, InstrumentId);
+
 		return Json(response.ResponseDataList);
 	}
 
@@ -216,21 +225,22 @@ public class InstrumentController : BaseController
 	}
 	public JsonResult SaveInventoryCalibration(List<Instrumentids> InstrumentList)
 	{
-		
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        
+
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.SaveInventoryCalibration(InstrumentList, userId);
 
 		return Json(response.ResponseData);
-		 
+
 	}
 	public IActionResult ToolRoomDepartment()
 	{
-        ViewBag.PageTitle = "Replacement Due List Details";
+		ViewBag.PageTitle = "Replacement Due List Details";
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomDepartmentwiseInstrument();
 
 		return View(response.ResponseDataList);
 	}
-	//For Tool Inventory Manager
-    
-}
+	
+		//For Tool Inventory Manager
+
+	}

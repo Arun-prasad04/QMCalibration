@@ -72,7 +72,7 @@ public class TrackerController : BaseController
 	}
 	public IActionResult Request(int? reqType)
 	{
-		 ViewBag.PageTitle = "Request";
+		// ViewBag.PageTitle = "Request";
 		ViewBag.ReqType = reqType;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
@@ -104,7 +104,8 @@ public class TrackerController : BaseController
 		//int reqType = 4;
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+		//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
 
         if (reqType == 1 && response.ResponseDataList != null)
         {
@@ -142,8 +143,9 @@ public class TrackerController : BaseController
 		ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
 		ViewBag.MasterData = masterResponse.ResponseDataList;
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
-		ViewBag.ObservationType = response.ResponseData.ObservationType;
-		ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		//ViewBag.ObservationType = response.ResponseData.ObservationType;
+
+       // ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 
 		return View(response.ResponseData);
 	}

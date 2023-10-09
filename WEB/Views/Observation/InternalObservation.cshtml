@@ -1,0 +1,708 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+	table,
+	th,
+	tr,
+	td {
+		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.Tables-AndTablesTextBox {
+		width: 100%;
+	}
+
+</style>
+<div class="row">
+	<div class="col-md-10" style="padding: 19px;border: 1px solid black; background-color: white;">
+
+
+		<table class="Tables-AndTablesTextBox" id="tblHeader">
+
+
+
+			<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
+				<td colspan="4">
+					@* <span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span> *@
+					<span class="trn">
+						@Model.Title
+					</span>
+				</td>
+
+			</tr>
+
+			<tr class="sizeborder">
+				<td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px" height="20">
+					<img src="../image/Fuso.png" alt="" style="width: 40%;" />
+				</td>
+
+				<td id="tdHeaderDepth" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
+					<span class="trn">
+						@Model.SubTitle
+					</span>
+					@* <span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span> *@
+				</td>
+
+				<td class="textleftborder trn" height="10">
+					@Model.FormatNoTitle
+				</td>
+
+				<td id="tdFormatDepth" class="textcenterborder">
+					@Model.FormatNo
+				</td>
+			</tr>
+			<tr>
+				<td class="textleftborder" height="20">
+					リビジョン番号／Revision No.
+				</td>
+				<td class="textcenterborder">0</td>
+			</tr>
+		</table>
+		<br>
+
+		<table id="TblInstrument" class="Tables-AndTablesTextBox">
+			<tr>
+				<td colspan="2" class="textcenterborder"><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
+				<td colspan="1">@Model.IdNo</td>
+				<td colspan="2" class="textcenterborder"><span>品名   ／</span><br /><span>Instrument name</span></td>
+				<td colspan="3">@Model.Name</td>
+				<td colspan="2" class="textcenterborder"><span>製造者／</span><br /><span> Make</span></td>
+				<td colspan="2">@Model.Make</td>
+			</tr>
+			<tr>
+				<td class="textcenterborder" colspan="2">
+					<span>製造番号 /Serial Number</span>
+				</td>
+				<td colspan="1">@Model.SlNo</td>
+				<td class="textcenterborder" colspan="2">
+					<span>等級   ／</span><br /><span>Grade</span>
+				</td>
+				<td colspan="3">@Model.Grade</td>
+				<td colspan="2" class="textcenterborder">
+					<span>能力(測定範囲）／</span><br /> <span>Range</span>
+				</td>
+				<td colspan="2">@Model.Range</td>
+			</tr>
+			<tr>
+				<td class="textcenterborder" colspan="6">
+					<span>基準器・標準器・検査設備機器／</span><br /><span> Standard instruments (Master instrument)</span>
+				</td>
+
+				<td class="textcenterborder" colspan="3">
+					<span>参照基準／</span><br /><span>Reference standards</span>
+				</td>
+				<td colspan="3"> @Model.RefStd</td>
+
+			</tr>
+			<tr>
+
+				<td colspan="6">
+					<div id="masterEquipmentValue" class="Tables-AndTablesTextBox">
+						@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+						{
+							int i = 1;
+
+							@foreach (var master in Model.MasterEqiupmentList)
+							{
+								<label>
+
+									@i
+									.
+									@master.EquipName
+									&nbsp;
+
+								</label>
+
+
+								i = i + 1;
+							}
+
+						}
+					</div>
+				</td>
+
+				<td class="textcenterborder" colspan="3">
+					<span>単位／ Unit</span>
+				</td>
+				<td colspan="3"><input type="text" style="height: 50px;" value="@Model.Units" class="Tables-AndTablesTextBox" name="Units" id="Units"></td>
+			</tr>
+			<tr>
+				<td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
+				<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+				<td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
+				<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+				<td colspan=2">
+					<span>外観・機能／Visual Check</span>
+				</td>
+				<td colspan="4">
+					
+
+					<textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea>
+				</td>
+
+		</table>
+		<br>
+		<div class="row">
+				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && @Model.ReviewStatus == 0)
+				{
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="required trn">Observation Content</label>
+						<select name="ContentSelect" id="ContentSelect" class="form-control muldrop" multiple="multiple">
+								@foreach (var Content in @Model.ObservationContentList)
+								{
+									if (@Model.UserContentMappingViewModel != null)
+									{
+										var check = false;
+										@foreach (var contentmapid in @Model.UserContentMappingViewModel)
+										{
+											//if(SubSectionCode.)
+											if (Content.Id == contentmapid.ContentId)
+											{
+												check = true;
+											}
+										}
+										if (check == true)
+										{
+
+											<option value="@Content.Id" selected="check">@Content.ContentName</option>
+										}
+										else
+										{
+											<option value="@Content.Id">@Content.ContentName</option>
+										}
+									}
+									else
+									{
+
+									<option value="@Content.Id">@Content.ContentName</option>
+									
+									}
+
+
+								}
+							
+							}
+						</select>
+					</div>
+					<input type="button" id="btnGenerate" value="Generate Table" class="btn-Generate" />
+				</div>
+				}
+			<div id="dvTable" class="col-md-8 content"></div>
+				@* </div> *@
+			<table class="Tables-AndTablesTextBox" id="TblFooter">
+				<tr>
+					<td class="trn">検査員／Inspector</td>
+					<td>
+						<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
+							   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
+					</td>
+					<td>検査日／Inspection date:</td>
+				@if (true)
+				{
+					var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+						<td>
+							<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+								   class="Tables-AndTablesTextBox" disabled>
+						</td>
+				}
+
+				</tr>
+
+				<tr>
+					<td class="trn">承認者／Approver</td>
+					<td><input type="text" value="@Model.CalibrationReviewedBy" class="Tables-AndTablesTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
+
+					<td>承認日／Approved date:</td>
+
+				@if (true)
+				{
+					var ReviewDate = @Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");
+						<td>
+							<input type="text" name="CalibrationReviewedDate" id="CalibrationReviewedDate"
+								   value="@ReviewDate" class="Tables-AndTablesTextBox" disabled>
+						</td>
+
+				}
+				</tr>
+				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" && @Model.ReviewStatus == 0)
+				@*|| @Model.ReviewStatus == 0) @Model.ReviewStatus	 != null *@
+				{
+					<tr>
+						<td class="textcenterborder">判定／Judgement</td>
+						<td class="textcenterborder" colspan="3">
+							<div style="text-align: left;">
+
+								<label class="trn">合格 / Pass</label>
+								<input type="radio" name="Approve" id="Approve">
+								<label class="trn">不合格 /Fail</label>
+								<input type="radio" name="Reject" id="Reject">
+							</div>
+						</td>
+
+					</tr>
+				}
+				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
+				{
+					<tr>
+						<td colspan="4">
+							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+							{
+								<input type="button" class="btn btn-primary trn btnSaveApproval" value="Save" name="Save" id="btnSaveApproval">  @* onclick="SaveMicrometer(language)" *@
+							}
+							<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+						</td>
+					</tr>
+				}
+				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+				{
+					<tr>
+						<td colspan="4" style="text-align:center;">
+							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+							@* @Model.IsDisabled *@
+
+							{
+								<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
+							}@* onclick="SubmitReview(language)" *@
+							<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+						</td>
+					</tr>
+				}
+			</table>
+
+			<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+			<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
+			<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
+			<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
+		</div>
+
+	</div>
+
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+	<script type="text/javascript">
+
+		if ($('#TemplateObservationId').val() > 0) {
+			$("#dvTable").html("");
+			BindObservationTable();
+		}
+
+		$(document).on('keyup', '.MeasuedValue , .Actual', function () {
+
+			var Actual = $(this).closest('tr').find('.Actual').val();
+			var MeasuedValue = $(this).closest('tr').find('.MeasuedValue').val();
+			console.log(Actual);
+			Actual = isNaN(Actual) || !Actual.trim() || null ? 0 : parseFloat(Actual);
+			MeasuedValue = isNaN(MeasuedValue) || !MeasuedValue.trim() || null ? 0 : parseFloat(MeasuedValue);
+
+			var subtotal = Actual - MeasuedValue;
+
+			$(this).closest('tr').find('.Avg').val(subtotal);
+
+		});
+
+		//for Torque Wrench
+		$(document).on('keyup', '.Value1 , .Value2, .Value3, .Average, .Percentage', function () {
+
+			var Value1 = $(this).closest('tr').find('.Value1').val();
+			var Value2 = $(this).closest('tr').find('.Value2').val();
+			var Value3 = $(this).closest('tr').find('.Value3').val();
+
+			Value1 = isNaN(Value1) || !Value1.trim() || null ? 0 : parseFloat(Value1);
+			Value2 = isNaN(Value2) || !Value2.trim() || null ? 0 : parseFloat(Value2);
+			Value3 = isNaN(Value3) || !Value3.trim() || null ? 0 : parseFloat(Value3);
+			var Average = (Value1 + Value2 + Value3) / 3;
+			var Percentage = Average / 100;
+			$(this).closest('tr').find('.Average').val(Average.toFixed(2));
+			$(this).closest('tr').find('.Percentage').val(Percentage.toFixed(2));
+			
+		});
+
+		$(document).on('click', '.btn-Generate', (e) => {
+
+			$('#dvTable').html("");
+			if ($('#TemplateObservationId').val() > 0) {
+				BindObservationTable();
+			}
+			$('#ContentSelect > :selected').each(function () {
+
+
+				var drop = $('#ObservationId :selected').text();
+				
+				$.ajax({
+					type: 'GET',
+					url: '../Observation/GetSelectedObservationContentById',
+					dataType: 'json',
+					data: { ContentId: $(this).val(), InstrumentId: $('#InstrumentId').val() },
+				}).done(function (resultObject) {
+
+					for (let i = 0; i < resultObject.length; i++) {//contentCount
+
+						optText = resultObject[i].contentSubTitle1;
+						var IdValue = resultObject[i].contentValue.slice(0, 2);
+
+						var tblId = 'TblObservation' + i;
+						var table = '<table id="' + tblId + '" style="text-align:center;">';
+						if (IdValue == 'CW') {
+							var rowhead = '<thead><tr><td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td></tr><tr><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+
+						}
+						else {
+							var rowhead = '<thead><tr><td  colspan="5" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td></tr><tr><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+						}
+
+						var rowBody = '<tbody>';
+						var rowContent = '';
+
+						for (var j = 1; j <= resultObject[i].contentCount; j++) {
+
+							if (IdValue == 'CW') {
+								rowContent += '<tr><td id="CW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"></td>' +
+									'<td id="CW"><input id="Value1" name="Value1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox Value1"/></td>' +
+									'<td id="CW"><input id="Value2" name="Value2[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value2"/></td>' +
+									'<td id="CW"><input id="Value3" name="Value3[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value3"/></td>' +
+									'<td id="CW"><input id="Average" name="Average[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Average"/></td>' +
+									'<td id="CW"><input id="Percentage" name = "Percentage[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Percentage"  disabled = "disabled"/> </td></tr>';
+
+
+							}
+							else //if (IdValue == 'IN') {
+							{
+								rowContent += '<tr><td id="IN"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /> <input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"></td>' +
+									'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + j + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue"/></td>' +
+									'<td id="IN"><input id="Actual" name="Actual[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Actual"/></td>' +
+									'<td id="IN"><input id="Avg" name = "Avg[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Avg"  disabled = "disabled"/> </td></tr>'
+							}
+						}
+
+						rowBody += rowContent;
+						rowBody += '</tbody></table><br/>';
+
+						table += rowhead;
+						table += rowBody;
+						var dvTable = $("#dvTable");
+						dvTable.append(table);
+
+					}
+
+				});
+
+			});
+			
+		});
+
+		$(document).on('click', '.btnSaveApproval', (e) => {
+
+			//debugger;
+			//ValidateObservation();
+			var Unit = $('#Units').val();
+			if (Unit == null || Unit == "") {
+				showWarning("Please enter the Units", language);
+				return false;;
+			}
+			var Temprature = $('#TempStart').val();
+			if (Temprature == null || Temprature == "") {
+				showWarning("Please enter the Temprature !!!", language);
+				return false;
+			}
+			var Humidity = $('#Humidity').val();
+			if (Humidity == null || Humidity == "") {
+				showWarning("Please enter the Humidity", language);
+				return false;
+			}
+			var VisualCheckCondition = $('#VisualCheckCondition').val();
+			if (VisualCheckCondition == null || VisualCheckCondition == "") {
+				showWarning("Please enter the Visual Check", language);
+				return false;
+			}
+			var ObservationContentValues = new Array();
+			var ObservationContent = new Array();
+			var ObservationContenMapping = new Array();
+			$(".content").each(function () {
+
+				$(this).find('table').each(function () {
+					
+					var ObservationContenMappingData = {
+
+						Id: $(this).find("input[name = HiddenMappingId]").val(),
+						ContentId: $(this).find("input[name = HiddenContentId]").val(),
+						ObservationId: $('#TemplateObservationId').val(),
+						InstrumentId: $('#InstrumentId').val(),
+						CreatedBy: "",
+						CreatedOn: "",
+						IsActive: true
+					}
+					ObservationContenMapping.push(ObservationContenMappingData);
+
+					$(this).find('tr').each(function () {
+						var currentRow = $(this).find('td').attr('id');
+						
+						var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
+						if (contentvalueid == "0") {
+							contentvalueid = null
+						}
+						
+						if ($(this).find("input[name = HiddenContentId]").val() > 0) {
+							if (currentRow == 'CW') {
+
+								var ObservationContenValuesData = {
+
+									Id: contentvalueid,
+									ParentId: $('#TemplateObservationId').val(),
+									Sno: $(this).find("td:eq(0) input[type='text']").val(),
+									MeasuedValue: "",
+									ActualValue: "",
+									InstrumentError: "",
+									Diff: $(this).find('td').attr('id'),
+									MeasuedValue1: $(this).find("td:eq(1) input[type='text']").val(),
+									MeasuedValue2: $(this).find("td:eq(2) input[type='text']").val(),
+									MeasuedValue3: $(this).find("td:eq(3) input[type='text']").val(),
+									Average: $(this).find("td:eq(4) input[type='text']").val(),
+									Percent: $(this).find("td:eq(5) input[type='text']").val(),
+									ContentId: $(this).find("input[name = HiddenContentId]").val()
+								}
+								//}
+								ObservationContentValues.push(ObservationContenValuesData);
+							}
+							else// if (currentRow == 'IN')
+							{
+
+								var ObservationContenValuesData = {
+
+									Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
+									ParentId: $('#TemplateObservationId').val(),
+									Sno: $(this).find("td:eq(0) input[type='text']").val(),
+									MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+									ActualValue: $(this).find("td:eq(2) input[type='text']").val(),
+									InstrumentError: $(this).find("td:eq(3) input[type='text']").val(),
+									Diff: $(this).find('td').attr('id'),
+									MeasuedValue1: "",
+									MeasuedValue2: "",
+									MeasuedValue3: "",
+									Average: "",
+									Percent: "",
+									ContentId: $(this).find("input[name = HiddenContentId]").val()
+									//}
+								}
+								ObservationContentValues.push(ObservationContenValuesData);
+							}
+						}
+
+					});
+				});
+
+			});
+			
+			var data = {
+				Id: $('#Id').val(),
+				InstrumentId: $('#InstrumentId').val(),
+				RequestId: $('#RequestId').val(),
+				TempStart: $('#TempStart').val(),
+				Humidity: $('#Humidity').val(),
+				Units: $('#Units').val(),
+				Condition: $('#VisualCheckCondition').val(),
+				ObservationContentValuesList: ObservationContentValues,
+				ObservationContentMappingList: ObservationContenMapping
+			}
+			
+			$.ajax({
+				url: '../Observation/InsertDynamicObservationContent',
+				type: 'POST',
+				data: { dynamic: data },
+				dataType: "json",
+			}).done(function (resultObject) {
+				window.location.href = '../Tracker/Request?reqType=4';
+				showSuccess("Data Saved Successfully", lang);
+			});
+
+		});
+
+		$(function () {
+			$('#ContentSelect').multiselect({
+				allSelectedText: 'All',
+				maxHeight: 200,
+				width: "100%",
+				buttonWidth: '100%',
+				inheritClass: true,
+				enableFiltering: true,
+				// buttonContainer: '<div class="btn-group me-2" style="border:ridge;"/>',
+				includeSelectAllOption: true,
+				templates: {
+					filter: '<li class="multiselect-item multiselect-filter"><div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div><input class="form-control multiselect-search" type="text" /></div></li>',
+					filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="fa fa-times-circle"></i></button></span>'
+
+				},
+
+				buttonText: function (options, select) {
+					if (options.length == 0) {
+						return 'Select all';
+					}
+					else {
+						var selected = '';
+
+						options.each(function () {
+							selected += $(this).text() + ', ';
+						});
+
+						return selected.substr(0, selected.length - 2);
+					}
+				}
+			});
+
+
+			//for radio button
+
+			$('#Approve').on('change', function () {
+
+				if ($('#Approve').not(this).prop('checked', false)) {
+					$('#Reject').prop('checked', false);
+					$('#ReviewStatus').val(1);
+				}
+			});
+
+			$('#Reject').on('change', function () {
+				if ($('#Reject').not(this).prop('checked', false)) {
+					$('#Approve').prop('checked', false);
+					$('#ReviewStatus').val(2);
+				}
+
+			});
+
+			var reviewStatus = $('#ReviewStatus').val();
+			if (reviewStatus == 1) {
+				$('#Approve').prop('checked', true);
+				$('#Reject').prop('checked', false);
+			}
+			else if (reviewStatus == 2) {
+				$('#Approve').prop('checked', false);
+				$('#Reject').prop('checked', true);
+			}
+		});
+
+
+		function BindObservationTable() {
+
+			$.ajax({
+				type: 'GET',
+				url: '../Observation/GetObservationById',
+				dataType: 'json',
+				data: { InstrumentId: $('#InstrumentId').val() },
+			}).done(function (resultObject) {
+
+				//$("#dvTable").html("");
+				var rowhead = "";
+				var id = "";
+				for (let i = 0; i < resultObject.length; i++) {//contentCount
+
+					var IdValue = resultObject[i].contentValue.slice(0, 2);
+					optText = resultObject[i].contentSubTitle1;
+					var tblId = 'TblObservation' + i;
+					var table = '<table id="' + tblId + '" style="text-align:center;">';
+					if (IdValue == 'CW') {
+						var rowhead = '<thead><tr><td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td></tr><tr><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+
+					}
+					else //if (IdValue == 'IN')
+					{
+						var rowhead = '<thead><tr><td  colspan="5" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td></tr><tr><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+					}
+
+					var rowBody = '<tbody>';
+					var rowContent = '';
+					id = resultObject[i].id;
+					for (let j = 1; j <= resultObject[i].contentCount; j++) {
+						
+						if (IdValue == 'CW') {
+							rowContent += '<tr><td id="CW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
+								'<td id="CW"><input id="Value1" name="Value1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox Value1"/></td>' +
+								'<td id="CW"><input id="Value2" name="Value2[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value2"/></td>' +
+								'<td id="CW"><input id="Value3" name="Value3[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value3"/></td>' +
+								'<td id="CW"><input id="Average" name="Average[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Average"/></td>' +
+								'<td id="CW"><input id="Percentage" name = "Percentage[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Percentage"  disabled = "disabled"/> </td></tr>';
+
+
+						}
+						else// if (IdValue == 'IN') {
+						{
+							rowContent += '<tr><td id="IN"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
+								'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + j + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue"/></td>' +
+								'<td id="IN"><input id="Actual" name="Actual[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Actual"/></td>' +
+								'<td id="IN"><input id="Avg" name = "Avg[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Avg"  disabled = "disabled"/> </td></tr>'
+						}
+					}
+
+
+					rowBody += rowContent;
+
+					rowBody += '</tbody></table><br/>';
+
+					table += rowhead;
+
+					table += rowBody;
+
+					var dvTable = $("#dvTable");
+					dvTable.append(table);
+
+				}
+			});
+			$.ajax({
+				type: 'GET',
+				url: '../Observation/GetObservationContentValuesById',
+				dataType: 'json',
+				data: { ContentId: $('#InstrumentId').val() },
+			}).done(function (result) {
+				//console.log(resultObject[i].contentCount);
+
+				for (j = 0; j < result.length; j++) {
+					
+					$(".content").each(function () {
+
+						$(this).find('table').each(function () {
+							$(this).find('tr').each(function () {
+								var currentRow = $(this).find('td').attr('id');
+
+								//	if (currentRow == 'CW') {
+								if ($(this).find("input[name = HiddenContentId]").val() == result[j].contentId) {
+									if ($(this).find("td:eq(0) input[type='text']").val() == result[j].sno) {
+
+										if (result[j].diff == 'CW') {
+											
+											$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
+												$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
+												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
+												$(this).find("td:eq(1) input[type='text']").val(result[j].measuedValue1),
+												$(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue2),
+												$(this).find("td:eq(3) input[type='text']").val(result[j].measuedValue3),
+												$(this).find("td:eq(4) input[type='text']").val(result[j].average),
+												$(this).find("td:eq(5) input[type='text']").val(result[j].percent)
+										}
+										else {
+											
+
+											$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
+												$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
+												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
+												$(this).find("td:eq(1) input[type='text']").val(result[j].measuedValue),
+												$(this).find("td:eq(2) input[type='text']").val(result[j].actualValue),
+												$(this).find("td:eq(3) input[type='text']").val(result[j].instrumentError)
+										}
+									}
+								}
+
+							});
+						});
+					});
+				}
+			});
+		}
+
+
+
+
+	</script>
+

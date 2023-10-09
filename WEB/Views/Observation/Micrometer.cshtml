@@ -42,7 +42,7 @@
 	}
 </style>
 
- <div class="row">
+<div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
 
@@ -209,33 +209,9 @@
 
 					<textarea name="MicrometerCondition" id="MicrometerCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.MicrometerCondition</textarea>
 				</td>
-				@*<tr>
-				<td colspan="3"><span>検査室温度 °C／ Temperature °C</span></td>
 
-				<td colspan="3"><span>検査室湿度 %RH／ Humidity %RH</span></td>
-
-				<td colspan="6">
-				<span>外観・機能／Visual Check</span>
-
-				</td>
-				</tr>
-				<tr>
-
-				<td colspan="3"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox"></td>
-				<td colspan="3"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox"></td>
-				<td colspan="6">
-				<textarea name="MicrometerCondition" id="MicrometerCondition" style="height: 50px;width: 700px;" class="Tables-AndTablesTextBox">@Model.MicrometerCondition</textarea>
-				</td>
-				</tr>*@
 		</table>
 		<br>
-
-
-		<tr>
-			<p align="right">
-				<button style="align-content:right;" id="add" name="add" type="button" class="btn btn-primary trn">Add New Row</button>
-			</p>
-		</tr>
 
 		<div class="Tables-AndTablesTextBox">
 			<table id="Microadd" class="Tables-AndTablesTextBox">
@@ -488,49 +464,9 @@
 								   disabled="disabled">
 						</td>
 
-				@*<td>
-						<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeMu(2);"></i>
-						</td>*@
 
 					</tr>
 
-
-
-				@*	@foreach (var item in Model.MicrometerAddResultViewModelTwoList)
-					{
-
-					<tr id="tablerowIns4">
-
-					<td>
-					<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value="@item.SNO" disabled="disabled" />
-
-					</td>
-					<td>
-					<input value="@item.MeasuedValue" id="MeasuedValue" name="MeasuedValue" type="text"
-					required="required" class="Tables-AndTablesTextBox" onkeyup="GetValue('3');">
-					</td>
-					<td>
-					<input value="@item.ActualsT1" id="actualst1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"
-					required="required" onkeyup="GetValue('3');">
-					</td>
-					<td>
-					<input value="@item.Diff1" id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox"
-					required="required">
-					</td>
-
-					@*<td>
-					<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removemu(3);"></i> onkeyup="GetValue('3');"
-					</td>*@
-				@*<td><input value="@item.Id" id="id" name="Id" type="hidden"></td>
-					<td><input value="@item.ParentId" id="ParentId" name="parentid" type="hidden"></td>
-					<td><input value="@item.Parallelism" id="Parallelism" name="Parallelism" type="hidden"></td>
-					</tr>
-
-
-					</tbody>
-					</table>
-					</div>
-					}*@
 					<br>
 
 					<table id="tblrowFlat" class="Tables-AndTablesTextBox">
@@ -562,8 +498,6 @@
 						</tr>
 
 						</tr>
-
-
 
 					</table>
 					<br>
@@ -661,7 +595,7 @@
 				}
 
 					</table>
-					
+
 					<input type="hidden" id="instrumentId" value="@Model.InstrumentId">
 					<input type="hidden" id="requestId" value="@Model.RequestId">
 					<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
@@ -775,43 +709,35 @@
 
 				if ($(tr).find("td:eq(1) input[type='text']").val() == 0) {
 
-			//	//	$(tr).remove();
-			//	//	counter--;
-			//	//	SNo--;
-			//	//}
-			//});
+					$('<tr id="tablerowIns' + counter + '"><td>' +
+						'<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value=' + SNo + ' disabled="disabled" />' +
+						'</td>' +
+						'<td>' +
+						'<input id="MeasuedValue" name="MeasuedValue" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+						'</td>' +
+						'<td>' +
+						'<input id="ActualsT1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
+						'</td>' +
+						'<td>' +
+						'<input id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox" value="" required="required" />' +
+						'</td>' +
+						'<input id="id" name="id" type="hidden" value="" />' +
+						'</td>' +
+						'<td>' +
+						'<input id="parentid" name="parentid" type="hidden" value="" />' +
+						'</td>' +
+						'<td>' +
+						'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
+						'</td>' +
+						'</tr>').appendTo('#Microadd');
+					//InstrumentError have been added as 1 above
+					counter++;
+					SNo++;
 
-			$('<tr id="tablerowIns' + counter + '"><td>' +
-				'<input id="sno" name="sno" type="text" class="Tables-AndTablesTextBox" value=' + SNo + ' disabled="disabled" />' +
-				'</td>' +
-				'<td>' +
-				'<input id="MeasuedValue" name="MeasuedValue" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
-				'</td>' +
-				'<td>' +
-				'<input id="ActualsT1" name="ActualsT1" type="text" class="Tables-AndTablesTextBox"  value="" onkeyup="GetValue(' + counter + ');" required="required" />' +
-				'</td>' +
-				'<td>' +
-				'<input id="Diff1" name="Diff1" type="text" class="Tables-AndTablesTextBox" value="" required="required" />' +
-				'</td>' +
+					return false;
 
-				//'<td>' +
-				//'<i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTr(' + counter + ');"></i>' +
-				//'</td>' +
-				//'<td>' +
-				'<input id="id" name="id" type="hidden" value="" />' +
-				'</td>' +
-				'<td>' +
-				'<input id="parentid" name="parentid" type="hidden" value="" />' +
-				'</td>' +
-				'<td>' +
-				'<input value="1" id = "InstrumentError" name = "InstrumentError" type = "hidden">' +
-				'</td>' +
-				'</tr>').appendTo('#Microadd');
-			//InstrumentError have been added as 1 above
-			counter++;
-			SNo++;
-			
-			return false;
+				}
+
 			});
 		});
 	});
@@ -868,6 +794,25 @@
 			var sumofarray = parseFloat(ActualsT1 - Measured);
 		}
 		$('#tablerowFlatness').find("td:eq(2) input[type='text']").val(sumofarray);
+	}
+
+	function GetValueParallelism(Id) {
+
+		$('#tblMicroParallel tbody tr').each(function (row, tr) {
+
+
+			var Measured = $(this).find("td:eq(1) input[type='text']").val();
+			var ActualsT1 = $(this).find("td:eq(2) input[type='text']").val();
+			console.log("Measured");
+			console.log(Measured);
+			console.log(ActualsT1);
+			ActualsT1 = isNaN(ActualsT1) || !ActualsT1.trim() || null ? 0 : parseFloat(ActualsT1);
+			Measured = isNaN(Measured) || !Measured.trim() || null ? 0 : parseFloat(Measured);
+
+			var sumofarray = (ActualsT1 - Measured);
+			$(this).find("td:eq(3) input[type='text']").val(sumofarray);
+
+		});
 	}
 </script>
 <script type="text/javascript">

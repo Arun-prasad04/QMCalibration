@@ -1,10 +1,11 @@
 ﻿@{
-	ViewData["Title"] = "Instrument Create";
+	ViewData["PageTitle"] = "Instrument Create";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <form name="frm" id="instrumentform" enctype="multipart/form-data" method="post"
    action='@Url.Action("InsertInstrument","Instrument")'>
+	
 	<input type="hidden" name="Id" value="@Model.Id">
 	<input type="hidden" name="IsNABL" id="IsNABL" value="@Model.IsNABL">
 	<!-- Main content -->
@@ -42,7 +43,7 @@
 						</div>
 						<!-- /.card-header -->
 
-						<div class="card-body">
+						<div id="myDivDivContent" class="card-body">
 							<div class="row">
 								<div class="col-sm-6">
 									<!-- text input -->
@@ -433,7 +434,7 @@
 
 						@if (@Model.IdNo != null && @Model.IdNo != "")
 						{
-							<div class="card card-default">
+							<div id="myDivDivCaliration" class="card card-default">
 								<div class="card-header">
 									<h3 class="card-title trn">Calibration Details</h3>
 

@@ -62,63 +62,63 @@
 							<tbody>
 								@foreach (var item in Model)
 								{
-										<tr>
+									<tr>
 
-											<td id="InstrumentName">
+										<td id="InstrumentName">
 
 											@* 	<a href="#" onclick="PopUpListing1('@item.InstrumentName','@item.Id');"> *@
 
 											@item.InstrumentName
 											@* </a> *@
 
-											</td>
+										</td>
 
 
-											<td id="SlNo">@item.SlNo</td>
-											<td>@item.IdNo</td>
-											<td>@item.Range</td>
-											<td>@item.DepartmentName</td>
-											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+										<td id="SlNo">@item.SlNo</td>
+										<td>@item.IdNo</td>
+										<td>@item.Range</td>
+										<td>@item.DepartmentName</td>
+										<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
 										@if (@item.ToolRoomStatus == 1)
 										{
 
-													<td id="ReplacementLabID_@item.Id" href="#">
+											<td id="ReplacementLabID_@item.Id" href="#">
 
 												@item.ReplacementLabID
-													</td>
+											</td>
 											@* <td>
 									<input type="text" id="ReplacementLabID_@item.Id" name="ReplacementLabID_@item.Id" value="@item.ReplacementLabID">
 									</td> *@
-													<td id="ChkInput" style="text-align:left;">
-														<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" value="0" disabled />
-														<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
-														<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="@item.ReplacementLabID">
-														<input type="hidden" id="instrumentid" value="@item.Id">
-													</td>
+											<td id="ChkInput" style="text-align:left;">
+												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" value="0" disabled />
+												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
+												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="@item.ReplacementLabID">
+												<input type="hidden" id="instrumentid" value="@item.Id">
+											</td>
 										}
 										else
 										{
-													<td id="ReplacementLabID_@item.Id" onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">
+											<td id="ReplacementLabID_@item.Id" onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">
 
-														<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
+												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
 
-													</td>
+											</td>
 											@* <td>
 									<input type="text" id="ReplacementLabID_@item.Id" name="ReplacementLabID_@item.Id" onclick="PopUpListing1('@item.InstrumentName','@item.Id');">
 									<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
 
 									</td> *@
-													<td id="ChkInput" style="text-align:left;">
-														<input type="hidden" id="instrumentid" name="instrumentid" value="@item.Id">
-														<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" />@* onchange="ValidateReplacementLabID(\"" + encodeURI(ReplacementLabID_+@item.Id) + " \")" *@
-														<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
-													</td>
+											<td id="ChkInput" style="text-align:left;">
+												<input type="hidden" id="instrumentid" name="instrumentid" value="@item.Id">
+												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" />@* onchange="ValidateReplacementLabID(\"" + encodeURI(ReplacementLabID_+@item.Id) + " \")" *@
+												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
+											</td>
 
 										}
 
 
 
-										</tr>
+									</tr>
 								}
 
 							</tbody>

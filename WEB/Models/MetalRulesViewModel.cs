@@ -69,7 +69,7 @@
 		public List<MetalRuleResultViewModel> MetalRuleAddResultViewModelList2 { get; set; }
 		public int? ObservationTypeId { get; set; }		
 		public string InstrumentErrValue { get; set; }
-        
 
+       
     }
 }
