@@ -82,40 +82,35 @@
                                 <div class="form-group">
                                     @*<option value="" selected="true">Select User Role</option>*@
                                     <label class="required trn">Role</label>
-                                    <select class="form-control" name="UserRoleId" id="UserRoleId">
-                                        <option value="0" class="trn required">--- Select User Role ---</option>
-                                        @if (Model.UserRoleId == 1)
+                                    <select name="RoleSelect" id="RoleSelect" class="form-control muldrop" multiple="multiple">
+                                        @foreach (var role in @Model.RoleList)
                                         {
-                                        <option value="1" selected="true" class="trn">Department User</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="1" class="trn">Department User</option>
-                                        }
-                                        @if (Model.UserRoleId == 2)
-                                        {
-                                        <option value="2" selected="true" class="trn">LAB Admin</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="2" class="trn">LAB Admin</option>
-                                        }
-                                        @if (Model.UserRoleId == 3)
-                                        {
-                                        <option value="3" selected="true" class="trn">Lab inspector</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="3" class="trn">Lab inspector</option>
-                                        }
-                                        @if (Model.UserRoleId == 4)
-                                        {
-                                        <option value="4" selected="true" class="trn">LAB Technical</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="4" class="trn">LAB Technical</option>
-                                        }*@
+                                            if (@Model.RoleSelectVal != null)
+                                            {
+                                                var check = false;
+                                                @foreach (var sel in @Model.RoleSelectVal)
+                                                {
+                                                    //if(SubSectionCode.)
+                                                    if (role.Id == sel.RoleId)
+                                                    {
+                                                        check = true;                                                       
+                                                    }
+                                                }
+                                                if (check == true)
+                                                {
+                                                    <option value="@role.Id" selected="check">@role.RoleName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@role.Id">@role.RoleName</option>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Id">@role.RoleName</option>
+                                            }
+                                        }                                        
                                     </select>
                                     <a style="display:none;color: red;" id="UserRoleIdError" class="field-validation-error">Please Select Role</a>
                                 </div>
@@ -136,7 +131,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="required trn">Designation</label>
-                                    <select class="form-control" name="Designation" id="Designation">
+                                    <select class="form-control mt-5" name="Designation" id="Designation">
                                         <option value="">---Select User Designation---</option>
                                         @foreach (var designation in @Model.DesignationList)
                                         {
@@ -177,15 +172,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="required trn">Sub Section Code</label>
-                                    @* <input type="text" alt="Please provide the Sub Section Code" class="form-control trn" placeholder="Sub Section Code" id="SubSectionCode" name="SubSectionCode" onblur="GetDepartmentDetails()" value="@Model.SubSectionCode">*@
-                                    @* @Html.DropDownListFor(M => Model.DepartmentId, new MultiSelectList(Model.DepartmentList, "Value", "Text"), "--Select--", new { @class = "js-example-basic-single form-control form-control-kdqr",multiple = "multiple", @id = "SubSectionCode_drop" })*@
-                                    <select id="SubSectionCodeval" name="SubSectionCodeval" class="form-control muldrop" multiple="multiple">
-                                        @* <option value="cheese">Cheese</option>
-                                        <option value="tomatoes">Tomatoes</option>
-                                        <option value="mozarella">Mozzarella</option>
-                                        <option value="mushrooms">Mushrooms</option>
-                                        <option value="pepperoni">Pepperoni</option>
-                                        <option value="onions">Onions</option>*@
+                                     <select id="SubSectionCodeval" name="SubSectionCodeval" class="form-control muldrop" multiple="multiple">                                      
                                         @foreach (var department in @Model.DepartmentList)
                                         {
                                             if (@Model.SubSectionCodeName1 != null)
@@ -530,6 +517,8 @@
 
     $(function () {
 
+        $('#Designation').select2();
+
         $.validator.addMethod('Designation', function (value, element) {           
             if ($('#Designation').val() == '0') {
                 return false;
@@ -548,6 +537,7 @@
         })
 
         $('#userform').validate({
+            ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
             rules: {
                 FirstName: {
                     required: true,
@@ -578,7 +568,7 @@
                 //ignore: ':hidden:not("#SubSectionCodeval")',
             },
             //ignore: ':hidden:not("#RoleSelect")',
-            ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
+            //ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
             messages: {
                 FirstName: {
                     required: "Please enter your first name",

@@ -1,4 +1,4 @@
-using CMT.DAL;
+﻿using CMT.DAL;
 using CMT.DATAMODELS;
 using WEB.Services.Interface;
 using AutoMapper;
@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using HtmlAgilityPack;
 using DATAMODELS;
+using WEB.Models.Templates;
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -4392,7 +4393,14 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			RequestStatus reqestStatus = new RequestStatus();
 			reqestStatus.RequestId = observationById.RequestId;
-			reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+			if(instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+			{
+                reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+            }
+            else {
+                reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+            }
+			
 			reqestStatus.CreatedOn = DateTime.Now;
 			reqestStatus.CreatedBy = reviewedBy;
 			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
@@ -4401,12 +4409,44 @@ public class ObservationTemplateService : IObservationTemplateService
 			//----------------------New update for listing Approved Request start---------------------------
 			//Request Tempreqests = new Request();
 			ReqstData.Id = observationById.RequestId;
-			ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+            if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+            {
+                ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+            }
+            else
+            {
+                ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+            }           
 			_unitOfWork.Repository<Request>().Update(ReqstData);
 			_unitOfWork.SaveChanges();
 			//----------------------New update for listing Approved Request end---------------------------
 
-			_unitOfWork.Commit();
+			//To Update ToolInventory Status
+			if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
+			{
+				if (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)
+				{
+					if (reviewStatus == 1)
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
+						instrumentData.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
+						instrumentData.ReplacementLabID = null;
+					}
+					else
+					{
+						instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.RejectedTool;
+
+					}
+				}
+				else if (ReqstData.TypeOfReqest == 1)
+				{
+					instrumentData.ToolInventoryStatus = reviewStatus == 1 ? (Int32)ToolInventoryStatus.SentTool : (Int32)ToolInventoryStatus.RejectedTool;
+				}
+			}
+			_unitOfWork.Repository<Instrument>().Update(instrumentData);
+            _unitOfWork.SaveChanges();
+
+            _unitOfWork.Commit();
 			return new ResponseViewModel<LeverTypeDialViewModel>
 			{
 				ResponseCode = 200,
@@ -4459,13 +4499,15 @@ public class ObservationTemplateService : IObservationTemplateService
 		return userData;
 	}
 
-	private List<int?> GenerateULRAndCertificateNumber(bool? isNABL)
-	{
+	private List<int?> GenerateULRAndCertificateNumber(bool? isNABL) // parameter bool? isNABL
+    {
 		int? ulrNumber = 0;
 		int? certificateNumber = 0;
 		int? year = 2022;
+		isNABL = true;
 
-		var startDate = DateTime.Parse(string.Concat("01-01-", year.ToString()));
+
+        var startDate = DateTime.Parse(string.Concat("01-01-", year.ToString()));
 		var endDate = DateTime.Parse(string.Concat("31-12-", DateTime.Now.Year.ToString()));
 
 
@@ -5008,6 +5050,200 @@ public class ObservationTemplateService : IObservationTemplateService
                 ResponseMessage = "Failure",
                 ErrorMessage = e.Message,
                 ResponseData = metalrule,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateService",
+                ResponseServiceMethod = "InsertMicrometer"
+            };
+        }
+    }
+
+    public ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId)
+	{
+        try
+        {
+            ExternalObsViewModel metalViewModel = _unitOfWork.Repository<TemplateObservation>()
+            .GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)           
+            .Select(s => new ExternalObsViewModel()
+            {
+                Id = s.Id,
+                TempStart = s.TempStart,
+                TempEnd = s.TempEnd,
+                Humidity = s.Humidity,
+                RefWi = s.RefWi,
+                Allvalues = s.Allvalues,
+                CalibrationPerformedDate = s.CreatedOn,
+                CreatedBy = s.CreatedBy,
+                CalibrationReviewedBy = s.CalibrationReviewedBy,
+                CalibrationReviewedDate = s.CalibrationReviewedDate,                
+                ReviewStatus = s.ReviewStatus,
+                ExternalObsCondition = s.InstrumentCondition,
+                AdminReviewStatus = s.ExternalObsStatus,
+                ULRNumber = s.ULRNumber
+            }).SingleOrDefault();
+
+            if (metalViewModel == null)
+            {
+                return new ResponseViewModel<ExternalObsViewModel>
+                {
+                    ResponseCode = 200,
+                    ResponseMessage = "No records found",
+                    ResponseData = null,
+                    ResponseDataList = null
+                };
+            }
+            else
+            {
+
+                List<string> performedUserData = GetUserName(metalViewModel.CreatedBy);
+
+                if (performedUserData.Count >= 3)
+                {
+                    metalViewModel.CalibrationPerformedBy = performedUserData[0];
+                    metalViewModel.PerformedBySign = performedUserData[1];
+                    metalViewModel.PerformedByDesignation = performedUserData[2];
+                }
+
+                List<string> reviewedUserData = GetUserName(metalViewModel.CalibrationReviewedBy);
+
+                if (reviewedUserData.Count >= 3)
+                {
+                    metalViewModel.ReviewedBy = reviewedUserData[0];
+                    metalViewModel.ReviewedBySign = reviewedUserData[1];
+                    metalViewModel.ReviewedByDesignation = reviewedUserData[2];
+                }
+
+                int? ulrNumber = metalViewModel.ULRNumber == null ? 0 : metalViewModel.ULRNumber;
+               // int? certificateNumber = metalViewModel.CertificateNumber == null ? 0 : metalViewModel.CertificateNumber;
+                //List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+
+                //if (formatList.Count >= 2)
+                //{
+                //    metalViewModel.ULRFormat = formatList[0];
+                //    metalViewModel.CertificateFormat = formatList[1];
+                //}
+            }           
+            return new ResponseViewModel<ExternalObsViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = metalViewModel,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("ObservationTemplateService - GetMetalRulesId Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<ExternalObsViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateService",
+                ResponseServiceMethod = "GetMetalRulesId"
+            };
+        }
+    }
+
+    public ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            int tempobsId = 0;
+            int ObjMicroData = 0;
+            TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+                                                                 .GetQueryAsNoTracking(Q => Q.RequestId == exObs.RequestId
+                                                                  && Q.InstrumentId == exObs.InstrumentId).SingleOrDefault();
+
+            if ((exObs.TemplateObservationId == 0) && (observationById == null))
+
+            {
+                TemplateObservation templateObservation = new TemplateObservation()
+                {
+                    InstrumentId = exObs.InstrumentId,
+                    RequestId = exObs.RequestId,
+                    TempStart = exObs.TempStart,
+                    TempEnd = exObs.TempEnd,
+                    Humidity = exObs.Humidity,
+                    InstrumentCondition = exObs.ExternalObsCondition,
+                    RefWi = exObs.RefWi,
+                    Allvalues = exObs.Allvalues,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = exObs.CreatedBy,
+                    CalibrationReviewedDate = DateTime.Now,
+                    ExternalObsStatus = exObs.AdminReviewStatus
+                };
+                _unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+                _unitOfWork.SaveChanges();
+                tempobsId = templateObservation.Id;
+            }
+            else
+            {
+                if (observationById != null)
+                {
+
+
+                    if (exObs.TempStart != null)
+                    {
+                        observationById.TempStart = exObs.TempStart;
+                    }
+
+                    if (exObs.TempEnd != null)
+                    {
+                        observationById.TempEnd = exObs.TempEnd;
+                    }
+
+                    if (exObs.Humidity != null)
+                    {
+                        observationById.Humidity = exObs.Humidity;
+                    }
+
+                    if (exObs.ExternalObsCondition != null)
+                    {
+                        observationById.InstrumentCondition = exObs.ExternalObsCondition;
+                    }
+                    if (exObs.RefWi != null)
+                    {
+                        observationById.RefWi = exObs.RefWi;
+                    }
+                    if (exObs.Allvalues != null)
+                    {
+                        observationById.Allvalues = exObs.Allvalues;
+                    }
+                    if (exObs.AdminReviewStatus != null)
+                    {
+                        observationById.ExternalObsStatus = exObs.AdminReviewStatus;
+                    }
+
+                    _unitOfWork.Repository<TemplateObservation>().Update(observationById);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+           
+            _unitOfWork.SaveChanges();
+            _unitOfWork.Commit();            
+            return new ResponseViewModel<ExternalObsViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            _unitOfWork.RollBack();
+            ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<ExternalObsViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = exObs,
                 ResponseDataList = null,
                 ResponseService = "ObservationTemplateService",
                 ResponseServiceMethod = "InsertMicrometer"

@@ -35,7 +35,16 @@ ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int 
             DateTime dateOfReceipt);
 
     ResponseViewModel<RequestViewModel> ExternalRejectRequest(int requestId, string RejectReason, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string standardReffered);
-    ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase);
+    ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, DateTime DueDate);
 
     ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId);
+    ResponseViewModel<RequestViewModel> DueInstrumentAdminApprove(List<DueInstrument> DueList, int userId);
+    ResponseViewModel<DueInstrument> GetAdminApproveInstrumentList();
+
+    ResponseViewModel<RequestViewModel> DueInstrumentManagerApprove(List<DueInstrument> DueList, int userId);
+
+    ResponseViewModel<RequestViewModel> ExternalUserSubmit(int requestId, int userId, IFormFile httpPostedFileBase);
+    ResponseViewModel<RequestViewModel> SaveExternalObs(int requestId,int InstrumentID, int userId, string InstrumentIdNo);
+
+    ResponseViewModel<RequestViewModel> ExternalCalibrationReject(int requestId, string RejectReason, int userId);
 }
