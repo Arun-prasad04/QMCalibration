@@ -31,38 +31,38 @@
 							</tr>
 						</thead>
 						<tbody>
-
-
+							
+						
 
 							@foreach (var item in Model)
 							{
-									<tr>
-									<td>
-										@item.DepartmentName
-									</td>
-									<td>
-									<a href='@Url.Action("ToolInventory","Instrument", new {UserDept= @item.UserDept})'> 
-											@item.InstrumentCount
-									</a>
-											<input type="hidden" id="UserDept" value="@item.UserDept">
-									</td>
-									<td>
-										@item.DueDate.ToString("dd-MM-yyyy")
-									</td>
-									@if (@item.InstrumentCount > @item.ToolRoomStatus)
-									{
-										<td>
-										Pending
-										</td>
-									}
-									@if (@item.InstrumentCount == @item.ToolRoomStatus)
-									{
-										<td>
-										Completed
-										</td>
-									}
-
-									</tr>
+								<tr>
+								<td>
+								@item.DepartmentName
+								</td>
+								<td>
+								<a href='@Url.Action("ToolInventory","Instrument", new {UserDept= @item.UserDept})'> 
+								@item.InstrumentCount
+								</a>
+										<input type="hidden" id="UserDept" value="@item.UserDept">
+								</td>
+								<td>
+								@item.DueDate.ToString("dd-MM-yyyy")
+								</td>
+								@if (@item.InstrumentCount > @item.ToolRoomStatus)
+								{
+								<td>
+								Pending
+								</td>
+								}
+								@if (@item.InstrumentCount == @item.ToolRoomStatus)
+								{
+								<td>
+								Completed
+								</td>
+								}
+							
+								</tr>
 							}
 						</tbody>
 					</table>
@@ -85,5 +85,5 @@
 
 
 	}, 500);
-
+		
 </script>

@@ -103,6 +103,11 @@ public class MappingProfile : Profile
         CreateMap<UserRoleMapping, UserRoleMappingView>();
         CreateMap<UserRoleMappingView, UserRoleMapping>();
 
-        //This comment added For Git merge conflict issue   
-    }
+		CreateMap<ObservationContentValues, ObservationContentValuesViewModel>();
+		CreateMap<ObservationContentValuesViewModel, ObservationContentValues>();
+
+		CreateMap<ObservationContentMapping, ObservationContentMappingViewModel>();
+		CreateMap<ObservationContentMappingViewModel, ObservationContentMapping>();
+		//This comment added For Git merge conflict issue   
+	}
 }

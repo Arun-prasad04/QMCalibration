@@ -954,7 +954,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template</label>
+                                        <label class="trn">Observation Template-i-E</label>
                                         <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled>
                                             @foreach (var freq in @Model.ObservationTemplateList)
                                             {
@@ -988,7 +988,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template Type</label>
+                                        <label class="trn">Observation Template Type-IE</label>
                                         <select id="NewObservationTypeEd" class="form-control" disabled>
                                         </select>
                                     </div>
@@ -1692,15 +1692,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                 <div class="col-sm-6">
-                                <div class="form-group">
-                                        <label class="trn">Instrument Id Number</label>
-                                        <input type="text" class="form-control" id="IdNo" value='@Model.InstrumentIdNo'>
+                           
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Instrument Id Number</label>
+                                        @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                        {
+                                            <input type="text" class="form-control" id="IdNo" value="@Model.InstrumentIdNo" disabled>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="IdNo" value=''>
+                                        }
+                                    </div>
                                     </div>
                                 </div>
-                            </div>
-
+                           
                             <div class="row">
                                 <div class="col-sm-6">
                                 </div>

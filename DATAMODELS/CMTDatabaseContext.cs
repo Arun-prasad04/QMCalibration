@@ -61,7 +61,9 @@ namespace CMT.DATAMODELS
 		public virtual DbSet<UserDepartmentMapping> UserDepartmentMapping { get;set;}
 		public virtual DbSet<UserRoleMapping> UserRoleMapping { get;set;}
 		public virtual DbSet<UserRoles> UserRoles { get;set;}
-		
+		public virtual DbSet<ObservationContentValues> ObservationContentValues { get; set; }
+		public virtual DbSet<ObservationContentMapping> ObservationContentMapping { get; set; }
+
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

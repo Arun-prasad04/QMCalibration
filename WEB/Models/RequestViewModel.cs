@@ -22,6 +22,7 @@ public partial class RequestViewModel
     public string? Capacity { get; set; }
     public string? Unit1 { get; set; }
     public string? Unit2 { get; set; }
+    public string? Unit3 { get; set; }
     public string? AmountJPY { get; set; }
     public int? Instrument_Type { get; set; }
     public string? Rule_Confirmity { get; set; }

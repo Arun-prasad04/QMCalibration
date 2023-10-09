@@ -50,10 +50,14 @@ namespace WEB.Services.Interface
 		ResponseViewModel<MetalRulesViewModel> GetMetalRulesId(int requestId, int instrumentId);
 
         ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel micrometer);
-        ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId);
+		ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId);
+	
+		ResponseViewModel<DynamicViewModel> GetObservationInstrumentById(int InstrumentId, int RequestId);
+		ResponseViewModel<ObservationContentViewModel> GetSelectedObservationContentById(int ContentId, int InstrumentId);
 
-        ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs);
+		ResponseViewModel<DynamicViewModel> InsertObservation(DynamicViewModel Dynamic);
+		ResponseViewModel<ObservationContentValuesViewModel> GetObservationContentValuesById(int ContentId);
 
-    }
+	}
 
 }
