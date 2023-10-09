@@ -1,6 +1,6 @@
 using CMT.DATAMODELS;
 using WEB.Models;
-
+using WEB.Models.Templates;
 
 namespace WEB.Services.Interface
 {

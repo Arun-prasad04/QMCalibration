@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using WEB.Models;
 using WEB.Services;
 using WEB.Services.Interface;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+
 namespace WEB.Controllers;
 
 public class TrackerController : BaseController
@@ -13,11 +15,13 @@ public class TrackerController : BaseController
 	private IExternalRequestService _externalRequestService { get; set; }
 	private IRequestService _requestService { get; set; }
 	private IMasterService _masterService { get; set; }
-	public TrackerController(ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IExternalRequestService externalRequestService, IRequestService requestService, IMasterService masterService) : base(logger, contextAccessor)
+	private IConfiguration _configuration;
+	public TrackerController(ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IExternalRequestService externalRequestService, IRequestService requestService, IMasterService masterService, IConfiguration Configuration) : base(logger, contextAccessor)
 	{
 		_externalRequestService = externalRequestService;
 		_requestService = requestService;
 		_masterService = masterService;
+		_configuration = Configuration;		
 	}
 
 	public IActionResult ExternalRequest()
@@ -252,12 +256,79 @@ public class TrackerController : BaseController
         return Json(response.ResponseData);
     }
 
-	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase)	
+	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase, DateTime DueDate)	
 	{
 		//return Json(true);
         int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase);
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase, DueDate);
         return Json(response.ResponseData);
     }
 
+	public IActionResult DueInstrument()
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		CMTDL _cmtdl = new CMTDL(_configuration);
+		List<DueInstrument> response = _cmtdl.GetAllDueInstrumentList();
+		return View(response);
+	}
+
+	//public IActionResult GetAllDueInstrumentList()
+	//{
+	//	int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+	//	int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+	//	CMTDL _cmtdl = new CMTDL(_configuration);
+	//	List<DueInstrument> response = _cmtdl.GetAllDueInstrumentList();
+	//	return View(response);
+	//}
+
+	public IActionResult DueInstrumentAdminApprove(List<DueInstrument> DueList) 
+	{
+        //return Json(true);
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response;
+        response = _requestService.DueInstrumentAdminApprove(DueList, userId);
+        return Json(true); 
+	}
+
+    public IActionResult DueTracker()
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        ResponseViewModel<DueInstrument> response = _requestService.GetAdminApproveInstrumentList();
+        return View(response.ResponseDataList);
+    }
+
+    public IActionResult DueInstrumentManagerApprove(List<DueInstrument> DueList)
+    {
+        //return Json(true);
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response;
+        response = _requestService.DueInstrumentManagerApprove(DueList, userId);
+        return Json(true);
+    }
+
+    public IActionResult ExternalUserSubmit(int requestId, IFormFile httpPostedFileBase)
+    {
+       // return Json(true);
+        int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalUserSubmit(requestId, UserId, httpPostedFileBase);
+        return Json(response.ResponseData);
+    }
+
+	public IActionResult SaveExternalObs(int requestId,int InstrumentID, string InstrumentIdNo)
+	{
+        //return Json(true);
+        int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.SaveExternalObs(requestId, InstrumentID, UserId, InstrumentIdNo);
+        return Json(true);
+	}
+
+    public IActionResult ExternalCalibrationReject(int requestId, string rejectReason)
+    {
+        //return View();
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalCalibrationReject(requestId, rejectReason, userId);
+        return Json(response.ResponseData);
+    }
 }

@@ -8,7 +8,7 @@ using CMT.DATAMODELS;
 using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
-
+using Newtonsoft.Json.Linq;
 using WEB.Models;
 using WEB.Services;
 using WEB.Services.Interface;
@@ -18,28 +18,28 @@ namespace WEB.Controllers;
 
 public class InstrumentController : BaseController
 {
-	private IInstrumentService _instrumentService { get; set; }
-	private IRequestService _requestService { get; set; }
+    private IInstrumentService _instrumentService { get; set; }
+    private IRequestService _requestService{get;set;}
 	private IUnitOfWork _unitOfWork { get; set; }
-	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IUnitOfWork unitOfWork) : base(logger, contextAccessor)
-	{
-		_instrumentService = instrumentService;
-		_requestService = requestService;
+	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService, IUnitOfWork unitOfWork) : base(logger, contextAccessor)
+    {
+        _instrumentService = instrumentService;
+        _requestService=requestService;
 		_unitOfWork = unitOfWork;
 	}
 
-	public IActionResult Index()
-	{
-		ViewBag.PageTitle = "Instrument List";
-		ViewBag.ResponseCode = TempData["ResponseCode"];
-		ViewBag.ResponseMessage = TempData["ResponseMessage"];
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
-		
-		return View(response.ResponseDataList);
-		//return View();
-	}
+    public IActionResult Index() 
+    {
+        ViewBag.PageTitle="Instrument List";
+        ViewBag.ResponseCode = TempData["ResponseCode"];  
+        ViewBag.ResponseMessage = TempData["ResponseMessage"];
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
+        return View(response.ResponseDataList);
+        //return View();
+
+    }
 
 	public JsonResult GetAllInstrumentList()
 	{
@@ -56,7 +56,7 @@ public class InstrumentController : BaseController
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
-		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		ViewBag.UserBaseDepartment = response.ResponseData.Departments;
 		ViewBag.ShowDetails = true;
 		return View(response.ResponseData);
 	}
@@ -199,21 +199,26 @@ public class InstrumentController : BaseController
 	}
 
 
-	public ActionResult DueRequest(List<RequestAllView> userViewModelList)
-	{        //return Json(true);       
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response;
-		response = _requestService.InsertDueRequest(userViewModelList, userId);
-		//response = _requestService.InsertDueRequest(userViewModelList, userId);        
-		//foreach (var user in userViewModelList)        //      {        //            //}    
-		//ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId);  
-		return Json(true);
-	}
-	//For Tool Inventory Manager
+    public ActionResult DueRequest(List<RequestAllView> userViewModelList)
+    {
+        //return Json(true);
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        ResponseViewModel<RequestViewModel> response;
+        response = _requestService.InsertDueRequest(userViewModelList, userId);
 
-	public IActionResult ToolInventory(int UserDept)
-	{
+        //response = _requestService.InsertDueRequest(userViewModelList, userId);
 
+        //foreach (var user in userViewModelList)
+        //      {
+        //	
+        //}
+        //ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
+        return Json(true);
+    }
+    //For Tool Inventory Manager
+    public IActionResult ToolInventory(int UserDept)
+    {
+		
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolInventoryInstrumentList(UserDept);
 
 		return View(response.ResponseDataList);

@@ -19,8 +19,7 @@
 	<!-- Tempusdominus Bbootstrap 4 -->
 	<link rel="stylesheet" href="~/css/tempusdominus-bootstrap-4.min.css">
 	<!-- iCheck -->
-	<link rel="stylesheet" href="~/css/icheck-bootstrap.min.css">
-	<!-- JQVMap -->
+	<link rel="stylesheet" href="~/css/icheck-bootstrap.min.css"><!-- JQVMap -->
 	<link rel="stylesheet" href="~/css/jqvmap.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="~/css/adminlte.min.css">
@@ -38,9 +37,9 @@
 	<link rel="stylesheet" href="~/css/animate.css">
 	<link rel="stylesheet" href="~/js/jquery-ui.css">
 	<link rel="stylesheet" href="~/css/bootstrap-select.min.css">
-	
-	
-
+	<!-- Select2 CSS -->
+	@*<link href="~/select2/select2.min.css" rel="stylesheet" />*@
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -290,6 +289,12 @@
 
 								<br />
 							}
+							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
+							{
+								<label id="lblUserType5" name="UserType5">Approve Manager</label>
+
+								<br />
+							}
 
 						</a>
 					</div>
@@ -302,7 +307,7 @@
 						   with font-awesome or any other icon font library -->
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"
 								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"
-								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
+								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5"|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("HomePage","Home")' class="nav-link">
@@ -312,8 +317,10 @@
 								</a>
 							</li>
 						}
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+					 	@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" 
+								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5"
+								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("Index","Home")' class="nav-link">
@@ -321,7 +328,7 @@
 									<p class="trn">Dashboard</p>
 								</a>
 							</li>
-						}
+						} 
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
 						{
 							<li class="nav-item has-treeview">
@@ -330,18 +337,16 @@
 									<p class="trn">Request Tracker</p>
 								</a>
 							</li>
-						}
-						@* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
+						}						
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
 							<li class="nav-item has-treeview">
-								<a href='@Url.Action("InternalObservation","Observation")' class="nav-link">
-									
-									<i class="nav-icon fas fa-calendar-minus"></i>
-									<p class="trn">Tool Inventory</p>
+								<a href='@Url.Action("DueTracker","Tracker")' class="nav-link">
+									<i class="nav-icon fas fa-compass"></i>
+									<p class="trn">Due Instrument Tracker</p>
 								</a>
 							</li>
-						} *@
-						
+						}
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
 								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
@@ -367,7 +372,7 @@
 										</li>
 									}
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
 									{
 										<li class="nav-item navIndend">
@@ -377,11 +382,20 @@
 											</a>
 										</li>
 									}
+									@if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("DueInstrument","Tracker")' class="nav-link">
+												<i class="fas fas fa-share-square"></i>
+												<p class="trn">Due Instrument Tracker</p>
+											</a>
+										</li>
+									}
 								</ul>
 							</li>
 						}
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 						{
 							<li class="nav-item has-treeview">
 								<a href="#" class="nav-link">
@@ -421,8 +435,7 @@
 							</li>
 
 						}
-
-						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 						{
 							<li class="nav-item has-treeview">
 
@@ -535,10 +548,6 @@
 								</ul>
 							</li>
 						}
-
-
-
-
 						@if ( @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 								//|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "5" ||)
 						{
@@ -712,34 +721,42 @@
 		<!-- /.control-sidebar -->
 	</div>
 	<!-- ./wrapper -->
+	<!-- Select2 CSS -->
+	
+
 
 	
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>	
+
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	
 	<script src="~/js/site.js" asp-append-version="true"></script>
-	@await RenderSectionAsync("Scripts", required: false)
+
+	<!-- Select2 JS -->
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+	@RenderSection("Scripts", required: false)
+	
 
 	<div>
-		
 
 		
-
-		<script src="~/lib/jquery/dist/jquery.min.js"></script>
+		
+		
 		<!-- jQuery -->
 		@*<script src="~/js/jquery.min.js"></script>*@
 		<!-- jQuery UI 1.11.4 -->
 		@*<script src="~/js/jquery-ui.min.js"></script>*@
 		<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+		
 
 		
-@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
 		<script>
 			$.widget.bridge('uibutton', $.ui.button)
 		</script>
 		<!-- Bootstrap 4 -->
-		<script src="~/js/bootstrap.bundle.min.js"></script>
+		<script src="~/js/bootstrap.bundle.min.js"></script>		
 		<!-- ChartJS -->
 		<script src="~/js/Chart.min.js"></script>
 		<!-- Sparkline -->
@@ -773,13 +790,14 @@
 		
 		<script src="~/js/Chart.js"></script>
 		<script src="~/js/additional-methods.min.js"></script>
-		<script src="~/js/template.js"></script>		
+		<script src="~/js/template.js"></script>
 		<script src="~/js/SweetAlert.js"></script>
 		<script src="~/js/jquery.translate.js"></script>
 		<script src="~/js/jquery.swaltranslate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>		
 		<script src="~/js/daimler.js"></script>
-	
+
+
 		<script type="text/javascript">
 			var dicts;
 			var GlDicts;
@@ -1751,7 +1769,29 @@
 					"Sub Section (EN)": { jp: "サブセクション (英語)", en: "Sub Section (EN)" },
 					"Sub Section (JP)": { jp: "サブセクション（JP）", en: "Sub Section (JP)" },
 					"Department Description (EN)": { jp: "部門の説明 (英語)", en: "Department Description (EN)" },
-					"Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" },
+					"Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" },					
+
+					//Last changes
+					"Type Of Instrument": { jp: "楽器の種類", en: "Type Of Instrument" },
+					"--Select Type Of Instrument--": { jp: "--楽器の種類を選択してください--", en: "--Select Type Of Instrument--" },
+					"Internal Instrument": { jp: "内部計器", en: "Internal Instrument" },
+					"External Instrument": { jp: "外部機器", en: "External Instrument" },
+					"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory" },
+					"--Select Tool Inventory--": { jp: "--ツールインベントリの選択--", en: "--Select Tool Inventory--" },
+					"Due For Calibration": { jp: "校正期限", en: "Due For Calibration"},
+					"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request"},
+					"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity"},
+					"Amount in JPY": { jp: "日本円での金額", en: "Amount in JPY"},
+					"Comment": { jp: "コメント", en: "Comment"},
+					"Equipment Station": { jp: "機器ステーション", en: "Equipment Station"},
+					"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--"},
+					"Inline": { jp: "列をなして", en: "Inline"},
+					"Lab": { jp: "研究室", en: "Lab"},
+					"Scope": { jp: "範囲", en: "Scope"},
+					"--Select Type Of Scope--": { jp: "--スコープのタイプを選択してください--", en: "--Select Type Of Scope--"},
+					"Internal Instrument": { jp: "内部計器", en: "Internal Instrument"},
+					"External Instrument": { jp: "外部機器", en: "External Instrument"},
+					"Type Of Scope": { jp: "スコープの種類", en: "Type Of Scope"},
 
 					//Last changes                    
 					"Type Of Instrument": { jp: "楽器の種類", en: "Type Of Instrument" },
@@ -1855,6 +1895,7 @@
 
 					$("#UserDept").empty();
 					$("#DepartmentId").empty();
+					$("#UserDept1").empty();
 
 					if (lang == 'jp') {
 						optionhtml = '<option value=""> -- マスターを選択 -- </option>';
@@ -1863,6 +1904,7 @@
 						optionhtml = '<option value="">--- Select User Department ---</option>';
 					}
 					$("#UserDept").append(optionhtml);
+					$("#UserDept1").append(optionhtml);
 					$("#DepartmentId").append(optionhtml);
 
 					$.each(resultObject, function (index, item) {
@@ -1878,6 +1920,7 @@
 						}
 
 						$("#UserDept").append(optionhtml);
+						$("#UserDept1").append(optionhtml);
 						$("#DepartmentId").append(optionhtml);
 					});
 					/////////////Code for select the value
@@ -2426,7 +2469,7 @@
 					
 				});
 			}
-																					/////////////TEMPLATE PART END ////////////////////////
+			/////////////TEMPLATE PART END ////////////////////////
 			function LoadRole() {
 				$.ajax({
 					type: "POST",
@@ -2439,9 +2482,7 @@
 					
 						optionhtml = '';
 						optionhtml1 = '';
-					$.each(data, function (index, item) {
-							console.log(item.roleName);
-							//$("#droprole").append($("<option <i class='fa fa-times-circle'></i>></option>").val(item.id).html(item.roleName));
+					$.each(data, function (index, item) {							
 							optionhtml1 = '<i class="fas fa-user-circle"></i>';
 							optionhtml = '<option value="' + item.id + '">' + optionhtml1 + item.roleName + ' </option>';
 							$("#droprole").append(optionhtml);

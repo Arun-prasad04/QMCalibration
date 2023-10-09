@@ -41,114 +41,109 @@
 
 					</div>
 
-				</div>
-				<!-- /.card-header -->
-				<!-- form start -->
-				<form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post" enctype="multipart/form-data">
-					<div class="card-body">
-						<input type="hidden" name="Id" id="userId" value="@Model.Id">
-						<div class="row">
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="ShortId" class="required trn">User Name</label>
-									<input type="text" class="form-control trn" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()">
-									<a style="display:none;color: red;" id="ShortIdError" class="field-validation-error">Please Enter Short ID</a>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="FirstName" class="required trn">First Name</label>
-									<input type="text" alt="Please enter your first name" class="form-control trn" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
-									<a style="display:none;color: red;" id="FirstNameError" class="field-validation-error">Please Enter First Name</a>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="LastName" class="required trn">Last Name</label>
-									<input type="text" alt="Please enter your last name" class="form-control trn" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName">
-									<a style="display:none;color: red;" id="LastNameError" class="field-validation-error">Please Enter Last Name</a>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label class="required trn">Mobile No</label>
-									<input type="text" alt="Please provide thett mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
-									<a style="display:none;color: red;" id="MobileNoError" class="field-validation-error">Please Enter Mobile Number</a> 
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									@*<option value="" selected="true">Select User Role</option>
-									<label class="required trn">Role</label>
-									<select name="RoleSelect" id="RoleSelect" class="form-control muldrop" multiple="multiple">
-										@foreach (var role in @Model.RoleList)
-										{
-											if (@Model.RoleSelectVal != null)
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="frm" id="userform" action='@Url.Action("InsertUser","User")' method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <input type="hidden" name="Id" id="userId" value="@Model.Id">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ShortId" class="required trn">User Name</label>
+                                    <input type="text" class="form-control trn" id="ShortId" placeholder="Short Name" name="ShortId" value="@Model.ShortId" maxlength="7" onblur="GetUserDetails()">
+                                    <a style="display:none;color: red;" id="ShortIdError" class="field-validation-error">Please Enter Short ID</a>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="FirstName" class="required trn">First Name</label>
+                                    <input type="text" alt="Please enter your first name" class="form-control trn" id="FirstName" placeholder="First Name" value="@Model.FirstName" name="FirstName">
+                                    <a style="display:none;color: red;" id="FirstNameError" class="field-validation-error">Please Enter First Name</a>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="LastName" class="required trn">Last Name</label>
+                                    <input type="text" alt="Please enter your last name" class="form-control trn" id="LastName" placeholder="Last Name" name="LastName" value="@Model.LastName">
+                                    <a style="display:none;color: red;" id="LastNameError" class="field-validation-error">Please Enter Last Name</a>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="required trn">Mobile No</label>
+                                    <input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                                    <a style="display:none;color: red;" id="MobileNoError" class="field-validation-error">Please Enter Mobile Number</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @*<option value="" selected="true">Select User Role</option>*@
+                                    <label class="required trn">Role</label>
+                                    <select name="RoleSelect" id="RoleSelect" class="form-control muldrop" multiple="multiple">
+                                        @foreach (var role in @Model.RoleList)
+                                        {
+                                            if (@Model.RoleSelectVal != null)
+                                            {
+                                                var check = false;
+                                                @foreach (var sel in @Model.RoleSelectVal)
+                                                {
+                                                    //if(SubSectionCode.)
+                                                    if (role.Id == sel.RoleId)
+                                                    {
+                                                        check = true;                                                       
+                                                    }
+                                                }
+                                                if (check == true)
+                                                {
+                                                    <option value="@role.Id" selected="check">@role.RoleName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@role.Id">@role.RoleName</option>
+                                                }
 
-											{
-												var check = false;   
-
-												@foreach (var sel in @Model.RoleSelectVal)
-												{
-													//if(SubSectionCode.)     
-													if (role.Id == sel.RoleId)
-													{
-														check = true;
-
-													}
-												}     
-												if (check == true)
-												{   
-													<option value="@role.Id" selected="check">@role.RoleName</option>
-												}
-												else
-												{                     
-													<option value="@role.Id">@role.RoleName</option>
-												}
-											}
-											else
-											{   
-												<option value="@role.Id">@role.RoleName</option>
-											}
-										}  
-
-									</select>
-
-
-									<a style="display:none;color: red;" id="UserRoleIdError" class="field-validation-error">Please Select Role</a>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Email Id</label>
-									<input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
-									<a style="display:none;color: red;" id="EmailError" class="field-validation-error">Please Enter Email Address</a>
-								</div>
-							</div>
-							@*<div class="col-md-4">
-							<div class="form-group">
-							<label class="required trn">Mobile No</label>
-							<input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
-							</div>
-							</div>*@
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Designation</label>
-									<select class="form-control" name="Designation" id="Designation">
-										<option value="">---Select User Designation---</option>
-										@foreach (var designation in @Model.DesignationList)
-										{
-											if (designation.Id == Model.Designation)
-											{
-												<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
-												@*@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
-										{
-										<option value="@designation.Id" selected="selected">@designation.AttrValue</option>
-										}
-										else
-										{
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Id">@role.RoleName</option>
+                                            }
+                                        }                                        
+                                    </select>
+                                    <a style="display:none;color: red;" id="UserRoleIdError" class="field-validation-error">Please Select Role</a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Email Id</label>
+                                    <input type="email" alt="Please provide the Email address" class="form-control trn" placeholder="Email Address" id="Email" name="Email" value="@Model.Email">
+                                    <a style="display:none;color: red;" id="EmailError" class="field-validation-error">Please Enter Email Address</a>
+                                </div>
+                            </div>
+                            @*<div class="col-md-4">
+                            <div class="form-group">
+                            <label class="required trn">Mobile No</label>
+                            <input type="text" alt="Please provide the mobile number" class="form-control trn" placeholder="Mobile Number" maxlength="15" id="MobileNo" name="MobileNo" value="@Model.MobileNo">
+                            </div>
+                            </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Designation</label>
+                                    <select class="form-control mt-5" name="Designation" id="Designation">
+                                        <option value="">---Select User Designation---</option>
+                                        @foreach (var designation in @Model.DesignationList)
+                                        {
+                                            if (designation.Id == Model.Designation)
+                                            {
+                                                <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                                                @*@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+                                        {
+                                        <option value="@designation.Id" selected="selected">@designation.AttrValue</option>
+                                        }
+                                        else
+                                        {
 
 										<option value="@designation.Id" selected="selected">@designation.AttrValueJp</option>
 										}*@
@@ -165,53 +160,45 @@
 										{
 										<option value="@designation.Id">@designation.AttrValueJp</option>
 
-										}*@
-											}
-										}
-									</select>
-									<a style="display:none;color: red;" id="DesignationError" class="field-validation-error">Please Select Designation</a>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="required trn">Sub Section Code</label>
-									@* <input type="text" alt="Please provide the Sub Section Code" class="form-control trn" placeholder="Sub Section Code" id="SubSectionCode" name="SubSectionCode" onblur="GetDepartmentDetails()" value="@Model.SubSectionCode">*@
-									@* @Html.DropDownListFor(M => Model.DepartmentId, new MultiSelectList(Model.DepartmentList, "Value", "Text"), "--Select--", new { @class = "js-example-basic-single form-control form-control-kdqr",multiple = "multiple", @id = "SubSectionCode_drop" })*@
-									<select id="SubSectionCodeval" name="SubSectionCodeval" class="form-control muldrop" multiple="multiple">
-										@* <option value="cheese">Cheese</option>
-										<option value="tomatoes">Tomatoes</option>
-										<option value="mozarella">Mozzarella</option>
-										<option value="mushrooms">Mushrooms</option>
-										<option value="pepperoni">Pepperoni</option>
-										<option value="onions">Onions</option>*@
-										@foreach (var department in @Model.DepartmentList)
-										{
-											if (@Model.SubSectionCodeName1 != null)
-											{
-												var check = false;
-												@foreach (var sel in @Model.SubSectionCodeName1)
-												{
-													//if(SubSectionCode.)
-													if (department.Id == sel.DepartmentId)
-													{
-														check = true;
-														@*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
-													}
-													@*else
-										{
-										<option value="@department.Id">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>
-										} *@
-												}
-												if (check == true)
-												{
-													<option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
-												}
-												else
-												{
-													<option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
-												}
+                                        }*@
+                                            }
+                                        }
+                                    </select>
+                                    <a style="display:none;color: red;" id="DesignationError" class="field-validation-error">Please Select Designation</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="required trn">Sub Section Code</label>
+                                     <select id="SubSectionCodeval" name="SubSectionCodeval" class="form-control muldrop" multiple="multiple">                                      
+                                        @foreach (var department in @Model.DepartmentList)
+                                        {
+                                            if (@Model.SubSectionCodeName1 != null)
+                                            {
+                                                var check = false;
+                                                @foreach (var sel in @Model.SubSectionCodeName1)
+                                                {
+                                                    //if(SubSectionCode.)
+                                                    if (department.Id == sel.DepartmentId)
+                                                    {
+                                                        check = true;
+                                                        @*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
+                                                    }
+                                                    @*else
+                                        {
+                                        <option value="@department.Id">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>
+                                        } *@
+                                                }
+                                                if (check == true)
+                                                {
+                                                    <option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+                                                }
 
 											}
 											else
@@ -530,13 +517,15 @@
 
 	$(function () {
 
-		$.validator.addMethod('Designation', function (value, element) {
-			if ($('#Designation').val() == '0') {
-				return false;
-			} else {
-				return true;
-			}
-		}, 'Please select User Designation');
+        $('#Designation').select2();
+
+        $.validator.addMethod('Designation', function (value, element) {           
+            if ($('#Designation').val() == '0') {
+                return false;
+            } else {                
+                return true;
+            }
+    }, 'Please select User Designation');
 
 		$.validator.addMethod("RoleSelect", function (value, element) {
 			return $(element).multiselect("getChecked").length > 0;
@@ -547,73 +536,74 @@
 			return count > 0;
 		})
 
-		$('#userform').validate({
-			rules: {
-				FirstName: {
-					required: true,
-				},
-				LastName: {
-					required: true,
-				},
-				RoleSelect: {
-					RoleSelect: true,
-					required: true,
-				},
-				Email: {
-					required: true,
-				},
-				MobileNo: {
-					required: true,
-				},
-				Designation: {
-					Designation: true,
-					required: true,
+        $('#userform').validate({
+            ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
+            rules: {
+                FirstName: {
+                    required: true,
+                },
+                LastName: {
+                    required: true,
+                },
+                RoleSelect: {
+                    RoleSelect: true,
+                    required: true,
+                },
+                Email: {
+                    required: true,
+                },
+                MobileNo: {
+                    required: true,
+                },
+                Designation: {
+                    Designation: true,
+                    required: true,
 
-				},
-				SubSectionCodeval: {
-					SubSectionCodeval: true,
-					//minlength: 0,
-					required: true,
-				},
-				//ignore: ':hidden:not("#SubSectionCodeval")',
-			},
-			//ignore: ':hidden:not("#RoleSelect")',
-			ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
-			messages: {
-				FirstName: {
-					required: "Please enter your first name",
-				},
-				LastName: {
-					required: "Please enter your last name",
-				},
-				RoleSelect: {
-					required: "Please select user role",
-				},
-				Email: {
-					required: "Please provide the Email address",
-				},
-				MobileNo: {
-					required: "Please provide the mobile number",
-				},
-				Designation: {
-					required: "Please select the Designation",
-				},
-				SubSectionCodeval: {
-					required: "Please select the Sub Section Code",
-				},
-			},
-			errorElement: 'span',
-			errorPlacement: function (error, element) {
-				error.addClass('invalid-feedback');
-				element.closest('.form-group').append(error);
-			},
-			highlight: function (element, errorClass, validClass) {
-				$(element).addClass('is-invalid');
-			},
-			unhighlight: function (element, errorClass, validClass) {
-				$(element).removeClass('is-invalid');
-			}
-		});
+                },
+                SubSectionCodeval: {
+                    SubSectionCodeval: true,
+                    //minlength: 0,
+                    required: true,
+                },
+                //ignore: ':hidden:not("#SubSectionCodeval")',
+            },
+            //ignore: ':hidden:not("#RoleSelect")',
+            //ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
+            messages: {
+                FirstName: {
+                    required: "Please enter your first name",
+                },
+                LastName: {
+                    required: "Please enter your last name",
+                },
+                RoleSelect: {
+                    required: "Please select user role",
+                },
+                Email: {
+                    required: "Please provide the Email address",
+                },
+                MobileNo: {
+                    required: "Please provide the mobile number",
+                },
+                Designation: {
+                    required: "Please select the Designation",
+                },
+                SubSectionCodeval: {
+                    required: "Please select the Sub Section Code",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
 
 		//    $('#saveUser').click(function () {
 		//        var errCount = 0;

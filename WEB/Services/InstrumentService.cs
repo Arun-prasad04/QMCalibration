@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Http;
 using System.Data.SqlTypes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using Nancy.Json;
 using System.Text;
 using static iTextSharp.text.pdf.AcroFields;
 
@@ -39,48 +38,47 @@ public class InstrumentService : IInstrumentService
         //_cmtdl = cmtdl;
     }
 
-    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId)
-    {
-        try
-        {
-            //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
-            List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
-            CMTDL _cmtdl = new CMTDL(_configuration);
-            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId);
-            //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
-            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    InstrumentViewModel inst = new InstrumentViewModel
-                    {
-                        Id = Convert.ToInt32(dr["Id"]),
-                        InstrumentName = dr["InstrumentName"].ToString(),
-                        SlNo = dr["SlNo"].ToString(),
-                        IdNo = dr["IdNo"].ToString(),
-                        Range = dr["Range"].ToString(),
-                        LC = dr["LC"].ToString(),
-                        CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
-                        CalibDate = Convert.ToDateTime(dr["CalibDate"]),
-                        DueDate = Convert.ToDateTime(dr["DueDate"]),
-                        Make = dr["Make"].ToString(),
-                        CalibSource = dr["CalibSource"].ToString(),
-                        StandardReffered = dr["StandardReffered"].ToString(),
-                        Remarks = dr["Remarks"].ToString(),
-                        Status = Convert.ToInt16(dr["Status"]),
-                        RequestId = Convert.ToInt16(dr["RequestId"]),
+	public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId)
+	{
+		try
+		{
+			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+			List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId);
+			//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in ds.Tables[0].Rows)
+				{
+					InstrumentViewModel inst = new InstrumentViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						InstrumentName = dr["InstrumentName"].ToString(),
+						SlNo = dr["SlNo"].ToString(),
+						IdNo = dr["IdNo"].ToString(),
+						Range = dr["Range"].ToString(),
+						LC = dr["LC"].ToString(),
+						CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+						CalibDate = Convert.ToDateTime(dr["CalibDate"]),
+						DueDate = Convert.ToDateTime(dr["DueDate"]),
+						Make = dr["Make"].ToString(),
+						CalibSource = dr["CalibSource"].ToString(),
+						StandardReffered = dr["StandardReffered"].ToString(),
+						Remarks = dr["Remarks"].ToString(),
+						Status = Convert.ToInt16(dr["Status"]),
+                        RequestId = Convert.ToInt32(dr["RequestId"]),
                         //FileList = 
                         //CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
                         //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
                         //NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
-                        DepartmentName = dr["deptName"].ToString(),
-                        RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
-                        UserRoleId = userRoleId,
-                        TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
-                        ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
-
-                    };
-                    instrumentList.Add(inst);
+                        DepartmentName = dr["deptName"].ToString(),						
+						RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						UserRoleId = userRoleId,
+						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+					};
+					instrumentList.Add(inst);
 
                 }
             }
@@ -335,48 +333,47 @@ public class InstrumentService : IInstrumentService
             _unitOfWork.Repository<Request>().Insert(newRequest);
             _unitOfWork.SaveChanges();
 
-            RequestStatus ReqestStatus = new RequestStatus();
-            ReqestStatus.RequestId = newRequest.Id;
-            ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
-            ReqestStatus.CreatedOn = DateTime.Now;
-            ReqestStatus.CreatedBy = instrument.CreatedBy;
-            _unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
-            _unitOfWork.SaveChanges();
+			RequestStatus ReqestStatus = new RequestStatus();
+			ReqestStatus.RequestId = newRequest.Id;
+			ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
+			ReqestStatus.CreatedOn = DateTime.Now;
+			ReqestStatus.CreatedBy = instrument.CreatedBy;
+			_unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
+			_unitOfWork.SaveChanges();
 
-            InstrumentQuarantine instrumentQuarantine = new InstrumentQuarantine()
-            {
-                InstrumentId = instrumentdata.Id,
-                Reason = "",
-                UserId = instrumentdata.CreatedBy,
-                CreatedOn = DateTime.Now,
-                StatusId = 2
-            };
-            _unitOfWork.Repository<InstrumentQuarantine>().Insert(instrumentQuarantine);
-            _unitOfWork.SaveChanges();
-            if (instrument.ImageUpload != null && instrument.ImageUpload.Count > 0)
-            {
-                foreach (IFormFile fileObj in instrument.ImageUpload)
-                {
-                    string filePath = _utilityService.UploadImage(fileObj, "Instrument");
-                    Uploads upload = new Uploads()
-                    {
-                        FileName = fileObj.FileName,
-                        FileGuid = Guid.NewGuid(),
-                        CreatedOn = DateTime.Now,
-                        ModifiedOn = DateTime.Now,
-                        FilePath = filePath
-                    };
-                    _unitOfWork.Repository<Uploads>().Insert(upload);
-                    _unitOfWork.SaveChanges();
-                    InstrumentFileUpload instrumentFileUpload = new InstrumentFileUpload();
-                    instrumentFileUpload.InstrumentId = instrumentdata.Id;
-                    instrumentFileUpload.UploadId = upload.Id;
-                    _unitOfWork.Repository<InstrumentFileUpload>().Insert(instrumentFileUpload);
-                    _unitOfWork.SaveChanges();
-                }
-            }
-
-            string objToolInventory = instrument.ToolInventory;
+			InstrumentQuarantine instrumentQuarantine = new InstrumentQuarantine()
+			{
+				InstrumentId = instrumentdata.Id,
+				Reason = "",
+				UserId = instrumentdata.CreatedBy,
+				CreatedOn = DateTime.Now,
+				StatusId = 2
+			};
+			_unitOfWork.Repository<InstrumentQuarantine>().Insert(instrumentQuarantine);
+			_unitOfWork.SaveChanges();
+			if (instrument.ImageUpload != null && instrument.ImageUpload.Count > 0)
+			{
+				foreach (IFormFile fileObj in instrument.ImageUpload)
+				{
+					string filePath = _utilityService.UploadImage(fileObj, "Instrument");
+					Uploads upload = new Uploads()
+					{
+						FileName = fileObj.FileName,
+						FileGuid = Guid.NewGuid(),
+						CreatedOn = DateTime.Now,
+						ModifiedOn = DateTime.Now,
+						FilePath = filePath
+					};
+					_unitOfWork.Repository<Uploads>().Insert(upload);
+					_unitOfWork.SaveChanges();
+					InstrumentFileUpload instrumentFileUpload = new InstrumentFileUpload();
+					instrumentFileUpload.InstrumentId = instrumentdata.Id;
+					instrumentFileUpload.UploadId = upload.Id;
+					_unitOfWork.Repository<InstrumentFileUpload>().Insert(instrumentFileUpload);
+					_unitOfWork.SaveChanges();
+				}
+			}
+			string objToolInventory = instrument.ToolInventory;
 
 			_unitOfWork.Commit();
             CMTDL _cmtdl = new CMTDL(_configuration);
@@ -547,156 +544,159 @@ public class InstrumentService : IInstrumentService
                 instrumentById.MasterInstrument2 = 0;
             }
 
-            if (instrument.MasterInstrument3 != null && instrument.MasterInstrument3 > 0)
-            {
-                instrumentById.MasterInstrument3 = instrument.MasterInstrument3;
-            }
-            else
-            {
-                instrumentById.MasterInstrument3 = 0;
-            }
+			if (instrument.MasterInstrument3 != null && instrument.MasterInstrument3 > 0)
+			{
+				instrumentById.MasterInstrument3 = instrument.MasterInstrument3;
+			}
+			else
+			{
+				instrumentById.MasterInstrument3 = 0;
+			}
 
-            if (instrument.MasterInstrument4 != null && instrument.MasterInstrument4 > 0)
-            {
-                instrumentById.MasterInstrument4 = instrument.MasterInstrument4;
-            }
-            else
-            {
-                instrumentById.MasterInstrument4 = 0;
-            }
+			if (instrument.MasterInstrument4 != null && instrument.MasterInstrument4 > 0)
+			{
+				instrumentById.MasterInstrument4 = instrument.MasterInstrument4;
+			}
+			else
+			{
+				instrumentById.MasterInstrument4 = 0;
+			}
 
-            instrumentById.IsNABL = instrument.IsNABL;
-            //Newly Added 
-            if (instrument.CertificationTemplate != null && instrument.CertificationTemplate > 0)
-            {
-                instrumentById.CertificationTemplate = instrument.CertificationTemplate;
-            }
-            if (instrument.CalibrationStatus != null && instrument.CalibrationStatus > 0)
-            {
-                instrumentById.CalibrationStatus = instrument.CalibrationStatus;
-            }
-            if (instrument.Rule_Confirmity != null)
-            {
-                instrumentById.Rule_Confirmity = instrument.Rule_Confirmity;
-            }
-            if (instrument.EquipmentStation != null)
-            {
-                instrumentById.EquipmentStation = instrument.EquipmentStation;
-            }
-            if (instrument.Instrument_Type != null && instrument.Instrument_Type > 0)
-            {
-                instrumentById.Instrument_Type = instrument.Instrument_Type;
-            }
-            if (instrument.TypeOfEquipment != null)
-            {
-                instrumentById.TypeOfEquipment = instrument.TypeOfEquipment;
-            }
-            if (instrument.ToolInventory != null)
-            {
-                instrumentById.ToolInventory = instrument.ToolInventory;
-            }
+			instrumentById.IsNABL = instrument.IsNABL;
+			//Newly Added 
+			if (instrument.CertificationTemplate != null && instrument.CertificationTemplate > 0)
+			{
+				instrumentById.CertificationTemplate = instrument.CertificationTemplate;
+			}
+			if (instrument.CalibrationStatus != null && instrument.CalibrationStatus > 0)
+			{
+				instrumentById.CalibrationStatus = instrument.CalibrationStatus;
+			}
+			if (instrument.Rule_Confirmity != null)
+			{
+				instrumentById.Rule_Confirmity = instrument.Rule_Confirmity;
+			}
+			if (instrument.EquipmentStation != null)
+			{
+				instrumentById.EquipmentStation = instrument.EquipmentStation;
+			}
+			if (instrument.Instrument_Type != null && instrument.Instrument_Type > 0)
+			{
+				instrumentById.Instrument_Type = instrument.Instrument_Type;
+			}
+			if (instrument.TypeOfEquipment != null)
+			{
+				instrumentById.TypeOfEquipment = instrument.TypeOfEquipment;
+			}
+			if (instrument.ToolInventory != null)
+			{
+				instrumentById.ToolInventory = instrument.ToolInventory;
+			}
 
 
-            _unitOfWork.Repository<Instrument>().Update(instrumentById);
-            _unitOfWork.SaveChanges();
-            _unitOfWork.Commit();
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 200,
-                ResponseMessage = "Success",
-                ResponseData = null,
-                ResponseDataList = null
-            };
-        }
-        catch (Exception e)
-        {
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 500,
-                ResponseMessage = "Failure",
-                ErrorMessage = e.Message,
-                ResponseData = null,
-                ResponseDataList = null,
-                ResponseService = "Instrument",
-                ResponseServiceMethod = "UpdateInstrument"
-            };
-        }
-    }
-    public ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId)
+			_unitOfWork.Repository<Instrument>().Update(instrumentById);
+			_unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Instrument",
+				ResponseServiceMethod = "UpdateInstrument"
+			};
+		}
+	}
+	public ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId)
+  {
+    try
     {
-        try
-        {
-            Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
-            _unitOfWork.BeginTransaction();
-            _unitOfWork.Repository<Instrument>().Delete(instrumentById);
-            _unitOfWork.SaveChanges();
-            _unitOfWork.Commit();
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 200,
-                ResponseMessage = "Success",
-                ResponseData = null,
-                ResponseDataList = null
-            };
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.RollBack();
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 500,
-                ResponseMessage = "Failure",
-                ErrorMessage = e.Message,
-                ResponseData = null,
-                ResponseDataList = null,
-                ResponseService = "Instrument",
-                ResponseServiceMethod = "DeleteInstrument"
-            };
-        }
+      Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
+      _unitOfWork.BeginTransaction();
+      _unitOfWork.Repository<Instrument>().Delete(instrumentById);
+      _unitOfWork.SaveChanges();
+      _unitOfWork.Commit();
+      return new ResponseViewModel<InstrumentViewModel>
+      {
+        ResponseCode = 200,
+        ResponseMessage = "Success",
+        ResponseData = null,
+        ResponseDataList = null
+      };
     }
-    public ResponseViewModel<InstrumentViewModel> CreateNewInstrument(int userId, int userRoleId)
+    catch (Exception e)
     {
-        try
-        {
+      _unitOfWork.RollBack();
+      return new ResponseViewModel<InstrumentViewModel>
+      {
+        ResponseCode = 500,
+        ResponseMessage = "Failure",
+        ErrorMessage = e.Message,
+        ResponseData = null,
+        ResponseDataList = null,
+        ResponseService = "Instrument",
+        ResponseServiceMethod = "DeleteInstrument"
+      };
+    }
+  }
+
+	public ResponseViewModel<InstrumentViewModel> CreateNewInstrument(int userId, int userRoleId)
+	{
+		try
+		{
 			CMTDL _cmtdl = new CMTDL(_configuration);
 			//var DepartmentData = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
 			var DepartmentData = _cmtdl.GetUserDepartment(userId, userRoleId);
 
+
+
 			InstrumentViewModel instrumentEmptyViewModel = new InstrumentViewModel();
-            List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-            List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
-            instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
-            instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
-            instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
-            instrumentEmptyViewModel.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
-            instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
-            instrumentEmptyViewModel.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
-            instrumentEmptyViewModel.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
-            instrumentEmptyViewModel.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
-            instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
-            instrumentEmptyViewModel.Departments = DepartmentData;
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 200,
-                ResponseMessage = "Success",
-                ResponseData = instrumentEmptyViewModel,
-                ResponseDataList = null
-            };
-        }
-        catch (Exception e)
-        {
-            return new ResponseViewModel<InstrumentViewModel>
-            {
-                ResponseCode = 500,
-                ResponseMessage = "Failure",
-                ErrorMessage = e.Message,
-                ResponseData = null,
-                ResponseDataList = null,
-                ResponseService = "Instrument",
-                ResponseServiceMethod = "CreateNewInstrument"
-            };
-        }
-    }
+			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
+			List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
+			instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
+			instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
+			instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
+			instrumentEmptyViewModel.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
+			instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
+			instrumentEmptyViewModel.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
+			instrumentEmptyViewModel.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
+			instrumentEmptyViewModel.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
+			instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
+			instrumentEmptyViewModel.Departments = DepartmentData;
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = instrumentEmptyViewModel,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Instrument",
+				ResponseServiceMethod = "CreateNewInstrument"
+			};
+		}
+	}
 
     public ResponseViewModel<InstrumentViewModel> GetAllInstrumentQuarantineList(int userId, int userRoleId)
     {
@@ -916,37 +916,40 @@ public class InstrumentService : IInstrumentService
         }
     }
 
-    public ResponseViewModel<InstrumentViewModel> InstrumentRemoveQuarantine(int instrumentId, int statusId, int userId)
+  public ResponseViewModel<InstrumentViewModel> InstrumentRemoveQuarantine(int instrumentId, int statusId, int userId)
+  {
+    try
     {
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
-            User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId).SingleOrDefault();
-            User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).SingleOrDefault();
-            Instrument instrument = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).FirstOrDefault();
-            InstrumentQuarantine instrumentQuarantineById = _unitOfWork.Repository<InstrumentQuarantine>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId && Q.StatusId == 1).FirstOrDefault();
-            instrumentQuarantineById.StatusId = statusId;
-            _unitOfWork.Repository<InstrumentQuarantine>().Update(instrumentQuarantineById);
-            Request newRequest = new Request();
-            Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
-            long maxId = 1;
-            if (getMaxId != null)
-            {
-                maxId = getMaxId.Id + 1;
-            }
-            string requestNumberFormat = maxId.ToString().PadLeft(4, '0');
-            newRequest.ReqestNo = "CR" + DateTime.Now.Year + requestNumberFormat;
-            newRequest.InstrumentId = instrumentId;
-            newRequest.RequestDate = DateTime.Now;
-            newRequest.TypeOfReqest = 3;
-            newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
-            newRequest.CreatedBy = userId;
-            newRequest.CreatedOn = DateTime.Now;
-            //newRequest.UserL4 = DeptuserByL4Id.Id;
-            newRequest.LabL4 = LabuserByL4Id.Id;
-            _unitOfWork.Repository<Request>().Insert(newRequest);
-            _unitOfWork.SaveChanges();
+      _unitOfWork.BeginTransaction();
+	  CMTDL _cmtdl = new CMTDL(_configuration);
+	  User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
+      //User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId).SingleOrDefault();
+	  //User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).SingleOrDefault();
+	  User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.DeptCordShortId).FirstOrDefault();
+	  User LabuserByL4Id = _cmtdl.GetCalibrationLabUsers();
+	  Instrument instrument = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).FirstOrDefault();
+      InstrumentQuarantine instrumentQuarantineById = _unitOfWork.Repository<InstrumentQuarantine>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId && Q.StatusId == 1).FirstOrDefault();
+      instrumentQuarantineById.StatusId = statusId;
+      _unitOfWork.Repository<InstrumentQuarantine>().Update(instrumentQuarantineById);
+      Request newRequest = new Request();
+      Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
+      long maxId = 1;
+      if (getMaxId != null)
+      {
+        maxId = getMaxId.Id + 1;
+      }
+      string requestNumberFormat = maxId.ToString().PadLeft(4, '0');
+      newRequest.ReqestNo = "CR" + DateTime.Now.Year + requestNumberFormat;
+      newRequest.InstrumentId = instrumentId;
+      newRequest.RequestDate = DateTime.Now;
+      newRequest.TypeOfReqest = 3;
+      newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
+      newRequest.CreatedBy = userId;
+      newRequest.CreatedOn = DateTime.Now;
+      newRequest.UserL4 = DeptuserByL4Id.Id;
+      newRequest.LabL4 = LabuserByL4Id.Id;
+      _unitOfWork.Repository<Request>().Insert(newRequest);
+      _unitOfWork.SaveChanges();
 
             RequestStatus ReqestStatus = new RequestStatus();
             ReqestStatus.RequestId = newRequest.Id;
@@ -1159,18 +1162,22 @@ public class InstrumentService : IInstrumentService
         }
     }
 
-    int IInstrumentService.GetObservationTemplateId(int instrumentId, string Type)
-    {
-        Instrument row = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
-        int? ObservationTemplateId = 0;
-        if (Type == "Certification")
-        {
-            ObservationTemplateId = row != null ? row.CertificationTemplate : 0;
-        }
-        else if (Type == "Observation")
-        {
-            ObservationTemplateId = row != null ? row.ObservationTemplate : 0;
-        }
+	int IInstrumentService.GetObservationTemplateId(int instrumentId, string Type)
+	{
+		Instrument row = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).SingleOrDefault();
+		int? ObservationTemplateId = 0;
+		if (Type == "Certification")
+		{
+			ObservationTemplateId = row != null ? row.CertificationTemplate : 0;
+		}
+		else if (Type == "Observation" && (row.TypeOfEquipment == "Internal Instrument" || row.TypeOfEquipment == "内部計器"))
+		{
+			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 0;
+		}
+		else if (Type == "Observation" && (row.TypeOfEquipment == "External Instrument" || row.TypeOfEquipment == "外部機器"))
+		{
+			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 01;
+		}
 
         return (int)ObservationTemplateId;
     }
@@ -1265,10 +1272,10 @@ public class InstrumentService : IInstrumentService
                         //CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
                         CalibDate = Convert.ToDateTime(dr["CalibDate"]),
                         DueDate = Convert.ToDateTime(dr["DueDate"]),
-                        // Make = dr["Make"].ToString(),
-                        // CalibSource = dr["CalibSource"].ToString(),
-                        // StandardReffered = dr["StandardReffered"].ToString(),
-                        // Remarks = dr["Remarks"].ToString(),
+                        //Make = dr["Make"].ToString(),
+                        CalibSource = dr["CalibSource"].ToString(),
+                        //StandardReffered = dr["StandardReffered"].ToString(),
+                        Remarks = dr["Remarks"].ToString(),
                         Status = Convert.ToInt16(dr["Status"]),
                         DepartmentName = dr["deptName"].ToString(),
                         CreatedBy = Convert.ToInt16(dr["CreatedBy"]),
@@ -1324,7 +1331,7 @@ public class InstrumentService : IInstrumentService
                         UserDept = Convert.ToInt32(dr["UserDept"]),
                         DepartmentName = dr["DepartmentName"].ToString(),
                         InstrumentCount = Convert.ToInt32(dr["InstrumentCount"]),
-                        ToolRoomStatus = Convert.ToInt32(dr["Status"]),// ? (Int32)ToolRoomStatus.Pending : (Int32)ToolRoomStatus.Completed,
+                        ToolRoomStatus = Convert.ToInt32(dr["Status"]),
                         DueDate = Convert.ToDateTime(dr["DueForCalibration"])
                     };
                     ToolInventoryList.Add(ObjinstView);
@@ -1409,16 +1416,17 @@ public class InstrumentService : IInstrumentService
         SqlCommand cmd = new SqlCommand("SaveToolInventryInstrumentList");
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.Parameters.AddWithValue("@ToolInventoryList", ToolInventoryList);
-        SqlConnection sqlConn = new SqlConnection(connectionString);
-        DataSet dsResults = new DataSet();
-        SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-        cmd.Connection = sqlConn;
-        cmd.CommandTimeout = 2000;
-        sqlAdapter.SelectCommand = cmd;
-        sqlAdapter.Fill(dsResults);
-        return dsResults;
-    }
+		cmd.Parameters.AddWithValue("@ToolInventoryList", ToolInventoryList);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
     public ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int UserId)
     {
         try
@@ -1463,5 +1471,5 @@ public class InstrumentService : IInstrumentService
                 ResponseServiceMethod = "SaveInventoryCalibration"
             };
         }
-    }
+    } 
 }

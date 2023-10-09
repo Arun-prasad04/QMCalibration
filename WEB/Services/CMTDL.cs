@@ -141,114 +141,114 @@ namespace WEB.Services
 		}
 
 
+        #region Command
+        //public UserViewModel GetUserById(int UserId)
+        //{
+        //	UserViewModel uv = new UserViewModel();
+        //	try
+        //	{
 
-		//public UserViewModel GetUserById(int UserId)
-		//{
-		//	UserViewModel uv = new UserViewModel();
-		//	try
-		//	{
+        //		DataSet ds = GetUserDashboardInfo(UserId);
 
-		//		DataSet ds = GetUserDashboardInfo(UserId);
+        //		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+        //		{
+        //			uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
+        //			uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
+        //			uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
+        //			uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+        //			uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
+        //			uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
+        //			uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
+        //			uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
+        //			uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
+        //			uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
+        //			uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
+        //			uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
 
-		//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-		//		{
-		//			uv.ShortId = Convert.ToString(ds.Tables[0].Rows[0]["ShortId"]);
-		//			uv.FirstName = Convert.ToString(ds.Tables[0].Rows[0]["FirstName"]);
-		//			uv.LastName = Convert.ToString(ds.Tables[0].Rows[0]["LastName"]);
-		//			uv.Email = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
-		//			uv.Designation = Convert.ToInt16(ds.Tables[0].Rows[0]["Designation"]);
-		//			uv.MobileNo = Convert.ToString(ds.Tables[0].Rows[0]["MobileNo"]);
-		//			uv.DeptCordEmail = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordEmail"]);
-		//			uv.DeptCordName = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordName"]);
-		//			uv.DeptCordShortId = Convert.ToString(ds.Tables[0].Rows[0]["DeptCordShortId"]);
-		//			uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
-		//			uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
-		//			uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
+        //		}
 
-		//		}
+        //		//List<LovsViewModel> Lv = new List<LovsViewModel>();
+        //		if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+        //		{
+        //			var Lovslist = new List<LovsViewModel>();
+        //			foreach (DataRow dr in ds.Tables[1].Rows)
+        //			{
+        //				Lovslist.Add(new LovsViewModel
+        //				{
+        //					Id = Convert.ToInt32(dr["Id"]),
+        //					AttrName = Convert.ToString(dr["AttrName"]),
+        //					Attrform = Convert.ToString(dr["Attrform"]),
+        //					AttrValue = Convert.ToString(dr["AttrValue"]),
+        //					AttrNameJp = Convert.ToString(dr["AttrNameJp"]),
+        //					AttrformJp = Convert.ToString(dr["AttrformJp"]),
+        //					AttrValueJp = Convert.ToString(dr["AttrValueJp"]),
+        //					IsActive = Convert.ToBoolean(dr["IsActive"])
+        //				});
+        //			}
 
-		//		//List<LovsViewModel> Lv = new List<LovsViewModel>();
-		//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
-		//		{
-		//			var Lovslist = new List<LovsViewModel>();
-		//			foreach (DataRow dr in ds.Tables[1].Rows)
-		//			{
-		//				Lovslist.Add(new LovsViewModel
-		//				{
-		//					Id = Convert.ToInt32(dr["Id"]),
-		//					AttrName = Convert.ToString(dr["AttrName"]),
-		//					Attrform = Convert.ToString(dr["Attrform"]),
-		//					AttrValue = Convert.ToString(dr["AttrValue"]),
-		//					AttrNameJp = Convert.ToString(dr["AttrNameJp"]),
-		//					AttrformJp = Convert.ToString(dr["AttrformJp"]),
-		//					AttrValueJp = Convert.ToString(dr["AttrValueJp"]),
-		//					IsActive = Convert.ToBoolean(dr["IsActive"])
-		//				});
-		//			}
+        //			uv.DesignationList = Lovslist;
+        //		}
 
-		//			uv.DesignationList = Lovslist;
-		//		}
+        //		if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
+        //		{
+        //			var deptlist = new List<DepartmentViewModel>();
+        //			foreach (DataRow dr in ds.Tables[2].Rows)
+        //			{
+        //				deptlist.Add(new DepartmentViewModel
+        //				{
+        //					Id = Convert.ToInt32(dr["Id"]),
+        //					Name = Convert.ToString(dr["Name"]),
+        //					Section = Convert.ToString(dr["Section"]),
+        //					SubSection = Convert.ToString(dr["SubSection"]),
+        //					SectionCode = Convert.ToString(dr["SectionCode"]),
+        //					SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
+        //					Description = Convert.ToString(dr["Description"]),
+        //					NameJP = Convert.ToString(dr["NameJP"]),
+        //					DescriptionJP = Convert.ToString(dr["DescriptionJP"]),
+        //					SectionJP = Convert.ToString(dr["SectionJP"]),
+        //					SubSectionJP = Convert.ToString(dr["SubSectionJP"]),
+        //					ActiveStatus = Convert.ToBoolean(dr["ActiveStatus"]),
+        //					DeptCode = Convert.ToString(dr["DeptCode"])
+        //				});
+        //			}
 
-		//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
-		//		{
-		//			var deptlist = new List<DepartmentViewModel>();
-		//			foreach (DataRow dr in ds.Tables[2].Rows)
-		//			{
-		//				deptlist.Add(new DepartmentViewModel
-		//				{
-		//					Id = Convert.ToInt32(dr["Id"]),
-		//					Name = Convert.ToString(dr["Name"]),
-		//					Section = Convert.ToString(dr["Section"]),
-		//					SubSection = Convert.ToString(dr["SubSection"]),
-		//					SectionCode = Convert.ToString(dr["SectionCode"]),
-		//					SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
-		//					Description = Convert.ToString(dr["Description"]),
-		//					NameJP = Convert.ToString(dr["NameJP"]),
-		//					DescriptionJP = Convert.ToString(dr["DescriptionJP"]),
-		//					SectionJP = Convert.ToString(dr["SectionJP"]),
-		//					SubSectionJP = Convert.ToString(dr["SubSectionJP"]),
-		//					ActiveStatus = Convert.ToBoolean(dr["ActiveStatus"]),
-		//					DeptCode = Convert.ToString(dr["DeptCode"])
-		//				});
-		//			}
+        //			uv.DepartmentList = deptlist;
+        //		}
 
-		//			uv.DepartmentList = deptlist;
-		//		}
+        //		if (ds != null && ds.Tables.Count > 0 && ds.Tables[3].Rows.Count > 0)
+        //		{
+        //			var urselectlist = new List<UserDepartmentMappingView>();
+        //			foreach (DataRow dr in ds.Tables[3].Rows)
+        //			{
+        //				urselectlist.Add(new UserDepartmentMappingView
+        //				{
+        //					Id = Convert.ToInt32(dr["Id"]),
+        //					UserId = Convert.ToInt32(dr["UserId"]),
+        //					SubSectionCode = Convert.ToInt32(dr["SubSectionCode"]),
+        //					IsActive = Convert.ToBoolean(dr["IsActive"])
+        //				});
+        //			}
 
-		//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[3].Rows.Count > 0)
-		//		{
-		//			var urselectlist = new List<UserDepartmentMappingView>();
-		//			foreach (DataRow dr in ds.Tables[3].Rows)
-		//			{
-		//				urselectlist.Add(new UserDepartmentMappingView
-		//				{
-		//					Id = Convert.ToInt32(dr["Id"]),
-		//					UserId = Convert.ToInt32(dr["UserId"]),
-		//					SubSectionCode = Convert.ToInt32(dr["SubSectionCode"]),
-		//					IsActive = Convert.ToBoolean(dr["IsActive"])
-		//				});
-		//			}
-
-		//			uv.SubSectionCodeName1 = urselectlist;
-		//		}
-		//		//UserViewModel userById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
-		//		//List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
-		//		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation").ToList());
-		//		//userById.DepartmentList = departmentList;
-		//		//userById.DesignationList = lovsList;
-
-
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		ErrorViewModelTest.Log("UserService - GetUserById Method");
-		//		ErrorViewModelTest.Log("exception - " + e.Message);
-		//	}
-		//	return uv;
-		//}
+        //			uv.SubSectionCodeName1 = urselectlist;
+        //		}
+        //		//UserViewModel userById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
+        //		//List<DepartmentViewModel> departmentList = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+        //		//List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "Designation").ToList());
+        //		//userById.DepartmentList = departmentList;
+        //		//userById.DesignationList = lovsList;
 
 
-		public List<UserViewModel> GetLadAdminUsers()
+        //	}
+        //	catch (Exception e)
+        //	{
+        //		ErrorViewModelTest.Log("UserService - GetUserById Method");
+        //		ErrorViewModelTest.Log("exception - " + e.Message);
+        //	}
+        //	return uv;
+        //}
+        #endregion
+
+        public List<UserViewModel> GetLadAdminUsers()
 		{
 			try
 			{
@@ -923,5 +923,125 @@ namespace WEB.Services
         }
 		*/
 		#endregion`
-	}
+
+		public List<DueInstrument> GetAllDueInstrumentList()
+		{
+			try
+			{
+				List<DueInstrument> InstrumentlList = new List<DueInstrument>();
+
+
+				DataSet ds = GetAllDueInstrumentListData();
+				//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					foreach (DataRow dr in ds.Tables[0].Rows)
+					{
+						DueInstrument Instlist = new DueInstrument
+						{
+							IdNo = dr["IdNo"].ToString(),
+							InstrumentId = Convert.ToInt32(dr["InstrumentId"]),
+							EquipmentType = dr["EquipmentType"].ToString(),
+							InstrumentName = dr["EquipmentName"].ToString(),
+							Class = dr["Class"].ToString(),
+							Location = dr["Class"].ToString(),
+							SubSectionCode = dr["SubSectionCode"].ToString(),
+							SectionName = dr["SectionName"].ToString(),
+							TypeofScope = dr["CalibrationType"].ToString(),
+							DueDate = Convert.ToDateTime(dr["DueDate"]),
+							ToolRoom = dr["ToolRoom"].ToString(),
+							DeptId = Convert.ToInt32(dr["DeptId"]),
+                            InstrumentCreatedBy = Convert.ToInt32(dr["InstrumentCreatedBy"]),							                                                
+						};
+						InstrumentlList.Add(Instlist);
+
+					}
+				}
+
+				return InstrumentlList;
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetAllDueInstrumentList Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+				return null;
+			}
+		}
+
+
+		public DataSet GetAllDueInstrumentListData()
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetUserInstrumentData");
+			cmd.CommandType = CommandType.StoredProcedure;
+			//cmd.Parameters.AddWithValue("@UserId", userid);
+			//cmd.Parameters.AddWithValue("@UserRoleId", UserRole);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
+
+			return dsResults;
+		}
+
+        public DataSet InsertDueInstrumentList(string duelist, int userId)
+        {
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("InsertDueInstrumentListForMail");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@userid", userId);
+            cmd.Parameters.AddWithValue("@Duelist", duelist);
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+
+            return dsResults;
+
+        }
+
+        public DataSet GetAdminApproveInstrumentList()
+        {
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("GetAdminApproveInstrumentList");
+            cmd.CommandType = CommandType.StoredProcedure;          
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+
+            return dsResults;
+
+        }
+
+
+        public DataSet InsertMgApproveDueInstrumentList(string duelist, int userId)
+        {
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("InsertMgApproveDueInstrumentList");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@userid", userId);
+            cmd.Parameters.AddWithValue("@Duelist", duelist);
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+
+            return dsResults;
+
+        }
+
+    }
 }

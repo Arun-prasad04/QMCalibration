@@ -1,4 +1,4 @@
-using CMT.DAL;
+﻿using CMT.DAL;
 using CMT.DATAMODELS;
 using WEB.Services.Interface;
 using AutoMapper;
@@ -4400,7 +4400,14 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			RequestStatus reqestStatus = new RequestStatus();
 			reqestStatus.RequestId = observationById.RequestId;
-			reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+			if(instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+			{
+                reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+            }
+            else {
+                reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+            }
+			
 			reqestStatus.CreatedOn = DateTime.Now;
 			reqestStatus.CreatedBy = reviewedBy;
 			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
@@ -4409,8 +4416,14 @@ public class ObservationTemplateService : IObservationTemplateService
 			//----------------------New update for listing Approved Request start---------------------------
 			//Request Tempreqests = new Request();
 			ReqstData.Id = observationById.RequestId;
-			ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
-
+            if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+            {
+                ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+            }
+            else
+            {
+                ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+            }           
 			_unitOfWork.Repository<Request>().Update(ReqstData);
 			_unitOfWork.SaveChanges();
 			//----------------------New update for listing Approved Request end---------------------------
@@ -4492,13 +4505,15 @@ public class ObservationTemplateService : IObservationTemplateService
 		return userData;
 	}
 
-	private List<int?> GenerateULRAndCertificateNumber(bool? isNABL)
-	{
+	private List<int?> GenerateULRAndCertificateNumber(bool? isNABL) // parameter bool? isNABL
+    {
 		int? ulrNumber = 0;
 		int? certificateNumber = 0;
 		int? year = 2022;
+		isNABL = true;
 
-		var startDate = DateTime.Parse(string.Concat("01-01-", year.ToString()));
+
+        var startDate = DateTime.Parse(string.Concat("01-01-", year.ToString()));
 		var endDate = DateTime.Parse(string.Concat("31-12-", DateTime.Now.Year.ToString()));
 
 

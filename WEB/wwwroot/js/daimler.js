@@ -826,6 +826,9 @@ function ValidateCheck() {
     else {
         //$('#CountryError').hide();
     }
+    if ($('#TentativeCompletionDate').val().trim() == '') {
+        errCount = errCount + 1;
+    }
 
     return errCount;
 }
@@ -1044,10 +1047,10 @@ function SaveLABAdminUpdates(lang) {
         type: 'POST',
         data: {
             requestId: $('#RequestCalibId').val(),
-            ObservationTemplate: $('#NewObservation').val(),
-            ObservationTemplateType: $('#NewObservationType').val(),
-            MUTemplate: $('#NewMU').val(),
-            CertificationTemplate: $('#NewCertification').val()
+            ObservationTemplate: $('#NewObservationEd').val(),
+            ObservationTemplateType: $('#NewObservationTypeEd').val(),
+            //MUTemplate: $('#NewMU').val(),
+            CertificationTemplate: $('#NewCertificationEd').val()
 
         }
     }).done(function (resultObject) {
@@ -1248,7 +1251,7 @@ function AcceptRejectNewRequest(lang) {
             AcceptRequest(type, lang);
         }
         else {
-            showWarning('Please Select Observation Templates, Observation Template Type, Certification Template Values...!', lang);
+            showWarning('Please Select Tentative Closing Date, Observation Templates, Observation Template Type, Certification Template Values...!', lang);
         }
 
     } else {
@@ -1263,15 +1266,16 @@ function AcceptRejectNewRequest(lang) {
 }
 
 function AcceptRejectExternalRequest(lang) {
+    debugger;
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        if ($('#txtIdNo').val() != '') {
+        if ($('#CalibFreq').val() != '' && $('#Acceptreason').val().trim() != '' && $('#ImageUpload')[0].files.length != 0) {
             ExternalAcceptRequest(type, lang);
         }
         else {
-            showWarning('Please Enter Instrument Id Number...!', lang);
+            showWarning('Please fill the Calibration Frequency and Accept Reason and Upload Image...!', lang);
         }
 
     } else {
@@ -1287,6 +1291,7 @@ function AcceptRejectExternalRequest(lang) {
 
 function ExternalRejecttRequest(type, lang)
 {
+    debugger;
     console.log($('#TentativeCompletionDate').val());
     var data1;
     if (type == 1) {
@@ -1326,7 +1331,6 @@ function ExternalRejecttRequest(type, lang)
     });
 }
 
-
 function ExternalAcceptRequest(type, lang) {
     var data1;
     var formData = new FormData();
@@ -1347,6 +1351,12 @@ function ExternalAcceptRequest(type, lang) {
     //    photo: FileData
     //}
 
+    var dueDate;
+    var dt = $('#CalibFreq').val();
+    dueDate = DudeDateCalculation(dt);
+    console.log('duedate');
+    console.log(dueDate);
+
     formData.append("requestId", $('#RequestCalibId').val());
     formData.append("ReceivedBy", $('#ReceivedBy').val());
     formData.append("InstrumentCondition", $('#InstrumentCondition').val());
@@ -1356,6 +1366,7 @@ function ExternalAcceptRequest(type, lang) {
     formData.append("InstrumentIdNo", $('#txtIdNo').val());
     formData.append("acceptReason", $('#Acceptreason').val());
     formData.append("httpPostedFileBase", file);
+    formData.append("DueDate", dueDate);
 
     ////formData.append("data", JSON.stringify(data1));
 
@@ -1392,7 +1403,6 @@ function ValidateCheckForExternal() {
     }    
     return errCount;
 }
-
 
 function AcceptRejectReCalibrationRequest(lang) {
     var type = $('#hdntype').val();
@@ -1608,6 +1618,7 @@ function SaveLeverDial(lang) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
+
 function SaveInventoryCalibration(lang) {
     var sPageURLPaarameter = window.location.search.substring(1);
     
@@ -1701,7 +1712,8 @@ function SaveInventoryCalibration(lang) {
         return false;
     }
 }
-function DueForCalibrationInstruments() {
+
+function DueForCalibrationInstruments_olds() {
 
     var tblRowsCoun = $("#example1 th").length;
     if (tblRowsCoun > 0) {
@@ -1723,7 +1735,8 @@ function DueForCalibrationInstruments() {
     }
 
 }
-function InsertRequestList() {
+
+function InsertRequestListold() {
     var Request = new Array();
     $('#example1 > tbody > tr').each(function (row, tr) {
 
@@ -1762,6 +1775,7 @@ function InsertRequestList() {
 
     });
 }
+
 function SaveMicrometer(lang) {
     var MicroResult;
     var ObjParent = '';
@@ -1970,7 +1984,6 @@ function SaveMicrometer(lang) {
     });
 }
 
-
 function SaveMetalRule(lang) {
     debugger;
     var MicroResult;
@@ -2103,7 +2116,6 @@ function SaveMetalRule(lang) {
     }
 }
 
-
 function SaveGeneral(lang) {
     //debugger;
     var GeneralResult = new Array();
@@ -2165,7 +2177,6 @@ function SaveGeneral(lang) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
-
 
 function SaveVernierCaliper(lang) {
     var data = {
@@ -2360,7 +2371,6 @@ function SaveVernierCaliper(lang) {
     });
 }
 
-
 function SaveGeneralNew(lang) {
     var data = {
         Id: $('#Id').val(),
@@ -2417,7 +2427,6 @@ function SaveGeneralNew(lang) {
         showSuccess("Data Saved Successfully", lang);
     });
 }
-
 
 function SavePlungerDial(lang) {
 
@@ -2755,8 +2764,6 @@ function LoadObservationTypePopup(lang) {
 
 }
 
-
-
 function LoadObservationTypePopupEd(lang) {
     $.ajax({
         url: '../Tracker/LoadObservationType',
@@ -2813,14 +2820,10 @@ function AddNewInstrumentMaster(lang) {
     }
 }
 
-
 function DeleteMasterEqiupment(id) {
     $('#MasterInstrument' + id).remove();
     $('#masvalue' + id).remove();
 }
-
-
-
 
 function SaveCertificate(templtatename, lang) {
 
@@ -2895,7 +2898,6 @@ function SaveInstrumentDetails(lang) {
     console.log(" $('#Grade').val()");
     console.log($('#Grade').val());
 }
-
 
 function newSubmitReqLABVisual(lang) {
 
@@ -3108,23 +3110,21 @@ function DueForCalibrationInstruments() {
         if (tblRowsCoun > 0) {
             console.log('count');
             var oTable = $("#example1").dataTable();
-            $(".one", oTable.fnGetNodes()).each(function (i, row) {
-                var currentRow3 = $(this).closest("tr");
-                if (typeof ($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") {
-                    currentRow3.hide();
+            $(".one", oTable.fnGetNodes()).each(function (i, row) {                                                                   
+                var currentRow3 = $(this).closest("tr");                
+                if (typeof($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") { 
+                     currentRow3.hide();
                 }
                 else {
-                    currentRow3.show();
+                     currentRow3.show();
                 }
-            });
+            });            
         }
     }
     else {
         window.location.href = '../Instrument/Index';
     }
 }
-
-
 
 function DueForCalibrationInstruments_Old() {
     //debugger;
@@ -3152,14 +3152,13 @@ function DueForCalibrationInstruments_Old() {
 
 }
 
-
 function InsertRequestList() {
     //debugger;
     var Request = new Array();
 
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-        var UserView = {
+        var UserView = {            
             instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
             TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val()
         }
@@ -3186,7 +3185,7 @@ function InsertRequestList() {
         url: '../Instrument/DueRequest',
         type: 'POST',
         data: { userViewModelList: Request },
-        dataType: "json",
+        dataType: "json",    
     }).done(function (resultObject) {
         //showSuccess("Data Saved Successfully");
         window.location.href = '../Instrument/Index';
@@ -3199,7 +3198,7 @@ function DueInstrumentList() {
     var id = "";
     var oTable = $("#example2").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+       // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
         var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
             InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
@@ -3212,18 +3211,190 @@ function DueInstrumentList() {
             SectionName: $(this).closest('tr').find('td:eq(5) input[name="subname"]').val(),
             Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
             ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
+            InstrumentCreatedBy: $(this).closest('tr').find('td:eq(5) input[name="InstrumentCreatedBy"]').val(),
         }
-        Request.push(UserView);
-    });
+        Request.push(UserView);        
+    });    
     console.log(Request);
     $.ajax({
         url: '../Tracker/DueInstrumentAdminApprove',
         type: 'POST',
         data: { DueList: Request },
-        dataType: "json",
+        dataType: "json",       
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully");
         window.location.href = '../Tracker/DueInstrument';
+    });
+
+
+function DueInstrumentManagerApprove() {
+    var Request = new Array();
+    var id = "";
+    var oTable = $("#example2").dataTable();
+    $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
+        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+        var UserView = {
+            instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
+            //InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
+            //IdNo: $(this).closest('tr').find('td:eq(1)').html(),
+            //SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
+            //TypeofScope: $(this).closest('tr').find('td:eq(3)').html(),
+            //DueDate: $(this).closest('tr').find('td:eq(4)').html(),
+            //DeptId: $(this).closest('tr').find('td:eq(5) input[name="deptId"]').val(),
+            //EquipmentType: $(this).closest('tr').find('td:eq(5) input[name="equipType"]').val(),
+            //SectionName: $(this).closest('tr').find('td:eq(5) input[name="subname"]').val(),
+            //Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
+            //ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
+        }
+        Request.push(UserView);
+    });
+    console.log(Request);
+    $.ajax({
+        url: '../Tracker/DueInstrumentManagerApprove',
+        type: 'POST',
+        data: { DueList: Request },
+        dataType: "json",
+    }).done(function (resultObject) {
+        showSuccess("Data Saved Successfully");
+        window.location.href = '../Tracker/DueTracker';
+    });
+}
+
+function ExternalUserSubmit(type, lang) {
+    var data1;
+    var formData = new FormData();
+    var Id = $('#RequestCalibId').val();
+    //var files = $("#ImageUpload")[0].files;
+
+    var file = $('#ImageUpload')[0].files[0];
+    //formData.append("file", file);
+    //data1 = {
+    //    requestId: $('#RequestCalibId').val(),
+    //    ReceivedBy: $('#ReceivedBy').val(),
+    //    InstrumentCondition: $('#InstrumentCondition').val(),
+    //    Feasiblity: $('#Feasiblity').val(),
+    //    TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+    //    newNABL: $('#IsNABL').val(),
+    //    InstrumentIdNo: $('#txtIdNo').val(),
+    //    rejectReason: $('#Newreason').val(),
+    //    photo: FileData
+    //}
+    //formData.append("ReceivedBy", $('#ReceivedBy').val());
+    //formData.append("InstrumentCondition", $('#InstrumentCondition').val());
+    //formData.append("Feasiblity", $('#Feasiblity').val());
+    //formData.append("TentativeCompletionDate", $('#TentativeCompletionDate').val());
+    //formData.append("newNABL", $('#IsNABL').val());
+    //formData.append("InstrumentIdNo", $('#txtIdNo').val());
+    //formData.append("acceptReason", $('#Acceptreason').val());
+
+    formData.append("requestId", $('#RequestCalibId').val());
+    formData.append("httpPostedFileBase", file);
+
+    ////formData.append("data", JSON.stringify(data1));
+
+    //formData.append("httpPostedFileBase", $("#ImageUpload")[0].files[0]);
+    //var totalFiles = document.getElementById('ImageUpload').files.length;
+    //for (var i = 0; i < totalFiles; i++) {
+    //    var file = document.getElementById('ImageUpload').files[i];
+    //    formData.append("httpPostedFileBase", file);
+    //}
+    $.ajax({
+        type: 'POST',
+        url: '../Tracker/ExternalUserSubmit',
+        data: formData,
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+function SaveExternalObservationSheet(lang) {
+    //debugger;    
+
+    var data = {
+        Id: $('#Id').val(),
+        InstrumentId: $('#instrumentId').val(),
+        RequestId: $('#requestId').val(),
+        RefStd: $('#RefStd').val(),
+        TempStart: $('#TempStart').val(),
+        TempEnd: $('#TempEnd').val(),
+        Humidity: $('#Humidity').val(),
+        RefWi: $('#RefWi').val(),
+        Allvalues: $('#Allvalues').val(),
+        ExternalObsCondition: $('#ExtIndicatiorCondition').val(),
+        CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
+        ReviewedBy: $('#ReviewedBy').val(),
+        CalibrationDoneDate: $('#CalibrationDoneDate').val(),
+        ReviewedDate: $('#ReviewedDate').val(),        
+        AdminReviewStatus: $('#AdminReviewStatus').val(),
+    }
+    $.ajax({
+        url: '../Observation/InsertExternalObs',
+        type: 'POST',
+        data: { ExObs: data },
+        dataType: "json",
+    }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
+        showSuccess("Data Saved Successfully", lang);
+    });
+}
+
+function SaveExternalObs(lang) {
+    debugger;
+    if ($('#txtIdNo').val().trim() == '') {
+        showWarning("Please Enter Instrument Id Number", lang);
+        return false; 
+    }
+   
+
+    $.ajax({
+        url: '../Tracker/SaveExternalObs',
+        type: 'POST',
+        data: { requestId: $('#RequestCalibId').val(), InstrumentID: $('#hdnInstrumentId').val(), InstrumentIdNo: $('#txtIdNo').val() },    
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            //showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+function ExternalCalibrationRequest(lang) {
+    if ($('#Newreason').val().trim() == '') {
+        return false;
+    }
+    var data1;
+    data1 = {
+        requestId: $('#RequestCalibId').val(),
+        ReceivedBy: $('#ReceivedBy').val(),
+       // InstrumentCondition: $('#InstrumentCondition').val(),
+       // Feasiblity: $('#Feasiblity').val(),
+       // TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+        rejectReason: $('#Newreason').val(),
+        //standardReffered: $('#StandardReffered').val()
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '../Tracker/ExternalCalibrationReject',
+        data: data1,
+        dataType: 'json',
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
     });
 }
 function ValidateObservation()

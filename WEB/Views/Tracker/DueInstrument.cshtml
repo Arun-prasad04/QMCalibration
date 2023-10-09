@@ -1,0 +1,170 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="card-title trn">Due Instrument List</h3>
+                        </div>
+                        <div class="col-md-6 text-right">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">                    
+                    <table id="example2" class="table table-bordered table-striped" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th class="trn">Equipment Name</th>
+                               @* <th class="trn">Equipment Type</th>*@
+                                <th class="trn">Instrument Id Number</th>
+                                <th class="trn">SubSection Code</th>
+                                <th class="trn">Type Of Scope</th>
+                                <th class="trn">Due Date</th>
+                                <th style="text-align:center;">
+                                    <span class="trn">SelectAll Request</span>
+                                    <br>
+                                    <input type="checkbox" id="selectAll" name="selectAll" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td id="InstrumentName">@item.InstrumentName</td>
+                                    <td id="SlNo">@item.IdNo</td>
+                                    <td>@item.SubSectionCode</td>
+                                    <td>@item.TypeofScope</td>                                    
+                                    <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                    <td id="ChkInput" style="text-align:center;">
+                                        <input id="ChkInput" name="ChkInput" class="class1" type="checkbox" value="@item.InstrumentId" />
+                                        <input id='deptId' name='deptId' type='hidden' value="@item.DeptId" />
+                                        <input id='equipType' name='equipType' type='hidden' value="@item.EquipmentType" />
+                                        <input id='subname' name='subname' type='hidden' value="@item.SectionName" />
+                                        <input id='loc' name='loc' type='hidden' value="@item.Location" />
+                                        <input id='troom' name='troom' type='hidden' value="@item.ToolRoom" />
+                                        <input id='InstrumentCreatedBy' name='InstrumentCreatedBy' type='hidden' value="@item.InstrumentCreatedBy" />
+                                    </td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="form-group" style="text-align:right;">
+                    <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
+                           onclick="DueInstrumentList();">
+                    <a href='@Url.Action("DueInstrument","Tracker")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                </div>
+
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+         
+        var oTable = $('#example2').dataTable({
+            stateSave: true
+        });
+
+        var allPages = oTable.fnGetNodes();
+
+        $('body').on('click', '#selectAll', function () {
+            if ($(this).hasClass('allChecked')) {
+                $('input[type="checkbox"]', allPages).prop('checked', false);
+            } else {
+                $('input[type="checkbox"]', allPages).prop('checked', true);
+            }
+            $(this).toggleClass('allChecked');
+        })
+
+        //$('#selectAll').click(function (e) {
+
+        //    var table = $(e.target).closest('table');
+        //    if (this.checked) {
+
+        //        $('td input:checkbox', table).prop('checked', true);
+        //        // showWarning("Please Select the ReplacementLabId", lang);
+        //    }
+        //    else {
+        //        $('td input:checkbox', table).prop('checked', false);
+        //    }
+
+        //});
+
+    });
+
+    function LoadDueInstrument()
+    {
+        $('#dvload').show();
+        // debugger;
+        $.ajax({
+            type: 'GET',
+            url: '../Tracker/GetAllDueInstrumentList',
+            //data: { reqType: selectedValue },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        
+                        var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
+                        var rows = "<tr>"
+                            + "<td type='label'>" + item.instrumentName + "</td>"
+                            //+ "<td>" + item.equipmentType + "</td>"
+                            + "<td>" + item.idNo + "</td>"
+                            + "<td>" + item.subSectionCode + "</td>"
+                            + "<td>" + item.typeofScope + "</td>"
+                            + "<td>" + dueDate + "</td>"
+                            + "<td style='text-align: center;'><input id='deptId' name='deptId' type='hidden' value=" + item.deptId + " /><input id='chkBox' name='chkBox' class='chkBox' type='checkbox' value=" + item.instrumentId + " /></td>"
+                            + "</tr>";
+
+                        $('#example2 tbody').append(rows);
+                        $('#dvload').hide();
+
+                    });
+                }
+                else {
+                    $('#dvload').hide();
+                }
+
+                //$('#example2').destroy();
+                $('#example2').dataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": true,
+                    "responsive": true,
+                    'columnDefs': [{
+                        'targets': [5], /* column index */
+                        'orderable': false, /* true or false */                       
+                    }]
+                });
+
+            },
+            error: function (emp) {
+                $('#dvload').hide();
+                alert('error');
+            }
+        });
+    }
+</script>

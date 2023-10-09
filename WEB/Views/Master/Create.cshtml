@@ -1,8 +1,7 @@
 @{
 	ViewData["Title"] = "Master Create";
 }
-<form name="frm" id="masterform" method="post" enctype="multipart/form-data"
-   action='@Url.Action("MasterInsert","Master")'>
+<form name="frm" id="masterform" method="post" enctype="multipart/form-data" action='@Url.Action("MasterInsert","Master")'>
 	<input type="hidden" name="Id" value="@Model.Id">
 	<!-- Main content -->
 	<section class="content">
@@ -55,7 +54,7 @@
 									<!-- text input -->
 									<div class="form-group">
 										<label class="required trn">Equipment Name (JP)</label>
-										<input type="text" id="EquipName" name="EquipNameJP" value="@Model.EquipNameJP" class="form-control"
+										<input type="text" id="EquipNameJP" name="EquipNameJP" value="@Model.EquipNameJP" class="form-control"
 											   placeholder="" alt="Please enter Equipment Name">
 									</div>
 								</div>
@@ -215,7 +214,8 @@
 									<div class="form-group">
 										<label for="CalibFreq" class="required trn">Calibration Frequency</label>
 										<select id="CalibFreqMaster" name="CalibFreqMaster" class="form-control">
-										
+											<option value="">--Select Calibration Frequency --</option>
+
 											@*@foreach (var freq in @Model.CalibrationFreq)
 											{
 												if (freq.Id == Model.CalibFreqId)
@@ -437,9 +437,14 @@
 	<!-- /.content -->
 </form>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-	setTimeout(function () {
+
+	$(function () {
+		$('#LocationId').select2();
+		$('#CalibFreqMaster').select2();
+
 		$('#reservationdate1').datetimepicker({
 			format: 'DD/MM/YYYY'
 		});
@@ -452,114 +457,223 @@
 		$('#reservationdate4').datetimepicker({
 			format: 'DD/MM/YYYY'
 		});
-		$(function () {
-			$('#masterform').validate({
-				rules: {
-					EquipName: {
-						required: true,
-					},
-					LocationId: {
-						required: true,
-					},
-					PONo: {
-						required: true,
-					},
-					CommissionedOn: {
-						required: true,
-					},
-					Make: {
-						required: true,
-					},
-					Cost: {
-						required: true,
-					},
-					CalibrationSourceId: {
-						required: true,
-					},
-					Supplier: {
-						required: true,
-					},
-					CalibFreqId: {
-						required: true,
-					},
-					LabId: {
-						required: true,
-					},
-					Name: {
-						required: true,
-					},
-					PhoneNo: {
-						required: true,
-					},
-					EmailId: {
-						required: true,
-					},
-					EquipmentMasterId: {
-						required: true,
-					},
+
+		$('#masterform').validate({		
+			rules: {
+				EquipName: {
+					required: true,
 				},
-				messages: {
-					EquipName: {
-						required: "Please enter Equipment Name",
-					},
-					LocationId: {
-						required: "Please enter the location",
-					},
-					PONo: {
-						required: "Please provide the P.O. Number",
-					},
-					CommissionedOn: {
-						required: "Please provide the date",
-					},
-					Make: {
-						required: "Please fill this field",
-					},
-					Cost: {
-						required: "Please provide the amount",
-					},
-					CalibrationSourceId: {
-						required: "Please provide the Calibration Source",
-					},
-					Supplier: {
-						required: "Please provide the supplier or agency",
-					},
-					CalibFreqId: {
-						required: "Please provide the Calibration Frequency",
-					},
-					LabId: {
-						required: "Please provide lab Id",
-					},
-					Name: {
-						required: "Please provide supplier name",
-					},
-					PhoneNo: {
-						required: "Please provide supplier phone number",
-					},
-					EmailId: {
-						required: "Please provide supplier Email address",
-					},
-					EquipmentMasterId: {
-						required: "Please provide the Equipment Master ID",
-					},
+				EquipNameJP: {
+					required: true,
 				},
-				errorElement: 'span',
-				errorPlacement: function (error, element) {
-					error.addClass('invalid-feedback');
-					element.closest('.form-group').append(error);
+				LocationId: {
+					required: true,
 				},
-				highlight: function (element, errorClass, validClass) {
-					$(element).addClass('is-invalid');
+				PONo: {
+					required: true,
 				},
-				unhighlight: function (element, errorClass, validClass) {
-					$(element).removeClass('is-invalid');
-				}
-			});
+				CommissionedOn: {
+					required: true,
+				},
+				Make: {
+					required: true,
+				},
+				Cost: {
+					required: true,
+				},
+				CalibrationSourceId: {
+					required: true,
+				},
+				Supplier: {
+					required: true,
+				},
+				CalibFreqId: {
+					required: true,
+				},
+				LabId: {
+					required: true,
+				},
+				Name: {
+					required: true,
+				},
+				PhoneNo: {
+					required: true,
+				},
+				EmailId: {
+					required: true,
+				},
+				EquipmentMasterId: {
+					required: true,
+				},
+			},
+			messages: {
+				EquipName: {
+					required: "Please enter Equipment Name",
+				},
+				EquipNameJP: {
+					required: "Please enter the EquipNameJP",
+				},
+				LocationId: {
+					required: "Please enter the location",
+				},
+				PONo: {
+					required: "Please provide the P.O. Number",
+				},
+				CommissionedOn: {
+					required: "Please provide the date",
+				},
+				Make: {
+					required: "Please fill this field",
+				},
+				Cost: {
+					required: "Please provide the amount",
+				},
+				CalibrationSourceId: {
+					required: "Please provide the Calibration Source",
+				},
+				Supplier: {
+					required: "Please provide the supplier or agency",
+				},
+				CalibFreqId: {
+					required: "Please provide the Calibration Frequency",
+				},
+				LabId: {
+					required: "Please provide lab Id",
+				},
+				Name: {
+					required: "Please provide supplier name",
+				},
+				PhoneNo: {
+					required: "Please provide supplier phone number",
+				},
+				EmailId: {
+					required: "Please provide supplier Email address",
+				},
+				EquipmentMasterId: {
+					required: "Please provide the Equipment Master ID",
+				},
+			},
+			errorElement: 'span',
+			errorPlacement: function (error, element) {
+				error.addClass('invalid-feedback');
+				element.closest('.form-group').append(error);
+			},
+			highlight: function (element, errorClass, validClass) {
+				$(element).addClass('is-invalid');
+			},
+			unhighlight: function (element, errorClass, validClass) {
+				$(element).removeClass('is-invalid');
+			}
 		});
-	}, 1000);
-</script>
 
+	});
+	//setTimeout(function () {
+		
+	//	$(function () {
+	//		$('#masterform').validate({
+	//			rules: {
+	//				EquipName: {
+	//					required: true,
+	//				},
+	//				LocationId: {
+	//					required: true,
+	//				},
+	//				PONo: {
+	//					required: true,
+	//				},
+	//				CommissionedOn: {
+	//					required: true,
+	//				},
+	//				Make: {
+	//					required: true,
+	//				},
+	//				Cost: {
+	//					required: true,
+	//				},
+	//				CalibrationSourceId: {
+	//					required: true,
+	//				},
+	//				Supplier: {
+	//					required: true,
+	//				},
+	//				CalibFreqId: {
+	//					required: true,
+	//				},
+	//				LabId: {
+	//					required: true,
+	//				},
+	//				Name: {
+	//					required: true,
+	//				},
+	//				PhoneNo: {
+	//					required: true,
+	//				},
+	//				EmailId: {
+	//					required: true,
+	//				},
+	//				EquipmentMasterId: {
+	//					required: true,
+	//				},
+	//			},
+	//			messages: {
+	//				EquipName: {
+	//					required: "Please enter Equipment Name",
+	//				},
+	//				LocationId: {
+	//					required: "Please enter the location",
+	//				},
+	//				PONo: {
+	//					required: "Please provide the P.O. Number",
+	//				},
+	//				CommissionedOn: {
+	//					required: "Please provide the date",
+	//				},
+	//				Make: {
+	//					required: "Please fill this field",
+	//				},
+	//				Cost: {
+	//					required: "Please provide the amount",
+	//				},
+	//				CalibrationSourceId: {
+	//					required: "Please provide the Calibration Source",
+	//				},
+	//				Supplier: {
+	//					required: "Please provide the supplier or agency",
+	//				},
+	//				CalibFreqId: {
+	//					required: "Please provide the Calibration Frequency",
+	//				},
+	//				LabId: {
+	//					required: "Please provide lab Id",
+	//				},
+	//				Name: {
+	//					required: "Please provide supplier name",
+	//				},
+	//				PhoneNo: {
+	//					required: "Please provide supplier phone number",
+	//				},
+	//				EmailId: {
+	//					required: "Please provide supplier Email address",
+	//				},
+	//				EquipmentMasterId: {
+	//					required: "Please provide the Equipment Master ID",
+	//				},
+	//			},
+	//			errorElement: 'span',
+	//			errorPlacement: function (error, element) {
+	//				error.addClass('invalid-feedback');
+	//				element.closest('.form-group').append(error);
+	//			},
+	//			highlight: function (element, errorClass, validClass) {
+	//				$(element).addClass('is-invalid');
+	//			},
+	//			unhighlight: function (element, errorClass, validClass) {
+	//				$(element).removeClass('is-invalid');
+	//			}
+	//		});
+	//	});
+	//}, 1000);
 
-<script>
 
 	function checkFileSize(element, maxSize, event) {
 		var val = $(element).val(); //get file value
@@ -577,8 +691,7 @@
 		output.innerHTML = result;
 
 	}
-</script>
-<script>
+
 	function loaddate() {
 		var date1 = document.getElementById("CalibDate").value;
 		var e = document.getElementById("CalibFreqId");
