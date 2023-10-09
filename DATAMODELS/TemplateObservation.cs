@@ -28,5 +28,7 @@ public class TemplateObservation{
         public virtual List<ObsTemplateMetalRules> MetalRulesModel { get;set;}
         public virtual User CalibrationCreatedModel{get;set;}
         public virtual User CalibrationReviewedModel{get;set;}
-       
+
+        public int? ExternalObsStatus { get; set; }
+
 }

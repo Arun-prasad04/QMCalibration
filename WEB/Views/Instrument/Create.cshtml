@@ -1,4 +1,4 @@
-@{
+﻿@{
 	ViewData["Title"] = "Instrument Create";
 }
 @using Microsoft.AspNetCore.Http
@@ -17,6 +17,7 @@
 						<div class="row">
 							<div class="col-md-6">
 								<h3 class="card-title trn">New Instrument</h3>
+								<input type="hidden" id="hdnLanguage" value="" />
 							</div>
 							<div class="col-md-6 text-right">
 								<a href='@Url.Action("Index","Instrument")'>
@@ -25,7 +26,7 @@
 							</div>
 						</div>
 					</div>
-
+					@*<fieldset>*@
 					<div class="card card-default">
 						<div class="card-header">
 							<h3 class="card-title trn">Instrument Details</h3>
@@ -133,7 +134,7 @@
 									{
 										<div class="form-group">
 											<label class="required trn">User Department</label>
-											<input type="text" id="UserDept1" name="UserDept" value='@Model.DepartmentName' class="form-control"
+											<input type="text" id="UserDept11" name="UserDept" value='@Model.DepartmentName' class="form-control"
 												   placeholder="" disabled>
 										</div>
 									}
@@ -145,10 +146,12 @@
 											@*<input type="text" id="UserDept1" name="UserDept"
 												   value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentName")' class="form-control"
 												   placeholder="" disabled>*@
-												   <select class="form-control" name="UserDept" id="UserDept1">
-												<option class="trn" selected="true" value="">--Select User Department--</option>
+												<select class="form-control" name="UserDept" id="UserDept1">
+												@*<option class="trn" selected="true" value="">--Select User Department--</option>
 												@foreach (var department in @Model.Departments)
 												{
+
+													<option value="@department.Id">@department.Name</option>
 													if (department.Id == Model.UserDept)
 													{
 														<option value="@department.Id" selected="selected">@department.Name</option>
@@ -157,7 +160,7 @@
 													{
 														<option value="@department.Id">@department.Name</option>
 													}
-												}
+												}*@
 											</select>
 										</div>
 									}
@@ -308,7 +311,7 @@
 										<label class="required trn">Scope</label>
 										<select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
 											<option value="" selected="true" class="trn">--Select Type Of Scope--</option>
-											@if (Model.TypeOfEquipment == "Internal Instrument")
+											@if (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")
 											{
 												<option value="Internal Instrument" selected="true" class="trn">Internal Instrument</option>
 											}
@@ -316,7 +319,7 @@
 											{
 												<option value="Internal Instrument" class="trn">Internal Instrument</option>
 											}
-											@if (Model.TypeOfEquipment == "External Instrument")
+											@if (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器")
 											{
 												<option value="External Instrument" selected="true" class="trn">External Instrument</option>
 											}
@@ -330,7 +333,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="required trn">Applicable for Tool Inventory</label>
-										<select id="ToolInventory" name="ToolInventory" class="form-control">
+										<select id="ToolInventory" name="ToolInventory" class="form-control" disabled>
 											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
 											@if (Model.ToolInventory == "Yes")
 											{
@@ -420,7 +423,7 @@
 												 src="https://cdn3.iconfinder.com/data/icons/document-icons-2/30/647702-excel-512.png">
 
 										}
-										<a href='~/Master/@img' target="_blank">@img</a>
+										<a href='~/Instrument/@img' target="_blank">@img</a>
 
 										<br />
 									}
@@ -446,10 +449,10 @@
 								<!-- /.card-header -->
 
 								<div class="card-body">
-									
+
 									<div class="row" >
-										@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-										{*@
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+										{
 											<div class="col-sm-3" >
 												<div class="form-group">
 													<label class="trn">Master Instrument Name</label>
@@ -457,22 +460,22 @@
 														<option>--Select Master--</option>
 														@foreach (var master in @Model.MasterData)
 														{
-														
+
 															<option value="@master.Id">@master.EquipName</option>
 														}
-													}
+														}
 													</select>
 												</div>
 											</div>
-										@*}*@
-										<div class="col-sm-1" style="top: 36px;">
-											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+
+											<div class="col-sm-1" style="top: 36px;">
+												@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 												{*@
-											<input type="button" class="btn-primary" value="Add"
-												   onclick="AddNewInstrumentMaster(language)">
+												<input type="button" class="btn-primary" value="Add"
+												onclick="AddNewInstrumentMaster(language)">
 												@*}*@
-										</div>
-												
+											</div>
+										}		
 										<div class="col-sm-2">
 											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 											{*@
@@ -528,13 +531,13 @@
 									</div>
 									
 									<div class="row">
-										<div class="col-sm-6">
+										@*<div class="col-sm-6">
 											<div class="form-group">
 												<label class="trn">Standard Reffered</label>
 												<input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
 													   class="form-control" placeholder="" @Model.IsDisabled>
 											</div>
-										</div>
+										</div>*@
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="trn">Calibration Date</label>
@@ -548,6 +551,27 @@
 												</div>
 											</div>
 										</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="exampleSelectRounded0" class="trn">Calibration Status</label>
+													<select id="CalibrationStatus" name="CalibrationStatus" class="form-control" @Model.IsDisabled>
+													@foreach (var calibrationstatus in @Model.CalibrationStatusList)
+													{
+														if (calibrationstatus.Id == Model.CalibrationStatus)
+														{
+																		<option value="@calibrationstatus.Id" selected="selected">
+																@calibrationstatus.AttrValue
+																		</option>
+														}
+														else
+														{
+																		<option value="@calibrationstatus.Id">@calibrationstatus.AttrValue</option>
+														}
+													}
+
+													</select>
+												</div>
+											</div>
 									</div>
 									<div class="row">
 										<div class="col-sm-6">
@@ -581,14 +605,14 @@
 
 
 									<div class="row">
-										<div class="col-sm-6">
+										@*<div class="col-sm-6">
 											<div class="form-group">
 												<label class="trn">Calibration Source</label>
 												<input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
 													   class="form-control" placeholder="" alt="Please provide the Calibration Source" @Model.IsDisabled>
 											</div>
-										</div>
-										<div class="col-sm-6">
+										</div>*@
+										@*<div class="col-sm-6">
 											<div class="form-group">
 												<label for="exampleSelectRounded0" class="trn">Calibration Status</label>
 												<select id="CalibrationStatus" name="CalibrationStatus" class="form-control" @Model.IsDisabled>
@@ -608,12 +632,12 @@
 
 												</select>
 											</div>
-										</div>
+										</div>*@
 									</div>
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
 									{
 										<div class="row">
-											<div class="col-sm-6">
+											@*<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Is NABL</label>
 													
@@ -655,8 +679,6 @@
 													</select>
 												</div>
 											</div>
-										</div>
-										<div class="row">
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Observation Type</label>
@@ -666,6 +688,29 @@
 
 												</div>
 											</div>
+										</div>
+										<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label class="required trn">Certification Template</label>
+															<select id="CertificationTemplate" name="CertificationTemplate" class="form-control"
+													@Model.IsDisabled>
+														@*@foreach (var certificate in @Model.CertificationTemplateList)
+														{
+															if (certificate.Id == Model.CertificationTemplate)
+															{
+																<option value="@certificate.Id" selected="selected">
+																	@certificate.AttrValue
+																</option>
+															}
+															else
+															{
+																<option value="@certificate.Id">@certificate.AttrValue</option>
+															}
+														}*@
+															</select>
+														</div>
+													</div>
 											@*<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">MU Template</label>
@@ -691,27 +736,7 @@
 											</div>*@
 										</div>
 										<div class="row">
-											<div class="col-sm-6">
-												<div class="form-group">
-													<label class="required trn">Certification Template</label>
-													<select id="CertificationTemplate" name="CertificationTemplate" class="form-control"
-													@Model.IsDisabled>
-														@*@foreach (var certificate in @Model.CertificationTemplateList)
-														{
-															if (certificate.Id == Model.CertificationTemplate)
-															{
-																<option value="@certificate.Id" selected="selected">
-																	@certificate.AttrValue
-																</option>
-															}
-															else
-															{
-																<option value="@certificate.Id">@certificate.AttrValue</option>
-															}
-														}*@
-													</select>
-												</div>
-											</div>
+											
 											<div class="col-sm-6">
 												<div class="form-group">
 												</div>
@@ -722,12 +747,14 @@
 
 							</div>
 						}
+						@if(ViewBag.ShowDetails) {
 						<div class="card-footer">
 							<button type="submit" class="btn btn-primary trn">Submit</button>
 								<a href='@Url.Action("Index","Instrument")'>
 									<input type="button" class="btn btn-default trn" value="Cancel">
 								</a>
 						</div>
+						}
 						<!-- /.card-body -->
 					</div>
 					<!-- /.card -->
@@ -737,9 +764,60 @@
 			<!-- /.row -->
 	</section>
 	<!-- /.content -->
+	@*</fieldset>*@
 </form>
-
+@*<script src="~/js/3.3.1Version/jquery.min.js"></script>*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>	
+	
+		@*var attrSubmitButton = @Json.Serialize(@ViewBag.ShowDetails);*@
+		@*if (attrSubmitButton == false) {
+   			$('fieldset').attr('disabled', 'disabled');
+		}*@
+
+	$(function () {
+
+		$('#UserDept').select2();
+		$('#UserDept1').select2();
+			$('#MasterInstrument').select2();
+
+		//LoadDepartmentUserWise()
+
+		$("#TypeOfEquipment").change(function () {
+			var eq = $('#TypeOfEquipment').val();
+			console.log(eq);
+				if (eq == "External Instrument" || eq == "外部機器") {
+				$('#ToolInventory').prop("disabled", true);
+			} else {
+				$("#ToolInventory").prop("disabled", false);
+			}
+		});
+
+		
+	});
+	
+	@*function LoadDepartmentUserWise(){
+		var TmpDept = @Json.Serialize(@ViewBag.UserBaseDepartment);
+		console.log('TmpDept');
+		console.log(TmpDept);
+		var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
+		console.log(language);
+		$.each(TmpDept, function (index, item) {
+			optionhtmlUserDept = '';
+
+			if (lang == 'jp') {
+
+				optionhtmlUserDept = '<option value="' + item.id + '">' + item.nameJP + '</option>';
+			}
+			else {
+				optionhtmlUserDept = '<option value="' + item.id + '">' + item.name + '</option>';
+
+			}
+
+			$("#UserDept1").append(optionhtmlUserDept);
+		});
+	}*@
+
 	setTimeout(function () {
 
 		$('#reservationdate').datetimepicker({
@@ -867,9 +945,9 @@
 				}
 			});
 		});
-	}, 1000);
-</script>
-<script>
+	}, 1000);	
+@*</script>
+<script>*@
 
 	function getNABLValue(option) {
 		document.getElementById("IsNABL").value = option.value;
@@ -892,8 +970,8 @@
 		output.innerHTML = result;
 
 	}
-</script>
-<script>
+@*</script>
+<script>*@
 	function loaddate() {
 		debugger;
 		var date1 = document.getElementById("CalibDate").value;

@@ -22,6 +22,5 @@ public interface IInstrumentService
 	ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int userId);
 	ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument();
 	ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId);
-
-
+	
 }

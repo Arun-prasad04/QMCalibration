@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Http;
 using System.Data.SqlTypes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using Nancy.Json;
 using System.Text;
 
 namespace WEB.Services;
@@ -67,7 +66,7 @@ public class InstrumentService : IInstrumentService
 						StandardReffered = dr["StandardReffered"].ToString(),
 						Remarks = dr["Remarks"].ToString(),
 						Status = Convert.ToInt16(dr["Status"]),
-                        RequestId = Convert.ToInt16(dr["RequestId"]),
+                        RequestId = Convert.ToInt32(dr["RequestId"]),
                         //FileList = 
                         //CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
                         //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
@@ -76,6 +75,7 @@ public class InstrumentService : IInstrumentService
 						RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
 						UserRoleId = userRoleId,
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 					};
 					instrumentList.Add(inst);
 
@@ -335,13 +335,13 @@ public class InstrumentService : IInstrumentService
 			_unitOfWork.Repository<Request>().Insert(newRequest);
 			_unitOfWork.SaveChanges();
 
-      RequestStatus ReqestStatus = new RequestStatus();
-      ReqestStatus.RequestId = newRequest.Id;
-      ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
-      ReqestStatus.CreatedOn = DateTime.Now;
-      ReqestStatus.CreatedBy = instrument.CreatedBy;
-      _unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
-      _unitOfWork.SaveChanges();
+			RequestStatus ReqestStatus = new RequestStatus();
+			ReqestStatus.RequestId = newRequest.Id;
+			ReqestStatus.StatusId = (Int32)EnumRequestStatus.Requested;
+			ReqestStatus.CreatedOn = DateTime.Now;
+			ReqestStatus.CreatedBy = instrument.CreatedBy;
+			_unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
+			_unitOfWork.SaveChanges();
 
 			InstrumentQuarantine instrumentQuarantine = new InstrumentQuarantine()
 			{
@@ -375,6 +375,8 @@ public class InstrumentService : IInstrumentService
 					_unitOfWork.SaveChanges();
 				}
 			}
+			string objToolInventory = instrument.ToolInventory;
+
 			_unitOfWork.Commit();
 			CMTDL _cmtdl = new CMTDL(_configuration);
 			string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
@@ -382,11 +384,11 @@ public class InstrumentService : IInstrumentService
 			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(UserId)).SingleOrDefault());
 			//List<UserViewModel> fmUserById = _mapper.Map<List<UserViewModel>>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2 && Q.Level != "L4").ToList());
 			List<UserViewModel> fmUserById = _cmtdl.GetLadAdminUsers();
-            List<string> emailList = new List<string>();
-			foreach (var item in fmUserById)
+			List<string> emailList = new List<string>();
+			string mailSubject = "New Instrument Calibration Request /  新規計量器校正依頼の件 - " + newRequest.ReqestNo + "";
+			string RequestType = string.Empty;
+			if (objToolInventory != "Yes")
 			{
-				emailList.Add(item.Email.Trim());
-				string RequestType = string.Empty;
 				if (newRequest.TypeOfReqest == 1)
 				{
 					RequestType = "New";
@@ -399,39 +401,34 @@ public class InstrumentService : IInstrumentService
 				{
 					RequestType = "Recalibration";
 				}
-				string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Created by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-				mailbody = mailbody.Replace("$NAME$", item.FirstName + " " + item.LastName).Replace("$USERNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQNO$", newRequest.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentdata.InstrumentName).Replace("$INSTRUMENTID$", instrumentdata.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(newRequest.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
-
-		MailMessage message = new MailMessage();
-        SmtpClient smtp = new SmtpClient();
-        SmtpSettings smtpvalue = new SmtpSettings();
-        message.From = new MailAddress(smtpvalue.FromAddress);
-        message.To.Add(new MailAddress(item.Email.Trim()));
-        //message.To.Add("gurushev.p@daimlertruck.com");
-        //message.Bcc.Add("mohammedashik.s@intelizign.com");  
-
-        //message.Subject= "新規計量器校正依頼の件 -" + newRequest.ReqestNo + "";
-
-		message.Subject = "New Instrument Calibration Request /  新規計量器校正依頼の件 - " + newRequest.ReqestNo + "";
-        message.IsBodyHtml = true; //to make message body as html  
-        message.Body = mailbody;
-        smtp.Port = int.Parse(smtpvalue.Port);
-        smtp.Host = smtpvalue.Server; //for gmail host  
-        smtp.EnableSsl = false;
-        smtp.UseDefaultCredentials = false;
-        smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
-        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-        //smtp.Send(message);
+				foreach (var item in fmUserById)
+				{
+					emailList.Add(item.Email.Trim());
 
 
-      }
-      return new ResponseViewModel<InstrumentViewModel>
-      {
-        ResponseCode = 200,
-        ResponseMessage = "Success",
-        ResponseData = null,
-        ResponseDataList = null
-      };
+					string mailbodyLab = "\r\n\r\n<!DOCTYPE html>  \r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n<head>     \r\n\t<meta charset=\"utf-8\">  \r\n\t<meta name=\"viewport\" content=\"width=device-width\">     \r\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">     \r\n\t<meta name=\"x-apple-disable-message-reformatting\">   \r\n\t<title></title> <!--[if mso]><style>*{font-family:sans-serif !important}</style><![endif]-->    \r\n\t<style>         \r\n\t\thtml, body {              \r\n\t\t\tmargin: 0 auto !important;             \r\n\t\t\tpadding: 0 !important;              \r\n\t\t\theight: 100% !important;              \r\n\t\t\twidth: 100% !important          }          \r\n\t\t\tp {              font-size: 11px          }     \r\n\t\t\t* {              -ms-text-size-adjust: 100%;              -webkit-text-size-adjust: 100%          }\r\n\t\t\tdiv[style*=\"margin: 16px 0\"] {              margin: 0 !important          }        \r\n\t\t\ttable, td {              mso-table-lspace: 0pt !important;              mso-table-rspace: 0pt !important          }  \r\n\t\t\ttable {              border-spacing: 0 !important;              border-collapse: collapse !important;              table-layout: fixed !important;              margin: 0 auto !important          }     \r\n\t\t\ttable table table {                  table-layout: auto              }            a {              text-decoration: none          } \r\n\t\t\timg {              -ms-interpolation-mode: bicubic          }            *[x-apple-data-detectors], .unstyle-auto-detected-links *, .aBn {              border-bottom: 0 !important;              cursor: default !important;              color: inherit !important;              text-decoration: none !important;              font-size: inherit !important;              font-family: inherit !important;              font-weight: inherit !important;              line-height: inherit !important          }            .a6S {              display: none !important;              opacity: 0.01 !important          }         \r\n\t\t\timg.g-img + div {              display: none !important          }           \r\n\t\t\t@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {         \r\n\t\t\t\t.email-container {                  min-width: 320px !important              }          }  \r\n\t\t\t\t@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {             \r\n\t\t\t\t\t.email-container {                  min-width: 375px !important              }          }       \r\n\t\t\t\t\t@media only screen and (min-device-width: 414px) {              \r\n\t\t\t\t\t\t.email-container {                  min-width: 414px !important              }          }      \r\n\t\t\t\t\t\t</style>    \r\n\t\t\t\t\t\t<style>        \r\n\t\t\t\t\t\t\t.button-td, .button-a {              transition: all 100ms ease-in          }     \r\n\t\t\t\t\t\t\t.button-td-primary:hover, \r\n\t\t\t\t\t\t\t.button-a-primary:hover {              background: #555 !important;              border-color: #555 !important          }   \r\n\t\t\t\t\t\t\t@media screen and (max-width: 600px) {             \r\n\t\t\t\t\t\t\t\t.email-container {                  width: 100% !important;                  margin: auto !important              }           \r\n\t\t\t\t\t\t\t\t.fluid {                  max-width: 100% !important;                  height: auto !important;                  margin-left: auto !important;                  margin-right: auto !important              }              \r\n\t\t\t\t\t\t\t\t.stack-column, .stack-column-center {                  display: block !important;                  width: 100% !important;                  max-width: 100% !important;                  direction: ltr !important              }                .stack-column-center {                  text-align: center !important              }                .center-on-narrow {                  text-align: center !important;                  display: block !important;                  margin-left: auto !important;                  margin-right: auto !important;                  float: none !important              }                table.center-on-narrow {                  display: inline-block !important              }                .email-container p {                  font-size: 20px !important              }          }      \r\n\t\t</style><!--[if gte mso 9]>\r\n\r\n\t\t<xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]--> \r\n\t\t</head>  \r\n\t\t<body width=\"100%\" style=\"margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;\">      \r\n\t\t\t<center style=\"width: 100%; background-color: #f1f1f1;\">          <!--[if mso | IE]><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f1f1f1;\"><tr><td> <![endif]-->          <span style=\"font-size: 18px\">英語版は日本語に続きます。</span>     \r\n<table align=\"center\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto;\" class=\"email-container\">\r\n\t\t\t\t\t\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">Dear lab Team,\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">New instrument calibration request has been created by <span>\r\n<b>$USERNAME$</b></span></h1></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request no:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request type:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>New</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument name:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested sub section:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$SUBSECTION$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested by:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">User</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n \r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n\r\n\r\n<br />  ---\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">計量管理部門の皆様\r\n\r\n</h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">新規計量器の校正依頼がありました。<span>\r\n</span></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">依頼№:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">種類　:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>新規</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">計量器名:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">要求されたサブセクション:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$SUBSECTIONJP$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">に要求された:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">使用部門:</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n \r\n</table>\r\n</td></tr>\r\n</table>\r\n</table>  \r\n <!--[if mso | IE]></td></tr></table> <![endif]-->      </center>      <br /> \r\n\t\t\r\n\t\t\r\n\t\t</body>  </html>";
+					mailbodyLab = mailbodyLab.Replace("$NAME$", item.FirstName + " " + item.LastName).Replace("$USERNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQNO$", newRequest.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentdata.InstrumentName).Replace("$INSTRUMENTID$", instrumentdata.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(newRequest.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+
+					_emailService.EmailSendingFunction(item.Email.Trim(), mailbodyLab, mailSubject);
+
+
+				}
+				//Mail For Instrument Created User-Start  
+
+				string mailbodyUser = "\r\n\r\n<!DOCTYPE html>  \r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n<head>     \r\n\t<meta charset=\"utf-8\">  \r\n\t<meta name=\"viewport\" content=\"width=device-width\">     \r\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">     \r\n\t<meta name=\"x-apple-disable-message-reformatting\">   \r\n\t<title></title> <!--[if mso]><style>*{font-family:sans-serif !important}</style><![endif]-->    \r\n\t<style>         \r\n\t\thtml, body {              \r\n\t\t\tmargin: 0 auto !important;             \r\n\t\t\tpadding: 0 !important;              \r\n\t\t\theight: 100% !important;              \r\n\t\t\twidth: 100% !important          }          \r\n\t\t\tp {              font-size: 11px          }     \r\n\t\t\t* {              -ms-text-size-adjust: 100%;              -webkit-text-size-adjust: 100%          }\r\n\t\t\tdiv[style*=\"margin: 16px 0\"] {              margin: 0 !important          }        \r\n\t\t\ttable, td {              mso-table-lspace: 0pt !important;              mso-table-rspace: 0pt !important          }  \r\n\t\t\ttable {              border-spacing: 0 !important;              border-collapse: collapse !important;              table-layout: fixed !important;              margin: 0 auto !important          }     \r\n\t\t\ttable table table {                  table-layout: auto              }            a {              text-decoration: none          } \r\n\t\t\timg {              -ms-interpolation-mode: bicubic          }            *[x-apple-data-detectors], .unstyle-auto-detected-links *, .aBn {              border-bottom: 0 !important;              cursor: default !important;              color: inherit !important;              text-decoration: none !important;              font-size: inherit !important;              font-family: inherit !important;              font-weight: inherit !important;              line-height: inherit !important          }            .a6S {              display: none !important;              opacity: 0.01 !important          }         \r\n\t\t\timg.g-img + div {              display: none !important          }           \r\n\t\t\t@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {         \r\n\t\t\t\t.email-container {                  min-width: 320px !important              }          }  \r\n\t\t\t\t@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {             \r\n\t\t\t\t\t.email-container {                  min-width: 375px !important              }          }       \r\n\t\t\t\t\t@media only screen and (min-device-width: 414px) {              \r\n\t\t\t\t\t\t.email-container {                  min-width: 414px !important              }          }      \r\n\t\t\t\t\t\t</style>    \r\n\t\t\t\t\t\t<style>        \r\n\t\t\t\t\t\t\t.button-td, .button-a {              transition: all 100ms ease-in          }     \r\n\t\t\t\t\t\t\t.button-td-primary:hover, \r\n\t\t\t\t\t\t\t.button-a-primary:hover {              background: #555 !important;              border-color: #555 !important          }   \r\n\t\t\t\t\t\t\t@media screen and (max-width: 600px) {             \r\n\t\t\t\t\t\t\t\t.email-container {                  width: 100% !important;                  margin: auto !important              }           \r\n\t\t\t\t\t\t\t\t.fluid {                  max-width: 100% !important;                  height: auto !important;                  margin-left: auto !important;                  margin-right: auto !important              }              \r\n\t\t\t\t\t\t\t\t.stack-column, .stack-column-center {                  display: block !important;                  width: 100% !important;                  max-width: 100% !important;                  direction: ltr !important              }                .stack-column-center {                  text-align: center !important              }                .center-on-narrow {                  text-align: center !important;                  display: block !important;                  margin-left: auto !important;                  margin-right: auto !important;                  float: none !important              }                table.center-on-narrow {                  display: inline-block !important              }                .email-container p {                  font-size: 20px !important              }          }      \r\n\t\t</style><!--[if gte mso 9]>\r\n\r\n\t\t<xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]--> \r\n\t\t</head>  \r\n\t\t<body width=\"100%\" style=\"margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;\">      \r\n\t\t\t<center style=\"width: 100%; background-color: #f1f1f1;\">          <!--[if mso | IE]><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f1f1f1;\"><tr><td> <![endif]-->          <span style=\"font-size: 18px\">英語版は日本語に続きます。</span>     \r\n<table align=\"center\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto;\" class=\"email-container\">\r\n\t\t\t\t\t\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">Dear User,\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">New instrument calibration request has been created. <span>\r\n</span></h1></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request no:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request type:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>New</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument name:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested sub section:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$SUBSECTION$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested by:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">Regards</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\"></p></td></table></td></tr>\r\n\r\n \r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n\r\n\r\n<br />  \r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">計量管理部門の皆様\r\n\r\n</h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">新規測定器登録を作成しました。<span>\r\n</span></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">依頼№:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">種類　:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>新規</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">計量器名:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">要求されたサブセクション:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$SUBSECTIONJP$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">に要求された:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">計量管理部門</p></td></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n \r\n</table>\r\n</td></tr>\r\n</table>\r\n</table>  \r\n     </center>      <br /> \r\n\t\t\r\n\t\t\r\n\t\t</body>  </html>";
+				mailbodyUser = mailbodyUser.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQNO$", newRequest.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentdata.InstrumentName).Replace("$INSTRUMENTID$", instrumentdata.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(newRequest.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+				_emailService.EmailSendingFunction(labUserById.Email.Trim(), mailbodyUser, mailSubject);
+				//Mail For Instrument Created User-End  
+
+			}
+		
+		  return new ResponseViewModel<InstrumentViewModel>
+		  {
+			ResponseCode = 200,
+			ResponseMessage = "Success",
+			ResponseData = null,
+			ResponseDataList = null
+		  };
     }
     catch (Exception e)
     {
@@ -447,127 +444,128 @@ public class InstrumentService : IInstrumentService
       };
     }
   }
-  public ResponseViewModel<InstrumentViewModel> UpdateInstrument(InstrumentViewModel instrument)
-  {
 
-    try
-    {
-      _unitOfWork.BeginTransaction();
-      Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrument.Id).SingleOrDefault();
-      if (instrument.InstrumentName != null)
-      {
-        instrumentById.InstrumentName = instrument.InstrumentName;
-      }
-      if (instrument.SlNo != null)
-      {
-        instrumentById.SlNo = instrument.SlNo;
-      }
-      if (instrument.IdNo != null)
-      {
-        instrumentById.IdNo = instrument.IdNo;
-      }
-      if (instrument.Range != null)
-      {
-        instrumentById.Range = instrument.Range;
-      }
-      if (instrument.InstrumentStatus != null)
-      {
-        instrumentById.InstrumentStatus = instrument.InstrumentStatus;
-      }
-      if (instrument.LC != null)
-      {
-        instrumentById.LC = instrument.LC;
-      }
-      if (instrument.CalibFreq != null)
-      {
-        instrumentById.CalibFreq = instrument.CalibFreq;
-      }
-      if (instrument.UserRoleId == 2)
-      {
-        if (instrument.UserDept != null)
-        {
-          instrumentById.UserDept = instrument.UserDept;
-        }
-      }
-      if (instrument.Make != null)
-      {
-        instrumentById.Make = instrument.Make;
-      }
-      if (instrument.CalibSource != null)
-      {
-        instrumentById.CalibSource = instrument.CalibSource;
-      }
-      if (instrument.StandardReffered != null)
-      {
-        instrumentById.StandardReffered = instrument.StandardReffered;
-      }
-      if (instrument.Remarks != null)
-      {
-        instrumentById.Remarks = instrument.Remarks;
-      }
-      if (instrument.DueDate != null)
-      {
-        instrumentById.DueDate = instrument.DueDate;
-      }
-      if (instrument.CalibDate != null)
-      {
-        instrumentById.CalibDate = instrument.CalibDate;
-      }
-      if (instrument.DateOfReceipt != null)
-      {
-        instrumentById.DateOfReceipt = instrument.DateOfReceipt;
-      }
-      if (instrument.ObservationTemplate != null && instrument.ObservationTemplate > 0)
-      {
-        instrumentById.ObservationTemplate = instrument.ObservationTemplate;
-      }
-      if (instrument.ObservationType != null && instrument.ObservationType > 0)
-      {
-        instrumentById.ObservationType = instrument.ObservationType;
-      }
-      if (instrument.MUTemplate != null && instrument.MUTemplate > 0)
-      {
-        instrumentById.MUTemplate = instrument.MUTemplate;
-      }
+	public ResponseViewModel<InstrumentViewModel> UpdateInstrument(InstrumentViewModel instrument)
+	{
 
-      if (instrument.MasterInstrument1 != null && instrument.MasterInstrument1 > 0)
-      {
-        instrumentById.MasterInstrument1 = instrument.MasterInstrument1;
-      }
-      else
-      {
-        instrumentById.MasterInstrument1 = 0;
-      }
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrument.Id).SingleOrDefault();
+			if (instrument.InstrumentName != null)
+			{
+				instrumentById.InstrumentName = instrument.InstrumentName;
+			}
+			if (instrument.SlNo != null)
+			{
+				instrumentById.SlNo = instrument.SlNo;
+			}
+			if (instrument.IdNo != null)
+			{
+				instrumentById.IdNo = instrument.IdNo;
+			}
+			if (instrument.Range != null)
+			{
+				instrumentById.Range = instrument.Range;
+			}
+			if (instrument.InstrumentStatus != null)
+			{
+				instrumentById.InstrumentStatus = instrument.InstrumentStatus;
+			}
+			if (instrument.LC != null)
+			{
+				instrumentById.LC = instrument.LC;
+			}
+			if (instrument.CalibFreq != null)
+			{
+				instrumentById.CalibFreq = instrument.CalibFreq;
+			}
+			if (instrument.UserRoleId == 2)
+			{
+				if (instrument.UserDept != null)
+				{
+					instrumentById.UserDept = instrument.UserDept;
+				}
+			}
+			if (instrument.Make != null)
+			{
+				instrumentById.Make = instrument.Make;
+			}
+			if (instrument.CalibSource != null)
+			{
+				instrumentById.CalibSource = instrument.CalibSource;
+			}
+			if (instrument.StandardReffered != null)
+			{
+				instrumentById.StandardReffered = instrument.StandardReffered;
+			}
+			if (instrument.Remarks != null)
+			{
+				instrumentById.Remarks = instrument.Remarks;
+			}
+			if (instrument.DueDate != null && instrument.DueDate != DateTime.MinValue)
+			{
+				instrumentById.DueDate = instrument.DueDate;
+			}
+			if (instrument.CalibDate != null)
+			{
+				instrumentById.CalibDate = instrument.CalibDate;
+			}
+			if (instrument.DateOfReceipt != null)
+			{
+				instrumentById.DateOfReceipt = instrument.DateOfReceipt;
+			}
+			if (instrument.ObservationTemplate != null && instrument.ObservationTemplate > 0)
+			{
+				instrumentById.ObservationTemplate = instrument.ObservationTemplate;
+			}
+			if (instrument.ObservationType != null && instrument.ObservationType > 0)
+			{
+				instrumentById.ObservationType = instrument.ObservationType;
+			}
+			if (instrument.MUTemplate != null && instrument.MUTemplate > 0)
+			{
+				instrumentById.MUTemplate = instrument.MUTemplate;
+			}
 
-      if (instrument.MasterInstrument2 != null && instrument.MasterInstrument2 > 0)
-      {
-        instrumentById.MasterInstrument2 = instrument.MasterInstrument2;
-      }
-      else
-      {
-        instrumentById.MasterInstrument2 = 0;
-      }
+			if (instrument.MasterInstrument1 != null && instrument.MasterInstrument1 > 0)
+			{
+				instrumentById.MasterInstrument1 = instrument.MasterInstrument1;
+			}
+			else
+			{
+				instrumentById.MasterInstrument1 = 0;
+			}
 
-      if (instrument.MasterInstrument3 != null && instrument.MasterInstrument3 > 0)
-      {
-        instrumentById.MasterInstrument3 = instrument.MasterInstrument3;
-      }
-      else
-      {
-        instrumentById.MasterInstrument3 = 0;
-      }
+			if (instrument.MasterInstrument2 != null && instrument.MasterInstrument2 > 0)
+			{
+				instrumentById.MasterInstrument2 = instrument.MasterInstrument2;
+			}
+			else
+			{
+				instrumentById.MasterInstrument2 = 0;
+			}
 
-      if (instrument.MasterInstrument4 != null && instrument.MasterInstrument4 > 0)
-      {
-        instrumentById.MasterInstrument4 = instrument.MasterInstrument4;
-      }
-      else
-      {
-        instrumentById.MasterInstrument4 = 0;
-      }
+			if (instrument.MasterInstrument3 != null && instrument.MasterInstrument3 > 0)
+			{
+				instrumentById.MasterInstrument3 = instrument.MasterInstrument3;
+			}
+			else
+			{
+				instrumentById.MasterInstrument3 = 0;
+			}
 
-      instrumentById.IsNABL = instrument.IsNABL;
-            //Newly Added 
+			if (instrument.MasterInstrument4 != null && instrument.MasterInstrument4 > 0)
+			{
+				instrumentById.MasterInstrument4 = instrument.MasterInstrument4;
+			}
+			else
+			{
+				instrumentById.MasterInstrument4 = 0;
+			}
+
+			instrumentById.IsNABL = instrument.IsNABL;
+			//Newly Added 
 			if (instrument.CertificationTemplate != null && instrument.CertificationTemplate > 0)
 			{
 				instrumentById.CertificationTemplate = instrument.CertificationTemplate;
@@ -580,42 +578,50 @@ public class InstrumentService : IInstrumentService
 			{
 				instrumentById.Rule_Confirmity = instrument.Rule_Confirmity;
 			}
-			if (instrument.Drawing_Attached != null)
+			if (instrument.EquipmentStation != null)
 			{
-				instrumentById.Drawing_Attached = instrument.Drawing_Attached;
+				instrumentById.EquipmentStation = instrument.EquipmentStation;
 			}
 			if (instrument.Instrument_Type != null && instrument.Instrument_Type > 0)
 			{
 				instrumentById.Instrument_Type = instrument.Instrument_Type;
 			}
-			
+			if (instrument.TypeOfEquipment != null)
+			{
+				instrumentById.TypeOfEquipment = instrument.TypeOfEquipment;
+			}
+			if (instrument.ToolInventory != null)
+			{
+				instrumentById.ToolInventory = instrument.ToolInventory;
+			}
+
 
 			_unitOfWork.Repository<Instrument>().Update(instrumentById);
-      _unitOfWork.SaveChanges();
-      _unitOfWork.Commit();
-      return new ResponseViewModel<InstrumentViewModel>
-      {
-        ResponseCode = 200,
-        ResponseMessage = "Success",
-        ResponseData = null,
-        ResponseDataList = null
-      };
-    }
-    catch (Exception e)
-    {
-      return new ResponseViewModel<InstrumentViewModel>
-      {
-        ResponseCode = 500,
-        ResponseMessage = "Failure",
-        ErrorMessage = e.Message,
-        ResponseData = null,
-        ResponseDataList = null,
-        ResponseService = "Instrument",
-        ResponseServiceMethod = "UpdateInstrument"
-      };
-    }
-  }
-  public ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId)
+			_unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Instrument",
+				ResponseServiceMethod = "UpdateInstrument"
+			};
+		}
+	}
+	public ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId)
   {
     try
     {
@@ -647,48 +653,52 @@ public class InstrumentService : IInstrumentService
       };
     }
   }
-  public ResponseViewModel<InstrumentViewModel> CreateNewInstrument()
-  {
-    try
-    {
-      var DepartmentData = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+
+	public ResponseViewModel<InstrumentViewModel> CreateNewInstrument(int userId, int userRoleId)
+	{
+		try
+		{
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			//var DepartmentData = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			var DepartmentData = _cmtdl.GetUserDepartment(userId, userRoleId);
 
 
-      InstrumentViewModel instrumentEmptyViewModel = new InstrumentViewModel();
-      List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-      List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
-      instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
-      instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
-      instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
-      instrumentEmptyViewModel.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
-      instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
-      instrumentEmptyViewModel.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
-      instrumentEmptyViewModel.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
-      instrumentEmptyViewModel.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
-      instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
-      instrumentEmptyViewModel.Departments = DepartmentData;
-      return new ResponseViewModel<InstrumentViewModel>
-      {
-        ResponseCode = 200,
-        ResponseMessage = "Success",
-        ResponseData = instrumentEmptyViewModel,
-        ResponseDataList = null
-      };
-    }
-    catch (Exception e)
-    {
-      return new ResponseViewModel<InstrumentViewModel>
-      {
-        ResponseCode = 500,
-        ResponseMessage = "Failure",
-        ErrorMessage = e.Message,
-        ResponseData = null,
-        ResponseDataList = null,
-        ResponseService = "Instrument",
-        ResponseServiceMethod = "CreateNewInstrument"
-      };
-    }
-  }
+
+			InstrumentViewModel instrumentEmptyViewModel = new InstrumentViewModel();
+			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
+			List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
+			instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
+			instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
+			instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
+			instrumentEmptyViewModel.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
+			instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
+			instrumentEmptyViewModel.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
+			instrumentEmptyViewModel.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
+			instrumentEmptyViewModel.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
+			instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
+			instrumentEmptyViewModel.Departments = DepartmentData;
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = instrumentEmptyViewModel,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "Instrument",
+				ResponseServiceMethod = "CreateNewInstrument"
+			};
+		}
+	}
 
 	public ResponseViewModel<InstrumentViewModel> GetAllInstrumentQuarantineList(int userId, int userRoleId)
 	{
@@ -913,10 +923,13 @@ public class InstrumentService : IInstrumentService
     try
     {
       _unitOfWork.BeginTransaction();
-      User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
-      User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId).SingleOrDefault();
-      User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).SingleOrDefault();
-      Instrument instrument = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).FirstOrDefault();
+	  CMTDL _cmtdl = new CMTDL(_configuration);
+	  User userById = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault();
+      //User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.ForemanShortId).SingleOrDefault();
+	  //User LabuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Level == "L4" && Q.DepartmentId == 66).SingleOrDefault();
+	  User DeptuserByL4Id = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.ShortId == userById.DeptCordShortId).FirstOrDefault();
+	  User LabuserByL4Id = _cmtdl.GetCalibrationLabUsers();
+	  Instrument instrument = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == instrumentId).FirstOrDefault();
       InstrumentQuarantine instrumentQuarantineById = _unitOfWork.Repository<InstrumentQuarantine>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId && Q.StatusId == 1).FirstOrDefault();
       instrumentQuarantineById.StatusId = statusId;
       _unitOfWork.Repository<InstrumentQuarantine>().Update(instrumentQuarantineById);
@@ -1159,9 +1172,13 @@ public class InstrumentService : IInstrumentService
 		{
 			ObservationTemplateId = row != null ? row.CertificationTemplate : 0;
 		}
-		else if (Type == "Observation")
+		else if (Type == "Observation" && (row.TypeOfEquipment == "Internal Instrument" || row.TypeOfEquipment == "内部計器"))
 		{
-			ObservationTemplateId = row != null ? row.ObservationTemplate : 0;
+			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 0;
+		}
+		else if (Type == "Observation" && (row.TypeOfEquipment == "External Instrument" || row.TypeOfEquipment == "外部機器"))
+		{
+			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 01;
 		}
 
 		return (int)ObservationTemplateId;
@@ -1257,9 +1274,9 @@ public class InstrumentService : IInstrumentService
                         CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
                         CalibDate = Convert.ToDateTime(dr["CalibDate"]),
                         DueDate = Convert.ToDateTime(dr["DueDate"]),
-                        Make = dr["Make"].ToString(),
+                        //Make = dr["Make"].ToString(),
                         CalibSource = dr["CalibSource"].ToString(),
-                        StandardReffered = dr["StandardReffered"].ToString(),
+                        //StandardReffered = dr["StandardReffered"].ToString(),
                         Remarks = dr["Remarks"].ToString(),
                         Status = Convert.ToInt16(dr["Status"]),
                         DepartmentName = dr["deptName"].ToString(),
@@ -1316,7 +1333,7 @@ public class InstrumentService : IInstrumentService
                         UserDept = Convert.ToInt32(dr["UserDept"]),
                         DepartmentName = dr["DepartmentName"].ToString(),
                         InstrumentCount = Convert.ToInt32(dr["InstrumentCount"]),
-                        ToolRoomStatus = dr["Status"].Equals("") ? (Int32)ToolRoomStatus.Pending : (Int32)ToolRoomStatus.Completed,
+                        ToolRoomStatus = Convert.ToInt32(dr["Status"]),
                         DueDate = Convert.ToDateTime(dr["DueForCalibration"])
 					};
 					ToolInventoryList.Add(ObjinstView);
@@ -1411,75 +1428,50 @@ public class InstrumentService : IInstrumentService
 		sqlAdapter.Fill(dsResults);
 		return dsResults;
 	}
-	public ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int UserId)
-	{
-		try
-			{
-		
 
-			StringBuilder data = new StringBuilder(""); 
-            data.Append("<Root>"); 
+    public ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int UserId)
+    {
+        try
+        {
+
+            StringBuilder Intrumentdata = new StringBuilder();
+            Intrumentdata.Append("<Root>");
             foreach (var Instrument in Instrumentid)
-            { 
-                data.Append("<InstrumentList>"); 
-                data.Append(string.Format("<instrumentId>{0}</instrumentId>", Instrument.InstrumentId));
-                data.Append(string.Format("<ReplacementLabId>{0}</ReplacementLabId>", Instrument.ReplacementLabId));
-				data.Append(string.Format("<ToolInventoryStatus>{0}</ToolInventoryStatus>", (Int32)ToolInventoryStatus.UserTool));
-				data.Append(string.Format("<ToolRoomStatus>{0}</ToolRoomStatus>", (Int32)ToolRoomStatus.Completed));
-				data.Append("</InstrumentList>"); 
-            } 
-            data.Append("</Root>");
-			var status = _cmtdl.InsertDueRequest(data.ToString(), userId);
+            {
+                Intrumentdata.Append("<InstrumentList>");
+                Intrumentdata.Append(string.Format("<instrumentId>{0}</instrumentId>", Instrument.InstrumentId));
+                Intrumentdata.Append(string.Format("<ReplacementLabId>{0}</ReplacementLabId>", Instrument.ReplacementLabId));
+                Intrumentdata.Append(string.Format("<ToolInventoryStatus>{0}</ToolInventoryStatus>", (Int32)ToolInventoryStatus.UserTool));
+                Intrumentdata.Append(string.Format("<ToolRoomStatus>{0}</ToolRoomStatus>", (Int32)ToolRoomStatus.Completed));
+                Intrumentdata.Append("</InstrumentList>");
+            }
+            Intrumentdata.Append("</Root>");
 
-			//for (var i = 0; i < Instrumentid.Count; i++)
-   //         {
-   //             var item = Instrumentid[i];
-               
-   //             _unitOfWork.BeginTransaction();
-			//	Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(item.InstrumentId)).SingleOrDefault();
-   //             //Move to User Listing From Tool Room
-   //             if ((instrumentById.ToolInventory != null) && (instrumentById.ToolInventory == "Yes"))
+            var status = SaveInventoryList(Intrumentdata.ToString());
 
-			//	{
-   //                 if((instrumentById.ReplacementLabID == null) || (instrumentById.ToolInventory == ""))
-
-			//		{ 
-   //                     instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.UserTool;
-                   
-   //                     instrumentById.ToolRoomStatus = (Int32)ToolRoomStatus.Completed;
-
-   //                     instrumentById.ReplacementLabID = item.ReplacementLabId;
-
-   //                     _unitOfWork.Repository<Instrument>().Update(instrumentById);
-   //                     _unitOfWork.SaveChanges();
-			//		}
-
-			//	}
-			//	_unitOfWork.Commit();
-			//}
-			return new ResponseViewModel<InstrumentViewModel>
-			{
-				ResponseCode = 200,
-				ResponseMessage = "Success",
-				ResponseData = null,
-				ResponseDataList = null
-			};
-		}
-		catch (Exception e)
-		{
-			ErrorViewModelTest.Log("RequestService - AcceptRequest Method");
-			ErrorViewModelTest.Log("exception - " + e.Message);
-			_unitOfWork.RollBack();
-			return new ResponseViewModel<InstrumentViewModel>
-			{
-				ResponseCode = 500,
-				ResponseMessage = "Failure",
-				ErrorMessage = e.Message,
-				ResponseData = null,
-				ResponseDataList = null,
-				ResponseService = "ToolInventoryCalibration",
-				ResponseServiceMethod = "SaveInventoryCalibration"
-			};
-		}
-	}
-		}
+            return new ResponseViewModel<InstrumentViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = status.ToString(),// "Success",
+                ResponseData = null,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("InstrumentService - SaveInventoryCalibration Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            _unitOfWork.RollBack();
+            return new ResponseViewModel<InstrumentViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseService = "ToolInventoryCalibration",
+                ResponseServiceMethod = "SaveInventoryCalibration"
+            };
+        }
+    } 
+}
