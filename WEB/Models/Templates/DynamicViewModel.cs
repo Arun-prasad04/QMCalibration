@@ -59,10 +59,10 @@
 	{
 		//		Id ContentId   ObservationId InstrumentId    CreatedBy CreatedOn   IsActive
 
-		public int? Id { get; set; }
+	//	public int? Id { get; set; }
 		public int? ContentId { get; set; }
-		public int? ObservationId { get; set; }
-		public int? InstrumentId { get; set; }
+		//public int? ObservationId { get; set; }
+		//public int? InstrumentId { get; set; }
 
 	}
 }

@@ -8,6 +8,7 @@ using AutoMapper;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Diagnostics.Metrics;
 using WEB.Models.Templates;
+using Nancy;
 
 namespace WEB.Controllers;
 public class ObservationController : BaseController
@@ -1408,30 +1409,30 @@ public class ObservationController : BaseController
 
 		ResponseViewModel<DynamicViewModel> response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
 		if ((response.ResponseData.TemplateObservationId == 0) || (response.ResponseData.TemplateObservationId == null))
+		 { 
+		response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;
+		response.ResponseData.CalibrationPerformedDate = DateTime.Now;
+        response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+         
+        }
+		if (Convert.ToInt32(base.SessionGetString("UserRoleId")) == 4 )
 		{
-			response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;
-			response.ResponseData.CalibrationPerformedDate = DateTime.Now;
-			response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            response.ResponseData.CalibrationReviewedBy = firstName + " " + lastName;
 
-		}
-		if (Convert.ToInt32(base.SessionGetString("UserRoleId")) == 4)
-		{
-			response.ResponseData.CalibrationReviewedBy = firstName + " " + lastName;
-
-		}
-		return View(response.ResponseData);
+        }
+        return View(response.ResponseData);
 
 
-	}
+    }
 	public JsonResult GetObservationById(int InstrumentId, int RequestId)
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId, RequestId);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId,RequestId);
 		return Json(response.ResponseDataList);
 
 	}
-	public JsonResult GetSelectedObservationContentById(int ContentId, int InstrumentId, int RequestId)
+	public JsonResult GetSelectedObservationContentById(int ContentId,int InstrumentId, int RequestId)
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetSelectedObservationContentById(ContentId, InstrumentId, RequestId);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetSelectedObservationContentById(ContentId,InstrumentId,RequestId);
 		return Json(response.ResponseDataList);
 
 	}
@@ -1451,6 +1452,13 @@ public class ObservationController : BaseController
 		ResponseViewModel<ObservationContentValuesViewModel> response = _ObservationTemplateService.GetObservationContentValuesById(InstrumentId, RequestId);
 
 		return Json(response.ResponseDataList);
+	}
+	public JsonResult GetObservationContentSelectedList(List<Contentids> Contents)
+	{
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationContentSelectedList(Contents);
+
+		return Json(response.ResponseDataList);
+
 	}
 	#endregion
 
