@@ -213,50 +213,50 @@
                             </div>
                         </div>
                         @*<div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="trn">Calibration Frequency</label>
-                                <select id="CalibFreq" name="CalibFreq" class="form-control" disabled>
-                                    @foreach (var freq in @Model.CalibFreqList)
-                                    {
-                                        if (freq.Id == Model.CalibFreq)
-                                        {
-                                            <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@freq.Id">@freq.AttrValue</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
+                        <div class="form-group">
+                        <label class="trn">Calibration Frequency</label>
+                        <select id="CalibFreq" name="CalibFreq" class="form-control" disabled>
+                        @foreach (var freq in @Model.CalibFreqList)
+                        {
+                        if (freq.Id == Model.CalibFreq)
+                        {
+                        <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
+                        }
+                        else
+                        {
+                        <option value="@freq.Id">@freq.AttrValue</option>
+                        }
+                        }
+                        </select>
+                        </div>
                         </div>*@
                         @if (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")
                         {
-                                <div class="col-sm-6">
-									<div class="form-group">
-										<label class="required trn">Applicable for Tool Inventory</label>
-										<select id="ToolInventory" name="ToolInventory" class="form-control">
-											<option value="" selected="true" class="trn">--Select Tool Inventory--</option>
-											@if (Model.ToolInventory == "Yes")
-											{
-												<option value="Yes" selected="true" class="trn">Yes</option>
-											}
-											else
-											{
-												<option value="Yes" class="trn">Yes</option>
-											}
-											@if (Model.ToolInventory == "No")
-											{
-												<option value="No" selected="true" class="trn">No</option>
-											}
-											else
-											{
-												<option value="No" class="trn">No</option>
-											}
-										</select>
-									</div>
-								</div>
-                                }
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="required trn">Applicable for Tool Inventory</label>
+                                    <select id="ToolInventory" name="ToolInventory" class="form-control">
+                                        <option value="" selected="true" class="trn">--Select Tool Inventory--</option>
+                                        @if (Model.ToolInventory == "Yes")
+                                        {
+                                            <option value="Yes" selected="true" class="trn">Yes</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Yes" class="trn">Yes</option>
+                                        }
+                                        @if (Model.ToolInventory == "No")
+                                        {
+                                            <option value="No" selected="true" class="trn">No</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="No" class="trn">No</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -315,52 +315,52 @@
                             </div>
                         </div>
                         @*<div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="required trn">Drawing is attached</label>
-                                <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
-                                    @if (Model.Drawing_Attached == "Yes")
-                                    {
-                                        <option value="Yes" selected="true">Yes</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Yes">Yes</option>
-                                    }
-                                    @if (Model.Drawing_Attached == "No")
-                                    {
-                                        <option value="No" selected="true">No</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="No">No</option>
-                                    }
-                                </select>
-                            </div>
+                        <div class="form-group">
+                        <label class="required trn">Drawing is attached</label>
+                        <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
+                        @if (Model.Drawing_Attached == "Yes")
+                        {
+                        <option value="Yes" selected="true">Yes</option>
+                        }
+                        else
+                        {
+                        <option value="Yes">Yes</option>
+                        }
+                        @if (Model.Drawing_Attached == "No")
+                        {
+                        <option value="No" selected="true">No</option>
+                        }
+                        else
+                        {
+                        <option value="No">No</option>
+                        }
+                        </select>
+                        </div>
                         </div>*@
                     </div>
                     <div class="row">
                         @*<div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="trn">Decision rule for statement of Confirmity</label>
-                                <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
-                                    @if (Model.Rule_Confirmity == "Include MU")
-                                    {
-                                        <option value="Include MU" selected="true">Include MU</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Include MU">Include MU</option>
-                                    }
-                                    @if (Model.Rule_Confirmity == "Exclude MU")
-                                    {
-                                        <option value="Exclude MU" selected="true">Exclude MU</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Exclude MU">Exclude MU</option>
-                                    }
-                                </select>
-                            </div>
+                        <div class="form-group">
+                        <label class="trn">Decision rule for statement of Confirmity</label>
+                        <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
+                        @if (Model.Rule_Confirmity == "Include MU")
+                        {
+                        <option value="Include MU" selected="true">Include MU</option>
+                        }
+                        else
+                        {
+                        <option value="Include MU">Include MU</option>
+                        }
+                        @if (Model.Rule_Confirmity == "Exclude MU")
+                        {
+                        <option value="Exclude MU" selected="true">Exclude MU</option>
+                        }
+                        else
+                        {
+                        <option value="Exclude MU">Exclude MU</option>
+                        }
+                        </select>
+                        </div>
                         </div>*@
                     </div>
                     @if (Model.TypeOfRequest == 3 && (Model.LabL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsLabL4Accepted == null) || (Model.UserL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsUserL4Accepted == null))
@@ -432,42 +432,42 @@
                                 </div>
                             </div>
                         </div>
-                            @*<div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="trn">Instrument Condition</label>
-                                    <input type="text" id="InstrumentCondition" class="form-control" value="">
-                                    <label id="InstrumentConditionError" class="" style="display:none; color: red;">Please Enter Instrument Condition</label>
-                                </div>
-                            </div>*@
-                            <div class="row">
-                            
+                        @*<div class="col-sm-6">
+                    <div class="form-group">
+                    <label class="trn">Instrument Condition</label>
+                    <input type="text" id="InstrumentCondition" class="form-control" value="">
+                    <label id="InstrumentConditionError" class="" style="display:none; color: red;">Please Enter Instrument Condition</label>
+                    </div>
+                    </div>*@
+                        <div class="row">
+
 
                             @*<div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="required trn">Standard Reffered/Calibration Method</label>
-                                    <input type="text" id="StandardReffered" name="StandardReffered" value=""
-                                           class="form-control" placeholder="">
-                                    <label id="StandardRefferedError" class="" style="display:none; color: red;">Please Enter Standard Reffered/Calibration Method</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label class="trn">NABL</label>
-                                    <select id="NewNABL" name="NewNABL" class="form-control" onchange="getNABLValue(this)">
-                                        @if (Model.IsNABL == false)
-                                        {
-                                            <option value="false" class="trn" selected>No</option>
-                                            <option value="true" class="trn">Yes</option>
-                                        }
-                                        else if (Model.IsNABL == true)
-                                        {
-                                            <option value="true" class="trn" selected>Yes</option>
-                                            <option value="false" class="trn">No</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                        <div class="form-group">
+                        <label class="required trn">Standard Reffered/Calibration Method</label>
+                        <input type="text" id="StandardReffered" name="StandardReffered" value=""
+                        class="form-control" placeholder="">
+                        <label id="StandardRefferedError" class="" style="display:none; color: red;">Please Enter Standard Reffered/Calibration Method</label>
+                        </div>
+                        </div>
+                        <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                        <label class="trn">NABL</label>
+                        <select id="NewNABL" name="NewNABL" class="form-control" onchange="getNABLValue(this)">
+                        @if (Model.IsNABL == false)
+                        {
+                        <option value="false" class="trn" selected>No</option>
+                        <option value="true" class="trn">Yes</option>
+                        }
+                        else if (Model.IsNABL == true)
+                        {
+                        <option value="true" class="trn" selected>Yes</option>
+                        <option value="false" class="trn">No</option>
+                        }
+                        </select>
+                        </div>
+                        </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
@@ -498,7 +498,7 @@
                                 </div>
                             </div>
 
-                            </div>                            
+                        </div>
                     }
                     @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30)
                     {
@@ -522,60 +522,60 @@
                                 </div>
                             </div>
                             @*<div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="trn">Instrument Condition</label>
-                                    <input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
-                                </div>
-                            </div>*@
+                        <div class="form-group">
+                        <label class="trn">Instrument Condition</label>
+                        <input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
+                        </div>
+                        </div>*@
                             @*<div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="trn">Scope</label>
-                                    <select id="Scope" class="form-control" disabled>
-                                        @if (Model.Feasiblity == "Internal Instrument")
-                                        {
-                                            <option value="Internal Instrument" selected=true>Internal Instrument</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="Internal Instrument">Internal Instrument</option>
-                                        }
-                                        @if (Model.Feasiblity == "External Instrument")
-                                        {
-                                            <option value="External Instrument" selected=true>External Instrument</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="External Instrument">External Instrument</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                        <div class="form-group">
+                        <label class="trn">Scope</label>
+                        <select id="Scope" class="form-control" disabled>
+                        @if (Model.Feasiblity == "Internal Instrument")
+                        {
+                        <option value="Internal Instrument" selected=true>Internal Instrument</option>
+                        }
+                        else
+                        {
+                        <option value="Internal Instrument">Internal Instrument</option>
+                        }
+                        @if (Model.Feasiblity == "External Instrument")
+                        {
+                        <option value="External Instrument" selected=true>External Instrument</option>
+                        }
+                        else
+                        {
+                        <option value="External Instrument">External Instrument</option>
+                        }
+                        </select>
+                        </div>
+                        </div>*@
 
-                           @* <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="required trn">Standard Reffered/Calibration Method</label>
-                                    <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
-                                           class="form-control" placeholder="" disabled>
-                                </div>
-                            </div>*@
-                           @* <div class="col-sm-6">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label class="trn">NABL</label>
-                                    <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
-                                        @if (Model.IsNABL == false)
-                                        {
-                                            <option value="false" selected>No</option>
-                                            <option value="true">Yes</option>
-                                        }
-                                        else if (Model.IsNABL == true)
-                                        {
-                                            <option value="true" selected>Yes</option>
-                                            <option value="false">No</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                            @* <div class="col-sm-6">
+                        <div class="form-group">
+                        <label class="required trn">Standard Reffered/Calibration Method</label>
+                        <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
+                        class="form-control" placeholder="" disabled>
+                        </div>
+                        </div>*@
+                            @* <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                        <label class="trn">NABL</label>
+                        <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
+                        @if (Model.IsNABL == false)
+                        {
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                        }
+                        else if (Model.IsNABL == true)
+                        {
+                        <option value="true" selected>Yes</option>
+                        <option value="false">No</option>
+                        }
+                        </select>
+                        </div>
+                        </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
@@ -588,41 +588,41 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(Model.Status == 30 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器"))
+                            @if (Model.Status == 30 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器"))
                             {
-                            <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label class="trn">Accept</label>
-                                    @if (Model.Status == 27 || Model.Status == 29)
-                                    {
-                                        <input type="radio" name="NewAcceptReject" value="Accept" checked=true
-                                               onclick="NewReqEnableReason()" disabled>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" name="NewAcceptReject" value="Accept"
-                                               onclick="NewReqEnableReason()" disabled>
-                                    }
+                                <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="trn">Accept</label>
+                                        @if (Model.Status == 27 || Model.Status == 29)
+                                        {
+                                            <input type="radio" name="NewAcceptReject" value="Accept" checked=true
+                                                   onclick="NewReqEnableReason()" disabled>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" name="NewAcceptReject" value="Accept"
+                                                   onclick="NewReqEnableReason()" disabled>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3" style="top: 35px;" id="RejectSection">
-                                <div class="form-group">
-                                    <label class="trn">Reject</label>
+                                <div class="col-sm-3" style="top: 35px;" id="RejectSection">
+                                    <div class="form-group">
+                                        <label class="trn">Reject</label>
 
-                                    @if (Model.Status == 28)
-                                    {
-                                        <input type="radio" name="NewAcceptReject" value="Reject" checked=true
-                                               onclick="NewReqEnableReason()" disabled>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" name="NewAcceptReject" value="Reject"
-                                               onclick="NewReqEnableReason()" disabled>
-                                    }
+                                        @if (Model.Status == 28)
+                                        {
+                                            <input type="radio" name="NewAcceptReject" value="Reject" checked=true
+                                                   onclick="NewReqEnableReason()" disabled>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" name="NewAcceptReject" value="Reject"
+                                                   onclick="NewReqEnableReason()" disabled>
+                                        }
 
+                                    </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     }
@@ -633,7 +633,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="trn">External Reject Reason</label>
-                                        <textarea id="Newreason" style="width: 100%;"></textarea>
+                                        <textarea id="Newreason" class="form-control" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-sm-6" style="text-align:right;">
@@ -644,7 +644,7 @@
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                     }
                     @if (Model.Status == 26 && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器"))
@@ -661,11 +661,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">External Accept Reason</label>
-                                        <textarea id="Acceptreason" style="width: 100%;" value="@Model.ReasonforRejection"></textarea>
+                                        <textarea id="Acceptreason" class="form-control" style="width: 100%;" value="@Model.ReasonforRejection"></textarea>
                                     </div>
-                                </div>                               
+                                </div>
                             </div>
-                            <div class="row">                               
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="exampleInputFile" class="trn">Upload Image</label>
@@ -678,16 +678,20 @@
                                                 <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="ManagerEmail" class="trn">Signature Image</label>
+                                            <p id="SignImageName"></p>
+                                            @*@if (@Model.SignImageName != null)
+                                        {
+                                        <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                        }*@
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="ManagerEmail" class="trn">Signature Image</label>
-                                        <p id="SignImageName"></p>
-                                        @*@if (@Model.SignImageName != null)
-                                        {
-                                            <a href='~/UserSignature/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
-                                        }*@
+                                        <label class="trn">Standard Reffered/Calibration Method</label><br>
+                                        <input id="StdReffer" class="form-control" style="width: 100%;" value="">
                                     </div>
                                 </div>
                             </div>
@@ -703,23 +707,29 @@
                             </div>
 
                         </div>
-                    }  
+                    }
                     @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器"))
                     {
                         <div id="ExternalAcceptSection">
                             <div class="row">
                                 @*<div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="required trn">Instrument Id Number</label>
-                                        <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
-                                               class="form-control" placeholder="" alt="Please fill this field">
-                                        <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
-                                    </div>
-                                </div>*@
+                            <div class="form-group">
+                            <label class="required trn">Instrument Id Number</label>
+                            <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
+                            class="form-control" placeholder="" alt="Please fill this field">
+                            <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
+                            </div>
+                            </div>*@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">External Accept Reason</label>
                                         <input id="Acceptreason" style="width: 100%;" value="@Model.AcceptReason" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="trn">Standard Reffered/Calibration Method</label>
+                                        <input id="Acceptreason" style="width: 100%;" value="@Model.StandardReffered" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -750,18 +760,18 @@
                                 </div>
                             </div>
                             @*<div class="row">
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
-                                        <a href='@Url.Action("ExternalRequest","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
-                                    </div>
-                                </div>
-                            </div>*@
+                        <div class="col-sm-6" style="text-align:right;">
+                        <!-- text input -->
+                        <div class="form-group">
+                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                        class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                        <a href='@Url.Action("ExternalRequest","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                        </div>
+                        </div>
+                        </div>*@
 
                         </div>
-                    }                   
+                    }
                     @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
                     {
                         <div id="NewReasonSection" style="display:none;">
@@ -787,7 +797,7 @@
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
-                                <div class="col-sm-5">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="trn">Master Instrument Name</label><br>
                                         <select id="MasterInstrument" name="MasterInstrument" class="form-control" style="width:100%; height:100%; padding:5px">
@@ -811,50 +821,32 @@
 
                                     <div id="masterEquipmentValue">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Standard Reffered/Calibration Method</label><br>
+                                        <input id="StdReffer" class="form-control" style="width: 100%;" value="">
+                                    </div>
+                                </div>
 
-                                    @*<div class="col-sm-5">
-                                <input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
-                                value="@Model.MasterInstrument1">
-                                <input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
-                                value="@Model.MasterInstrument2">
-                                <input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
-                                value="@Model.MasterInstrument3">
-                                <input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
-                                value="@Model.MasterInstrument4">
 
-                                <div id="masterEquipmentValue">
-                                @if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
-                                {
-                                int i = 1;
-                                @foreach (var master in Model.MasterEqiupmentList)
-                                {
-                                string identifier = "masvalue" + @i;
-                                <div id='@identifier'>
-                                @master.EquipName <i class="fas fa-trash"
-                                onclick="DeleteMasterEqiupment(@i)"></i><br>
-                                </div>
-                                ;
-                                i = i + 1;
-                                }
-                                }
-                                </div>
-                                </div>*@
-                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Calibration Frequency</label><br>
                                         <select id="CalibFreq" name="CalibFreq" class="form-control" style="width:100%; height:100%; padding:5px">
-                                           @* @foreach (var freq in @Model.CalibFreqList)
-                                            {
-                                                if (freq.Id == Model.CalibFreq)
-                                                {
-                                                    <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@freq.Id">@freq.AttrValue</option>
-                                                }
-                                            }*@
+                                            @* @foreach (var freq in @Model.CalibFreqList)
+                                        {
+                                        if (freq.Id == Model.CalibFreq)
+                                        {
+                                        <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                        }
+                                        }*@
                                         </select>
                                     </div>
                                 </div>
@@ -892,27 +884,27 @@
 
                             </div>
                             <div class="row">
-                               @* <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">MU Template</label>
-                                        <select id="NewMU" class="form-control">
-                                            @*<option class="trn">-- Select MU Template --</option>*@
-                                            @*@foreach (var freq in @Model.MUTemplateList)
-                                        {
-                                        if (freq.Id == Model.MUTemplate)
-                                        {
-                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="@freq.Id">@freq.AttrValue</option>
-                                        }
-                                        }
-                                        </select>
+                                @* <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">MU Template</label>
+                            <select id="NewMU" class="form-control">
+                            @*<option class="trn">-- Select MU Template --</option>*@
+                                @*@foreach (var freq in @Model.MUTemplateList)
+                            {
+                            if (freq.Id == Model.MUTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValue</option>
+                            }
+                            }
+                            </select>
 
-                                    </div>
-                                </div>*@
+                            </div>
+                            </div>*@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -952,7 +944,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template-i-E</label>
+                                        <label class="trn">Observation Template</label>
                                         <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled>
                                             @foreach (var freq in @Model.ObservationTemplateList)
                                             {
@@ -986,7 +978,7 @@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
-                                        <label class="trn">Observation Template Type-IE</label>
+                                        <label class="trn">Observation Template Type</label>
                                         <select id="NewObservationTypeEd" class="form-control" disabled>
                                         </select>
                                     </div>
@@ -994,39 +986,39 @@
 
                             </div>
                             <div class="row">
-                               @* <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">MU Template</label>
-                                        <select id="NewMUEd" class="form-control" disabled>
-                                            @foreach (var freq in @Model.MUTemplateList)
-                                            {
-                                                if (@ViewBag.SessionLang == "en")
-                                                {
-                                                    if (freq.Id == Model.MUTemplate)
-                                                    {
-                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@freq.Id">@freq.AttrValue</option>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (freq.Id == Model.MUTemplate)
-                                                    {
-                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-                                </div>*@
+                                @* <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">MU Template</label>
+                            <select id="NewMUEd" class="form-control" disabled>
+                            @foreach (var freq in @Model.MUTemplateList)
+                            {
+                            if (@ViewBag.SessionLang == "en")
+                            {
+                            if (freq.Id == Model.MUTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValue</option>
+                            }
+                            }
+                            else
+                            {
+                            if (freq.Id == Model.MUTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValueJp</option>
+                            }
+                            }
+                            }
+                            </select>
+                            </div>
+                            </div>*@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -1058,6 +1050,13 @@
                                                 }
                                             }
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="trn">Standard Reffered/Calibration Method</label>
+                                        <input type="text" class="form-control" id="NewrejectedReason" value="@Model.StandardReffered" disabled />
                                     </div>
                                 </div>
                             </div>
@@ -1245,12 +1244,12 @@
 
                         <div class="row">
                             @*<div class="col-sm-6">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label class="trn">Instrument Id Number</label>
-                                    <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">
-                                </div>
-                            </div>*@
+                        <!-- text input -->
+                        <div class="form-group">
+                        <label class="trn">Instrument Id Number</label>
+                        <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">
+                        </div>
+                        </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Result</label>
@@ -1386,17 +1385,18 @@
                     @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器") && Model.AdminReviewStatus != 1)
                     {
                         <div class="row">
-                            <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
                                 <!-- text input -->
 
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-2">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                 <!-- text input -->
                                 <div class="form-group">
                                     <input type="button" class="btn btn-primary" name="newedit" id="newedit"
                                            value="Edit" onclick="enableFields()">
                                     <input type="button" class="btn btn-primary trn" name="newSubmitLABAdmin" disabled id="newSubmitLABAdmin"
                                            value="Update" onclick="SaveLABAdminUpdates(language)">
+                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
                         </div>
@@ -1470,12 +1470,12 @@
                             </div>
                             <div class="row">
                                 @*<div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Instrument Id Number</label>
-                                        <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>
-                                    </div>
-                                </div>*@
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">Instrument Id Number</label>
+                            <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>
+                            </div>
+                            </div>*@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Result</label>
@@ -1690,11 +1690,11 @@
                                     </div>
                                 </div>
                             </div>
-                           
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="trn">Instrument Id Number</label>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="trn">Instrument Id Number</label>
                                         @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
                                         {
                                             <input type="text" class="form-control" id="IdNo" value="@Model.InstrumentIdNo" disabled>
@@ -1704,9 +1704,9 @@
                                             <input type="text" class="form-control" id="IdNo" value=''>
                                         }
                                     </div>
-                                    </div>
                                 </div>
-                           
+                            </div>
+
                             <div class="row">
                                 <div class="col-sm-6">
                                 </div>
@@ -1732,7 +1732,9 @@
                                     <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
                                 </div>
                             </div>
-                            </div><br>
+                        </div>
+
+                        <br>
                         @if (Model.Status == 30)
                         {
                             <div class="row">
@@ -1740,14 +1742,14 @@
                                     <!-- text input -->
                                     <div class="form-group">
                                         <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                        class="btn btn-primary trn" onclick="SaveExternalObs(language)">
+                                               class="btn btn-primary trn" onclick="SaveExternalObs(language)">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                     </div>
                                 </div>
                             </div>
                         }
                     }
-                    @if((Model.Status == 27 || Model.Status == 30)&& (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器") && Model.AdminReviewStatus == 2)
+                    @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器") && Model.AdminReviewStatus == 2)
                     {
                         <div id="ExternalRejectSection" style="display:block;">
                             <div class="row">
@@ -1797,7 +1799,7 @@
 
     var selectlang;
     $(function () {
-            $('#CalibFreq').select2();
+        $('#CalibFreq').select2();
         $('#MasterInstrument').select2();
         $('#NewObservation').select2();
         $('#NewObservationType').select2();
@@ -1806,26 +1808,26 @@
         $('#NewObservationTypeEd').select2();
         $('#NewCertificationEd').select2();
 
-      
-        if(JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null){
-        var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
-        var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
 
-        if ('@HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en') {
-            $.each(ObservationTypeList, function (index, item) {
+        if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
+            var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
+            var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
 
-                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
-                }
-            });
-        }
-        else {
-            $.each(ObservationTypeList, function (index, item) {
-                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
-                }
-            });
-        }
+            if ('@HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en') {
+                $.each(ObservationTypeList, function (index, item) {
+
+                    if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+                        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
+                    }
+                });
+            }
+            else {
+                $.each(ObservationTypeList, function (index, item) {
+                    if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+                        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
+                    }
+                });
+            }
         }
     });
 
@@ -1849,9 +1851,9 @@
         result += input.files.item(0).name;
         output.innerHTML = result;
     }
-@*</script>
+    @*</script>
 
-<script>*@
+        <script>*@
     @*var selectlang;*@
     @*$(document).ready(function () {
 
@@ -1866,32 +1868,32 @@
         var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
 
         if ('@HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en') {
-            $.each(ObservationTypeList, function (index, item) {
+        $.each(ObservationTypeList, function (index, item) {
 
-                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
-                }
-            });
+        if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
+        }
+        });
         }
         else {
-            $.each(ObservationTypeList, function (index, item) {
-                if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                    $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
-                }
-            });
+        $.each(ObservationTypeList, function (index, item) {
+        if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
         }
-    });*@
+        });
+        }
+        });*@
 
 
 
-@*</script>
-<script>
-*@
-    function getNABLValue(option) {
-        document.getElementById("IsNABL").value = option.value;
-    }
+    @*</script>
+        <script>
+        *@
+        function getNABLValue(option) {
+            document.getElementById("IsNABL").value = option.value;
+        }
     function loaddate() {
-        debugger;
+        // debugger;
         var date1 = document.getElementById("CalibDate").value;
         var e = document.getElementById("CalibFreq");
         var type = e.options[e.selectedIndex].text;

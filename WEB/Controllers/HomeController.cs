@@ -173,20 +173,21 @@ public class HomeController : BaseController
 	}
 
 	public IActionResult ObservationTypeTranslation()
-	{
-			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.IsActive == true).ToList());
-			var ObservationType = new List<ObservationTypeModel>();
-			foreach (var item in lovsList)
+	{		
+		List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.IsActive == true).ToList());
+		var ObservationType = new List<ObservationTypeModel>();
+		foreach (var item in lovsList)
+		{
+
+			ObservationType.Add(new ObservationTypeModel
 			{
-				ObservationType.Add(new ObservationTypeModel
-				{
-					Id = item.Id,
-					AttrName = item.AttrName,
-					AttrValue = item.AttrValue,
-					Attrform = item.Attrform,
-					AttrNameJp = item.AttrNameJp,
-					AttrValueJp = item.AttrValueJp,
-					AttrformJp = item.AttrformJp,
+				Id = item.Id,
+				AttrName = item.AttrName,
+				AttrValue = item.AttrValue,
+				Attrform = item.Attrform,
+				AttrNameJp = item.AttrNameJp,
+				AttrValueJp = item.AttrValueJp,
+				AttrformJp = item.AttrformJp,
 
 				});
 			}

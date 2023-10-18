@@ -144,7 +144,6 @@ public class TrackerController : BaseController
 		ViewBag.MasterData = masterResponse.ResponseDataList;
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
 		ViewBag.ObservationType = response.ResponseData.ObservationType;
-
 		ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 
 		return View(response.ResponseData);
@@ -256,11 +255,11 @@ public class TrackerController : BaseController
         return Json(response.ResponseData);
     }
 
-	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase, DateTime DueDate)	
+	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, DateTime DueDate)	
 	{
 		//return Json(true);
         int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase, DueDate);
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase, StandardReffered, DueDate);
         return Json(response.ResponseData);
     }
 

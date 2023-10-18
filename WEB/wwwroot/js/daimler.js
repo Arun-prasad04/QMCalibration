@@ -927,7 +927,7 @@ function AcceptRequest(type, lang) {
         newObservationType: $('#NewObservationType').val(),
         newMU: $('#NewMU').val(),
         newCertification: $('#NewCertification').val(),
-        standardReffered: $('#StandardReffered').val(),
+        standardReffered: $('#StdReffer').val(),
         MasterInstrument1: $('#MasterInstrument1').val(),
         MasterInstrument2: $('#MasterInstrument2').val(),
         MasterInstrument3: $('#MasterInstrument3').val(),
@@ -1267,7 +1267,7 @@ function AcceptRejectExternalRequest(lang) {
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        if ($('#CalibFreq').val() != '' && $('#Acceptreason').val().trim() != '' && $('#ImageUpload')[0].files.length != 0) {
+        if ($('#CalibFreq').val() != '' && $('#Acceptreason').val().trim() != '' && $('#ImageUpload')[0].files.length != 0 && $('#StdReffer').val().trim() != '') {
             ExternalAcceptRequest(type, lang);
         }
         else {
@@ -1361,6 +1361,7 @@ function ExternalAcceptRequest(type, lang) {
     formData.append("InstrumentIdNo", $('#txtIdNo').val());
     formData.append("acceptReason", $('#Acceptreason').val());
     formData.append("httpPostedFileBase", file);
+    formData.append("StandardReffered", $('#StdReffer').val());
     formData.append("DueDate", dueDate);
 
     ////formData.append("data", JSON.stringify(data1));
@@ -2975,7 +2976,7 @@ function SubmitReview(lang) {
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#CalibrationReviewedDate').val(), reviewStatus: $('#ReviewStatus').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
@@ -3177,7 +3178,7 @@ function InsertRequestList() {
     //});
     console.log(Request);
     $.ajax({
-        url: '../Instrument/DueRequest',
+        url: '../Instrument/RegularRecaliRequest',
         type: 'POST',
         data: { userViewModelList: Request },
         dataType: "json",
@@ -3221,6 +3222,7 @@ function DueInstrumentList() {
         window.location.href = '../Tracker/DueInstrument';
     });
 }
+
 
     function DueInstrumentManagerApprove() {
         var Request = new Array();
@@ -3378,39 +3380,90 @@ function DueInstrumentList() {
             //standardReffered: $('#StandardReffered').val()
         }
 
-        $.ajax({
-            type: 'POST',
-            url: '../Tracker/ExternalCalibrationReject',
-            data: data1,
-            dataType: 'json',
-            success: function (data) {
-                window.location.href = '../Tracker/Request?reqType=4';
-                showSuccess("You are rejected the External request. LAB admin get notified!", lang);
-            },
-            error: function () {
-                alert('error');
-            }
-        });
+    $.ajax({
+        type: 'POST',
+        url: '../Tracker/ExternalCalibrationReject',
+        data: data1,
+        dataType: 'json',
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
+        }
+    });
     }
-    function ValidateObservation() {
-        var Unit = $('#Units').val();
-        if (Unit == null || Unit == "") {
-            showWarning("Please enter the Units", language);
-            return false;;
-        }
-        var Temperature = $('#TempStart').val();
-        if (Temperature == null || Temperature == "") {
-            showWarning("Please enter the Temperature !!!", language);
-            return false;
-        }
-        var Humidity = $('#Humidity').val();
-        if (Humidity == null || Humidity == "") {
-            showWarning("Please enter the Humidity", language);
-            return false;
-        }
-        var VisualCheckCondition = $('#VisualCheckCondition').val();
-        if (VisualCheckCondition == null || VisualCheckCondition == "") {
-            showWarning("Please enter the Visual Check", language);
-            return false;
-        }
+
+function ValidateObservation()
+{
+
+    var Unit = $('#Units').val();
+    if (Unit == null || Unit == "") {
+        showWarning("Please enter the Units", language);
+        return false;;
     }
+    var Temprature = $('#TempStart').val();
+    if (Temprature == null || Temprature == "") {
+        showWarning("Please enter the Temprature !!!", language);
+        return false;
+    }
+    var Humidity = $('#Humidity').val();
+    if (Humidity == null || Humidity == "") {
+        showWarning("Please enter the Humidity", language);
+        return false;
+    }
+    var VisualCheckCondition = $('#VisualCheckCondition').val();
+    if (VisualCheckCondition == null || VisualCheckCondition == "") {
+        showWarning("Please enter the Visual Check", language);
+        return false;
+    }
+}
+
+function SaveCertificateTemp(lang) {
+
+    var temptName = 'test';
+    var result = $('#CalibrationResult').val();
+    var remarks = $('#Remarks').val();
+    if (result == null || result == "") {
+        showWarning("Please enter the Calibration Result!!!", lang);
+        return true;
+    }
+    else if (remarks == null || remarks == "") {
+        showWarning("Please enter the Calibration Result!!!", lang);
+        return true;
+    }
+
+    Swal.fire({
+        title: "Are you want To Generate QR Code with Pdf file?",
+        text: "You will save Certificate and Generate QR Code with Pdf file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, generate it!",
+        closeOnConfirm: false
+    }).then((result) => {
+        // }, function (isConfirm) {
+        //       if (!isConfirm) return;
+
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../Certification/SaveCertificateTemp', 
+                type: 'POST',
+                data: {
+                    requestId: $('#requestId').val(),
+                    instrumentId: $('#instrumentId').val(),
+                    EnvironmentCondition: '0', //$('#EnvironmentCondition').val(),
+                    //Uncertainity: $('#Uncertainity').val(),
+                    CalibrationResult: $('#CalibrationResult').val(),
+                    Remarks: $('#Remarks').val(),
+                    ExportData: $("#Pdfhtml").html(),
+                    TempltateName: temptName
+                }
+            }).done(function (resultObject) {
+                showSuccess("Result Of Calibration & Remarks Successfully", lang);
+                window.location.reload();
+            });
+        }
+    });
+}

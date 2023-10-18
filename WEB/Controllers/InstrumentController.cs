@@ -30,7 +30,7 @@ public class InstrumentController : BaseController
 
     public IActionResult Index() 
     {
-        ViewBag.PageTitle="Instrument List";
+        //ViewBag.PageTitle="Instrument List";
         ViewBag.ResponseCode = TempData["ResponseCode"];  
         ViewBag.ResponseMessage = TempData["ResponseMessage"];
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
@@ -199,7 +199,7 @@ public class InstrumentController : BaseController
 	}
 
 
-    public ActionResult DueRequest(List<RequestAllView> userViewModelList)
+    public ActionResult RegularRecaliRequest(List<RequestAllView> userViewModelList)
     {
         //return Json(true);
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));

@@ -63,6 +63,6 @@ namespace WEB.Services.Interface
 		ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId);
 		ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs);
 
-	}
+    }
 
 }

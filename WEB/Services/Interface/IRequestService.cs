@@ -35,7 +35,7 @@ ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int 
             DateTime dateOfReceipt);
 
     ResponseViewModel<RequestViewModel> ExternalRejectRequest(int requestId, string RejectReason, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string standardReffered);
-    ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, DateTime DueDate);
+    ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, DateTime DueDate);
 
     ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId);
     ResponseViewModel<RequestViewModel> DueInstrumentAdminApprove(List<DueInstrument> DueList, int userId);

@@ -13,6 +13,7 @@
 		public string? ContentSubTitle1 { get; set; }
 		public string? ContentSubTitle2 { get; set; }
 		public string? ContentSubTitle3 { get; set; }
+		public string? TypeOfContent { get; set; }
 
 		
 	}

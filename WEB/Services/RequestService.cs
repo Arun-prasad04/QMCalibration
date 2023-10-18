@@ -1123,7 +1123,9 @@ public class RequestService : IRequestService
 
             }
 			_emailService.EmailSendingFunction(labUserById.Email, mailbody, mailSubject);
-            return new ResponseViewModel<RequestViewModel>
+
+			
+			return new ResponseViewModel<RequestViewModel>
             {
                 ResponseCode = 200,
                 ResponseMessage = "Success",
@@ -2030,7 +2032,7 @@ public class RequestService : IRequestService
         }
     }
 
-    public ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, DateTime DueDate)
+    public ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, DateTime DueDate)
     {
         try
         {
@@ -2069,6 +2071,7 @@ public class RequestService : IRequestService
 
             Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
             instrumentById.DueDate = DueDate;
+            instrumentById.StandardReffered = StandardReffered;
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
 

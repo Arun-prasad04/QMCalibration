@@ -5081,11 +5081,11 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 					ObservationContentValuesViewModel dynamicViewModel = new ObservationContentValuesViewModel
 					{
-						
-						Id=Convert.ToInt32(dr["Id"]),
-						ParentId= Convert.ToInt32(dr["ParentId"]),
+
+						Id = Convert.ToInt32(dr["Id"]),
+						ParentId = Convert.ToInt32(dr["ParentId"]),
 						Sno = Convert.ToInt32(dr["Sno"]),
-						MeasuedValue =dr["MeasuedValue"].ToString(),
+						MeasuedValue = dr["MeasuedValue"].ToString(),
 						ActualValue = dr["ActualValue"].ToString(),
 						InstrumentError = dr["InstrumentError"].ToString(),
 						Diff = dr["Diff"].ToString(),
@@ -5095,7 +5095,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						Average = dr["Average"].ToString(),
 						Percent = dr["Percent"].ToString(),
 						ContentId = Convert.ToInt32(dr["ContentId"]),
-						ContentMappingId= Convert.ToInt32(dr["ContentMappingId"])
+						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
 
 					};
 					ObservationInstrument.Add(dynamicViewModel);
@@ -5142,14 +5142,14 @@ public class ObservationTemplateService : IObservationTemplateService
 		sqlAdapter.Fill(dsResults);
 		return dsResults;
 	}
-	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId,int RequestId)
+	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId, int RequestId)
 	{
 		try
 		{
 
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
 
-			DataSet dsObservationContent = GetObservationContent(InstrumentId,RequestId);
+			DataSet dsObservationContent = GetObservationContent(InstrumentId, RequestId);
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
@@ -5167,7 +5167,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						ContentSubTitle1 = dr["ContentSubTitle1"].ToString(),
 						ContentSubTitle2 = dr["ContentSubTitle2"].ToString(),
 						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
-						ContentSubTitle4= dr["ContentSubTitle4"].ToString(),
+						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
 						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
 						Id = Convert.ToInt32(dr["Id"]),
 						TypeOfContent = dr["TypeOfContent"].ToString(),
@@ -5187,7 +5187,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						ContentId = Convert.ToInt32(dr["ContentId"]),
 						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
 
-					};
+                    };
 					ObservationInstrument.Add(dynamicViewModel);
 				}
 			}
