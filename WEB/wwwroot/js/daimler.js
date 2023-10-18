@@ -931,7 +931,7 @@ function AcceptRequest(type, lang) {
         newObservationType: $('#NewObservationType').val(),
         newMU: $('#NewMU').val(),
         newCertification: $('#NewCertification').val(),
-        standardReffered: $('#StandardReffered').val(),
+        standardReffered: $('#StdReffer').val(),
         MasterInstrument1: $('#MasterInstrument1').val(),
         MasterInstrument2: $('#MasterInstrument2').val(),
         MasterInstrument3: $('#MasterInstrument3').val(),
@@ -1271,7 +1271,7 @@ function AcceptRejectExternalRequest(lang) {
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
     } else if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        if ($('#CalibFreq').val() != '' && $('#Acceptreason').val().trim() != '' && $('#ImageUpload')[0].files.length != 0) {
+        if ($('#CalibFreq').val() != '' && $('#Acceptreason').val().trim() != '' && $('#ImageUpload')[0].files.length != 0 && $('#StdReffer').val().trim() != '') {
             ExternalAcceptRequest(type, lang);
         }
         else {
@@ -1366,6 +1366,7 @@ function ExternalAcceptRequest(type, lang) {
     formData.append("InstrumentIdNo", $('#txtIdNo').val());
     formData.append("acceptReason", $('#Acceptreason').val());
     formData.append("httpPostedFileBase", file);
+    formData.append("StandardReffered", $('#StdReffer').val());
     formData.append("DueDate", dueDate);
 
     ////formData.append("data", JSON.stringify(data1));
@@ -2980,7 +2981,7 @@ function SubmitReview(lang) {
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#CalibrationReviewedDate').val(), reviewStatus: $('#ReviewStatus').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
@@ -3182,7 +3183,7 @@ function InsertRequestList() {
     //});
     console.log(Request);
     $.ajax({
-        url: '../Instrument/DueRequest',
+        url: '../Instrument/RegularRecaliRequest',
         type: 'POST',
         data: { userViewModelList: Request },
         dataType: "json",    
@@ -3198,7 +3199,7 @@ function DueInstrumentList() {
     var id = "";
     var oTable = $("#example2").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-       // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
         var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
             InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
@@ -3213,18 +3214,19 @@ function DueInstrumentList() {
             ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
             InstrumentCreatedBy: $(this).closest('tr').find('td:eq(5) input[name="InstrumentCreatedBy"]').val(),
         }
-        Request.push(UserView);        
-    });    
+        Request.push(UserView);
+    });
     console.log(Request);
     $.ajax({
         url: '../Tracker/DueInstrumentAdminApprove',
         type: 'POST',
         data: { DueList: Request },
-        dataType: "json",       
+        dataType: "json",
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully");
         window.location.href = '../Tracker/DueInstrument';
     });
+}
 
 
 function DueInstrumentManagerApprove() {
@@ -3396,7 +3398,8 @@ function ExternalCalibrationRequest(lang) {
             alert('error');
         }
     });
-}
+    }
+
 function ValidateObservation()
 {
 
@@ -3422,4 +3425,50 @@ function ValidateObservation()
     }
 }
 
+function SaveCertificateTemp(lang) {
 
+    var temptName = 'test';
+    var result = $('#CalibrationResult').val();
+    var remarks = $('#Remarks').val();
+    if (result == null || result == "") {
+        showWarning("Please enter the Calibration Result!!!", lang);
+        return true;
+    }
+    else if (remarks == null || remarks == "") {
+        showWarning("Please enter the Calibration Result!!!", lang);
+        return true;
+    }
+
+    Swal.fire({
+        title: "Are you want To Generate QR Code with Pdf file?",
+        text: "You will save Certificate and Generate QR Code with Pdf file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, generate it!",
+        closeOnConfirm: false
+    }).then((result) => {
+        // }, function (isConfirm) {
+        //       if (!isConfirm) return;
+
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../Certification/SaveCertificateTemp', 
+                type: 'POST',
+                data: {
+                    requestId: $('#requestId').val(),
+                    instrumentId: $('#instrumentId').val(),
+                    EnvironmentCondition: '0', //$('#EnvironmentCondition').val(),
+                    //Uncertainity: $('#Uncertainity').val(),
+                    CalibrationResult: $('#CalibrationResult').val(),
+                    Remarks: $('#Remarks').val(),
+                    ExportData: $("#Pdfhtml").html(),
+                    TempltateName: temptName
+                }
+            }).done(function (resultObject) {
+                showSuccess("Result Of Calibration & Remarks Successfully", lang);
+                window.location.reload();
+            });
+        }
+    });
+}

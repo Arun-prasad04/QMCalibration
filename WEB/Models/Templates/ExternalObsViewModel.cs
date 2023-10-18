@@ -52,6 +52,7 @@
         public int TemplateObservationId { get; set; }
 
         public string? Review_Date { get; set; }
+        public string? SignImageName { get; set; }
 
     }
 }
