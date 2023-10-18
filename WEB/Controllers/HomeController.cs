@@ -189,55 +189,53 @@ public class HomeController : BaseController
 				AttrValueJp = item.AttrValueJp,
 				AttrformJp = item.AttrformJp,
 
-			});
+				});
+			}
+			return Json(ObservationType);
 		}
-		return Json(ObservationType);
-	}
-	public IActionResult DepartmentTranslate()
-	{
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		List<DepartmentViewModel> DepartmentList;
-		CMTDL _cmtdl = new CMTDL(_configuration);
-		if (userRoleId == 2)
+		public IActionResult DepartmentTranslate()
 		{
-			DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
-		}
-		else
-		{					
-			DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);			
-		}
-
-		
-		//var DepartmentData
-		//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
-		//MasterLangTranslate MStranslater = new MasterLangTranslate();
-		var DepartTranslater = new List<DepartmentLangTranslate>();
-		foreach (var item in DepartmentList)
-		{
-	
-			DepartTranslater.Add(new DepartmentLangTranslate
+			int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+			int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+			List<DepartmentViewModel> DepartmentList;
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			if (userRoleId == 2)
 			{
-				id = item.Id,
-				Name = item.Name,
-				NameJp = item.NameJP,
+				DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
+			}
+			else
+			{
+				DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
+			}
+			//var DepartmentData
+			//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
+			//MasterLangTranslate MStranslater = new MasterLangTranslate();
+			var DepartTranslater = new List<DepartmentLangTranslate>();
+			foreach (var item in DepartmentList)
+			{
 
-			});
+				DepartTranslater.Add(new DepartmentLangTranslate
+				{
+					id = item.Id,
+					Name = item.Name,
+					NameJp = item.NameJP,
+
+				});
+			}
+			return Json(DepartTranslater);
+
 		}
-		return Json(DepartTranslater);
 
-	}
+		public IActionResult LoadRole()
+		{
+			int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 
-	public IActionResult LoadRole()
-	{
-		int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+			//List<UserRoles> MasterList = _unitOfWork.Repository<UserRoles>().GetQueryAsNoTracking().Include(I => I.UserRoleMapping.);
 
-		//List<UserRoles> MasterList = _unitOfWork.Repository<UserRoles>().GetQueryAsNoTracking().Include(I => I.UserRoleMapping.);
-
-		CMTDL _cmtdl = new CMTDL(_configuration);
-		List<UserRolesView> UserRoles = _cmtdl.GetUserRoles(LoggedId);
-		return Json(UserRoles);
-	}
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			List<UserRolesView> UserRoles = _cmtdl.GetUserRoles(LoggedId);
+			return Json(UserRoles);
+		} 
 
 	public class DepartmentLangTranslate
 	{

@@ -251,18 +251,15 @@
 				$.each(data, function (i, item) {
 					$('#tblTool  > tbody > tr').each(function (a, b) {
 						var ReplacementLabID = $(this).children("td:eq(6)").text();
-						// console.log("------------");
-						// console.log(ReplacementLabID);
+						
 						if (ReplacementLabID == item.idNo) {
 
-							//console.log("Match");
 							count += 1;
 						}
 
 
 					});
 
-					//console.log(item.idNo);
 					if (count == 0) {
 					var date = new Date($.now());
 
@@ -284,10 +281,6 @@
 					}
 				});
 
-			// 	});
-
-			// });
-
 
 		var currentRow = $(this).closest("tr");
 		$("#popupcount_" + MasterLabID).val($('#tblPopUp >tbody >tr').length);
@@ -304,11 +297,7 @@
 	},
 	error: function (emp) {
 		$('#dvload').hide();
-		// console.log("data");
-
-		// console.log("Error List PopUp");
-		// console.log(data);
-
+		
 	}
 		});
 	HidePopUp();
@@ -321,15 +310,9 @@
 		var ChkId = "ChkInput_" + MasterLabID;
 		var HiddenLabID = "HiddenLabID_" + MasterLabID;
 		// $("#" + id).text(RLabId);
-		// console.log(RLabId);
-		// console.log("id");
-		// console.log(id);
 		$("#" + id).text(RLabId);
 		$("#" + HiddenLabID).val(RLabId);
 		$("#" + ChkId).prop("checked", true);
-		//console.log(ChkId);
-
-
 		HidePopUp();
 	}
 </script>

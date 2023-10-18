@@ -134,7 +134,7 @@ public class TrackerController : BaseController
 	{
 		//ResponseViewModel<RequestViewModel> response=_requestService.GetRequestById(requestId);
 		return View();
-	}
+	} 
 	public IActionResult RequestDetailsNew()
 	{
 		int requestId = int.Parse(HttpContext.Request.Query["ID"].ToString());

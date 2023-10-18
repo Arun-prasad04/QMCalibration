@@ -291,12 +291,16 @@
                     else if (item.status == 30) {
                         tdStatus = "<td>Closed</td>"
                     }
-
                     var tdTest = '';
                     if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
 
 
-                            tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+                        tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+                    }
+                    else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External Instrument') {
+
+
+                        tdTest = "<td><a href='@Url.Action("ViewObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
                     }
                         else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External Instrument') {
 
@@ -306,7 +310,6 @@
                     else {
                         tdTest = "<td> </td>"
                     }
-
                     var tdCertificate = '';
                     if (item.templateReviewStatus == 1) {
                         tdCertificate = "<td><a href='@Url.Action("ViewCertification","Certification")?requestId="+item.id+"&instrumentId="+item.instrumentId+"'><i class='fas fa-user-graduate' style = 'cursor:pointer'></i></td>"
