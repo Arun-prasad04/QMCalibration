@@ -1403,29 +1403,35 @@ public class ObservationController : BaseController
 	{
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string firstName = base.SessionGetString("FirstName");
-        string lastName = base.SessionGetString("LastName");
+		string lastName = base.SessionGetString("LastName");
 
 
-        ResponseViewModel<DynamicViewModel > response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
-		if (response.ResponseData.TemplateObservationId == 0)
-		{ 
-		response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;
-		response.ResponseData.CalibrationPerformedDate = DateTime.Now;
-        response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+		ResponseViewModel<DynamicViewModel> response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
+		if ((response.ResponseData.TemplateObservationId == 0) || (response.ResponseData.TemplateObservationId == null))
+		{
+			response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;
+			response.ResponseData.CalibrationPerformedDate = DateTime.Now;
+			response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+
+		}
+		if (Convert.ToInt32(base.SessionGetString("UserRoleId")) == 4)
+		{
+			response.ResponseData.CalibrationReviewedBy = firstName + " " + lastName;
+
 		}
 		return View(response.ResponseData);
-        
 
-    }
-	public JsonResult GetObservationById(int InstrumentId)
+
+	}
+	public JsonResult GetObservationById(int InstrumentId, int RequestId)
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId, RequestId);
 		return Json(response.ResponseDataList);
 
 	}
-	public JsonResult GetSelectedObservationContentById(int ContentId,int InstrumentId)
+	public JsonResult GetSelectedObservationContentById(int ContentId, int InstrumentId, int RequestId)
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetSelectedObservationContentById(ContentId,InstrumentId);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetSelectedObservationContentById(ContentId, InstrumentId, RequestId);
 		return Json(response.ResponseDataList);
 
 	}
@@ -1433,20 +1439,140 @@ public class ObservationController : BaseController
 	{
 		ResponseViewModel<DynamicViewModel> response;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-	
+
 		Dynamic.CreatedBy = userId;
 
 		response = _ObservationTemplateService.InsertObservation(Dynamic);
 
 		return Json(response.ResponseData);
 	}
-	public IActionResult GetObservationContentValuesById(int ContentId)
+	public IActionResult GetObservationContentValuesById(int InstrumentId, int RequestId)
 	{
-		ResponseViewModel<ObservationContentValuesViewModel> response = _ObservationTemplateService.GetObservationContentValuesById(ContentId);
+		ResponseViewModel<ObservationContentValuesViewModel> response = _ObservationTemplateService.GetObservationContentValuesById(InstrumentId, RequestId);
 
 		return Json(response.ResponseDataList);
 	}
 	#endregion
+
+	public IActionResult ExternalObs(int requestId, int instrumentId)
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        string firstName = base.SessionGetString("FirstName");
+        string lastName = base.SessionGetString("LastName");
+        ResponseViewModel<ExternalObsViewModel> response = _ObservationTemplateService.GetExternalObsById(requestId, instrumentId);
+        if (response.ResponseData != null)
+        {
+            //if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
+            //response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
+
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            response.ResponseData.InstrumentId = instrumentId;
+            response.ResponseData.RequestId = requestId;
+            response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;
+            response.ResponseData.Range = instrumentresponse.ResponseData.Range;
+            response.ResponseData.Make = instrumentresponse.ResponseData.Make;
+            response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
+            response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
+            response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            //response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
+            //response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
+
+            if (userRoleId == 1)
+            {
+                response.ResponseData.IsDisabled = "disabled";
+            }
+            else
+            {
+                response.ResponseData.IsDisabled = "";
+            }
+
+            if (userRoleId == 4 && response.ResponseData.ReviewStatus == null)
+            {
+                response.ResponseData.ReviewedBy = string.Concat(firstName, " ", lastName);
+                response.ResponseData.CalibrationReviewedBy = userId;
+                response.ResponseData.CalibrationReviewedDate = DateTime.Now;
+            }
+            else if (userRoleId != 4 && response.ResponseData.ReviewStatus != null)
+            {
+                response.ResponseData.Review_Date = response.ResponseData.CalibrationReviewedDate.ToString();
+            }
+
+            List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == requestId).ToList();
+            if (UploadList.Count > 0)
+            {
+                // RequestById.MUTemplateFileName = UploadList.Where(w => w.RequestId == requestId).Select(q => q.FileName).Take(1).SingleOrDefault();
+                response.ResponseData.SignImageName = UploadList.Where(w => w.RequestId == requestId && w.TemplateType == "EX-AP").Select(q => q.FileName).Take(1).SingleOrDefault();
+            }
+
+        }
+        else
+        {
+            ResponseViewModel<ExternalObsViewModel> responseempty = new ResponseViewModel<ExternalObsViewModel>();
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            ExternalObsViewModel extObs = new ExternalObsViewModel();
+            extObs.InstrumentId = instrumentId;
+            extObs.RequestId = requestId;
+            extObs.Name = instrumentresponse.ResponseData.InstrumentName;
+            extObs.SerialNo = instrumentresponse.ResponseData.SlNo;
+            extObs.IdNo = instrumentresponse.ResponseData.IdNo;
+            extObs.Range = instrumentresponse.ResponseData.Range;
+            extObs.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            extObs.Make = instrumentresponse.ResponseData.Make;
+            extObs.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
+            extObs.CalibrationPerformedDate = DateTime.Now;
+            extObs.CalibrationReviewedDate = DateTime.Now;
+            //extObs.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
+            if (userRoleId == 4)
+            {
+                extObs.ReviewedBy = string.Concat(firstName, " ", lastName);
+                extObs.CalibrationReviewedDate = DateTime.Now;
+            }
+            else
+            {
+                extObs.ReviewedBy = string.Empty;
+                // extObs.Review_Date = string.Empty;
+            }
+
+            if (userRoleId == 1)
+            {
+                extObs.IsDisabled = "disabled";
+            }
+            else
+            {
+                extObs.IsDisabled = "";
+            }
+
+            //List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == requestId).ToList();
+            //if (UploadList.Count > 0)
+            //{
+            //   // RequestById.MUTemplateFileName = UploadList.Where(w => w.RequestId == requestId).Select(q => q.FileName).Take(1).SingleOrDefault();
+            //    extObs.SignImageName = UploadList.Where(w => w.RequestId == requestId && w.TemplateType == "EX-AP").Select(q => q.FileName).Take(1).SingleOrDefault();
+            //}
+
+            responseempty.ResponseData = extObs;
+            return View(responseempty.ResponseData);
+        }
+        return View(response.ResponseData);
+    }
+
+    public IActionResult InsertExternalObs(ExternalObsViewModel exObs)
+    {
+        //return Json(true);
+        ResponseViewModel<ExternalObsViewModel> response;
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        exObs.CreatedBy = userId;
+
+        response = _ObservationTemplateService.InsertExternalObs(exObs);
+
+
+        //TempData["ResponseCode"] = response.ResponseCode;
+        //TempData["ResponseMessage"] = response.ResponseMessage;
+
+        return Json(response.ResponseData);
+
+    }
 }
 
 

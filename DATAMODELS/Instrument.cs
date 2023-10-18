@@ -55,7 +55,7 @@ namespace CMT.DATAMODELS
 	public string? ToolInventory { get; set; }
 	public int? ToolInventoryStatus { get; set; }
     public string? ReplacementLabID { get; set; }
-	public int? ToolRoomStatus { get; set; }
+	public int? ToolRoomStatus { get; set; }	
 
 	}
 }

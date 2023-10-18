@@ -143,7 +143,19 @@
             </table>
         </div>
         <br>
-        
+        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+        {
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="ManagerEmail" class="trn">Signature Image</label>
+                    <p id="SignImageName"></p>
+                    @if (@Model.SignImageName != null)
+                    {
+                        <a href='~/Instrument/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                    }
+                </div>
+            </div>
+        }
         <br>
         <table class="TableWidth">
             <tr>
@@ -242,6 +254,7 @@
         <input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
         <input type="hidden" id="AdminReviewStatus" name="AdminReviewStatus" value="@Model.AdminReviewStatus">
         <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.Id">
+        <input type="hidden" id="UserRoleId" name="UserRoleId" value="@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")">
 
 
 
@@ -291,6 +304,7 @@
         });
 
         var reviewStatus = $('#ReviewStatus').val();
+        var UserRoleId = $('#UserRoleId').val();
         if (reviewStatus == 1) {
             $('#Approve').prop('checked', true);
             $('#Reject').prop('checked', false);
@@ -299,6 +313,13 @@
             $('#Approve').prop('checked', false);
             $('#Reject').prop('checked', true);
         }
+
+        if(UserRoleId == 4)
+        {
+            $("#checkOk").prop("disabled", true);
+            $("#checkNotOk").prop("disabled", true);
+        }
+
     });
 
 
