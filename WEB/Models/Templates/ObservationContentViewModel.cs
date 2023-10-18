@@ -16,5 +16,6 @@
 		public string? ContentSubTitle3 { get; set; }
 		public string? ContentSubTitle4 { get; set; }
 		public string? ContentSubTitle5 { get; set; }
+		public string? TypeOfContent { get; set; }
 	}
 }

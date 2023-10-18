@@ -15,6 +15,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Text;
 using static iTextSharp.text.pdf.AcroFields;
+//using System.Diagnostics.Metrics;
 
 namespace WEB.Services;
 public class InstrumentService : IInstrumentService
@@ -218,7 +219,7 @@ public class InstrumentService : IInstrumentService
             .Include(I => I.QuarantineModel)
             .Include(I => I.FileUploadModel)
             .Include(I => I.UserModel)
-            .Include(I => I.DepartmenttModel)
+            .Include(I => I.DepartmenttModel)           
             .Select(s => new InstrumentViewModel()
             {
                 Id = s.Id,
@@ -261,13 +262,15 @@ public class InstrumentService : IInstrumentService
                 IsNABL = s.IsNABL == null ? false : s.IsNABL,
                 Grade = s.Grade,
                 TypeOfEquipment = s.TypeOfEquipment,
-                ToolInventory = s.ToolInventory
+                ToolInventory = s.ToolInventory,
+                SubSecCode = s.DepartmenttModel.SubSectionCode			
 
-            }
+			}
                 ).SingleOrDefault();
             List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>()
                                                                                 //.GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-                                                                                .GetQueryAsNoTracking().ToList());
+                                                                                .GetQueryAsNoTracking().ToList());            
+
             if (instrumentById != null)
             {
                 instrumentById.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
@@ -1472,4 +1475,16 @@ public class InstrumentService : IInstrumentService
             };
         }
     } 
+
+    public DateTime GetcalibrationClosedate(int RequestId)
+    {
+        DateTime closedate = DateTime.MinValue;
+		RequestStatus reById = _unitOfWork.Repository<RequestStatus>().GetQueryAsNoTracking(Q => Q.RequestId == RequestId && Q.StatusId == 30).SingleOrDefault();
+        if (reById != null)
+        {
+            closedate = (DateTime)reById.CreatedOn;
+        }		
+        return closedate;
+
+	}
 }

@@ -18,7 +18,7 @@
 
 </style>
 <div class="row">
-	<div class="col-md-10" style="padding: 19px;border: 1px solid black; background-color: white;">
+	<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
 
 
 		<table class="Tables-AndTablesTextBox" id="tblHeader">
@@ -139,7 +139,7 @@
 					<span>外観・機能／Visual Check</span>
 				</td>
 				<td colspan="4">
-					
+
 
 					<textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea>
 				</td>
@@ -147,7 +147,7 @@
 		</table>
 		<br>
 		<div class="row">
-				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && @Model.ReviewStatus == 0)
+				@if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0)
 				{
 				<div class="col-md-4">
 					<div class="form-group">
@@ -169,23 +169,23 @@
 										if (check == true)
 										{
 
-											<option value="@Content.Id" selected="check">@Content.ContentName</option>
+										<option value="@Content.Id" selected="check">@Content.ContentName</option>
 										}
 										else
 										{
-											<option value="@Content.Id">@Content.ContentName</option>
+										<option value="@Content.Id">@Content.ContentName</option>
 										}
 									}
 									else
 									{
 
 									<option value="@Content.Id">@Content.ContentName</option>
-									
+
 									}
 
 
 								}
-							
+
 							}
 						</select>
 					</div>
@@ -223,7 +223,7 @@
 				{
 					var ReviewDate = @Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");
 						<td>
-							<input type="text" name="CalibrationReviewedDate" id="CalibrationReviewedDate"
+							<input type="text" name="CalibrationReviewedDate" id="ReviewDate"
 								   value="@ReviewDate" class="Tables-AndTablesTextBox" disabled>
 						</td>
 
@@ -286,11 +286,16 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript">
+		$(document).ready(function () {
 
-		if ($('#TemplateObservationId').val() > 0) {
-			$("#dvTable").html("");
-			BindObservationTable();
-		}
+			if ($('#TemplateObservationId').val() > 0) {
+				$("#dvTable").html("");
+				BindObservationTable();
+			}
+
+		});
+
+
 
 		$(document).on('keyup', '.MeasuedValue , .Actual', function () {
 
@@ -320,25 +325,27 @@
 			var Percentage = Average / 100;
 			$(this).closest('tr').find('.Average').val(Average.toFixed(2));
 			$(this).closest('tr').find('.Percentage').val(Percentage.toFixed(2));
-			
+
 		});
 
 		$(document).on('click', '.btn-Generate', (e) => {
 
 			$('#dvTable').html("");
 			if ($('#TemplateObservationId').val() > 0) {
+
 				BindObservationTable();
+
 			}
 			$('#ContentSelect > :selected').each(function () {
 
 
 				var drop = $('#ObservationId :selected').text();
-				
+
 				$.ajax({
 					type: 'GET',
 					url: '../Observation/GetSelectedObservationContentById',
 					dataType: 'json',
-					data: { ContentId: $(this).val(), InstrumentId: $('#InstrumentId').val() },
+					data: { ContentId: $(this).val(), InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
 				}).done(function (resultObject) {
 
 					for (let i = 0; i < resultObject.length; i++) {//contentCount
@@ -393,7 +400,7 @@
 				});
 
 			});
-			
+
 		});
 
 		$(document).on('click', '.btnSaveApproval', (e) => {
@@ -426,7 +433,7 @@
 			$(".content").each(function () {
 
 				$(this).find('table').each(function () {
-					
+
 					var ObservationContenMappingData = {
 
 						Id: $(this).find("input[name = HiddenMappingId]").val(),
@@ -441,12 +448,12 @@
 
 					$(this).find('tr').each(function () {
 						var currentRow = $(this).find('td').attr('id');
-						
+
 						var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
 						if (contentvalueid == "0") {
 							contentvalueid = null
 						}
-						
+
 						if ($(this).find("input[name = HiddenContentId]").val() > 0) {
 							if (currentRow == 'CW') {
 
@@ -497,7 +504,7 @@
 				});
 
 			});
-			
+
 			var data = {
 				Id: $('#Id').val(),
 				InstrumentId: $('#InstrumentId').val(),
@@ -509,7 +516,7 @@
 				ObservationContentValuesList: ObservationContentValues,
 				ObservationContentMappingList: ObservationContenMapping
 			}
-			
+
 			$.ajax({
 				url: '../Observation/InsertDynamicObservationContent',
 				type: 'POST',
@@ -585,16 +592,16 @@
 		});
 
 
-		function BindObservationTable() {
+		function BindObservationTable_old() {
 
 			$.ajax({
 				type: 'GET',
 				url: '../Observation/GetObservationById',
 				dataType: 'json',
-				data: { InstrumentId: $('#InstrumentId').val() },
+				data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
 			}).done(function (resultObject) {
 
-				//$("#dvTable").html("");
+				//	$("#dvTable").html("");
 				var rowhead = "";
 				var id = "";
 				for (let i = 0; i < resultObject.length; i++) {//contentCount
@@ -616,7 +623,7 @@
 					var rowContent = '';
 					id = resultObject[i].id;
 					for (let j = 1; j <= resultObject[i].contentCount; j++) {
-						
+
 						if (IdValue == 'CW') {
 							rowContent += '<tr><td id="CW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
 								'<td id="CW"><input id="Value1" name="Value1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox Value1"/></td>' +
@@ -654,12 +661,11 @@
 				type: 'GET',
 				url: '../Observation/GetObservationContentValuesById',
 				dataType: 'json',
-				data: { ContentId: $('#InstrumentId').val() },
+				data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
 			}).done(function (result) {
-				//console.log(resultObject[i].contentCount);
 
 				for (j = 0; j < result.length; j++) {
-					
+
 					$(".content").each(function () {
 
 						$(this).find('table').each(function () {
@@ -671,7 +677,7 @@
 									if ($(this).find("td:eq(0) input[type='text']").val() == result[j].sno) {
 
 										if (result[j].diff == 'CW') {
-											
+
 											$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
 												$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
 												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
@@ -682,7 +688,7 @@
 												$(this).find("td:eq(5) input[type='text']").val(result[j].percent)
 										}
 										else {
-											
+
 
 											$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
 												$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
@@ -702,7 +708,199 @@
 		}
 
 
+		function BindObservationTable() {
 
+			$.ajax({
+				type: 'GET',
+				url: '../Observation/GetObservationById',
+				dataType: 'json',
+				data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
+			}).done(function (resultObject) {
+
+				var rowhead = "";
+				var rowContentCW = '';
+				var rowContentIN = '';
+				var rowContentSW = '';
+				for (let i = 0; i < resultObject.length; i++) {
+					var IdName = resultObject[i].typeOfContent;
+
+					var tblId = 'TblObservation' + i;
+					var tableIN = '<table id="IN' + tblId + '" style="text-align:center;">';
+					var tableCW = '<table id="CW' + tblId + '" style="text-align:center;">';
+					var tableSW = '<table id="SW' + tblId + '" style="text-align:center;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
+					if (IdName == 'CW') {
+						var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+
+					}
+					else if (IdName == 'SW') {
+						var rowheadSW = '<thead><tr><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
+
+					}
+					else if (IdName == 'IN') {
+						var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+					}
+
+					var rowBodyCW = '<tbody>';
+					var rowBodyIN = '<tbody>';
+					var rowBodySW = '<tbody>';
+
+					for (let j = 1; j <= resultObject[i].contentCount; j++) {
+
+						var objcontentCount = resultObject[i].contentCount;
+
+						var title = "";
+						var contentsubheadingIN = "";
+						if ((objcontentCount > 1) && (j == 2)) {
+
+							title = resultObject[i].contentValue.trim();
+							contentsubheadingIN = '<td style="width: 40%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+
+						}
+						else if (objcontentCount == 1) {
+
+							title = resultObject[i].contentValue.trim();
+							contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+						}
+						else {
+
+							title = " ";
+							contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+						}
+
+						if (IdName == 'CW') {
+
+							rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + j + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /></td>' +
+								'<td id="CW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
+								'<td id="CW"><input id="Value1" name="Value1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox Value1"/></td>' +
+								'<td id="CW"><input id="Value2" name="Value2[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value2"/></td>' +
+								'<td id="CW"><input id="Value3" name="Value3[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value3"/></td>' +
+								'<td id="CW"><input id="Average" name="Average[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Average"/></td>' +
+								'<td id="CW"><input id="Percentage" name = "Percentage[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Percentage"  disabled = "disabled"/> </td></tr>';
+
+						}
+						else if (IdName == 'SW') {
+							console.log("crew Thread test");
+							rowContentSW += '<tr><td id="SW"><input id="Head' + i + j + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /></td>' +
+								'<td id="SW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
+								'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox"/></td>' +
+								'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td>' +
+								'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td>' +
+								'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td></tr>'
+						}
+						else if (IdName == 'IN') {
+							rowContentIN += '<tr>' + contentsubheadingIN + '</td>'
+								+ '<td id="IN"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
+								'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + j + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue"/></td>' +
+								'<td id="IN"><input id="Actual" name="Actual[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Actual"/></td>' +
+								'<td id="IN"><input id="Avg" name = "Avg[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Avg"  disabled = "disabled"/> </td></tr>'
+
+						}
+					}
+
+
+				}
+
+
+				rowBodyCW += rowContentCW;
+				rowBodyIN += rowContentIN;
+				rowBodySW += rowContentSW;
+
+				rowBodyCW += '</tbody></table><br/>';
+				rowBodyIN += '</tbody></table><br/>';
+				rowBodySW += '</tbody></table><br/>';
+
+				tableCW += rowheadCW;
+				tableCW += rowBodyCW;
+
+				tableIN = tableIN + rowheadIN;
+				tableIN += rowBodyIN;
+				console.log("rowheadIN");
+				console.log(rowheadIN);
+
+
+				tableSW += rowheadSW;
+				tableSW += rowBodySW;
+
+				if (rowContentSW == "") {
+
+					tableSW = "";
+				}
+				if (rowContentIN == "") {
+
+					tableIN = "";
+				}
+				if (rowContentCW == "") {
+
+					tableCW = "";
+				}
+				$("#dvTable").html("");
+				var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
+				var dvTable = $("#dvTable");
+				dvTable.append(tables);
+
+			});
+			$.ajax({
+				type: 'GET',
+				url: '../Observation/GetObservationContentValuesById',
+				dataType: 'json',
+				data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
+			}).done(function (result) {
+				console.log("test result");
+				console.log(result);
+				for (j = 0; j < result.length; j++) {
+
+					$(".content").each(function () {
+
+						$(this).find('table').each(function () {
+
+							$(this).find('tr').each(function () {
+
+								var currentRow = $(this).find('td').attr('id');
+
+								if ($(this).find("input[name = HiddenContentId]").val() == result[j].contentId) {
+									if ($(this).find("td:eq(1) input[type='text']").val() == result[j].sno) {
+
+										if (result[j].diff == 'CW') {
+											console.log(result[j].contentMappingId);
+											$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
+												$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
+												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
+												$(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue1),
+												$(this).find("td:eq(3) input[type='text']").val(result[j].measuedValue2),
+												$(this).find("td:eq(4) input[type='text']").val(result[j].measuedValue3),
+												$(this).find("td:eq(5) input[type='text']").val(result[j].average),
+												$(this).find("td:eq(6) input[type='text']").val(result[j].percent)
+											console.log($(this).find("input[name = HiddenContentvalueId]").val());
+										}
+										else if (result[j].diff == 'SW') {
+											console.log(result[j].contentMappingId);
+											$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
+												$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
+												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
+												$(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue),
+												$(this).find("td:eq(3) input[type='text']").val(result[j].measuedValue1),
+												$(this).find("td:eq(4) input[type='text']").val(result[j].measuedValue2),
+												$(this).find("td:eq(5) input[type='text']").val(result[j].measuedValue3)
+										}
+										else if (result[j].diff == 'IN') {
+
+											console.log(result[j].measuedValue);
+											$(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
+												$(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
+												$(this).find("input[name = HiddenContentId]").val(result[j].contentId),
+												$(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue),
+												$(this).find("td:eq(3) input[type='text']").val(result[j].actualValue),
+												$(this).find("td:eq(4) input[type='text']").val(result[j].instrumentError)
+										}
+									}
+								}
+
+							});
+						});
+					});
+				}
+			});
+		}
 
 	</script>
 
