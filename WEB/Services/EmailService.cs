@@ -120,25 +120,25 @@ namespace WEB.Service
         
       if (email != null)
       {
-          MailMessage message = new MailMessage();
-          SmtpClient smtp = new SmtpClient();
-          SmtpSettings smtpvalue = new SmtpSettings();
-          message.From = new MailAddress(smtpvalue.FromAddress);
-          message.To.Add(new MailAddress(email.Trim()));
-          //message.To.Add(new MailAddress("srinidhis189@gmail.com"));
-          //message.To.Add("gurushev.p@daimlertruck.com");
-          //message.Bcc.Add("mohammedashik.s@intelizign.com");  
-          message.Subject = Subject;
-          message.IsBodyHtml = true; //to make message body as html  
-          message.Body = mailbody;
-          smtp.Port = int.Parse(smtpvalue.Port);
-          smtp.Host = smtpvalue.Server; //for gmail host  
-          smtp.EnableSsl = false;
-          smtp.UseDefaultCredentials = false;
-          smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
-          smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-          //smtp.Send(message);
-      }
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                SmtpSettings smtpvalue = new SmtpSettings();
+                message.From = new MailAddress(smtpvalue.FromAddress);
+                message.To.Add(new MailAddress(email.Trim()));
+                //message.To.Add(new MailAddress("srinidhis189@gmail.com"));
+                //message.To.Add("gurushev.p@daimlertruck.com");
+                //message.Bcc.Add("mohammedashik.s@intelizign.com");  
+                message.Subject = Subject;
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = mailbody;
+                smtp.Port = int.Parse(smtpvalue.Port);
+                smtp.Host = smtpvalue.Server; //for gmail host  
+                smtp.EnableSsl = false;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //smtp.Send(message);
+            }
       else
       {
 

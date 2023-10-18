@@ -946,7 +946,7 @@ public class InstrumentService : IInstrumentService
       newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
       newRequest.CreatedBy = userId;
       newRequest.CreatedOn = DateTime.Now;
-      newRequest.UserL4 = DeptuserByL4Id.Id;
+     // newRequest.UserL4 = DeptuserByL4Id.Id;
       newRequest.LabL4 = LabuserByL4Id.Id;
       _unitOfWork.Repository<Request>().Insert(newRequest);
       _unitOfWork.SaveChanges();

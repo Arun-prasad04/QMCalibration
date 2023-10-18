@@ -18,6 +18,9 @@ using System.Data;
 using WEB.Controllers;
 using MathNet.Numerics;
 using System;
+using WEB.Models.Templates;
+
+
 
 //using System.Collections.Generic
 
@@ -5064,14 +5067,14 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 	#region "Dynamic Observation"
-	public ResponseViewModel<ObservationContentValuesViewModel> GetObservationContentValuesById (int ContentId)
+	public ResponseViewModel<ObservationContentValuesViewModel> GetObservationContentValuesById (int InstrumentId, int RequestId)
 	{
 		try
 		{
 
 			List<ObservationContentValuesViewModel> ObservationInstrument = new List<ObservationContentValuesViewModel>();
 
-			DataSet dsObservationContent = GetContentValuesById(ContentId);
+			DataSet dsObservationContent = GetContentValuesById(InstrumentId, RequestId);
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
@@ -5123,12 +5126,13 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 	}
 
-	public DataSet GetContentValuesById(int ContentId)//, int deptid)
+	public DataSet GetContentValuesById(int InstrumentId,int RequestId)//, int deptid)@InstrumentId int,@RequestId int
 	{
 		var connectionString = _configuration.GetConnectionString("CMTDatabase");
 		SqlCommand cmd = new SqlCommand("GetObservationContentValuesById");//GetObservationContentsById
 		cmd.CommandType = CommandType.StoredProcedure;
-		cmd.Parameters.AddWithValue("@ContentId", ContentId);
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		cmd.Parameters.AddWithValue("@RequestId", RequestId);
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -5138,14 +5142,14 @@ public class ObservationTemplateService : IObservationTemplateService
 		sqlAdapter.Fill(dsResults);
 		return dsResults;
 	}
-	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId)
+	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId,int RequestId)
 	{
 		try
 		{
 
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
 
-			DataSet dsObservationContent = GetObservationContent(InstrumentId);
+			DataSet dsObservationContent = GetObservationContent(InstrumentId,RequestId);
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
@@ -5166,6 +5170,22 @@ public class ObservationTemplateService : IObservationTemplateService
 						ContentSubTitle4= dr["ContentSubTitle4"].ToString(),
 						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
 						Id = Convert.ToInt32(dr["Id"]),
+						TypeOfContent = dr["TypeOfContent"].ToString(),
+						//////////////////test////////////////
+						ObsContentValueId = Convert.ToInt32(dr["ObsContentValueId"]),
+						ParentId = Convert.ToInt32(dr["ParentId"]),
+						Sno = Convert.ToInt32(dr["Sno"]),
+						MeasuedValue = dr["MeasuedValue"].ToString(),
+						ActualValue = dr["ActualValue"].ToString(),
+						InstrumentError = dr["InstrumentError"].ToString(),
+						Diff = dr["Diff"].ToString(),
+						MeasuedValue1 = dr["MeasuedValue1"].ToString(),
+						MeasuedValue2 = dr["MeasuedValue2"].ToString(),
+						MeasuedValue3 = dr["MeasuedValue3"].ToString(),
+						Average = dr["Average"].ToString(),
+						Percent = dr["Percent"].ToString(),
+						ContentId = Convert.ToInt32(dr["ContentId"]),
+						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
 
 					};
 					ObservationInstrument.Add(dynamicViewModel);
@@ -5195,12 +5215,14 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
-	public DataSet GetObservationContent(int InstrumentId)//, int deptid)
+	public DataSet GetObservationContent(int InstrumentId,int RequestId)//, int deptid)
 	{
 		var connectionString = _configuration.GetConnectionString("CMTDatabase");
-		SqlCommand cmd = new SqlCommand("GetObservationContents");
+		//SqlCommand cmd = new SqlCommand("GetObservationContents");
+		SqlCommand cmd = new SqlCommand("GetObsContentValuesById");
 		cmd.CommandType = CommandType.StoredProcedure;
 		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		cmd.Parameters.AddWithValue("@RequestId", RequestId);		
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -5295,10 +5317,10 @@ public class ObservationTemplateService : IObservationTemplateService
 					UserContentMapping.Add(new UserContentMappingView
 					{
 					
-						Id = Convert.ToInt32(dr["Id"]),
+						//Id = Convert.ToInt32(dr["Id"]),
 						ContentId = Convert.ToInt32(dr["ContentId"]),
-						ObservationId = Convert.ToInt32(dr["ObservationId"]),
-						InstrumentId = Convert.ToInt32(dr["InstrumentId"])
+						//ObservationId = Convert.ToInt32(dr["ObservationId"]),
+						//InstrumentId = Convert.ToInt32(dr["InstrumentId"])
 					});
 				}
 
@@ -5346,14 +5368,14 @@ public class ObservationTemplateService : IObservationTemplateService
 		sqlAdapter.Fill(dsResults);
 		return dsResults;
 	}
-	public ResponseViewModel<ObservationContentViewModel> GetSelectedObservationContentById(int ContentId,int InstrumentId)
+	public ResponseViewModel<ObservationContentViewModel> GetSelectedObservationContentById(int ContentId,int InstrumentId,int RequestId)
 	{
 		try
 		{
 
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
 
-			DataSet dsObservationContent = GetSelectedObservationContent(ContentId, InstrumentId);
+			DataSet dsObservationContent = GetSelectedObservationContent(ContentId, InstrumentId,RequestId);
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
@@ -5373,6 +5395,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
 						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
 						Id = Convert.ToInt32(dr["Id"]),
+						TypeOfContent = dr["TypeOfContent"].ToString(),
 
 
 					};
@@ -5404,14 +5427,15 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 	}
 	//[GetSelectedObservationContent]
-	public DataSet GetSelectedObservationContent(int ContentId,int InstrumentId)//, int deptid)
+	public DataSet GetSelectedObservationContent(int ContentId,int InstrumentId,int RequestId)//, int deptid)
 	{
 		var connectionString = _configuration.GetConnectionString("CMTDatabase");
 		SqlCommand cmd = new SqlCommand("GetSelectedObservationContent");
 		cmd.CommandType = CommandType.StoredProcedure;
 
 		cmd.Parameters.AddWithValue("@ContentId", ContentId);
-		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId); 
+		cmd.Parameters.AddWithValue("@RequestId", InstrumentId);
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -5491,60 +5515,58 @@ public class ObservationTemplateService : IObservationTemplateService
 				dynamicId = observationById.Id;
 			}
 
-			
-
-			dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
-			var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-									.Where(x => x.Id > 0).ToList());
-			if (detailData.Any())
+			if (dynamic.ObservationContentValuesList != null)
 			{
-				
-				foreach (var updateData in detailData)
+				dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
+				var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+										.Where(x => x.Id > 0).ToList());
+				if (detailData.Any())
 				{
-					_unitOfWork.Repository<ObservationContentValues>().Update(updateData);
-					_unitOfWork.SaveChanges();
+
+					foreach (var updateData in detailData)
+					{
+						_unitOfWork.Repository<ObservationContentValues>().Update(updateData);
+						_unitOfWork.SaveChanges();
+					}
 				}
-			}
-			//if (dynamicId == null )
-			//{ 
-			//dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
-			//}
-			detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-									.Where(x => x.Id == null).ToList());
 
-			if (detailData.Any())
-			{
-				
-				_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
-				_unitOfWork.SaveChanges();
-			}
+				detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+										.Where(x => x.Id == null).ToList());
 
-			//dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
-			
-			//To insert ObservationContentMapping
-			dynamic.ObservationContentMappingList.ForEach(x => x.ObservationId = dynamicId);
-			dynamic.ObservationContentMappingList.ForEach(x => x.CreatedOn = DateTime.Now);
-			dynamic.ObservationContentMappingList.ForEach(x => x.CreatedBy = dynamic.CreatedBy);
-
-			var MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
-									.Where(x => x.Id > 0).ToList());
-			if (MappingData.Any())
-			{
-				foreach (var updateData in MappingData)
+				if (detailData.Any())
 				{
-					_unitOfWork.Repository<ObservationContentMapping>().Update(updateData);
+
+					_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
 					_unitOfWork.SaveChanges();
 				}
 			}
 
-			MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
-									.Where(x => x.Id == null).ToList());
-			if (MappingData.Any())
+			if (dynamic.ObservationContentMappingList != null)
 			{
-				_unitOfWork.Repository<ObservationContentMapping>().InsertRange(MappingData);
-				_unitOfWork.SaveChanges();
-			}
+				//To insert ObservationContentMapping
+				//dynamic.ObservationContentMappingList.ForEach(x => x.ObservationId = dynamicId);
+				//dynamic.ObservationContentMappingList.ForEach(x => x.CreatedOn = DateTime.Now);
+				//dynamic.ObservationContentMappingList.ForEach(x => x.CreatedBy = dynamic.CreatedBy);
 
+			
+				//var MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
+				//						.Where(x => x.ContentId > 0).ToList());
+				//if (MappingData.Any())
+				//{
+				//	foreach (var updateData in MappingData)
+				//	{
+				//		_unitOfWork.Repository<ObservationContentMapping>().Update(updateData);
+				//		_unitOfWork.SaveChanges();
+				//	}
+				//}
+				//MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
+				//						.Where(x => x.ContentId == null).ToList());
+				//if (MappingData.Any())
+				//{
+				//	_unitOfWork.Repository<ObservationContentMapping>().InsertRange(MappingData);
+				//	_unitOfWork.SaveChanges();
+				//}
+			}
 			_unitOfWork.Commit();
 			return new ResponseViewModel<DynamicViewModel>
 			{
@@ -5669,5 +5691,303 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
+	public ResponseViewModel<ObservationContentViewModel>GetObservationContentSelectedList (List<Contentids> Contents)
+	{
+		try
+		{
+
+			StringBuilder Contentdata = new StringBuilder();
+			Contentdata.Append("<Root>");
+			foreach (var Contentlist in Contents)
+			{
+				Contentdata.Append("<ContentList>");
+				Contentdata.Append(string.Format("<ContentId>{0}</ContentId>", (Int32)Contentlist.ContentId));
+				Contentdata.Append(string.Format("<InstrumentId>{0}</InstrumentId>", (Int32)Contentlist.InstrumentId));
+				Contentdata.Append(string.Format("<RequestId>{0}</RequestId>", (Int32)Contentlist.RequestId));
+				
+				Contentdata.Append("</ContentList>");
+			}
+			Contentdata.Append("</Root>");
+
+			DataSet dsObservationContent = GetObsContentList(Contentdata.ToString());
+			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
+				{
+					ObservationContentViewModel ContentViewModel = new ObservationContentViewModel
+					{
+
+						ObservationTemplate = Convert.ToInt32(dr["ObservationTemplate"]),
+						ObservationType = Convert.ToInt32(dr["ObservationType"]),
+						ContentName = dr["ContentName"].ToString(),
+						ContentValue = dr["ContentValue"].ToString(),
+						ContentCount = dr["ContentCount"].ToString(),
+						ContentTitle1 = dr["ContentTitle1"].ToString(),
+						ContentTitle2 = dr["ContentTitle2"].ToString(),
+						ContentSubTitle1 = dr["ContentSubTitle1"].ToString(),
+						ContentSubTitle2 = dr["ContentSubTitle2"].ToString(),
+						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
+						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
+						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
+						Id = Convert.ToInt32(dr["Id"]),
+						TypeOfContent = dr["TypeOfContent"].ToString(),
+						//////////////////test////////////////
+						ObsContentValueId = Convert.ToInt32(dr["ObsContentValueId"]),
+						ParentId = Convert.ToInt32(dr["ParentId"]),
+						Sno = Convert.ToInt32(dr["Sno"]),
+						MeasuedValue = dr["MeasuedValue"].ToString(),
+						ActualValue = dr["ActualValue"].ToString(),
+						InstrumentError = dr["InstrumentError"].ToString(),
+						Diff = dr["Diff"].ToString(),
+						MeasuedValue1 = dr["MeasuedValue1"].ToString(),
+						MeasuedValue2 = dr["MeasuedValue2"].ToString(),
+						MeasuedValue3 = dr["MeasuedValue3"].ToString(),
+						Average = dr["Average"].ToString(),
+						Percent = dr["Percent"].ToString(),
+						ContentId = Convert.ToInt32(dr["ContentId"]),
+						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
+
+					};
+					ObservationInstrument.Add(ContentViewModel);
+				}
+			}
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ObservationInstrument
+			};
+
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("InstrumentService - GetObservationContentSelectedList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
+			return new ResponseViewModel<ObservationContentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "GetObservationContentSelectedList"
+			};
+		}
+	}
+	public DataSet GetObsContentList(string Contents)//, int deptid)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("GetObservationContentSelectedList");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		cmd.Parameters.AddWithValue("@Content", Contents);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
 	#endregion
+
+	public ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId)
+	{
+		try
+		{
+			ExternalObsViewModel metalViewModel = _unitOfWork.Repository<TemplateObservation>()
+			.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+			.Select(s => new ExternalObsViewModel()
+			{
+				Id = s.Id,
+				TempStart = s.TempStart,
+				TempEnd = s.TempEnd,
+				Humidity = s.Humidity,
+				RefWi = s.RefWi,
+				Allvalues = s.Allvalues,
+				CalibrationPerformedDate = s.CreatedOn,
+				CreatedBy = s.CreatedBy,
+				CalibrationReviewedBy = s.CalibrationReviewedBy,
+				CalibrationReviewedDate = s.CalibrationReviewedDate,
+				ReviewStatus = s.ReviewStatus,
+				ExternalObsCondition = s.InstrumentCondition,
+				AdminReviewStatus = s.ExternalObsStatus,
+				ULRNumber = s.ULRNumber
+			}).SingleOrDefault();
+
+			if (metalViewModel == null)
+			{
+				return new ResponseViewModel<ExternalObsViewModel>
+				{
+					ResponseCode = 200,
+					ResponseMessage = "No records found",
+					ResponseData = null,
+					ResponseDataList = null
+				};
+			}
+			else
+			{
+
+				List<string> performedUserData = GetUserName(metalViewModel.CreatedBy);
+
+				if (performedUserData.Count >= 3)
+				{
+					metalViewModel.CalibrationPerformedBy = performedUserData[0];
+					metalViewModel.PerformedBySign = performedUserData[1];
+					metalViewModel.PerformedByDesignation = performedUserData[2];
+				}
+
+				List<string> reviewedUserData = GetUserName(metalViewModel.CalibrationReviewedBy);
+
+				if (reviewedUserData.Count >= 3)
+				{
+					metalViewModel.ReviewedBy = reviewedUserData[0];
+					metalViewModel.ReviewedBySign = reviewedUserData[1];
+					metalViewModel.ReviewedByDesignation = reviewedUserData[2];
+				}
+
+				int? ulrNumber = metalViewModel.ULRNumber == null ? 0 : metalViewModel.ULRNumber;
+				// int? certificateNumber = metalViewModel.CertificateNumber == null ? 0 : metalViewModel.CertificateNumber;
+				//List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+
+				//if (formatList.Count >= 2)
+				//{
+				//    metalViewModel.ULRFormat = formatList[0];
+				//    metalViewModel.CertificateFormat = formatList[1];
+				//}
+			}
+			return new ResponseViewModel<ExternalObsViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = metalViewModel,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("ObservationTemplateService - GetMetalRulesId Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<ExternalObsViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "GetMetalRulesId"
+			};
+		}
+	}
+
+	public ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs)
+	{
+		try
+		{
+			_unitOfWork.BeginTransaction();
+			int tempobsId = 0;
+			int ObjMicroData = 0;
+			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+																 .GetQueryAsNoTracking(Q => Q.RequestId == exObs.RequestId
+																  && Q.InstrumentId == exObs.InstrumentId).SingleOrDefault();
+
+			if ((exObs.TemplateObservationId == 0) && (observationById == null))
+
+			{
+				TemplateObservation templateObservation = new TemplateObservation()
+				{
+					InstrumentId = exObs.InstrumentId,
+					RequestId = exObs.RequestId,
+					TempStart = exObs.TempStart,
+					TempEnd = exObs.TempEnd,
+					Humidity = exObs.Humidity,
+					InstrumentCondition = exObs.ExternalObsCondition,
+					RefWi = exObs.RefWi,
+					Allvalues = exObs.Allvalues,
+					CreatedOn = DateTime.Now,
+					CreatedBy = exObs.CreatedBy,
+					CalibrationReviewedDate = DateTime.Now,
+					ExternalObsStatus = exObs.AdminReviewStatus
+				};
+				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
+				_unitOfWork.SaveChanges();
+				tempobsId = templateObservation.Id;
+			}
+			else
+			{
+				if (observationById != null)
+				{
+
+
+					if (exObs.TempStart != null)
+					{
+						observationById.TempStart = exObs.TempStart;
+					}
+
+					if (exObs.TempEnd != null)
+					{
+						observationById.TempEnd = exObs.TempEnd;
+					}
+
+					if (exObs.Humidity != null)
+					{
+						observationById.Humidity = exObs.Humidity;
+					}
+
+					if (exObs.ExternalObsCondition != null)
+					{
+						observationById.InstrumentCondition = exObs.ExternalObsCondition;
+					}
+					if (exObs.RefWi != null)
+					{
+						observationById.RefWi = exObs.RefWi;
+					}
+					if (exObs.Allvalues != null)
+					{
+						observationById.Allvalues = exObs.Allvalues;
+					}
+					if (exObs.AdminReviewStatus != null)
+					{
+						observationById.ExternalObsStatus = exObs.AdminReviewStatus;
+					}
+
+					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+					_unitOfWork.SaveChanges();
+				}
+			}
+
+			_unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+			return new ResponseViewModel<ExternalObsViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			_unitOfWork.RollBack();
+			ErrorViewModelTest.Log("ObservationTemplateService - InsertMicrometer Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<ExternalObsViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = exObs,
+				ResponseDataList = null,
+				ResponseService = "ObservationTemplateService",
+				ResponseServiceMethod = "InsertMicrometer"
+			};
+		}
+	}
 }

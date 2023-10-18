@@ -944,10 +944,8 @@
                             </div>
                         </div>
                     }
-                    @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器"))
+                    @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
                     {
-                        @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "2")
-                    { *@
                         <div>
 
                             <div class="row mt-4">

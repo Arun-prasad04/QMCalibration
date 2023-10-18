@@ -134,7 +134,7 @@ public class TrackerController : BaseController
 	{
 		//ResponseViewModel<RequestViewModel> response=_requestService.GetRequestById(requestId);
 		return View();
-	}
+	} 
 	public IActionResult RequestDetailsNew()
 	{
 		int requestId = int.Parse(HttpContext.Request.Query["ID"].ToString());
@@ -143,9 +143,9 @@ public class TrackerController : BaseController
 		ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
 		ViewBag.MasterData = masterResponse.ResponseDataList;
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
-		//ViewBag.ObservationType = response.ResponseData.ObservationType;
+		ViewBag.ObservationType = response.ResponseData.ObservationType;
 
-       // ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 
 		return View(response.ResponseData);
 	}

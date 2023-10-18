@@ -133,9 +133,6 @@ function validateSession(sessionvalue) {
         });
     }
 }
-
-
-
 function showPopup(resCode, resMsg, lang) {
     if (resCode != '' && resCode != undefined && resCode == 200) {
         showSuccess(resMsg, lang);
@@ -155,7 +152,6 @@ function viewExternalRequest(element) {
         $("#trackerViewModel").modal('show');
     });
 }
-
 function AssignExternalRequestValues(resultObject) {
     if (resultObject != null) {
         $('#ReqNo').val(resultObject.reqNo);
@@ -834,7 +830,7 @@ function ValidateCheck() {
 }
 
 
-function DudeDateCalculation (dt) {
+function DudeDateCalculation(dt) {
 
     var duedate;
     if (dt == 13) {
@@ -911,13 +907,13 @@ function AcceptRequest(type, lang) {
     //debugger;
     var data;
     var Id = $('#RequestCalibId').val();
-    
-    var dueDate;      
+
+    var dueDate;
     var dt = $('#CalibFreq').val();
     dueDate = DudeDateCalculation(dt);
     console.log('duedate');
     console.log(dueDate);
-    
+
     data = {
         requestId: $('#RequestCalibId').val(),
         ReceivedBy: $('#ReceivedBy').val(),
@@ -1226,7 +1222,7 @@ function CloseNewRequestPopup() {
 }
 
 function NewReqEnableReason() {
-   // debugger;
+    // debugger;
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         $('#NewReasonSection').css('display', 'none');
         $('#NewacceptSection').css('display', 'block');
@@ -1242,7 +1238,7 @@ function NewReqEnableReason() {
 }
 
 function AcceptRejectNewRequest(lang) {
-    
+
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
@@ -1289,8 +1285,7 @@ function AcceptRejectExternalRequest(lang) {
     }
 }
 
-function ExternalRejecttRequest(type, lang)
-{
+function ExternalRejecttRequest(type, lang) {
     debugger;
     console.log($('#TentativeCompletionDate').val());
     var data1;
@@ -1382,7 +1377,7 @@ function ExternalAcceptRequest(type, lang) {
         data: formData,
         dataType: 'json',
         processData: false,
-        contentType: false, 
+        contentType: false,
         success: function (data) {
             window.location.href = '../Tracker/Request?reqType=4';
             showSuccess("You are rejected the External request. LAB admin get notified!", lang);
@@ -1396,11 +1391,11 @@ function ExternalAcceptRequest(type, lang) {
 function ValidateCheckForExternal() {
     debugger;
     var errCount = 0;
-    $('#txtIdNoError').hide();        
+    $('#txtIdNoError').hide();
     if (($('#txtIdNo').val()) == '') {
         errCount = errCount + 1;
         $('#txtIdNoError').show();
-    }    
+    }
     return errCount;
 }
 
@@ -1537,7 +1532,7 @@ function RejecttQuarRequest() {
 
 
 
- function LoadObservationType(lang) {
+function LoadObservationType(lang) {
 
     var optionhtmlOBType;
     $.ajax({
@@ -1621,16 +1616,16 @@ function SaveLeverDial(lang) {
 
 function SaveInventoryCalibration(lang) {
     var sPageURLPaarameter = window.location.search.substring(1);
-    
+
     var InstrumentDataList = new Array();
     var CheckedCount = 0;
-    var UNCheckedCount = 0;   
+    var UNCheckedCount = 0;
     var tblLength = $('#tblTool tbody tr').length;
     var UserDept = 0;
-   
+
     if ($('#tblTool tbody tr').length > 0) {
         $('#tblTool tbody tr').each(function (row, tr) {
-            
+
             var checkedvalue = $(tr).find("input[name=ChkInput]").prop('checked');
 
             var objInstrumentId = $(tr).find("input[name=instrumentid]").val();//$(tr).find("td[id='instrumentid'] input[type='hidden']").val();
@@ -1641,8 +1636,8 @@ function SaveInventoryCalibration(lang) {
             //var objReplacementLabId = $(tr).find("input[id='" + Masterid + "']").text().trim();
             var objPopUpRecordCount = $(tr).find("input[id='" + POPoutId + "']").val(); // $(tr).find("input[id= '" + ChkoutId + "']").val().trim();
             var objChkRecordCount = $(tr).find("input[id='" + CHKoutId + "']").prop('checked');
-                 
-          
+
+
             if (checkedvalue == true) {
 
 
@@ -1678,12 +1673,12 @@ function SaveInventoryCalibration(lang) {
             //    UNCheckedCount += 1;
             //}
         });
-      
+
 
     }
-    
-    if ((InstrumentDataList.length > 0) && (CheckedCount == 0)){
-      
+
+    if ((InstrumentDataList.length > 0) && (CheckedCount == 0)) {
+
         $.ajax({
             dataType: 'json',
             url: '../Instrument/SaveInventoryCalibration',
@@ -1691,9 +1686,9 @@ function SaveInventoryCalibration(lang) {
             data: { InstrumentList: InstrumentDataList },
             success: function () {
 
-               
+
                 window.location.href = '../Instrument/ToolInventory?' + sPageURLPaarameter + '';
-                
+
                 showSuccess("Data Saved Successfully", lang);
             },
             failure: function (response) {
@@ -2053,11 +2048,11 @@ function SaveMetalRule(lang) {
     var obsType = $('#ObservationTypeMetalId').val();
     if (obsType != 165) {
 
-        $('#MetalRule2 tbody tr').each(function (row, tr) {       
-            if ($('#MetalRule2 >tbody >tr').length > 0) {                
+        $('#MetalRule2 tbody tr').each(function (row, tr) {
+            if ($('#MetalRule2 >tbody >tr').length > 0) {
                 if ($(tr).index() >= 0) {
                     //ObjParent = $(tr).find("td:eq(5) input[type='hidden']").val() || null || '' ? $('#TemplateObservationId').val() : $(tr).find("td:eq(5) input[type='hidden']").val();                   
-                    if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {                        
+                    if ($(tr).find("td:eq(1) input[type='text']").val() > 0) {
                         var MicroData = {
                             Id: $(tr).find("td:eq(0) input[id='id']").val(),
                             SNO: $(tr).find("td:eq(0) input[type='text']").val(),
@@ -3110,15 +3105,15 @@ function DueForCalibrationInstruments() {
         if (tblRowsCoun > 0) {
             console.log('count');
             var oTable = $("#example1").dataTable();
-            $(".one", oTable.fnGetNodes()).each(function (i, row) {                                                                   
-                var currentRow3 = $(this).closest("tr");                
-                if (typeof($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") { 
-                     currentRow3.hide();
+            $(".one", oTable.fnGetNodes()).each(function (i, row) {
+                var currentRow3 = $(this).closest("tr");
+                if (typeof ($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") {
+                    currentRow3.hide();
                 }
                 else {
-                     currentRow3.show();
+                    currentRow3.show();
                 }
-            });            
+            });
         }
     }
     else {
@@ -3158,7 +3153,7 @@ function InsertRequestList() {
 
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-        var UserView = {            
+        var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
             TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val()
         }
@@ -3185,7 +3180,7 @@ function InsertRequestList() {
         url: '../Instrument/DueRequest',
         type: 'POST',
         data: { userViewModelList: Request },
-        dataType: "json",    
+        dataType: "json",
     }).done(function (resultObject) {
         //showSuccess("Data Saved Successfully");
         window.location.href = '../Instrument/Index';
@@ -3198,7 +3193,7 @@ function DueInstrumentList() {
     var id = "";
     var oTable = $("#example2").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-       // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
         var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
             InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
@@ -3213,213 +3208,209 @@ function DueInstrumentList() {
             ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
             InstrumentCreatedBy: $(this).closest('tr').find('td:eq(5) input[name="InstrumentCreatedBy"]').val(),
         }
-        Request.push(UserView);        
-    });    
+        Request.push(UserView);
+    });
     console.log(Request);
     $.ajax({
         url: '../Tracker/DueInstrumentAdminApprove',
         type: 'POST',
         data: { DueList: Request },
-        dataType: "json",       
+        dataType: "json",
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully");
         window.location.href = '../Tracker/DueInstrument';
     });
-
-
-function DueInstrumentManagerApprove() {
-    var Request = new Array();
-    var id = "";
-    var oTable = $("#example2").dataTable();
-    $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
-        // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
-        var UserView = {
-            instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
-            //InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
-            //IdNo: $(this).closest('tr').find('td:eq(1)').html(),
-            //SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
-            //TypeofScope: $(this).closest('tr').find('td:eq(3)').html(),
-            //DueDate: $(this).closest('tr').find('td:eq(4)').html(),
-            //DeptId: $(this).closest('tr').find('td:eq(5) input[name="deptId"]').val(),
-            //EquipmentType: $(this).closest('tr').find('td:eq(5) input[name="equipType"]').val(),
-            //SectionName: $(this).closest('tr').find('td:eq(5) input[name="subname"]').val(),
-            //Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
-            //ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
-        }
-        Request.push(UserView);
-    });
-    console.log(Request);
-    $.ajax({
-        url: '../Tracker/DueInstrumentManagerApprove',
-        type: 'POST',
-        data: { DueList: Request },
-        dataType: "json",
-    }).done(function (resultObject) {
-        showSuccess("Data Saved Successfully");
-        window.location.href = '../Tracker/DueTracker';
-    });
 }
 
-function ExternalUserSubmit(type, lang) {
-    var data1;
-    var formData = new FormData();
-    var Id = $('#RequestCalibId').val();
-    //var files = $("#ImageUpload")[0].files;
+    function DueInstrumentManagerApprove() {
+        var Request = new Array();
+        var id = "";
+        var oTable = $("#example2").dataTable();
+        $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
+            // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
+            var UserView = {
+                instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
+                //InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
+                //IdNo: $(this).closest('tr').find('td:eq(1)').html(),
+                //SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
+                //TypeofScope: $(this).closest('tr').find('td:eq(3)').html(),
+                //DueDate: $(this).closest('tr').find('td:eq(4)').html(),
+                //DeptId: $(this).closest('tr').find('td:eq(5) input[name="deptId"]').val(),
+                //EquipmentType: $(this).closest('tr').find('td:eq(5) input[name="equipType"]').val(),
+                //SectionName: $(this).closest('tr').find('td:eq(5) input[name="subname"]').val(),
+                //Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
+                //ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
+            }
+            Request.push(UserView);
+        });
+        console.log(Request);
+        $.ajax({
+            url: '../Tracker/DueInstrumentManagerApprove',
+            type: 'POST',
+            data: { DueList: Request },
+            dataType: "json",
+        }).done(function (resultObject) {
+            showSuccess("Data Saved Successfully");
+            window.location.href = '../Tracker/DueTracker';
+        });
+    }
 
-    var file = $('#ImageUpload')[0].files[0];
-    //formData.append("file", file);
-    //data1 = {
-    //    requestId: $('#RequestCalibId').val(),
-    //    ReceivedBy: $('#ReceivedBy').val(),
-    //    InstrumentCondition: $('#InstrumentCondition').val(),
-    //    Feasiblity: $('#Feasiblity').val(),
-    //    TentativeCompletionDate: $('#TentativeCompletionDate').val(),
-    //    newNABL: $('#IsNABL').val(),
-    //    InstrumentIdNo: $('#txtIdNo').val(),
-    //    rejectReason: $('#Newreason').val(),
-    //    photo: FileData
-    //}
-    //formData.append("ReceivedBy", $('#ReceivedBy').val());
-    //formData.append("InstrumentCondition", $('#InstrumentCondition').val());
-    //formData.append("Feasiblity", $('#Feasiblity').val());
-    //formData.append("TentativeCompletionDate", $('#TentativeCompletionDate').val());
-    //formData.append("newNABL", $('#IsNABL').val());
-    //formData.append("InstrumentIdNo", $('#txtIdNo').val());
-    //formData.append("acceptReason", $('#Acceptreason').val());
+    function ExternalUserSubmit(type, lang) {
+        var data1;
+        var formData = new FormData();
+        var Id = $('#RequestCalibId').val();
+        //var files = $("#ImageUpload")[0].files;
 
-    formData.append("requestId", $('#RequestCalibId').val());
-    formData.append("httpPostedFileBase", file);
+        var file = $('#ImageUpload')[0].files[0];
+        //formData.append("file", file);
+        //data1 = {
+        //    requestId: $('#RequestCalibId').val(),
+        //    ReceivedBy: $('#ReceivedBy').val(),
+        //    InstrumentCondition: $('#InstrumentCondition').val(),
+        //    Feasiblity: $('#Feasiblity').val(),
+        //    TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+        //    newNABL: $('#IsNABL').val(),
+        //    InstrumentIdNo: $('#txtIdNo').val(),
+        //    rejectReason: $('#Newreason').val(),
+        //    photo: FileData
+        //}
+        //formData.append("ReceivedBy", $('#ReceivedBy').val());
+        //formData.append("InstrumentCondition", $('#InstrumentCondition').val());
+        //formData.append("Feasiblity", $('#Feasiblity').val());
+        //formData.append("TentativeCompletionDate", $('#TentativeCompletionDate').val());
+        //formData.append("newNABL", $('#IsNABL').val());
+        //formData.append("InstrumentIdNo", $('#txtIdNo').val());
+        //formData.append("acceptReason", $('#Acceptreason').val());
 
-    ////formData.append("data", JSON.stringify(data1));
+        formData.append("requestId", $('#RequestCalibId').val());
+        formData.append("httpPostedFileBase", file);
 
-    //formData.append("httpPostedFileBase", $("#ImageUpload")[0].files[0]);
-    //var totalFiles = document.getElementById('ImageUpload').files.length;
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById('ImageUpload').files[i];
-    //    formData.append("httpPostedFileBase", file);
-    //}
-    $.ajax({
-        type: 'POST',
-        url: '../Tracker/ExternalUserSubmit',
-        data: formData,
-        dataType: 'json',
-        processData: false,
-        contentType: false,
-        success: function (data) {
+        ////formData.append("data", JSON.stringify(data1));
+
+        //formData.append("httpPostedFileBase", $("#ImageUpload")[0].files[0]);
+        //var totalFiles = document.getElementById('ImageUpload').files.length;
+        //for (var i = 0; i < totalFiles; i++) {
+        //    var file = document.getElementById('ImageUpload').files[i];
+        //    formData.append("httpPostedFileBase", file);
+        //}
+        $.ajax({
+            type: 'POST',
+            url: '../Tracker/ExternalUserSubmit',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                window.location.href = '../Tracker/Request?reqType=4';
+                showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+
+    function SaveExternalObservationSheet(lang) {
+        //debugger;    
+
+        var data = {
+            Id: $('#Id').val(),
+            InstrumentId: $('#instrumentId').val(),
+            RequestId: $('#requestId').val(),
+            RefStd: $('#RefStd').val(),
+            TempStart: $('#TempStart').val(),
+            TempEnd: $('#TempEnd').val(),
+            Humidity: $('#Humidity').val(),
+            RefWi: $('#RefWi').val(),
+            Allvalues: $('#Allvalues').val(),
+            ExternalObsCondition: $('#ExtIndicatiorCondition').val(),
+            CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
+            ReviewedBy: $('#ReviewedBy').val(),
+            CalibrationDoneDate: $('#CalibrationDoneDate').val(),
+            ReviewedDate: $('#ReviewedDate').val(),
+            AdminReviewStatus: $('#AdminReviewStatus').val(),
+        }
+        $.ajax({
+            url: '../Observation/InsertExternalObs',
+            type: 'POST',
+            data: { ExObs: data },
+            dataType: "json",
+        }).done(function (resultObject) {
             window.location.href = '../Tracker/Request?reqType=4';
-            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
-        },
-        error: function () {
-            alert('error');
+            showSuccess("Data Saved Successfully", lang);
+        });
+    }
+
+    function SaveExternalObs(lang) {
+        debugger;
+        if ($('#txtIdNo').val().trim() == '') {
+            showWarning("Please Enter Instrument Id Number", lang);
+            return false;
         }
-    });
-}
 
-function SaveExternalObservationSheet(lang) {
-    //debugger;    
 
-    var data = {
-        Id: $('#Id').val(),
-        InstrumentId: $('#instrumentId').val(),
-        RequestId: $('#requestId').val(),
-        RefStd: $('#RefStd').val(),
-        TempStart: $('#TempStart').val(),
-        TempEnd: $('#TempEnd').val(),
-        Humidity: $('#Humidity').val(),
-        RefWi: $('#RefWi').val(),
-        Allvalues: $('#Allvalues').val(),
-        ExternalObsCondition: $('#ExtIndicatiorCondition').val(),
-        CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
-        ReviewedBy: $('#ReviewedBy').val(),
-        CalibrationDoneDate: $('#CalibrationDoneDate').val(),
-        ReviewedDate: $('#ReviewedDate').val(),        
-        AdminReviewStatus: $('#AdminReviewStatus').val(),
+        $.ajax({
+            url: '../Tracker/SaveExternalObs',
+            type: 'POST',
+            data: { requestId: $('#RequestCalibId').val(), InstrumentID: $('#hdnInstrumentId').val(), InstrumentIdNo: $('#txtIdNo').val() },
+            success: function (data) {
+                window.location.href = '../Tracker/Request?reqType=4';
+                //showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
     }
-    $.ajax({
-        url: '../Observation/InsertExternalObs',
-        type: 'POST',
-        data: { ExObs: data },
-        dataType: "json",
-    }).done(function (resultObject) {
-        window.location.href = '../Tracker/Request?reqType=4';
-        showSuccess("Data Saved Successfully", lang);
-    });
-}
 
-function SaveExternalObs(lang) {
-    debugger;
-    if ($('#txtIdNo').val().trim() == '') {
-        showWarning("Please Enter Instrument Id Number", lang);
-        return false; 
-    }
-   
-
-    $.ajax({
-        url: '../Tracker/SaveExternalObs',
-        type: 'POST',
-        data: { requestId: $('#RequestCalibId').val(), InstrumentID: $('#hdnInstrumentId').val(), InstrumentIdNo: $('#txtIdNo').val() },    
-        success: function (data) {
-            window.location.href = '../Tracker/Request?reqType=4';
-            //showSuccess("You are rejected the External request. LAB admin get notified!", lang);
-        },
-        error: function () {
-            alert('error');
+    function ExternalCalibrationRequest(lang) {
+        if ($('#Newreason').val().trim() == '') {
+            return false;
         }
-    });
-}
-
-function ExternalCalibrationRequest(lang) {
-    if ($('#Newreason').val().trim() == '') {
-        return false;
-    }
-    var data1;
-    data1 = {
-        requestId: $('#RequestCalibId').val(),
-        ReceivedBy: $('#ReceivedBy').val(),
-       // InstrumentCondition: $('#InstrumentCondition').val(),
-       // Feasiblity: $('#Feasiblity').val(),
-       // TentativeCompletionDate: $('#TentativeCompletionDate').val(),
-        rejectReason: $('#Newreason').val(),
-        //standardReffered: $('#StandardReffered').val()
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: '../Tracker/ExternalCalibrationReject',
-        data: data1,
-        dataType: 'json',
-        success: function (data) {
-            window.location.href = '../Tracker/Request?reqType=4';
-            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
-        },
-        error: function () {
-            alert('error');
+        var data1;
+        data1 = {
+            requestId: $('#RequestCalibId').val(),
+            ReceivedBy: $('#ReceivedBy').val(),
+            // InstrumentCondition: $('#InstrumentCondition').val(),
+            // Feasiblity: $('#Feasiblity').val(),
+            // TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+            rejectReason: $('#Newreason').val(),
+            //standardReffered: $('#StandardReffered').val()
         }
-    });
-}
-function ValidateObservation()
-{
 
-    var Unit = $('#Units').val();
-    if (Unit == null || Unit == "") {
-        showWarning("Please enter the Units", language);
-        return false;;
+        $.ajax({
+            type: 'POST',
+            url: '../Tracker/ExternalCalibrationReject',
+            data: data1,
+            dataType: 'json',
+            success: function (data) {
+                window.location.href = '../Tracker/Request?reqType=4';
+                showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
     }
-    var Temprature = $('#TempStart').val();
-    if (Temprature == null || Temprature == "") {
-        showWarning("Please enter the Temprature !!!", language);
-        return false;
+    function ValidateObservation() {
+        var Unit = $('#Units').val();
+        if (Unit == null || Unit == "") {
+            showWarning("Please enter the Units", language);
+            return false;;
+        }
+        var Temperature = $('#TempStart').val();
+        if (Temperature == null || Temperature == "") {
+            showWarning("Please enter the Temperature !!!", language);
+            return false;
+        }
+        var Humidity = $('#Humidity').val();
+        if (Humidity == null || Humidity == "") {
+            showWarning("Please enter the Humidity", language);
+            return false;
+        }
+        var VisualCheckCondition = $('#VisualCheckCondition').val();
+        if (VisualCheckCondition == null || VisualCheckCondition == "") {
+            showWarning("Please enter the Visual Check", language);
+            return false;
+        }
     }
-    var Humidity = $('#Humidity').val();
-    if (Humidity == null || Humidity == "") {
-        showWarning("Please enter the Humidity", language);
-        return false;
-    }
-    var VisualCheckCondition = $('#VisualCheckCondition').val();
-    if (VisualCheckCondition == null || VisualCheckCondition == "") {
-        showWarning("Please enter the Visual Check", language);
-        return false;
-    }
-}
-
-

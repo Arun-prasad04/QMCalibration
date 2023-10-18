@@ -9,5 +9,6 @@
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedOn { get; set; }
 		public bool? IsActive { get; set; }
+		public int? Sno { get; set; }
 	}
 }
