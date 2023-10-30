@@ -114,9 +114,10 @@ namespace WEB.Models
     {
         public int instrumentId { get; set; }
         public int TypeValue { get; set; }
+        public string EmailServiceNo { get; set; }
 
-    }
-
+	}
+    
     public class RequestMailList
     {
         public int SNo { get; set; }

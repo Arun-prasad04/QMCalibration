@@ -66,6 +66,6 @@ namespace WEB.Services.Interface
         ResponseViewModel<CertificateViewModel> SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, int loginBy, string ExportData);
 
 
-    }
+	}
 
 }

@@ -337,6 +337,13 @@
 									<p class="trn">Request Tracker</p>
 								</a>
 							</li>
+							<li class="nav-item  has-treeview">
+								<a href='@Url.Action("ToolRoomInstrumentListing","Instrument")' class="nav-link">
+									
+									<i class="nav-icon fas fa-calendar-minus"></i>
+									<p class="trn">ToolRoom Instrument List</p>
+								</a>
+							</li>
 						}						
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{

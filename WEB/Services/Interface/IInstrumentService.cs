@@ -23,6 +23,6 @@ public interface IInstrumentService
 	ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId);
 
     DateTime GetcalibrationClosedate(int requid);
-
+	ResponseViewModel<InstrumentViewModel> GetAllToolRoomInstrument();
 
 }

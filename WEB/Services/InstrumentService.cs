@@ -1487,4 +1487,87 @@ public class InstrumentService : IInstrumentService
         return closedate;
 
 	}
-}
+	public ResponseViewModel<InstrumentViewModel> GetAllToolRoomInstrument()
+	{
+		
+
+			try
+			{
+				//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+				List<InstrumentViewModel> ToolRoomInstrumentListing = new List<InstrumentViewModel>();
+				DataSet dsToolInventory = GetToolRoomInstrumentList();
+				if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[0].Rows.Count > 0)
+				{
+					foreach (DataRow dr in dsToolInventory.Tables[0].Rows)
+					{
+						InstrumentViewModel inst = new InstrumentViewModel
+						{
+							Id = Convert.ToInt32(dr["Id"]),
+							InstrumentName = dr["InstrumentName"].ToString(),
+							SlNo = dr["SlNo"].ToString(),
+							IdNo = dr["IdNo"].ToString(),
+							Range = dr["Range"].ToString(),
+							LC = dr["LC"].ToString(),
+							CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+							CalibDate = Convert.ToDateTime(dr["CalibDate"]),
+							DueDate = Convert.ToDateTime(dr["DueDate"]),
+							Make = dr["Make"].ToString(),
+							CalibSource = dr["CalibSource"].ToString(),
+							StandardReffered = dr["StandardReffered"].ToString(),
+							Remarks = dr["Remarks"].ToString(),
+							Status = Convert.ToInt16(dr["Status"]),
+							RequestId = Convert.ToInt32(dr["RequestId"]),
+							DepartmentName = dr["deptName"].ToString(),
+							RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+							//UserRoleId = userRoleId,
+							TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+							ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+						};
+						ToolRoomInstrumentListing.Add(inst);
+
+					}
+				}
+
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ToolRoomInstrumentListing
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("InstrumentService - GetAllToolInventoryInstrumentList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseServiceMethod = "Instrument",
+				ResponseService = "GetAllToolInventoryInstrumentList"
+			};
+		}
+	}
+
+
+	public DataSet GetToolRoomInstrumentList()
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("[GetToolRoomInstrumentList]");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
+   }

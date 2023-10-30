@@ -3167,7 +3167,7 @@ function InsertRequestList() {
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
-            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val()
+            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val(),
         }
 
         Request.push(UserView);
