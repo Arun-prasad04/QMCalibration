@@ -8,7 +8,7 @@ using AutoMapper;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Diagnostics.Metrics;
 using WEB.Models.Templates;
-using Nancy;
+
 
 namespace WEB.Controllers;
 public class ObservationController : BaseController
@@ -1007,10 +1007,10 @@ public class ObservationController : BaseController
 		}
 		return View(response.ResponseData);
 	}
-	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus)
-	{
+	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks)
+	{        
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId);
+		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks);
 		return Json(response.ResponseData);
 	}
 	public IActionResult GeneralNew(int requestId, int instrumentId)
@@ -1483,6 +1483,8 @@ public class ObservationController : BaseController
             response.ResponseData.SerialNo = instrumentresponse.ResponseData.SlNo;
             response.ResponseData.IdNo = instrumentresponse.ResponseData.IdNo;
             response.ResponseData.RefStd = instrumentresponse.ResponseData.StandardReffered;
+            response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
+            response.ResponseData.MasterEqiupmentList = instrumentresponse.ResponseData.MasterEqiupmentList;
             //response.ResponseData.ObsSubType = instrumentresponse.ResponseData.ObservationType;
             //response.ResponseData.Grade = instrumentresponse.ResponseData.Grade;
 
@@ -1530,6 +1532,7 @@ public class ObservationController : BaseController
             extObs.CalibrationPerformedBy = string.Concat(firstName, " ", lastName);
             extObs.CalibrationPerformedDate = DateTime.Now;
             extObs.CalibrationReviewedDate = DateTime.Now;
+            extObs.Grade = instrumentresponse.ResponseData.Grade;
             //extObs.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
             if (userRoleId == 4)
             {
@@ -1561,7 +1564,7 @@ public class ObservationController : BaseController
             responseempty.ResponseData = extObs;
             return View(responseempty.ResponseData);
         }
-        return View(response.ResponseData);
+            return View(response.ResponseData);
     }
 
     public IActionResult InsertExternalObs(ExternalObsViewModel exObs)

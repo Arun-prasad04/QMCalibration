@@ -219,6 +219,8 @@ public class HomeController : BaseController
 					id = item.Id,
 					Name = item.Name,
 					NameJp = item.NameJP,
+					SubSectionCode = item.SubSectionCode
+
 
 				});
 			}
@@ -243,6 +245,7 @@ public class HomeController : BaseController
 		public string? Name { get; set; }
 
 		public string? NameJp { get; set; }
+		public string? SubSectionCode { get; set; }
 
 	}
 

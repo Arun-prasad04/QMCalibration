@@ -256,5 +256,29 @@ namespace WEB.Services
 				return data;
 			}
 		}
-	}
+
+
+        public QRCodeFilesViewModel GetQRCodeDetailsForCertificate(int requid, int instrumentid)
+        {
+            try
+            {
+                QRCodeFilesViewModel qrCodeFilesCurrentData = _mapper.Map<QRCodeFilesViewModel>
+                                                                   (_unitOfWork.Repository<QRCodeFiles>()
+                                                                                  .GetQueryAsNoTracking()
+                                                                                  .Where(x => x.RequestId == requid
+                                                                                        && x.InstrumentId == instrumentid)
+                                                                                  .OrderByDescending(x => x.Id)
+                                                                                  .ToList()
+                                                                                  .FirstOrDefault()
+                                                                   );
+                return qrCodeFilesCurrentData;
+            }
+            catch (Exception ex)
+            {
+                ErrorViewModelTest.Log("QRCodeGeneratorService - GetQRCodeDetails Method");
+                ErrorViewModelTest.Log("exception - " + ex.Message);
+                return new QRCodeFilesViewModel() { };
+            }
+        }
+    }
 }

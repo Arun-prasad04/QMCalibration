@@ -745,14 +745,17 @@ public class CertificationController : BaseController
                 {
                     instrumentresponse.ResponseData.obsContent = responseObs.ResponseDataList;
                 }
-                if (string.IsNullOrEmpty(instrumentresponse.ResponseData.TempObservationData.CalibrationResult))
-                {
-                    instrumentresponse.ResponseData.isExportCertificate = false;
-                }
-                else
+
+                QRCodeFilesViewModel existingData = _qrCodeGeneratorService.GetQRCodeDetailsForCertificate(requestId, instrumentId);
+
+                if (existingData != null)
                 {
                     instrumentresponse.ResponseData.isExportCertificate = true;
                 }
+                else
+                {
+                    instrumentresponse.ResponseData.isExportCertificate = false;
+                }                
 
                 ResponseViewModel<RequestViewModel> requestResponse = _requestService.GetRequestById(requestId);
                 if (requestResponse.ResponseData != null)
@@ -812,18 +815,17 @@ public class CertificationController : BaseController
         return View(instrumentresponse.ResponseData);
     }
 
-    public IActionResult SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, string CalibrationResult, string Remarks, string ExportData, string TempltateName)
+    public IActionResult SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition,  string ExportData, string TempltateName)
     {
-
+        
         //ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_RESULTS, CalibrationResult);
-        //ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_REMARKS, Remarks);        
-
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-
+        //ExportData = ExportData.Replace(Constants.PDF_CERTIFICATE_REMARKS, Remarks);
+        //return Json(true);
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));        
         ResponseViewModel<CertificateViewModel> response = new ResponseViewModel<CertificateViewModel>();
-        response = _ObservationTemplateService.SaveCertificateTemp(requestId, instrumentId,EnvironmentCondition, CalibrationResult, Remarks, userId, ExportData);
+        response = _ObservationTemplateService.SaveCertificateTemp(requestId, instrumentId,EnvironmentCondition, userId, ExportData);
         return Json(response);
-    }
+    }    
 }
 
 
