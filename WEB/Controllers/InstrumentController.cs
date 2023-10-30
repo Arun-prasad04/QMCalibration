@@ -240,7 +240,14 @@ public class InstrumentController : BaseController
 
 		return View(response.ResponseDataList);
 	}
-	
-		//For Tool Inventory Manager
+	public IActionResult ToolRoomInstrumentListing()
+	{
+		
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomInstrument();
+		return View(response.ResponseDataList);
+		//return View();
 
 	}
+	//For Tool Inventory Manager
+
+}

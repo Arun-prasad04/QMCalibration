@@ -4,990 +4,947 @@
 <html lang="en" translate="yes">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Document</title>
 </head>
-@*
-<style>
-    table, td, th {
-        border: 1px solid;
-    }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-</style>*@
+<style>
+	/*  table, td, th {
+			border: 1px solid;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		} */
+</style>
 
 <body style="font-family: Calibri;">
-    <!-- page1 start-->
+	<!-- page1 start-->
 
-    <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
-        <table style="border-collapse: collapse; border:2px solid #000">
-            <tbody>
-                <tr>
-                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
-                        @*@if (Model.IsNABL ?? false)
-                        {
-                        <img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
-                        }
-                        else
-                        {
-                        <img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
-                        }*@
-                        <img src="../image/Fuso.png" style="padding-top:5px;" width="100px" />
-                    </td>
-                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
-                        <div>
-                            <h5 class="trn" style="margin: 5px;font-size:40px;">Mitsubishi Fuso Truck and Bus Corporation</h5>
-                            <p class="trn" style="margin: 5px; font-size: 18px;">Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522</p>
-                        </div>
-                    </td>
-                    <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
-                        <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px"
-                             src="@ViewBag.QRCodeImage" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        @if (@Model.TypeOfEquipment == "Internal Instrument")
-        {
-            <div>
-                <h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF CALIBRATION</h2>
-        </div>
-        }
-        @if (@Model.TypeOfEquipment == "External Instrument")
-        {
-            <div>
-                <h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF VERIFICATION</h2>
-        </div>
-        }
-        <div style="border-collapse: collapse; border:2px solid #000">
-            <div>
-                <div style="padding: 10px;">
-                    @if (@Model.TypeOfEquipment == "Internal Instrument")
-                    {
-                        <div>
-                            <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under calibration (DUC)</p>
-                        </div>
-                    }
-                    @if (@Model.TypeOfEquipment == "External Instrument")
-                    {
-                        <div>
-                            <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUC)</p>
-                        </div>
-                    }                   
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber</td>
-                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
-                            </tr>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
-                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
-                            </tr>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
-                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Date of receipt</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
-                            </tr>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Sub section code</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.SubSecCode</td>
-                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Description of equipment</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.InstrumentName</td>
-                            </tr>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification No.</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
-                                 @if (@Model.TypeOfEquipment == "Internal Instrument")
-                                {
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
-                                }
-                                @if (@Model.TypeOfEquipment == "External Instrument")
-                                {
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUV</td>
-                                }
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
-                            </tr>
+	<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+		<table style="border-collapse: collapse; border:2px solid #000">
+			<tbody>
+				<tr>
+					<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+						@*@if (Model.IsNABL ?? false)
+						{
+						<img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
+						}
+						else
+						{
+						<img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
+						}*@
+						<img src="../image/Fuso.png" style="padding-top:5px;" width="100px" />
+					</td>
+					<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+						<div>
+							<h5 class="trn" style="margin: 5px;font-size:40px;">Mitsubishi Fuso Truck and Bus Corporation</h5>
+							<p class="trn" style="margin: 5px; font-size: 18px;">Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522</p>
+						</div>
+					</td>
+					<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+						<img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px"
+							 src="@ViewBag.QRCodeImage" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		@if (@Model.TypeOfEquipment == "Internal Instrument")
+		{
+			<div>
+				<h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF CALIBRATION</h2>
+			</div>
+		}
+		@if (@Model.TypeOfEquipment == "External Instrument")
+		{
+			<div>
+				<h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF VERIFICATION</h2>
+			</div>
+		}
+		<div style="border-collapse: collapse; border:2px solid #000">
+			<div>
+				<div style="padding: 10px;">
+					@if (@Model.TypeOfEquipment == "Internal Instrument")
+					{
+						<div>
+							<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under calibration (DUC)</p>
+						</div>
+					}
+					@if (@Model.TypeOfEquipment == "External Instrument")
+					{
+						<div>
+							<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUC)</p>
+						</div>
+					}
+					<table>
+						<tbody>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber</td>
+								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
+							</tr>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
+								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
+							</tr>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
+								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Date of receipt</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+							</tr>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Sub section code</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.SubSecCode</td>
+								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Description of equipment</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.InstrumentName</td>
+							</tr>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification No.</td>
+								<td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
+								@if (@Model.TypeOfEquipment == "Internal Instrument")
+								{
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+								}
+								@if (@Model.TypeOfEquipment == "External Instrument")
+								{
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUV</td>
+								}
+								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
+							</tr>
 
-                        </tbody>
-                    </table>
-
-
-                    <div style="padding-top: 10px;">
-                        <table style="border-collapse: collapse; border:1px solid #000">
-                            <tr>
-                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
-
-                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
-
-                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
-
-                                <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
-
-                            </tr>
-                            <tr>
-                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                    <p>@Model.Range</p>
-                                </td>
-                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                    <p>@Model.LC</p>
-                                </td>
-                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                    <p>@Model.SlNo</p>
-                                </td>
-                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                    <p>@Model.Make</p>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table style="margin-top:15px">
-                            <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.StandardReffered</td>
-                                    @if(@Model.TypeOfEquipment == "Internal Instrument")
-                                    {
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
-                                    }
-                                    @if (@Model.TypeOfEquipment == "External Instrument")
-                                    {
-                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
-                                        <td style="width:400px;padding-bottom: 25px;"></td>
-                                    }
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                        <div>
-                            <p class="trn" style="width:325px; font-weight: 900; padding-bottom:25px; width:600px;">II. Master & Equipment used</p>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <table style="border-collapse: collapse; border:1px solid #000">
-                                <tr>
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+						</tbody>
+					</table>
 
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+					<div style="padding-top: 10px;">
+						<table style="border-collapse: collapse; border:1px solid #000">
+							<tr>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make</th>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability</th>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No</th>
+							</tr>
+							<tr>
+								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+									<p>@Model.Range</p>
+								</td>
+								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+									<p>@Model.LC</p>
+								</td>
+								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+									<p>@Model.SlNo</p>
+								</td>
+								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+									<p>@Model.Make</p>
+								</td>
+							</tr>
+						</table>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity</th>
+						<table style="margin-top:15px">
+							<tbody>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.StandardReffered</td>
+									@if (@Model.TypeOfEquipment == "Internal Instrument")
+									{
+										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
+										<td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
+									}
+									@if (@Model.TypeOfEquipment == "External Instrument")
+									{
+										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
+										<td style="width:400px;padding-bottom: 25px;"></td>
+									}
 
-                                </tr>
-                                @{
-                            @if (@Model.TypeOfEquipment == "Internal Instrument")
-                            {
-                                
-                                    int i = 1;
-                                    @foreach (var item in @Model.MasterEqiupmentList)
-                                    {
-                                        <tr>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
-                                        </tr>
-                                        i++;
-                                    }
-                                
-                            }
-                            @if (@Model.TypeOfEquipment == "External Instrument")
-                            {
-                                 <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">1</td>
-                                    <td colspan="6" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;">Refer external calibartion report</td>
-                            }
-                            }
-                        </table>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-                        </div>
-                    
-                    <div>
-                        <table style="margin-top:15px">
-                            <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">III. Calibration Results</td>
-                                    <td style="width:400px;padding-bottom: 25px;"></td>
-
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">All values are in</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.Allvalues</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    @*<div>
-                    <table style="border-collapse: collapse; border:1px solid #000">
-                    </table>
-                    </div>*@
-
-                    @if(@Model.TypeOfEquipment == "Internal Instrument")
-                    {
-                        <div id="dvTable" class="col-md-8 content"></div>
-                    }
-                    
-
-                    @if (@Model.TypeOfEquipment == "External Instrument")
-                    {
-                        <div id="dvExtTable" class="content" style="align-content:center">
-                            <table style="border: 1px solid; width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td class="trn" style="border: 1px solid; text-align:center">External report result status</td>
-                                    <td class="trn" style="border: 1px solid; text-align:center">1</td>
-                                    <td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkOk" name="radio"> OK</td>
-                                    <td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkNotOk" name="radio"> Not OK</td>
-                                </tr>
-                            </table>
-                        </div>
-                    }
-                    @if (@Model.TypeOfEquipment == "External Instrument")
-                    {
-                        <p class="trn" style="margin-top:15px">Refer the external calibartion report for more details</p>
-                    }
-                    <table style="margin-top:15px">
-                        <tbody>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
-
-                                <td class="trn" style="width:400px;padding-bottom: 25px;">
-                                    <input class="form-control"
-                                           placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
-                                           value="@Model.TempObservationData.CalibrationResult"> @*Model.TempObservationData.CalibrationResult*@
-                                </td>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
-                                <td style="width:400px;padding-bottom: 25px;"></td>
-                            </tr>
-                            <tr>
-                                <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
-                                <td class="trn" style="width:400px;padding-bottom: 25px;">
-                                    <input class="form-control"
-                                           placeholder="Remarks" id="Remarks" name="Remarks"
-                                           value="@Model.TempObservationData.Remarks"> @*Model.TempObservationData.Remarks*@
-                                </td>
-                                <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
-                                <td style="width:400px;padding-bottom: 25px;"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    @if(@Model.TypeOfEquipment == "Internal Instrument")
-                    {
-                        <p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor</p>
-                    }
-                    @if(@Model.TypeOfEquipment == "External Instrument")
-                    {
-                        <p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate</p>
-                    }
+					<div>
+						<p class="trn" style="width:325px; font-weight: 900; padding-bottom:25px; width:600px;">II. Master & Equipment used</p>
+					</div>
+					<div class="row">
+						<table style="border-collapse: collapse; border:1px solid #000">
+							<tr>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
 
 
-                    <table style="margin-top:15px">
-                        <tbody>
-                            <tr>
-                                <td style="width:325px; padding-bottom: 25px; width: 800px;">
-                                    <div class="col-6 text-start">
-                                        <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
-                                        <img src="../wwwroot/UserSignature/Guru sign.jpg" />
-                                        <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
-                                        <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
-                                    </div>
-                                </td>
-                                <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                    <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
-                                    <img src="../wwwroot/UserSignature/Gurushev.jpg" />
-                                    <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
-                                    <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
 
-                </div>
-                @if(@Model.TypeOfEquipment == "Internal Instrument")
-                    {
-                <div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
-                    <div style="padding:10px">
-                        <p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results are valid at the time of and under the stated condition of measurement.</p>
-                        <p class="trn" style="margin: 0px; font-size: 12px;">2. The report should not be reproduced either in full or in part without permission in writing.</p>
-                        <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
-                    </div>
-                </div>
-                }
-                 @if(@Model.TypeOfEquipment == "External Instrument")
-                {
-                    <div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
-                        <div style="padding:10px">
-                            <p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results based on external certificate result</p>
-                            <p class="trn" style="margin: 0px; font-size: 12px;">2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>                           
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-        @*<table style="margin-top:15px">
-            <tbody>
-                <tr style="font-size: xx-small;">
-                    <td style="width:325px; padding-bottom: 25px; width: 800px;">
-                        <div>
-                            <h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
-                        </div>
-                    </td>
-                    <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                        <h4 class="trn" style="font-size: small;">Page 1 of 2</h4>
-                    </td>
-                </tr>
-            </tbody>
-        </table>*@
-    </div>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
 
-    @*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
-    <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
-    <input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
-    <input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
-    @*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make</th>
 
-    <!-- page1 end-->
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability</th>
 
-    <div>
-        <input type="hidden" id="requestId" value="@ViewBag.RequestId">
-        <input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
-        <input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
-        <input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
-        @if (@Model.isExportCertificate)
-        {
-            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-            {
-                <input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
-            }
-            <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
-            <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
-        }
-        else
-        {
-            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-            {
-                <input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary">
-            }
-        }
-        <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-    </div>
-    </div>
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No</th>
+
+								<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity</th>
+
+							</tr>
+							@{
+									@if (@Model.TypeOfEquipment == "Internal Instrument")
+								{
+
+									int i = 1;
+										@foreach (var item in @Model.MasterEqiupmentList)
+									{
+											<tr>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
+												<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+											</tr>
+										i++;
+									}
+
+								}
+									@if (@Model.TypeOfEquipment == "External Instrument")
+								{
+										<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">1</td>
+										<td colspan="6" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;">Refer external calibartion report</td>
+								}
+							}
+						</table>
+
+					</div>
+
+					<div>
+						<table style="margin-top:15px">
+							<tbody>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">III. Calibration Results</td>
+									<td style="width:400px;padding-bottom: 25px;"></td>
+
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">All values are in</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.Allvalues</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					@*<div>
+					<table style="border-collapse: collapse; border:1px solid #000">
+					</table>
+					</div>*@
+
+					@if (@Model.TypeOfEquipment == "Internal Instrument")
+					{
+						<div id="dvTable" class="col-md-9 content"></div>
+					}
+
+
+					@if (@Model.TypeOfEquipment == "External Instrument")
+					{
+						<div id="dvExtTable" class="content" style="align-content:center">
+							<table style="border: 1px solid; width: 100%; border-collapse: collapse;">
+								<tr>
+									<td class="trn" style="border: 1px solid; text-align:center">External report result status</td>
+									<td class="trn" style="border: 1px solid; text-align:center">1</td>
+									<td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkOk" name="radio"> OK</td>
+									<td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkNotOk" name="radio"> Not OK</td>
+								</tr>
+							</table>
+						</div>
+					}
+					@if (@Model.TypeOfEquipment == "External Instrument")
+					{
+						<p class="trn" style="margin-top:15px">Refer the external calibartion report for more details</p>
+					}
+					<table style="margin-top:15px">
+						<tbody>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+
+								<td class="trn" style="width:400px;padding-bottom: 25px;">
+									<input class="form-control"
+										   placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
+										   value="@Model.TempObservationData.CalibrationResult"> @*Model.TempObservationData.CalibrationResult*@
+								</td>
+								<td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+								<td style="width:400px;padding-bottom: 25px;"></td>
+							</tr>
+							<tr>
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+								<td class="trn" style="width:400px;padding-bottom: 25px;">
+									<input class="form-control"
+										   placeholder="Remarks" id="Remarks" name="Remarks"
+										   value="@Model.TempObservationData.Remarks"> @*Model.TempObservationData.Remarks*@
+								</td>
+								<td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+								<td style="width:400px;padding-bottom: 25px;"></td>
+							</tr>
+						</tbody>
+					</table>
+
+					@if (@Model.TypeOfEquipment == "Internal Instrument")
+					{
+						<p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor</p>
+					}
+					@if (@Model.TypeOfEquipment == "External Instrument")
+					{
+						<p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate</p>
+					}
+
+
+					<table style="margin-top:15px">
+						<tbody>
+							<tr>
+								<td style="width:325px; padding-bottom: 25px; width: 800px;">
+									<div class="col-6 text-start">
+										<h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
+										<img src="../wwwroot/UserSignature/Guru sign.jpg" />
+										<p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
+										<p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
+									</div>
+								</td>
+								<td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+									<h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
+									<img src="../wwwroot/UserSignature/Gurushev.jpg" />
+									<p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
+									<p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				@if (@Model.TypeOfEquipment == "Internal Instrument")
+				{
+					<div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
+						<div style="padding:10px">
+							<p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results are valid at the time of and under the stated condition of measurement.</p>
+							<p class="trn" style="margin: 0px; font-size: 12px;">2. The report should not be reproduced either in full or in part without permission in writing.</p>
+							<p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
+						</div>
+					</div>
+				}
+				@if (@Model.TypeOfEquipment == "External Instrument")
+				{
+					<div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
+						<div style="padding:10px">
+							<p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results based on external certificate result</p>
+							<p class="trn" style="margin: 0px; font-size: 12px;">2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+		@*<table style="margin-top:15px">
+		<tbody>
+		<tr style="font-size: xx-small;">
+		<td style="width:325px; padding-bottom: 25px; width: 800px;">
+		<div>
+		<h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
+		</div>
+		</td>
+		<td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+		<h4 class="trn" style="font-size: small;">Page 1 of 2</h4>
+		</td>
+		</tr>
+		</tbody>
+		</table>*@
+	</div>
+
+	@*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
+	<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
+	<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
+	<input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
+	@*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
+
+	<!-- page1 end-->
+
+	<div>
+		<input type="hidden" id="requestId" value="@ViewBag.RequestId">
+		<input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
+		<input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
+		<input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
+		@if (@Model.isExportCertificate)
+		{
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+			{
+				<input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+			}
+			<input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
+			<a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
+		}
+		else
+		{
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+			{
+				<input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary">
+			}
+		}
+		<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+	</div>
+	</div>
 </body>
 
 
 <!-- Pdf Content-->
 
 <div id="Pdfhtml" style="display: none;">
-    <body style="font-family: Calibri;">
-        <!-- page1 start-->
+	<body style="font-family: Calibri;">
+		<!-- page1 start-->
 
-        <div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
-            <table style="border-collapse: collapse; border:2px solid #000">
-                <tbody>
-                    <tr>
-                        <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
-                            @*@if (Model.IsNABL ?? false)
-                            {
-                            <img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
-                            }
-                            else
-                            {
-                            <img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
-                            }*@
-                            <img src="../image/Fuso.png" style="padding-top:5px;" width="100px" />
-                        </td>
-                        <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
-                            <div>
-                                <h5 class="trn" style="margin: 5px;font-size:40px;">Mitsubishi Fuso Truck and Bus Corporation</h5>
-                                <p class="trn" style="margin: 5px; font-size: 20px;">Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522</p>
-                            </div>
-                        </td>
-                        <td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
-                            <img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px"
-                                 src="@ViewBag.QRCodeImage" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            @if (@Model.TypeOfEquipment == "Internal Instrument")
-            {
-                <div>
-                    <h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF CALIBRATION</h2>
-                </div>
-            }
-            @if (@Model.TypeOfEquipment == "External Instrument")
-            {
-                <div>
-                    <h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF VERIFICATION</h2>
-                </div>
-            }
-            <div style="border-collapse: collapse; border:2px solid #000">
-                <div>
-                    <div style="padding: 10px;">
-                        @if (@Model.TypeOfEquipment == "Internal Instrument")
-                        {
-                            <div>
-                                <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under calibration (DUC)</p>
-                            </div>
-                        }
-                        @if (@Model.TypeOfEquipment == "External Instrument")
-                        {
-                            <div>
-                                <p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUC)</p>
-                            </div>
-                        }
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: Model.Reportissuedate</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: Model.DateofCalibration</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Date of receipt</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Sub section code</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.SubSecCode</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Description of equipment</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.InstrumentName</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification No.</td>
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
-                                    @if (@Model.TypeOfEquipment == "Internal Instrument")
-                                    {
-                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
-                                    }
-                                    @if (@Model.TypeOfEquipment == "External Instrument")
-                                    {
-                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUV</td>
-                                    }
-                                    <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
-                                </tr>
+		<div style="padding-left: 5%; padding-right: 5%; margin-bottom: 5%;">
+			<table style="border-collapse: collapse; border:2px solid #000">
+				<tbody>
+					<tr>
+						<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:250px">
+							@*@if (Model.IsNABL ?? false)
+							{
+							<img src="../image/NABL.png" style="padding-top:5px;" width="100px" />
+							}
+							else
+							{
+							<img src="../image/Bharat_Benz.png" style="padding-top:5px;" width="150px" />
+							}*@
+							<img src="../image/Fuso.png" style="padding-top:5px;" width="100px" />
+						</td>
+						<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:840px">
+							<div>
+								<h5 class="trn" style="margin: 5px;font-size:40px;">Mitsubishi Fuso Truck and Bus Corporation</h5>
+								<p class="trn" style="margin: 5px; font-size: 20px;">Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522</p>
+							</div>
+						</td>
+						<td style="border-collapse: collapse; border:2px solid #000; text-align: center; width:100px">
+							<img style="padding-left:40px;padding-top:5px;" id="imgQRCode" height="150px" width="190px"
+								 src="@ViewBag.QRCodeImage" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			@if (@Model.TypeOfEquipment == "Internal Instrument")
+			{
+				<div>
+					<h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF CALIBRATION</h2>
+				</div>
+			}
+			@if (@Model.TypeOfEquipment == "External Instrument")
+			{
+				<div>
+					<h2 class="trn" style="text-align: center; text-transform: uppercase;">CERTIFICATE OF VERIFICATION</h2>
+				</div>
+			}
+			<div style="border-collapse: collapse; border:2px solid #000">
+				<div>
+					<div style="padding: 10px;">
+						@if (@Model.TypeOfEquipment == "Internal Instrument")
+						{
+							<div>
+								<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under calibration (DUC)</p>
+							</div>
+						}
+						@if (@Model.TypeOfEquipment == "External Instrument")
+						{
+							<div>
+								<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUC)</p>
+							</div>
+						}
+						<table>
+							<tbody>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber</td>
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
+									<td style="width:400px;padding-bottom: 25px;">: Model.Reportissuedate</td>
+								</tr>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
+									<td style="width:400px;padding-bottom: 25px;">: Model.DateofCalibration</td>
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
+								</tr>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Date of receipt</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+								</tr>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Sub section code</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.SubSecCode</td>
+									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Description of equipment</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.InstrumentName</td>
+								</tr>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Identification No.</td>
+									<td style="width:400px;padding-bottom: 25px;">: @Model.IdNo</td>
+									@if (@Model.TypeOfEquipment == "Internal Instrument")
+									{
+										<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUC</td>
+									}
+									@if (@Model.TypeOfEquipment == "External Instrument")
+									{
+										<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUV</td>
+									}
+									<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
+								</tr>
 
-                            </tbody>
-                        </table>
-
-
-                        <div style="padding-top: 10px;">
-                            <table style="border-collapse: collapse; border:1px solid #000">
-                                <tr>
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
-
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
-
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
-
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
-
-                                </tr>
-                                <tr>
-                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.Range</p>
-                                    </td>
-                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.LC</p>
-                                    </td>
-                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.SlNo</p>
-                                    </td>
-                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.Make</p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table style="margin-top:15px">
-                                <tbody>
-                                    <tr>
-                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
-                                        <td style="width:400px;padding-bottom: 25px;">: Model.Calibrationprocedure/Referencestandard</td>
-                                        @if (@Model.TypeOfEquipment == "Internal Instrument")
-                                        {
-                                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
-                                            <td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
-                                        }
-                                        @if (@Model.TypeOfEquipment == "External Instrument")
-                                        {
-                                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
-                                            <td style="width:400px;padding-bottom: 25px;"></td>
-                                        }
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div>
-                            <p class="trn" style="width:325px; font-weight: 900; padding-bottom:25px; width:600px;">II. Master & Equipment used</p>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <table style="border-collapse: collapse; border:1px solid #000">
-                                <tr>
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
+							</tbody>
+						</table>
 
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
+						<div style="padding-top: 10px;">
+							<table style="border-collapse: collapse; border:1px solid #000">
+								<tr>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Range</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Least Count</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make</th>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Serial No</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability</th>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px; padding: 5px;">Make</th>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No</th>
+								</tr>
+								<tr>
+									<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+										<p>@Model.Range</p>
+									</td>
+									<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+										<p>@Model.LC</p>
+									</td>
+									<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+										<p>@Model.SlNo</p>
+									</td>
+									<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+										<p>@Model.Make</p>
+									</td>
+								</tr>
+							</table>
 
-                                    <th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity</th>
+							<table style="margin-top:15px">
+								<tbody>
+									<tr>
+										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
+										<td style="width:400px;padding-bottom: 25px;">: Model.Calibrationprocedure/Referencestandard</td>
+										@if (@Model.TypeOfEquipment == "Internal Instrument")
+										{
+											<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
+											<td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
+										}
+										@if (@Model.TypeOfEquipment == "External Instrument")
+										{
+											<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
+											<td style="width:400px;padding-bottom: 25px;"></td>
+										}
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
-                                </tr>
-                                @{
-                                    @if (@Model.TypeOfEquipment == "Internal Instrument")
-                                    {
-
-                                        int i = 1;
-                                        @foreach (var item in @Model.MasterEqiupmentList)
-                                        {
-                                            <tr>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
-                                            </tr>
-                                            i++;
-                                        }
-
-                                    }
-                                    @if (@Model.TypeOfEquipment == "External Instrument")
-                                    {
-                                        <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">1</td>
-                                        <td colspan="6" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;">Refer external calibartion report</td>
-                                    }
-                                }
-                            </table>
-
-                        </div>
-
-                        <div>
-                            <table style="margin-top:15px">
-                                <tbody>
-                                    <tr>
-                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">III. Calibration Results</td>
-                                        <td style="width:400px;padding-bottom: 25px;">: Model.Calibrationprocedure/Referencestandard</td>
-
-                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">All values are in</td>
-                                        <td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        @*<div>
-                        <table style="border-collapse: collapse; border:1px solid #000">
-                        </table>
-                        </div>*@
-
-                        @if (@Model.TypeOfEquipment == "Internal Instrument")
-                        {
-                            <div id="dvTable" class="col-md-8 content"></div>
-                        }
+						<div>
+							<p class="trn" style="width:325px; font-weight: 900; padding-bottom:25px; width:600px;">II. Master & Equipment used</p>
+						</div>
+						<div style="margin-top: 10px;">
+							<table style="border-collapse: collapse; border:1px solid #000">
+								<tr>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">SI.</th>
 
 
-                        @if (@Model.TypeOfEquipment == "External Instrument")
-                        {
-                            <div id="dvExtTable" class="content" style="align-content:center">
-                                <table style="border: 1px solid; width: 100%; border-collapse: collapse;">
-                                    <tr>
-                                        <td class="trn" style="border: 1px solid; text-align:center">External report result status</td>
-                                        <td class="trn" style="border: 1px solid; text-align:center">1</td>
-                                        <td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkOk" name="radio"> OK</td>
-                                        <td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkNotOk" name="radio"> Not OK</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        }
-                        @if (@Model.TypeOfEquipment == "External Instrument")
-                        {                            
-                            <p class="trn" style="margin-top:15px">Refer the external calibartion report for more details</p>
-                        }
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Master Equipment</th>
 
-                        <table style="margin-top:15px">
-                            <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Id No</th>
 
-                                    <td class="trn" style="width:400px;padding-bottom: 25px;">
-                                        <input class="form-control"
-                                               placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
-                                               value="@Model.TempObservationData.CalibrationResult"> @*Model.GeneralData.CalibrationResult*@
-                                    </td>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
-                                    <td style="width:400px;padding-bottom: 25px;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
-                                    <td class="trn" style="width:400px;padding-bottom: 25px;">
-                                        <input class="form-control"
-                                               placeholder="Remarks" id="Remarks" name="Remarks"
-                                               value="@Model.TempObservationData.Remarks"> @*Model.TempObservationData.Remarks*@
-                                    </td>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
-                                    <td style="width:400px;padding-bottom: 25px;"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Make</th>
 
-                        @if (@Model.TypeOfEquipment == "Internal Instrument")
-                        {
-                            <p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor</p>
-                        }
-                        @if (@Model.TypeOfEquipment == "External Instrument")
-                        {
-                            <p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate</p>
-                        }
-                        
-                        <table style="margin-top:15px">
-                            <tbody>
-                                <tr>
-                                    <td style="width:325px; padding-bottom: 25px; width: 800px;">
-                                        <div class="col-6 text-start">
-                                            <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
-                                            <img src="../wwwroot/UserSignature/Guru sign.jpg" />
-                                            <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
-                                            <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
-                                        </div>
-                                    </td>
-                                    <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                        <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
-                                        <img src="../wwwroot/UserSignature/Gurushev.jpg" />
-                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
-                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Traceability</th>
 
-                    </div>
-                    @if (@Model.TypeOfEquipment == "Internal Instrument")
-                    {
-                        <div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
-                            <div style="padding:10px">
-                                <p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results are valid at the time of and under the stated condition of measurement.</p>
-                                <p class="trn" style="margin: 0px; font-size: 12px;">2. The report should not be reproduced either in full or in part without permission in writing.</p>
-                                <p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
-                            </div>
-                        </div>
-                    }
-                    @if (@Model.TypeOfEquipment == "External Instrument")
-                    {
-                        <div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
-                            <div style="padding:10px">
-                                <p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results based on external certificate result</p>
-                                <p class="trn" style="margin: 0px; font-size: 12px;">2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            <table style="margin-top:15px">
-                <tbody>
-                    <tr style="font-size: xx-small;">
-                        <td style="width:325px; padding-bottom: 25px; width: 800px;">
-                            <div>
-                                <h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
-                            </div>
-                        </td>
-                        <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                            <h4 class="trn" style="font-size: small;">Page 1 of 2</h4>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Certificate No</th>
 
-        @*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
-        <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
-        <input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
-        <input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
-        @*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
+									<th class="trn" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">Validity</th>
+
+								</tr>
+								@{
+										@if (@Model.TypeOfEquipment == "Internal Instrument")
+									{
+
+										int i = 1;
+											@foreach (var item in @Model.MasterEqiupmentList)
+										{
+												<tr>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
+													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+												</tr>
+											i++;
+										}
+
+									}
+										@if (@Model.TypeOfEquipment == "External Instrument")
+									{
+											<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">1</td>
+											<td colspan="6" style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px;">Refer external calibartion report</td>
+									}
+								}
+							</table>
+
+						</div>
+
+						<div>
+							<table style="margin-top:15px">
+								<tbody>
+									<tr>
+										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">III. Calibration Results</td>
+										<td style="width:400px;padding-bottom: 25px;">: Model.Calibrationprocedure/Referencestandard</td>
+
+										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">All values are in</td>
+										<td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						@*<div>
+						<table style="border-collapse: collapse; border:1px solid #000">
+						</table>
+						</div>*@
+
+						@if (@Model.TypeOfEquipment == "Internal Instrument")
+						{
+							<div id="dvTable" class="col-md-8 content"></div>
+						}
 
 
-        @*<div>
-            <input type="hidden" id="requestId" value="@ViewBag.RequestId">
-            <input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
-            <input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
-            <input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
-            @if (@Model.isExportCertificate)
-            {
-                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-                {
-                    <input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
-                }
-                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
-                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
-            }
-            else
-            {
-                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-                {
-                    <input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary">
-                }
-            }
-            <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-        </div>*@
-        </body>
+						@if (@Model.TypeOfEquipment == "External Instrument")
+						{
+							<div id="dvExtTable" class="content" style="align-content:center">
+								<table style="border: 1px solid; width: 100%; border-collapse: collapse;">
+									<tr>
+										<td class="trn" style="border: 1px solid; text-align:center">External report result status</td>
+										<td class="trn" style="border: 1px solid; text-align:center">1</td>
+										<td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkOk" name="radio"> OK</td>
+										<td class="trn" style="border: 1px solid; text-align:center"><input type="radio" checked="checked" id="checkNotOk" name="radio"> Not OK</td>
+									</tr>
+								</table>
+							</div>
+						}
+						@if (@Model.TypeOfEquipment == "External Instrument")
+						{
+							<p class="trn" style="margin-top:15px">Refer the external calibartion report for more details</p>
+						}
+
+						<table style="margin-top:15px">
+							<tbody>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">IV. Result Of Calibration :</td>
+
+									<td class="trn" style="width:400px;padding-bottom: 25px;">
+										<input class="form-control"
+											   placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
+											   value="@Model.TempObservationData.CalibrationResult"> @*Model.GeneralData.CalibrationResult*@
+									</td>
+									<td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+									<td style="width:400px;padding-bottom: 25px;"></td>
+								</tr>
+								<tr>
+									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">V. Remarks :</td>
+									<td class="trn" style="width:400px;padding-bottom: 25px;">
+										<input class="form-control"
+											   placeholder="Remarks" id="Remarks" name="Remarks"
+											   value="@Model.TempObservationData.Remarks"> @*Model.TempObservationData.Remarks*@
+									</td>
+									<td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
+									<td style="width:400px;padding-bottom: 25px;"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						@if (@Model.TypeOfEquipment == "Internal Instrument")
+						{
+							<p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor</p>
+						}
+						@if (@Model.TypeOfEquipment == "External Instrument")
+						{
+							<p class="trn">Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate</p>
+						}
+
+						<table style="margin-top:15px">
+							<tbody>
+								<tr>
+									<td style="width:325px; padding-bottom: 25px; width: 800px;">
+										<div class="col-6 text-start">
+											<h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
+											<img src="../wwwroot/UserSignature/Guru sign.jpg" />
+											<p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
+											<p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
+										</div>
+									</td>
+									<td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+										<h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
+										<img src="../wwwroot/UserSignature/Gurushev.jpg" />
+										<p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
+										<p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+					@if (@Model.TypeOfEquipment == "Internal Instrument")
+					{
+						<div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
+							<div style="padding:10px">
+								<p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results are valid at the time of and under the stated condition of measurement.</p>
+								<p class="trn" style="margin: 0px; font-size: 12px;">2. The report should not be reproduced either in full or in part without permission in writing.</p>
+								<p class="trn" style="margin: 0px; font-size: 12px;">3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
+							</div>
+						</div>
+					}
+					@if (@Model.TypeOfEquipment == "External Instrument")
+					{
+						<div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
+							<div style="padding:10px">
+								<p class="trn" style="margin: 0px; font-size: 12px;">1. The calibration results based on external certificate result</p>
+								<p class="trn" style="margin: 0px; font-size: 12px;">2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.</p>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+			<table style="margin-top:15px">
+				<tbody>
+					<tr style="font-size: xx-small;">
+						<td style="width:325px; padding-bottom: 25px; width: 800px;">
+							<div>
+								<h4 class="trn" style="font-size: small;">Format No : 365.QM.D.16, Rev No : 02</h4>
+							</div>
+						</td>
+						<td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+							<h4 class="trn" style="font-size: small;">Page 1 of 2</h4>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		@*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
+		<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
+		<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
+		<input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
+		@*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
+
+
+		@*<div>
+		<input type="hidden" id="requestId" value="@ViewBag.RequestId">
+		<input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
+		<input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
+		<input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
+		@if (@Model.isExportCertificate)
+		{
+		@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+		{
+		<input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+		}
+		<input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
+		<a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
+		}
+		else
+		{
+		@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+		{
+		<input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary">
+		}
+		}
+		<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+		</div>*@
+	</body>
 </div>
 
 </html>
 
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+	$(document).ready(function () {
 
-        //if ($('#TemplateObservationId').val() > 0) {
-        //	$("#dvTable").html("");
-        //	BindObservationTable();
-        //}
-        BindObservationTable();
+		//if ($('#TemplateObservationId').val() > 0) {
+		//	$("#dvTable").html("");
+		//	BindObservationTable();
+		//}
+		BindObservationTable();
 
-        var reviewStatus = $('#ExternalObsStatus').val();
-        if (reviewStatus == 1) {
-            $('#checkOk').prop('checked', true);
-            $('#checkNotOk').prop('checked', false);
-        }
-        else if (reviewStatus == 2) {
-            $('#checkOk').prop('checked', false);
-            $('#checkNotOk').prop('checked', true);
-        }
+		var reviewStatus = $('#ExternalObsStatus').val();
+		if (reviewStatus == 1) {
+			$('#checkOk').prop('checked', true);
+			$('#checkNotOk').prop('checked', false);
+		}
+		else if (reviewStatus == 2) {
+			$('#checkOk').prop('checked', false);
+			$('#checkNotOk').prop('checked', true);
+		}
 
-    });
+	});
+	function BindObservationTable() {
 
-    function BindObservationTable() {
+		$.ajax({
+			type: 'GET',
+			url: '../Observation/GetObservationById',
+			dataType: 'json',
+			data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
+		}).done(function (resultObject) {
 
-        $.ajax({
-            type: 'GET',
-            url: '../Observation/GetObservationById',
-            dataType: 'json',
-            data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
-        }).done(function (resultObject) {
+			var rowhead = "";
+			var rowContentCW = '';
+			var rowContentIN = '';
+			var rowContentSW = '';
+			console.log(" bind resultObject ");
+			console.log(resultObject);
+			var InCount = 0;
+			for (let i = 0; i < resultObject.length; i++) {
+				var IdName = resultObject[i].typeOfContent;
 
-            var rowhead = "";
-            var rowContentCW = '';
-            var rowContentIN = '';
-            var rowContentSW = '';
-            for (let i = 0; i < resultObject.length; i++) {
-                var IdName = resultObject[i].typeOfContent;
+				var tblId = 'TblObservation' + i;
+				var tableIN = '<table id="IN' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';
+				var tableCW = '<table id="CW' + tblId + '" style="text-align:center; border: 1px solid; width: 150% border-collapse: collapse;">';
+				var tableSW = '<table id="SW' + tblId + '" style="text-align:center; border: 1px solid; width: 150%; border-collapse: collapse;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
+				//if (resultObject[i].contentCount == 0) {
+				if (IdName == 'CW') {
+					var rowheadCW = '<thead><tr height="50" ><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
 
-                var tblId = 'TblObservation' + i;
-                var tableIN = '<table id="IN' + tblId + '" style="text-align:center; border: 1px solid; width: 150%; border-collapse: collapse;">';
-                var tableCW = '<table id="CW' + tblId + '" style="text-align:center; border: 1px solid; width: 150%; border-collapse: collapse;">';
-                var tableSW = '<table id="SW' + tblId + '" style="text-align:center; border: 1px solid; width: 150%; border-collapse: collapse;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
-                if (IdName == 'CW') {
-                    var rowheadCW = '<thead><tr height="50" ><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+				}
+				else if (IdName == 'SW') {
+					var rowheadSW = '<thead><tr height="50"><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
 
-                }
-                else if (IdName == 'SW') {
-                    var rowheadSW = '<thead><tr><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
+				}
+				else if (IdName == 'IN') {
+					var rowheadIN = '<thead><tr height="50"><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr>';
+				}
+				//}
+				var rowBodyCW = '<tbody>';
+				var rowBodyIN = '<tbody>';
+				var rowBodySW = '<tbody>';
+				//if  (resultObject[i].contentCount != 0) {
+				//for (let j = 1; j <= resultObject[i].contentCount; j++) {
 
-                }
-                else if (IdName == 'IN') {
-                    var rowheadIN = '<tr><td height="50" style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr>';
-                }
+				var objcontentCount = resultObject[i].contentCount;
 
-                var rowBodyCW = '<tbody>';
-                var rowBodyIN = '<tbody>';
-                var rowBodySW = '<tbody>';
+				var title = "";
+				var contentsubheadingIN = "";
 
-                for (let j = 1; j <= resultObject[i].contentCount; j++) {
+				if (IdName == 'IN') {
 
-                    var objcontentCount = resultObject[i].contentCount;
+					if (InCount == 3) {
+						InCount = 0
+					}
+					if (objcontentCount > 1) {
+						InCount = InCount + 1;
+						if (InCount == 2) {
+							title = resultObject[i].contentValue.trim();
+							console.log("title 2");
+							console.log(title);
+							contentsubheadingIN = '<td style="width: 70%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
 
-                    var title = "";
-                    var contentsubheadingIN = "";
-                    if ((objcontentCount > 1) && (j == 2)) {
+						}
+						else {
+							console.log(" else title");
+							console.log(title);
+							title = "";// resultObject[i].contentValue.trim();
+							contentsubheadingIN = '<td style="border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+						}
+					}
+					else //if (InCount == 1)
+					{
+						//alert(InCount);
+						console.log("title 1");
+						console.log(title);
+						title = resultObject[i].contentValue.trim();
+						contentsubheadingIN = '<td style="width: 40%;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+					}
 
-                        title = resultObject[i].contentValue.trim();
-                        contentsubheadingIN = '<td style="width: 70%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input style="width:100%" id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+				}
 
-                    }
-                    else if (objcontentCount == 1) {
+				if (IdName == 'CW') {
 
-                        title = resultObject[i].contentValue.trim();
-                        contentsubheadingIN = '<td style="border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
-                    }
-                    else {
+					rowContentCW += '<tr><td style="width: 40%" id="CW"><input style="width: 100%" id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+						'<td id="CW"><input style="width: 100%" id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+						'<td id="CW"><input style="width: 100%" id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+						'<td id="CW"><input style="width: 100%" id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+						'<td id="CW"><input style="width: 100%" id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+						'<td id="CW"><input style="width: 100%" id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
+						'<td id="CW"><input style="width: 100%" id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
 
-                        title = " ";
-                        contentsubheadingIN = '<td style="width: 60%;border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
-                    }
+				}
+				else if (IdName == 'SW') {
 
-                    if (IdName == 'CW') {
+					rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+						'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+						'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+						'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+						'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+						'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+				}
+				else if (IdName == 'IN') {
 
-                        rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + j + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /></td>' +
-                            '<td id="CW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
-                            '<td id="CW"><input id="Value1" name="Value1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox Value1"/></td>' +
-                            '<td id="CW"><input id="Value2" name="Value2[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value2"/></td>' +
-                            '<td id="CW"><input id="Value3" name="Value3[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Value3"/></td>' +
-                            '<td id="CW"><input id="Average" name="Average[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Average"/></td>' +
-                            '<td id="CW"><input id="Percentage" name = "Percentage[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Percentage"  disabled = "disabled"/> </td></tr>';
+					rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
+						+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+						'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+						'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+						'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
 
-                    }
-                    else if (IdName == 'SW') {
-                        console.log("crew Thread test");
-                        rowContentSW += '<tr><td id="SW"><input id="Head' + i + j + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /></td>' +
-                            '<td id="SW"><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
-                            '<td id="SW"><input id="SWValue1" name="SWValue1[' + i + j + '] " type="text" class="Tables-AndTablesTextBox"/></td>' +
-                            '<td id="SW"><input id="SWValue2" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td>' +
-                            '<td id="SW"><input id="SWValue3" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td>' +
-                            '<td id="SW"><input id="SWValue4" name="SWValue1[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox"/></td></tr>'
-                    }
-                    else if (IdName == 'IN') {
-                        console.log("000000000000000000000000000000000000000000000000000000000000000000000000000");
-                        rowContentIN += '<tr>' + contentsubheadingIN + '</td>'
-                            + '<td id="IN" ><input id="SNO' + i + j + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled = "disabled" /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value=""></td>' +
-                            '<td id="IN" style="border: 1px solid;"><input id="MeasuedValue" name="MeasuedValue[' + i + j + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue"/></td>' +
-                            '<td id="IN" style="border: 1px solid;"><input id="Actual" name="Actual[' + i + j + ']"  type="text" class="Tables-AndTablesTextBox Actual"/></td>' +
-                            '<td id="IN" style="border: 1px solid;"><input id="Avg" name = "Avg[' + i + j + ']" type = "text" class="Tables-AndTablesTextBox Avg"  disabled = "disabled"/> </td></tr>'
+				}
 
-                    }
-                }
-
-
-            }
-
-
-            rowBodyCW += rowContentCW;
-            rowBodyIN += rowContentIN;
-            rowBodySW += rowContentSW;
-
-            rowBodyCW += '</tbody></table><br/>';
-            rowBodyIN += '</tbody></table><br/>';
-            rowBodySW += '</tbody></table><br/>';
-
-            tableCW += rowheadCW;
-            tableCW += rowBodyCW;
-
-            tableIN = tableIN + rowheadIN;
-            tableIN += rowBodyIN;
-            console.log("rowheadIN");
-            console.log(rowheadIN);
+			}
 
 
-            tableSW += rowheadSW;
-            tableSW += rowBodySW;
+			rowBodyCW += rowContentCW;
+			rowBodyIN += rowContentIN;
+			rowBodySW += rowContentSW;
 
-            if (rowContentSW == "") {
+			rowBodyCW += '</tbody></table><br/>';
+			rowBodyIN += '</tbody></table><br/>';
+			rowBodySW += '</tbody></table><br/>';
 
-                tableSW = "";
-            }
-            if (rowContentIN == "") {
+			tableCW += rowheadCW;
+			tableCW += rowBodyCW;
 
-                tableIN = "";
-            }
-            if (rowContentCW == "") {
+			tableIN = tableIN + rowheadIN;
+			tableIN += rowBodyIN;
+			console.log("rowheadIN");
+			console.log(rowheadIN);
 
-                tableCW = "";
-            }
-            $("#dvTable").html("");
-            var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
-            var dvTable = $("#dvTable");
-            dvTable.append(tables);
 
-        });
-        $.ajax({
-            type: 'GET',
-            url: '../Observation/GetObservationContentValuesById',
-            dataType: 'json',
-            data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
-        }).done(function (result) {
-            console.log("test result");
-            console.log(result);
-            for (j = 0; j < result.length; j++) {
+			tableSW += rowheadSW;
+			tableSW += rowBodySW;
 
-                $(".content").each(function () {
+			if (rowContentSW == "") {
 
-                    $(this).find('table').each(function () {
+				tableSW = "";
+			}
+			if (rowContentIN == "") {
 
-                        $(this).find('tr').each(function () {
+				tableIN = "";
+			}
+			if (rowContentCW == "") {
 
-                            var currentRow = $(this).find('td').attr('id');
+				tableCW = "";
+			}
+			$("#dvTable").html("");
+			var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
+			var dvTable = $("#dvTable");
+			dvTable.append(tables);
 
-                            if ($(this).find("input[name = HiddenContentId]").val() == result[j].contentId) {
-                                if ($(this).find("td:eq(1) input[type='text']").val() == result[j].sno) {
+		});
+	}
 
-                                    if (result[j].diff == 'CW') {
-                                        console.log(result[j].contentMappingId);
-                                        $(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
-                                            $(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
-                                            $(this).find("input[name = HiddenContentId]").val(result[j].contentId),
-                                            $(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue1),
-                                            $(this).find("td:eq(3) input[type='text']").val(result[j].measuedValue2),
-                                            $(this).find("td:eq(4) input[type='text']").val(result[j].measuedValue3),
-                                            $(this).find("td:eq(5) input[type='text']").val(result[j].average),
-                                            $(this).find("td:eq(6) input[type='text']").val(result[j].percent)
-                                        console.log($(this).find("input[name = HiddenContentvalueId]").val());
-                                    }
-                                    else if (result[j].diff == 'SW') {
-                                        console.log(result[j].contentMappingId);
-                                        $(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
-                                            $(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
-                                            $(this).find("input[name = HiddenContentId]").val(result[j].contentId),
-                                            $(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue),
-                                            $(this).find("td:eq(3) input[type='text']").val(result[j].measuedValue1),
-                                            $(this).find("td:eq(4) input[type='text']").val(result[j].measuedValue2),
-                                            $(this).find("td:eq(5) input[type='text']").val(result[j].measuedValue3)
-                                    }
-                                    else if (result[j].diff == 'IN') {
-                                        console.log('result[j].measuedValue');
-                                        console.log(result[j].measuedValue);
-                                        $(this).find("input[name = HiddenContentvalueId]").val(result[j].id),
-                                            $(this).find("input[name = HiddenMappingId]").val(result[j].contentMappingId),
-                                            $(this).find("input[name = HiddenContentId]").val(result[j].contentId),
-                                            $(this).find("td:eq(2) input[type='text']").val(result[j].measuedValue),
-                                            $(this).find("td:eq(3) input[type='text']").val(result[j].actualValue),
-                                            $(this).find("td:eq(4) input[type='text']").val(result[j].instrumentError)
-                                    }
-                                }
-                            }
-
-                        });
-                    });
-                });
-            }
-        });
-    }
 </script>

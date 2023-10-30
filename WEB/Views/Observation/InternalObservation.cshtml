@@ -7,8 +7,20 @@
 	th,
 	tr,
 	td {
+		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.TblContent {
 		/* border: 1px solid #CCC; */
 		border: 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.TblInHeader {
+		border: none;
 		border-collapse: collapse;
 		text-align: center;
 	}
@@ -23,337 +35,299 @@
 		top: 65%;
 		-ms-transform: translateY(-50%);
 		transform: translateY(-50%);
+		border: 1px solid black;
+		border-collapse: collapse;
 	}
 </style>
-<div class="row">
-	<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
+@* <div class="row"> *@
+<div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
 
 
-		<table class="Tables-AndTablesTextBox" id="tblHeader">
+	<table class="Tables-AndTablesTextBox" id="tblHeader">
 
 
 
-			<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
-				<td colspan="4">
-					@* <span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span> *@
-					<span class="trn">
-						@Model.Title
-					</span>
-				</td>
-
-			</tr>
-
-			<tr class="sizeborder">
-				<td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px;" height="20">
-					<img src="../image/Fuso.png" alt="" style="width: 40%;" />
-				</td>
-
-				<td id="tdHeaderDepth" class="textcenterborder" rowspan="2" style="font-weight: bold;font-size: 15px;">
-					<span class="trn">
-						@Model.SubTitle
-					</span>
-					@* <span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span> *@
-				</td>
-
-				<td class="textleftborder trn" height="10">
-					@Model.FormatNoTitle
-				</td>
-
-				<td id="tdFormatDepth" class="textcenterborder">
-					@Model.FormatNo
-				</td>
-			</tr>
-			<tr>
-				<td class="textleftborder" height="20">
-					リビジョン番号／Revision No.
-				</td>
-				<td class="textcenterborder">0</td>
-			</tr>
-		</table>
-		<br>
-
-		<table id="TblInstrument" class="Tables-AndTablesTextBox">
-			<tr>
-				<td colspan="2" class="textcenterborder"><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
-				<td colspan="1">@Model.IdNo</td>
-				<td colspan="2" class="textcenterborder"><span>品名   ／</span><br /><span>Instrument name</span></td>
-				<td colspan="3">@Model.Name</td>
-				<td colspan="2" class="textcenterborder"><span>製造者／</span><br /><span> Make</span></td>
-				<td colspan="2">@Model.Make</td>
-			</tr>
-			<tr>
-				<td class="textcenterborder" colspan="2">
-					<span>製造番号 /Serial Number</span>
-				</td>
-				<td colspan="1">@Model.SlNo</td>
-				<td class="textcenterborder" colspan="2">
-					<span>等級   ／</span><br /><span>Grade</span>
-				</td>
-				<td colspan="3">@Model.Grade</td>
-				<td colspan="2" class="textcenterborder">
-					<span>能力(測定範囲）／</span><br /> <span>Range</span>
-				</td>
-				<td colspan="2">@Model.Range</td>
-			</tr>
-			<tr>
-				<td class="textcenterborder" colspan="6">
-					<span>基準器・標準器・検査設備機器／</span><br /><span> Standard instruments (Master instrument)</span>
-				</td>
-
-				<td class="textcenterborder" colspan="3">
-					<span>参照基準／</span><br /><span>Reference standards</span>
-				</td>
-				<td colspan="3"> @Model.RefStd</td>
-
-			</tr>
-			<tr>
-
-				<td colspan="6">
-					<div id="masterEquipmentValue" class="Tables-AndTablesTextBox">
-						@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
-						{
-							int i = 1;
-
-							@foreach (var master in Model.MasterEqiupmentList)
-							{
-								<label>
-
-									@i
-									.
-									@master.EquipName
-									&nbsp;
-
-								</label>
-
-
-								i = i + 1;
-							}
-
-						}
-					</div>
-				</td>
-
-				<td class="textcenterborder" colspan="3">
-					<span>単位／ Unit</span>
-				</td>
-				<td colspan="3"><input type="text" style="height: 50px;" value="@Model.Units" class="Tables-AndTablesTextBox" name="Units" id="Units"></td>
-			</tr>
-			<tr>
-				<td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
-				<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
-				<td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
-				<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
-				<td colspan=2">
-					<span>外観・機能／Visual Check</span>
-				</td>
-				<td colspan="4">
-
-
-					<textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea>
-				</td>
-
-		</table>
-		<br>
-		<div class="row">
-				@if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0)
-				{
-					@* <div class="Tables-AndTablesTextBox">
-			<table>
-			<tr>
-			<td>Observation Content</td>
-			</tr>
-			<br>
-			<tr>
-			<td>
-			<div class="col-md-4">
-			<select name="ContentSelect" id="ContentSelect" class="form-control muldrop" multiple="multiple">
-			@foreach (var Content in @Model.ObservationContentList)
-			{
-			if (@Model.UserContentMappingViewModel != null)
-			{
-			var check = false;
-			@foreach (var contentmapid in @Model.UserContentMappingViewModel)
-			{
-			//if(SubSectionCode.)
-			if (Content.Id == contentmapid.ContentId)
-			{
-			check = true;
-			}
-			}
-			if (check == true)
-			{
-
-			<option value="@Content.Id" selected="check">@Content.ContentName</option>
-			}
-			else
-			{
-			<option value="@Content.Id">@Content.ContentName</option>
-			}
-			}
-			else
-			{
-
-			<option value="@Content.Id">@Content.ContentName</option>
-
-			}
-
-
-			}
-
-			}
-			</select>
-			</div>
+		<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
+			<td colspan="4">
+				@* <span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span> *@
+				<span class="trn">
+					@Model.Title
+				</span>
 			</td>
-			<td><input type="button" id="btnGenerate" value="Generate Table" class="btn-Generate form-control" /></td>
-			</tr>
-			</table>
-			</div> *@
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="required trn">Observation Content</label>
-						<select style="width:80%" name="ContentSelect" id="ContentSelect" class="form-control muldrop" multiple="multiple">
-								@foreach (var Content in @Model.ObservationContentList)
-								{
-									if (@Model.UserContentMappingViewModel != null)
-									{
-										var check = false;
-										@foreach (var contentmapid in @Model.UserContentMappingViewModel)
-										{
-											//if(SubSectionCode.)
-											if (Content.Id == contentmapid.ContentId)
-											{
-												check = true;
-											}
-										}
-										if (check == true)
-										{
 
-										<option value="@Content.Id" selected="check">@Content.ContentName</option>
-										}
-										else
+		</tr>
+
+		<tr class="">
+			<td class="" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px;" height="20">
+				<img src="../image/Fuso.png" alt="" style="width: 40%;" />
+			</td>
+
+			<td id="tdHeaderDepth" class="" rowspan="2" style="font-weight: bold;font-size: 15px;">
+				<span class="trn">
+					@Model.SubTitle
+				</span>
+				@* <span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span> *@
+			</td>
+
+			<td class="trn" height="10">
+				@Model.FormatNoTitle
+			</td>
+
+			<td id="" class="">
+				@Model.FormatNo
+			</td>
+		</tr>
+		<tr>
+			<td class="" height="20">
+				リビジョン番号／Revision No.
+			</td>
+			<td class="">0</td>
+		</tr>
+	</table>
+	<br>
+
+	<table id="TblInstrument" class="Tables-AndTablesTextBox">
+		<tr>
+			<td colspan="2" class=""><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
+			<td colspan="1">@Model.IdNo</td>
+			<td colspan="2" class=""><span>品名   ／</span><br /><span>Instrument name</span></td>
+			<td colspan="3">@Model.Name</td>
+			<td colspan="2" class=""><span>製造者／</span><br /><span> Make</span></td>
+			<td colspan="2">@Model.Make</td>
+		</tr>
+		<tr>
+			<td class="" colspan="2">
+				<span>製造番号 /Serial Number</span>
+			</td>
+			<td colspan="1">@Model.SlNo</td>
+			<td class="" colspan="2">
+				<span>等級   ／</span><br /><span>Grade</span>
+			</td>
+			<td colspan="3">@Model.Grade</td>
+			<td colspan="2" class="">
+				<span>能力(測定範囲）／</span><br /> <span>Range</span>
+			</td>
+			<td colspan="2">@Model.Range</td>
+		</tr>
+		<tr>
+			<td class="" colspan="6">
+				<span>基準器・標準器・検査設備機器／</span><br /><span> Standard instruments (Master instrument)</span>
+			</td>
+
+			<td class="" colspan="3">
+				<span>参照基準／</span><br /><span>Reference standards</span>
+			</td>
+			<td colspan="3"> @Model.RefStd</td>
+
+		</tr>
+		<tr>
+
+			<td colspan="6">
+				<div id="masterEquipmentValue" class="Tables-AndTablesTextBox">
+					@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+					{
+						int i = 1;
+
+						@foreach (var master in Model.MasterEqiupmentList)
+						{
+							<label>
+
+								@i
+								.
+								@master.EquipName
+								&nbsp;
+
+							</label>
+
+
+							i = i + 1;
+						}
+
+					}
+				</div>
+			</td>
+
+			<td class="" colspan="3">
+				<span>単位／ Unit</span>
+			</td>
+			<td colspan="3"><input type="text" style="height: 50px;" value="@Model.Units" class="Tables-AndTablesTextBox" name="Units" id="Units"></td>
+		</tr>
+		<tr>
+			<td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
+			<td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+			<td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
+			<td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+			<td colspan=2">
+				<span>外観・機能／Visual Check</span>
+			</td>
+			<td colspan="4">
+
+
+				<textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea>
+			</td>
+
+	</table>
+	<br>
+	<div class="row">
+			@if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0)
+			{
+			<div class="col-md-4">
+				<div class="form-group">
+					<label class="required trn">Observation Content</label>
+					<select style="width:80%" name="ContentSelect" id="ContentSelect" class="form-control muldrop TblContent" multiple="multiple">
+							@foreach (var Content in @Model.ObservationContentList)
+							{
+								if (@Model.UserContentMappingViewModel != null)
+								{
+									var check = false;
+									@foreach (var contentmapid in @Model.UserContentMappingViewModel)
+									{
+										//if(SubSectionCode.)
+										if (Content.Id == contentmapid.ContentId)
 										{
-										<option value="@Content.Id">@Content.ContentName</option>
+											check = true;
 										}
+									}
+									if (check == true)
+									{
+
+									<option value="@Content.Id" selected="check">@Content.ContentName</option>
 									}
 									else
 									{
-
 									<option value="@Content.Id">@Content.ContentName</option>
-
 									}
+								}
+								else
+								{
 
+								<option value="@Content.Id">@Content.ContentName</option>
 
 								}
 
-							}
-						</select>
 
-					</div>
+							}
+
+						}
+					</select>
 
 				</div>
-				<div class="col-md-4">
-					<div class="form-group vertical-center">
-						<input type="button" id="btnGenerate" value="Generate Table" class="btn-Generate" />
-					</div>
+
+			</div>
+			<div class="col-md-4">
+				<div class="form-group vertical-center">
+					<input type="button" id="btnGenerate" value="Generate Table" class="btn-Generate" />
 				</div>
-				}
-				@* Dynamic table Div *@
-			<div id="dvTable" class="col-md-9 content"></div>
-				@* Dynamic table Div *@
-			<table class="Tables-AndTablesTextBox" id="TblFooter">
-				<tr>
-					<td class="trn">検査員／Inspector</td>
-					<td>
-						<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox"
-							   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
-					</td>
-					<td>検査日／Inspection date:</td>
-				@if (true)
-				{
-					var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
-						<td>
-							<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
-								   class="Tables-AndTablesTextBox" disabled>
-						</td>
-				}
+			</div>
+			}
 
-				</tr>
-
-				<tr>
-					<td class="trn">承認者／Approver</td>
-					<td><input type="text" value="@Model.CalibrationReviewedBy" class="Tables-AndTablesTextBox" id="ReviewedBy" name="ReviewedBy" disabled></td>
-
-					<td>承認日／Approved date:</td>
-
-				@if (true)
-				{
-					var ReviewDate = @Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");
-						<td>
-							<input type="text" name="CalibrationReviewedDate" id="ReviewDate"
-								   value="@ReviewDate" class="Tables-AndTablesTextBox" disabled>
-						</td>
-
-				}
-				</tr>
-				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" && @Model.ReviewStatus == 0)
-				@*|| @Model.ReviewStatus == 0) @Model.ReviewStatus	 != null *@
-				{
-					<tr>
-						<td class="textcenterborder">判定／Judgement</td>
-						<td class="textcenterborder" colspan="3">
-							<div style="text-align: left;">
-
-								<label class="trn">合格 / Pass</label>
-								<input type="radio" name="Approve" id="Approve">
-								<label class="trn">不合格 /Fail</label>
-								<input type="radio" name="Reject" id="Reject">
-							</div>
-						</td>
-
-					</tr>
-				}
-				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
-				{
-					<tr>
-						<td colspan="4">
-							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
-							{
-								<input type="button" class="btn btn-primary trn btnSaveApproval" value="Save" name="Save" id="btnSaveApproval">  @* onclick="SaveMicrometer(language)" *@
-							}
-							<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-						</td>
-					</tr>
-				}
-				@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
-				{
-					<tr>
-						<td colspan="4" style="text-align:center;">
-							@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
-
-
-							{
-								<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
-							}
-							<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-						</td>
-					</tr>
-				}
-			</table>
-
-			<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
-			<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
-			<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
-			<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
-		</div>
+			@* Dynamic table Div *@
+		<div id="dvTable" class="col-md-9 content"></div>
+			@* Dynamic table Div *@
 
 	</div>
+		<table class="Tables-AndTablesTextBox TblInHeader" id="TblFooter">
+			<tr>
+				<td class="trn">検査員／Inspector</td>
+				<td>
+					<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox TblInHeader"
+						   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
+				</td>
+				<td>検査日／Inspection date:</td>
+			@if (true)
+			{
+				var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
+					<td>
+						<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+							   class="Tables-AndTablesTextBox TblInHeader" disabled>
+					</td>
+			}
+
+			</tr>
+
+			<tr>
+				<td class="trn">承認者／Approver</td>
+				<td><input type="text" value="@Model.CalibrationReviewedBy" class="Tables-AndTablesTextBox TblInHeader" id="ReviewedBy" name="ReviewedBy" disabled></td>
+
+				<td>承認日／Approved date:</td>
+
+			@if (true)
+			{ 
+				var ReviewDate = @Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");
+					<td>
+						<input type="text" name="CalibrationReviewedDate" id="ReviewDate"
+						   value="@ReviewDate" class="Tables-AndTablesTextBox TblInHeader" disabled>
+					</td>
+
+			 }
+			</tr>
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" && @Model.ReviewStatus == 0)
+			@*|| @Model.ReviewStatus == 0) @Model.ReviewStatus	 != null *@
+			{
+				<tr>
+					<td class="">判定／Judgement</td>
+					<td class="" colspan="3">
+						<div style="text-align: left;">
+
+							<label class="trn">合格 / Pass</label>
+							<input type="radio" name="Approve" id="Approve">
+							<label class="trn">不合格 /Fail</label>
+							<input type="radio" name="Reject" id="Reject">
+						</div>
+					</td>
+
+				</tr>
+			}
+			@* <textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea> *@
+			@* 	<td colspan="4"><input type="text" value=" " class="Tables-AndTablesTextBox TblInHeader" style="text-align:left;" id="Remarks" name="Remarks"></td> *@
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+			{
+			<tr id="trRejection" class="trhideRejection">
+				<td class="trn">拒否の理由／Reason For Rejection </td>
+
+				<td colspan="4"><textarea value=" " class="Tables-AndTablesTextBox TblInHeader" style="text-align:left;" id="Remarks" name="Remarks"></textarea></td>
+				</tr>
+			}
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
+			{
+				<tr>
+					<td colspan="4">
+						@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+						{
+							<input type="button" class="btn btn-primary trn btnSaveApproval" value="Save" name="Save" id="btnSaveApproval">  @* onclick="SaveMicrometer(language)" *@
+						}
+						<a class="btn btn-primary trn TblInHeader" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+					</td>
+				</tr>
+			}
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+			{
+				<tr>
+					<td colspan="3" style="text-align:center;">
+						@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
 
 
+						{
+							<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
+						}
+						<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+					</td>
+				</tr>
+			}
+		</table>
+
+		<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+		<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
+		<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
+		<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
+
+	
+			</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function () {
-
+		$('.trhideRejection').hide();
 			if ($('#TemplateObservationId').val() > 0) {
 
 				$("#dvTable").html("");
@@ -470,50 +444,49 @@
 								if (InCount == 2) {
 									title = resultObject[i].contentValue.trim();
 
-									contentsubheadingIN = '<td style="width: 40%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+									contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 
 								}
 								else {
 
 									title = "";// resultObject[i].contentValue.trim();
-									contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+									contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 								}
 							}
 							else //if (InCount == 1)
 							{
 								title = resultObject[i].contentValue.trim();
-								contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 							}
 
 						}
 
 						if (IdName == 'CW') {
 
-							rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-								'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-								'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-								'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-								'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-								'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
-								'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
-
+							rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+								'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+								'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+								'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+								'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+								'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+								'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
 						}
 						else if (IdName == 'SW') {
 
-							rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-								'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-								'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
-								'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-								'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-								'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+							rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+								'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+								'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+								'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+								'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+								'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
 						}
 						else if (IdName == 'IN') {
 
 							rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-								+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-								'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-								'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-								'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+								+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+								'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+								'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+								'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
 
 						}
 
@@ -534,48 +507,77 @@
 							if ((objcontentCount > 1) && (j == 2)) {//new mode
 
 								title = resultObject[i].contentValue.trim();
-								contentsubheadingIN = '<td style="width: 40%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 
 							}
 							else if (objcontentCount == 1) {
 
 								title = resultObject[i].contentValue.trim();
-								contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 							}
 							else {
 
 								title = " ";
-								contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 							}
 							if (IdName == 'CW') {
 
-								rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-									'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-									'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-									'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-									'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-									'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
-									'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
+								rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+									'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+									'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+									'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+									'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+									'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+									'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
 
 							}
 							else if (IdName == 'SW') {
 
-								rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-									'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"></td>' +
-									'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
-									'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-									'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-									'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+								rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+									'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+									'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+									'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+									'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+									'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
 							}
 							else if (IdName == 'IN') {
 
 								rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-									+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-									'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-									'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
-									'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+									+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+									'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+									'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+									'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
 
 							}
+							// if (IdName == 'CW') {
+
+							// 	rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+							// 		'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
+							// 		'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+							// 		'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+							// 		'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+							// 		'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
+							// 		'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
+
+							// }
+							// else if (IdName == 'SW') {
+
+							// 	rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+							// 		'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"></td>' +
+							// 		'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
+							// 		'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+							// 		'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+							// 		'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+							// }
+							// else if (IdName == 'IN') {
+
+							// 	rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
+							// 		+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
+							// 		'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+							// 		'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
+							// 		'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+
+							// }
 						}
 
 					}
@@ -828,6 +830,8 @@
 				if ($('#Approve').not(this).prop('checked', false)) {
 					$('#Reject').prop('checked', false);
 					$('#ReviewStatus').val(1);
+				$('.trhideRejection').hide();
+					$('#Remarks').val(" ");
 				}
 			});
 
@@ -835,6 +839,8 @@
 				if ($('#Reject').not(this).prop('checked', false)) {
 					$('#Approve').prop('checked', false);
 					$('#ReviewStatus').val(2);
+					// for instrument rejection reason
+				$('.trhideRejection').show();
 				}
 
 			});
@@ -907,15 +913,15 @@
 							if (InCount == 2) {
 								title = resultObject[i].contentValue.trim();
 								console.log("title 2");
-								console.log(title);
-								contentsubheadingIN = '<td style="width: 40%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								console.log(title);// #ffffff//class="TblInHeader" style="width: 40%;border:2px solid #f2f3f5;border-left:none;border-right:none;"
+								contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 
 							}
 							else {
 								console.log(" else title");
 								console.log(title);
 								title = "";// resultObject[i].contentValue.trim();
-								contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+								contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 							}
 						}
 						else //if (InCount == 1)
@@ -924,38 +930,38 @@
 							console.log("title 1");
 							console.log(title);
 							title = resultObject[i].contentValue.trim();
-							contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+							contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 						}
 
 					}
 
 					if (IdName == 'CW') {
 
-						rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-							'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-							'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-							'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-							'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-							'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
-							'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
+						rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+							'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+							'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+							'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+							'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+							'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+							'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
 
 					}
 					else if (IdName == 'SW') {
 
-						rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-							'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-							'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
-							'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-							'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-							'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+						rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+							'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+							'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+							'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+							'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+							'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
 					}
 					else if (IdName == 'IN') {
 
 						rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-							+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-							'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-							'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-							'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+							+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+							'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+							'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+							'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
 
 					}
 

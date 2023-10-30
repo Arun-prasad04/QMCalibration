@@ -63,7 +63,7 @@ namespace CMT.DATAMODELS
 		public virtual DbSet<UserRoles> UserRoles { get;set;}
 		public virtual DbSet<ObservationContentValues> ObservationContentValues { get; set; }
 		public virtual DbSet<ObservationContentMapping> ObservationContentMapping { get; set; }
-
+		public virtual DbSet<EmailServiceStatus> EmailServiceStatus { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -66,14 +66,9 @@
 
 										<td id="InstrumentName">
 
-											@* 	<a href="#" onclick="PopUpListing1('@item.InstrumentName','@item.Id');"> *@
-
 											@item.InstrumentName
-											@* </a> *@
-
+											
 										</td>
-
-
 										<td id="SlNo">@item.SlNo</td>
 										<td>@item.IdNo</td>
 										<td>@item.Range</td>
@@ -82,13 +77,11 @@
 										@if (@item.ToolRoomStatus == 1)
 										{
 
-											<td id="ReplacementLabID_@item.Id" href="#">
+											<td id="ReplacementLabID_@item.Id" class="LabIDCell" href="#">
 
 												@item.ReplacementLabID
 											</td>
-											@* <td>
-									<input type="text" id="ReplacementLabID_@item.Id" name="ReplacementLabID_@item.Id" value="@item.ReplacementLabID">
-									</td> *@
+											
 											<td id="ChkInput" style="text-align:left;">
 												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" value="0" disabled />
 												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
@@ -103,21 +96,13 @@
 												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
 
 											</td>
-											@* <td>
-									<input type="text" id="ReplacementLabID_@item.Id" name="ReplacementLabID_@item.Id" onclick="PopUpListing1('@item.InstrumentName','@item.Id');">
-									<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
-
-									</td> *@
 											<td id="ChkInput" style="text-align:left;">
 												<input type="hidden" id="instrumentid" name="instrumentid" value="@item.Id">
-												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" />@* onchange="ValidateReplacementLabID(\"" + encodeURI(ReplacementLabID_+@item.Id) + " \")" *@
+												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" />
 												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
 											</td>
 
 										}
-
-
-
 									</tr>
 								}
 
@@ -132,14 +117,10 @@
 								<div class="modal-header">
 
 									<h4 class="modal-title trn">Tool Room Instruments</h4>
-									@* <button type="button" class="close" data-dismiss="modal">&times;</button> *@
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
 								</div>
 								<div class="modal-body">
 									<div class="card-body">
-
-										@* 	LabID	Name	DepartName	DueDate
-										Ts-01	Test Instrument 01	LAB	2023-06-27 17:53:22.550 *@
-
 										<table id="tblPopUp" class="table table-bordered table-striped" style="width:100%">
 											<thead>
 												<tr>
@@ -149,7 +130,7 @@
 													<th class="trn">Due Date</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody id="tbodypopup">
 											</tbody>
 										</table>
 									</div>
@@ -182,7 +163,7 @@
 </form>
 <script>
 
-	setTimeout(function () {
+	$(function () {
 		$("#tblTool").DataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -192,12 +173,14 @@
 			"autoWidth": true,
 			"responsive": true,
 		});
-	}, 500);
+	});
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-<script>
 
+ <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+ 
+ <script>
 
 	$(function () {
 		//For Select All CheckBox Functionality
@@ -228,8 +211,12 @@
 
 	}
 	function PopUpListing1(InstrumentName, Id) {
-
+		if ($.fn.dataTable.isDataTable('#tblPopUp')) {
+			$('#tblPopUp').DataTable().clear().destroy();
+		}
+		var table;
 		var rows = "";
+		//var SetData = $("#tbodypopup").empty(); 
 		var MasterLabID = Id;
 		$.ajax({
 			type: 'GET',
@@ -240,18 +227,12 @@
 
 				$("#ToolHistoryDetails").modal('show');
 				$('#tblPopUp tbody').empty();
-				//console.log(data);
-				// $('#tblTool  > tbody > tr').each(function (a, b) {
-				// 	var DelPartNo = $(this).children("td:eq(6)").text();
-				// 	console.log(DelPartNo);
-				// });
-				// var MasterLabID = $(tr).find("input[name=instrumentid]").val();
-				// var ReplacementLabID = "ReplacementLabID_" + MasterLabID;
+
 				var count = 0;
 				$.each(data, function (i, item) {
 					$('#tblTool  > tbody > tr').each(function (a, b) {
 						var ReplacementLabID = $(this).children("td:eq(6)").text();
-						
+
 						if (ReplacementLabID == item.idNo) {
 
 							count += 1;
@@ -259,49 +240,60 @@
 
 
 					});
-
+					
 					if (count == 0) {
-					var date = new Date($.now());
+						var date = new Date($.now());
 
-					var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
-					var LabId = encodeURI(item.idNo);
+						var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
+						var LabId = encodeURI(item.idNo);
 
 
-					rows = "<tr>"
-						+ "<td>"
-						+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + ");'>" + item.instrumentName
-						+ "</a>"
-						+ "</td>"
-						+ "<td>" + item.idNo + "</td>"
-						+ "<td>" + item.departmentName + "</td>"
-						+ "<td>" + dueDate + "</td>"
-						+ "</tr>"
-					$('#tblPopUp tbody').append(rows);
-					$('#dvload').hide();
+						rows = "<tr>"
+							+ "<td>"
+							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + ");'>" + item.instrumentName
+							+ "</a>"
+							+ "</td>"
+							+ "<td>" + item.idNo + "</td>"
+							+ "<td>" + item.departmentName + "</td>"
+							+ "<td>" + dueDate + "</td>"
+							+ "</tr>"
+						$('#tblPopUp tbody').append(rows);
+						//SetData.append(rows);
+						$('#dvload').hide();
 					}
 				});
+				
+				$("#tblPopUp").DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				
+				});
 
+				var currentRow = $(this).closest("tr");
+				$("#popupcount_" + MasterLabID).val($('#tblPopUp >tbody >tr').length);
 
-		var currentRow = $(this).closest("tr");
-		$("#popupcount_" + MasterLabID).val($('#tblPopUp >tbody >tr').length);
+				if ($('#tblPopUp >tbody >tr').length == 0) {
 
-		if ($('#tblPopUp >tbody >tr').length == 0) {
+					var ChkoutId = "ChkInput_" + MasterLabID;
+					$("#" + ChkoutId).attr("disabled", true);
 
-			var ChkoutId = "ChkInput_" + MasterLabID;
-			$("#" + ChkoutId).attr("disabled", true);
+				}
 
-		}
+				$('.overlay').hide();
 
-		$('.overlay').hide();
+			},
+			error: function (emp) {
+				$('#dvload').hide();
 
-	},
-	error: function (emp) {
-		$('#dvload').hide();
-		
-	}
-		});
-	HidePopUp();
 			}
+		});
+		HidePopUp();
+	}
 
 	function MasterToolListing(ReplacementidNo, MasterLabID) {
 
@@ -309,7 +301,6 @@
 		var id = "ReplacementLabID_" + MasterLabID;
 		var ChkId = "ChkInput_" + MasterLabID;
 		var HiddenLabID = "HiddenLabID_" + MasterLabID;
-		// $("#" + id).text(RLabId);
 		$("#" + id).text(RLabId);
 		$("#" + HiddenLabID).val(RLabId);
 		$("#" + ChkId).prop("checked", true);

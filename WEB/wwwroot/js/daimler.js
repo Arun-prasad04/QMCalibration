@@ -2973,10 +2973,13 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
+    console.log("Remarks");
+    console.log($('#Remarks').val());
+    console.log($('#ReviewDate').val());
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val() }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
@@ -3156,7 +3159,7 @@ function InsertRequestList() {
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
             instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
-            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val()
+            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val(),
         }
 
         Request.push(UserView);
