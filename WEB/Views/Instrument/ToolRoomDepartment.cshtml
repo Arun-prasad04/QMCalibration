@@ -1,12 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@* @{
+﻿@* @{
 	ViewData["Title"] = "Replacement Due List Details";
-}
- *@
+} *@
+ 
 <section class="content">
 	<div class="row">
 		<div class="col-12">
@@ -71,9 +66,12 @@
 		</div>
 	</div>
 </section>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
 <script>
-	setTimeout(function () {
-		$('#tblToolDept').DataTable({
+	
+	$(function () {
+		$('#tblToolDept').dataTable({
 			"paging": true,
 			"lengthChange": true,
 			"searching": true,
@@ -81,9 +79,9 @@
 			"info": true,
 			"autoWidth": true,
 			"responsive": true,
+			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		});
-
-
-	}, 500);
-		
+	});
 </script>

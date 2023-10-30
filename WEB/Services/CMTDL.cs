@@ -614,7 +614,45 @@ namespace WEB.Services
 				return null;
 			}
 		}
+		public List<RequestMailList> GetRequestDetailsForEMail(int RequestId)
+		{
+			try
+			{
+				List<RequestMailList> requestMailLists = new List<RequestMailList>();
+				DataSet ds = GetRequestsForEMail(RequestId);
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{ 
+				foreach (DataRow dr in ds.Tables[0].Rows)
+					{
+						RequestMailList requestMail=new RequestMailList();
+						{
+							requestMail.SNo = Convert.ToInt16(dr["S.No"]);
+							requestMail.RequestNo = Convert.ToString(dr["Request No"]);
+							requestMail.LabId = Convert.ToString(dr["Lab ID"]);
+							requestMail.EquipmentType = Convert.ToString(dr["Equipment Type"]);
+							requestMail.EquipmentName = Convert.ToString(dr["Equipment Name"]);
+							requestMail.SubsectionCode = Convert.ToString(dr["Sub Section Code"]);
+							requestMail.CalibrationType = Convert.ToString(dr["Calibration Type"]);
+							requestMail.CreaterFirstName = Convert.ToString(dr["CreaterFirstName"]);
+							requestMail.CreaterLastName = Convert.ToString(dr["CreaterLastName"]);
+							requestMail.CreaterEmail = Convert.ToString(dr["CreaterEmail"]);
+						}
+						requestMailLists.Add(requestMail);
+					}
+				
+				}
 
+				return requestMailLists;
+			}
+			catch(Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetRequestDetailsForEMail Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+				return null;
+
+			}
+		
+		}
 		public RequestMailList GetDataForInstrumentRequest(int InstId, int reqtype)
 		{
 			RequestMailList uv = new RequestMailList();
@@ -662,7 +700,6 @@ namespace WEB.Services
 
 			return dsResults;
 		}
-
 		public DataSet GetCalibrationLabUsersData()
 		{
 			var connectionString = _configuration.GetConnectionString("CMTDatabase");
@@ -1043,5 +1080,21 @@ namespace WEB.Services
 
         }
 
-    }
+		public DataSet GetRequestsForEMail(int RequestId)
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetRequestDetailsForEMail");
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@RequestId", RequestId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
+			return dsResults;
+		}
+	}
+
 }
