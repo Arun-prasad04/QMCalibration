@@ -1823,7 +1823,42 @@
 
 					"Please enter the Humidity": { jp: "湿度を入力してください", en: "Please enter the Humidity" },
 					"Please enter the Temperature": { jp: "温度を入力してください", en: "Please enter the Temperature" },
-					"Please enter the Units": { jp: "単位を入力してください", en: "Please enter the Units" }
+					"Please enter the Units": { jp: "単位を入力してください", en: "Please enter the Units" },
+
+					// Certificate Template
+					"Mitsubishi Fuso Truck and Bus Corporation": { jp: "三菱ふそうトラック・バス株式会社", en: "Mitsubishi Fuso Truck and Bus Corporation" },
+					"Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522": { jp: "〒211-8522 神奈川県川崎市中原区大蔵町10", en: "Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522" },
+					"CERTIFICATE OF CALIBRATION": { jp: "校正証明書", en: "CERTIFICATE OF CALIBRATION" },
+					"CERTIFICATE OF VERIFICATION": { jp: "検証証明書", en: "CERTIFICATE OF VERIFICATION" },
+					"I. Description of device under calibration (DUC)": { jp: "I. 校正対象デバイス (DUC) の説明", en: "I. Description of device under calibration (DUC)" },
+					"I. Description of device under verification (DUV)": { jp: "I. 検証対象デバイス（DUV）の説明", en: "I. Description of device under verification (DUV)" },
+					"Certificate No.": { jp: "証明書の番号。", en: "Certificate No." },
+					"Report issue date": { jp: "レポート発行日", en: "Report issue date" },
+					"Next Calibrtaion due": { jp: "次回の校正期限", en: "Next Calibrtaion due" },
+					"Name of Dept.": { jp: "部署名", en: "Name of Dept." },
+					"Date of receipt": { jp: "領収書の日付", en: "Date of receipt" },
+					"Sub section code": { jp: "サブセクションコード", en: "Sub section code" },
+					"Description of equipment": { jp: "設備の説明", en: "Description of equipment" },
+					"Identification No.": { jp: "識別番号。", en: "Identification No." },
+					"Calibration procedure/Reference standard": { jp: "校正手順・基準器", en: "Calibration procedure/Reference standard" },
+					"Environmental condition": { jp: "環境条件", en: "Environmental condition" },
+					"External": { jp: "外部の", en: "External" },
+					"II. Master &amp; Equipment used": { jp: "II.マスター＆使用機材", en: "II. Master &amp; Equipment used"},
+					"Refer external calibartion report": { jp: "外部校正レポートを参照してください", en: "Refer external calibartion report"},
+"III. Calibration Results": { jp: "Ⅲ．校正結果", en: "III. Calibration Results"},
+"All values are in": { jp: "すべての値が入っています", en: "All values are in"},
+"External report result status": { jp: "外部報告結果状況", en: "External report result status"},
+"OK": { jp: "わかりました", en: "OK"},
+"Not OK": { jp: "よくない", en: "Not OK"},
+"Refer the external calibartion report for more details": { jp: "詳細については、外部校正レポートを参照してください。", en: "Refer the external calibartion report for more details"},
+"Note: Statement of conformity is given based on decision rule agreed by requestor": { jp: "注: 適合性の宣言は、要求者が合意した決定ルールに基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor"},
+"Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate": { jp: "注: 適合性の宣言は、要求者によって合意された決定ルールと外部証明書に基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate"},
+"1. The calibration results are valid at the time of and under the stated condition of measurement.": { jp: "1. 校正結果は、測定時および指定された測定条件下で有効です。", en: "1. The calibration results are valid at the time of and under the stated condition of measurement."},
+"2. The report should not be reproduced either in full or in part without permission in writing.": { jp: "2. 報告書の全部または一部を書面による許可なく転載することはできません。", en: "2. The report should not be reproduced either in full or in part without permission in writing."},
+"3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "3. 次回の校正期限は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument."},
+"1. The calibration results based on external certificate result": { jp: "1. 外部証明書の結果に基づく校正結果", en: "1. The calibration results based on external certificate result"},
+"2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "2. 次回の校正期日は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument."}
+
 				}
 
 				return dicts;
@@ -1882,7 +1917,8 @@
 					data: ''
 				}).done(function (resultObject) {
 					GlDicts = resultObject;
-
+					console.log("Department-----------------")
+					console.log(resultObject)
 					var optionhtml;
 					var optionhtmlRole;
 					var optiinhtmlDeptId;
@@ -1907,11 +1943,11 @@
 						optionhtml = '';
 						if (lang == 'jp') {
 
-							optionhtml = '<option value="' + item.id + '">' + item.nameJp + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.nameJp +' - '+ item.subSectionCode + '</option>';
 						}
 						else {
 
-							optionhtml = '<option value="' + item.id + '">' + item.name + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.name +' - '+ item.subSectionCode + '</option>';
 						}
 
 						$("#UserDept").append(optionhtml);
