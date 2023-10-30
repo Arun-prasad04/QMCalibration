@@ -4373,7 +4373,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 
-	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy)
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks)
 	{
 		try
 		{
@@ -4394,11 +4394,29 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			_unitOfWork.BeginTransaction();
 			observationById.CalibrationReviewedDate = reviewDate;
-			observationById.ReviewStatus = reviewStatus;
+            if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+            {
+                observationById.ExternalObsStatus = reviewStatus;
+            }
+            else
+            {
+                observationById.ReviewStatus = reviewStatus;
+            }
+            //observationById.ReviewStatus = reviewStatus;
 			observationById.ULRNumber = numberList[0];
 			observationById.CertificateNumber = numberList[1];
 			observationById.CalibrationReviewedBy = reviewedBy;
-			_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+            if (reviewStatus == 2)
+            {
+				observationById.CalibrationResult = "Not Ok";
+                observationById.Remarks = Remarks;
+            }
+            if (reviewStatus == 1)
+            {
+				observationById.CalibrationResult = "Ok";
+                observationById.Remarks = "OK";
+            }
+            _unitOfWork.Repository<TemplateObservation>().Update(observationById);
 			_unitOfWork.SaveChanges();
 
 			RequestStatus reqestStatus = new RequestStatus();
@@ -4413,6 +4431,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			
 			reqestStatus.CreatedOn = DateTime.Now;
 			reqestStatus.CreatedBy = reviewedBy;
+			reqestStatus.Comment = Remarks;
 			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 			_unitOfWork.SaveChanges();
 
@@ -4684,10 +4703,12 @@ public class ObservationTemplateService : IObservationTemplateService
 			TextReader reader = new StringReader(ExportData);
 			//PageSize.A4, 10.0F, 10.0F, 100.0F, 0.0F)PageSize.A4, 10, 10, 10, 20
 
-			Document PdfFile = new Document(PageSize.LETTER.Rotate(), 10, 10, 10, 20);
-			PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);
-			//  String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2 strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 26pt;font-weight: 900; }";
-			String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2, strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody1 { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 16pt; }";
+			//Document PdfFile = new Document(PageSize.LETTER.Rotate(), 10, 10, 10, 20);
+			//Document PdfFile = new Document(new iTextSharp.text.Rectangle(410f, 288f).Rotate());
+			Document PdfFile = new Document(iTextSharp.text.PageSize.A4.Rotate(), 10, 10, 10, 20);
+			PdfWriter writer = PdfWriter.GetInstance(PdfFile, sourceStream);            
+            //  String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2 strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 26pt;font-weight: 900; }";
+            String Export_css = @"html { font-family: SmartFontUI; font-size: 10px; }  h1, h2, strong { font-family: SmartFontUI; font-weight: normal; display: inline; }  h1 { font-size: 18pt; }   .main { font-size: 12pt; color: black; font-family: SmartFontUI, Arial, Sans-Serif; background-color: white; text-align: left; line-height: 1.4em; margin: 2%; } .mainDesc { width: 100%; margin: 10px 0; }  span { float: left; display: block; width: 100%; margin-bottom: 5px; }  .bodyText1SerNo { width: 2em; }  .bodyText1LIC { width: 22em; }  .txtboxspan { width: 32em; }  .tableBody1 { width: 100%; } .nc { margin-left: 100px; } .subtitle { font-size: 16pt; }";
 			MemoryStream msCss = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Export_css));
 			MemoryStream msHtml = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(ExportData));
 
@@ -5810,7 +5831,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				TempEnd = s.TempEnd,
 				Humidity = s.Humidity,
 				RefWi = s.RefWi,
-				Allvalues = s.Allvalues,
+				Units = s.Allvalues,
 				CalibrationPerformedDate = s.CreatedOn,
 				CreatedBy = s.CreatedBy,
 				CalibrationReviewedBy = s.CalibrationReviewedBy,
@@ -5913,13 +5934,40 @@ public class ObservationTemplateService : IObservationTemplateService
 					Allvalues = exObs.Allvalues,
 					CreatedOn = DateTime.Now,
 					CreatedBy = exObs.CreatedBy,
-					CalibrationReviewedDate = DateTime.Now,
-					ExternalObsStatus = exObs.AdminReviewStatus
-				};
+					CalibrationReviewedDate = DateTime.Now,	
+					ExternalObsStatus = exObs.AdminReviewStatus,
+                //Units = exObs.Allvalues,
+            };
+				if(exObs.AdminReviewStatus == 2)
+				{
+					templateObservation.Remarks = exObs.AdRemarks;
+					templateObservation.CalibrationResult = "Not OK In Observation Template";
+				}
+
 				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
 				_unitOfWork.SaveChanges();
 				tempobsId = templateObservation.Id;
-			}
+
+				if (exObs.AdminReviewStatus == 2)
+				{
+					RequestStatus reqestStatus = new RequestStatus();
+					reqestStatus.RequestId = exObs.RequestId;
+					reqestStatus.StatusId = (Int32)EnumRequestStatus.Rejected;
+					reqestStatus.CreatedOn = DateTime.Now;
+					reqestStatus.CreatedBy = exObs.CreatedBy;
+					reqestStatus.Comment = exObs.AdRemarks;
+					_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+                    _unitOfWork.SaveChanges();
+
+                    Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == exObs.RequestId).SingleOrDefault();
+					requestById.StatusId = (Int32)EnumRequestStatus.Rejected;
+					requestById.ReceivedBy = exObs.CreatedBy;
+					requestById.ReceivedDate = DateTime.Now;
+					_unitOfWork.Repository<Request>().Update(requestById);
+					_unitOfWork.SaveChanges();
+				}
+
+            }
 			else
 			{
 				if (observationById != null)
@@ -5990,4 +6038,196 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
+
+    public ResponseViewModel<CertificateViewModel> GetTemplateObservationById(int requestId, int instrumentId)
+    {
+        try
+        {
+            CertificateViewModel templateObservation = _unitOfWork.Repository<TemplateObservation>()
+                                                                    .GetQueryAsNoTracking(Q => Q.RequestId == requestId
+                                                                                            && Q.InstrumentId == instrumentId)
+                                                    .Select(s => new CertificateViewModel()
+                                                    {
+                                                        Id = s.Id,
+                                                        TempStart = s.TempStart,
+                                                        TempEnd = s.TempEnd,
+                                                        Humidity = s.Humidity,
+                                                        RefWi = s.RefWi,
+                                                        Allvalues = s.Allvalues,
+                                                        ReviewStatus = s.ReviewStatus,
+                                                        CreatedBy = s.CreatedBy,
+                                                        ULRNumber = s.ULRNumber,
+                                                        CertificateNumber = s.CertificateNumber,
+                                                        CalibrationReviewedBy = s.CalibrationReviewedBy,
+                                                        //CalibrationPerformedDate = s.CreatedOn,
+                                                        CalibrationReviewedDate = s.CalibrationReviewedDate,
+                                                        InstrumentCondition = s.InstrumentCondition,
+                                                        ExternalObsStatus = s.ExternalObsStatus,
+                                                        CalibrationResult = s.CalibrationResult,
+                                                        Remarks = s.Remarks,
+                                                    }).SingleOrDefault();
+
+            if (templateObservation != null)
+            {
+                List<string> performedUserData = GetUserName(templateObservation.CreatedBy);
+                if (performedUserData.Count >= 3)
+                {
+                    templateObservation.CalibrationPerformedBy = performedUserData[0];
+                    templateObservation.PerformedBySign = performedUserData[1];
+                    templateObservation.PerformedByDesignation = performedUserData[2];
+                }
+                List<string> reviewedUserData = GetUserName(templateObservation.CalibrationReviewedBy);
+
+                if (reviewedUserData.Count >= 3)
+                {
+                    templateObservation.ReviewedBy = reviewedUserData[0];
+                    templateObservation.ReviewedBySign = reviewedUserData[1];
+                    templateObservation.ReviewedByDesignation = reviewedUserData[2];
+                }
+
+                int? ulrNumber = templateObservation.ULRNumber == null ? 0 : templateObservation.ULRNumber;
+                int? certificateNumber = templateObservation.CertificateNumber == null ? 0 : templateObservation.CertificateNumber;
+                List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+
+                if (formatList.Count >= 2)
+                {
+                    templateObservation.ULRFormat = formatList[0];
+                    templateObservation.CertificateFormat = formatList[1];
+                }
+            }
+
+            #region
+            /*
+            if (plungerDialViewModel != null)
+            {
+                List<string> performedUserData = GetUserName(plungerDialViewModel.CreatedBy);
+
+                if (performedUserData.Count >= 3)
+                {
+                    plungerDialViewModel.CalibrationPerformedBy = performedUserData[0];
+                    plungerDialViewModel.PerformedBySign = performedUserData[1];
+                    plungerDialViewModel.PerformedByDesignation = performedUserData[2];
+                }
+
+                List<string> reviewedUserData = GetUserName(plungerDialViewModel.CalibrationReviewedBy);
+
+                if (reviewedUserData.Count >= 3)
+                {
+                    plungerDialViewModel.ReviewedBy = reviewedUserData[0];
+                    plungerDialViewModel.ReviewedBySign = reviewedUserData[1];
+                    plungerDialViewModel.ReviewedByDesignation = reviewedUserData[2];
+                }
+
+                int? ulrNumber = plungerDialViewModel.ULRNumber == null ? 0 : plungerDialViewModel.ULRNumber;
+                int? certificateNumber = plungerDialViewModel.CertificateNumber == null ? 0 : plungerDialViewModel.CertificateNumber;
+                List<string> formatList = GetULRAndCertificateNumber(ulrNumber, certificateNumber);
+
+                if (formatList.Count >= 2)
+                {
+                    plungerDialViewModel.ULRFormat = formatList[0];
+                    plungerDialViewModel.CertificateFormat = formatList[1];
+                }
+            }
+			*/
+            #endregion
+
+            return new ResponseViewModel<CertificateViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = templateObservation,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("ObservationTemplateService - GetTemplateObservationById Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<CertificateViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateService",
+                ResponseServiceMethod = "GetTemplateObservationById"
+            };
+        }
+    }
+
+    public ResponseViewModel<CertificateViewModel> SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, int userId, string exportData)
+    {
+        try
+        {
+
+            _unitOfWork.BeginTransaction();
+
+
+
+            //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+            //                                                     .GetQueryAsNoTracking(Q => Q.RequestId == requestId
+            //                                                                            && Q.InstrumentId == instrumentId)
+            //                                                     .SingleOrDefault();
+
+            //observationById.CalibrationResult = CalibrationResult;
+            //observationById.Remarks = Remarks;
+            //_unitOfWork.Repository<TemplateObservation>().Update(observationById);
+            //_unitOfWork.SaveChanges();
+
+
+            //ObsTemplateLeverTypeDial leverTypeDialById = _unitOfWork.Repository<ObsTemplateLeverTypeDial>()
+            //                                                        .GetQueryAsNoTracking(Q => Q.ObservationId == observationById.Id)
+            //                                                        .SingleOrDefault();
+            //leverTypeDialById.EnvironmentCondition = EnvironmentCondition;
+            //leverTypeDialById.Uncertainity = Uncertainity;
+            //leverTypeDialById.CalibrationResult = CalibrationResult;
+            //leverTypeDialById.Remarks = Remarks;
+            //_unitOfWork.Repository<ObsTemplateLeverTypeDial>().Update(leverTypeDialById);
+            //_unitOfWork.SaveChanges();
+
+
+            ResponseViewModel<QRCodeFilesViewModel> qrCodeResponseData = InsertQRCodeFiles(requestId, instrumentId, userId, exportData);
+
+            if (qrCodeResponseData.ResponseCode == 500)
+            {
+                _unitOfWork.RollBack();
+                return new ResponseViewModel<CertificateViewModel>
+                {
+                    ResponseCode = 500,
+                    ResponseMessage = qrCodeResponseData.ResponseMessage,
+                    ErrorMessage = qrCodeResponseData.ErrorMessage,
+                    ResponseData = null,
+                    ResponseDataList = null,
+                    ResponseService = qrCodeResponseData.ResponseService,
+                    ResponseServiceMethod = qrCodeResponseData.ResponseServiceMethod
+                };
+            }
+
+            _unitOfWork.Commit();
+            return new ResponseViewModel<CertificateViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            _unitOfWork.RollBack();
+            ErrorViewModelTest.Log("ObservationTemplateService - SaveCertificateTemp Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<CertificateViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateService",
+                ResponseServiceMethod = "SaveCertificateTemp"
+            };
+        }
+    }
 }

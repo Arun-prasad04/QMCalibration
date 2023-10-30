@@ -54,24 +54,23 @@
 </style>
 
 
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8" style="padding: 19px;border: 1px solid black; background-color: white;">
+<div class="row">    
+    <div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
         <table class="TableWidth">
             <tr class="sizeborder">
                 <td class="textcenterborder" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px"
-                    height="60">
-                    <img src="../image/Daimler_Header_Logo_Observation.png" alt="" style="width: 75%;" />
+                    height="40">
+                    <img src="../image/Fuso.png" alt="" style="width: 75%;" />
                 </td>
                 <td class="textcenterborder" rowspan="3" style="font-weight: bold;font-size: 20px;">
-                    <span class="trn">Observation Sheet</span>
-                    </br> <span class="trn">External Calibration</span>
+                    <span class="trn">Observation Sheet External Calibration</span> <br />     
+                    <span class="trn">観察シート外部校正</span>
                 </td>
-                <td class="textleftborder trn" height="30">Format No.</td>
+                <td class="textleftborder trn" height="20" width="70">Format No.</td>
                 <td class="textcenterborder trn">365.QM.D.824</td>
             </tr>
             <tr>
-                <td class="textleftborder" height="30">
+                <td class="textleftborder" height="20" width="70">
                     <span class="trn">RevNo & </span></br> <span class="trn">Date</span>
                 </td>
                 <td class="textcenterborder trn">01/ 14.11.2018</td>
@@ -80,54 +79,59 @@
         <br>
 
         <table class="TableWidth">
-            <tr>
-                <td class="textleftborder trn">Name</td>
-                <td>@Model.Name</td>
-                <td class="textleftborder trn">Range</td>
-                <td>@Model.Range</td>
-                <td class="textleftborder trn">Make</td>
-                <td>@Model.Make</td>
+            <tr>               
+
+                <td colspan="2" class="textcenterborder"><span>品名コード-社番／</span><br /><span>Instrument ID number</span></td>
+                <td colspan="1">@Model.IdNo</td>
+                <td colspan="2" class="textcenterborder"><span>品名   ／</span><br /><span>Instrument name</span></td>
+                <td colspan="3">@Model.Name</td>
+                <td colspan="2" class="textcenterborder"><span>製造者／</span><br /><span> Make</span></td>
+                <td colspan="2">@Model.Make</td>
+
+            </tr>
+            <tr>               
+
+                <td class="textcenterborder" colspan="2"><span>製造番号 /Serial Number</span></td>
+                <td colspan="1">@Model.SerialNo</td>
+                <td class="textcenterborder" colspan="2"><span>等級   ／</span><br /><span>Grade</span></td>
+                <td colspan="3">@Model.Grade</td>
+                <td colspan="2" class="textcenterborder"><span>能力(測定範囲）／</span><br /> <span>Range</span></td>
+                <td colspan="2">@Model.Range</td>
             </tr>
             <tr>
-                <td class="textleftborder trn">Serial No.</td>
-                <td>@Model.SerialNo</td>
-                <td class="textleftborder trn">ID No.</td>
-                <td>@Model.IdNo</td>
-                <td class="textleftborder trn">Ref Std</td>
-                <td>@Model.RefStd</td>
+                <td class="textcenterborder" colspan="6"><span>基準器・標準器・検査設備機器／</span><br /><span> Standard instruments (Master instrument)</span></td>
+                <td class="textcenterborder" colspan="3"><span>参照基準／</span><br /><span>Reference standards</span></td>
+                <td colspan="3"> @Model.RefStd</td>
             </tr>
             <tr>
-                <td><span class="trn">Temp@Start </span><sup>o</sup>C</td>
-                <td><input type="text" value="@Model.TempStart" id="TempStart" class="Border0px"></td>
-                <td><span class="trn">Temp@End </span><sup>o</sup>C</td>
-                <td><input type="text" value="@Model.TempEnd" id="TempEnd" class="Border0px"></td>
-                <td class="trn">Humidity %RH</td>
-                <td><input type="text" value="@Model.Humidity" id="Humidity" class="Border0px"></td>
+
+                <td colspan="6"><span>Refer external calibartion report / 外部校正レポートを参照してください</span></td>
+
+                <td class="textcenterborder" colspan="3">
+                    <span>単位／ Unit</span>
+                </td>
+                <td colspan="3"><input type="text" style="height: 50px;width:100%" value="@Model.Units" class="Tables-AndTablesTextBox" name="Units" id="Units"></td>
             </tr>
 
             <tr>
-                <td rowspan="2" colspan="4" class="textleftborder">
-                    <span class="trn">Condition of the Instrument</span></br>
-                    <textarea name="ExtIndicatiorCondition" id="ExtIndicatiorCondition"
-                              style="height: 50px;width: 400px;">@Model.ExternalObsCondition</textarea>
+                <td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
+                <td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 75px;" required="required"></td>
+                <td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
+                <td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 75px;" required="required"></td>
+                <td colspan=2">
+                    <span>外観・機能／Visual Check</span>
                 </td>
-                <td class="textleftborder" colspan="2">
-                    <span class="trn">Ref WI: </span><input type="text" name="RefWi" id="RefWi"
-                                                            value="@Model.RefWi" class="size" style="width: 140px;">
-                </td>
-            </tr>
-            <tr>
-                <td class="textleftborder" colspan="2">
-                    <span class="trn">All Values Are In</span><input type="text" style="width: 60px;"
-                                                                     name="Allvalues" id="Allvalues" value="@Model.Allvalues" class="size">
+                <td colspan="4">
+                    <textarea name="ExtIndicatiorCondition" id="ExtIndicatiorCondition" style="width: 500px;height: 75px;" class="Tables-AndTablesTextBox" required="required">@Model.ExternalObsCondition</textarea>
                 </td>
             </tr>
+            
         </table>
         <br>
        
 
         <div class="TableWidth">
-            <table align="center">
+            <table align="center" style="width:100%">
                 <tr>
                     <th colspan="3" class="trn">External Calibration</th>
                 </tr>
@@ -159,19 +163,19 @@
         <br>
         <table class="TableWidth">
             <tr>
-                <td class="trn">Calibration Performed By</td>
+                <td class="trn">検査員／Inspector</td>
                 <td>
                     <input type="text" value="@Model.CalibrationPerformedBy" id="CalibrationPerformedBy" name="CalibrationPerformedBy"
                            class="Border0px" disabled>
                 </td>
 
-                <td class="trn">Reviewed By</td>
+                <td class="trn">承認者／Approver</td>
                 <td>
                     <input type="text" value="@Model.ReviewedBy" id="ReviewedBy" name="ReviewedBy" class="Border0px" disabled>
                 </td>
             </tr>
             <tr>
-                <td class="textcenterborder trn">Date:</td>
+                <td class="textcenterborder trn">検査日／Inspection date:</td>
                 @if (true)
                 {
                     var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -181,14 +185,13 @@
                     </td>
                 }
 
-                <td class="textcenterborder trn">Date:</td>
+                <td class="textcenterborder trn">承認日／Approved date:</td>
 
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
                 || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
                     <td>
-                        <input type="text" name="Review_Date" id="Review_Date"
-                               value="@Model.Review_Date" class="size" disabled>
+                        <input type="text" name="Review_Date" id="Review_Date" value="@Model.Review_Date" class="Border0px" disabled>
                     </td>
                 }
                 else if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
@@ -206,21 +209,40 @@
                     </td>
                 }
             </tr>
+                
             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4") @*|| Model.ReviewStatus != null)*@
             {
                 <tr>
-                    <td class="textleftborder trn">Status</td>
+                    <td class="textleftborder trn" style="text-align:center">判定 / Judgement</td>
                     <td class="textleftborder" colspan="3">
                         <div style="text-align: left;">
-                            <label class="trn">Approve</label>
+                            <label class="trn">合格 / Pass</label>
                             <input type="radio" name="Approve" id="Approve">
-                            <label class="trn">Reject</label>
+                            <label class="trn">失敗 / Fail</label>
                             <input type="radio" name="Approve" id="Reject">
                         </div>
                     </td>
 
                 </tr>
             }
+
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
+                {
+                <tr id="trRejection" class="trhideRejection">
+                    <td class="trn">拒否の理由／Reason For Rejection </td>
+                    <td colspan="4"><textarea type="text" value=" " class="Tables-AndTablesTextBox TblInHeader" style="text-align:left; width:100%" id="Remarks" name="Remarks"></textarea></td>
+                </tr>
+                }
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                <tr id="AdtrRejection" class="AdtrhideRejection">
+                    <td class="trn">拒否の理由／Reason For Rejection </td>
+                    <td colspan="4">
+                        <textarea type="text" value=" " class="Tables-AndTablesTextBox TblInHeader" style="text-align:left; width:100%" id="AdRemarks" name="AdRemarks"></textarea>
+                        </td>
+                </tr>
+                }
+
             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4")
             {
                 <tr>
@@ -265,16 +287,20 @@
 
 <script type="text/javascript">
     $(function () {
-
+        $('.trhideRejection').hide();
+        $('#AdtrRejection').hide();
         $('#checkOk').on('change', function () {
             if ($('#checkOk').not(this).prop('checked', false)) {
                 $('#AdminReviewStatus').val(1);
+                $('#AdtrRejection').hide();
+                $('#AdRemarks').val(" ");
             }
         });
 
         $('#checkNotOk').on('change', function () {
             if ($('#checkNotOk').not(this).prop('checked', false)) {
                 $('#AdminReviewStatus').val(2);
+                $('#AdtrRejection').show();
             }
 
         });
@@ -293,14 +319,17 @@
         $('#Approve').on('change', function () {
             if ($('#Approve').not(this).prop('checked', false)) {
                 $('#ReviewStatus').val(1);
+                $('.trhideRejection').hide();
+                $('#Remarks').val(" ");
             }
         });
 
         $('#Reject').on('change', function () {
             if ($('#Reject').not(this).prop('checked', false)) {
                 $('#ReviewStatus').val(2);
+                $('.trhideRejection').show();
             }
-
+           
         });
 
         var reviewStatus = $('#ReviewStatus').val();

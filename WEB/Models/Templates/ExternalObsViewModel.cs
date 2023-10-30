@@ -53,6 +53,11 @@
 
         public string? Review_Date { get; set; }
         public string? SignImageName { get; set; }
+        public string? Grade { get; set; }
+        public string? Units { get; set; }
+        public string? AdRemarks { get; set; }
+        
+        public List<MasterViewModel> MasterEqiupmentList { get; set; }
 
     }
 }
