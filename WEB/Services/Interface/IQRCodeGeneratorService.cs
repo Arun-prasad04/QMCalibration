@@ -8,4 +8,5 @@ public interface IQRCodeGeneratorService
     public QRCodeFilesViewModel GetQRCodeDetails(QRCodeFilesViewModel qrCodeFilesViewModel);
     public QRCodeFilesViewModel GetQRCodeByGuid(Guid guid);
     public RequestViewModel GetRequestData(int requestId);
+    public QRCodeFilesViewModel GetQRCodeDetailsForCertificate(int requestId, int instrumentId);
 }

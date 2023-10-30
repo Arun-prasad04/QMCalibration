@@ -2973,9 +2973,17 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
-    console.log("Remarks");
-    console.log($('#Remarks').val());
-    console.log($('#ReviewDate').val());
+
+    var revstat = $('#ReviewStatus').val();
+
+    if (revstat == 2) {
+
+        if ($('#Remarks').val().trim() == '') {
+            showWarning("Please Enter External Instrument Reject Reason", lang);
+            return false;
+        }
+    }
+
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
@@ -3327,13 +3335,14 @@ function DueInstrumentList() {
             TempEnd: $('#TempEnd').val(),
             Humidity: $('#Humidity').val(),
             RefWi: $('#RefWi').val(),
-            Allvalues: $('#Allvalues').val(),
+            Allvalues: $('#Units').val(),
             ExternalObsCondition: $('#ExtIndicatiorCondition').val(),
             CalibrationPerformedBy: $('#CalibrationPerformedBy').val(),
             ReviewedBy: $('#ReviewedBy').val(),
             CalibrationDoneDate: $('#CalibrationDoneDate').val(),
             ReviewedDate: $('#ReviewedDate').val(),
             AdminReviewStatus: $('#AdminReviewStatus').val(),
+            AdRemarks: $('#AdRemarks').val(),
         }
         $.ajax({
             url: '../Observation/InsertExternalObs',
@@ -3426,16 +3435,16 @@ function ValidateObservation()
 function SaveCertificateTemp(lang) {
 
     var temptName = 'test';
-    var result = $('#CalibrationResult').val();
-    var remarks = $('#Remarks').val();
-    if (result == null || result == "") {
-        showWarning("Please enter the Calibration Result!!!", lang);
-        return true;
-    }
-    else if (remarks == null || remarks == "") {
-        showWarning("Please enter the Calibration Result!!!", lang);
-        return true;
-    }
+    //var result = $('#CalibrationResult').val();
+    //var remarks = $('#Remarks').val();
+    //if (result == null || result == "") {
+    //    showWarning("Please enter the Calibration Result!!!", lang);
+    //    return true;
+    //}
+    //else if (remarks == null || remarks == "") {
+    //    showWarning("Please enter the Calibration Result!!!", lang);
+    //    return true;
+    //}
 
     Swal.fire({
         title: "Are you want To Generate QR Code with Pdf file?",

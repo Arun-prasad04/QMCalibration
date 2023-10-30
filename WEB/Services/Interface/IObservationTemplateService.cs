@@ -62,9 +62,9 @@ namespace WEB.Services.Interface
 		#endregion
 		ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId);
 		ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs);
-		ResponseViewModel<CertificateViewModel> GetTemplateObservationById(int requestId, int instrumentId);
+        ResponseViewModel<CertificateViewModel> GetTemplateObservationById(int requestId, int instrumentId);
+        ResponseViewModel<CertificateViewModel> SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, int loginBy, string ExportData);
 
-		ResponseViewModel<CertificateViewModel> SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, string CalibrationResult, string Remarks, int loginBy, string ExportData);
 
 	}
 

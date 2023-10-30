@@ -111,6 +111,8 @@ public partial class RequestViewModel
     public string? ToolInventory { get; set; }
 
     public int? AdminReviewStatus { get; set; }
+
+    public int? ExObsTemplateReviewStatus { get; set; }
 }
 public class UploadFile
     {

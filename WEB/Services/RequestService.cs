@@ -223,18 +223,28 @@ public class RequestService : IRequestService
 			{
 				var templateObservationList = GetTemplateObservations();
 				int? reviewStatus = 0;
+				int? ExObsreviewStatus = 0;
 				foreach (var data in RequestList)
 				{
 					var observationData = templateObservationList.Where(x => x.InstrumentId == data.InstrumentId
 																	  && x.RequestId == data.Id)
 														   .FirstOrDefault();
 					if (observationData != null)
-						reviewStatus = observationData.ReviewStatus;
-					else
-						reviewStatus = 0;
+                    {
+                        reviewStatus = observationData.ReviewStatus;
+                        ExObsreviewStatus = observationData.ExternalObsStatus;
+                    }
+                    else
+                    {
+                        reviewStatus = 0;
+                        ExObsreviewStatus = 0;
+                    }
+						
 
 					data.TemplateReviewStatus = reviewStatus == null ? 0 : reviewStatus;
-				}
+                    data.ExObsTemplateReviewStatus = ExObsreviewStatus == null ? 0 : ExObsreviewStatus;
+
+                }
 			}
 
 			return new ResponseViewModel<RequestViewModel>
