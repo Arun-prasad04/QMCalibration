@@ -278,11 +278,11 @@
                     }
                     else if (item.status == 27) {
                         tdStatus = "<td>Approved</td>"
-                    }
+                    }                    
                     else if (item.status == 28) {
                         tdStatus = "<td>Request Rejected</td>"
                     }
-                    else if (item.status == 29 && item.labResult == "Rejected") {
+                    else if (item.status == 28 && item.Result == "Result") {
                         tdStatus = "<td>Calibration Rejected</td>"
                     }
                     else if (item.status == 29 && item.labResult != "Rejected") {
@@ -291,13 +291,17 @@
                     else if (item.status == 30) {
                         tdStatus = "<td>Closed</td>"
                     }
+                        else if (item.status == 31) {
+                            tdStatus = "<td>Reject</td>"
+                        }
+                    
                     var tdTest = '';
-                    if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
+                    if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External') {
 
 
                         tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
                     }
-                    else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External Instrument') {
+                    else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External') {
 
 
                         tdTest = "<td><a href='@Url.Action("ViewObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"

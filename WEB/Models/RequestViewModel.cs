@@ -70,9 +70,7 @@ public partial class RequestViewModel
     public string? Feasiblity { get; set; }
     public DateTime? TentativeCompletionDate { get; set; }
     public DateTime? ReceivedDate { get; set; }
-
     public DateTime? InstrumentReturnedOn { get; set; }
-
     public string? CollectedBy { get; set; }    
     public string? ReceivedByName { get; set; }
     public int? MasterInstrument1 { get; set; }

@@ -312,21 +312,21 @@
 										<label class="required trn">Scope</label>
 										<select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
 											<option value="" selected="true" class="trn">--Select Type Of Scope--</option>
-											@if (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")
+											@if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
 											{
-												<option value="Internal Instrument" selected="true" class="trn">Internal Instrument</option>
+												<option value="Internal" selected="true" class="trn">Internal</option>
 											}
 											else
 											{
-												<option value="Internal Instrument" class="trn">Internal Instrument</option>
+												<option value="Internal" class="trn">Internal</option>
 											}
-											@if (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器")
+											@if (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の")
 											{
-												<option value="External Instrument" selected="true" class="trn">External Instrument</option>
+												<option value="External" selected="true" class="trn">External</option>
 											}
 											else
 											{
-												<option value="External Instrument" class="trn">External Instrument</option>
+												<option value="External" class="trn">External</option>
 											}
 										</select>
 									</div>
@@ -452,7 +452,7 @@
 								<div class="card-body">
 
 									<div class="row" >
-										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
 										{
 											<div class="col-sm-3" >
 												<div class="form-group">
@@ -532,13 +532,7 @@
 									</div>
 									
 									<div class="row">
-										@*<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Standard Reffered</label>
-												<input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
-													   class="form-control" placeholder="" @Model.IsDisabled>
-											</div>
-										</div>*@
+									
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="trn">Calibration Date</label>
@@ -581,7 +575,7 @@
 												<div class="input-group date" id="reservationdate1" data-target-input="nearest"
 													 onchange="$('#DueDate').attr('value',$('#DueDate').val());">
 													<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-														   id="DueDate" name="DueDate" value="@Model.DueDate" @Model.IsDisabled />
+														   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" @Model.IsDisabled />
 													<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
 														<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 													</div>
@@ -603,60 +597,11 @@
 											</div>
 										</div>
 									</div>
-
-
-									<div class="row">
-										@*<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Calibration Source</label>
-												<input type="text" id="CalibSource" name="CalibSource" value="@Model.CalibSource"
-													   class="form-control" placeholder="" alt="Please provide the Calibration Source" @Model.IsDisabled>
-											</div>
-										</div>*@
-										@*<div class="col-sm-6">
-											<div class="form-group">
-												<label for="exampleSelectRounded0" class="trn">Calibration Status</label>
-												<select id="CalibrationStatus" name="CalibrationStatus" class="form-control" @Model.IsDisabled>
-													@foreach (var calibrationstatus in @Model.CalibrationStatusList)
-													{
-														if (calibrationstatus.Id == Model.CalibrationStatus)
-														{
-															<option value="@calibrationstatus.Id" selected="selected">
-																@calibrationstatus.AttrValue
-															</option>
-														}
-														else
-														{
-															<option value="@calibrationstatus.Id">@calibrationstatus.AttrValue</option>
-														}
-													}
-
-												</select>
-											</div>
-										</div>*@
-									</div>
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+									
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
 									{
 										<div class="row">
-											@*<div class="col-sm-6">
-												<div class="form-group">
-													<label class="required trn">Is NABL</label>
-													
-													<select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)">
-														<option value="" class="trn">--Select Is NABL--</option>
-														@if (Model.IsNABL == false)
-														{
-															<option value="false" selected class="trn">No</option>
-															<option value="true" class="trn">Yes</option>
-														}
-														else if (Model.IsNABL == true)
-														{
-															<option value="true" selected class="trn">Yes</option>
-															<option value="false" class="trn">No</option>
-														}
-													</select>
-												</div>
-											</div>@*//@HttpContextAccessor.HttpContext.Session.GetString("Language")*@
+											
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Observation Template</label>
@@ -690,56 +635,12 @@
 												</div>
 											</div>
 										</div>
-										<div class="row">
-													<div class="col-sm-6">
-														<div class="form-group">
-															<label class="required trn">Certification Template</label>
-															<select id="CertificationTemplate" name="CertificationTemplate" class="form-control"
-													@Model.IsDisabled>
-														@*@foreach (var certificate in @Model.CertificationTemplateList)
-														{
-															if (certificate.Id == Model.CertificationTemplate)
-															{
-																<option value="@certificate.Id" selected="selected">
-																	@certificate.AttrValue
-																</option>
-															}
-															else
-															{
-																<option value="@certificate.Id">@certificate.AttrValue</option>
-															}
-														}*@
-															</select>
-														</div>
-													</div>
-											@*<div class="col-sm-6">
-												<div class="form-group">
-													<label class="required trn">MU Template</label>
-
-													<select id="MUTemplate" name="MUTemplate" class="form-control" @Model.IsDisabled>
-														@*foreach (var mu in model.mutemplatelist)
-														{
-															if (mu.id == model.mutemplate)
-															{
-																<option value="mu.id" selected="selected">
-																	mu.attrvalue
-																</option>
-															}
-															else
-															{
-																<option value="mu.id">mu.attrvalue</option>
-															}
-														}
-
-													</select>
-
-												</div>
-											</div>*@
-										</div>
+										
 										<div class="row">
 											
 											<div class="col-sm-6">
 												<div class="form-group">
+													@*<button type="submit" id="btnSave" onclick="SaveInstrumenDetails()" class="btn btn-primary trn">Save</button>*@
 												</div>
 											</div>
 										</div>
@@ -784,19 +685,31 @@
 
 		//LoadDepartmentUserWise()
 
+			$('#reservationdate1').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+			$('#reservationdate2').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+
 		$("#TypeOfEquipment").change(function () {
 			var eq = $('#TypeOfEquipment').val();
 			console.log(eq);
-				if (eq == "External Instrument" || eq == "外部機器") {
+				if (eq == "External" || eq == "外部の") {
+			$('#ToolInventory').val('');
 				$('#ToolInventory').prop("disabled", true);
 			} else {
 				$("#ToolInventory").prop("disabled", false);
 			}
-		});
-
-		
+		});			
 	});
 	
+	@*$("#DueDate").change(function () {
+		debugger;
+		selectedDate = $('#DueDate').datetimepicker({ format: 'DD/MM/YYYY' }).val();
+		alert(selectedDate);
+	});*@
+
 	@*function LoadDepartmentUserWise(){
 		var TmpDept = @Json.Serialize(@ViewBag.UserBaseDepartment);
 		console.log('TmpDept');
@@ -828,6 +741,9 @@
 			format: 'DD/MM/YYYY'
 		});
 		$('#reservationdate2').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
+			$('#DueDate').datepicker({
 			format: 'DD/MM/YYYY'
 		});
 		$(function () {
@@ -974,7 +890,7 @@
 @*</script>
 <script>*@
 	function loaddate() {
-		debugger;
+		//debugger;
 		var date1 = document.getElementById("CalibDate").value;
 		var e = document.getElementById("CalibFreq");
 		var type = e.options[e.selectedIndex].text;

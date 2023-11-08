@@ -100,7 +100,17 @@ namespace WEB.Models
         public List<ObservationContentViewModel> obsContent { get; set; }
 		public DateTime? CalibrationCloseDate { get; set; }
 
-    }
+		public string IssueNo { get; set; }
+
+		public string Inspectiondetails { get; set; }
+
+		public string SectionCode { get; set; }
+
+		public string InstrumentType { get; set; }
+		public string? CalibrationMonth { get; set; }
+
+		public string? CalibrationRequestDate { get; set; }
+	}
     public class Instrumentids
     {
         public string InstrumentId { get; set; }
@@ -150,5 +160,12 @@ namespace WEB.Models
         public string ToolRoom { get; set; }
         public int DeptId { get; set; }
         public int InstrumentCreatedBy { get; set; }
+        public int RequestId { get; set; }
     }
+	public class RequestAllData
+	{
+		public int requestId { get; set; }
+		public string Inspectiondetails { get; set; }
+
+	}
 }

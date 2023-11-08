@@ -2973,8 +2973,16 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
-
+    debugger;
     var revstat = $('#ReviewStatus').val();
+    console.log('revstat');
+    console.log(revstat);
+
+
+    if (revstat == '') {
+        showWarning("Please select Judgement", lang);
+        return false;
+    }
 
     if (revstat == 2) {
 
@@ -3166,27 +3174,13 @@ function InsertRequestList() {
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
-            instrumentId: $(this).closest('tr').find('td:eq(9) input[type="checkbox"]').val(),
-            TypeValue: $(this).closest('tr').find("td:eq(9) input[type='hidden']").val(),
+            instrumentId: $(this).closest('tr').find('td:eq(10) input[type="checkbox"]').val(),
+            TypeValue: $(this).closest('tr').find("td:eq(10) input[type='hidden']").val(),
         }
 
         Request.push(UserView);
     });
-    //$('#example1 > tbody > tr').each(function (row, tr) {
-    //    var currentRow = $(this).closest("tr");
-    //    if (currentRow.find("td:eq(9)").text() != " ") {
-    //        var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
-    //        if (checkedvalue == true) {               
-
-    //            var UserView = {
-    //                instrumentId: $(tr).find("td:eq(9) input[type='checkbox']").val(),
-    //                TypeValue: $(tr).find("td:eq(9) input[type='hidden']").val()                   
-    //            }
-
-    //            Request.push(UserView);
-    //        }
-    //    }
-    //});
+    
     console.log(Request);
     $.ajax({
         url: '../Instrument/RegularRecaliRequest',
@@ -3219,6 +3213,7 @@ function DueInstrumentList() {
             Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
             ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
             InstrumentCreatedBy: $(this).closest('tr').find('td:eq(5) input[name="InstrumentCreatedBy"]').val(),
+            RequestId: $(this).closest('tr').find('td:eq(5) input[name="RequestId"]').val(),
         }
         Request.push(UserView);
     });
@@ -3243,6 +3238,7 @@ function DueInstrumentList() {
             // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
             var UserView = {
                 instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
+                RequestId: $(this).closest('tr').find('td:eq(5) input[name="RequestId"]').val(),
                 //InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
                 //IdNo: $(this).closest('tr').find('td:eq(1)').html(),
                 //SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
@@ -3476,6 +3472,36 @@ function SaveCertificateTemp(lang) {
                 showSuccess("Result Of Calibration & Remarks Successfully", lang);
                 window.location.reload();
             });
+        }
+    });
+}
+
+function SaveInstrumenDetails() {
+   
+    var data1;
+    var DueDates = $('#DueDate').val();
+    data1 = {
+        DueDate: $('#DueDate').val(),
+        //DueDates: $('#reservationdate1').val()
+        //ReceivedBy: $('#ReceivedBy').val(),
+        //// InstrumentCondition: $('#InstrumentCondition').val(),
+        //// Feasiblity: $('#Feasiblity').val(),
+        //// TentativeCompletionDate: $('#TentativeCompletionDate').val(),
+        //rejectReason: $('#Newreason').val(),
+        //standardReffered: $('#StandardReffered').val()
+    }
+    console.log(data1);
+    $.ajax({
+        type: 'POST',
+        url: '../Instrument/SaveInstrumenDetails',
+        data: data1,
+        dataType: 'json',
+        success: function (data) {
+            window.location.href = '../Tracker/Request?reqType=4';
+            showSuccess("You are rejected the External request. LAB admin get notified!", lang);
+        },
+        error: function () {
+            alert('error');
         }
     });
 }

@@ -49,10 +49,12 @@
 								<th class="trn">Lab ID Number</th>
 								<th class="trn">Range</th>
 								<th class="trn">Department</th>
+								<th class="trn">Sub section code</th>
 								<th class="trn">Scope</th>
 								<th class="trn">Calibration Date</th>
 								<th class="trn">DueDate</th>
 								<th class="trn">Edit</th>
+								<th class="trn">Control Card</th>
 								<!--<th>Delete</th>-->
 								@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
 								{
@@ -80,11 +82,13 @@
 										<td>@item.IdNo</td>
 										<td>@item.Range</td>
 										<td>@item.DepartmentName</td>
+										<td>@item.SubSecCode</td>
 										<td>@item.TypeOfEquipment</td>
 										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
 										<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
 
 										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+										<td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
 										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
 										{
 											<td style="text-align:center;" class="chkpl">
