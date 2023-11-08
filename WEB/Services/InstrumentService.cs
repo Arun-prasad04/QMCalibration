@@ -78,6 +78,7 @@ public class InstrumentService : IInstrumentService
 						UserRoleId = userRoleId,
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+						SubSecCode = dr["SubSectionCode"].ToString(),
 					};
 					instrumentList.Add(inst);
 
@@ -1173,11 +1174,11 @@ public class InstrumentService : IInstrumentService
 		{
 			ObservationTemplateId = row != null ? row.CertificationTemplate : 0;
 		}
-		else if (Type == "Observation" && (row.TypeOfEquipment == "Internal Instrument" || row.TypeOfEquipment == "内部計器"))
+		else if (Type == "Observation" && (row.TypeOfEquipment == "Internal" || row.TypeOfEquipment == "内部"))
 		{
 			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 0;
 		}
-		else if (Type == "Observation" && (row.TypeOfEquipment == "External Instrument" || row.TypeOfEquipment == "外部機器"))
+		else if (Type == "Observation" && (row.TypeOfEquipment == "External" || row.TypeOfEquipment == "外部の"))
 		{
 			ObservationTemplateId = row.ObservationTemplate != null ? row.ObservationTemplate : 01;
 		}
@@ -1570,4 +1571,207 @@ public class InstrumentService : IInstrumentService
 		return dsResults;
 	}
 
-   }
+	#region ControlCard
+	public ResponseViewModel<InstrumentViewModel> GetInstrumentDetailById(int InstrumentId)
+	{
+		try
+		{
+
+			InstrumentViewModel ObservationInstrument = new InstrumentViewModel();
+			DataSet dsInstrumentContent = GetInstrumentCardDetailsById(InstrumentId);
+			if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[0].Rows.Count > 0)
+			{
+				DataRow dr = dsInstrumentContent.Tables[0].Rows[0];
+				ObservationInstrument.Id = Convert.ToInt32(dr["Id"]);
+				ObservationInstrument.IdNo = dr["IdNo"].ToString();
+				ObservationInstrument.InstrumentName = dr["InstrumentName"].ToString();
+				ObservationInstrument.Make = dr["Make"].ToString();
+				ObservationInstrument.AmountJPY = dr["AmountJPY"].ToString();
+				ObservationInstrument.Grade = dr["Grade"].ToString();
+				ObservationInstrument.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+				ObservationInstrument.IssueNo = dr["IssueNo"].ToString();
+			}
+			if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[1].Rows.Count > 0)
+			{
+
+				var EqiupmentList = new List<MasterViewModel>();
+				foreach (DataRow dr in dsInstrumentContent.Tables[1].Rows)
+				{
+					EqiupmentList.Add(new MasterViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						EquipName = Convert.ToString(dr["EquipName"])
+					});
+
+				}
+
+				ObservationInstrument.MasterEqiupmentList = EqiupmentList;
+			}
+
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = ObservationInstrument,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("InstrumentService - GetInstrumentDetailById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseServiceMethod = "Instrument",
+				ResponseService = "GetInstrumentDetailById"
+			};
+		}
+	}
+
+	public DataSet GetInstrumentCardDetailsById(int InstrumentId)
+	{
+
+		var connectionstring = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand command = new SqlCommand("GetInstrumentDetailById");
+		command.CommandType = CommandType.StoredProcedure;
+		command.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		SqlConnection sqlcon = new SqlConnection(connectionstring);
+		DataSet dsResult = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		command.Connection = sqlcon;
+		command.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = command;
+		sqlAdapter.Fill(dsResult);
+		return dsResult;
+
+
+	}
+	public ResponseViewModel<InstrumentViewModel> GetRequestListForInstrument(int InstrumentId)
+	{
+		try
+		{
+			List<InstrumentViewModel> InstrumentRequest = new List<InstrumentViewModel>();
+			DataSet dsInstrumentContent = GetRequestListInstrument(InstrumentId);
+			if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsInstrumentContent.Tables[0].Rows)
+				{
+
+					InstrumentViewModel requestListInstrument = new InstrumentViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						IdNo = dr["IdNo"].ToString(),
+						InstrumentName = dr["InstrumentName"].ToString(),
+						Result = dr["Result"].ToString(),
+						Grade = dr["Grade"].ToString(),
+						CalibrationMonth = dr["CalibrationMonth"].ToString(),
+						CalibrationRequestDate = dr["Duedate"].ToString(),
+						Inspectiondetails = dr["Inspectiondetails"].ToString(),
+						SectionCode = dr["SectionCode"].ToString(),
+						InstrumentType = dr["InstrumentType"].ToString(),
+						RequestId = Convert.ToInt32(dr["RequestId"]),
+
+					};
+					InstrumentRequest.Add(requestListInstrument);
+				}
+			}
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = InstrumentRequest
+			};
+
+
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("InstrumentService - GetInstrumentDetailById Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseServiceMethod = "Instrument",
+				ResponseService = "GetInstrumentDetailById"
+			};
+		}
+	}
+
+	public DataSet GetRequestListInstrument(int InstrumentId)
+	{
+
+		var connectionstring = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand command = new SqlCommand("GetRequestListForInstrument");
+		command.CommandType = CommandType.StoredProcedure;
+		command.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		SqlConnection sqlcon = new SqlConnection(connectionstring);
+		DataSet dsResult = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		command.Connection = sqlcon;
+		command.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = command;
+		sqlAdapter.Fill(dsResult);
+		return dsResult;
+
+
+	}
+
+	public ResponseViewModel<InstrumentViewModel> UpdateControlCardRequestList(List<RequestAllData> reqlist, int InstrumentId, string IssueNo)
+	{
+		StringBuilder data = new StringBuilder("");
+		data.Append("<Root>");
+		foreach (var sd in reqlist)
+		{
+
+			data.Append("<RequestList>");
+			data.Append(string.Format("<Inspectiondetails>{0}</Inspectiondetails>", sd.Inspectiondetails));
+			data.Append(string.Format("<requestId>{0}</requestId>", sd.requestId));
+			data.Append("</RequestList>");
+		}
+		data.Append("</Root>");
+
+		var status = UpdateControlCard(data.ToString(), InstrumentId, IssueNo);
+
+		return new ResponseViewModel<InstrumentViewModel>
+		{
+			ResponseCode = 500,
+			ResponseMessage = "Failure",
+			ErrorMessage = "",
+			ResponseData = null,
+			ResponseDataList = null,
+			ResponseService = "InstrumentService",
+			ResponseServiceMethod = "UpdateControlCardRequestList"
+		};
+	}
+	public DataSet UpdateControlCard(string reqist, int InstrumentId, string IssueNo)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("UpdateControlCardRequestList");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		cmd.Parameters.AddWithValue("@instrumentid", InstrumentId);
+		cmd.Parameters.AddWithValue("@IssueNo", IssueNo);
+		cmd.Parameters.AddWithValue("@requestdata ", reqist);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+		cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
+	#endregion
+
+}

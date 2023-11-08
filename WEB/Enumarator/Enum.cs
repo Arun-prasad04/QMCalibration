@@ -4,7 +4,8 @@ public enum EnumRequestStatus{
 		Approved=27,
 		Rejected=28,
 		Sent=29,
-		Closed=30
+		Closed=30,
+		CalibrationReject = 31
 }
 public enum FeedbackDocumentStatus{
 		ActionRequired = 0,

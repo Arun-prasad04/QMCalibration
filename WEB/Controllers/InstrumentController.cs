@@ -21,11 +21,13 @@ public class InstrumentController : BaseController
     private IInstrumentService _instrumentService { get; set; }
     private IRequestService _requestService{get;set;}
 	private IUnitOfWork _unitOfWork { get; set; }
-	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService, IUnitOfWork unitOfWork) : base(logger, contextAccessor)
+	private IQRCodeGeneratorService _qrCodeGeneratorService { get; set; }
+	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService) : base(logger, contextAccessor)
     {
         _instrumentService = instrumentService;
         _requestService=requestService;
 		_unitOfWork = unitOfWork;
+		_qrCodeGeneratorService = qrCodeGeneratorService;
 	}
 
     public IActionResult Index() 
@@ -63,6 +65,7 @@ public class InstrumentController : BaseController
 
 	public IActionResult InsertInstrument(InstrumentViewModel instrument)
 	{
+		//return Json(true);
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int UserDeptId = Convert.ToInt32(base.SessionGetString("DepartmentId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
@@ -128,7 +131,7 @@ public class InstrumentController : BaseController
 		Request NewRequest = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId).OrderByDescending(O => O.Id).FirstOrDefault();
 		if (NewRequest.TypeOfReqest == 2 || NewRequest.TypeOfReqest == 3 || NewRequest.StatusId == 30)
 		{ 
-		ViewBag.ShowDetails = false;
+			ViewBag.ShowDetails = false;
 			response.ResponseData.IsDisabled = "readonly";
 		}
 		else 
@@ -249,5 +252,58 @@ public class InstrumentController : BaseController
 
 	}
 	//For Tool Inventory Manager
+	public IActionResult SaveInstrumenDetails(DateTime DueDate)
+	{
+		return Json(true);
+		//int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		//ResponseViewModel<RequestViewModel> response = _requestService.ExternalCalibrationReject(requestId, rejectReason, userId);
+		//return Json(response.ResponseData);
+	}
 
+	#region Control Card
+	public IActionResult ControlCard(int instrumentId)
+	{
+		ViewBag.InstrumentId = instrumentId;
+		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
+		ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+
+		return View(response.ResponseData);
+
+	}
+
+	public JsonResult RequestListForInstrument(int instrumentId)
+	{
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetRequestListForInstrument(instrumentId);
+		return Json(response.ResponseDataList);
+	}
+	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId)
+	{
+
+		QRCodeFilesViewModel qrCodeGenInputViewModel = new QRCodeFilesViewModel()
+		{
+			TemplateName = Constants.INSCONTROLLERNAME,
+			InstrumentId = instrumentId
+		};
+
+		QRCodeFilesViewModel qrCodeGenOutputViewModel = _qrCodeGeneratorService.QRCodeGenerationForInstrument(qrCodeGenInputViewModel, instrumentId);
+
+
+		if (qrCodeGenOutputViewModel == null)
+		{
+			return qrCodeGenInputViewModel;
+		}
+
+		return qrCodeGenOutputViewModel;
+	}
+
+	public JsonResult updateRequestforInstrument(List<RequestAllData> reqlist, int InstrumentId, string IssueNo)
+	{
+
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.UpdateControlCardRequestList(reqlist, InstrumentId, IssueNo);
+
+		return Json(response.ResponseDataList);
+	}
+
+	#endregion
 }
