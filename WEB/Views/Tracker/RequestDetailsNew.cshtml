@@ -808,7 +808,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="trn">Standard Reffered/Calibration Method</label><br>
+                                        <label class="trn">Standard Refered/Calibration Method</label><br>
                                         <input id="StdReffer" class="form-control" style="width: 100%;" value="">
                                     </div>
                                 </div>
@@ -833,7 +833,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @if(Model.TypeOfRequest == 1)
+                            {
                             <div class="row">
                                 <div class="col-sm-6">
                                     <!-- text input -->
@@ -855,16 +856,17 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                @* <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template Type</label><br>
                                         <select id="NewObservationType" class="form-control" style="width:100%; height:100%; padding:5px">
                                         </select>
                                     </div>
-                                </div>
+                                </div> *@
 
                             </div>
+                            }
                             <div class="row">
                                 @* <div class="col-sm-6">
                             <!-- text input -->
@@ -921,13 +923,15 @@
                     @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
-
+                            @if (Model.TypeOfRequest == 1)
+                            {
                             <div class="row mt-4">
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template</label>
-                                        <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled>
+                                        @* <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled> *@
+                                            <select id="NewObservationEd"  class="form-control" disabled>
                                             @foreach (var freq in @Model.ObservationTemplateList)
                                             {
                                                 if (@ViewBag.SessionLang == "en")
@@ -957,16 +961,18 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                   
+                                @* <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Observation Template Type</label>
                                         <select id="NewObservationTypeEd" class="form-control" disabled>
                                         </select>
                                     </div>
-                                </div>
+                                </div> *@
 
-                            </div>
+                                </div>
+                            }
                             <div class="row">
                                 @* <div class="col-sm-6">
                             <!-- text input -->
@@ -1001,7 +1007,7 @@
                             </select>
                             </div>
                             </div>*@
-                                <div class="col-sm-6">
+                               @*  <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <label class="trn">Certification Template</label>
@@ -1033,7 +1039,7 @@
                                             }
                                         </select>
                                     </div>
-                                </div>
+                                </div> *@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -1417,11 +1423,11 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                                @* <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">MU Template</label>
                                     </div>
-                                </div>
+                                </div> *@
                                 <div class="col-sm-6">
                                     <div id="imageSection">
                                         @if (@Model.MUTemplateFileName != null)
@@ -1693,7 +1699,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Instrument Id Number</label>
-                                        @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                        @if ((Model.InstrumentIdNo != null) && (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3))
                                         {
                                             <input type="text" class="form-control" id="IdNo" value="@Model.InstrumentIdNo" disabled>
                                         }
@@ -1815,7 +1821,7 @@
         $('#NewCertificationEd').select2();
 
 
-        if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
+      @*   if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
             var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
             var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
 
@@ -1834,14 +1840,14 @@
                     }
                 });
             }
-        }
+        } *@
     });
 
     function enableFields() {
         document.getElementById("NewObservationEd").disabled = false;
-        document.getElementById("NewObservationTypeEd").disabled = false;
+        //document.getElementById("NewObservationTypeEd").disabled = false;
         //document.getElementById("NewMUEd").disabled = false;
-        document.getElementById("NewCertificationEd").disabled = false;
+        //document.getElementById("NewCertificationEd").disabled = false;
         document.getElementById("newSubmitLABAdmin").disabled = false;
     }
     function checkFileSize(element, maxSize, event) {

@@ -42,7 +42,7 @@ namespace WEB.Services.Interface
 		ResponseViewModel<GeneralNewViewModel> SaveGeneralNewCertificate(int requestId, int instrumentId, string EnvironmentCondition, string Uncertainity, string CalibrationResult, string Remarks, int loginBy, string ExportData);
 
 		ResponseViewModel<GeneralViewModel> SaveGeneralCertificate(int requestId, int instrumentId, string EnvironmentCondition, string Uncertainity, string CalibrationResult, string Remarks, int loginBy, string ExportData);
-		ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks);
+		ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks,int RequestId);
 
 		//ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(InstrumentViewModel instrument);
 		ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4);
@@ -51,21 +51,22 @@ namespace WEB.Services.Interface
 
         ResponseViewModel<MetalRulesViewModel> InsertMetalRule(MetalRulesViewModel micrometer);
 		#region "Dynamic Observation"
-		ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId, int RequestId);
-	
+
+		ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId, int RequestId, int TemplateObservationId);
+
 		ResponseViewModel<DynamicViewModel> GetObservationInstrumentById(int InstrumentId, int RequestId);
 		ResponseViewModel<ObservationContentViewModel> GetSelectedObservationContentById(int ContentId, int InstrumentId,int RequestId);
 
 		ResponseViewModel<DynamicViewModel> InsertObservation(DynamicViewModel Dynamic);
 		ResponseViewModel<ObservationContentValuesViewModel> GetObservationContentValuesById(int InstrumentId, int RequestId);
-		ResponseViewModel<ObservationContentViewModel> GetObservationContentSelectedList(List<Contentids> Contents);
+		ResponseViewModel<ObservationContentViewModel> GetObservationContentSelectedList(List<Contentids> Contents, int InstrumentId, int TemplateObservationId);
+
 		#endregion
 		ResponseViewModel<ExternalObsViewModel> GetExternalObsById(int requestId, int instrumentId);
 		ResponseViewModel<ExternalObsViewModel> InsertExternalObs(ExternalObsViewModel exObs);
         ResponseViewModel<CertificateViewModel> GetTemplateObservationById(int requestId, int instrumentId);
         ResponseViewModel<CertificateViewModel> SaveCertificateTemp(int requestId, int instrumentId, string EnvironmentCondition, int loginBy, string ExportData);
-
-
+		
 	}
 
 }

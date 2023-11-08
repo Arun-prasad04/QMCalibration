@@ -883,6 +883,7 @@ public class UserService : IUserService
 	{
 		try
 		{
+			
 			UserViewModel validateUser = _unitOfWork.Repository<User>().GetQueryAsNoTracking(Q =>
 			//(Q.ShortId == UserName || Q.Email.Trim() == UserName.Trim())).Include(I => I.Department).Select(S => new UserViewModel()
 			(Q.Email.Trim() == email && Q.ActiveStatus == true)).Include(I => I.Department).Select(S => new UserViewModel()
@@ -910,6 +911,7 @@ public class UserService : IUserService
 			}).SingleOrDefault();
 			if (validateUser == null)
 			{
+				
 				return new ResponseViewModel<UserViewModel>
 				{
 					ResponseCode = 500,

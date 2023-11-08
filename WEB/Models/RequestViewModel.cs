@@ -137,4 +137,6 @@ public class RequestKPIViewModel
         public List<ChartDataViewModel>? ChartDataRegular {get;set;}
 
         public List<ChartDataViewModel>? ChartDataRecalibration {get;set;}
+
+	    public string? Inspectiondetails { get; set; }
 }

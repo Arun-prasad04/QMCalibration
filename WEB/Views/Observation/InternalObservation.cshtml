@@ -47,15 +47,15 @@
 
 
 
-		<tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
+		@* <tr id="RowHeaderDepth" style="font-weight: bold;" class="sizeborder">
 			<td colspan="4">
 				@* <span> 観察シート / Observation sheet -</span><span>ディップスマイクロメータ／Depth micrometer</span> *@
-				<span class="trn">
+		@*<span class="trn">
 					@Model.Title
 				</span>
 			</td>
 
-		</tr>
+		</tr> *@
 
 		<tr class="">
 			<td class="" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px;" height="20">
@@ -64,7 +64,7 @@
 
 			<td id="tdHeaderDepth" class="" rowspan="2" style="font-weight: bold;font-size: 15px;">
 				<span class="trn">
-					@Model.SubTitle
+					@Model.Title
 				</span>
 				@* <span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span> *@
 			</td>
@@ -123,7 +123,7 @@
 		<tr>
 
 			<td colspan="6">
-				<div id="masterEquipmentValue" class="Tables-AndTablesTextBox">
+				@* <div id="masterEquipmentValue" class="Tables-AndTablesTextBox"> *@
 					@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
 					{
 						int i = 1;
@@ -139,12 +139,10 @@
 
 							</label>
 
-
 							i = i + 1;
 						}
-
 					}
-				</div>
+				@* </div> *@
 			</td>
 
 			<td class="" colspan="3">
@@ -169,12 +167,14 @@
 	</table>
 	<br>
 	<div class="row">
-			@if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0)
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2") @* || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0) *@
 			{
-			<div class="col-md-4">
+				@if (Model.StatusId != 30)
+				{
+			<div class="col-md-5">
 				<div class="form-group">
 					<label class="required trn">Observation Content</label>
-					<select style="width:80%" name="ContentSelect" id="ContentSelect" class="form-control muldrop TblContent" multiple="multiple">
+					<select style="width:90%" name="ContentSelect" id="ContentSelect" class="form-control muldrop TblContent" multiple="multiple">
 							@foreach (var Content in @Model.ObservationContentList)
 							{
 								if (@Model.UserContentMappingViewModel != null)
@@ -191,7 +191,7 @@
 									if (check == true)
 									{
 
-									<option value="@Content.Id" selected="check">@Content.ContentName</option>
+									<option value="@Content.Id" selected="selected">@Content.ContentName</option>
 									}
 									else
 									{
@@ -214,11 +214,13 @@
 				</div>
 
 			</div>
+				
 			<div class="col-md-4">
 				<div class="form-group vertical-center">
 					<input type="button" id="btnGenerate" value="Generate Table" class="btn-Generate" />
 				</div>
 			</div>
+				}
 			}
 
 			@* Dynamic table Div *@
@@ -233,7 +235,7 @@
 					<input type="text" value="@Model.CalibrationPerformedBy" class="Tables-AndTablesTextBox TblInHeader"
 						   id="CalibrationPerformedBy" name="CalibrationPerformedBy" disabled>
 				</td>
-				<td>検査日／Inspection date:</td>
+				<td>検査日／Inspection Date</td>
 			@if (true)
 			{
 				var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
@@ -249,7 +251,7 @@
 				<td class="trn">承認者／Approver</td>
 				<td><input type="text" value="@Model.CalibrationReviewedBy" class="Tables-AndTablesTextBox TblInHeader" id="ReviewedBy" name="ReviewedBy" disabled></td>
 
-				<td>承認日／Approved date:</td>
+				<td>承認日／Approved Date</td>
 
 			@if (true)
 			{ 
@@ -261,7 +263,7 @@
 
 			 }
 			</tr>
-			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" && @Model.ReviewStatus == 0)
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")@*  && @Model.ReviewStatus == 0) *@
 			@*|| @Model.ReviewStatus == 0) @Model.ReviewStatus	 != null *@
 			{
 				<tr>
@@ -270,7 +272,7 @@
 						<div style="text-align: left;">
 
 							<label class="trn">合格 / Pass</label>
-							<input type="radio" name="Approve" id="Approve">
+							<input type="radio" name="Approve" id="Approve" value="">
 							<label class="trn">不合格 /Fail</label>
 							<input type="radio" name="Reject" id="Reject">
 						</div>
@@ -292,7 +294,10 @@
 			{
 				<tr>
 					<td colspan="4">
-						@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+						@* @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+						{ *@
+				
+						@if (Model.StatusId == 27 || Model.StatusId == 29 )
 						{
 							<input type="button" class="btn btn-primary trn btnSaveApproval" value="Save" name="Save" id="btnSaveApproval">  @* onclick="SaveMicrometer(language)" *@
 						}
@@ -304,12 +309,10 @@
 			{
 				<tr>
 					<td colspan="3" style="text-align:center;">
-						@if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
-
-
-						{
+						@* @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
+						{  *@
 							<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
-						}
+						@*  } *@
 						<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
 					</td>
 				</tr>
@@ -326,6 +329,7 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript">
+		var tbllengthcount;
 		$(document).ready(function () {
 		$('.trhideRejection').hide();
 			if ($('#TemplateObservationId').val() > 0) {
@@ -369,7 +373,7 @@
 
 		$(document).on('click', '.btn-Generate', (e) => {
 
-			$('#dvTable').html("");
+			//$('#dvTable').html("");
 
 			var rowContentCW = "";
 			var rowContentIN = "";
@@ -390,22 +394,21 @@
 				//alert("test selection");
 				var ContentData =
 				{
-					ContentId: $(this).val(),
-					InstrumentId: $('#InstrumentId').val(),
-					RequestId: $('#RequestId').val()
+					ContentId: $(this).val()//,
+					// InstrumentId: $('#InstrumentId').val(),
+					// RequestId: $('#RequestId').val()
 				}
 				ContentDataList.push(ContentData);
-				console.log("ContentDataList");
-				console.log(ContentDataList);
+				
 			});//for select part///
 			$.ajax({
 				dataType: 'json',
 				url: '../Observation/GetObservationContentSelectedList',
 				type: 'POST',
-				data: { Contents: ContentDataList },
+			data: { Contents: ContentDataList, InstrumentId: $('#InstrumentId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
 			}).done(function (resultObject) {
-				console.log("resultt");
-				console.log(resultObject);
+			//alert(resultObject.length);
+				tbllengthcount = resultObject.length;
 				var InCount = 0;
 				for (let i = 0; i < resultObject.length; i++) {
 					var IdName = resultObject[i].typeOfContent;
@@ -417,20 +420,19 @@
 
 					}
 					else if (IdName == 'SW') {
-						//var rowheadSW = "";
+						
 						rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
-						console.log("rowheadSW");
-						console.log(rowheadSW);
+						
 					}
 					else if (IdName == 'IN') {
-						//var rowheadIN = "";
-						rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+
+					rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td style="width: 10%">' + resultObject[i].contentSubTitle2 + '</td><td style="width: 15%">' + resultObject[i].contentSubTitle3 + '</td></tr>';
 					}
 					///////////////////// contentvalueid>0////////////////
 
 					if (resultObject[i].obsContentValueId > 0) {
 						var objcontentCount = resultObject[i].contentCount;
-						//var InCount = 0;
+						
 						var title = "";
 						var contentsubheadingIN = "";
 
@@ -495,10 +497,8 @@
 					///////////////////// contentvalueid>0 ////////////////
 					else if (resultObject[i].obsContentValueId == 0) {
 
-						//var rowBody = '<tbody>';
-
 						for (let j = 1; j <= resultObject[i].contentCount; j++) {
-							//if (((resultObject[i].contentCount == 3) && (i += 2)) || ((resultObject[i].contentCount == 1) && (j == 1)))
+							
 							var objcontentCount = resultObject[i].contentCount;
 
 							var title = "";
@@ -549,35 +549,7 @@
 									'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
 
 							}
-							// if (IdName == 'CW') {
-
-							// 	rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-							// 		'<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-							// 		'<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox Value1" value = "' + resultObject[i].measuedValue1 + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-							// 		'<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-							// 		'<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-							// 		'<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Average" value = "' + resultObject[i].average + '" /></td>' +
-							// 		'<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
-
-							// }
-							// else if (IdName == 'SW') {
-
-							// 	rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + title + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-							// 		'<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"></td>' +
-							// 		'<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
-							// 		'<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-							// 		'<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-							// 		'<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
-							// }
-							// else if (IdName == 'IN') {
-
-							// 	rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-							// 		+ '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-							// 		'<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-							// 		'<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox Actual" value = "' + resultObject[i].actualValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/> </td>' +
-							// 		'<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
-
-							// }
+							
 						}
 
 					}
@@ -626,8 +598,7 @@
 
 		$(document).on('click', '.btnSaveApproval', (e) => {
 
-			//debugger;
-			//ValidateObservation();
+			
 			var Unit = $('#Units').val();
 			if (Unit == null || Unit == "") {
 				showWarning("Please enter the Units", language);
@@ -648,6 +619,7 @@
 				showWarning("Please enter the Visual Check", language);
 				return false;
 			}
+		
 			var ObservationContentValues = new Array();
 			var ObservationContent = new Array();
 			var ObservationContenMapping = new Array();
@@ -655,34 +627,19 @@
 
 				$(this).find('table').each(function () {
 
-					// var ObservationContenMappingData = {
-
-					// 	Id: $(this).find("input[name = HiddenMappingId]").val(),
-					// 	ContentId: $(this).find("input[name = HiddenContentId]").val(),
-					// 	ObservationId: $('#TemplateObservationId').val(),
-					// 	InstrumentId: $('#InstrumentId').val(),
-					// 	CreatedBy: "",
-					// 	CreatedOn: "",
-					// 	IsActive: true
-					// }
-					// ObservationContenMapping.push(ObservationContenMappingData);
-
+					
 					$(this).find('tr').each(function () {
-						console.log("tr contentvalueid");
-						console.log($(this).find("input[name = HiddenContentvalueId]").val());
-
+						
 						var currentRow = $(this).find('td').attr('id');
 
 						var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
-						console.log("td contentvalueid");
-						console.log($(this).find("input[name = HiddenContentvalueId]").val());
+						
 						if ((contentvalueid == "0") || (contentvalueid == "")) {
 							contentvalueid = null
 						}
 
 						if ($(this).find("input[name = HiddenContentId]").val() > 0) {
-							console.log("obscontent>0 contentvalueid");
-							console.log($(this).find("input[name = HiddenContentvalueId]").val());
+							
 							var ObservationContenMappingData = {
 
 								Id: $(this).find("input[name = HiddenMappingId]").val(),
@@ -776,7 +733,7 @@
 				ObservationContentValuesList: ObservationContentValues,
 				ObservationContentMappingList: ObservationContenMapping
 			}
-			console.log(data);
+		
 			$.ajax({
 				url: '../Observation/InsertDynamicObservationContent',
 				type: 'POST',
@@ -856,21 +813,20 @@
 			}
 		});
 
-		function BindObservationTable() {
-
+		function BindObservationTable1() {
+		
 			$.ajax({
 				type: 'GET',
 				url: '../Observation/GetObservationById',
 				dataType: 'json',
-				data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
+			data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
 			}).done(function (resultObject) {
 
 				var rowhead = "";
 				var rowContentCW = '';
 				var rowContentIN = '';
 				var rowContentSW = '';
-				console.log(" bind resultObject ");
-				console.log(resultObject);
+				
 				var InCount = 0;
 				for (let i = 0; i < resultObject.length; i++) {
 					var IdName = resultObject[i].typeOfContent;
@@ -879,7 +835,7 @@
 					var tableIN = '<table id="IN' + tblId + '" style="text-align:center;">';
 					var tableCW = '<table id="CW' + tblId + '" style="text-align:center;">';
 					var tableSW = '<table id="SW' + tblId + '" style="text-align:center;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
-					//if (resultObject[i].contentCount == 0) {
+				
 					if (IdName == 'CW') {
 						var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
 
@@ -889,15 +845,13 @@
 
 					}
 					else if (IdName == 'IN') {
-						var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+					var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td style="width: 10%">' + resultObject[i].contentSubTitle2 + '</td><td style="width: 15%">' + resultObject[i].contentSubTitle3 + '</td></tr>';
 					}
-					//}
+					
 					var rowBodyCW = '<tbody>';
 					var rowBodyIN = '<tbody>';
 					var rowBodySW = '<tbody>';
-					//if  (resultObject[i].contentCount != 0) {
-					//for (let j = 1; j <= resultObject[i].contentCount; j++) {
-
+					
 					var objcontentCount = resultObject[i].contentCount;
 
 					var title = "";
@@ -912,23 +866,19 @@
 							InCount = InCount + 1;
 							if (InCount == 2) {
 								title = resultObject[i].contentValue.trim();
-								console.log("title 2");
-								console.log(title);// #ffffff//class="TblInHeader" style="width: 40%;border:2px solid #f2f3f5;border-left:none;border-right:none;"
+							
 								contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 
 							}
 							else {
-								console.log(" else title");
-								console.log(title);
+							
 								title = "";// resultObject[i].contentValue.trim();
 								contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 							}
 						}
 						else //if (InCount == 1)
 						{
-							//alert(InCount);
-							console.log("title 1");
-							console.log(title);
+							
 							title = resultObject[i].contentValue.trim();
 							contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 						}

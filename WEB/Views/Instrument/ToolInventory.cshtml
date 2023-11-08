@@ -91,7 +91,7 @@
 										}
 										else
 										{
-											<td id="ReplacementLabID_@item.Id" onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">
+											<td id="ReplacementLabID_@item.Id" class="LabIDCell"  onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">
 
 												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
 
@@ -117,7 +117,7 @@
 								<div class="modal-header">
 
 									<h4 class="modal-title trn">Tool Room Instruments</h4>
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<button type="button" class="close" data-dismiss="modal" onclick="HidePopUp();">&times;</button>
 								</div>
 								<div class="modal-body">
 									<div class="card-body">
@@ -228,17 +228,17 @@
 				$("#ToolHistoryDetails").modal('show');
 				$('#tblPopUp tbody').empty();
 
-				var count = 0;
+				
 				$.each(data, function (i, item) {
-					$('#tblTool  > tbody > tr').each(function (a, b) {
-						var ReplacementLabID = $(this).children("td:eq(6)").text();
+					var count = 0;
+					
+					$('#tblTool tr').each(function () {
+						
+						var ReplacementLabID = $(this).find(".LabIDCell").text().trim();
 
 						if (ReplacementLabID == item.idNo) {
-
-							count += 1;
-						}
-
-
+							count = 1;
+							}
 					});
 					
 					if (count == 0) {
@@ -246,8 +246,6 @@
 
 						var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
 						var LabId = encodeURI(item.idNo);
-
-
 						rows = "<tr>"
 							+ "<td>"
 							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + ");'>" + item.instrumentName
@@ -258,9 +256,11 @@
 							+ "<td>" + dueDate + "</td>"
 							+ "</tr>"
 						$('#tblPopUp tbody').append(rows);
-						//SetData.append(rows);
+						
 						$('#dvload').hide();
+						
 					}
+					
 				});
 				
 				$("#tblPopUp").DataTable({
