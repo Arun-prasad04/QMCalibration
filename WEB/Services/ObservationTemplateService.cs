@@ -4403,7 +4403,7 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			_unitOfWork.BeginTransaction();
 			observationById.CalibrationReviewedDate = reviewDate;
-            if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+            if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
             {
                 observationById.ExternalObsStatus = reviewStatus;
             }
@@ -4430,49 +4430,76 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			RequestStatus reqestStatus = new RequestStatus();
 			reqestStatus.RequestId = observationById.RequestId;
-			if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
-				reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
-			}
+				//reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+                if ((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
+                {
+
+                    reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
+
+                }
+                else
+                {
+                    reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
+                }
+            }
 			else
 			{
 				if((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
 				{
 					
-						reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+						reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 					
 				}
 				else
 				{
-					reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+					reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
 				}
 			}
 
 			reqestStatus.CreatedOn = DateTime.Now;
 			reqestStatus.CreatedBy = reviewedBy;
-			reqestStatus.Comment = Remarks;
+			if (reviewStatus == 1)
+			{
+                reqestStatus.Comment = "Pass";
+            }
+			else
+			{
+                reqestStatus.Comment = Remarks;
+            }			
 			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 			_unitOfWork.SaveChanges();
 
 			//----------------------New update for listing Approved Request start---------------------------
 			//Request Tempreqests = new Request();
 			ReqstData.Id = observationById.RequestId;
-			if (instrumentData.TypeOfEquipment == "External Instrument" || instrumentData.TypeOfEquipment == "外部機器")
+			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
-				ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
-			}
+                //ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+                if ((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
+                {
+
+                    ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
+
+                }
+                else
+                {
+                    ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
+                }
+            }
 			else
 			{
 				
 				 if ((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
 				{
 						
-					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 				
 				}
 				else
 				{
-					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
+					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
 				}
 			}
 			_unitOfWork.Repository<Request>().Update(ReqstData);

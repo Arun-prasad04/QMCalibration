@@ -1008,7 +1008,7 @@ public class ObservationController : BaseController
 		return View(response.ResponseData);
 	}
 	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks)
-	{
+	{        
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks);
 		return Json(response.ResponseData);
