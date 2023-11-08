@@ -990,7 +990,8 @@ namespace WEB.Services
 							DueDate = Convert.ToDateTime(dr["DueDate"]),
 							ToolRoom = dr["ToolRoom"].ToString(),
 							DeptId = Convert.ToInt32(dr["DeptId"]),
-                            InstrumentCreatedBy = Convert.ToInt32(dr["InstrumentCreatedBy"]),							                                                
+                            InstrumentCreatedBy = Convert.ToInt32(dr["InstrumentCreatedBy"]),							
+							RequestId = Convert.ToInt32(dr["RequestId"]),
 						};
 						InstrumentlList.Add(Instlist);
 

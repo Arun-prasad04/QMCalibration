@@ -109,16 +109,16 @@
 
                 <td class="textcenterborder" colspan="3">
                     <span>単位／ Unit</span>
-                </td> 
-                <td colspan="3"><input type="text" style="height: 50px;width:100%" value="@Model.Units" class="Tables-AndTablesTextBox" name="Units" id="Units"></td>
+                </td>
+                <td colspan="3"><input type="text" style="height: 50px;width:100%" value="-" class="Tables-AndTablesTextBox" name="Units" id="Units" readonly></td>
             </tr>
 
             <tr>
                 <td colspan="1"><span>検査室温度 °C／ Temperature °C</span></td>
-                <td colspan="2"><input type="text" value="@Model.TempStart" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
+                <td colspan="2"><input type="text" value="-" id="TempStart" class="Tables-AndTablesTextBox" style="height: 60px;" readonly></td>
                 <td colspan="1"><span>検査室湿度 %RH／ Humidity %RH</span></td>
-                <td colspan="2"><input type="text" value="@Model.Humidity" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" required="required"></td>
-                <td colspan="2">
+                <td colspan="2"><input type="text" value="-" id="Humidity" class="Tables-AndTablesTextBox" style="height: 60px;" readonly></td>
+                <td colspan=2">
                     <span>外観・機能／Visual Check</span>
                 </td>
                 <td colspan="3">

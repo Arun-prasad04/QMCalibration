@@ -65,6 +65,7 @@ public class InstrumentController : BaseController
 
 	public IActionResult InsertInstrument(InstrumentViewModel instrument)
 	{
+		//return Json(true);
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int UserDeptId = Convert.ToInt32(base.SessionGetString("DepartmentId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
@@ -251,6 +252,33 @@ public class InstrumentController : BaseController
 
 	}
 	//For Tool Inventory Manager
+	public IActionResult SaveInstrumenDetails(DateTime DueDate)
+	{
+		return Json(true);
+		//int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		//ResponseViewModel<RequestViewModel> response = _requestService.ExternalCalibrationReject(requestId, rejectReason, userId);
+		//return Json(response.ResponseData);
+	}
+
+	#region Control Card
+	public IActionResult ControlCard(int instrumentId)
+	{
+		ViewBag.InstrumentId = instrumentId;
+		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
+		ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+
+		return View(response.ResponseData);
+
+	}
+
+	public JsonResult RequestListForInstrument(int instrumentId)
+	{
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetRequestListForInstrument(instrumentId);
+		return Json(response.ResponseDataList);
+	}
+	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId)
+	{
 	#region Control Card
 	public IActionResult ControlCard(int instrumentId)
 	{

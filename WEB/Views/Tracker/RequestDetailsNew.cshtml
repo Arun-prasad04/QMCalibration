@@ -230,7 +230,7 @@
                         </select>
                         </div>
                         </div>*@
-                        @if (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")
+                        @if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
                         {
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -295,21 +295,21 @@
                             <div class="form-group">
                                 <label class="trn">Scope</label>
                                 <select id="Scope" class="form-control" disabled>
-                                    @if (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")
+                                    @if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
                                     {
-                                        <option value="Internal Instrument" class="trn" selected=true>Internal Instrument</option>
+                                        <option value="Internal" class="trn" selected=true>Internal</option>
                                     }
                                     else
                                     {
-                                        <option value="Internal Instrument" class="trn">Internal Instrument</option>
+                                        <option value="Internal" class="trn">Internal</option>
                                     }
-                                    @if (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器")
+                                    @if (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の")
                                     {
-                                        <option value="External Instrument" class="trn" selected=true>External Instrument</option>
+                                        <option value="External" class="trn" selected=true>External</option>
                                     }
                                     else
                                     {
-                                        <option value="External Instrument" class="trn">External Instrument</option>
+                                        <option value="External" class="trn">External</option>
                                     }
                                 </select>
                             </div>
@@ -500,7 +500,7 @@
 
                         </div>
                     }
-                    @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30)
+                    @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30 || Model.Status == 31)
                     {
                         <div class="row">
                             <div class="col-sm-6">
@@ -531,7 +531,7 @@
                         <div class="form-group">
                         <label class="trn">Scope</label>
                         <select id="Scope" class="form-control" disabled>
-                        @if (Model.Feasiblity == "Internal Instrument")
+                        @if (Model.Feasiblity == "Internal")
                         {
                         <option value="Internal Instrument" selected=true>Internal Instrument</option>
                         }
@@ -588,7 +588,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Model.Status == 30 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器"))
+                            @if (Model.Status == 30 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の"))
                             {
                                 <div class="col-sm-3" style="top: 35px;" id="AcceptSection">
                                     <!-- text input -->
@@ -626,7 +626,7 @@
                             }
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器"))
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div id="ExternalRejectSection" style="display:none;">
                             <div class="row">
@@ -647,7 +647,7 @@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器"))
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div id="ExternalAcceptSection" style="display:none;">
                             <div class="row">
@@ -708,18 +708,10 @@
 
                         </div>
                     }
-                    @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器"))
+                    @if ((Model.Status == 27 || Model.Status == 29) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div id="ExternalAcceptSection">
-                            <div class="row">
-                                @*<div class="col-sm-6">
-                            <div class="form-group">
-                            <label class="required trn">Instrument Id Number</label>
-                            <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
-                            class="form-control" placeholder="" alt="Please fill this field">
-                            <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
-                            </div>
-                            </div>*@
+                            <div class="row">                                
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">External Accept Reason</label>
@@ -758,21 +750,11 @@
                                         }
                                     </div>
                                 </div>
-                            </div>
-                            @*<div class="row">
-                        <div class="col-sm-6" style="text-align:right;">
-                        <!-- text input -->
-                        <div class="form-group">
-                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                        class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
-                        <a href='@Url.Action("ExternalRequest","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
-                        </div>
-                        </div>
-                        </div>*@
+                            </div>                           
 
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div id="NewReasonSection" style="display:none;">
                             <div class="row">
@@ -793,7 +775,7 @@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
@@ -938,7 +920,7 @@
                             </div>
                         </div>
                     }
-                    @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+                    @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
                             @if (Model.TypeOfRequest == 1)
@@ -1144,7 +1126,7 @@
                     </div>
                     }  *@
                     }
-                    @if (Model.Status == 28)
+                    @if (Model.Status == 28 || Model.Status == 31)
                     {
                         <div>
                             <div class="row">
@@ -1155,17 +1137,30 @@
                                         <input type="text" class="form-control" id="NewrejectedOn" value="@Model.SubmittedOn.ToShortDateString()" disabled>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Rejected Reason</label>
-                                        <input type="text" class="form-control" id="NewrejectedReason" value="@Model.RejectReason" disabled>
+                                @if (Model.Status == 28)
+                                {
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="trn">Rejected Reason</label>
+                                            <input type="text" class="form-control" id="NewrejectedReason" value="@Model.RejectReason" disabled>
+                                        </div>
                                     </div>
-                                </div>
+                                }
+                                @if ( Model.Status == 31)
+                                {
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="trn">Rejected Reason</label>
+                                            <input type="text" class="form-control" id="NewrejectedReason" value="@Model.Result" disabled>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 27 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器") && Model.AdminReviewStatus != 1)
+                    @if (Model.Status == 27 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
                     {
                         <div id="newfmVisualCheckSection" style="display: block;">
                             <div class="row">
@@ -1248,14 +1243,7 @@
                         </div>
 
 
-                        <div class="row">
-                            @*<div class="col-sm-6">
-                        <!-- text input -->
-                        <div class="form-group">
-                        <label class="trn">Instrument Id Number</label>
-                        <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control">
-                        </div>
-                        </div>*@
+                        <div class="row">                            
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Result</label>
@@ -1388,7 +1376,7 @@
                             </div>
                         </div>
                     }
-                    @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External Instrument" || Model.TypeOfEquipment != "外部機器") && Model.AdminReviewStatus != 1)
+                    @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
                     {
                         <div class="row">
                             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
@@ -1408,7 +1396,7 @@
                         </div>
                     }
                    @*  @if (Model.Status == 29 || Model.Status == 30 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")) *@
-                    @if (Model.Status == 29 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器"))
+                    @if (Model.Status == 29 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
                             <div class="row">
@@ -1475,26 +1463,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                @*<div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                            <label class="trn">Instrument Id Number</label>
-                            <input type="text" id="IdNo" name="IdNo" value="@Model.InstrumentIdNo" class="form-control" disabled>
-                            </div>
-                            </div>*@
+                            <div class="row">                                
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Result</label>
                                         <select id="newResultLAB" class="form-control" onchange="ResultAcceptReject()" disabled>
                                             <option value="0">Select</option>
-                                            @if (Model.LabResult == "Accepted")
+                                            @if (Model.LabResult == "Approved")
                                             {
-                                                <option value="Accepted" selected=true>Accepted</option>
+                                                <option value="Approved" selected=true>Accepted</option>
                                             }
                                             else
                                             {
-                                                <option value="Accepted">Accepted</option>
+                                                <option value="Approved">Accepted</option>
                                             }
                                             @if (Model.LabResult == "Rejected")
                                             {
@@ -1686,7 +1667,7 @@
                             }
                         </div>
                     }
-                    @if (Model.LabResult != "Rejected" && Model.Status == 29)
+                    @if ((Model.LabResult != "Rejected" && Model.Status == 29) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
                             <div class="row">
@@ -1724,7 +1705,7 @@
                                         }
                                         else
                                         {
-                                            <input type="text" class="form-control" id="IdNo" value=''>
+                                            <input type="text" class="form-control" id="IdNo" value='@Model.InstrumentIdNo'>
                                         }
                                     </div>
                                 </div>
@@ -1744,21 +1725,29 @@
                             </div>
                         </div>
                     }
-                    @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器") && Model.AdminReviewStatus == 1)
+                    @if ((Model.Status == 29|| Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="required trn">Instrument Id Number</label>
-                                    <input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
-                                           class="form-control" placeholder="" alt="Please fill this field">
+                                    @*<input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
+                                           class="form-control" placeholder="" alt="Please fill this field">*@
+                                    @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
+                                    {
+                                        <input type="text" class="form-control" id="txtIdNo" value="@Model.InstrumentIdNo" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" id="txtIdNo" value='@Model.InstrumentIdNo'>
+                                    }
                                     <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
                                 </div>
                             </div>
                         </div>
 
                         <br>
-                        @if (Model.Status == 30)
+                        @if (Model.Status == 29)
                         {
                             <div class="row">
                                 <div class="col-sm-6" style="text-align:right;">
@@ -1772,7 +1761,7 @@
                             </div>
                         }
                     }
-                    @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External Instrument" || Model.TypeOfEquipment == "外部機器") && Model.AdminReviewStatus == 2)
+                    @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の") && Model.AdminReviewStatus == 2)
                     {
                         <div id="ExternalRejectSection" style="display:block;">
                             <div class="row">

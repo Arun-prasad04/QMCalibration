@@ -1,7 +1,7 @@
 
 using CMT.DATAMODELS;
 using WEB.Models;
-namespace WEB.Services.Interface; 
+namespace WEB.Services.Interface;
 public interface IInstrumentService
 {
  ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId);

@@ -310,8 +310,8 @@ public class RequestService : IRequestService
 				UserDept = s.InstrumentModel.UserDept,
 				SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
 				RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-				Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-				ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),//regular//recalibration -"sent" replaced with "Closed"
+				Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.CalibrationReject).Select(S => S.Comment).FirstOrDefault(),
+                ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),//regular//recalibration -"sent" replaced with "Closed"
 				ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
 				RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
 				ReqestBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Requested).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
@@ -338,7 +338,7 @@ public class RequestService : IRequestService
 				ObservationType = s.InstrumentModel.ObservationType,
 				MUTemplate = s.InstrumentModel.MUTemplate,
 				CertificationTemplate = s.InstrumentModel.CertificationTemplate,
-                LabResult = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault() == 29 ? "Pass" : "Fail",
+				LabResult = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault() == 29 ? "Pass" : "Fail", 
                 InstrumentReturnedOn = s.InstrumentReturnedOn,
 				CollectedBy = s.CollectedBy,
 				ReasonforRejection = s.ReasonforRejection,
@@ -2677,6 +2677,7 @@ public class RequestService : IRequestService
             data.Append(string.Format("<DueDate>{0}</DueDate>", sd.DueDate));
             data.Append(string.Format("<DeptId>{0}</DeptId>", sd.DeptId));
             data.Append(string.Format("<InstrumentCreatedBy>{0}</InstrumentCreatedBy>", sd.InstrumentCreatedBy));
+            data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
             data.Append("</DueList>");
         }
         data.Append("</Root>");
@@ -2720,6 +2721,7 @@ public class RequestService : IRequestService
                         DueDate = Convert.ToDateTime(dr["DueDate"]),
                         //ToolRoom = dr["ToolRoom"].ToString(),
                         DeptId = Convert.ToInt32(dr["DeptId"]),
+                        RequestId = Convert.ToInt32(dr["RequestId"]),
                     };
                     DuelList.Add(Instlist);
 
@@ -2754,7 +2756,7 @@ public class RequestService : IRequestService
         {
             data.Append("<DueList>");
             data.Append(string.Format("<instrumentId>{0}</instrumentId>", sd.InstrumentId));
-            //data.Append(string.Format("<InstrumentName>{0}</InstrumentName>", sd.InstrumentName));
+            data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
             //data.Append(string.Format("<IdNo>{0}</IdNo>", sd.IdNo));
             //data.Append(string.Format("<SubSectionCode>{0}</SubSectionCode>", sd.SubSectionCode));
             //data.Append(string.Format("<TypeofScope>{0}</TypeofScope>", sd.TypeofScope));
@@ -2888,7 +2890,22 @@ public class RequestService : IRequestService
             instrumentById.IdNo = IdNo;
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
-            
+
+
+            Request ReqstData = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
+            ReqstData.StatusId = (Int32)EnumRequestStatus.Closed;
+            _unitOfWork.Repository<Request>().Update(ReqstData);
+            _unitOfWork.SaveChanges();
+
+            RequestStatus reqestStatus = new RequestStatus();
+            reqestStatus.RequestId = requestId;
+            reqestStatus.StatusId = (Int32)EnumRequestStatus.Closed;
+            reqestStatus.CreatedOn = DateTime.Now;
+            reqestStatus.CreatedBy = userId;
+            reqestStatus.Comment = "Pass";
+            _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+            _unitOfWork.SaveChanges();
+
             _unitOfWork.Commit();
            
             return new ResponseViewModel<RequestViewModel>

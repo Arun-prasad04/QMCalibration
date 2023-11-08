@@ -161,8 +161,8 @@ namespace WEB.Models
         public string ToolRoom { get; set; }
         public int DeptId { get; set; }
         public int InstrumentCreatedBy { get; set; }
+        public int RequestId { get; set; }
     }
-
 	public class RequestAllData
 	{
 		public int requestId { get; set; }

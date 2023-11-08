@@ -2973,8 +2973,16 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
-
+    debugger;
     var revstat = $('#ReviewStatus').val();
+    console.log('revstat');
+    console.log(revstat);
+
+
+    if (revstat == '') {
+        showWarning("Please select Judgement", lang);
+        return false;
+    }
 
     if (revstat == 2) {
 
@@ -3172,7 +3180,7 @@ function InsertRequestList() {
         console.log(UserView);
         Request.push(UserView);
     });
-        
+    
     console.log(Request);
    
     $.ajax({
@@ -3205,6 +3213,7 @@ function DueInstrumentList() {
             Location: $(this).closest('tr').find('td:eq(5) input[name="loc"]').val(),
             ToolRoom: $(this).closest('tr').find('td:eq(5) input[name="troom"]').val(),
             InstrumentCreatedBy: $(this).closest('tr').find('td:eq(5) input[name="InstrumentCreatedBy"]').val(),
+            RequestId: $(this).closest('tr').find('td:eq(5) input[name="RequestId"]').val(),
         }
         Request.push(UserView);
     });
@@ -3229,6 +3238,7 @@ function DueInstrumentList() {
             // console.log($(this).closest('tr').find('td:eq(0)').html()); //get the enclosing tr
             var UserView = {
                 instrumentId: $(this).closest('tr').find('td:eq(5) input[type="checkbox"]').val(),
+                RequestId: $(this).closest('tr').find('td:eq(5) input[name="RequestId"]').val(),
                 //InstrumentName: $(this).closest('tr').find('td:eq(0)').html(),
                 //IdNo: $(this).closest('tr').find('td:eq(1)').html(),
                 //SubSectionCode: $(this).closest('tr').find('td:eq(2)').html(),
