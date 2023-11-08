@@ -8,6 +8,9 @@ using AutoMapper;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using static System.Net.WebRequestMethods;
+using Microsoft.VisualBasic;
+using System.Diagnostics.Metrics;
 
 namespace WEB.Services
 {
@@ -125,6 +128,7 @@ namespace WEB.Services
 				return new RequestViewModel() { };
 			}
 		}
+		
 		public QRCodeFilesViewModel QRCodeGeneration(QRCodeFilesViewModel qrCodeGenInputViewModel)
 		{
 			//get Existing QR Code Data
@@ -212,6 +216,8 @@ namespace WEB.Services
 			}
 			return newBitmap;
 		}
+
+		
 		private Bitmap GetQRCodeImage(string qrcodeUrl)
 		{
 			QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -280,5 +286,57 @@ namespace WEB.Services
                 return new QRCodeFilesViewModel() { };
             }
         }
-    }
+
+
+		#region ControlCard
+		public QRCodeFilesViewModel QRCodeGenerationForInstrument(QRCodeFilesViewModel qrCodeGenInputViewModel, int instrumentid)
+		{
+
+			string applicationUrl = _configuration["AppUrl"];
+			string qrEncodeText = string.Concat(applicationUrl, "/", qrCodeGenInputViewModel.TemplateName + instrumentid);
+
+			Guid guid = Guid.NewGuid();
+
+			Bitmap qrCodeImage = GetQRCodeImage(qrEncodeText);
+
+			qrCodeImage = GenerateQRBitmapTextandImageForInstrument(qrCodeImage);
+
+			var QRDecodeByteData = BitmapToBytes(qrCodeImage);
+
+			QRCodeFilesViewModel outputData = new QRCodeFilesViewModel()
+			{
+				QRImageUrl = String.Format(Constants.QRCODE_IMAGE_FORMAT, Convert.ToBase64String(QRDecodeByteData)),
+				DecodeText = ResizeImage(QRDecodeByteData),
+				InstrumentId = qrCodeGenInputViewModel.InstrumentId,
+				UrlGuid = guid,
+				QRFilepath = qrEncodeText
+			};
+
+			return outputData;
+		}
+		private Bitmap GenerateQRBitmapTextandImageForInstrument(Bitmap bmImage)
+		{
+			var newBitmap = new Bitmap(bmImage.Width + 150, bmImage.Height + 150);
+			Graphics graphics = Graphics.FromImage(newBitmap);
+			graphics.SmoothingMode = SmoothingMode.AntiAlias;
+			graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+			string drawText = string.Empty;
+			StringFormat format = new StringFormat()
+			{
+				Alignment = StringAlignment.Center,
+				LineAlignment = StringAlignment.Far
+			};
+			RectangleF rectfDrawText = new RectangleF(0, 0, newBitmap.Width - 100, newBitmap.Height - 60);
+			Rectangle rectDrawImage = new Rectangle(0, 0, bmImage.Width, bmImage.Height);
+			graphics.DrawString(drawText, new Font(Constants.QRCODE_FONT_NAME, Constants.QRCODE_FONT_SIZE, FontStyle.Bold), Brushes.Black, rectfDrawText, format);
+			graphics.DrawImage(bmImage, rectDrawImage);
+			graphics.Flush();
+
+			return newBitmap;
+		}
+		#endregion
+
+	}
 }

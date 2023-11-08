@@ -53,6 +53,7 @@
 								<th class="trn">Calibration Date</th>
 								<th class="trn">DueDate</th>
 								<th class="trn">Edit</th>
+								<th class="trn">Control Card</th>
 								<!--<th>Delete</th>-->
 								@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
 								{
@@ -85,6 +86,7 @@
 										<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
 
 										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+										<td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
 										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
 										{
 											<td style="text-align:center;" class="chkpl">
@@ -98,7 +100,7 @@
 
 															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
 															<input id="typeId" name="typeId" type="hidden" value="2" />
-															<input id="requestId" name="typeId" type="hidden" value='@item.RequestId' />
+															<input id="requestId" name="requestId" type="hidden" value='@item.RequestId' />
 
 														}
 
@@ -110,7 +112,7 @@
 
 															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
 															<input id="typeId" name="typeId" type="hidden" value="3" />
-															<input id="requestId" name="typeId" type="hidden" value='@item.RequestId' />
+															<input id="requestId" name="requestId" type="hidden" value='@item.RequestId' />
 														}
 
 													}
@@ -121,6 +123,8 @@
 												}
 											</td>
 										}
+										@* far fa-id-card *@
+										
 										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 										{
 											<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>

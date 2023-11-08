@@ -256,43 +256,43 @@
                 console.log("-----data----------");
                 console.log(data);
                 //console.log(Object.keys(data).length);
-                if (data.length>0){	
-                $.each(data, function (i, item) {
-                    var tdTypeofRequest = '';
-                    if (item.typeOfRequest == 1) {
-                        tdTypeofRequest = "<td>New</td>"
-                    }
-                    else if (item.typeOfRequest == 2) {
-                        tdTypeofRequest = "<td>Regular</td>"
-                    }
-                    else if (item.typeOfRequest == 3) {
-                        tdTypeofRequest = "<td>Recalibration</td>"
-                    }
-                    else if (item.typeOfRequest == 4) {
-                        tdTypeofRequest = "<td>UnQuarantine</td>"
-                    }
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        var tdTypeofRequest = '';
+                        if (item.typeOfRequest == 1) {
+                            tdTypeofRequest = "<td>New</td>"
+                        }
+                        else if (item.typeOfRequest == 2) {
+                            tdTypeofRequest = "<td>Regular</td>"
+                        }
+                        else if (item.typeOfRequest == 3) {
+                            tdTypeofRequest = "<td>Recalibration</td>"
+                        }
+                        else if (item.typeOfRequest == 4) {
+                            tdTypeofRequest = "<td>UnQuarantine</td>"
+                        }
 
-                    var tdStatus = '';
-                    if (item.status == 26) {
-                        tdStatus = "<td>Requested</td>"
-                    }
-                    else if (item.status == 27) {
-                        tdStatus = "<td>Approved</td>"
-                    }
-                    else if (item.status == 28) {
-                        tdStatus = "<td>Request Rejected</td>"
-                    }
-                    else if (item.status == 29 && item.labResult == "Rejected") {
-                        tdStatus = "<td>Calibration Rejected</td>"
-                    }
-                    else if (item.status == 29 && item.labResult != "Rejected") {
-                        tdStatus = "<td>Calibration done</td>"
-                    }
-                    else if (item.status == 30) {
-                        tdStatus = "<td>Closed</td>"
-                    }
-                    var tdTest = '';
-                    if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
+                        var tdStatus = '';
+                        if (item.status == 26) {
+                            tdStatus = "<td>Requested</td>"
+                        }
+                        else if (item.status == 27) {
+                            tdStatus = "<td>Approved</td>"
+                        }
+                        else if (item.status == 28) {
+                            tdStatus = "<td>Request Rejected</td>"
+                        }
+                        else if (item.status == 29 && item.labResult == "Rejected") {
+                            tdStatus = "<td>Calibration Rejected</td>"
+                        }
+                        else if (item.status == 29 && item.labResult != "Rejected") {
+                            tdStatus = "<td>Calibration done</td>"
+                        }
+                        else if (item.status == 30) {
+                            tdStatus = "<td>Closed</td>"
+                        }
+                        var tdTest = '';
+                        if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 28 || item.status == 30) && item.typeOfEquipment != 'External Instrument') {
 
 
                         tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"

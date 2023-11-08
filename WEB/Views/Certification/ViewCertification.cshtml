@@ -373,8 +373,8 @@
 	<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
 	<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
 	<input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
-	@*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
-
+	@* <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
+ *@
 	<!-- page1 end-->
 
     <div>
@@ -406,7 +406,7 @@
 
 <!-- Pdf Content-->
 
-<div id="Pdfhtml" style="display: block;">
+<div id="Pdfhtml" style="display: none;">
     <body style="font-family: Calibri;border:2px solid #000">
         <!-- page1 start-->
 
@@ -744,10 +744,10 @@
         <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
         <input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
         <input type="hidden" id="ExternalObsStatus1" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
-        @*<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">*@
+        <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TempObservationData.Id">
 
 
-		@*<div>
+        @*<div>
 		<input type="hidden" id="requestId" value="@ViewBag.RequestId">
 		<input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
 		<input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
@@ -813,7 +813,7 @@
 			type: 'GET',
 			url: '../Observation/GetObservationById',
 			dataType: 'json',
-			data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val() },
+            data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
 		}).done(function (resultObject) {
 
             var rowhead = "";

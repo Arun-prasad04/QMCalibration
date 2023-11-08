@@ -274,10 +274,11 @@ public class RequestService : IRequestService
 
 	
 	public ResponseViewModel<RequestViewModel> GetRequestById(int RequestId)
-	{
+	   {
 		try
 		{
-            RequestViewModel RequestById = _unitOfWork.Repository<Request>()
+			
+			RequestViewModel RequestById = _unitOfWork.Repository<Request>()
                                     .GetQueryAsNoTracking(Q => Q.Id == RequestId)
                                     .Include(I => I.InstrumentModel)
                                     .Include(I => I.RequestStatusModel)
@@ -337,8 +338,8 @@ public class RequestService : IRequestService
 				ObservationType = s.InstrumentModel.ObservationType,
 				MUTemplate = s.InstrumentModel.MUTemplate,
 				CertificationTemplate = s.InstrumentModel.CertificationTemplate,
-				LabResult = s.Result,
-				InstrumentReturnedOn = s.InstrumentReturnedOn,
+                LabResult = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault() == 29 ? "Pass" : "Fail",
+                InstrumentReturnedOn = s.InstrumentReturnedOn,
 				CollectedBy = s.CollectedBy,
 				ReasonforRejection = s.ReasonforRejection,
 				IsFeasibleService = s.IsFeasibleService,
@@ -351,7 +352,7 @@ public class RequestService : IRequestService
                 TypeOfEquipment = s.InstrumentModel.TypeOfEquipment,
                 ToolInventory = s.InstrumentModel.ToolInventory
             }).SingleOrDefault();
-
+			
 			if (RequestById.ReceivedBy != null)
 			{
 				UserViewModel ReceivedUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(RequestById.ReceivedBy)).SingleOrDefault());
@@ -390,8 +391,8 @@ public class RequestService : IRequestService
                 RequestById.MUTemplateFileName = UploadList.Where(w => w.RequestId == RequestId).Select(q => q.FileName).Take(1).SingleOrDefault();
                 RequestById.SignImageName = UploadList.Where(w => w.RequestId == RequestId && w.TemplateType == "EX-AP").Select(q => q.FileName).Take(1).SingleOrDefault();
             }
-
-            return new ResponseViewModel<RequestViewModel>
+			
+			return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",

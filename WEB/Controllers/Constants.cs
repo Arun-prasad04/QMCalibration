@@ -45,4 +45,6 @@ public static class Constants
     public static string PDF_CERTIFICATE_RESULTS = "PDF_Certificate_Results";
     public static string PDF_CERTIFICATE_REMARKS = "PDF_Certificate_Remarks";
     public static string PDF_CERTIFICATE_UNCERTAINTY = "PDF_Certificate_Uncertainty";
+
+	public static string INSCONTROLLERNAME = "Instrument/ControlCard?instrumentId=";
 } 
