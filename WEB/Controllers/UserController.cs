@@ -118,6 +118,7 @@ public class UserController : BaseController
 		//ErrorViewModelTest.Log("response - " + response.ResponseMessage);
 		//ErrorViewModelTest.Log("responseData - " + response.ResponseData);
 		#endregion
+		
 		string roleurl = _configuration["RoleChangeURL"];
 		ResponseViewModel<UserViewModel> response = _userService.ValidateUser(email);
         if (response.ResponseMessage == "Success")
@@ -137,9 +138,6 @@ public class UserController : BaseController
 				HttpContext.Session.SetString("UserRoleURl", roleurl);
 			}
 
-			//if (!string.IsNullOrEmpty(ReturnUrl))
-			//    return Redirect(ReturnUrl);
-
 			return RedirectToAction("Index", "Home");
 
 		}
@@ -148,7 +146,6 @@ public class UserController : BaseController
 		{
 			TempData["ResponseCode"] = response.ResponseCode;
 			TempData["ResponseMessage"] = response.ResponseMessage;
-
 			return RedirectToAction("Logout", "Account");
 		}
 	}

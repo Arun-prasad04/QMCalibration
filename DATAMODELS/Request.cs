@@ -29,10 +29,10 @@ namespace CMT.DATAMODELS
     public DateTime? TentativeCompletionDate {get;set;}
     public DateTime? ReceivedDate {get;set;}
     public DateTime? InstrumentReturnedOn {get;set;}
+    public string? Inspectiondetails { get; set; }
+		//public List<Lovs> LovsList { get; set; }
 
-    //public List<Lovs> LovsList { get; set; }
 
 
-
-    }
+	}
 }

@@ -20,11 +20,6 @@ using MathNet.Numerics;
 using System;
 using WEB.Models.Templates;
 
-
-
-
-//using System.Collections.Generic
-
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
 {
@@ -4378,7 +4373,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 
-	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy,string Remarks)
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy,string Remarks,int RequestId)
 	{
 		try
 		{
@@ -4391,11 +4386,11 @@ public class ObservationTemplateService : IObservationTemplateService
 																	.SingleOrDefault();
 
 			Request ReqstData = _unitOfWork.Repository<Request>()
-																	.GetQueryAsNoTracking(Q => Q.Id == observationById.RequestId)
+																	.GetQueryAsNoTracking(Q => Q.Id == RequestId)
 																	.SingleOrDefault();
 
 			EmailServiceStatus emailService = _unitOfWork.Repository<EmailServiceStatus>()
-																		.GetQueryAsNoTracking(Q => Q.RequestId == observationById.RequestId)
+																		.GetQueryAsNoTracking(Q => Q.RequestId ==RequestId)
 																		.SingleOrDefault();
 
 			var numberList = GenerateULRAndCertificateNumber(instrumentData.IsNABL);
@@ -4449,7 +4444,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				if((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
 				{
 					
-						reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
+						reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
 					
 				}
 				else
@@ -4490,8 +4485,8 @@ public class ObservationTemplateService : IObservationTemplateService
             }
 			else
 			{
-				
-				 if ((instrumentData.IdNo != "") && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
+
+				if ((instrumentData.IdNo != null) && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
 				{
 						
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
@@ -4535,7 +4530,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			//TO UPDATE THE EMAIL SERVICE
 			if(emailService != null)
 			{ 
-				if ((instrumentData.IdNo != "") && (emailService.Status != null) && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
+				if ((instrumentData.IdNo != null) && (emailService.Status != null) && ((ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3)))
 				{
 					emailService.Status = 1;
 			
@@ -5289,14 +5284,14 @@ public class ObservationTemplateService : IObservationTemplateService
 		sqlAdapter.Fill(dsResults);
 		return dsResults;
 	}
-	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId, int RequestId)
+	public ResponseViewModel<ObservationContentViewModel> GetObservationById(int InstrumentId, int RequestId,int TemplateObservationId)
 	{
 		try
 		{
 
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
 
-			DataSet dsObservationContent = GetObservationContent(InstrumentId, RequestId);
+			DataSet dsObservationContent = GetObservationContent(InstrumentId, RequestId, TemplateObservationId);
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
@@ -5362,14 +5357,15 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
-	public DataSet GetObservationContent(int InstrumentId,int RequestId)//, int deptid)
+	public DataSet GetObservationContent(int InstrumentId,int RequestId,int TemplateObservationId)//, int deptid)
 	{
 		var connectionString = _configuration.GetConnectionString("CMTDatabase");
 		//SqlCommand cmd = new SqlCommand("GetObservationContents");
 		SqlCommand cmd = new SqlCommand("GetObsContentValuesById");
 		cmd.CommandType = CommandType.StoredProcedure;
 		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
-		cmd.Parameters.AddWithValue("@RequestId", RequestId);		
+		cmd.Parameters.AddWithValue("@RequestId", RequestId);
+		cmd.Parameters.AddWithValue("@TemplateObservationId", TemplateObservationId);
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -5419,10 +5415,10 @@ public class ObservationTemplateService : IObservationTemplateService
 				ObservationInstrument.SlNo = dr["SlNo"].ToString();
 				ObservationInstrument.Range = dr["Range"].ToString();
 				ObservationInstrument.Make = dr["Make"].ToString();
-				ObservationInstrument.RequestId = Convert.ToInt32(dr["RequestId"]);
+				ObservationInstrument.RequestId = RequestId;// Convert.ToInt32(dr["RequestId"]);
 				ObservationInstrument.Grade = dr["Grade"].ToString();
 				ObservationInstrument.TemplateObservationId = Convert.ToInt32(dr["TemplateObservationId"]);
-				//ObservationInstrument.SubTitle = dr["SubTitle"].ToString();
+				ObservationInstrument.StatusId = Convert.ToInt32(dr["StatusId"]);
 			}
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
 			{
@@ -5433,7 +5429,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					ObservationContent.Add(new ObservationContentViewModel
 					{
 						Id = Convert.ToInt32(dr["Id"]),
-						ContentName = Convert.ToString(dr["ContentName"])
+						ContentName = Convert.ToString(dr["ContentValue"])
 					});
 
 				}
@@ -5601,10 +5597,9 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.BeginTransaction();
 			int dynamicId = 0;
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-																 .GetQueryAsNoTracking(Q => Q.RequestId == dynamic.RequestId
-																						&& Q.InstrumentId == dynamic.InstrumentId)
+																 .GetQueryAsNoTracking(Q => Q.InstrumentId == dynamic.InstrumentId)
 																 .SingleOrDefault();
-
+			//.GetQueryAsNoTracking(Q => Q.RequestId == dynamic.RequestId	&& Q.InstrumentId == dynamic.InstrumentId).SingleOrDefault();
 			if ((dynamic.TemplateObservationId == null) && (observationById == null))
 
 			{
@@ -5651,7 +5646,11 @@ public class ObservationTemplateService : IObservationTemplateService
 					{
 						observationById.Allvalues = dynamic.Units;
 					}
-					//generalId = observationById.Id;
+					if (dynamic.RequestId != null)
+					{
+						observationById.RequestId = dynamic.RequestId;
+					}
+									
 					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
 				}
 			}
@@ -5838,7 +5837,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
-	public ResponseViewModel<ObservationContentViewModel>GetObservationContentSelectedList (List<Contentids> Contents)
+	public ResponseViewModel<ObservationContentViewModel>GetObservationContentSelectedList (List<Contentids> Contents,int InstrumentId,int TemplateObservationId)
 	{
 		try
 		{
@@ -5849,14 +5848,14 @@ public class ObservationTemplateService : IObservationTemplateService
 			{
 				Contentdata.Append("<ContentList>");
 				Contentdata.Append(string.Format("<ContentId>{0}</ContentId>", (Int32)Contentlist.ContentId));
-				Contentdata.Append(string.Format("<InstrumentId>{0}</InstrumentId>", (Int32)Contentlist.InstrumentId));
-				Contentdata.Append(string.Format("<RequestId>{0}</RequestId>", (Int32)Contentlist.RequestId));
+				//Contentdata.Append(string.Format("<InstrumentId>{0}</InstrumentId>", (Int32)Contentlist.InstrumentId));
+				//Contentdata.Append(string.Format("<RequestId>{0}</RequestId>", (Int32)Contentlist.RequestId));
 				
 				Contentdata.Append("</ContentList>");
 			}
 			Contentdata.Append("</Root>");
 
-			DataSet dsObservationContent = GetObsContentList(Contentdata.ToString());
+			DataSet dsObservationContent = GetObsContentList(Contentdata.ToString(), InstrumentId, TemplateObservationId);
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
@@ -5925,13 +5924,15 @@ public class ObservationTemplateService : IObservationTemplateService
 			};
 		}
 	}
-	public DataSet GetObsContentList(string Contents)//, int deptid)
+	public DataSet GetObsContentList(string Contents, int InstrumentId, int TemplateObservationId)//, int deptid)
 	{
 		var connectionString = _configuration.GetConnectionString("CMTDatabase");
 		SqlCommand cmd = new SqlCommand("GetObservationContentSelectedList");
 		cmd.CommandType = CommandType.StoredProcedure;
 
 		cmd.Parameters.AddWithValue("@Content", Contents);
+		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+		cmd.Parameters.AddWithValue("@TemplateObservationId", TemplateObservationId);
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -6168,10 +6169,12 @@ public class ObservationTemplateService : IObservationTemplateService
     public ResponseViewModel<CertificateViewModel> GetTemplateObservationById(int requestId, int instrumentId)
     {
         try
-        {
-            CertificateViewModel templateObservation = _unitOfWork.Repository<TemplateObservation>()
-                                                                    .GetQueryAsNoTracking(Q => Q.RequestId == requestId
-                                                                                            && Q.InstrumentId == instrumentId)
+
+		{  //.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
+
+			CertificateViewModel templateObservation = _unitOfWork.Repository<TemplateObservation>()
+                                                                    .GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId)
+																	 
                                                     .Select(s => new CertificateViewModel()
                                                     {
                                                         Id = s.Id,

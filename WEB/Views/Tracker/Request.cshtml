@@ -256,21 +256,21 @@
                 console.log("-----data----------");
                 console.log(data);
                 //console.log(Object.keys(data).length);
-                if (data.length>0){	
-                $.each(data, function (i, item) {
-                    var tdTypeofRequest = '';
-                    if (item.typeOfRequest == 1) {
-                        tdTypeofRequest = "<td>New</td>"
-                    }
-                    else if (item.typeOfRequest == 2) {
-                        tdTypeofRequest = "<td>Regular</td>"
-                    }
-                    else if (item.typeOfRequest == 3) {
-                        tdTypeofRequest = "<td>Recalibration</td>"
-                    }
-                    else if (item.typeOfRequest == 4) {
-                        tdTypeofRequest = "<td>UnQuarantine</td>"
-                    }
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        var tdTypeofRequest = '';
+                        if (item.typeOfRequest == 1) {
+                            tdTypeofRequest = "<td>New</td>"
+                        }
+                        else if (item.typeOfRequest == 2) {
+                            tdTypeofRequest = "<td>Regular</td>"
+                        }
+                        else if (item.typeOfRequest == 3) {
+                            tdTypeofRequest = "<td>Recalibration</td>"
+                        }
+                        else if (item.typeOfRequest == 4) {
+                            tdTypeofRequest = "<td>UnQuarantine</td>"
+                        }
 
                     var tdStatus = '';
                     if (item.status == 26) {

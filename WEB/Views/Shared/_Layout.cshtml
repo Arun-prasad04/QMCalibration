@@ -368,7 +368,7 @@
 									</p>
 								</a>
 								<ul class="nav nav-treeview">
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
+									@* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 									{
 										<li class="nav-item navIndend">
@@ -377,7 +377,7 @@
 												<p class="trn">External Request</p>
 											</a>
 										</li>
-									}
+									} *@
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")

@@ -99,8 +99,7 @@ namespace WEB.Models
 
         public List<ObservationContentViewModel> obsContent { get; set; }
 		public DateTime? CalibrationCloseDate { get; set; }
-
-		public string IssueNo { get; set; }
+        public string IssueNo { get; set; }
 
 		public string Inspectiondetails { get; set; }
 
@@ -109,26 +108,28 @@ namespace WEB.Models
 		public string InstrumentType { get; set; }
 		public string? CalibrationMonth { get; set; }
 
-		public string? CalibrationRequestDate { get; set; }
+        public string? CalibrationRequestDate { get; set; }
 	}
     public class Instrumentids
     {
         public string InstrumentId { get; set; }
 
         public string ReplacementLabId { get; set; }
+		 
+       
+		
 
 
-    }
+	}
 
-    public class RequestAllView
+	public class RequestAllView
     {
         public int instrumentId { get; set; }
         public int TypeValue { get; set; }
         public string EmailServiceNo { get; set; }
 
 	}
-    
-    public class RequestMailList
+		public class RequestMailList
     {
         public int SNo { get; set; }
         public string? RequestNo { get; set; }

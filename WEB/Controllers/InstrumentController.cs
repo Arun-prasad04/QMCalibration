@@ -18,30 +18,30 @@ namespace WEB.Controllers;
 
 public class InstrumentController : BaseController
 {
-    private IInstrumentService _instrumentService { get; set; }
-    private IRequestService _requestService{get;set;}
+	private IInstrumentService _instrumentService { get; set; }
+	private IRequestService _requestService { get; set; }
 	private IUnitOfWork _unitOfWork { get; set; }
 	private IQRCodeGeneratorService _qrCodeGeneratorService { get; set; }
-	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor,IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService) : base(logger, contextAccessor)
-    {
-        _instrumentService = instrumentService;
-        _requestService=requestService;
+	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService) : base(logger, contextAccessor)
+	{
+		_instrumentService = instrumentService;
+		_requestService = requestService;
 		_unitOfWork = unitOfWork;
 		_qrCodeGeneratorService = qrCodeGeneratorService;
 	}
 
-    public IActionResult Index() 
-    {
-        //ViewBag.PageTitle="Instrument List";
-        ViewBag.ResponseCode = TempData["ResponseCode"];  
-        ViewBag.ResponseMessage = TempData["ResponseMessage"];
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
-        return View(response.ResponseDataList);
-        //return View();
+	public IActionResult Index()
+	{
+		//ViewBag.PageTitle="Instrument List";
+		ViewBag.ResponseCode = TempData["ResponseCode"];
+		ViewBag.ResponseMessage = TempData["ResponseMessage"];
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
+		return View(response.ResponseDataList);
+		//return View();
 
-    }
+	}
 
 	public JsonResult GetAllInstrumentList()
 	{
@@ -127,14 +127,14 @@ public class InstrumentController : BaseController
 			response.ResponseData.IsDisabled = "readonly";
 		}
 
-		
+
 		Request NewRequest = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId).OrderByDescending(O => O.Id).FirstOrDefault();
 		if (NewRequest.TypeOfReqest == 2 || NewRequest.TypeOfReqest == 3 || NewRequest.StatusId == 30)
-		{ 
+		{
 			ViewBag.ShowDetails = false;
 			response.ResponseData.IsDisabled = "readonly";
 		}
-		else 
+		else
 		{
 			ViewBag.ShowDetails = true;
 		}
@@ -202,26 +202,26 @@ public class InstrumentController : BaseController
 	}
 
 
-    public ActionResult RegularRecaliRequest(List<RequestAllView> userViewModelList)
-    {
-        //return Json(true);
-        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response;
-        response = _requestService.InsertDueRequest(userViewModelList, userId);
+	public ActionResult RegularRecaliRequest(List<RequestAllView> userViewModelList)
+	{
+		//return Json(true);
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		ResponseViewModel<RequestViewModel> response;
+		response = _requestService.InsertDueRequest(userViewModelList, userId);
 
-        //response = _requestService.InsertDueRequest(userViewModelList, userId);
+		//response = _requestService.InsertDueRequest(userViewModelList, userId);
 
-        //foreach (var user in userViewModelList)
-        //      {
-        //	
-        //}
-        //ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
-        return Json(true);
-    }
-    //For Tool Inventory Manager
-    public IActionResult ToolInventory(int UserDept)
-    {
-		
+		//foreach (var user in userViewModelList)
+		//      {
+		//	
+		//}
+		//ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
+		return Json(true);
+	}
+	//For Tool Inventory Manager
+	public IActionResult ToolInventory(int UserDept)
+	{
+
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolInventoryInstrumentList(UserDept);
 
 		return View(response.ResponseDataList);
@@ -245,8 +245,8 @@ public class InstrumentController : BaseController
 	}
 	public IActionResult ToolRoomInstrumentListing()
 	{
-		
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomInstrument();
+
+		ResponseViewModel<InstrumentViewModel> response  = _instrumentService.GetAllToolRoomInstrument();
 		return View(response.ResponseDataList);
 		//return View();
 
@@ -279,7 +279,26 @@ public class InstrumentController : BaseController
 	}
 	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId)
 	{
+	#region Control Card
+	public IActionResult ControlCard(int instrumentId)
+	{
+		ViewBag.InstrumentId = instrumentId;
+		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
+		ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
 
+		return View(response.ResponseData);
+		
+	}
+
+	public JsonResult RequestListForInstrument(int instrumentId)
+	{
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetRequestListForInstrument(instrumentId);
+		return Json(response.ResponseDataList);
+	}
+	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId)
+	{
+	
 		QRCodeFilesViewModel qrCodeGenInputViewModel = new QRCodeFilesViewModel()
 		{
 			TemplateName = Constants.INSCONTROLLERNAME,
@@ -290,14 +309,14 @@ public class InstrumentController : BaseController
 
 
 		if (qrCodeGenOutputViewModel == null)
-		{
+		{ 
 			return qrCodeGenInputViewModel;
 		}
 
 		return qrCodeGenOutputViewModel;
 	}
 
-	public JsonResult updateRequestforInstrument(List<RequestAllData> reqlist, int InstrumentId, string IssueNo)
+	public JsonResult updateRequestforInstrument(List<RequestAllData> reqlist, int InstrumentId,string IssueNo)
 	{
 
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.UpdateControlCardRequestList(reqlist, InstrumentId, IssueNo);

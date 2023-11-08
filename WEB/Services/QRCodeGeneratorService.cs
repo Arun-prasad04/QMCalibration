@@ -8,6 +8,9 @@ using AutoMapper;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using static System.Net.WebRequestMethods;
+using Microsoft.VisualBasic;
+using System.Diagnostics.Metrics;
 
 namespace WEB.Services
 {
@@ -125,6 +128,7 @@ namespace WEB.Services
 				return new RequestViewModel() { };
 			}
 		}
+		
 		public QRCodeFilesViewModel QRCodeGeneration(QRCodeFilesViewModel qrCodeGenInputViewModel)
 		{
 			//get Existing QR Code Data
@@ -212,6 +216,8 @@ namespace WEB.Services
 			}
 			return newBitmap;
 		}
+
+		
 		private Bitmap GetQRCodeImage(string qrcodeUrl)
 		{
 			QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -280,6 +286,7 @@ namespace WEB.Services
                 return new QRCodeFilesViewModel() { };
             }
         }
+
 
 		#region ControlCard
 		public QRCodeFilesViewModel QRCodeGenerationForInstrument(QRCodeFilesViewModel qrCodeGenInputViewModel, int instrumentid)

@@ -1007,10 +1007,10 @@ public class ObservationController : BaseController
 		}
 		return View(response.ResponseData);
 	}
-	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks)
-	{        
+	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks, int RequestId)
+	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks);
+        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks, RequestId);
 		return Json(response.ResponseData);
 	}
 	public IActionResult GeneralNew(int requestId, int instrumentId)
@@ -1424,9 +1424,9 @@ public class ObservationController : BaseController
 
 
     }
-	public JsonResult GetObservationById(int InstrumentId, int RequestId)
+	public JsonResult GetObservationById(int InstrumentId, int RequestId, int TemplateObservationId)
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId,RequestId);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId,RequestId, TemplateObservationId);
 		return Json(response.ResponseDataList);
 
 	}
@@ -1453,9 +1453,9 @@ public class ObservationController : BaseController
 
 		return Json(response.ResponseDataList);
 	}
-	public JsonResult GetObservationContentSelectedList(List<Contentids> Contents)
+	public JsonResult GetObservationContentSelectedList(List<Contentids> Contents,int InstrumentId , int TemplateObservationId )
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationContentSelectedList(Contents);
+		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationContentSelectedList(Contents,InstrumentId,TemplateObservationId);
 
 		return Json(response.ResponseDataList);
 

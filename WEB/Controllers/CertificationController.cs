@@ -678,8 +678,8 @@ public class CertificationController : BaseController
         // return Redirect(url);
         //}
     }
-
-    private QRCodeFilesViewModel GetQRCodeImage(int requestId, int instrumentId)
+	
+	private QRCodeFilesViewModel GetQRCodeImage(int requestId, int instrumentId)
     {
         RequestViewModel requestData = _qrCodeGeneratorService.GetRequestData(requestId);
         if (requestData == null)
@@ -728,19 +728,25 @@ public class CertificationController : BaseController
 
             DateTime calibrationClosedate = _instrumentService.GetcalibrationClosedate(requestId);
             instrumentresponse.ResponseData.CalibrationCloseDate = calibrationClosedate;
-			//TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-			//                                             .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
-			//                                                                        && Q.InstrumentId == levertypedial.InstrumentId)
-			//                                             .SingleOrDefault();
+            //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
+            //                                             .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
+            //                                                                        && Q.InstrumentId == levertypedial.InstrumentId)
+            //                                             .SingleOrDefault();
+            
 			ResponseViewModel<CertificateViewModel> response = _ObservationTemplateService.GetTemplateObservationById(requestId, instrumentId);
 
             if (response.ResponseData != null)
             {
-                instrumentresponse.ResponseData.TempObservationData = response.ResponseData;
+                int TemplateObservationId = 0;
+				instrumentresponse.ResponseData.TempObservationData = response.ResponseData;
                 instrumentresponse.ResponseData.TempObservationData.PdfCalibrationResult = Constants.PDF_CERTIFICATE_RESULTS;
-                instrumentresponse.ResponseData.TempObservationData.PdfRemarks = Constants.PDF_CERTIFICATE_REMARKS;                
+                instrumentresponse.ResponseData.TempObservationData.PdfRemarks = Constants.PDF_CERTIFICATE_REMARKS;
+                if (response !=null)
+                {
+                     TemplateObservationId = response.ResponseData.Id;
 
-                ResponseViewModel<ObservationContentViewModel> responseObs = _ObservationTemplateService.GetObservationById(instrumentId, requestId);
+				}
+				ResponseViewModel<ObservationContentViewModel> responseObs = _ObservationTemplateService.GetObservationById(instrumentId, requestId,TemplateObservationId);
                 if (responseObs != null)
                 {
                     instrumentresponse.ResponseData.obsContent = responseObs.ResponseDataList;

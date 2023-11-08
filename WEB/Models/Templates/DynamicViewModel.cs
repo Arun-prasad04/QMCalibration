@@ -54,15 +54,14 @@
 		public string? FormatNoTitle { get; set; }
 		public int? TemplateObservationId { get; set; }
 		public List<UserContentMappingView> UserContentMappingViewModel { get; set; }
+		public int? StatusId { get; set; }
+		
 	}
 	public class UserContentMappingView
 	{
-		//		Id ContentId   ObservationId InstrumentId    CreatedBy CreatedOn   IsActive
-
-	//	public int? Id { get; set; }
+	
 		public int? ContentId { get; set; }
-		//public int? ObservationId { get; set; }
-		//public int? InstrumentId { get; set; }
+		
 
 	}
 }
