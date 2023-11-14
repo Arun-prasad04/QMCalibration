@@ -311,7 +311,9 @@
 					<td colspan="3" style="text-align:center;">
 						@* @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
 						{  *@
+						
 							<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
+					
 						@*  } *@
 						<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
 					</td>
@@ -323,9 +325,7 @@
 		<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
 		<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
 		<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
-
-	
-			</div>
+		</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript">
@@ -333,7 +333,6 @@
 		$(document).ready(function () {
 		$('.trhideRejection').hide();
 			if ($('#TemplateObservationId').val() > 0) {
-
 				$("#dvTable").html("");
 				BindObservationTable();
 			}

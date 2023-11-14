@@ -4424,7 +4424,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 
 			RequestStatus reqestStatus = new RequestStatus();
-			reqestStatus.RequestId = observationById.RequestId;
+			reqestStatus.RequestId = RequestId;
 			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
 				//reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
@@ -4468,7 +4468,7 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			//----------------------New update for listing Approved Request start---------------------------
 			//Request Tempreqests = new Request();
-			ReqstData.Id = observationById.RequestId;
+			ReqstData.Id = RequestId;
 			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
                 //ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;

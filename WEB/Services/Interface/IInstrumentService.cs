@@ -17,9 +17,9 @@ public interface IInstrumentService
  ResponseViewModel<InstrumentViewModel> GetInstrumentListByName(string instrumentName);
  ResponseViewModel<InstrumentViewModel> GetInstrumentListByIdNo(string idNo);
  ResponseViewModel<InstrumentViewModel> GetCurrentMonthDueList();
-ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept);
+ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept, int DueMonth);
 ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int userId);
-ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument();
+ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument(int DueMonth);
 ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId);
 
 DateTime GetcalibrationClosedate(int requid);

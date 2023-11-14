@@ -31,6 +31,7 @@
 								<th class="trn">Lab ID Number</th>
 								<th class="trn">Range</th>
 								<th class="trn">Department</th>
+								<th class="trn">SubSectionCode</th>
 								<th class="trn">Scope</th>
 								<th class="trn">Calibration Date</th>
 								<th class="trn">DueDate</th>
@@ -57,17 +58,15 @@
 								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
 								{
 									<tr>
-										<td class="one">@item.InstrumentName</td>
-										<td>@item.SlNo</td>
-										<td>@item.IdNo</td>
-										<td>@item.Range</td>
-										<td>@item.DepartmentName</td>
-										<td>@item.TypeOfEquipment</td>
-										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
-										<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-
-									 	@* <td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
-										 *@
+										<td class="trn one">@item.InstrumentName</td>
+										<td class="trn">@item.SlNo</td>
+										<td class="trn">@item.IdNo</td>
+										<td class="trn">@item.Range</td>
+										<td class="trn">@item.DepartmentName</td>
+										<td class="trn">@item.SubSectionCode</td>
+										<td class="trn">@item.TypeOfEquipment</td>
+										<td class="trn">@item.CalibDate.ToString("dd-MM-yyyy")</td>
+										<td class="trn">@item.DueDate.ToString("dd-MM-yyyy")</td>
 									</tr>
 
 								}
@@ -88,20 +87,8 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 
-	// setTimeout(function () {
-	// 	$('#tblToolInstruments').DataTable({
-	// 		"paging": true,
-	// 		"lengthChange": true,
-	// 		"searching": true,
-	// 		"ordering": true,
-	// 		"info": true,
-	// 		"autoWidth": true,
-	// 		"responsive": true,
-	// 	});
-
-
-	// }, 500);
 	$(function () {
+		
 		$('#tblToolInstruments').dataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -114,5 +101,6 @@
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		});
+
 	});
 	</script>

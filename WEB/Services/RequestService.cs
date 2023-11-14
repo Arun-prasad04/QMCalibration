@@ -378,7 +378,7 @@ public class RequestService : IRequestService
             instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
             RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
             instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
-            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
+            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate" && W.IsActive == true).ToList();
             RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
             RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
             RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList());
@@ -676,8 +676,12 @@ public class RequestService : IRequestService
             instrumentById.IsNABL = newNABL;
             instrumentById.CalibFreq = CalibFreq;
             instrumentById.ToolInventory = ToolInventory;
-            instrumentById.ObservationTemplate = newObservation;
-            instrumentById.ObservationType = newObservationType;
+			if (requestById.TypeOfReqest == 1)
+            { 
+			instrumentById.ObservationTemplate = newObservation;
+			instrumentById.ObservationType = newObservationType;
+			}
+			
             instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
             instrumentById.StandardReffered = standardReffered;
