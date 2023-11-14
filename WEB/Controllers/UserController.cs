@@ -175,7 +175,7 @@ public class UserController : BaseController
 	public IActionResult InsertUser(UserViewModel user)
 	{
 
-        //return Json(true);
+        return Json(true);
 
         int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         ResponseViewModel<UserViewModel> response;
