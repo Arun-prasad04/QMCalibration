@@ -1221,9 +1221,10 @@ function CloseNewRequestPopup() {
     $("#NewInstrument").modal('hide');
 }
 
-function NewReqEnableReason() {
-    // debugger;
+function NewReqEnableReason1() {
+   
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
+        
         $('#NewReasonSection').css('display', 'none');
         $('#NewacceptSection').css('display', 'block');
         $('#ExternalRejectSection').css('display', 'none');
@@ -1615,7 +1616,9 @@ function SaveLeverDial(lang) {
     });
 }
 
-function SaveInventoryCalibration(lang) {
+function SaveInventoryCalibration(DueMonth,lang) {
+    //var DueMonth = @Json.Serialize(@ViewBag.DueMonth); 
+    //alert(DueMonth);
     var sPageURLPaarameter = window.location.search.substring(1);
 
     var InstrumentDataList = new Array();
@@ -1638,7 +1641,10 @@ function SaveInventoryCalibration(lang) {
             var objPopUpRecordCount = $(tr).find("input[id='" + POPoutId + "']").val(); // $(tr).find("input[id= '" + ChkoutId + "']").val().trim();
             var objChkRecordCount = $(tr).find("input[id='" + CHKoutId + "']").prop('checked');
 
+            var DueDate = $(this).closest('tr').find('.clsDueDate').val();
+            var CalibFreq = $(this).closest('tr').find('.clsCalibFreq').val();
 
+           // console.log()
             if (checkedvalue == true) {
 
 
@@ -1659,8 +1665,9 @@ function SaveInventoryCalibration(lang) {
                     var InstrumentData =
                     {
                         InstrumentId: objInstrumentId,
-                        ReplacementLabId: objReplacementLabId
-
+                        ReplacementLabId: objReplacementLabId,
+                        DueMonth: DueMonth,
+                        CalibFrequency: CalibFreq
                     }
 
                     InstrumentDataList.push(InstrumentData);
@@ -1677,7 +1684,8 @@ function SaveInventoryCalibration(lang) {
 
 
     }
-
+    console.log("InstrumentDataList");
+    console.log(InstrumentDataList);
     if ((InstrumentDataList.length > 0) && (CheckedCount == 0)) {
 
         $.ajax({
@@ -2973,7 +2981,7 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
-    debugger;
+   // debugger;
     var revstat = $('#ReviewStatus').val();
     console.log('revstat');
     console.log(revstat);
@@ -3651,5 +3659,19 @@ function BindObservationTable() {
         dvTable.append(tables);
 
     });
+
+}
+
+function getDepartmantDueInstruments(DueMonth) {
+    window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
+      
+    if ($('input[name="Month1"]:checked').val() == '1') {
+        window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
+    } else if ($('input[name="Month2"]:checked').val() == '2') {
+        window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
+    } 
+    else if ($('input[name="Month3"]:checked').val() == '3') {
+        window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
+    } 
 
 }

@@ -94,7 +94,7 @@
 											<td style="text-align:center;" class="chkpl">
 												@if (@item.DueDate != null)
 												{
-													@if (DateTime.Now.Month+1 == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+													@if ( DateTime.Now.Month+1 == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
 													{
 														@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27) || @item.RequestStatus == 0)
 														{

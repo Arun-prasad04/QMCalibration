@@ -677,8 +677,12 @@ public class RequestService : IRequestService
             instrumentById.IsNABL = newNABL;
             instrumentById.CalibFreq = CalibFreq;
             instrumentById.ToolInventory = ToolInventory;
-            instrumentById.ObservationTemplate = newObservation;
-            instrumentById.ObservationType = newObservationType;
+			if (requestById.TypeOfReqest == 1)
+            { 
+			instrumentById.ObservationTemplate = newObservation;
+			instrumentById.ObservationType = newObservationType;
+			}
+			
             instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
             instrumentById.StandardReffered = standardReffered;

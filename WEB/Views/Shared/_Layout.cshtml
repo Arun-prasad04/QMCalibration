@@ -332,8 +332,9 @@
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
 						{
 							<li class="nav-item has-treeview">
-								<a href='@Url.Action("ToolRoomDepartment","Instrument")' class="nav-link">
-									<i class="nav-icon fas fa-compass"></i>
+
+								<a href='@Url.Action("ToolRoomDepartment","Instrument",new {DueMonth = 0})' class="nav-link">
+									<i class="nav-icon fas fa-compass"></i> 
 									<p class="trn">Request Tracker</p>
 								</a>
 							</li>
