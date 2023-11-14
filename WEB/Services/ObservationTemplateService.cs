@@ -19,6 +19,7 @@ using WEB.Controllers;
 using MathNet.Numerics;
 using System;
 using WEB.Models.Templates;
+using Microsoft.VisualBasic;
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -4373,7 +4374,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 
-	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy,string Remarks,int RequestId)
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy,string Remarks,int RequestId, DateTime DueDate)
 	{
 		try
 		{
@@ -4424,7 +4425,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.SaveChanges();
 
 			RequestStatus reqestStatus = new RequestStatus();
-			reqestStatus.RequestId = observationById.RequestId;
+			reqestStatus.RequestId = RequestId;
 			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
 				//reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.Rejected;
@@ -4468,7 +4469,7 @@ public class ObservationTemplateService : IObservationTemplateService
 
 			//----------------------New update for listing Approved Request start---------------------------
 			//Request Tempreqests = new Request();
-			ReqstData.Id = observationById.RequestId;
+			ReqstData.Id = RequestId;
 			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
                 //ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
@@ -4476,6 +4477,7 @@ public class ObservationTemplateService : IObservationTemplateService
                 {
 
                     ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
+					ReqstData.ReqDueDate = DueDate;
 
                 }
                 else
@@ -4490,7 +4492,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 						
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
-				
+					ReqstData.ReqDueDate = DueDate;
 				}
 				else
 				{
@@ -5419,6 +5421,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ObservationInstrument.Grade = dr["Grade"].ToString();
 				ObservationInstrument.TemplateObservationId = Convert.ToInt32(dr["TemplateObservationId"]);
 				ObservationInstrument.StatusId = Convert.ToInt32(dr["StatusId"]);
+				ObservationInstrument.CalibFreq = Convert.ToInt32(dr["CalibFreq"]);
 			}
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
 			{

@@ -525,7 +525,7 @@
             } else {                
                 return true;
             }
-    }, 'Please select User Designation');
+		}, 'Please select User Designation');
 
 		$.validator.addMethod("RoleSelect", function (value, element) {
 			return $(element).multiselect("getChecked").length > 0;
@@ -564,11 +564,8 @@
                     SubSectionCodeval: true,
                     //minlength: 0,
                     required: true,
-                },
-                //ignore: ':hidden:not("#SubSectionCodeval")',
-            },
-            //ignore: ':hidden:not("#RoleSelect")',
-            //ignore: [':hidden:not("#SubSectionCodeval"), :hidden:not("#RoleSelect")'],
+                },                
+            },            
             messages: {
                 FirstName: {
                     required: "Please enter your first name",

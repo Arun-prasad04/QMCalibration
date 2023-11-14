@@ -377,8 +377,8 @@ public class RequestService : IRequestService
             instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
             instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
             RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
-            instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();
-            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate").ToList();
+            instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();            
+            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate" && W.IsActive == true).ToList();
             RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
             RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
             RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList());
@@ -669,6 +669,7 @@ public class RequestService : IRequestService
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;
             requestById.ReceivedDate = DateTime.Now;
+            requestById.ReqDueDate = DueDate;
             _unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
 
@@ -1090,6 +1091,7 @@ public class RequestService : IRequestService
                 Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
                 requestById.StatusId = (Int32)EnumRequestStatus.Closed;
                 requestById.CollectedBy = CollectedBy;
+                requestById.ReqDueDate = DueDate;
                 _unitOfWork.Repository<Request>().Update(requestById);
                 _unitOfWork.SaveChanges();
 
@@ -2070,6 +2072,7 @@ public class RequestService : IRequestService
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;
             requestById.ReceivedDate = DateTime.Now;
+            requestById.ReqDueDate = DueDate;
             _unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
 

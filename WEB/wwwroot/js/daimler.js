@@ -2992,10 +2992,15 @@ function SubmitReview(lang) {
         }
     }
 
+    var dueDate;
+    var dt = $('#InsCalibFreq').val();
+    //debugger;
+    dueDate = DudeDateCalculation(dt);
+
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val(), DueDate: dueDate }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
@@ -3174,8 +3179,8 @@ function InsertRequestList() {
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
-            instrumentId:$(this).closest('tr').find('td:eq(10) input[type="checkbox"]').val(),
-            TypeValue: $(this).closest('tr').find("td:eq(10) input[type='hidden']").val(),
+            instrumentId:$(this).closest('tr').find('td:eq(11) input[type="checkbox"]').val(),
+            TypeValue: $(this).closest('tr').find("td:eq(11) input[type='hidden']").val(),
         }
         console.log(UserView);
         Request.push(UserView);
