@@ -1253,14 +1253,14 @@ public class InstrumentService : IInstrumentService
             };
         }
     }
-    public ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept)
+    public ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept, int DueMonth)
     {
         try
         {
 
             List<InstrumentViewModel> ToolInventoryList = new List<InstrumentViewModel>();
 
-            DataSet dsToolInventory = GetToolInventoryList(UserDept);
+            DataSet dsToolInventory = GetToolInventoryList(UserDept,DueMonth);
             if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in dsToolInventory.Tables[0].Rows)
@@ -1276,7 +1276,7 @@ public class InstrumentService : IInstrumentService
                         IdNo = dr["IdNo"].ToString(),
                         Range = dr["Range"].ToString(),
                         //LC = dr["LC"].ToString(),
-                        //CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+                        CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
                         CalibDate = Convert.ToDateTime(dr["CalibDate"]),
                         DueDate = Convert.ToDateTime(dr["DueDate"]),
                         //Make = dr["Make"].ToString(),
@@ -1288,8 +1288,8 @@ public class InstrumentService : IInstrumentService
                         CreatedBy = Convert.ToInt16(dr["CreatedBy"]),
                         ReplacementLabID = dr["ReplacementLabID"].ToString(),
                         ToolRoomStatus = Convert.ToInt32(dr["ToolRoomStatus"]),
-                        ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"])
-						
+                        ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+						SubSectionCode = dr["SubSectionCode"].ToString(),
 					};
                     ToolInventoryList.Add(ObjinstView);
 
@@ -1320,14 +1320,14 @@ public class InstrumentService : IInstrumentService
             };
         }
     }
-    public ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument()
+    public ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument(int DueMonth)
     {
         try
         {
 
             List<InstrumentViewModel> ToolInventoryList = new List<InstrumentViewModel>();
 
-            DataSet dsToolInventory = GetToolRoomDepartmentwiseInstrumentCount();
+            DataSet dsToolInventory = GetToolRoomDepartmentwiseInstrumentCount(DueMonth);
             if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in dsToolInventory.Tables[0].Rows)
@@ -1337,10 +1337,12 @@ public class InstrumentService : IInstrumentService
 
                         UserDept = Convert.ToInt32(dr["UserDept"]),
                         DepartmentName = dr["DepartmentName"].ToString(),
-                        InstrumentCount = Convert.ToInt32(dr["InstrumentCount"]),
+						SubSectionCode = dr["SubSectionCode"].ToString(),
+						InstrumentCount = Convert.ToInt32(dr["InstrumentCount"]),
                         ToolRoomStatus = Convert.ToInt32(dr["Status"]),
-                        DueDate = Convert.ToDateTime(dr["DueForCalibration"])
-                    };
+                        DueDate = Convert.ToDateTime(dr["DueForCalibration"]),
+                        Inscount =Convert.ToInt32(dr["Inscount"]),
+     };
                     ToolInventoryList.Add(ObjinstView);
 
                 }
@@ -1370,14 +1372,15 @@ public class InstrumentService : IInstrumentService
             };
         }
     }
-    public DataSet GetToolInventoryList(int UserDept)//, int deptid)
+    public DataSet GetToolInventoryList(int UserDept, int DueMonth)//, int deptid)
     {
         var connectionString = _configuration.GetConnectionString("CMTDatabase");
         SqlCommand cmd = new SqlCommand("GetToolInventryInstrumentList");
         cmd.CommandType = CommandType.StoredProcedure;
 
         cmd.Parameters.AddWithValue("@UserDept", UserDept);
-        SqlConnection sqlConn = new SqlConnection(connectionString);
+		cmd.Parameters.AddWithValue("@DueMonth", DueMonth);  
+		SqlConnection sqlConn = new SqlConnection(connectionString);
         DataSet dsResults = new DataSet();
         SqlDataAdapter sqlAdapter = new SqlDataAdapter();
         cmd.Connection = sqlConn;
@@ -1402,13 +1405,13 @@ public class InstrumentService : IInstrumentService
         sqlAdapter.Fill(dsResults);
         return dsResults;
     }
-    public DataSet GetToolRoomDepartmentwiseInstrumentCount()
+    public DataSet GetToolRoomDepartmentwiseInstrumentCount(int DueMonth)
     {
         var connectionString = _configuration.GetConnectionString("CMTDatabase");
         SqlCommand cmd = new SqlCommand("GetToolRoomDepartmentwiseInstrumentCount");
         cmd.CommandType = CommandType.StoredProcedure;
-
-        SqlConnection sqlConn = new SqlConnection(connectionString);
+        cmd.Parameters.AddWithValue("@DueMonth", DueMonth);
+		SqlConnection sqlConn = new SqlConnection(connectionString);
         DataSet dsResults = new DataSet();
         SqlDataAdapter sqlAdapter = new SqlDataAdapter();
         cmd.Connection = sqlConn;
@@ -1448,9 +1451,13 @@ public class InstrumentService : IInstrumentService
                 Intrumentdata.Append(string.Format("<ReplacementLabId>{0}</ReplacementLabId>", Instrument.ReplacementLabId));
                 Intrumentdata.Append(string.Format("<ToolInventoryStatus>{0}</ToolInventoryStatus>", (Int32)ToolInventoryStatus.UserTool));
                 Intrumentdata.Append(string.Format("<ToolRoomStatus>{0}</ToolRoomStatus>", (Int32)ToolRoomStatus.Completed));
-                Intrumentdata.Append("</InstrumentList>");
+				Intrumentdata.Append(string.Format("<DueMonth>{0}</DueMonth>", Instrument.DueMonth));
+				Intrumentdata.Append(string.Format("<CalibFrequency>{0}</CalibFrequency>", Instrument.CalibFrequency));
+				Intrumentdata.Append("</InstrumentList>");
             }
-            Intrumentdata.Append("</Root>");
+			
+
+			Intrumentdata.Append("</Root>");
 
             var status = SaveInventoryList(Intrumentdata.ToString());
 
@@ -1524,6 +1531,7 @@ public class InstrumentService : IInstrumentService
 							//UserRoleId = userRoleId,
 							TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 							ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+							SubSectionCode = dr["SubSectionCode"].ToString(),
 						};
 						ToolRoomInstrumentListing.Add(inst);
 
@@ -1773,4 +1781,206 @@ public class InstrumentService : IInstrumentService
 		return dsResults;
 	}
 	#endregion
+	//   #region ControlCard
+	//   public ResponseViewModel<InstrumentViewModel> GetInstrumentDetailById(int InstrumentId)
+	//   {
+	//       try
+	//       {
+
+	//		InstrumentViewModel ObservationInstrument = new InstrumentViewModel();
+	//		DataSet dsInstrumentContent = GetInstrumentCardDetailsById(InstrumentId);
+	//		if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[0].Rows.Count > 0)
+	//		{
+	//			DataRow dr = dsInstrumentContent.Tables[0].Rows[0];
+	//			ObservationInstrument.Id = Convert.ToInt32(dr["Id"]);
+	//			ObservationInstrument.IdNo = dr["IdNo"].ToString();
+	//			ObservationInstrument.InstrumentName = dr["InstrumentName"].ToString();
+	//			ObservationInstrument.Make = dr["Make"].ToString();
+	//			ObservationInstrument.AmountJPY =dr["AmountJPY"].ToString();
+	//			ObservationInstrument.Grade = dr["Grade"].ToString();
+	//			ObservationInstrument.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+	//			ObservationInstrument.IssueNo = dr["IssueNo"].ToString();
+	//		}
+	//		if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[1].Rows.Count > 0)
+	//		{
+
+	//			var EqiupmentList = new List<MasterViewModel>();
+	//			foreach (DataRow dr in dsInstrumentContent.Tables[1].Rows)
+	//			{
+	//				EqiupmentList.Add(new MasterViewModel
+	//				{
+	//					Id = Convert.ToInt32(dr["Id"]),
+	//					EquipName = Convert.ToString(dr["EquipName"])
+	//				});
+
+	//			}
+
+	//			ObservationInstrument.MasterEqiupmentList = EqiupmentList;
+	//		}
+
+	//	return new ResponseViewModel<InstrumentViewModel>
+	//	{
+	//		ResponseCode = 200,
+	//		ResponseMessage = "Success",
+	//		ResponseData = ObservationInstrument,
+	//		ResponseDataList =null 
+	//	};
+	//}
+	//	catch (Exception e)
+	//	{
+	//		ErrorViewModelTest.Log("InstrumentService - GetInstrumentDetailById Method");
+	//		ErrorViewModelTest.Log("exception - " + e.Message);
+	//		return new ResponseViewModel<InstrumentViewModel>
+	//		{
+	//			ResponseCode = 500,
+	//			ResponseMessage = "Failure",
+	//			ErrorMessage = e.Message,
+	//			ResponseData = null,
+	//			ResponseDataList = null,
+	//			ResponseServiceMethod = "Instrument",
+	//			ResponseService = "GetInstrumentDetailById"
+	//		};
+	//	}
+	//}
+
+	//public DataSet GetInstrumentCardDetailsById(int InstrumentId)
+	//{
+
+	//	var connectionstring = _configuration.GetConnectionString("CMTDatabase");
+	//	SqlCommand command = new SqlCommand("GetInstrumentDetailById");
+	//	command.CommandType = CommandType.StoredProcedure;
+	//	command.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+	//	SqlConnection sqlcon = new SqlConnection(connectionstring);
+	//	DataSet dsResult = new DataSet();
+	//	SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+	//	command.Connection = sqlcon;
+	//	command.CommandTimeout = 2000;
+	//	sqlAdapter.SelectCommand = command;
+	//	sqlAdapter.Fill(dsResult);
+	//	return dsResult;
+
+
+	//}
+	//public ResponseViewModel<InstrumentViewModel> GetRequestListForInstrument(int InstrumentId)
+	//{
+	//	try
+	//	{
+	//		List<InstrumentViewModel> InstrumentRequest = new List<InstrumentViewModel>();
+	//		DataSet dsInstrumentContent = GetRequestListInstrument(InstrumentId);
+	//		if (dsInstrumentContent != null && dsInstrumentContent.Tables.Count > 0 && dsInstrumentContent.Tables[0].Rows.Count > 0)
+	//		{
+	//               foreach (DataRow dr in dsInstrumentContent.Tables[0].Rows)
+	//               {
+
+	//				InstrumentViewModel requestListInstrument = new InstrumentViewModel
+	//                   {
+	//                       Id = Convert.ToInt32(dr["Id"]),
+	//                       IdNo = dr["IdNo"].ToString(),
+	//                       InstrumentName = dr["InstrumentName"].ToString(),
+	//                       Result = dr["Result"].ToString(),
+	//                       Grade = dr["Grade"].ToString(),
+	//					CalibrationMonth = dr["CalibrationMonth"].ToString(),
+	//					CalibrationRequestDate = dr["Duedate"].ToString(),
+	//                       Inspectiondetails = dr["Inspectiondetails"].ToString(),
+	//                       SectionCode = dr["SectionCode"].ToString(),
+	//                       InstrumentType = dr["InstrumentType"].ToString(),
+	//                       RequestId = Convert.ToInt32(dr["RequestId"]),
+
+	//				};
+	//                    InstrumentRequest.Add(requestListInstrument);
+	//               }
+	//		}
+	//		return new ResponseViewModel<InstrumentViewModel>
+	//		{
+	//			ResponseCode = 200,
+	//			ResponseMessage = "Success",
+	//			ResponseData = null,
+	//			ResponseDataList = InstrumentRequest
+	//		};
+
+
+	//	}
+	//	catch (Exception e)
+	//	{
+	//		ErrorViewModelTest.Log("InstrumentService - GetInstrumentDetailById Method");
+	//		ErrorViewModelTest.Log("exception - " + e.Message);
+	//		return new ResponseViewModel<InstrumentViewModel>
+	//		{
+	//			ResponseCode = 500,
+	//			ResponseMessage = "Failure",
+	//			ErrorMessage = e.Message,
+	//			ResponseData = null,
+	//			ResponseDataList = null,
+	//			ResponseServiceMethod = "Instrument",
+	//			ResponseService = "GetInstrumentDetailById"
+	//		};
+	//	}
+	//}
+
+	//public DataSet GetRequestListInstrument(int InstrumentId)
+	//{
+
+	//	var connectionstring = _configuration.GetConnectionString("CMTDatabase");
+	//	SqlCommand command = new SqlCommand("GetRequestListForInstrument");
+	//	command.CommandType = CommandType.StoredProcedure;
+	//	command.Parameters.AddWithValue("@InstrumentId", InstrumentId);
+	//	SqlConnection sqlcon = new SqlConnection(connectionstring);
+	//	DataSet dsResult = new DataSet();
+	//	SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+	//	command.Connection = sqlcon;
+	//	command.CommandTimeout = 2000;
+	//	sqlAdapter.SelectCommand = command;
+	//	sqlAdapter.Fill(dsResult);
+	//	return dsResult;
+
+
+	//}
+
+	//   public ResponseViewModel<InstrumentViewModel> UpdateControlCardRequestList(List<RequestAllData> reqlist, int InstrumentId,string IssueNo)
+	//{
+	//	StringBuilder data = new StringBuilder("");
+	//	data.Append("<Root>");
+	//	foreach (var sd in reqlist)
+	//	{
+
+	//		data.Append("<RequestList>");
+	//		data.Append(string.Format("<Inspectiondetails>{0}</Inspectiondetails>", sd.Inspectiondetails));
+	//		data.Append(string.Format("<requestId>{0}</requestId>", sd.requestId));
+	//		data.Append("</RequestList>");
+	//	}
+	//	data.Append("</Root>");
+
+	//	var status = UpdateControlCard(data.ToString(),InstrumentId, IssueNo);
+
+	//	return new ResponseViewModel<InstrumentViewModel>
+	//	{
+	//		ResponseCode = 500,
+	//		ResponseMessage = "Failure",
+	//		ErrorMessage = "",
+	//		ResponseData = null,
+	//		ResponseDataList = null,
+	//		ResponseService = "InstrumentService",
+	//		ResponseServiceMethod = "UpdateControlCardRequestList"
+	//	};
+	//}
+	//public DataSet UpdateControlCard(string reqist, int InstrumentId, string IssueNo)
+	//{
+	//	var connectionString = _configuration.GetConnectionString("CMTDatabase");
+	//	SqlCommand cmd = new SqlCommand("UpdateControlCardRequestList");
+	//	cmd.CommandType = CommandType.StoredProcedure;
+
+	//	cmd.Parameters.AddWithValue("@instrumentid", InstrumentId);
+	//	cmd.Parameters.AddWithValue("@IssueNo", IssueNo);
+	//	cmd.Parameters.AddWithValue("@requestdata ", reqist);
+	//	SqlConnection sqlConn = new SqlConnection(connectionString);
+	//	DataSet dsResults = new DataSet();
+	//	SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+	//	cmd.Connection = sqlConn;
+	//	cmd.CommandTimeout = 2000;
+	//	sqlAdapter.SelectCommand = cmd;
+	//	sqlAdapter.Fill(dsResults);
+	//	return dsResults;
+	//}
+
+	//#endregion
 }

@@ -219,10 +219,10 @@ public class InstrumentController : BaseController
 		return Json(true);
 	}
 	//For Tool Inventory Manager
-	public IActionResult ToolInventory(int UserDept)
+	public IActionResult ToolInventory(int UserDept, int DueMonth)
 	{
-
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolInventoryInstrumentList(UserDept);
+		ViewBag.DueMonth = DueMonth;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolInventoryInstrumentList(UserDept, DueMonth);
 
 		return View(response.ResponseDataList);
 	}
@@ -236,10 +236,11 @@ public class InstrumentController : BaseController
 		return Json(response.ResponseData);
 
 	}
-	public IActionResult ToolRoomDepartment()
+	public IActionResult ToolRoomDepartment(int DueMonth)
 	{
-		ViewBag.PageTitle = "Replacement Due List Details";
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomDepartmentwiseInstrument();
+		//ViewBag.PageTitle = "Replacement Due List Details";
+		ViewBag.DueMonth = DueMonth;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllToolRoomDepartmentwiseInstrument(DueMonth);
 
 		return View(response.ResponseDataList);
 	}

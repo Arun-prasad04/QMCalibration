@@ -1,7 +1,8 @@
-﻿@* @{
+﻿
+@{
 	ViewData["Title"] = "Replacement Due List Details";
-} *@
- 
+}
+
 <section class="content">
 	<div class="row">
 		<div class="col-12">
@@ -14,6 +15,77 @@
 						</div>
 					</div>
 				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-3">
+							<!-- text input -->
+							<div class="form-group">
+								@* @DateTime.Now.AddMonths(1).Month *@
+								<label class="trn">Current Month Due</label>
+
+								@if (ViewBag.DueMonth == 0)
+								{
+
+									<input type="radio" id="Month0" name="Month0" value="0" onclick="getDepartmantDueInstruments(0)" checked="true">
+								}
+								else
+								{
+									<input type="radio" id="Month0" name="Month0" value="0" onclick="getDepartmantDueInstruments(0)">
+								}
+
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<!-- text input -->
+							<div class="form-group">
+								@* @DateTime.Now.ToString("MMMM") @DateTime.Now.AddMonths(1).Month *@
+								<label class="trn">@DateTime.Now.AddMonths(1).ToString("MMMM") Due</label>
+								
+								@if (ViewBag.DueMonth == 1)
+                                {	
+
+									<input type="radio" id="Month1" name="Month1" value="1" onclick="getDepartmantDueInstruments(1)" checked="true">
+								}
+								else
+								{
+									<input type="radio" id="Month1"  name="Month1" value="1" onclick="getDepartmantDueInstruments(1)">
+								}
+
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+									@* @DateTime.Now.AddMonths(2).Month *@
+								<label class="trn">@DateTime.Now.AddMonths(2).ToString("MMMM") Due</label>
+								@if (ViewBag.DueMonth == 2)
+								{
+									<input type="radio" id="Month2"  name="Month2" value="2" onclick="getDepartmantDueInstruments(2)" checked="true">
+								}
+								else
+								{
+									<input type="radio" id="Month2" name="Month2" value="2" onclick="getDepartmantDueInstruments(2)">
+								}
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								@* @DateTime.Now.AddMonths(3).Month *@
+								<label class="trn">@DateTime.Now.AddMonths(3).ToString("MMMM") Due</label>
+								
+								@if (ViewBag.DueMonth == 3)
+								{
+									<input type="radio" id="Month3" name="Month3" value="3" onclick="getDepartmantDueInstruments(3)" checked="true">
+								}
+								else
+								{
+									<input type="radio" id="Month3" name="Month3" value="3" onclick="getDepartmantDueInstruments(3)">
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+					
+
 				<!-- /.card-header -->
 				<div class="card-body">
 					<table id="tblToolDept" class="table table-bordered table-striped" style="width:100%">
@@ -21,42 +93,46 @@
 							<tr>
 								<th class="trn">Department</th>
 								<th class="trn">Number Of Equipments</th>
+								<th class="trn">SubSectionCode</th>
 								<th class="trn">DueDate</th>
 								<th class="trn">Status</th>
 							</tr>
 						</thead>
 						<tbody>
-							
-						
+
+
 
 							@foreach (var item in Model)
 							{
 								<tr>
-								<td>
-								@item.DepartmentName
-								</td>
-								<td>
-								<a href='@Url.Action("ToolInventory","Instrument", new {UserDept= @item.UserDept})'> 
-								@item.InstrumentCount
-								</a>
-										<input type="hidden" id="UserDept" value="@item.UserDept">
-								</td>
-								<td>
-								@item.DueDate.ToString("dd-MM-yyyy")
-								</td>
-								@if (@item.InstrumentCount > @item.ToolRoomStatus)
-								{
-								<td>
-								Pending
-								</td>
-								}
-								@if (@item.InstrumentCount == @item.ToolRoomStatus)
-								{
-								<td>
-								Completed
-								</td>
-								}
-							
+									<td>
+										@item.DepartmentName
+									</td>
+									<td>
+										<a href='@Url.Action("ToolInventory","Instrument", new {UserDept= @item.UserDept,DueMonth = ViewBag.DueMonth })'>
+										@item.InstrumentCount
+									</a>
+									<input type="hidden" id="UserDept" value="@item.UserDept">
+									</td>
+									<td>
+										@item.SubSectionCode
+									</td>
+									<td>
+										@item.DueDate.ToString("dd-MM-yyyy")
+									</td>
+									@if (@item.Inscount > @item.ToolRoomStatus)
+									{
+										<td>
+											Pending
+										</td>
+									}
+									@if (@item.Inscount == @item.ToolRoomStatus)
+									{
+										<td>
+											Completed
+										</td>
+									}
+
 								</tr>
 							}
 						</tbody>
@@ -69,8 +145,10 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 <script>
-	
+
 	$(function () {
+		//var m = new Date().getMonth() + 1;
+		
 		$('#tblToolDept').dataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -84,4 +162,9 @@
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		});
 	});
+
+	// const d = new Date();
+	// let month = d.getMonth();
+
+	
 </script>

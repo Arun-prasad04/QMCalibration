@@ -109,16 +109,17 @@ namespace WEB.Models
 		public string? CalibrationMonth { get; set; }
 
         public string? CalibrationRequestDate { get; set; }
-	}
+		public string? SubSectionCode { get; set; }
+        public int? Inscount { get; set; }
+        
+    }
     public class Instrumentids
     {
         public string InstrumentId { get; set; }
 
         public string ReplacementLabId { get; set; }
-		 
-       
-		
-
+		public int CalibFrequency { get; set; }
+		public int DueMonth { get; set; }
 
 	}
 
@@ -167,6 +168,6 @@ namespace WEB.Models
 	{
 		public int requestId { get; set; }
 		public string Inspectiondetails { get; set; }
-
+		
 	}
 }
