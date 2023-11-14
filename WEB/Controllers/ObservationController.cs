@@ -1007,10 +1007,10 @@ public class ObservationController : BaseController
 		}
 		return View(response.ResponseData);
 	}
-	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks, int RequestId)
+	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks, int RequestId, DateTime DueDate)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks, RequestId);
+        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks, RequestId, DueDate);
 		return Json(response.ResponseData);
 	}
 	public IActionResult GeneralNew(int requestId, int instrumentId)

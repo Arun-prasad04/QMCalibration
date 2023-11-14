@@ -42,7 +42,7 @@ namespace WEB.Services.Interface
 		ResponseViewModel<GeneralNewViewModel> SaveGeneralNewCertificate(int requestId, int instrumentId, string EnvironmentCondition, string Uncertainity, string CalibrationResult, string Remarks, int loginBy, string ExportData);
 
 		ResponseViewModel<GeneralViewModel> SaveGeneralCertificate(int requestId, int instrumentId, string EnvironmentCondition, string Uncertainity, string CalibrationResult, string Remarks, int loginBy, string ExportData);
-		ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks,int RequestId);
+		ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks,int RequestId, DateTime DueDate);
 
 		//ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(InstrumentViewModel instrument);
 		ResponseViewModel<MasterViewModel> GetEquipmentListByInstrumentId(int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4);
