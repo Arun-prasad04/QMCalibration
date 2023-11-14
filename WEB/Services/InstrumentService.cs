@@ -15,7 +15,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Text;
 using static iTextSharp.text.pdf.AcroFields;
-using Nancy.Diagnostics;
 using NPOI.SS.Formula.Functions;
 
 
@@ -613,7 +612,9 @@ public class InstrumentService : IInstrumentService
 		}
 		catch (Exception e)
 		{
-			return new ResponseViewModel<InstrumentViewModel>
+            ErrorViewModelTest.Log("InstrumentService - UpdateInstrument Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<InstrumentViewModel>
 			{
 				ResponseCode = 500,
 				ResponseMessage = "Failure",

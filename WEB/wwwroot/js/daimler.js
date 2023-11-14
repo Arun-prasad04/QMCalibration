@@ -3000,10 +3000,15 @@ function SubmitReview(lang) {
         }
     }
 
+    var dueDate;
+    var dt = $('#InsCalibFreq').val();
+    //debugger;
+    dueDate = DudeDateCalculation(dt);
+
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val() }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val(), DueDate: dueDate }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);

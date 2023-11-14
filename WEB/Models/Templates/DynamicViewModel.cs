@@ -55,6 +55,7 @@
 		public int? TemplateObservationId { get; set; }
 		public List<UserContentMappingView> UserContentMappingViewModel { get; set; }
 		public int? StatusId { get; set; }
+		public int? CalibFreq { get; set; }
 		
 	}
 	public class UserContentMappingView

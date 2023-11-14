@@ -13,7 +13,7 @@
 
 <style>
     .TblContent {
-        /* border: 1px solid #CCC; */
+       
         border: 1px solid black;
         border-collapse: collapse;
         text-align: center;
@@ -250,7 +250,7 @@
 
                     @if(@Model.TypeOfEquipment == "Internal")
                     {
-                        <div id="dvTable" class="col-md-12 content"></div>
+                        <div id="dvTableCer" class="col-md-12 content"></div>
                     }
                     
 
@@ -632,7 +632,7 @@
 
                         @if (@Model.TypeOfEquipment == "Internal")
                         {
-                            <div id="dvTable1" class="col-md-12 content"></div>
+                            <div id="dvTableCer1" class="col-md-12 content"></div>
                         }
 
 
@@ -747,29 +747,7 @@
         <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TempObservationData.Id">
 
 
-        @*<div>
-		<input type="hidden" id="requestId" value="@ViewBag.RequestId">
-		<input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
-		<input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
-		<input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
-		@if (@Model.isExportCertificate)
-		{
-		@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-		{
-		<input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
-		}
-		<input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
-		<a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
-		}
-		else
-		{
-		@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-		{
-		<input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary">
-		}
-		}
-		<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
-		</div>*@
+        
 	</body>
 </div>
 
@@ -783,7 +761,7 @@
 		//	$("#dvTable").html("");
 		//	BindObservationTable();
 		//}
-		BindObservationTable();
+		BindObservationTable1();
 
         var reviewStatus = $('#ExternalObsStatus').val();        
         if (reviewStatus == 1) {
@@ -807,14 +785,14 @@
 
     });
 
-    function BindObservationTable() {
-
-		$.ajax({
-			type: 'GET',
-			url: '../Observation/GetObservationById',
-			dataType: 'json',
+    function BindObservationTable1() {
+       // alert('BindObservationTable1');
+        $.ajax({
+            type: 'GET',
+            url: '../Observation/GetObservationById',
+            dataType: 'json',
             data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
-		}).done(function (resultObject) {
+        }).done(function (resultObject) {
 
             var rowhead = "";
             var rowContentCW = '';
@@ -842,13 +820,11 @@
                 else if (IdName == 'IN') {
                     var rowheadIN = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
                 }
-                //}
+                
                 var rowBodyCW = '<tbody>';
                 var rowBodyIN = '<tbody>';
                 var rowBodySW = '<tbody>';
-                //if  (resultObject[i].contentCount != 0) {
-                //for (let j = 1; j <= resultObject[i].contentCount; j++) {
-
+               
                 var objcontentCount = resultObject[i].contentCount;
 
                 var title = "";
@@ -878,10 +854,7 @@
                         }
                     }
                     else //if (InCount == 1)
-                    {
-                        //alert(InCount);
-                        console.log("title 1");
-                        console.log(title);
+                    {                       
                         title = resultObject[i].contentValue.trim();
                         //contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
                         contentsubheadingIN = '<td style="border:none;" id = "IN3"> <label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
@@ -911,7 +884,6 @@
                 }
                 else if (IdName == 'IN') {
                     console.log('Check value 3')
-                    
 
                     rowContentIN += '<tr style="border: 1px solid;">' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
                         + '<td id="IN" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
@@ -924,43 +896,41 @@
             }
 
 
-			rowBodyCW += rowContentCW;
-			rowBodyIN += rowContentIN;
-			rowBodySW += rowContentSW;
+            rowBodyCW += rowContentCW;
+            rowBodyIN += rowContentIN;
+            rowBodySW += rowContentSW;
 
-			rowBodyCW += '</tbody></table><br/>';
-			rowBodyIN += '</tbody></table><br/>';
-			rowBodySW += '</tbody></table><br/>';
+            rowBodyCW += '</tbody></table><br/>';
+            rowBodyIN += '</tbody></table><br/>';
+            rowBodySW += '</tbody></table><br/>';
 
-			tableCW += rowheadCW;
-			tableCW += rowBodyCW;
+            tableCW += rowheadCW;
+            tableCW += rowBodyCW;
 
-			tableIN = tableIN + rowheadIN;
-			tableIN += rowBodyIN;
-			console.log("rowheadIN");
-			console.log(rowheadIN);
+            tableIN = tableIN + rowheadIN;
+            tableIN += rowBodyIN;           
 
 
-			tableSW += rowheadSW;
-			tableSW += rowBodySW;
+            tableSW += rowheadSW;
+            tableSW += rowBodySW;
 
-			if (rowContentSW == "") {
+            if (rowContentSW == "") {
 
-				tableSW = "";
-			}
-			if (rowContentIN == "") {
+                tableSW = "";
+            }
+            if (rowContentIN == "") {
 
-				tableIN = "";
-			}
-			if (rowContentCW == "") {
+                tableIN = "";
+            }
+            if (rowContentCW == "") {
 
                 tableCW = "";
             }
-            $("#dvTable").html("");
-            $("#dvTable1").html("");
+            $("#dvTableCer").html("");
+            $("#dvTableCer1").html("");
             var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
-            var dvTable = $("#dvTable");
-            var dvTable1 = $("#dvTable1");
+            var dvTable = $("#dvTableCer");
+            var dvTable1 = $("#dvTableCer1");
             dvTable.append(tables);
             dvTable1.append(tables);
 
