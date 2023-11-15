@@ -94,6 +94,7 @@
 												<input type="hidden" id="instrumentid" value="@item.Id">
 												<input type="hidden" class="clsDueDate" id="DueDate" value="@item.DueDate">
 												<input type="hidden" class="clsCalibFreq" id=" CalibFreq" value="@item.CalibFreq">
+												<input type="hidden" class="clsRequestId" id="RequestId" value="@item.RequestId">
 											</td>
 										}
 										else
@@ -109,6 +110,7 @@
 												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
 												<input type="hidden" class="clsDueDate" id="DueDate" value="@item.DueDate">
 												<input type="hidden" class="clsCalibFreq" id=" CalibFreq" value="@item.CalibFreq">
+												<input type="hidden" class="clsRequestId" id="RequestId" value="@item.RequestId">
 											</td>
 
 										}
@@ -157,7 +159,7 @@
 				<div class="form-group" style="text-align:right;">
 					<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
 						   onclick="SaveInventoryCalibration(@ViewBag.DueMonth,lang);">
-					<a href='@Url.Action("ToolRoomDepartment","Instrument",new {DueMonth = 1})' )'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+					<a href='@Url.Action("ToolRoomDepartment","Instrument",new {DueMonth = 0})' )'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
 				</div>
 
 

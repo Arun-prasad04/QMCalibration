@@ -1101,9 +1101,12 @@ public class RequestService : IRequestService
 
 				Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
 				instrumentById.IdNo = InstrumentIdNo;
+               if(instrumentById.ToolInventory == "No")
+                { 
                 instrumentById.DueDate = DueDate;
-                //To Update ToolInventory Status
-                if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
+				}
+				//To Update ToolInventory Status
+				if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
                 {
                     instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
                     instrumentById.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
@@ -1274,7 +1277,7 @@ public class RequestService : IRequestService
 			// instrumentById.MUTemplate= MUTemplate;
 			// instrumentById.CertificationTemplate=CertificationTemplate;
 
-			if (Result != "Rejected")
+			if (Result != "Rejected" && instrumentById.ToolInventory == "No")
             {
                 instrumentById.DueDate = DueDate;
             }
