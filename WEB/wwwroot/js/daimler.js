@@ -1643,7 +1643,7 @@ function SaveInventoryCalibration(DueMonth,lang) {
 
             var DueDate = $(this).closest('tr').find('.clsDueDate').val();
             var CalibFreq = $(this).closest('tr').find('.clsCalibFreq').val();
-
+            var RequestId = $(this).closest('tr').find('.clsRequestId').val();
            // console.log()
             if (checkedvalue == true) {
 
@@ -1667,7 +1667,8 @@ function SaveInventoryCalibration(DueMonth,lang) {
                         InstrumentId: objInstrumentId,
                         ReplacementLabId: objReplacementLabId,
                         DueMonth: DueMonth,
-                        CalibFrequency: CalibFreq
+                        CalibFrequency: CalibFreq,
+                        RequestId: RequestId
                     }
 
                     InstrumentDataList.push(InstrumentData);
@@ -1677,9 +1678,7 @@ function SaveInventoryCalibration(DueMonth,lang) {
             else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 0)) {
                 UNCheckedCount += 1;
             }
-            //else if ((checkedvalue == false) && (objReplacementLabId == "") && (objPopUpRecordCount == 1)) {
-            //    UNCheckedCount += 1;
-            //}
+            
         });
 
 

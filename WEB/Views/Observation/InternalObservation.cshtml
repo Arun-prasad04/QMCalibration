@@ -159,15 +159,13 @@
 				<span>外観・機能／Visual Check</span>
 			</td>
 			<td colspan="4">
-
-
 				<textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea>
 			</td>
 
 	</table>
 	<br>
 	<div class="row">
-			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2") @* || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0) *@
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") @*&& @Model.ReviewStatus == 0) *@
 			{
 				@if (Model.StatusId != 30)
 				{

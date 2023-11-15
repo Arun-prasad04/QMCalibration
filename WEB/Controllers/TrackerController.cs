@@ -144,7 +144,7 @@ public class TrackerController : BaseController
 		ViewBag.MasterData = masterResponse.ResponseDataList;
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
-		ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 
 		return View(response.ResponseData);
 	}

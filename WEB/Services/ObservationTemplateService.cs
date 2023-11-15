@@ -4492,6 +4492,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 						
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
+
 					ReqstData.ReqDueDate = DueDate;
 				}
 				else
