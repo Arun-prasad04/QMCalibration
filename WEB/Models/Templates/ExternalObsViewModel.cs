@@ -58,6 +58,7 @@
         public string? AdRemarks { get; set; }
         
         public List<MasterViewModel> MasterEqiupmentList { get; set; }
+        public int CalibFreq { get; set; }
 
     }
 }
