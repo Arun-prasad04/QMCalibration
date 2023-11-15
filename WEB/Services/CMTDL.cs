@@ -963,14 +963,14 @@ namespace WEB.Services
 		*/
 		#endregion`
 
-		public List<DueInstrument> GetAllDueInstrumentList()
+		public List<DueInstrument> GetAllDueInstrumentList(int month)
 		{
 			try
 			{
 				List<DueInstrument> InstrumentlList = new List<DueInstrument>();
 
 
-				DataSet ds = GetAllDueInstrumentListData();
+				DataSet ds = GetAllDueInstrumentListData(month);
 				//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
 				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
 				{
@@ -1009,12 +1009,12 @@ namespace WEB.Services
 		}
 
 
-		public DataSet GetAllDueInstrumentListData()
+		public DataSet GetAllDueInstrumentListData(int month)
 		{
 			var connectionString = _configuration.GetConnectionString("CMTDatabase");
 			SqlCommand cmd = new SqlCommand("GetUserInstrumentData");
 			cmd.CommandType = CommandType.StoredProcedure;
-			//cmd.Parameters.AddWithValue("@UserId", userid);
+			cmd.Parameters.AddWithValue("@DueMonth", month);
 			//cmd.Parameters.AddWithValue("@UserRoleId", UserRole);
 			SqlConnection sqlConn = new SqlConnection(connectionString);
 			DataSet dsResults = new DataSet();

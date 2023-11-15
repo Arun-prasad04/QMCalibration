@@ -263,12 +263,13 @@ public class TrackerController : BaseController
         return Json(response.ResponseData);
     }
 
-	public IActionResult DueInstrument()
+	public IActionResult DueInstrument(int month)
 	{
+		ViewBag.DueMonth = month;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		CMTDL _cmtdl = new CMTDL(_configuration);
-		List<DueInstrument> response = _cmtdl.GetAllDueInstrumentList();
+		List<DueInstrument> response = _cmtdl.GetAllDueInstrumentList(month);
 		return View(response);
 	}
 

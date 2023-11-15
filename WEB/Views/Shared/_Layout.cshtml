@@ -273,7 +273,7 @@
 							}
 							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 							{
-								<label id="lblUserType3" name="UserType3">Facility Manager</label>
+								<label id="lblUserType3" name="UserType3">Lab Inspector</label>
 
 								<br />
 							}
@@ -393,7 +393,7 @@
 									@if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 									{
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("DueInstrument","Tracker")' class="nav-link">
+											<a href='@Url.Action("DueInstrument","Tracker", new {month=0})' class="nav-link">
 												<i class="fas fas fa-share-square"></i>
 												<p class="trn">Due Instrument Tracker</p>
 											</a>
