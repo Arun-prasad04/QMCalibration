@@ -17,7 +17,67 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">                    
+                <div class="card-body">      
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <!-- text input -->
+                            <div class="form-group">                                
+                                <label class="trn">Current Month Due</label>
+                                @if (ViewBag.DueMonth == 0)
+                                {
+
+                                    <input type="radio" id="Month0" name="Month" value="0" onclick="getDueInstruments(0)" checked="true">
+                                }
+                                else
+                                {
+                                    <input type="radio" id="Month0" name="Month" value="0" onclick="getDueInstruments(0)">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <!-- text input -->
+                            <div class="form-group">                                
+                                <label class="trn">@DateTime.Now.AddMonths(1).ToString("MMMM") Due</label>
+                                @if (ViewBag.DueMonth == 1)
+                                {
+
+                                    <input type="radio" id="Month1" name="Month" value="1" onclick="getDueInstruments(1)" checked="true">
+                                }
+                                else
+                                {
+                                    <input type="radio" id="Month1" name="Month" value="1" onclick="getDueInstruments(1)">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">                                
+                                <label class="trn">@DateTime.Now.AddMonths(2).ToString("MMMM") Due</label>
+                                @if (ViewBag.DueMonth == 2)
+                                {
+                                    <input type="radio" id="Month2" name="Month" value="2" onclick="getDueInstruments(2)" checked="true">
+                                }
+                                else
+                                {
+                                    <input type="radio" id="Month2" name="Month" value="2" onclick="getDueInstruments(2)">
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">                                
+                                <label class="trn">@DateTime.Now.AddMonths(3).ToString("MMMM") Due</label>
+                                @if (ViewBag.DueMonth == 3)
+                                {
+                                    <input type="radio" id="Month3" name="Month" value="3" onclick="getDueInstruments(3)" checked="true">
+                                }
+                                else
+                                {
+                                    <input type="radio" id="Month3" name="Month" value="3" onclick="getDueInstruments(3)">
+                                }
+                            </div>
+                        </div>
+                    </div>
                     <table id="example2" class="table table-bordered table-striped" style="width:100%;">
                         <thead>
                             <tr>

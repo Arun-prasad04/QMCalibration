@@ -3674,3 +3674,17 @@ function getDepartmantDueInstruments(DueMonth) {
     } 
 
 }
+
+function getDueInstruments(DueMonth) {
+    window.location.href = '../Tracker/DueInstrument?month=' + DueMonth + '';
+
+    if ($('input[name="Month1"]:checked').val() == '1') {
+        window.location.href = '../Tracker/DueInstrument?month=' + DueMonth + '';
+    } else if ($('input[name="Month2"]:checked').val() == '2') {
+        window.location.href = '../Tracker/DueInstrument?month=' + DueMonth + '';
+    }
+    else if ($('input[name="Month3"]:checked').val() == '3') {
+        window.location.href = '../Tracker/DueInstrument?month=' + DueMonth + '';
+    }
+
+}

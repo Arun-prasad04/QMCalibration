@@ -187,7 +187,7 @@
 
                 <td class="textcenterborder trn">承認日／Approved date:</td>
 
-                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1"
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3"
                 || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
                 {
                     <td>
@@ -233,7 +233,7 @@
                     <td colspan="4"><textarea type="text" value=" " class="Tables-AndTablesTextBox TblInHeader" style="text-align:left; width:100%" id="Remarks" name="Remarks"></textarea></td>
                 </tr>
                 }
-                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
                 {
                 <tr id="AdtrRejection" class="AdtrhideRejection">
                     <td class="trn">拒否の理由／Reason For Rejection </td>
@@ -277,7 +277,7 @@
         <input type="hidden" id="AdminReviewStatus" name="AdminReviewStatus" value="@Model.AdminReviewStatus">
         <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.Id">
         <input type="hidden" id="UserRoleId" name="UserRoleId" value="@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")">
-
+        <input type="hidden" id="InsCalibFreq" name="InsCalibFreq" value="@Model.CalibFreq">
 
 
     </div>

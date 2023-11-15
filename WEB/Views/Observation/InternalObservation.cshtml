@@ -165,7 +165,7 @@
 	</table>
 	<br>
 	<div class="row">
-			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") @*&& @Model.ReviewStatus == 0) *@
+			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") @* || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && @Model.ReviewStatus == 0) *@
 			{
 				@if (Model.StatusId != 30)
 				{
@@ -326,7 +326,7 @@
 	<input type="hidden" id="InsCalibFreq" name="InsCalibFreq" value="@Model.CalibFreq">
 
 	
-			</div>
+	</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script type="text/javascript">

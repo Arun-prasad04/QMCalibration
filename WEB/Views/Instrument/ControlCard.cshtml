@@ -112,17 +112,17 @@
 								<td class="TblSubTitle trn">Master std. Name / 代表基準ゲージ</td>
 								<td class="TblTitle1 trn">: 
 								
-					@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
-					{
-						@foreach (var master in Model.MasterEqiupmentList)
-						{
-							<label>
-								@master.EquipName
-								&nbsp;
-							</label>
-						}
+								@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+								{
+									@foreach (var master in Model.MasterEqiupmentList)
+									{
+										<label>
+											@master.EquipName
+											&nbsp;
+										</label>
+									}
 
-					}
+								}
 						</td>
 							<td class="TblSubTitle trn"> Master ID / 代表基準ゲージ社番</td>
 								<td class="TblTitle1 trn">:
