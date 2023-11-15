@@ -120,7 +120,7 @@ namespace WEB.Models
         public string ReplacementLabId { get; set; }
 		public int CalibFrequency { get; set; }
 		public int DueMonth { get; set; }
-
+		public int RequestId { get; set; }
 	}
 
 	public class RequestAllView

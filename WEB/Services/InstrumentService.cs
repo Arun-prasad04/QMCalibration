@@ -1290,6 +1290,7 @@ public class InstrumentService : IInstrumentService
                         ToolRoomStatus = Convert.ToInt32(dr["ToolRoomStatus"]),
                         ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSectionCode = dr["SubSectionCode"].ToString(),
+						RequestId = Convert.ToInt32(dr["RequestId"]),
 					};
                     ToolInventoryList.Add(ObjinstView);
 
@@ -1438,7 +1439,7 @@ public class InstrumentService : IInstrumentService
 	}
 
     public ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int UserId)
-    {
+      {
         try
         {
 
@@ -1453,6 +1454,7 @@ public class InstrumentService : IInstrumentService
                 Intrumentdata.Append(string.Format("<ToolRoomStatus>{0}</ToolRoomStatus>", (Int32)ToolRoomStatus.Completed));
 				Intrumentdata.Append(string.Format("<DueMonth>{0}</DueMonth>", Instrument.DueMonth));
 				Intrumentdata.Append(string.Format("<CalibFrequency>{0}</CalibFrequency>", Instrument.CalibFrequency));
+				Intrumentdata.Append(string.Format("<RequestId>{0}</RequestId>", (Int32)Instrument.RequestId));
 				Intrumentdata.Append("</InstrumentList>");
             }
 			
