@@ -31,8 +31,9 @@ namespace CMT.DATAMODELS
         public DateTime? InstrumentReturnedOn { get; set; }
         public string? Inspectiondetails { get; set; }
         public DateTime? ReqDueDate { get; set; }
+		public DateTime? ReqStartDate { get; set; }
 
 
 
-    }
+	}
 }

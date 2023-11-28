@@ -111,6 +111,8 @@ public partial class RequestViewModel
     public int? AdminReviewStatus { get; set; }
 
     public int? ExObsTemplateReviewStatus { get; set; }
+	public DateTime? ReqDueDate { get; set; }
+	public DateTime? ReqStartDate { get; set; }
 }
 public class UploadFile
     {

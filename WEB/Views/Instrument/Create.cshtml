@@ -569,19 +569,33 @@
 											</div>
 									</div>
 									<div class="row">
-										<div class="col-sm-6">
-											<div class="form-group">
-												<label class="trn">Due Date</label>
-												<div class="input-group date" id="reservationdate1" data-target-input="nearest"
-													 onchange="$('#DueDate').attr('value',$('#DueDate').val());">
-													<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-														   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" @Model.IsDisabled />
+										
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="trn">Due Date</label>
+													<div class="input-group date" id="reservationdate1" data-target-input="nearest"
+													onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+													@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
+													{
+														
+														<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+														id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" />  @* @Model.IsDisabled *@
+														
+													}
+													else
+													{
+													
+														<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+															   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" @Model.IsDisabled /> 
+														
+													}
 													<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
-														<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+															<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
+										
 
 										<div class="col-sm-6">
 											<div class="form-group">
@@ -602,12 +616,28 @@
 									{
 										<div class="row">
 											
-											<div class="col-sm-6">
-												<div class="form-group">
-													<label class="required trn">Observation Template</label>
-													<select id="ObservationTemplate" name="ObservationTemplate" class="form-control"
-															onchange="LoadObservationType(language)" @Model.IsDisabled>
-														@*<option value=""> -- Select Observation Template --</option>
+											@* <div class="col-sm-6">
+												<div class="form-group"> *@
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="trn">Standard Refered/Calibration Method</label>
+													<input id="StandardReffered" name="StandardReffered" class="form-control" style="width: 100%;" value="@Model.StandardReffered">
+														</div>
+											</div>
+												<div class="col-sm-6">
+														<div class="form-group">
+															<label class="trn">Calibration Frequency</label><br>
+															<select id="CalibFreq" name="CalibFreq" class="form-control" style="width:100%; height:100%; padding:5px">
+															</select>
+														</div>
+													</div>
+													
+														
+													
+
+												@* 	<label class="required trn">Observation Template</label>
+													<select id="ObservationTemplate" name="ObservationTemplate" class="form-control" @Model.IsDisabled> *@
+														@*onchange="LoadObservationType(language)"<option value=""> -- Select Observation Template --</option>
 														@foreach (var observation in @Model.ObservationTemplateList)
 														{
 															if (observation.Id == Model.ObservationTemplate)
@@ -620,20 +650,19 @@
 															{
 																<option value="@observation.Id">@observation.AttrValue</option>
 															}
-														}*@
+														}
 
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-6">
+											</select>*@
+												@* </div>
+											</div> *@
+											@* <div class="col-sm-6">
 												<div class="form-group">
 													<label class="required trn">Observation Type</label>
 													<select id="ObservationType" name="ObservationType" class="form-control" @Model.IsDisabled value=@Model.ObservationType>
 														@*value=@Model.ObservationType*@
-													</select>
-
+													@* </select>
 												</div>
-											</div>
+											</div> *@ 
 										</div>
 										
 										<div class="row">
@@ -649,14 +678,14 @@
 
 							</div>
 						}
-						@if(ViewBag.ShowDetails) {
+						@* @if(ViewBag.ShowDetails) { *@
 						<div class="card-footer">
 							<button type="submit" class="btn btn-primary trn">Submit</button>
 								<a href='@Url.Action("Index","Instrument")'>
 									<input type="button" class="btn btn-default trn" value="Cancel">
 								</a>
 						</div>
-						}
+						@* } *@
 						<!-- /.card-body -->
 					</div>
 					<!-- /.card -->

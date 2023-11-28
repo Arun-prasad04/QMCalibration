@@ -40,5 +40,6 @@ public static class Constants
     public static int ZeroCount = 13;
 
       public static int certificateZeroCount = 9;
+	public static string ToolRoomSubsectionCode = "10000";
 
 }

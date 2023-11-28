@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "Request";
 }
 
@@ -307,41 +307,56 @@
                         else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External') {
 
 
-                            tdTest = "<td><a href='@Url.Action("ExternalObs","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
-                        }
-                        else {
-                            tdTest = "<td> </td>"
-                        }
-                        var tdCertificate = '';
-                        if (item.templateReviewStatus == 1 || item.templateReviewStatus == 2 || (item.exObsTemplateReviewStatus == 1 && item.status != 27) || item.exObsTemplateReviewStatus == 2) {
-                            tdCertificate = "<td><a href='@Url.Action("ViewCertification","Certification")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "'><i class='fas fa-user-graduate' style = 'cursor:pointer'></i></td>"
-                        }
-                        else {
-                            tdCertificate = "<td> </td>"
-                        }
+                        tdTest = "<td><a href='@Url.Action("ExternalObs","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+                    }                       
+                    else {
+                        tdTest = "<td> </td>"
+                    }
+                        // && (item.status == 29 || item.status == 30 || item.status == 31)
+                    var tdCertificate = '';
+                        if (item.status == 29 || item.status == 30 || item.status == 31)//(item.templateReviewStatus == 1 || item.templateReviewStatus == 2 || (item.exObsTemplateReviewStatus == 1 && item.status != 27) || item.exObsTemplateReviewStatus == 2) )
+                        {
+                        tdCertificate = "<td><a href='@Url.Action("ViewCertification","Certification")?requestId="+item.id+"&instrumentId="+item.instrumentId+"'><i class='fas fa-user-graduate' style = 'cursor:pointer'></i></td>"
+                                            }
+                    else {
+                        tdCertificate = "<td> </td>"
+                    }
 
-                        //var date = new Date(item.requestDate, "dd-MM-yyyy").toLocaleDateString();
-                        var date = moment(item.requestDate).format("DD-MM-YYYY");
+                    //var date = new Date(item.requestDate, "dd-MM-yyyy").toLocaleDateString();
+                    var date = moment(item.requestDate).format("DD-MM-YYYY");
+                        var currentdate =new Date();
+                      
+                        var background = "";
+                        
+                        if (item.reqDueDate != null )
+                        {
 
-                        var rows = "<tr>"
-                            + "<td>" + item.reqestNo + "</td>"
-                            + "<td>" + date + "</td>"
-                            + "<td>" + item.subSectionCode + "</td>"
-                            + "<td>" + item.instrumentName + "</td>"
-                            + "<td>" + item.instrumentIdNo + "</td>"
-                            + "<td>" + item.range + "</td>"
-                            + tdTypeofRequest
-                            + tdStatus
-                            + "<td><i class='fas fa-eye' style = 'cursor:pointer' id = " + item.id + " onclick = 'GetRequestDetails(this)'></i></td>"
-                            + tdTest
-                            + tdCertificate
-                            + "<td>" + item.typeOfEquipment + "</td>"
-                            + "</tr>";
-
-                        $('#example2 tbody').append(rows);
-                        $('#dvload').hide();
-
-                    });
+                            if ((moment(item.reqDueDate).format('MM/DD/YYYY') < moment(currentdate).format('MM/DD/YYYY')) && (item.typeOfRequest == 1 || item.typeOfRequest == 2 || item.typeOfRequest == 3) && (item.status == 26 || item.status == 27 || item.status == 28 || item.status == 29 || item.status == 31) )
+                        {
+                                background = "background-color:  #fbefef;";
+                                // background = "background-color: lightsalmon,tomato,#FF7F50,lightcoral;";
+                        }
+                        }
+                        var rows = "<tr style='"+background +"' >"
+                        //var rows = "<tr>"
+                        + "<td>" + item.reqestNo + "</td>"                        
+                        + "<td>" + date + "</td>"
+                        + "<td>" + item.subSectionCode + "</td>"
+                        + "<td>" + item.instrumentName + "</td>"
+                        + "<td>" + item.instrumentIdNo + "</td>"
+                        + "<td>" + item.range + "</td>"
+                        + tdTypeofRequest
+                        + tdStatus
+                        + "<td><i class='fas fa-eye' style = 'cursor:pointer' id = " + item.id + " onclick = 'GetRequestDetails(this)'></i></td>"
+                        + tdTest
+                        + tdCertificate
+                        + "<td>" + item.typeOfEquipment + "</td>"
+                        + "</tr>";
+                        console.log(rows);
+                    $('#example2 tbody').append(rows);
+                    $('#dvload').hide();
+                    
+                });
                 }
                 else {
                     $('#dvload').hide();
@@ -368,5 +383,11 @@
             }
         });
     }
-
+    // const rows = document.querySelectorAll('td');
+    // rows.forEach((row) => {
+    //     if (row.innerHTML === '☐') {
+    //         const parent = row.parentNode;
+    //         parent.style.backgroundColor = 'red';
+    //     }
+    // });
 </script>

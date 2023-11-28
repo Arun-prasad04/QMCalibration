@@ -66,7 +66,15 @@
 										<td class="trn">@item.SubSectionCode</td>
 										<td class="trn">@item.TypeOfEquipment</td>
 										<td class="trn">@item.CalibDate.ToString("dd-MM-yyyy")</td>
-										<td class="trn">@item.DueDate.ToString("dd-MM-yyyy")</td>
+										@if (item.DueDate == null)
+										{
+											<td> </td>
+										}
+										else
+										{
+											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+										}
+
 									</tr>
 
 								}

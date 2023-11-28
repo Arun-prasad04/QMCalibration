@@ -64,7 +64,9 @@ namespace CMT.DATAMODELS
 		public virtual DbSet<ObservationContentValues> ObservationContentValues { get; set; }
 		public virtual DbSet<ObservationContentMapping> ObservationContentMapping { get; set; }
 		public virtual DbSet<EmailServiceStatus> EmailServiceStatus { get; set; }
+		public virtual DbSet<ToolRoomMaster> ToolRoomMaster { get; set; }
 
+		public virtual DbSet<ToolRoomHistory> ToolRoomHistory { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Master>()
@@ -214,7 +216,12 @@ namespace CMT.DATAMODELS
             .WithMany(b => b.Master)
             .HasForeignKey(p => p.CalibFreqId);
 
-            modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.MeasuedValue).HasColumnType("decimal(18, 6)");
+			modelBuilder.Entity<Master>()
+		   .HasOne(p => p.DepartmentModel)
+		   .WithMany(b => b.MasterModel)
+		   .HasForeignKey(p => p.DepartmentId);
+
+			modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.MeasuedValue).HasColumnType("decimal(18, 6)");
             modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.Trial1).HasColumnType("decimal(18, 6)");
             modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.Trial2).HasColumnType("decimal(18, 6)");
             modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.Trial3).HasColumnType("decimal(18, 6)");

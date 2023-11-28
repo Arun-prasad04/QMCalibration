@@ -19,7 +19,7 @@ namespace CMT.DATAMODELS
     public int? Instrument_Type {get; set;}
     public int CalibFreq {get; set;}
     public DateTime? CalibDate {get; set;}
-    public DateTime DueDate {get; set;}
+    public DateTime? DueDate {get; set;}
     public int UserDept{get; set;}
     public string? Make{get; set;}
     public string? CalibSource{get; set;}
@@ -57,5 +57,7 @@ namespace CMT.DATAMODELS
     public string? ReplacementLabID { get; set; }
 	public int? ToolRoomStatus { get; set; }
 	public string? IssueNo { get; set; }
+	public DateTime? ReplacementStartDate { get; set; }
+
 	}
 }

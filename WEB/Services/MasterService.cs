@@ -6,6 +6,7 @@ using WEB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Collections.Generic;
 
 namespace WEB.Services;
 
@@ -113,15 +114,19 @@ public class MasterService : IMasterService
 				EmailId = s.SupplierModel.EmailId,
 				MobileNo = s.SupplierModel.MobileNo,
 				EquipmentMasterId = s.EquipmentMasterId,
-				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList()
-			}).FirstOrDefault();
+				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+			//	TypeOfEquipment=s.TypeOfEquipment,
+				DepartmentId = s.DepartmentModel.Id
+				
+				}).FirstOrDefault();
 
 			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
 			masterById.LocationList = lovsList.Where(W => W.AttrName == "Location").ToList();
 			masterById.CurrencyList = lovsList.Where(W => W.AttrName == "Currency").ToList();
 			masterById.CalibrationSourceList = lovsList.Where(W => W.AttrName == "CalibrationSource").ToList();
 			masterById.CalibrationFreq = lovsList.Where(W => W.AttrName == "CalibrationFreq").ToList();
-
+			var DepartmentData = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			masterById.Departments = DepartmentData;
 			return new ResponseViewModel<MasterViewModel>
 			{
 				ResponseCode = 200,
@@ -318,7 +323,14 @@ public class MasterService : IMasterService
 			{
 				masterById.EquipmentMasterId = master.EquipmentMasterId;
 			}
-
+			//if (master.TypeOfEquipment != null)
+			//{
+			//	masterById.TypeOfEquipment = master.TypeOfEquipment;
+			//}
+			if (master.DepartmentId != null)
+			{
+				masterById.DepartmentId = master.DepartmentId;
+			}
 
 			Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
 			if (supplierById != null)
@@ -417,11 +429,13 @@ public class MasterService : IMasterService
 		try
 		{
 			MasterViewModel masterViewModel = new MasterViewModel();
+			var Department = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
 			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
 			masterViewModel.LocationList = lovsList.Where(W => W.AttrName == "Location").ToList();
 			masterViewModel.CurrencyList = lovsList.Where(W => W.AttrName == "Currency").ToList();
 			masterViewModel.CalibrationSourceList = lovsList.Where(W => W.AttrName == "CalibrationSource").ToList();
 			masterViewModel.CalibrationFreq = lovsList.Where(W => W.AttrName == "CalibrationFreq").ToList();
+			masterViewModel.Departments = Department;
 			masterViewModel.CommissionedOn = DateTime.Now;
 			masterViewModel.PODate = DateTime.Now;
 			masterViewModel.CalibDate = DateTime.Now;

@@ -212,25 +212,7 @@
                                 <input type="text" id="StandardReffered1" name="StandardReffered1" value="@Model.Comment" class="form-control" placeholder="" disabled>
                             </div>
                         </div>
-                        @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="trn">Calibration Frequency</label>
-                        <select id="CalibFreq" name="CalibFreq" class="form-control" disabled>
-                        @foreach (var freq in @Model.CalibFreqList)
-                        {
-                        if (freq.Id == Model.CalibFreq)
-                        {
-                        <option value="@freq.Id" id="type" selected="selected">@freq.AttrValue</option>
-                        }
-                        else
-                        {
-                        <option value="@freq.Id">@freq.AttrValue</option>
-                        }
-                        }
-                        </select>
-                        </div>
-                        </div>*@
-                        @if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
+                       @if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
                         {
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -314,54 +296,8 @@
                                 </select>
                             </div>
                         </div>
-                        @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="required trn">Drawing is attached</label>
-                        <select id="Drawing_Attached" name="Drawing_Attached" class="form-control" disabled>
-                        @if (Model.Drawing_Attached == "Yes")
-                        {
-                        <option value="Yes" selected="true">Yes</option>
-                        }
-                        else
-                        {
-                        <option value="Yes">Yes</option>
-                        }
-                        @if (Model.Drawing_Attached == "No")
-                        {
-                        <option value="No" selected="true">No</option>
-                        }
-                        else
-                        {
-                        <option value="No">No</option>
-                        }
-                        </select>
-                        </div>
-                        </div>*@
-                    </div>
+                       </div>
                     <div class="row">
-                        @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="trn">Decision rule for statement of Confirmity</label>
-                        <select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control" disabled>
-                        @if (Model.Rule_Confirmity == "Include MU")
-                        {
-                        <option value="Include MU" selected="true">Include MU</option>
-                        }
-                        else
-                        {
-                        <option value="Include MU">Include MU</option>
-                        }
-                        @if (Model.Rule_Confirmity == "Exclude MU")
-                        {
-                        <option value="Exclude MU" selected="true">Exclude MU</option>
-                        }
-                        else
-                        {
-                        <option value="Exclude MU">Exclude MU</option>
-                        }
-                        </select>
-                        </div>
-                        </div>*@
                     </div>
                     @if (Model.TypeOfRequest == 3 && (Model.LabL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsLabL4Accepted == null) || (Model.UserL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsUserL4Accepted == null))
                     {
@@ -432,42 +368,7 @@
                                 </div>
                             </div>
                         </div>
-                        @*<div class="col-sm-6">
-                    <div class="form-group">
-                    <label class="trn">Instrument Condition</label>
-                    <input type="text" id="InstrumentCondition" class="form-control" value="">
-                    <label id="InstrumentConditionError" class="" style="display:none; color: red;">Please Enter Instrument Condition</label>
-                    </div>
-                    </div>*@
                         <div class="row">
-
-
-                            @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="required trn">Standard Reffered/Calibration Method</label>
-                        <input type="text" id="StandardReffered" name="StandardReffered" value=""
-                        class="form-control" placeholder="">
-                        <label id="StandardRefferedError" class="" style="display:none; color: red;">Please Enter Standard Reffered/Calibration Method</label>
-                        </div>
-                        </div>
-                        <div class="col-sm-6">
-                        <!-- text input -->
-                        <div class="form-group">
-                        <label class="trn">NABL</label>
-                        <select id="NewNABL" name="NewNABL" class="form-control" onchange="getNABLValue(this)">
-                        @if (Model.IsNABL == false)
-                        {
-                        <option value="false" class="trn" selected>No</option>
-                        <option value="true" class="trn">Yes</option>
-                        }
-                        else if (Model.IsNABL == true)
-                        {
-                        <option value="true" class="trn" selected>Yes</option>
-                        <option value="false" class="trn">No</option>
-                        }
-                        </select>
-                        </div>
-                        </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
@@ -764,18 +665,18 @@
                                         <textarea id="Newreason" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-sm-6" style="text-align:right;">
+                               @*  <div class="col-sm-6" style="text-align:right;">
                                     <!-- text input -->
                                     <div class="form-group">
                                         <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
                                                class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
                                         <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部") && Model.TypeOfRequest == 1)
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))@*  && (Model.TypeOfRequest == 1) *@
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
@@ -809,7 +710,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Standard Refered/Calibration Method</label><br>
-                                        <input id="StdReffer" class="form-control" style="width: 100%;" value="">
+                                        <input id="StdReffer" class="form-control" style="width: 100%;" value="@Model.StandardReffered">
                                     </div>
                                 </div>
 
@@ -868,25 +769,7 @@
                                 </div>
                             }
                             <div class="row">
-                                @* <div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                            <label class="trn">MU Template</label>
-                            <select id="NewMU" class="form-control">
-                            @*<option class="trn">-- Select MU Template --</option>*@
-                                @*@foreach (var freq in @Model.MUTemplateList)
-                            {
-                            if (freq.Id == Model.MUTemplate)
-                            {
-                            <option value="@freq.Id" selected>@freq.AttrValue</option>
-                            }
-                            else
-                            {
-                            <option value="@freq.Id">@freq.AttrValue</option>
-                            }
-                            }
-                            </select>
-
+                              
                             </div>
                             </div>*@
                                 @*  <div class="col-sm-6">
@@ -924,8 +807,15 @@
                     @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
-                            @if (Model.TypeOfRequest == 1)
+                            @if (Model.TypeOfRequest == 1 && Model.TypeOfRequest == 2 && Model.TypeOfRequest == 3)
                             {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="trn">Standard Refered/Calibration Method</label><br>
+                                            <input id="StdReffer" class="form-control" style="width: 100%;" value="">
+                                        </div>
+                                    </div>
                                 <div class="row mt-4">
                                     <div class="col-sm-6">
                                         <!-- text input -->
@@ -963,84 +853,11 @@
                                         </div>
                                     </div>
 
-                                    @* <div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                            <label class="trn">Observation Template Type</label>
-                            <select id="NewObservationTypeEd" class="form-control" disabled>
-                            </select>
-                            </div>
-                            </div> *@
-
-                                </div>
+                                 </div>
+                                 </div>
                             }
                             <div class="row">
-                                @* <div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                            <label class="trn">MU Template</label>
-                            <select id="NewMUEd" class="form-control" disabled>
-                            @foreach (var freq in @Model.MUTemplateList)
-                            {
-                            if (@ViewBag.SessionLang == "en")
-                            {
-                            if (freq.Id == Model.MUTemplate)
-                            {
-                            <option value="@freq.Id" selected>@freq.AttrValue</option>
-                            }
-                            else
-                            {
-                            <option value="@freq.Id">@freq.AttrValue</option>
-                            }
-                            }
-                            else
-                            {
-                            if (freq.Id == Model.MUTemplate)
-                            {
-                            <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                            }
-                            else
-                            {
-                            <option value="@freq.Id">@freq.AttrValueJp</option>
-                            }
-                            }
-                            }
-                            </select>
-                            </div>
-                            </div>*@
-                                @*  <div class="col-sm-6">
-                            <!-- text input -->
-                            <div class="form-group">
-                            <label class="trn">Certification Template</label>
-                            <select id="NewCertificationEd" class="form-control" disabled>
-                            @foreach (var freq in @Model.CertificationTemplateList)
-                            {
-                            if (@ViewBag.SessionLang == "en")
-                            {
-                            if (freq.Id == Model.CertificationTemplate)
-                            {
-                            <option value="@freq.Id" selected>@freq.AttrValue</option>
-                            }
-                            else
-                            {
-                            <option value="@freq.Id">@freq.AttrValue</option>
-                            }
-                            }
-                            else
-                            {
-                            if (freq.Id == Model.CertificationTemplate)
-                            {
-                            <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                            }
-                            else
-                            {
-                            <option value="@freq.Id">@freq.AttrValueJp</option>
-                            }
-                            }
-                            }
-                            </select>
-                            </div>
-                            </div> *@
+                               
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -1050,82 +867,7 @@
                                 </div>
                             </div>
                         </div>
-                        @* }
-                    else{
-                    <div>
-
-                    <div class="row">
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group">
-                    <label>Observation Template</label>
-                    <select id="NewObservation" onchange="LoadObservationTypePopup()" class="form-control">
-                    @foreach (var freq in @Model.ObservationTemplateList)
-                    {
-                    if (freq.Id == Model.ObservationTemplate)
-                    {
-                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                    }
-                    else
-                    {
-                    <option value="@freq.Id">@freq.AttrValue</option>
-                    }
-                    }
-                    </select>
-                    </div>
-                    </div>
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group">
-                    <label>Observation Template Type</label>
-                    <select id="NewObservationType" class="form-control">
-                    </select>
-                    </div>
-                    </div>
-
-                    </div>
-                    <div class="row">
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group">
-                    <label>MU Template</label>
-                    <select id="NewMU" class="form-control">
-                    @foreach (var freq in @Model.MUTemplateList)
-                    {
-                    if (freq.Id == Model.MUTemplate)
-                    {
-                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                    }
-                    else
-                    {
-                    <option value="@freq.Id">@freq.AttrValue</option>
-                    }
-                    }
-                    </select>
-                    </div>
-                    </div>
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group">
-                    <label>Certification Tmeplate</label>
-                    <select id="NewCertification" class="form-control">
-                    @foreach (var freq in @Model.CertificationTemplateList)
-                    {
-                    if (freq.Id == Model.CertificationTemplate)
-                    {
-                    <option value="@freq.Id" selected>@freq.AttrValue</option>
-                    }
-                    else
-                    {
-                    <option value="@freq.Id">@freq.AttrValue</option>
-                    }
-                    }
-                    </select>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    }  *@
+                        
                     }
                     @if (Model.Status == 28 || Model.Status == 31)
                     {
@@ -1377,7 +1119,7 @@
                             </div>
                         </div>
                     }
-                    @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
+                    @* @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
                     {
                         @*<div class="row">
                             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
@@ -1394,8 +1136,8 @@
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
-                        </div>*@
-                    }
+                        </div>
+                    } *@
                     @*  @if (Model.Status == 29 || Model.Status == 30 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")) *@
                     @if (Model.Status == 29 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
@@ -1424,11 +1166,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                @* <div class="col-sm-6">
-                            <div class="form-group">
-                            <label class="trn">MU Template</label>
-                            </div>
-                            </div> *@
+                               
                                 <div class="col-sm-6">
                                     <div id="imageSection">
                                         @if (@Model.MUTemplateFileName != null)
@@ -1711,7 +1449,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @if(Model.Status == 29)
+                            {
                             <div class="row">
                                 <div class="col-sm-6">
                                 </div>
@@ -1724,6 +1463,7 @@
                                     </div>
                                 </div>
                             </div>
+                            }
                         </div>
                     }
                     @if ((Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))

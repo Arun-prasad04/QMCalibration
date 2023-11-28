@@ -868,6 +868,47 @@ namespace WEB.Services
 
 			return dsResults;
 		}
+		public ToolRoomMaster GetToolRoomMasterSubSectionCode(int UserId)
+		{
+			ToolRoomMaster uv = new ToolRoomMaster();
+			try
+			{
+
+				DataSet ds = GetToolRoomMaster();
+
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					uv.Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]);
+					uv.DeptSubSectionCode = Convert.ToString(ds.Tables[0].Rows[0]["DeptSubSectionCode"]);
+					uv.CreatedBy = Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedBy"]);
+					uv.SubSectionName = Convert.ToString(ds.Tables[0].Rows[0]["SubSectionName"]);
+					uv.CreatedOn = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedOn"]);
+				}
+
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("CMTDL - GetUserMasterById Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+			}
+			return uv;
+		}
+		public DataSet GetToolRoomMaster()
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetToomRoomSubSectionCode");
+			cmd.CommandType = CommandType.StoredProcedure;
+			//cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
+
+			return dsResults;
+		}
 
 		public DataSet InsertDueRequest(string reqist, int userId)
 		{
