@@ -46,5 +46,8 @@ public class MasterViewModel
 	public string? EquipNameJP { get; set; }
 	public string? EquipmentMasterId { get; set; }
 
-	}
+        public string? TypeOfEquipment { get; set; }
+        public int? DepartmentId { get; set; }
+
+    }
 }
