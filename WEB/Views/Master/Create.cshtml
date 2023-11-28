@@ -1,4 +1,4 @@
-@{
+﻿@{
 	ViewData["Title"] = "Master Create";
 }
 <form name="frm" id="masterform" method="post" enctype="multipart/form-data" action='@Url.Action("MasterInsert","Master")'>
@@ -185,6 +185,55 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div class="row">
+						<div class="col-sm-6">
+						<div class="form-group">
+							<label class="required trn">User Department</label>
+									<select class="form-control" name="DepartmentId" id="DepartmentId" value='@Model.DepartmentName'>
+									
+								<option class="trn" selected="true" value="">--Select User Department--</option>
+								@foreach (var department in @Model.Departments)
+								{
+
+								
+								if (department.Id == Model.DepartmentId)
+								{
+								<option value="@department.Id" selected="selected">@department.Name</option>
+								}
+								else
+								{
+								<option value="@department.Id">@department.Name</option>
+								}
+								}
+							</select>
+							</div>
+							</div>
+						@* <div class="col-sm-6">
+									<div class="form-group">
+										<label class="required trn">Scope</label>
+										<select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
+											<option value="" selected="true" class="trn">--Select Type Of Scope--</option>
+											@if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
+											{
+												<option value="Internal" selected="true" class="trn">Internal</option>
+											}
+											else
+											{
+												<option value="Internal" class="trn">Internal</option>
+											}
+											@if (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の")
+											{
+												<option value="External" selected="true" class="trn">External</option>
+											}
+											else
+											{
+												<option value="External" class="trn">External</option>
+											}
+										</select>
+									</div>
+								</div> *@
+						</div>
 						</div>
 					</div>
 					<div class="card card-default">
@@ -440,7 +489,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+	$(function () {
 
+		$('#UserDept').select2();
+	}
 	//$(function () {	
 	//	$('#masterform').validate({		
 	//		rules: {

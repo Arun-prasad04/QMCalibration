@@ -90,11 +90,13 @@
 											<td id="ChkInput" style="text-align:left;">
 												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" value="0" disabled />
 												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
-												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="@item.ReplacementLabID">
+												<input type="hidden" class="clsLabId" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="@item.ReplacementLabID">
 												<input type="hidden" id="instrumentid" value="@item.Id">
 												<input type="hidden" class="clsDueDate" id="DueDate" value="@item.DueDate">
 												<input type="hidden" class="clsCalibFreq" id=" CalibFreq" value="@item.CalibFreq">
-												<input type="hidden" class="clsRequestId" id="RequestId" value="@item.RequestId">
+												<input type="hidden" class="clsUserDept" id="UserDept" name="UserDept" value="@item.UserDept">
+												<input type="hidden" class="clsRequestId" id="HiddenRequestId_@item.Id" name"="HiddenRequestId_@item.Id">
+												<input type="hidden" class="clsIdno" id="HiddenIdno" name"="HiddenIdno" value="@item.IdNo">
 											</td>
 										}
 										else
@@ -107,10 +109,12 @@
 											<td id="ChkInput" style="text-align:left;">
 												<input type="hidden" id="instrumentid" name="instrumentid" value="@item.Id">
 												<input id="ChkInput_@item.Id" name="ChkInput" type="checkbox" />
-												<input type="hidden" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
+												<input type="hidden" class="clsLabId" id="HiddenLabID_@item.Id" name="HiddenLabID_@item.Id" value="">
 												<input type="hidden" class="clsDueDate" id="DueDate" value="@item.DueDate">
 												<input type="hidden" class="clsCalibFreq" id=" CalibFreq" value="@item.CalibFreq">
-												<input type="hidden" class="clsRequestId" id="RequestId" value="@item.RequestId">
+												<input type="hidden" class="clsUserDept" id=" UserDept" name="UserDept" value="@item.UserDept">
+												<input type="hidden" class="clsRequestId" id="HiddenRequestId_@item.Id" name"="HiddenRequestId_@item.Id">
+												<input type="hidden" class="clsIdno" id="HiddenIdno" name"="HiddenIdno" value="@item.IdNo">
 											</td>
 
 										}
@@ -137,8 +141,8 @@
 												<tr>
 													<th class="trn">Name</th>
 													<th class="trn">Lab ID Number</th>
-													<th class="trn">Department</th>
-													<th class="trn">Due Date</th>
+													@* <th class="trn">Department</th>
+													<th class="trn">Due Date</th> *@
 												</tr>
 											</thead>
 											<tbody id="tbodypopup">
@@ -240,12 +244,10 @@
 			data: { InstrumentName: InstrumentName, InstrumentId: Id },
 			dataType: 'json',
 			success: function (data) {
-				console.log("data");
+				console.log("popup data");
 				console.log(data);
 				$("#ToolHistoryDetails").modal('show');
-				$('#tblPopUp tbody').empty();
-
-				
+				$('#tblPopUp tbody').empty();				
 				$.each(data, function (i, item) {
 					var count = 0;
 					
@@ -265,12 +267,12 @@
 						var LabId = encodeURI(item.idNo);
 						rows = "<tr>"
 							+ "<td>"
-							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + ");'>" + item.instrumentName
+							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + "," + item.requestId + ");'>" + item.instrumentName
 							+ "</a>"
 							+ "</td>"
 							+ "<td>" + item.idNo + "</td>"
-							+ "<td>" + item.departmentName + "</td>"
-							+ "<td>" + dueDate + "</td>"
+							// + "<td>" + item.departmentName + "</td>"
+							// + "<td>" + dueDate + "</td>"
 							+ "</tr>"
 						$('#tblPopUp tbody').append(rows);
 						
@@ -312,15 +314,20 @@
 		HidePopUp();
 	}
 
-	function MasterToolListing(ReplacementidNo, MasterLabID) {
-
+	function MasterToolListing(ReplacementidNo, MasterLabID, RequestId) {
+		//alert(RequestId);
 		var RLabId = decodeURI(ReplacementidNo);
 		var id = "ReplacementLabID_" + MasterLabID;
 		var ChkId = "ChkInput_" + MasterLabID;
 		var HiddenLabID = "HiddenLabID_" + MasterLabID;
+		var RequestingId = "HiddenRequestId_" + MasterLabID;
+		//alert(id);
 		$("#" + id).text(RLabId);
+		$("#" + id).val(RLabId);
 		$("#" + HiddenLabID).val(RLabId);
 		$("#" + ChkId).prop("checked", true);
+		$("#" + RequestingId).val(RequestId);
+		//alert($("#" + RequestingId).val(RequestId));
 		HidePopUp();
 	}
 </script>

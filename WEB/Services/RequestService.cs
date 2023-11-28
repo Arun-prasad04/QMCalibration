@@ -81,9 +81,10 @@ public class RequestService : IRequestService
 						UserRoleId = userRoleId,
 						SubSectionCode = dr["SubSectionCode"].ToString(),
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+                        ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
+                        
 
-
-					};
+                    };
 					RequestList.Add(REQlist);
 
 				}
@@ -632,39 +633,38 @@ public class RequestService : IRequestService
 			};
 		}
 	}
-	public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Scope, DateTime TentativeCompletionDate, int CalibFreq, string ToolInventory, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4, DateTime DueDate)
-	{
-		try
-		{
+    public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Scope, DateTime TentativeCompletionDate, int CalibFreq, string ToolInventory, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4, DateTime DueDate)
+    {
+        try
+        {
             _unitOfWork.BeginTransaction();
 
-			RequestStatus reqestStatus = new RequestStatus();
-			reqestStatus.RequestId = requestId;
-			reqestStatus.StatusId = (Int32)EnumRequestStatus.Approved;
-			reqestStatus.CreatedOn = DateTime.Now;
-			reqestStatus.CreatedBy = userId;
-			_unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+            RequestStatus reqestStatus = new RequestStatus();
+            reqestStatus.RequestId = requestId;
+            reqestStatus.StatusId = (Int32)EnumRequestStatus.Approved;
+            reqestStatus.CreatedOn = DateTime.Now;
+            reqestStatus.CreatedBy = userId;
+            _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 
-			Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
-			requestById.StatusId = (Int32)EnumRequestStatus.Approved;
-			requestById.InstrumentCondition = InstrumentCondition;
-			requestById.ReceivedBy = userId;
+            Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
+            requestById.StatusId = (Int32)EnumRequestStatus.Approved;
+            requestById.InstrumentCondition = InstrumentCondition;
+            requestById.ReceivedBy = userId;
             requestById.Feasiblity = "";// Feasiblity;
 
-			//---------start of converting Default date to null to fix out of range issue--------
+            //---------start of converting Default date to null to fix out of range issue--------
 
+            //int Tyear = TentativeCompletionDate.Year;
+            ////int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
 
-            int Tyear = TentativeCompletionDate.Year;
-            //int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
-
-            if (Tyear.Equals(1))
-            {
-                requestById.TentativeCompletionDate = null;
-            }
-            else
-            {
-                requestById.TentativeCompletionDate = TentativeCompletionDate;
-            }
+            //if (Tyear.Equals(1))
+            //{
+            //    requestById.TentativeCompletionDate = null;
+            //}
+            //else
+            //{
+            requestById.TentativeCompletionDate = TentativeCompletionDate;
+            //}
             //---------end of converting date---------------------
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;
@@ -675,38 +675,54 @@ public class RequestService : IRequestService
 
             Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
             instrumentById.IsNABL = newNABL;
-            instrumentById.CalibFreq = CalibFreq;
+
             instrumentById.ToolInventory = ToolInventory;
-			if (requestById.TypeOfReqest == 1)
-            { 
-			instrumentById.ObservationTemplate = newObservation;
-			instrumentById.ObservationType = newObservationType;
-			}
-			
+            if (requestById.TypeOfReqest == 1)
+            {
+                instrumentById.ObservationTemplate = newObservation;
+                instrumentById.ObservationType = newObservationType;
+                instrumentById.CalibFreq = CalibFreq;
+                instrumentById.StandardReffered = standardReffered;
+                instrumentById.MasterInstrument1 = MasterInstrument1;
+                instrumentById.MasterInstrument2 = MasterInstrument2;
+                instrumentById.MasterInstrument3 = MasterInstrument3;
+                instrumentById.MasterInstrument4 = MasterInstrument4;
+            }
+
             instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
-            instrumentById.StandardReffered = standardReffered;
-            instrumentById.MasterInstrument1 = MasterInstrument1;
-            instrumentById.MasterInstrument2 = MasterInstrument2;
-            instrumentById.MasterInstrument3 = MasterInstrument3;
-            instrumentById.MasterInstrument4 = MasterInstrument4;
+
+
             instrumentById.DueDate = DueDate;
             if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
             {
                 instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
             }
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
-			//To Update ToolInventory Status
-			if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
-			{
-				instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
-			}
-			
-			_unitOfWork.Repository<Instrument>().Update(instrumentById);
+            //To Update ToolInventory Status
+            if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
+            {
+                instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
+            }
+
+            _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
+			//---ToolRoomHistory
+			if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
+			{
+				ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+				ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.AcceptTool;
+				ToolRoomHistoryById.ReplacementId = instrumentById.ReplacementLabID;
+				ToolRoomHistoryById.Comment = "Approved";
+				ToolRoomHistoryById.CreatedBy = userId;
+				ToolRoomHistoryById.CreatedOn = DateTime.Now;
+				ToolRoomHistoryById.LabId = instrumentById.IdNo;
+				ToolRoomHistoryById.InstrumentId = instrumentById.Id;
+				_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+				_unitOfWork.SaveChanges();
 
-
-            _unitOfWork.Commit();
+			}
+			_unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
          
             CMTDL _cmtdl = new CMTDL(_configuration);
@@ -961,7 +977,21 @@ public class RequestService : IRequestService
 			_unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
 
-            _unitOfWork.Commit();
+			if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
+			{
+				ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+				ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.RejectedTool;
+				ToolRoomHistoryById.ReplacementId = instrumentById.ReplacementLabID;
+				ToolRoomHistoryById.Comment = "Rejected";
+				ToolRoomHistoryById.CreatedBy = userId;
+				ToolRoomHistoryById.CreatedOn = DateTime.Now;
+				ToolRoomHistoryById.LabId = instrumentById.IdNo;
+				ToolRoomHistoryById.InstrumentId = instrumentById.Id;
+				_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+				_unitOfWork.SaveChanges();
+
+			}
+			_unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
             //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
             //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
@@ -1091,33 +1121,56 @@ public class RequestService : IRequestService
                 reqestStatus.Comment = Result;
                 _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 
-
                 Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
                 requestById.StatusId = (Int32)EnumRequestStatus.Closed;
                 requestById.CollectedBy = CollectedBy;
-                requestById.ReqDueDate = DueDate;
-                _unitOfWork.Repository<Request>().Update(requestById);
-                _unitOfWork.SaveChanges();
 
+                requestById.ReqDueDate = DueDate;
+				requestById.ReqStartDate = DateTime.Now;
+				
+				_unitOfWork.Repository<Request>().Update(requestById);
+                _unitOfWork.SaveChanges();
+                 
 				Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
 				instrumentById.IdNo = InstrumentIdNo;
                if(instrumentById.ToolInventory == "No")
                 { 
                 instrumentById.DueDate = DueDate;
 				}
+				
 				//To Update ToolInventory Status
-				if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
+				else if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
                 {
                     instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
                     instrumentById.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
                     instrumentById.ReplacementLabID = null;
+
+                    //Department Dept = _unitOfWork.Repository<Department>().GetQueryAsNoTracking(Q => Q.SubSectionCode == Constants.ToolRoomSubsectionCode).SingleOrDefault();
+                    //if (instrumentById.UserDept != Dept.Id)
+                    //{ instrumentById.DueDate = DueDate; }
                 }
 
 
                 _unitOfWork.Repository<Instrument>().Update(instrumentById);
                 _unitOfWork.SaveChanges();
 
-                _unitOfWork.Commit();
+				if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
+				{
+					ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+					ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.AcceptTool;
+					ToolRoomHistoryById.ReplacementId = instrumentById.ReplacementLabID;
+					ToolRoomHistoryById.Comment = "Closed";
+					ToolRoomHistoryById.CreatedBy = userId;
+					ToolRoomHistoryById.CreatedOn = DateAndTime.Now;
+					ToolRoomHistoryById.LabId = instrumentById.IdNo;
+					ToolRoomHistoryById.InstrumentId = instrumentById.Id;
+					_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+					_unitOfWork.SaveChanges();
+
+				}
+
+
+				_unitOfWork.Commit();
                 //Email Service
                 long UserId = requestById.CreatedBy;
 
@@ -1285,7 +1338,22 @@ public class RequestService : IRequestService
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
 
-            long UserId = requestbyIdd.CreatedBy;
+			if (instrumentById.ToolInventory == "Yes" && (requestbyIdd.TypeOfReqest == 2 || requestbyIdd.TypeOfReqest == 3))
+			{
+				ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+				ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.AcceptTool;
+				ToolRoomHistoryById.ReplacementId = instrumentById.ReplacementLabID;
+				ToolRoomHistoryById.Comment = "Sent";
+				ToolRoomHistoryById.CreatedBy = userId;
+				ToolRoomHistoryById.CreatedOn = DateAndTime.Now;
+				ToolRoomHistoryById.LabId = instrumentById.IdNo;
+				ToolRoomHistoryById.InstrumentId = instrumentById.Id;
+				_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+				_unitOfWork.SaveChanges();
+
+			}
+
+			long UserId = requestbyIdd.CreatedBy;
             //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
             //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
             //CMTDL _cmtdl = new CMTDL(_configuration);
@@ -1315,6 +1383,8 @@ public class RequestService : IRequestService
                 requestById.CollectedBy = CollectedBy;
                 requestById.Result = Result;
                 requestById.ReasonforRejection = ReasonforRejection;
+                requestById.ReceivedDate = DateTime.Now;
+               
                 _unitOfWork.Repository<Request>().Update(requestById);
                 _unitOfWork.SaveChanges();
 
@@ -1516,11 +1586,11 @@ public class RequestService : IRequestService
             _unitOfWork.SaveChanges();
             _unitOfWork.Commit();
             InstrumentViewModel fff = _mapper.Map<InstrumentViewModel>(instrumentById);
-            // var ab = new InstrumentViewModel();
-            // ab.ObservationTemplate =instrumentById.ObservationTemplate;
-            // ab.ObservationType = instrumentById.ObservationType;
-            // ab.MUTemplate = instrumentById.MUTemplate;
-            // ab.CertificationTemplate  = instrumentById.CertificationTemplate;
+            //// var ab = new InstrumentViewModel();
+            //// ab.ObservationTemplate =instrumentById.ObservationTemplate;
+            //// ab.ObservationType = instrumentById.ObservationType;
+            //// ab.MUTemplate = instrumentById.MUTemplate;
+            //// ab.CertificationTemplate  = instrumentById.CertificationTemplate;
 
             return new ResponseViewModel<InstrumentViewModel>
             {
@@ -1582,7 +1652,23 @@ public class RequestService : IRequestService
 
 			_unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
-            _unitOfWork.Commit();
+
+			//if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
+			//{
+			//	ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+			//	ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.AcceptTool;
+			//	ToolRoomHistoryById.ReplacementId = instrumentById.ReplacementLabID;
+			//	ToolRoomHistoryById.Comment = "Approved";
+			//	ToolRoomHistoryById.CreatedBy = userId;
+			//	ToolRoomHistoryById.CreatedOn = DateAndTime.Now;
+			//	ToolRoomHistoryById.LabId = instrumentById.IdNo;
+			//	ToolRoomHistoryById.InstrumentId = instrumentById.Id;
+			//	_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+			//	_unitOfWork.SaveChanges();
+
+			//}
+
+			_unitOfWork.Commit();
 
 
             RequestViewModel RequestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
@@ -2188,6 +2274,9 @@ public class RequestService : IRequestService
             data.Append(string.Format("<instrumentId>{0}</instrumentId>", sd.instrumentId));
             data.Append(string.Format("<TypeValue>{0}</TypeValue>", sd.TypeValue));
 			data.Append(string.Format("<EmailServiceNo>{0}</EmailServiceNo>", ObjEmailseriaLNo));
+			data.Append(string.Format("<DueDate>{0}</DueDate>",sd.DueDate.ToString()));//ReplacementStartDate
+		//	data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
+			data.Append(string.Format("<ReplacementStartDate>{0}</ReplacementStartDate>", sd.ReplacementStartDate.ToString()));
 			data.Append("</RequestList>");
         }
         data.Append("</Root>");
