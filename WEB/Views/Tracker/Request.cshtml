@@ -100,93 +100,93 @@
                         </thead>
                         <tbody>
 
-                           @* @foreach (var item in Model)
+                            @* @foreach (var item in Model)
                             {
 
-                                <tr>
-                                    <td>@item.ReqestNo</td>
-                                    <td>@item.RequestDate.ToString("dd-MM-yyyy")</td>
-                                    <td>@item.InstrumentName</td>
-                                    <td>@item.InstrumentIdNo</td>
-                                    <td>@item.Range</td>
-                                    @if (@item.TypeOfRequest == 1)
-                                    {
-                                        <td>New</td>
-                                    }
-                                    else if (@item.TypeOfRequest == 2)
-                                    {
-                                        <td>Regular</td>
-                                    }
-                                    else if (@item.TypeOfRequest == 3)
-                                    {
-                                        <td>Recalibration</td>
-                                    }
-                                    else if (@item.TypeOfRequest == 4)
-                                    {
-                                        <td>UnQuarantine</td>
-                                    }
+                            <tr>
+                            <td>@item.ReqestNo</td>
+                            <td>@item.RequestDate.ToString("dd-MM-yyyy")</td>
+                            <td>@item.InstrumentName</td>
+                            <td>@item.InstrumentIdNo</td>
+                            <td>@item.Range</td>
+                            @if (@item.TypeOfRequest == 1)
+                            {
+                            <td>New</td>
+                            }
+                            else if (@item.TypeOfRequest == 2)
+                            {
+                            <td>Regular</td>
+                            }
+                            else if (@item.TypeOfRequest == 3)
+                            {
+                            <td>Recalibration</td>
+                            }
+                            else if (@item.TypeOfRequest == 4)
+                            {
+                            <td>UnQuarantine</td>
+                            }
 
-                                    @if (@item.Status == (int)EnumRequestStatus.Requested)
-                                    {
-                                        <td>Requested</td>
-                                    }
-                                    else if (@item.Status == (int)EnumRequestStatus.Approved)
-                                    {
-                                        <td>Approved</td>
-                                    }
-                                    else if (@item.Status == (int)EnumRequestStatus.Rejected)
-                                    {
-                                        <td>Request Rejected</td>
-                                    }
-                                    else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult == "Rejected")
-                                    {
-                                        <td>Calibration Rejected</td>
-                                    }
-                                    else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult != "Rejected")
-                                    {
-                                        <td>Calibration done</td>
-                                    }
-                                    else if (@item.Status == (int)EnumRequestStatus.Closed)
-                                    {
-                                        <td>Closed</td>
-                                    }
+                            @if (@item.Status == (int)EnumRequestStatus.Requested)
+                            {
+                            <td>Requested</td>
+                            }
+                            else if (@item.Status == (int)EnumRequestStatus.Approved)
+                            {
+                            <td>Approved</td>
+                            }
+                            else if (@item.Status == (int)EnumRequestStatus.Rejected)
+                            {
+                            <td>Request Rejected</td>
+                            }
+                            else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult == "Rejected")
+                            {
+                            <td>Calibration Rejected</td>
+                            }
+                            else if (@item.Status == (int)EnumRequestStatus.Sent && @item.LabResult != "Rejected")
+                            {
+                            <td>Calibration done</td>
+                            }
+                            else if (@item.Status == (int)EnumRequestStatus.Closed)
+                            {
+                            <td>Closed</td>
+                            }
 
-                                    <td>
-                                        <i class="fas fa-eye" style="cursor:pointer" id='@item.Id'
-                                           onclick="GetRequestDetails(this)"></i>
-                                    </td>
-                                    @if (Model != null && Model.Count > 0)
-                                    {
-                                        @if (((@item.UserRoleId == 2 || @item.UserRoleId == 4) && (@item.Status == (int)EnumRequestStatus.Approved || @item.Status == (int)EnumRequestStatus.Sent || @item.Status == (int)EnumRequestStatus.Closed)))
-                                        { //|| (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
-                                            <td><a href='@Url.Action("ViewObservation","Observation",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-check-circle" style="cursor:pointer"></i></td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-                                    @if (Model != null && Model.Count > 0)
-                                    {
-                                        //@if((@item.UserRoleId==2 && (@item.Status == (int)EnumRequestStatus.Approved ||@item.Status == (int)EnumRequestStatus.Sent||@item.Status == (int)EnumRequestStatus.Closed)) || (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
-                                        @if (@item.TemplateReviewStatus == 1)
-                                        {
-                                            <td><a href='@Url.Action("ViewCertification","Certification",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-user-graduate" style="cursor:pointer"></i></td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-                                </tr>
+                            <td>
+                            <i class="fas fa-eye" style="cursor:pointer" id='@item.Id'
+                            onclick="GetRequestDetails(this)"></i>
+                            </td>
+                            @if (Model != null && Model.Count > 0)
+                            {
+                            @if (((@item.UserRoleId == 2 || @item.UserRoleId == 4) && (@item.Status == (int)EnumRequestStatus.Approved || @item.Status == (int)EnumRequestStatus.Sent || @item.Status == (int)EnumRequestStatus.Closed)))
+                            { //|| (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
+                            <td><a href='@Url.Action("ViewObservation","Observation",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-check-circle" style="cursor:pointer"></i></td>
+                            }
+                            else
+                            {
+                            <td></td>
+                            }
+                            }
+                            else
+                            {
+                            <td></td>
+                            }
+                            @if (Model != null && Model.Count > 0)
+                            {
+                            //@if((@item.UserRoleId==2 && (@item.Status == (int)EnumRequestStatus.Approved ||@item.Status == (int)EnumRequestStatus.Sent||@item.Status == (int)EnumRequestStatus.Closed)) || (@item.UserRoleId!=2 && @item.Status == (int)EnumRequestStatus.Closed)){
+                            @if (@item.TemplateReviewStatus == 1)
+                            {
+                            <td><a href='@Url.Action("ViewCertification","Certification",new {requestId=@item.Id,instrumentId=@item.InstrumentId})'><i class="fas fa-user-graduate" style="cursor:pointer"></i></td>
+                            }
+                            else
+                            {
+                            <td></td>
+                            }
+                            }
+                            else
+                            {
+                            <td></td>
+                            }
+                            </tr>
                             }*@
                         </tbody>
                     </table>
@@ -203,7 +203,7 @@
 
 <script>
     setTimeout(function () {
-        @*$("#example2").DataTable({
+    @*$("#example2").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -211,9 +211,9 @@
             "info": true,
             "autoWidth": true,
             "responsive": true,
-        });*@
-        //Conversion();        
-        GetAllRequest(4);
+            });*@
+            //Conversion();
+            GetAllRequest(4);
     }, 500);
 </script>
 
@@ -225,10 +225,10 @@
 
 
     function GetAllRequest(type) {
-        
+
         if ($('input[name="ReqTracker"]:checked').val() == 'New') {
-           console.log(1)
-           selectedValue = 1;
+            console.log(1)
+            selectedValue = 1;
         } else if ($('input[name="ReqTracker"]:checked').val() == 'Regular') {
             console.log(2)
             selectedValue = 2;
@@ -241,7 +241,7 @@
         }
 
         $('#dvload').show();
-       // debugger;
+        // debugger;
         $.ajax({
             type: 'GET',
             url: '../Tracker/GetAllRequestList',
@@ -272,80 +272,83 @@
                             tdTypeofRequest = "<td>UnQuarantine</td>"
                         }
 
-                    var tdStatus = '';
-                    if (item.status == 26) {
-                        tdStatus = "<td>Requested</td>"
-                    }
-                    else if (item.status == 27) {
-                        tdStatus = "<td>Approved</td>"
-                    }                    
-                    else if (item.status == 28) {
-                        tdStatus = "<td>Request Rejected</td>"
-                    }
-                    else if (item.status == 28 && item.Result == "Result") {
-                        tdStatus = "<td>Calibration Rejected</td>"
-                    }
-                    else if (item.status == 29 && item.labResult != "Rejected") {
-                        tdStatus = "<td>Calibration done</td>"
-                    }
-                    else if (item.status == 30) {
-                        tdStatus = "<td>Closed</td>"
-                    }
-                        else if (item.status == 31) {
-                            tdStatus = "<td>Rejected</td>"
+                        var tdStatus = '';
+                        if (item.status == 26) {
+                            tdStatus = "<td>Requested</td>"
                         }
-                    
-                    var tdTest = '';
+                        else if (item.status == 27) {
+                            tdStatus = "<td>Approved</td>"
+                        }
+                        else if (item.status == 28) {
+                            tdStatus = "<td>Request Rejected</td>"
+                        }
+                        else if (item.status == 28 && item.Result == "Result") {
+                            tdStatus = "<td>Calibration Rejected</td>"
+                        }
+                        else if (item.status == 29 && item.labResult != "Rejected" && item.typeOfEquipment == 'External') {
+                            tdStatus = "<td>Verification done</td>"
+                        }
+                        else if (item.status == 29 && item.labResult != "Rejected") {
+                            tdStatus = "<td>Calibration done</td>"
+                        }
+                        else if (item.status == 30) {
+                            tdStatus = "<td>Closed</td>"
+                        }
+                        else if (item.status == 31) {
+                            tdStatus = "<td>Calibration Rejected</td>"
+                        }
+
+                        var tdTest = '';
                         if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 28 || item.status == 29 || item.status == 30 || item.status == 31) && item.typeOfEquipment != 'External') {
 
 
-                        tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
-                    }
-                    else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External') {
+                            tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+                        }
+                        else if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30) && item.typeOfEquipment == 'External') {
 
 
-                        tdTest = "<td><a href='@Url.Action("ViewObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
-                    }                       
-                    else {
-                        tdTest = "<td> </td>"
-                    }
-                    var tdCertificate = '';
+                            tdTest = "<td><a href='@Url.Action("ExternalObs","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
+                        }
+                        else {
+                            tdTest = "<td> </td>"
+                        }
+                        var tdCertificate = '';
                         if (item.templateReviewStatus == 1 || item.templateReviewStatus == 2 || (item.exObsTemplateReviewStatus == 1 && item.status != 27) || item.exObsTemplateReviewStatus == 2) {
-                        tdCertificate = "<td><a href='@Url.Action("ViewCertification","Certification")?requestId="+item.id+"&instrumentId="+item.instrumentId+"'><i class='fas fa-user-graduate' style = 'cursor:pointer'></i></td>"
-                                            }
-                    else {
-                        tdCertificate = "<td> </td>"
-                    }
+                            tdCertificate = "<td><a href='@Url.Action("ViewCertification","Certification")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "'><i class='fas fa-user-graduate' style = 'cursor:pointer'></i></td>"
+                        }
+                        else {
+                            tdCertificate = "<td> </td>"
+                        }
 
-                    //var date = new Date(item.requestDate, "dd-MM-yyyy").toLocaleDateString();
-                    var date = moment(item.requestDate).format("DD-MM-YYYY");
+                        //var date = new Date(item.requestDate, "dd-MM-yyyy").toLocaleDateString();
+                        var date = moment(item.requestDate).format("DD-MM-YYYY");
 
-                    var rows = "<tr>"
-                        + "<td>" + item.reqestNo + "</td>"                        
-                        + "<td>" + date + "</td>"
-                        + "<td>" + item.subSectionCode + "</td>"
-                        + "<td>" + item.instrumentName + "</td>"
-                        + "<td>" + item.instrumentIdNo + "</td>"
-                        + "<td>" + item.range + "</td>"
-                        + tdTypeofRequest
-                        + tdStatus
-                        + "<td><i class='fas fa-eye' style = 'cursor:pointer' id = " + item.id + " onclick = 'GetRequestDetails(this)'></i></td>"
-                        + tdTest
-                        + tdCertificate
-                        + "<td>" + item.typeOfEquipment + "</td>"
-                        + "</tr>";
+                        var rows = "<tr>"
+                            + "<td>" + item.reqestNo + "</td>"
+                            + "<td>" + date + "</td>"
+                            + "<td>" + item.subSectionCode + "</td>"
+                            + "<td>" + item.instrumentName + "</td>"
+                            + "<td>" + item.instrumentIdNo + "</td>"
+                            + "<td>" + item.range + "</td>"
+                            + tdTypeofRequest
+                            + tdStatus
+                            + "<td><i class='fas fa-eye' style = 'cursor:pointer' id = " + item.id + " onclick = 'GetRequestDetails(this)'></i></td>"
+                            + tdTest
+                            + tdCertificate
+                            + "<td>" + item.typeOfEquipment + "</td>"
+                            + "</tr>";
 
-                    $('#example2 tbody').append(rows);
-                    $('#dvload').hide();
-                    
-                });
+                        $('#example2 tbody').append(rows);
+                        $('#dvload').hide();
+
+                    });
                 }
                 else {
                     $('#dvload').hide();
                 }
-                
+
                 //$('#example2').destroy();
-                $('#example2').dataTable({                    
+                $('#example2').dataTable({
                     "paging": true,
                     "lengthChange": true,
                     "searching": true,
@@ -356,8 +359,8 @@
                     dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                }); 
-               
+                });
+
             },
             error: function (emp) {
                 $('#dvload').hide();

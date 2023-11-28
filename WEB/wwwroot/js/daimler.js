@@ -3337,7 +3337,7 @@ function DueInstrumentList() {
         var data = {
             Id: $('#Id').val(),
             InstrumentId: $('#instrumentId').val(),
-            RequestId: $('#requestId').val(),
+            RequestId: $('#RequestId').val(),
             RefStd: $('#RefStd').val(),
             TempStart: $('#TempStart').val(),
             TempEnd: $('#TempEnd').val(),

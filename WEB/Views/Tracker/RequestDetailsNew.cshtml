@@ -500,7 +500,7 @@
 
                         </div>
                     }
-                    @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30 || Model.Status == 31)
+                    @if (Model.Status == 27 || Model.Status == 28 || Model.Status == 29 || Model.Status == 30 || Model.Status == 31) @* && (Model.Status == 26 && (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3))) *@
                     {
                         <div class="row">
                             <div class="col-sm-6">
@@ -711,7 +711,7 @@
                     @if ((Model.Status == 27 || Model.Status == 29) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div id="ExternalAcceptSection">
-                            <div class="row">                                
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">External Accept Reason</label>
@@ -721,7 +721,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">Standard Refered/Calibration Method</label>
-                                        <input id="Acceptreason" style="width: 100%;" value="@Model.StandardReffered" disabled>
+                                        <input id="Acceptreason" style="width: 100%;" value="As Per External Calibration" disabled>  @*Model.StandardReffered*@
                                     </div>
                                 </div>
                             </div>
@@ -750,7 +750,7 @@
                                         }
                                     </div>
                                 </div>
-                            </div>                           
+                            </div>
 
                         </div>
                     }
@@ -775,7 +775,7 @@
                             </div>
                         </div>
                     }
-                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
+                    @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部") && Model.TypeOfRequest == 1)
                     {
                         <div id="NewacceptSection" style="display: none;">
                             <div class="row">
@@ -833,16 +833,16 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(Model.TypeOfRequest == 1)
+                            @if (Model.TypeOfRequest == 1)
                             {
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Observation Template</label><br>
-                                        <select id="NewObservation" onchange="LoadObservationTypePopup(language)" class="form-control" style="width:100%; height:100%; padding:5px;position: absolute;">
-                                            @* <option>-- Select Observation Template --</option>*@
-                                            @*@foreach (var freq in @Model.ObservationTemplateList)
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="trn">Observation Template</label><br>
+                                            <select id="NewObservation" onchange="LoadObservationTypePopup(language)" class="form-control" style="width:100%; height:100%; padding:5px;position: absolute;">
+                                                @* <option>-- Select Observation Template --</option>*@
+                                                @*@foreach (var freq in @Model.ObservationTemplateList)
                                         {
                                         if (freq.Id == Model.ObservationTemplate)
                                         {
@@ -853,19 +853,19 @@
                                         <option value="@freq.Id">@freq.AttrValue</option>
                                         }
                                         }*@
-                                        </select>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                @* <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Observation Template Type</label><br>
-                                        <select id="NewObservationType" class="form-control" style="width:100%; height:100%; padding:5px">
-                                        </select>
-                                    </div>
-                                </div> *@
-
+                                    @* <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">Observation Template Type</label><br>
+                            <select id="NewObservationType" class="form-control" style="width:100%; height:100%; padding:5px">
+                            </select>
                             </div>
+                            </div> *@
+
+                                </div>
                             }
                             <div class="row">
                                 @* <div class="col-sm-6">
@@ -889,87 +889,88 @@
 
                             </div>
                             </div>*@
-                               @*  <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Certification Template</label><br>
-                                        <select id="NewCertification" class="form-control" style="width:100%; height:100%; padding:5px"> *@
-                                            @*<option class="trn">-- Select Certification Template --</option>*@
-                                            @*@foreach (var freq in @Model.CertificationTemplateList)
-                                        {
-                                        if (freq.Id == Model.CertificationTemplate)
-                                        {
-                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="@freq.Id">@freq.AttrValue</option>
-                                        }
-                                        }*@
-                                       @*  </select>
-                                    </div>
-                                </div> *@
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group mt-4">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
-                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
-                                    </div>
-                                </div>
+                                @*  <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">Certification Template</label><br>
+                            <select id="NewCertification" class="form-control" style="width:100%; height:100%; padding:5px"> *@
+                                @*<option class="trn">-- Select Certification Template --</option>*@
+                                @*@foreach (var freq in @Model.CertificationTemplateList)
+                            {
+                            if (freq.Id == Model.CertificationTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValue</option>
+                            }
+                            }*@
+                                @*  </select>
+                            </div>
+                            </div> *@
+
                             </div>
                         </div>
                     }
+                    @*<div class="col-sm-6" style="text-align:right;">
+                        <!-- text input -->
+                        <div class="form-group mt-4">
+                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                   class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
+                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                        </div>
+                    </div>*@
                     @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
                             @if (Model.TypeOfRequest == 1)
                             {
-                            <div class="row mt-4">
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Observation Template</label>
-                                        @* <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled> *@
-                                            <select id="NewObservationEd"  class="form-control" disabled>
-                                            @foreach (var freq in @Model.ObservationTemplateList)
-                                            {
-                                                if (@ViewBag.SessionLang == "en")
+                                <div class="row mt-4">
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="trn">Observation Template</label>
+                                            @* <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled> *@
+                                            <select id="NewObservationEd" class="form-control" disabled>
+                                                @foreach (var freq in @Model.ObservationTemplateList)
                                                 {
-                                                    if (freq.Id == Model.ObservationTemplate)
+                                                    if (@ViewBag.SessionLang == "en")
                                                     {
-                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                        if (freq.Id == Model.ObservationTemplate)
+                                                        {
+                                                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@freq.Id">@freq.AttrValue</option>
+                                                        }
                                                     }
                                                     else
                                                     {
-                                                        <option value="@freq.Id">@freq.AttrValue</option>
+                                                        if (freq.Id == Model.ObservationTemplate)
+                                                        {
+                                                            <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@freq.Id">@freq.AttrValueJp</option>
+                                                        }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    if (freq.Id == Model.ObservationTemplate)
-                                                    {
-                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
-                                                    }
-                                                }
 
-                                            }
-                                        </select>
+                                                }
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                   
-                                @* <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Observation Template Type</label>
-                                        <select id="NewObservationTypeEd" class="form-control" disabled>
-                                        </select>
-                                    </div>
-                                </div> *@
+
+                                    @* <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">Observation Template Type</label>
+                            <select id="NewObservationTypeEd" class="form-control" disabled>
+                            </select>
+                            </div>
+                            </div> *@
 
                                 </div>
                             }
@@ -1007,39 +1008,39 @@
                             </select>
                             </div>
                             </div>*@
-                               @*  <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Certification Template</label>
-                                        <select id="NewCertificationEd" class="form-control" disabled>
-                                            @foreach (var freq in @Model.CertificationTemplateList)
-                                            {
-                                                if (@ViewBag.SessionLang == "en")
-                                                {
-                                                    if (freq.Id == Model.CertificationTemplate)
-                                                    {
-                                                        <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@freq.Id">@freq.AttrValue</option>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (freq.Id == Model.CertificationTemplate)
-                                                    {
-                                                        <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@freq.Id">@freq.AttrValueJp</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-                                </div> *@
+                                @*  <div class="col-sm-6">
+                            <!-- text input -->
+                            <div class="form-group">
+                            <label class="trn">Certification Template</label>
+                            <select id="NewCertificationEd" class="form-control" disabled>
+                            @foreach (var freq in @Model.CertificationTemplateList)
+                            {
+                            if (@ViewBag.SessionLang == "en")
+                            {
+                            if (freq.Id == Model.CertificationTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValue</option>
+                            }
+                            }
+                            else
+                            {
+                            if (freq.Id == Model.CertificationTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValueJp</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValueJp</option>
+                            }
+                            }
+                            }
+                            </select>
+                            </div>
+                            </div> *@
                                 <div class="col-sm-6">
                                     <!-- text input -->
                                     <div class="form-group">
@@ -1147,7 +1148,7 @@
                                         </div>
                                     </div>
                                 }
-                                @if ( Model.Status == 31)
+                                @if (Model.Status == 31)
                                 {
                                     <div class="col-sm-6">
                                         <!-- text input -->
@@ -1243,7 +1244,7 @@
                         </div>
 
 
-                        <div class="row">                            
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Result</label>
@@ -1378,7 +1379,7 @@
                     }
                     @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
                     {
-                        <div class="row">
+                        @*<div class="row">
                             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
                                 <!-- text input -->
 
@@ -1393,9 +1394,9 @@
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     }
-                   @*  @if (Model.Status == 29 || Model.Status == 30 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")) *@
+                    @*  @if (Model.Status == 29 || Model.Status == 30 && (Model.TypeOfEquipment == "Internal Instrument" || Model.TypeOfEquipment == "内部計器")) *@
                     @if (Model.Status == 29 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
@@ -1424,10 +1425,10 @@
                             </div>
                             <div class="row">
                                 @* <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="trn">MU Template</label>
-                                    </div>
-                                </div> *@
+                            <div class="form-group">
+                            <label class="trn">MU Template</label>
+                            </div>
+                            </div> *@
                                 <div class="col-sm-6">
                                     <div id="imageSection">
                                         @if (@Model.MUTemplateFileName != null)
@@ -1463,7 +1464,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">                                
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Result</label>
@@ -1725,14 +1726,14 @@
                             </div>
                         </div>
                     }
-                    @if ((Model.Status == 29|| Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
+                    @if ((Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
                     {
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="required trn">Instrument Id Number</label>
                                     @*<input type="text" id="txtIdNo" name="IdNo" value="@Model.InstrumentIdNo"
-                                           class="form-control" placeholder="" alt="Please fill this field">*@
+                                class="form-control" placeholder="" alt="Please fill this field">*@
                                     @if (Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3)
                                     {
                                         <input type="text" class="form-control" id="txtIdNo" value="@Model.InstrumentIdNo" disabled>
@@ -1781,22 +1782,7 @@
                                 </div>
                             </div>
                         </div>
-                    }
-                    @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4" &&  Model.Status==27)
-                    {
-                    <div class="row">
-                    <div class="col-sm-6">
-                    </div>
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group" style="text-align:right;">
-                    <input style="margin-top: 32px;" type="button" class="btn btn-primary"
-                    name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-                    onclick="newSubmitReqDepVisual()">
-                    </div>
-                    </div>
-                    </div>
-                    } *@
+                    }                    
                 </div>
             </div>
         </div>
@@ -1821,27 +1807,27 @@
         $('#NewCertificationEd').select2();
 
 
-      @*   if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
+    @*   if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
             var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
             var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
 
             if ('@HttpContextAccessor.HttpContext.Session.GetString("Language")' == 'en') {
-                $.each(ObservationTypeList, function (index, item) {
+            $.each(ObservationTypeList, function (index, item) {
 
-                    if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
-                    }
-                });
+            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+            $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
+            }
+            });
             }
             else {
-                $.each(ObservationTypeList, function (index, item) {
-                    if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
-                        $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
-                    }
-                });
+            $.each(ObservationTypeList, function (index, item) {
+            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+            $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
             }
-        } *@
-    });
+            });
+            }
+            } *@
+        });
 
     function enableFields() {
         document.getElementById("NewObservationEd").disabled = false;
