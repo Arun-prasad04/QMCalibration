@@ -32,8 +32,10 @@ namespace CMT.DATAMODELS
         public virtual List<MasterFileUpload> FileUploadModel{get;set;}
         public virtual List<ExternalRequest> ExternalRequestModel{get;set;}
         public virtual Lovs Lovs {get;set;}
-
 		public string? EquipNameJP { get; set; }
 		public string? EquipmentMasterId { get; set; }
+		public string? TypeOfEquipment { get; set; }
+		public int? DepartmentId { get; set; }
+		public virtual Department DepartmentModel { get; set; }
 	}
 }

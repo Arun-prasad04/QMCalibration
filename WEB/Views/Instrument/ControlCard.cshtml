@@ -11,6 +11,12 @@
 	<title>Control Card</title>
 </head>
 <style>
+	.Tblborder {
+		/* border: 1px solid #CCC; */
+		border-collapse: collapse;
+		border: 2px solid #000;
+		width: 100%;
+	}
 	.TblContent {
 		/* border: 1px solid #CCC; */
 		border-collapse: collapse;
@@ -23,11 +29,12 @@
 		border: 1px solid #000;
 		width: 100%;
 		height:50px;
-		/* padding-top: 25px; */
+		padding-top: 5px;
 		font-weight:900;
 	}
 	.TablesTextBox {
 		width: 100%;
+		height:50px;
 	}
 
 	.TblInHeader {
@@ -60,7 +67,7 @@
 <!-- page1 start-->
 <body style="font-family: Calibri;">
 	<div style="padding-left:5%; padding-right: 5%; margin-bottom: 5%;">
-		<table class="TblContent">
+		<table class="Tblborder">
 			<tbody>
 				<tr>
 					<td style="border-collapse: collapse; border-right:2px solid #000;text-align: center;width:190px;">						
@@ -80,17 +87,27 @@
 			</tbody>
 		</table>
 		
-		<div class="TblContent">
-			<div class="TblContent trn">
-				<H4 class="trn" style="border-top-color:white;text-align:center;">Control/History card</H4>
-			</div>
+		<div class="Tblborder">
+		
+<div style="border-collapse: collapse;border-top-color:white;border-block-width: 0px; border-bottom: 2px solid #000;">
+				<div style="padding:10px">
+		<H4 class="trn" style="margin: 0px; font-size: 25px;text-align:center;">Control/History card</H4>
+		</div>
+	</div>
+			
 				<div>
 					<table id="tblhead">
 						<tbody>
 							<tr>
 								<td class="TblSubTitle trn">Issue No/発行№</td>
+							@if ((Model.IssueNo == "") || (Model.IssueNo == null))
+							{
 								<td class="TblTitle1">: <input type="text" style="height: 50px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno"/></td>
-								
+							}
+							else
+							{
+							<td class="TblTitle1">: <input type="text" style="height: 50px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno" disabled/></td>
+								}
 								<td class="TblSubTitle trn">Acquisition date / 初回登録日</td>
 								<td class="TblTitle1 trn">: @Model.CreatedOn.ToString("dd-MM-yyyy")</td>
 							</tr>
@@ -149,28 +166,33 @@
 				</div>
 			<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
 		</div>
-		<table id="TblRequest" class="TblContent">
+<div class="TblContent">
+		<table id="TblRequest" class="table table-bordered table-striped"  style="width:100%">
 		<thead>
 			<tr>
-				<th class="TblSubHeader trn">Month & Year/年月</th>
+				<th class="trn">Month & Year/年月</th>
 
-				<th class="TblSubHeader trn" style="width:150px;">Section code/部門コード</th>
+				<th class="trn">Section code/部門コード</th>
 
-				<th class="TblSubHeader trn" style="width:180px;">Inspection Type/検査の種類</th>
+				<th class="trn">Inspection Type/検査の種類</th>
 
-				<th class="TblSubHeader trn">Result/検査結果</th>
-				<th class="TblSubHeader trn">Grade/等級</th>
-				<th class="TblSubHeader trn">Due date/有効期限</th>
-				<th class="TblSubHeader trn" style="width:150px;">Inspection details/備考</th>
+				<th class="trn">Result/検査結果</th>
+				<th class="trn">Grade/等級</th>
+				<th class="trn">Due date/有効期限</th>
+				<th class="trn">Inspection details/備考</th>
 
 			</tr>
 			</thead>
 			<tbody class="TblContent">
+			
 			</tbody>
 			</table> 
-		<div>
-				<H6  class="Tblfoot trn">1. More details refer the individual certificate</H6>
+			<div style="border-collapse: collapse;border-top: solid;border-block-width: 2px; border: 2px solid #000; display: flex;">
+						<div style="padding:10px">
+				<p class="trn" style="margin: 0px; font-size: 18px;">1. More details refer the individual certificate.</P>
+				</div>
 			</div>
+			</div>		
 			
 					<div class="form-group" style="text-align:right;">
 						<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
@@ -180,34 +202,61 @@
 	</div>
 	
 </body>
+
+
 </html>
  <script src="~/js/3.3.1Version/jquery.min.js"></script> 
 <script>
-
-	$(document).ready(function ()
-	{
+	
+	$(document).ready(function () {
 		var rows = "";
-			$.ajax({
+		var DetailCol = "";
+		$.ajax({
 			type: 'GET',
 			url: '../Instrument/RequestListForInstrument',
 			data: { InstrumentId: $('#InstrumentId').val() },
-			}).done(function (data) {
-				
-				$.each(data, function (i, item) {
-					rows = "<tr>"
-						+"<td class='TblSubHeader trn'>" + item.calibrationMonth + "</td>"
-						+ "<td class='TblSubHeader trn'>" + item.sectionCode + "</td>"
-						+ "<td class='TblSubHeader trn'>" + item.instrumentType + "</td>"
-						+ "<td class='TblSubHeader trn'>" + item.result + "</td>"
-						+ "<td class='TblSubHeader trn'>" + item.grade + "</td>"
-						+ "<td class='TblSubHeader trn'>" + item.calibrationRequestDate + "</td>"
-						+ "<td class='TblSubHeader trn'><input type='text' style='height: 50px;width:100%;' value='"+item.inspectiondetails+"' class='Inspect' name='Inspectiondetails' id='Inspectiondetails'><input id='requestId' class='RequestId' name='requestId' type='hidden' value='"+item.requestId+"' /></td>"
-						+ "</tr>"
-						
-					$('#TblRequest tbody').append(rows);
+		}).done(function (data) {
 
-				});
+			$.each(data, function (i, item) {
+				if (item.inspectiondetails == '' || item.inspectiondetails == null) {
+					DetailCol = "<td class='TblSubHeader trn'><input type='text'class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' class='Inspect' name='Inspectiondetails' id='Inspectiondetails'><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
+
+				}
+				else { 
+					DetailCol = "<td class='TblSubHeader trn'><input type='text' class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' class='Inspect' name='Inspectiondetails' id='Inspectiondetails' disabled><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
+
 				
+				}
+				rows = "<tr>"
+					+ "<td class='trn'>" + item.calibrationMonth + "</td>"
+					+ "<td class='trn'>" + item.sectionCode + "</td>"
+					+ "<td class='trn'>" + item.instrumentType + "</td>"
+					+ "<td class='trn'>" + item.result + "</td>"
+					+ "<td class='trn'>" + item.grade + "</td>"
+					+ "<td class='trn'>" + item.calibrationRequestDate + "</td>"
+					/* + "<td class='TblSubHeader trn'><input type='text' style='height: 50px;width:100%;' value='" + item.inspectiondetails + "' class='Inspect' name='Inspectiondetails' id='Inspectiondetails'><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>"
+				 */	
+				 +DetailCol
+				 + "</tr>"
+
+				$('#TblRequest tbody').append(rows);
+
+			});
+			console.log(rows);
+		});
+
+}); 
+$(function () {
+
+	var oTable = $('#TblRequest').dataTable({
+		stateSave: true,
+		'columnDefs': [{
+			'targets': [9], /* column index */
+			'orderable': false, /* true or false */
+		}],
+		dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 	});
-	});
+});
 </script>

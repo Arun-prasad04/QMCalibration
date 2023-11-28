@@ -1225,7 +1225,7 @@ function NewReqEnableReason1() {
    
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
         
-        $('#NewReasonSection').css('display', 'none');
+        $('#NewReasonSection').css('display', 'none');//
         $('#NewacceptSection').css('display', 'block');
         $('#ExternalRejectSection').css('display', 'none');
         $('#ExternalAcceptSection').css('display', 'block');
@@ -1616,7 +1616,7 @@ function SaveLeverDial(lang) {
     });
 }
 
-function SaveInventoryCalibration(DueMonth,lang) {
+ function SaveInventoryCalibration(DueMonth,lang) {
     //var DueMonth = @Json.Serialize(@ViewBag.DueMonth); 
     //alert(DueMonth);
     var sPageURLPaarameter = window.location.search.substring(1);
@@ -1633,18 +1633,21 @@ function SaveInventoryCalibration(DueMonth,lang) {
             var checkedvalue = $(tr).find("input[name=ChkInput]").prop('checked');
 
             var objInstrumentId = $(tr).find("input[name=instrumentid]").val();//$(tr).find("td[id='instrumentid'] input[type='hidden']").val();
-            var Masterid = "ReplacementLabID_" + objInstrumentId;
             var POPoutId = "popupcount_" + objInstrumentId;
             var CHKoutId = "ChkInput_" + objInstrumentId;
-            var objReplacementLabId = $(tr).find("td[id='" + Masterid + "']").text().trim();
-            //var objReplacementLabId = $(tr).find("input[id='" + Masterid + "']").text().trim();
+            var Masterid = "ReplacementLabID_" + objInstrumentId;
+            //var ReplaceRequestId = "HiddenRequestId_" + objInstrumentId;
+           // var objReplacementLabId = $(tr).find("td[id='" + Masterid + "']").text().trim();
             var objPopUpRecordCount = $(tr).find("input[id='" + POPoutId + "']").val(); // $(tr).find("input[id= '" + ChkoutId + "']").val().trim();
             var objChkRecordCount = $(tr).find("input[id='" + CHKoutId + "']").prop('checked');
-
+           // var objReplaceRequestId = $(tr).find("input[id='" + ReplaceRequestId + "']").val();
             var DueDate = $(this).closest('tr').find('.clsDueDate').val();
             var CalibFreq = $(this).closest('tr').find('.clsCalibFreq').val();
+            var UserDept = $(this).closest('tr').find('.clsUserDept').val();// $(tr).find("input[name=UserDept]").val();
             var RequestId = $(this).closest('tr').find('.clsRequestId').val();
-           // console.log()
+            var objReplacementLabId = $(this).closest('tr').find('.clsLabId').val();
+            var objIdNo = $(this).closest('tr').find('.clsIdno').val();
+            //alert(objIdNo);
             if (checkedvalue == true) {
 
 
@@ -1662,13 +1665,16 @@ function SaveInventoryCalibration(DueMonth,lang) {
                     CheckedCount += 1;
                 }
                 else {
+                   // alert("message");
                     var InstrumentData =
                     {
                         InstrumentId: objInstrumentId,
                         ReplacementLabId: objReplacementLabId,
                         DueMonth: DueMonth,
                         CalibFrequency: CalibFreq,
-                        RequestId: RequestId
+                        UserDept: UserDept,
+                        RequestId: RequestId,
+                        IdNo: objIdNo
                     }
 
                     InstrumentDataList.push(InstrumentData);
@@ -1715,7 +1721,6 @@ function SaveInventoryCalibration(DueMonth,lang) {
         return false;
     }
 }
-
 function DueForCalibrationInstruments_olds() {
 
     var tblRowsCoun = $("#example1 th").length;
@@ -3188,8 +3193,11 @@ function InsertRequestList() {
         var UserView = {
             instrumentId:$(this).closest('tr').find('td:eq(11) input[type="checkbox"]').val(),
             TypeValue: $(this).closest('tr').find("td:eq(11) input[type='hidden']").val(),
+            RequestId: $(this).closest('tr').find('.clsRequestId').val(),
+            DueDate: $(this).closest('tr').find('.clsDueDate').val(),
+            ReplacementStartDate: $(this).closest('tr').find('.clsReplacementStartDate').val(),
         }
-        console.log(UserView);
+        
         Request.push(UserView);
     });
     
@@ -3337,7 +3345,7 @@ function DueInstrumentList() {
         var data = {
             Id: $('#Id').val(),
             InstrumentId: $('#instrumentId').val(),
-            RequestId: $('#requestId').val(),
+            RequestId: $('#RequestId').val(),
             RefStd: $('#RefStd').val(),
             TempStart: $('#TempStart').val(),
             TempEnd: $('#TempEnd').val(),

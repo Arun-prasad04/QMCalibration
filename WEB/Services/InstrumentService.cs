@@ -63,7 +63,7 @@ public class InstrumentService : IInstrumentService
 						LC = dr["LC"].ToString(),
 						CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
 						CalibDate = Convert.ToDateTime(dr["CalibDate"]),
-						DueDate = Convert.ToDateTime(dr["DueDate"]),
+						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
 						Make = dr["Make"].ToString(),
 						CalibSource = dr["CalibSource"].ToString(),
 						StandardReffered = dr["StandardReffered"].ToString(),
@@ -80,6 +80,10 @@ public class InstrumentService : IInstrumentService
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSecCode = dr["SubSectionCode"].ToString(),
+                        ToolInventory = dr["ToolInventory"].ToString(),
+						ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
+						//backcolor = dr["backcolor"].ToString(),
+						ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
 					};
 					instrumentList.Add(inst);
 
@@ -265,9 +269,8 @@ public class InstrumentService : IInstrumentService
                 Grade = s.Grade,
                 TypeOfEquipment = s.TypeOfEquipment,
                 ToolInventory = s.ToolInventory,
-                SubSecCode = s.DepartmenttModel.SubSectionCode			
-
-			}
+                SubSecCode = s.DepartmenttModel.SubSectionCode
+							}
                 ).SingleOrDefault();
             List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>()
                                                                                 //.GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
@@ -346,7 +349,21 @@ public class InstrumentService : IInstrumentService
 			_unitOfWork.Repository<RequestStatus>().Insert(ReqestStatus);
 			_unitOfWork.SaveChanges();
 
-			InstrumentQuarantine instrumentQuarantine = new InstrumentQuarantine()
+            //if (instrumentdata.ToolInventory == "Yes" && (newRequest.TypeOfReqest == 2 || newRequest.TypeOfReqest == 3))
+            //{
+            //    ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+            //    ToolRoomHistoryById.StatusId = (Int32)ToolInventoryStatus.AcceptTool;
+            //    ToolRoomHistoryById.ReplacementId = instrumentdata.ReplacementLabID;
+            //    ToolRoomHistoryById.Comment = "Approved";
+            //    ToolRoomHistoryById.CreatedBy = 0;
+            //    ToolRoomHistoryById.CreatedOn = DateTime.Now;
+            //    ToolRoomHistoryById.LabId = instrumentdata.IdNo;
+            //    ToolRoomHistoryById.InstrumentId = instrumentdata.Id;
+            //    _unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+            //    _unitOfWork.SaveChanges();
+
+            //}
+            InstrumentQuarantine instrumentQuarantine = new InstrumentQuarantine()
 			{
 				InstrumentId = instrumentdata.Id,
 				Reason = "",
@@ -479,18 +496,23 @@ public class InstrumentService : IInstrumentService
             {
                 instrumentById.LC = instrument.LC;
             }
-            if (instrument.CalibFreq != null)
-            {
-                instrumentById.CalibFreq = instrument.CalibFreq;
-            }
+            
             if (instrument.UserRoleId == 2)
             {
                 if (instrument.UserDept != null)
                 {
                     instrumentById.UserDept = instrument.UserDept;
                 }
-            }
-            if (instrument.Make != null)
+                if (instrument.CalibFreq != null)
+                {
+                    instrumentById.CalibFreq = instrument.CalibFreq;
+                }
+                if (instrument.StandardReffered != null)
+				{
+					instrumentById.StandardReffered = instrument.StandardReffered;
+				}
+			}
+			if (instrument.Make != null)
             {
                 instrumentById.Make = instrument.Make;
             }
@@ -498,10 +520,7 @@ public class InstrumentService : IInstrumentService
             {
                 instrumentById.CalibSource = instrument.CalibSource;
             }
-            if (instrument.StandardReffered != null)
-            {
-                instrumentById.StandardReffered = instrument.StandardReffered;
-            }
+            
             if (instrument.Remarks != null)
             {
                 instrumentById.Remarks = instrument.Remarks;
@@ -1120,7 +1139,7 @@ public class InstrumentService : IInstrumentService
 
             int currentYear = DateTime.Now.Year;
             int currentMonth = DateTime.Now.Month;
-            instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Where(Q => Q.DueDate.Month == DateTime.Now.Month).Select(s => new InstrumentViewModel()
+            instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel).Where(Q => Q.DueDate.Value.Month == DateTime.Now.Month).Select(s => new InstrumentViewModel()
             {
                 Id = s.Id,
                 InstrumentName = s.InstrumentName,
@@ -1150,8 +1169,8 @@ public class InstrumentService : IInstrumentService
                 ResponseCode = 200,
                 ResponseMessage = "Success",
                 ResponseData = null,
-                ResponseDataList = instrumentList.Where(W => W.DueDate.Month == DateTime.Now.Month && W.
-                DueDate.Year == DateTime.Now.Year).ToList()
+                ResponseDataList = instrumentList.Where(W => W.DueDate.Value.Month == DateTime.Now.Month && W.
+                DueDate.Value.Year == DateTime.Now.Year).ToList()
             };
         }
         catch (Exception e)
@@ -1213,17 +1232,16 @@ public class InstrumentService : IInstrumentService
 
                         IdNo = dr["IdNo"].ToString(),
 
-                        DueDate = Convert.ToDateTime(dr["DueDate"]),
+                        DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
+                        DepartmentName = dr["deptName"].ToString(),
+						RequestId = Convert.ToInt32(dr["RequestId"]),
 
-                        DepartmentName = dr["deptName"].ToString()
+						//ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"])
 
-
-                        //ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"])
-
-                        //RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
-                        //UserRoleId = userRoleId,
-                        //RequestId= Convert.ToInt32(dr["RequestId"]),
-                    };
+						//RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						//UserRoleId = userRoleId,
+						//RequestId= Convert.ToInt32(dr["RequestId"]),
+					};
                     ToolInventoryList.Add(ObjinstView);
 
                 }
@@ -1278,8 +1296,7 @@ public class InstrumentService : IInstrumentService
                         //LC = dr["LC"].ToString(),
                         CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
                         CalibDate = Convert.ToDateTime(dr["CalibDate"]),
-                        DueDate = Convert.ToDateTime(dr["DueDate"]),
-                        //Make = dr["Make"].ToString(),
+						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),						
                         CalibSource = dr["CalibSource"].ToString(),
                         //StandardReffered = dr["StandardReffered"].ToString(),
                         Remarks = dr["Remarks"].ToString(),
@@ -1290,7 +1307,7 @@ public class InstrumentService : IInstrumentService
                         ToolRoomStatus = Convert.ToInt32(dr["ToolRoomStatus"]),
                         ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSectionCode = dr["SubSectionCode"].ToString(),
-						RequestId = Convert.ToInt32(dr["RequestId"]),
+						UserDept = Convert.ToInt32(dr["UserDept"]),						
 					};
                     ToolInventoryList.Add(ObjinstView);
 
@@ -1421,13 +1438,14 @@ public class InstrumentService : IInstrumentService
         sqlAdapter.Fill(dsResults);
         return dsResults;
     }
-    public DataSet SaveInventoryList(string ToolInventoryList)//, int deptid)
+    public DataSet SaveInventoryList(string ToolInventoryList,int userid)//, int deptid)
     {
         var connectionString = _configuration.GetConnectionString("CMTDatabase");
         SqlCommand cmd = new SqlCommand("SaveToolInventryInstrumentList");
         cmd.CommandType = CommandType.StoredProcedure;
 
 		cmd.Parameters.AddWithValue("@ToolInventoryList", ToolInventoryList);
+        cmd.Parameters.AddWithValue("@userid", userid); 
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -1454,14 +1472,16 @@ public class InstrumentService : IInstrumentService
                 Intrumentdata.Append(string.Format("<ToolRoomStatus>{0}</ToolRoomStatus>", (Int32)ToolRoomStatus.Completed));
 				Intrumentdata.Append(string.Format("<DueMonth>{0}</DueMonth>", Instrument.DueMonth));
 				Intrumentdata.Append(string.Format("<CalibFrequency>{0}</CalibFrequency>", Instrument.CalibFrequency));
+				Intrumentdata.Append(string.Format("<UserDept>{0}</UserDept>", (Int32)Instrument.UserDept)); 
 				Intrumentdata.Append(string.Format("<RequestId>{0}</RequestId>", (Int32)Instrument.RequestId));
+	            Intrumentdata.Append(string.Format("<IdNo>{0}</IdNo>", Instrument.IdNo)); 
 				Intrumentdata.Append("</InstrumentList>");
             }
 			
 
 			Intrumentdata.Append("</Root>");
 
-            var status = SaveInventoryList(Intrumentdata.ToString());
+            var status = SaveInventoryList(Intrumentdata.ToString(), UserId);
 
             return new ResponseViewModel<InstrumentViewModel>
             {
@@ -1520,8 +1540,8 @@ public class InstrumentService : IInstrumentService
 							Range = dr["Range"].ToString(),
 							LC = dr["LC"].ToString(),
 							CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
-							CalibDate = Convert.ToDateTime(dr["CalibDate"]),
-							DueDate = Convert.ToDateTime(dr["DueDate"]),
+							CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
+							DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
 							Make = dr["Make"].ToString(),
 							CalibSource = dr["CalibSource"].ToString(),
 							StandardReffered = dr["StandardReffered"].ToString(),

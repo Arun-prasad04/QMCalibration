@@ -47,4 +47,5 @@ public static class Constants
     public static string PDF_CERTIFICATE_UNCERTAINTY = "PDF_Certificate_Uncertainty";
 
 	public static string INSCONTROLLERNAME = "Home/ControlCard?instrumentId=";
+   
 } 

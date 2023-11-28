@@ -124,8 +124,8 @@ public class UserService : IUserService
 			};
 		}
 	}
-    
-    public ResponseViewModel<UserViewModel> GetUserById(int UserId)
+	
+	public ResponseViewModel<UserViewModel> GetUserById(int UserId)
 	{
 		try
 		{

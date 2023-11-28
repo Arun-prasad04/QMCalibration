@@ -36,6 +36,7 @@ public class HomeController : BaseController
 
 	public IActionResult Index()
 	{
+		
 		ViewBag.PageTitle = "DashBoard";
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));

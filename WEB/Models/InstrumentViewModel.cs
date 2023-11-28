@@ -20,8 +20,8 @@ namespace WEB.Models
         public int? Instrument_Type { get; set; }
         public int CalibFreq { get; set; }
         public DateTime? CalibDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public int UserDept { get; set; }
+		public DateTime? DueDate { get; set; }
+		public int UserDept { get; set; }
         public string? Make { get; set; }
         public string? CalibSource { get; set; }
         public string? StandardReffered { get; set; }
@@ -111,8 +111,14 @@ namespace WEB.Models
         public string? CalibrationRequestDate { get; set; }
 		public string? SubSectionCode { get; set; }
         public int? Inscount { get; set; }
-        
-    }
+
+		public DateTime? ReplacementStartDate { get; set; }
+
+        public string? backcolor { get; set; }
+
+        public DateTime? ReqDueDate { get; set; }
+
+	}
     public class Instrumentids
     {
         public string InstrumentId { get; set; }
@@ -120,7 +126,9 @@ namespace WEB.Models
         public string ReplacementLabId { get; set; }
 		public int CalibFrequency { get; set; }
 		public int DueMonth { get; set; }
+		public int UserDept { get; set; }
 		public int RequestId { get; set; }
+		public string IdNo { get; set; }
 	}
 
 	public class RequestAllView
@@ -128,6 +136,11 @@ namespace WEB.Models
         public int instrumentId { get; set; }
         public int TypeValue { get; set; }
         public string EmailServiceNo { get; set; }
+		public DateTime? DueDate { get; set; }
+		public DateTime? ReplacementStartDate { get; set; }
+		public int RequestId { get; set; }
+		
+
 
 	}
 		public class RequestMailList
