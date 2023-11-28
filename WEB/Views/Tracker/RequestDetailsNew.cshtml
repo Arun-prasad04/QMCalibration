@@ -622,7 +622,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="trn">Standard Refered/Calibration Method</label>
-                                        <input id="Acceptreason" style="width: 100%;" value="@Model.StandardReffered" disabled>
+                                        <input id="Acceptreason" style="width: 100%;" value="As Per External Calibration" disabled>  @*Model.StandardReffered*@
                                     </div>
                                 </div>
                             </div>
@@ -771,19 +771,39 @@
                             <div class="row">
                               
                             </div>
-                        </div>
-                        <div class="col-sm-6" style="text-align:right;">
+                            </div>*@
+                                @*  <div class="col-sm-6">
                             <!-- text input -->
-                            <div class="form-group mt-4">
-                                <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                       class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
-                                <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                            <div class="form-group">
+                            <label class="trn">Certification Template</label><br>
+                            <select id="NewCertification" class="form-control" style="width:100%; height:100%; padding:5px"> *@
+                                @*<option class="trn">-- Select Certification Template --</option>*@
+                                @*@foreach (var freq in @Model.CertificationTemplateList)
+                            {
+                            if (freq.Id == Model.CertificationTemplate)
+                            {
+                            <option value="@freq.Id" selected>@freq.AttrValue</option>
+                            }
+                            else
+                            {
+                            <option value="@freq.Id">@freq.AttrValue</option>
+                            }
+                            }*@
+                                @*  </select>
+                            </div>
+                            </div> *@
+
                             </div>
                         </div>
-
                     }
-                    
-                
+                    @*<div class="col-sm-6" style="text-align:right;">
+                        <!-- text input -->
+                        <div class="form-group mt-4">
+                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                   class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
+                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                        </div>
+                    </div>*@
                     @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
@@ -1101,7 +1121,7 @@
                     }
                     @* @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
                     {
-                        <div class="row">
+                        @*<div class="row">
                             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
                                 <!-- text input -->
 
@@ -1502,22 +1522,7 @@
                                 </div>
                             </div>
                         </div>
-                    }
-                    @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "4" &&  Model.Status==27)
-                    {
-                    <div class="row">
-                    <div class="col-sm-6">
-                    </div>
-                    <div class="col-sm-6">
-                    <!-- text input -->
-                    <div class="form-group" style="text-align:right;">
-                    <input style="margin-top: 32px;" type="button" class="btn btn-primary"
-                    name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-                    onclick="newSubmitReqDepVisual()">
-                    </div>
-                    </div>
-                    </div>
-                    } *@
+                    }                    
                 </div>
             </div>
         </div>

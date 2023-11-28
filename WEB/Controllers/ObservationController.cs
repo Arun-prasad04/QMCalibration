@@ -1534,7 +1534,7 @@ public class ObservationController : BaseController
             extObs.CalibrationPerformedDate = DateTime.Now;
             extObs.CalibrationReviewedDate = DateTime.Now;
             extObs.Grade = instrumentresponse.ResponseData.Grade;
-			extObs.CalibFreq = instrumentresponse.ResponseData.CalibFreq;
+            extObs.CalibFreq = instrumentresponse.ResponseData.CalibFreq;
             //extObs.RefWi = Constants.THREAD_GAUGE_REFERENCE_WITH_INDICATOR;
             if (userRoleId == 4)
             {
