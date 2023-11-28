@@ -292,7 +292,7 @@ namespace WEB.Services
 		public QRCodeFilesViewModel QRCodeGenerationForInstrument(QRCodeFilesViewModel qrCodeGenInputViewModel, int instrumentid)
 		{
 
-			string applicationUrl = _configuration["AppUrl"];
+			string applicationUrl = _configuration["ControlCardAppUrl"];
 			string qrEncodeText = string.Concat(applicationUrl, "/", qrCodeGenInputViewModel.TemplateName + instrumentid);
 
 			Guid guid = Guid.NewGuid();
