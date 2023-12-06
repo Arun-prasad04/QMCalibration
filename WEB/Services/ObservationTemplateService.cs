@@ -4377,7 +4377,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 
-	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks, int RequestId, DateTime DueDate)
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks, int RequestId, int DueDate)
 	{
 		try
 		{
@@ -4398,9 +4398,9 @@ public class ObservationTemplateService : IObservationTemplateService
 																		.SingleOrDefault();
 
 			var numberList = GenerateULRAndCertificateNumber(instrumentData.IsNABL);
-
-
-			_unitOfWork.BeginTransaction();
+            CMTDL _cmtdl = new CMTDL(_configuration);
+            string calibfreqDate = _cmtdl.CalculateDuedate(DueDate);
+            _unitOfWork.BeginTransaction();
 			observationById.CalibrationReviewedDate = reviewDate;
 			if (instrumentData.TypeOfEquipment == "External" || instrumentData.TypeOfEquipment == "外部の")
 			{
@@ -4480,7 +4480,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
-					ReqstData.ReqDueDate = DueDate;
+					ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); 
 					ReqstData.ReqStartDate = DateTime.Now;
 				}
 				else
@@ -4498,7 +4498,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 					if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "No")
 					{
-						ReqstData.ReqDueDate = DueDate;
+						ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); ;
 						ReqstData.ReqStartDate = DateTime.Now;
 					}
 					else if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
@@ -4611,7 +4611,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				string ObjSendingEmailRecalibration = "";
 				int iRegularCount = 0;
 				int iRecalibrationCount = 0;
-				CMTDL _cmtdl = new CMTDL(_configuration);
+				
 				string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
 				UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
 				List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(ReqstData.Id);

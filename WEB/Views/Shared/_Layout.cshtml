@@ -2008,6 +2008,8 @@
 
 			/////////////TEMPLATE PART START ////////////////////////
 			function ObservationTypeTranslation(lang) {
+
+				//alert('1');
 				var SelectObservation = $('#NewObservation').find("option:selected").val();;
 				var SelectMU = $('#NewMU').find("option:selected").val();
 				var SelectCertification = $('#NewCertification').find("option:selected").val();
@@ -2050,7 +2052,7 @@
 						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
 						optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
 						optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
-						optionhtmlCalibFreq = '<option value=""> -- 校正周波数の選択-- </option>';
+						optionhtmlCalibFreq = '<option value="0"> -- 校正周波数の選択-- </option>';
 						optionhtmlCalibStatus = '<option value=""> -- 校正ステータスの選択 -- </option>';
 						optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
 						optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
@@ -2061,7 +2063,7 @@
 						optionhtml = '<option value=""> -- Select Observation Template -- </option>';
 						optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
 						optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
-						optionhtmlCalibFreq = '<option value=""> -- Select Calibration Frequency -- </option>';
+						optionhtmlCalibFreq = '<option value="0"> -- Select Calibration Frequency -- </option>';
 						optionhtmlCalibStatus = '<option value=""> -- Select Calibration Status -- </option>';
 						optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
 						optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
@@ -2193,7 +2195,7 @@
 
 			/////////////TEMPLATE PART START ////////////////////////
 			function InstrumentObservationTypeTranslation(lang) {
-			
+					//alert('2');
 				//debugger;
 				var SelectObservation = $('#ObservationTemplate').find("option:selected").val();
 				var SelectMU = $('#MUTemplte').find("option:selected").val();
@@ -2254,7 +2256,7 @@
 						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
 						optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
 						optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
-						optionhtmlCalibFreq = '<option value=""> -- 校正周波数の選択-- </option>';
+						optionhtmlCalibFreq = '<option value="0"> -- 校正周波数の選択-- </option>';
 						optionhtmlCalibStatus = '<option value=""> -- 校正ステータスの選択 -- </option>';
 						optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
 						optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
@@ -2266,12 +2268,12 @@
 						optionhtml = '<option value=""> -- Select Observation Template -- </option>';
 						optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
 						optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
-						optionhtmlCalibFreq = '<option value=""> -- Select Calibration Frequency -- </option>';
+						optionhtmlCalibFreq = '<option value="0"> -- Select Calibration Frequency -- </option>';
 						optionhtmlCalibStatus = '<option value=""> -- Select Calibration Status -- </option>';
 						optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
 						optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
 						optionhtmlDesignation = '<option value=""> -- Select User Designation -- </option>';
-						optionhtmlCalibFreqId = '<option value=""> -- Select Calibration Frequency -- </option>';
+						optionhtmlCalibFreqId = '<option value="0"> -- Select Calibration Frequency -- </option>';
 					}
 					$("#ObservationTemplate").append(optionhtml);
 					$("#MUTemplate").append(optionhtmlMU);
@@ -2494,7 +2496,7 @@
 					$('#MUTemplate').val(SelectMU).prop("selected", true);
 					$('#CertificationTemplate').val(SelectCertification).prop("selected", true);
 					$('#CalibrationStatus').val(SelectCalibrationStatus).prop("selected", true);
-					$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);
+					$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);					
 					$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
 					$('#ObservationType').val(TmpOBStype).prop("selected", true);
 

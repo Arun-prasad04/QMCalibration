@@ -145,11 +145,12 @@ public class TrackerController : BaseController
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
+		ViewBag.CalibFreqExternal = response.ResponseData.CalibFreq;
 
 		return View(response.ResponseData);
 	}
 
-	public IActionResult AcceptRequest(int requestId, string InstrumentCondition, DateTime DueDate
+	public IActionResult AcceptRequest(int requestId, string InstrumentCondition, int DueDate
     , string Scope, DateTime TentativeCompletionDate, int newObservation, int CalibFreq, string ToolInventory
     , int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4)
 	{		
@@ -171,10 +172,10 @@ public class TrackerController : BaseController
 		return Json(response.ResponseData);
 	}
 
-	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy, string InstrumentIdNo, DateTime DueDate)
+	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy, string InstrumentIdNo, int CalibFreq)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy, InstrumentIdNo, DueDate);
+		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy, InstrumentIdNo, CalibFreq);
 		//return RedirectToAction("Index", "Home"); 
 		return Json(response.ResponseData);
 	}
@@ -255,11 +256,11 @@ public class TrackerController : BaseController
         return Json(response.ResponseData);
     }
 
-	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, DateTime DueDate)	
+	public IActionResult ExternalAcceptRequest(int requestId, string acceptReason, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, int CalibFreq, int DueDate)	
 	{
 		//return Json(true);
         int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase, StandardReffered, DueDate);
+        ResponseViewModel<RequestViewModel> response = _requestService.ExternalAcceptRequest(requestId, UserId, InstrumentCondition, Feasiblity, TentativeCompletionDate, InstrumentIdNo, acceptReason, ReceivedBy, httpPostedFileBase, StandardReffered, CalibFreq, DueDate);
         return Json(response.ResponseData);
     }
 
@@ -316,11 +317,11 @@ public class TrackerController : BaseController
         return Json(response.ResponseData);
     }
 
-	public IActionResult SaveExternalObs(int requestId,int InstrumentID, string InstrumentIdNo)
+	public IActionResult SaveExternalObs(int requestId,int InstrumentID, string InstrumentIdNo, int CalibFreq)
 	{
         //return Json(true);
         int UserId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<RequestViewModel> response = _requestService.SaveExternalObs(requestId, InstrumentID, UserId, InstrumentIdNo);
+        ResponseViewModel<RequestViewModel> response = _requestService.SaveExternalObs(requestId, InstrumentID, UserId, InstrumentIdNo, CalibFreq);
         return Json(true);
 	}
 
