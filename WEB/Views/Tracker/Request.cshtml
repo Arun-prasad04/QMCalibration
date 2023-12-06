@@ -218,12 +218,7 @@
 </script>
 
 <script>
-    //$(document).ready(function() {
-    //    alert('1')
-    //    GetAllRequest();
-    //});
-
-
+   
     function GetAllRequest(type) {
 
         if ($('input[name="ReqTracker"]:checked').val() == 'New') {
@@ -252,7 +247,7 @@
                     $('#example2').DataTable().destroy();
                 }
                 $('#example2 tbody').empty();
-                //console.log('Rqdata');
+              
                 console.log("-----data----------");
                 console.log(data);
                 //console.log(Object.keys(data).length);
@@ -283,7 +278,7 @@
                             tdStatus = "<td>Request Rejected</td>"
                         }
                         else if (item.status == 28 && item.Result == "Result") {
-                            tdStatus = "<td>Calibration Rejected</td>"
+                            tdStatus = "<td>Request Rejected</td>"
                         }
                         else if (item.status == 29 && item.labResult != "Rejected" && item.typeOfEquipment == 'External') {
                             tdStatus = "<td>Verification done</td>"
@@ -325,18 +320,26 @@
                     //var date = new Date(item.requestDate, "dd-MM-yyyy").toLocaleDateString();
                     var date = moment(item.requestDate).format("DD-MM-YYYY");
                         var currentdate =new Date();
+                        var redate = new Date(item.reqDueDate);
                       
                         var background = "";
                         
                         if (item.reqDueDate != null )
                         {
-
-                            if ((moment(item.reqDueDate).format('MM/DD/YYYY') < moment(currentdate).format('MM/DD/YYYY')) && (item.typeOfRequest == 1 || item.typeOfRequest == 2 || item.typeOfRequest == 3) && (item.status == 26 || item.status == 27 || item.status == 28 || item.status == 29 || item.status == 31) )
-                        {
+                            
+                           // if ((moment(item.reqDueDate).format('MM/DD/YYYY') < moment(currentdate).format('MM/DD/YYYY')) && (item.typeOfRequest == 1 || item.typeOfRequest == 2 || item.typeOfRequest == 3) && (item.status == 26 || item.status == 27 || item.status == 28 || item.status == 29 || item.status == 31) )
+                            if ((redate < currentdate) && (item.status != 30)) {
+                                // console.log("--date check---");
+                                // console.log(item.reqestNo);
+                                // console.log("currentdate");
+                                // console.log(currentdate);
+                                // console.log("redate");
+                                // console.log(redate);
                                 background = "background-color:  #fbefef;";
+                            }
                                 // background = "background-color: lightsalmon,tomato,#FF7F50,lightcoral;";
                         }
-                        }
+                       
                         var rows = "<tr style='"+background +"' >"
                         //var rows = "<tr>"
                         + "<td>" + item.reqestNo + "</td>"                        
@@ -352,7 +355,7 @@
                         + tdCertificate
                         + "<td>" + item.typeOfEquipment + "</td>"
                         + "</tr>";
-                        console.log(rows);
+                       // console.log(rows);
                     $('#example2 tbody').append(rows);
                     $('#dvload').hide();
                     
