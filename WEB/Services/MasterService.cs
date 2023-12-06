@@ -45,7 +45,7 @@ public class MasterService : IMasterService
 				DueDate = s.DueDate,
 				Range = s.Range,
 				SerialNo = s.SerialNo,
-				LabId = s.LabId,
+				LabId = s.EquipmentMasterId,
 				CertNo = s.CertNo,
 				Traceability = s.Traceability,
 				Name = s.SupplierModel.Name,

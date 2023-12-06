@@ -34,7 +34,7 @@
 	}
 	.TablesTextBox {
 		width: 100%;
-		height:50px;
+		/* height:50px; */
 	}
 
 	.TblInHeader {
@@ -62,7 +62,7 @@
 		width: 400px;
 		padding-bottom: 25px;
 	}
-</style
+</style>
 
 <!-- page1 start-->
 <body style="font-family: Calibri;">
@@ -102,11 +102,11 @@
 								<td class="TblSubTitle trn">Issue No/発行№</td>
 							@if ((Model.IssueNo == "") || (Model.IssueNo == null))
 							{
-								<td class="TblTitle1">: <input type="text" style="height: 50px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno"/></td>
+								<td class="TblTitle1">: <input type="text" style="height: 40px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno"/></td>
 							}
 							else
 							{
-							<td class="TblTitle1">: <input type="text" style="height: 50px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno" disabled/></td>
+							<td class="TblTitle1">: <input type="text" style="height: 40px;width:90%" value="@Model.IssueNo"  name="Issueno" id="Issueno" disabled/></td>
 								}
 								<td class="TblSubTitle trn">Acquisition date / 初回登録日</td>
 								<td class="TblTitle1 trn">: @Model.CreatedOn.ToString("dd-MM-yyyy")</td>
@@ -206,9 +206,13 @@
 
 </html>
  <script src="~/js/3.3.1Version/jquery.min.js"></script> 
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 	
 	$(document).ready(function () {
+		/* if ($.fn.dataTable.isDataTable('#TblRequest')) {
+			$('#TblRequest').DataTable().clear().destroy();
+		} */
 		var rows = "";
 		var DetailCol = "";
 		$.ajax({
@@ -219,11 +223,11 @@
 
 			$.each(data, function (i, item) {
 				if (item.inspectiondetails == '' || item.inspectiondetails == null) {
-					DetailCol = "<td class='TblSubHeader trn'><input type='text'class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' class='Inspect' name='Inspectiondetails' id='Inspectiondetails'><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
+					DetailCol = "<td class='trn'><input type='text' class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' name='Inspectiondetails' id='Inspectiondetails'><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
 
 				}
 				else { 
-					DetailCol = "<td class='TblSubHeader trn'><input type='text' class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' class='Inspect' name='Inspectiondetails' id='Inspectiondetails' disabled><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
+					DetailCol = "<td class='trn'><input type='text' class='TablesTextBox Inspect trn' value='" + item.inspectiondetails + "' name='Inspectiondetails' id='Inspectiondetails' disabled><input id='requestId' class='RequestId' name='requestId' type='hidden' value='" + item.requestId + "' /></td>";
 
 				
 				}
@@ -242,21 +246,20 @@
 				$('#TblRequest tbody').append(rows);
 
 			});
-			console.log(rows);
+			$("#TblRequest").DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				
+				});
+			/* $( "#TblRequest-table" ).DataTable(); */
 		});
-
+	  
 }); 
-$(function () {
-
-	var oTable = $('#TblRequest').dataTable({
-		stateSave: true,
-		'columnDefs': [{
-			'targets': [9], /* column index */
-			'orderable': false, /* true or false */
-		}],
-		dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-	});
-});
+	
+	
 </script>
