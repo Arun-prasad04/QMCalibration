@@ -678,10 +678,15 @@ public class RequestService : IRequestService
             instrumentById.IsNABL = newNABL;
 
             instrumentById.ToolInventory = ToolInventory;
+
+            if (instrumentById != null && newObservation != null)
+            { 
+            
+                instrumentById.ObservationTemplate = newObservation;
+            }
             if (requestById.TypeOfReqest == 1)
             {
-                instrumentById.ObservationTemplate = newObservation;
-                instrumentById.ObservationType = newObservationType;
+                //instrumentById.ObservationType = newObservationType;
                 instrumentById.CalibFreq = CalibFreq;
                 instrumentById.StandardReffered = standardReffered;
                 instrumentById.MasterInstrument1 = MasterInstrument1;
