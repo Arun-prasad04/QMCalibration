@@ -798,7 +798,7 @@ namespace WEB.Services
 		public DataSet GetInstruentList(int userid, int userroleid)
 		{
 			var connectionString = _configuration.GetConnectionString("CMTDatabase");
-			SqlCommand cmd = new SqlCommand("GetInstrumentList");
+			SqlCommand cmd = new SqlCommand("GetInstrumentList"); 
 			cmd.CommandType = CommandType.StoredProcedure;
 			cmd.Parameters.AddWithValue("@userid", userid);
 			cmd.Parameters.AddWithValue("@userroleid", userroleid);

@@ -1455,7 +1455,7 @@ public class ObservationController : BaseController
 	}
 	public JsonResult GetObservationContentSelectedList(List<Contentids> Contents,int InstrumentId , int TemplateObservationId )
 	{
-		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationContentSelectedList(Contents,InstrumentId,TemplateObservationId);
+		 ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationContentSelectedList(Contents,InstrumentId,TemplateObservationId);
 
 		return Json(response.ResponseDataList);
 

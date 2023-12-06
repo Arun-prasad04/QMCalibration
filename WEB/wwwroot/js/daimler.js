@@ -3523,152 +3523,6 @@ function UpdateControlCardRequest() {
 
 }
 
-function BindObservationTable() {
-
-    $.ajax({
-        type: 'GET',
-        url: '../Observation/GetObservationById',
-        dataType: 'json',
-        data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
-    }).done(function (resultObject) {
-
-        var rowhead = "";
-        var rowContentCW = '';
-        var rowContentIN = '';
-        var rowContentSW = '';
-
-        var InCount = 0;
-        for (let i = 0; i < resultObject.length; i++) {
-            var IdName = resultObject[i].typeOfContent;
-
-            var tblId = 'TblObservation' + i;
-            var tableIN = '<table id="IN' + tblId + '" style="text-align:center;">';
-            var tableCW = '<table id="CW' + tblId + '" style="text-align:center;">';
-            var tableSW = '<table id="SW' + tblId + '" style="text-align:center;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
-
-            if (IdName == 'CW') {
-                var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
-
-            }
-            else if (IdName == 'SW') {
-                var rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
-
-            }
-            else if (IdName == 'IN') {
-                var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td style="width: 10%">' + resultObject[i].contentSubTitle2 + '</td><td style="width: 15%">' + resultObject[i].contentSubTitle3 + '</td></tr>';
-            }
-
-            var rowBodyCW = '<tbody>';
-            var rowBodyIN = '<tbody>';
-            var rowBodySW = '<tbody>';
-
-            var objcontentCount = resultObject[i].contentCount;
-
-            var title = "";
-            var contentsubheadingIN = "";
-
-            if (IdName == 'IN') {
-
-                if (InCount == 3) {
-                    InCount = 0
-                }
-                if (objcontentCount > 1) {
-                    InCount = InCount + 1;
-                    if (InCount == 2) {
-                        title = resultObject[i].contentValue.trim();
-
-                        contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-
-                    }
-                    else {
-
-                        title = "";// resultObject[i].contentValue.trim();
-                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-                    }
-                }
-                else //if (InCount == 1)
-                {
-
-                    title = resultObject[i].contentValue.trim();
-                    contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-                }
-
-            }
-
-            if (IdName == 'CW') {
-
-                rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-                    '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                    '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-                    '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-                    '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-                    '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
-                    '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
-
-            }
-            else if (IdName == 'SW') {
-
-                rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-                    '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                    '<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
-                    '<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-                    '<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-                    '<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
-            }
-            else if (IdName == 'IN') {
-
-                rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-                    + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-                    '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                    '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-                    '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
-
-            }
-
-        }
-
-
-        rowBodyCW += rowContentCW;
-        rowBodyIN += rowContentIN;
-        rowBodySW += rowContentSW;
-
-        rowBodyCW += '</tbody></table><br/>';
-        rowBodyIN += '</tbody></table><br/>';
-        rowBodySW += '</tbody></table><br/>';
-
-        tableCW += rowheadCW;
-        tableCW += rowBodyCW;
-
-        tableIN = tableIN + rowheadIN;
-        tableIN += rowBodyIN;
-        console.log("rowheadIN");
-        console.log(rowheadIN);
-
-
-        tableSW += rowheadSW;
-        tableSW += rowBodySW;
-
-        if (rowContentSW == "") {
-
-            tableSW = "";
-        }
-        if (rowContentIN == "") {
-
-            tableIN = "";
-        }
-        if (rowContentCW == "") {
-
-            tableCW = "";
-        }
-        $("#dvTable").html("");
-        var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
-        var dvTable = $("#dvTable");
-        dvTable.append(tables);
-
-    });
-
-}
-
 function getDepartmantDueInstruments(DueMonth) {
     window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
       
@@ -3694,5 +3548,779 @@ function getDueInstruments(DueMonth) {
     else if ($('input[name="Month3"]:checked').val() == '3') {
         window.location.href = '../Tracker/DueInstrument?month=' + DueMonth + '';
     }
+
+}
+function removeTrow(index) {
+    if (counter > 1) {
+        $('#INTblObservation' + index).remove();
+        counter--;
+    }
+    return false;
+}
+$(document).on('click', '.addIN', (e) => {
+    var counter = $('#INTblObservation >tbody >tr').length;
+    var SNo = $('#INTblObservation >tbody >tr').length;
+    var headingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + counter + '" name = "Head[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "" disabled />';
+
+    tbLINSNo += 1;   
+    $('#INTblObservation > tbody:last-child').append('<tr>' + headingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=" "/></td>'
+        + '<td id="IN"><input id="SNO' + counter + '" name="SNO[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + tbLINSNo + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLINContentId + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+        '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + counter + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+        '<td id="IN"><input id="Actual" name="Actual[' + counter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "" /> </td>' +
+        '<td id="IN"><input id="Avg" name = "Avg[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td></tr>');
+    counter++;
+    SNo++;
+    return false;
+});
+$(document).on('click', '.btnSaveApproval', (e) => {
+
+
+    var Unit = $('#Units').val();
+    if (Unit == null || Unit == "") {
+        showWarning("Please enter the Units", language);
+        return false;;
+    }
+    var Temprature = $('#TempStart').val();
+    if (Temprature == null || Temprature == "") {
+        showWarning("Please enter the Temprature !!!", language);
+        return false;
+    }
+    var Humidity = $('#Humidity').val();
+    if (Humidity == null || Humidity == "") {
+        showWarning("Please enter the Humidity", language);
+        return false;
+    }
+    var VisualCheckCondition = $('#VisualCheckCondition').val();
+    if (VisualCheckCondition == null || VisualCheckCondition == "") {
+        showWarning("Please enter the Visual Check", language);
+        return false;
+    }
+
+    var ObservationContentValues = new Array();
+    var ObservationContent = new Array();
+    var ObservationContenMapping = new Array();
+    $(".content").each(function () {
+
+        $(this).find('table').each(function () {
+
+
+            $(this).find('tr').each(function () {
+                console.log($(this).find('td'));
+                var currentRow = $(this).find('td').attr('id');
+
+                var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
+                console.log(contentvalueid);
+
+                if ((contentvalueid == "0") || (contentvalueid == "")) {
+                    contentvalueid = null
+                }
+                console.log($(this).find("input[name = HiddenContentId]").val());
+                if ($(this).find("input[name = HiddenContentId]").val() > 0) {
+
+                    var ObservationContenMappingData = {
+
+                        Id: $(this).find("input[name = HiddenMappingId]").val(),
+                        Sno: $(this).find("td:eq(1) input[type='text']").val(),
+                        ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                        ObservationId: $('#TemplateObservationId').val(),
+                        InstrumentId: $('#InstrumentId').val(),
+                        CreatedBy: "",
+                        CreatedOn: "",
+                        IsActive: true
+                    }
+                    ObservationContenMapping.push(ObservationContenMappingData);
+                    if (currentRow == 'CW') {
+                        console.log("contentvalueid cw");
+                        console.log(contentvalueid);
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue: "",
+                            ActualValue: "",
+                            InstrumentError: "",
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: $(this).find("td:eq(2) input[type='text']").val(),
+                            MeasuedValue2: $(this).find("td:eq(3) input[type='text']").val(),
+                            MeasuedValue3: $(this).find("td:eq(4) input[type='text']").val(),
+                            Average: $(this).find("td:eq(5) input[type='text']").val(),
+                            Percent: $(this).find("td:eq(6) input[type='text']").val(),
+                            ContentId: $(this).find("input[name = HiddenContentId]").val()
+                        }
+                        //}
+                        ObservationContentValues.push(ObservationContenValuesData);
+                    }
+                    else if (currentRow == 'SW') {
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue: $(this).find("td:eq(2) input[type='text']").val(),
+                            ActualValue: "",
+                            InstrumentError: "",
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: $(this).find("td:eq(3) input[type='text']").val(),
+                            MeasuedValue2: $(this).find("td:eq(4) input[type='text']").val(),
+                            MeasuedValue3: $(this).find("td:eq(5) input[type='text']").val(),
+                            Average: "",
+                            Percent: "",
+                            ContentId: $(this).find("input[name = HiddenContentId]").val()
+                        }
+                        //}
+                        ObservationContentValues.push(ObservationContenValuesData);
+                    }
+                    else if (currentRow == 'IN') {
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue: $(this).find("td:eq(2) input[type='text']").val(),
+                            ActualValue: $(this).find("td:eq(3) input[type='text']").val(),
+                            InstrumentError: $(this).find("td:eq(4) input[type='text']").val(),
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: "",
+                            MeasuedValue2: "",
+                            MeasuedValue3: "",
+                            Average: "",
+                            Percent: "",
+                            ContentId: $(this).find("input[name = HiddenContentId]").val()
+                            //}
+                        }
+                        ObservationContentValues.push(ObservationContenValuesData);
+                        console.log("ObservationContentValues");
+                        console.log(ObservationContentValues);
+                    }
+                }
+
+            });
+        });
+
+    });
+
+    var data = {
+        Id: $('#Id').val(),
+        InstrumentId: $('#InstrumentId').val(),
+        RequestId: $('#RequestId').val(),
+        TempStart: $('#TempStart').val(),
+        Humidity: $('#Humidity').val(),
+        Units: $('#Units').val(),
+        Condition: $('#VisualCheckCondition').val(),
+        ObservationContentValuesList: ObservationContentValues,
+        ObservationContentMappingList: ObservationContenMapping
+    }
+    console.log(data);
+    $.ajax({
+        url: '../Observation/InsertDynamicObservationContent',
+        type: 'POST',
+        data: { dynamic: data },
+        dataType: "json",
+    }).done(function (resultObject) {
+        window.location.href = '../Tracker/Request?reqType=4';
+        showSuccess("Data Saved Successfully", lang);
+    });
+
+});
+
+$(document).on('click', '.addCW', (e) => {
+    
+    var CWcounter = $('#CWTblObservation >tbody >tr').length;
+    var CWSNo = $('#CWTblObservation >tbody >tr').length;
+    tbLCWSNo += 1;
+    
+    $('#CWTblObservation > tbody:last-child').append('<tr><td style="width: 30%" id="CW"><input id="Head' + CWcounter + '" name="Head[' + CWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+        '<td id="CW"><input id="SNO' + CWcounter + '" name="SNO[' + CWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + tbLCWSNo + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLCWContentId + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+        '<td id="CW"><input id="Value1" name="Value1[' + CWcounter + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
+        '<td id="CW"><input id="Value2" name="Value2[' + CWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
+        '<td id="CW"><input id="Value3" name="Value3[' + CWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
+        '<td id="CW"><input id="Average" name="Average[' + CWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
+        '<td id="CW"><input id="Percentage" name = "Percentage[' + CWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td></tr>');
+    CWcounter++;
+    CWSNo++;
+    return false;
+});
+
+$(document).on('click', '.addSW', (e) => {
+    var SWcounter = $('#SWTblObservation >tbody >tr').length;
+    var SWSNo = $('#SWTblObservation >tbody >tr').length;
+   
+    tbLSWSNo += 1;
+   
+    $('#SWTblObservation > tbody:last-child').append('<tr><td style="width: 30%" id="SW"><input id="Head' + SWcounter + '" name="Head[' + SWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+        '<td id="SW"><input id="SNO' + SWcounter + '" name="SNO[' + SWcounter + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + tbLSWSNo + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLSWContentId + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+        '<td id="SW"><input id="SWValue1" name="SWValue1[' + SWcounter + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+        '<td id="SW"><input id="SWValue2" name="SWValue1[' + SWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+        '<td id="SW"><input id="SWValue3" name="SWValue1[' + SWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+        '<td id="SW"><input id="SWValue4" name="SWValue1[' + SWcounter + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td></tr >');
+
+    SWcounter++;
+    SWSNo++;
+    return false;
+});
+$(document).on('click', '.btn-Generate', (e) => {
+
+    //$('#dvTable').html("");
+    var rowNewContentCW = "";
+    var rowNewContentIN = "";
+    var rowNewContentSW = "";
+    var obsContentValueId = "";
+    var rowContentCW = "";
+    var rowContentIN = "";
+    var rowContentSW = "";
+    var rowBodyCW = "";
+    var rowBodyIN = "";
+    var rowBodySW = "";
+    var tblId = "";
+    var tableIN = "";
+    var tableCW = "";
+    var tableSW = "";
+    var rowheadCW = "";
+    var rowheadSW = "";
+    var rowheadIN = "";
+    var icount = 0;
+    var ContentDataList = new Array();
+    var addInRow = "";
+    var addCWRow = "";
+    var addSWRow = "";
+    var tblContentRowcount = 0;
+    $('#ContentSelect > :selected').each(function () {
+        //for xml start       
+        var ContentData =
+        {
+            ContentId: $(this).val()//,
+          
+        }
+        ContentDataList.push(ContentData);
+
+    });
+    $.ajax({
+        dataType: 'json',
+        url: '../Observation/GetObservationContentSelectedList',
+        type: 'POST',
+        data: { Contents: ContentDataList, InstrumentId: $('#InstrumentId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
+    }).done(function (resultObject) {
+        
+        tbllengthcount = resultObject.length;
+        var InCount = 0;
+        for (let i = 0; i < resultObject.length; i++) {
+            var IdName = resultObject[i].typeOfContent;
+            if (tbLINContentId == resultObject[i].id) {
+
+                tblContentRowcount += 1;
+            }
+            else {
+
+                tblContentRowcount = 1;
+            }
+            tblId = 'TblObservation' + i;
+            if (IdName == 'CW') {
+
+                rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+
+            }
+            else if (IdName == 'SW') {
+
+                rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
+
+            }
+            else if (IdName == 'IN') {
+
+                rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+            }
+            ///////////////////// contentvalueid>0////////////////<td style="width: 15%">
+            tbLINContentId = resultObject[i].id;
+            tbLCWContentId = resultObject[i].id;
+            tbLSWContentId = resultObject[i].id;
+
+            if (tblContentRowcount == 1) {
+
+                title = resultObject[i].contentValue.trim(); // resultObject[i].contentValue.trim();
+                contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                contentsubheadingSW = '<td style="width: 30%;border:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+                contentsubheadingCW = '<td style="width: 30%;border:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+
+            }
+            else {
+                title = "";
+                contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                contentsubheadingSW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+                contentsubheadingCW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+            }
+
+            if (resultObject[i].obsContentValueId > 0) {
+                var sno = resultObject[i].sno;
+                var addsno = sno + 1;
+                var objcontentCount = resultObject[i].contentCount;
+
+                var title = "";
+                var contentsubheadingIN = "";
+
+                if (IdName == 'IN') {
+
+                    if (InCount == 3) {
+                        InCount = 0;
+                    }
+                    if (objcontentCount > 1) {
+                        InCount = InCount + 1;
+                        if (InCount == 2) {
+                            title = resultObject[i].contentValue.trim();
+
+                            contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+
+                        }
+                        else {
+
+                            title = "";// resultObject[i].contentValue.trim();
+                            contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                        }
+                    }
+                    else //if (InCount == 1)
+                    {
+                        title = resultObject[i].contentValue.trim();
+                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                    }
+
+                }
+              
+                sno = resultObject[i].sno;
+                if (IdName == 'CW') {
+                    tbLCWContentId = resultObject[i].id;
+                    rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                        '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                        '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                        '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                        '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+                        '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+                        '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled ></td></tr>';
+                    //'<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow();"></i></td></tr>';
+
+                    addsno = sno + 1;
+                    tbLCWSNo = addsno;
+                  
+                    rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                        '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                        '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
+                        '<td id="CW"><input id="Value2" name="Value2[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
+                        '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
+                        '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
+                        '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td></tr>';
+
+
+                }
+                else if (IdName == 'SW') {
+                    tbLSWContentId = resultObject[i].id;
+                    rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                        '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                        '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+                        '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                        '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                        '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+                   
+                    addsno = sno + 1;
+                    tbLSWSNo = addsno;
+                  
+                    rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "0" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                        '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                        '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                        '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                        '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                        '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td></tr > '
+
+                }
+                else if (IdName == 'IN') {
+                    tbLINContentId = resultObject[i].id;
+                    rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
+                        + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                        '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                        '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+                        '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+                   
+                    addsno = sno + 1;                    
+                    tbLINSNo = addsno;                   
+                    title = "";
+                    rowNewContentIN = '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""/></td>'
+                        + '<td id="IN"><input id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                        '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                        '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+                        '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+                     }
+                icount += i;
+
+            }
+
+            ///////////////////// contentvalueid>0 ////////////////
+            else if (resultObject[i].obsContentValueId == 0) {
+
+                for (let j = 1; j <= resultObject[i].contentCount; j++) {
+
+                    var objcontentCount = resultObject[i].contentCount;
+
+                    var title = "";
+                    var contentsubheadingIN = "";
+
+                    if ((objcontentCount > 1) && (j == 2)) {//new mode
+
+                        title = resultObject[i].contentValue.trim();
+                        contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+
+                    }
+                    else if (objcontentCount == 1) {
+
+                        title = resultObject[i].contentValue.trim();
+                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                    }
+                    else {
+
+                        title = " ";
+                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                    }
+                    if (IdName == 'CW') {
+
+                        rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                            '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                            '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                            '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                            '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+                            '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+                            '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td></tr>';
+
+                        rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/> <td> ' +
+                            '<td id="CW"><input id="SNO' + icount + '" name="SNO[' + icount + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + j + 1 + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                            '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
+                            '<td id="CW"><input id="Value2" name="Value2[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
+                            '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
+                            '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
+                            '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td></tr>';
+                        // tbLCWContentId = resultObject[i].id;
+                        tbLCWSNo = j;
+
+                    }
+                    else if (IdName == 'SW') {
+                        rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                            '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                            '<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+                            '<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                            '<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                            '<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+
+
+                        rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + icount + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                            '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + icount + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + 1 + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                            '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                            '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                            '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                            '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td></tr > '
+
+                        // tbLSWContentId = resultObject[i].id;
+                        tbLSWSNo = j;
+                    }
+                    else if (IdName == 'IN') {
+
+                        rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
+                            + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                            '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                            '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+                            '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+                        var headingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + icount + '" name = "Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "" disabled />';
+
+                        rowNewContentIN = '<tr>' + headingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""/></td>'
+                            + '<td id="IN"><iheadingINnput id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + 1 + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                            '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                            '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "" /> </td>' +
+                            '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td></tr>'
+
+                        tbLINContentId = resultObject[i].id;
+                        tbLINSNo = j;
+                       
+                    }
+                    icount = i + j;
+
+                }
+
+            }
+
+        }
+        
+        icount = icount + 1;
+
+        rowBodyCW = rowContentCW;
+        rowBodyIN = rowContentIN;
+        rowBodySW = rowContentSW;
+       
+        tableIN = '<table id="INTblObservation" style="text-align:center;">';
+        tableCW = '<table id="CWTblObservation" style="text-align:center;">';
+        tableSW = '<table id="SWTblObservation" style="text-align:center;">';
+
+        rowBodyCW = '<tbody>' + rowContentCW + '</tbody></table><br/>';
+        tableCW += rowheadCW;
+        tableCW += rowBodyCW;
+
+        rowBodyIN = '<tbody>' + rowContentIN + '</tbody></table><br/>';
+        tableIN += rowheadIN;
+        tableIN += rowBodyIN;
+
+        rowBodySW = '<tbody>' + rowContentSW + '</tbody></table><br/>';
+        tableSW += rowheadSW;
+        tableSW += rowBodySW;
+
+
+        // add new button
+        addInRow = '<br><tr><p align="right"><button style="align-content: right;" class="addIN" id = "addIN" name = "addIN" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+
+        addCWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addCW" id = "addCW" name = "addCW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+
+        addSWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addSW" id = "addSW" name = "addSW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+        // add new button
+        if (rowContentSW == "") {
+            
+            tableSW = "";
+            addSWRow = "";
+        }
+        if (rowContentIN == "") {
+            
+            tableIN = "";
+            addInRow = "";
+        }
+        if (rowContentCW == "") {
+            
+            tableCW = "";
+            addCWRow = "";
+        }
+       
+        $("#dvTable").html("");
+        var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW;
+        var dvTable = $("#dvTable");
+        dvTable.append(tables);
+    });
+
+});
+
+function BindObservationTable() {
+
+    $.ajax({
+        type: 'GET',
+        url: '../Observation/GetObservationById',
+        dataType: 'json',
+        data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
+    }).done(function (resultObject) {
+        var rowNewContentCW = "";
+        var rowNewContentIN = "";
+        var rowNewContentSW = "";
+        var rowhead = "";
+        var rowContentCW = '';
+        var rowContentIN = '';
+        var rowContentSW = '';
+        var icount = 0;
+        var InCount = 0;
+        var tblContentRowcount = 0;
+        console.log("obervation resultObject");
+
+        console.log(resultObject);
+        for (let i = 0; i < resultObject.length; i++) {
+            var IdName = resultObject[i].typeOfContent;
+
+            var tblId = 'TblObservation' + i;
+            //var tableIN = '<table id="IN' + tblId + '" style="text-align:center;">';
+            //var tableCW = '<table id="CW' + tblId + '" style="text-align:center;">';
+            //var tableSW = '<table id="SW' + tblId + '" style="text-align:center;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
+
+            var tableIN = '<table id="INTblObservation" style="text-align:center;">';
+            var tableCW = '<table id="CWTblObservation" style="text-align:center;">';
+            var tableSW = '<table id="SWTblObservation" style="text-align:center;">';
+            if (IdName == 'CW') {
+                var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+
+            }
+            else if (IdName == 'SW') {
+                var rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
+
+            }
+            else if (IdName == 'IN') {
+                var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+            }
+
+            var rowBodyCW = '<tbody>';
+            var rowBodyIN = '<tbody>';
+            var rowBodySW = '<tbody>';
+
+            var objcontentCount = resultObject[i].contentCount;
+
+            var title = "";
+            var contentsubheadingIN = "";
+            var contentsubheadingCW = "";
+            var contentsubheadingSW = "";
+            var contentid = resultObject[i].id;
+
+            if (tbLINContentId == resultObject[i].id) {
+
+                tblContentRowcount += 1;
+            }
+            else {
+
+                tblContentRowcount = 1;
+            }
+
+            if (IdName == 'IN') {
+
+                if (InCount >= 3) {// if (InCount == 3) {
+                    InCount = 0
+                }
+                if (objcontentCount > 1) {
+                    InCount = InCount + 1;
+                    if ((InCount == 2) || (InCount == 4) || (InCount == 5) || (InCount == 6)) {
+                        title = resultObject[i].contentValue.trim();
+
+                        contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+
+                    }
+                    else {
+
+                        title = "";// resultObject[i].contentValue.trim();
+                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                    }
+                }
+                else //if (InCount == 1)
+                {
+
+                    title = resultObject[i].contentValue.trim();
+                    contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                }
+
+            }
+            if (tblContentRowcount == 1) {
+
+                title = resultObject[i].contentValue.trim(); // resultObject[i].contentValue.trim();
+                contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                contentsubheadingSW = '<td style="width: 30%;border:none;"  id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+                contentsubheadingCW = '<td style="width: 30%;border:none;"  id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+
+            }
+            else {
+                title = "";
+
+                contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                contentsubheadingSW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+                contentsubheadingCW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+            }
+
+            var sno = resultObject[i].sno;
+            var addsno = sno + 1;
+            tbLINContentId = resultObject[i].id;
+            tbLCWContentId = resultObject[i].id;
+            tbLSWContentId = resultObject[i].id;
+            if (IdName == 'CW') {
+                //'<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                rowContentCW += '<tr>' + contentsubheadingCW + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                    '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + resultObject[i].sno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                    '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                    '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
+                    '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
+                    '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td>';
+                //  +'<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow();"></i></td></tr>';
+
+                rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                    // rowNewContentCW = '<tr>' + contentsubheadingCW +'<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                    '<td id="CW"><input id="SNO' + icount + '" name="SNO[' + i + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = ' + addsno + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                    '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
+                    '<td id="CW"><input id="Value2" name="Value2[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
+                    '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
+                    '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
+                    '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td></tr>';
+                /* '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow();"></i></td></tr>';*/
+                tbLCWSNo = addsno;
+            }
+            else if (IdName == 'SW') {
+                //'<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                rowContentSW += '<tr>' + contentsubheadingSW + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                    '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    '<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
+                    '<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
+                    '<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
+                    '<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td></tr > '
+                //  var addsno = sno + 1;
+
+                rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                    '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                    '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                    '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                    '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
+                    '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td></tr > '
+                tbLSWSNo = addsno;
+            }
+            else if (IdName == 'IN') {
+
+                rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
+                    + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+                    '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td></tr>'
+
+                title = "";
+                var headingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + icount + '" name = "Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "" disabled />';
+
+                rowNewContentIN = '<tr>' + headingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=" "/></td>'
+                    + '<td id="IN"><input id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
+                    '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                    '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "" /> </td>' +
+                    '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td></tr>'
+                /* tbLINContentId = resultObject[i].id; */
+                tbLINSNo = addsno;
+            }
+
+        }
+
+
+        rowBodyCW += rowContentCW;
+        rowBodyIN += rowContentIN;
+        rowBodySW += rowContentSW;
+
+        rowBodyCW = rowBodyCW + rowNewContentCW + '</tbody></table><br/>';
+        rowBodyIN = rowBodyIN + rowNewContentIN + '</tbody></table><br/>';
+        rowBodySW = rowBodySW + rowNewContentSW + '</tbody></table><br/>';
+
+        tableCW += rowheadCW;
+        tableCW += rowBodyCW;
+
+        tableIN = tableIN + rowheadIN;
+        tableIN += rowBodyIN;
+
+        tableSW += rowheadSW;
+        tableSW += rowBodySW;
+
+        // add new button
+        addInRow = '<br><tr><p align="right"><button style="align-content: right;" class="addIN" id = "addIN" name = "addIN" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+
+        addCWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addCW" id = "addCW" name = "addCW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+
+        addSWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addSW" id = "addSW" name = "addSW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+        // add new button
+        if (rowContentSW == "") {
+            //alert("sw");
+            tableSW = "";
+            addSWRow = "";
+        }
+        if (rowContentIN == "") {
+            //alert("IN");
+            tableIN = "";
+            addInRow = "";
+        }
+        if (rowContentCW == "") {
+            //alert("cw");
+            tableCW = "";
+            addCWRow = "";
+        }
+
+        $("#dvTable").html("");
+        var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW;
+        //var tables = tableCW + "<br/>" + addInRow + tableIN + "<br/>" + tableSW;
+        var dvTable = $("#dvTable");
+        dvTable.append(tables);
+
+    });
 
 }

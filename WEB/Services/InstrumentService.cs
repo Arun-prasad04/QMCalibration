@@ -60,14 +60,14 @@ public class InstrumentService : IInstrumentService
 						SlNo = dr["SlNo"].ToString(),
 						IdNo = dr["IdNo"].ToString(),
 						Range = dr["Range"].ToString(),
-						LC = dr["LC"].ToString(),
-						CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+						//LC = dr["LC"].ToString(),
+						//CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
 						CalibDate = Convert.ToDateTime(dr["CalibDate"]),
 						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
-						Make = dr["Make"].ToString(),
-						CalibSource = dr["CalibSource"].ToString(),
-						StandardReffered = dr["StandardReffered"].ToString(),
-						Remarks = dr["Remarks"].ToString(),
+						//Make = dr["Make"].ToString(),
+						//CalibSource = dr["CalibSource"].ToString(),
+						//StandardReffered = dr["StandardReffered"].ToString(),
+						//Remarks = dr["Remarks"].ToString(),
 						Status = Convert.ToInt16(dr["Status"]),
                         RequestId = Convert.ToInt32(dr["RequestId"]),
                         //FileList = 
@@ -80,8 +80,8 @@ public class InstrumentService : IInstrumentService
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSecCode = dr["SubSectionCode"].ToString(),
-                        ToolInventory = dr["ToolInventory"].ToString(),
-						ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
+                        //ToolInventory = dr["ToolInventory"].ToString(),
+						//ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
 						//backcolor = dr["backcolor"].ToString(),
 						ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
 					};
@@ -620,7 +620,19 @@ public class InstrumentService : IInstrumentService
 
 			_unitOfWork.Repository<Instrument>().Update(instrumentById);
 			_unitOfWork.SaveChanges();
+
+           
+				Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentById.Id).OrderByDescending(O => O.Id).SingleOrDefault();
+            if (requestById.ReqDueDate != null) {
+                requestById.ReqDueDate = instrumentById.DueDate;
+
+			}
+			_unitOfWork.Repository<Request>().Update(requestById);
+			_unitOfWork.SaveChanges();
 			_unitOfWork.Commit();
+
+
+			
 			return new ResponseViewModel<InstrumentViewModel>
 			{
 				ResponseCode = 200,
