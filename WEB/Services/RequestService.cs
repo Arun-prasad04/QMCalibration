@@ -353,47 +353,46 @@ public class RequestService : IRequestService
                 TypeOfEquipment = s.InstrumentModel.TypeOfEquipment,
                 ToolInventory = s.InstrumentModel.ToolInventory
             }).SingleOrDefault();
-			
-			if (RequestById.ReceivedBy != null)
+            
+            if (RequestById.ReceivedBy != null)
 			{
 				UserViewModel ReceivedUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(RequestById.ReceivedBy)).SingleOrDefault());
 				RequestById.ReceivedByName = ReceivedUserById.FirstName + " " + ReceivedUserById.LastName;
-			}
-			if (RequestById.Status == 27 || RequestById.Status == 30)
+			}            
+            if (RequestById.Status == 27 || RequestById.Status == 30)
 			{
 				List<TemplateObservation> TemplateObservationList = _unitOfWork.Repository<TemplateObservation>().GetQueryAsNoTracking(g => g.RequestId == RequestById.Id).ToList();
 				RequestById.ReviewedStatus = TemplateObservationList.Where(w => w.RequestId == RequestById.Id).Select(q => q.ReviewStatus).FirstOrDefault();
 				RequestById.AdminReviewStatus = TemplateObservationList.Where(w => w.RequestId == RequestById.Id).Select(q => q.ExternalObsStatus).FirstOrDefault();
-			}
-			//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
-			//RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
-			//RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
-			//RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
-			//RequestById.MasterInstrumentName4 = MasterList.Where(w => w.Id == RequestById.MasterInstrument4).Select(q => q.EquipName).SingleOrDefault();
+			}            
+            //List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
+            //RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
+            //RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
+            //RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
+            //RequestById.MasterInstrumentName4 = MasterList.Where(w => w.Id == RequestById.MasterInstrument4).Select(q => q.EquipName).SingleOrDefault();
 
             InstrumentViewModel instrumentEmptyViewModel = new InstrumentViewModel();
-            List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());
-            List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
+            List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Instrument").ToList());			
+			List<LovsViewModel> lovsListFrquency = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());            
             instrumentEmptyViewModel.InstrumentStatusList = lovsList.Where(W => W.AttrName == "InstrumentStatus").ToList();
-            instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();
+            instrumentEmptyViewModel.StatusList = lovsList.Where(W => W.AttrName == "Status").ToList();            
             instrumentEmptyViewModel.TemplateNameList = lovsList.Where(W => W.AttrName == "TemplateName").ToList();
-            RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();
+            RequestById.CalibFreqList = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq").ToList();            
             instrumentEmptyViewModel.CalibrationStatusList = lovsList.Where(W => W.AttrName == "CalibrationStatus").ToList();            
-            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate" && W.IsActive == true).ToList();
+            RequestById.ObservationTemplateList = lovsList.Where(W => W.AttrName == "ObservationTemplate" && W.IsActive == true).ToList();            
             RequestById.MUTemplateList = lovsList.Where(W => W.AttrName == "MUTemplate").ToList();
-            RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();
+            RequestById.CertificationTemplateList = lovsList.Where(W => W.AttrName == "CerTemplate").ToList();            
             RequestById.LovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.AttrName == "ObservationType").ToList());
-            instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());
+            instrumentEmptyViewModel.MasterData = _mapper.Map<List<MasterViewModel>>(_unitOfWork.Repository<Master>().GetQueryAsNoTracking().ToList());            
             var CFreq = RequestById.CalibFreq;
-            RequestById.CalibFrequency = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq" && W.Id == CFreq).Select(x => x.AttrValue).SingleOrDefault();
-            List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == RequestId).ToList();
+            RequestById.CalibFrequency = lovsListFrquency.Where(W => W.AttrName == "CalibrationFreq" && W.Id == CFreq).Select(x => x.AttrValue).SingleOrDefault();		
+			List<Uploads> UploadList = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(g => g.RequestId == RequestId).ToList();            
             if (UploadList.Count > 0)
             {
                 RequestById.MUTemplateFileName = UploadList.Where(w => w.RequestId == RequestId).Select(q => q.FileName).Take(1).SingleOrDefault();
                 RequestById.SignImageName = UploadList.Where(w => w.RequestId == RequestId && w.TemplateType == "EX-AP").Select(q => q.FileName).Take(1).SingleOrDefault();
-            }
-			
-			return new ResponseViewModel<RequestViewModel>
+            }            
+            return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 200,
 				ResponseMessage = "Success",
@@ -633,20 +632,22 @@ public class RequestService : IRequestService
 			};
 		}
 	}
-    public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Scope, DateTime TentativeCompletionDate, int CalibFreq, string ToolInventory, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4, DateTime DueDate)
+    public ResponseViewModel<RequestViewModel> AcceptRequest(int requestId, int userId, string InstrumentCondition, string Scope, DateTime TentativeCompletionDate, int CalibFreq, string ToolInventory, int newObservation, int newObservationType, int newMU, int newCertification, string standardReffered, bool newNABL, int MasterInstrument1, int MasterInstrument2, int MasterInstrument3, int MasterInstrument4, int DueDate)
     {
         try
         {
             _unitOfWork.BeginTransaction();
-
-            RequestStatus reqestStatus = new RequestStatus();
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			RequestStatus reqestStatus = new RequestStatus();
             reqestStatus.RequestId = requestId;
             reqestStatus.StatusId = (Int32)EnumRequestStatus.Approved;
             reqestStatus.CreatedOn = DateTime.Now;
             reqestStatus.CreatedBy = userId;
             _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
 
-            Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
+			string calibfreqDate = _cmtdl.CalculateDuedate(DueDate);
+
+			Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
             requestById.StatusId = (Int32)EnumRequestStatus.Approved;
             requestById.InstrumentCondition = InstrumentCondition;
             requestById.ReceivedBy = userId;
@@ -669,7 +670,7 @@ public class RequestService : IRequestService
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;
             requestById.ReceivedDate = DateTime.Now;
-            requestById.ReqDueDate = DueDate;
+            requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
             _unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
 
@@ -698,7 +699,7 @@ public class RequestService : IRequestService
             instrumentById.CertificationTemplate = newCertification;
 
 
-            instrumentById.DueDate = DueDate;
+            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
             if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
             {
                 instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
@@ -730,7 +731,7 @@ public class RequestService : IRequestService
 			_unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
          
-            CMTDL _cmtdl = new CMTDL(_configuration);
+            
             UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
             UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
             string RequestType = string.Empty;
@@ -1109,7 +1110,7 @@ public class RequestService : IRequestService
             };
         }
     }
-    public ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId, string CollectedBy, string InstrumentIdNo, DateTime DueDate)
+    public ResponseViewModel<RequestViewModel> SubmitDepartmentRequestVisual(int requestId, string Result, int userId, string CollectedBy, string InstrumentIdNo, int CalibFreq)
     {
         try
         {
@@ -1117,20 +1118,21 @@ public class RequestService : IRequestService
             if (InstrumentIdNo != null || InstrumentIdNo != "")
             {
                 _unitOfWork.BeginTransaction();
-
-                RequestStatus reqestStatus = new RequestStatus();
+				CMTDL _cmtdl = new CMTDL(_configuration);
+				RequestStatus reqestStatus = new RequestStatus();
                 reqestStatus.RequestId = requestId;
                 reqestStatus.StatusId = (Int32)EnumRequestStatus.Closed;
                 reqestStatus.CreatedOn = DateTime.Now;
                 reqestStatus.CreatedBy = userId;
                 reqestStatus.Comment = Result;
                 _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+				string calibfreqDate = _cmtdl.CalculateDuedate(CalibFreq);
 
-                Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
+				Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
                 requestById.StatusId = (Int32)EnumRequestStatus.Closed;
                 requestById.CollectedBy = CollectedBy;
 
-                requestById.ReqDueDate = DueDate;
+                requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
 				requestById.ReqStartDate = DateTime.Now;
 				
 				_unitOfWork.Repository<Request>().Update(requestById);
@@ -1140,7 +1142,7 @@ public class RequestService : IRequestService
 				instrumentById.IdNo = InstrumentIdNo;
                if(instrumentById.ToolInventory == "No")
                 { 
-                instrumentById.DueDate = DueDate;
+                instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
 				}
 				
 				//To Update ToolInventory Status
@@ -1179,7 +1181,7 @@ public class RequestService : IRequestService
                 //Email Service
                 long UserId = requestById.CreatedBy;
 
-                CMTDL _cmtdl = new CMTDL(_configuration);
+                
                 UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
                 UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
                 string RequestType = string.Empty;
@@ -2136,19 +2138,21 @@ public class RequestService : IRequestService
         }
     }
 
-    public ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered, DateTime DueDate)
+    public ResponseViewModel<RequestViewModel> ExternalAcceptRequest(int requestId, int userId, string InstrumentCondition, string Feasiblity, DateTime TentativeCompletionDate, string InstrumentIdNo, string acceptReason, string ReceivedBy, IFormFile httpPostedFileBase, string StandardReffered,int CalibFreq, int DueDate)
     {
         try
         {
             _unitOfWork.BeginTransaction();
-
-            RequestStatus reqestStatus = new RequestStatus();
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			RequestStatus reqestStatus = new RequestStatus();
             reqestStatus.RequestId = requestId;
             reqestStatus.StatusId = (Int32)EnumRequestStatus.Approved;
             reqestStatus.CreatedOn = DateTime.Now;
             reqestStatus.CreatedBy = userId;
             reqestStatus.Comment = acceptReason;
             _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
+
+            string calibfreqDate = _cmtdl.CalculateDuedate(DueDate);
 
             Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
             requestById.StatusId = (Int32)EnumRequestStatus.Approved;
@@ -2170,12 +2174,13 @@ public class RequestService : IRequestService
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;
             requestById.ReceivedDate = DateTime.Now;
-            requestById.ReqDueDate = DueDate;
+            requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
             _unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
 
             Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
-            instrumentById.DueDate = DueDate;
+            instrumentById.CalibFreq = CalibFreq;
+			instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
             instrumentById.StandardReffered = StandardReffered;
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
@@ -2209,7 +2214,7 @@ public class RequestService : IRequestService
             //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
             //List<string> emailList = new List<string>();
             //emailList.Add(fmUserById.Email);
-            CMTDL _cmtdl = new CMTDL(_configuration);
+            
             UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
             UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
             string RequestType = string.Empty;
@@ -2984,20 +2989,30 @@ public class RequestService : IRequestService
         }
     }
 
-    public ResponseViewModel<RequestViewModel> SaveExternalObs(int requestId, int InstrumentID, int userId,string IdNo)
+    public ResponseViewModel<RequestViewModel> SaveExternalObs(int requestId, int InstrumentID, int userId,string IdNo, int CalibFreq)
     {
         try
         {
             _unitOfWork.BeginTransaction();
-           
+            CMTDL _cmtdl = new CMTDL(_configuration);
+            string calibfreqDate = _cmtdl.CalculateDuedate(CalibFreq);
+
+            #region DueDate Calculation in C#
+            //DateTime today = DateTime.Today;
+            //DateTime nextMonth = today.AddDays(1).AddMonths(6).AddDays(-1);
+            //DateTime endOfMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1).AddMonths(1).AddDays(-1);
+            #endregion
+
             Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == InstrumentID).SingleOrDefault();
             instrumentById.IdNo = IdNo;
+            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
 
 
             Request ReqstData = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
             ReqstData.StatusId = (Int32)EnumRequestStatus.Closed;
+            ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate);
             _unitOfWork.Repository<Request>().Update(ReqstData);
             _unitOfWork.SaveChanges();
 

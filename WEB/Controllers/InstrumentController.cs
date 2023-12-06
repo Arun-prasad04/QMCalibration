@@ -301,7 +301,7 @@ public class InstrumentController : BaseController
 
 	public JsonResult updateRequestforInstrument(List<RequestAllData> reqlist, int InstrumentId,string IssueNo)
 	{
-
+		//return Json(true);
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.UpdateControlCardRequestList(reqlist, InstrumentId, IssueNo);
 
 		return Json(response.ResponseDataList);

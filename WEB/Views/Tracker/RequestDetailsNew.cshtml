@@ -9,10 +9,11 @@
 
     function checkFileSize(element, maxSize, event) {
         var val = $(element).val(); //get file value
+        var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+       
         var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
-        var fileSize = ($(element)[0].files[0].size); //size in MB
         if (fileSize > MAX_FILE_SIZE) {
-            alert("File Size Should Not Exceed More Than 20MB");// if Maxsize from Model > real file size alert this
+            AlertPopup("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
             $("#ImageUpload").val("");
         }
         var input = document.getElementById('ImageUpload')
@@ -555,7 +556,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Calibration Frequency</label><br>
-                                        <select id="CalibFreq" name="CalibFreq" class="form-control" style="width:100%; height:100%; padding:5px">
+                                        <select id="CalibFreq" name="CalibFreq" class="form-control ExtCalFreq" style="width:100%; height:100%; padding:5px">
                                         </select>
                                     </div>
                                 </div>
@@ -580,7 +581,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="ManagerEmail" class="trn">Signature Image</label>
+                                            <label for="ManagerEmail" class="trn">Upload Image</label>
                                             <p id="SignImageName"></p>
                                             @*@if (@Model.SignImageName != null)
                                         {
@@ -593,7 +594,7 @@
                                     <div class="form-group">
                                         <label class="trn">Standard Refered/Calibration Method</label><br>
                                         <input id="StdReffer" class="form-control" style="width: 100%;" value="As Per External Calibration" readonly>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -626,6 +627,8 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (Model.Status != 29 && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
+                            {
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -644,7 +647,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="ManagerEmail" class="trn">Signature Image</label>
-                                        <p id="SignImageName"></p>
+                                        <p id="SignImageName" name="Doc"></p>
                                         @if (@Model.SignImageName != null)
                                         {
                                             <a href='~/Instrument/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
@@ -652,6 +655,7 @@
                                     </div>
                                 </div>
                             </div>
+                            }
 
                         </div>
                     }
@@ -880,9 +884,24 @@
                                             <label class="trn">Rejected Reason</label>
                                             <input type="text" class="form-control" id="NewrejectedReason" value="@Model.Result" disabled>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 }
                             </div>
+                            @if (Model.Status == 31 && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
+                            {
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="ManagerEmail" class="trn">Signature Image</label>
+                                            <p id="SignImageName"></p>
+                                            @if (@Model.SignImageName != null)
+                                            {
+                                                <a href='~/Instrument/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     }
                     @if (Model.Status == 27 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
@@ -984,7 +1003,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Remarks</label>
-                                    <input type="text" class="form-control" id="newRemarks" value=''>
+                                    <input type="text" class="form-control" id="newRemarks" value='@Model.Result'>
                                 </div>
                             </div>
                         </div>
@@ -1409,7 +1428,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <div class="form-group">
-                                            <label class="trn">Result</label>
+                                            <label class="trn">Result</label>                                            
                                             <input type="text" class="form-control" id="newResultDEP" value="@Model.ResultDEP">
                                         </div>
                                     </div>
@@ -1467,8 +1486,18 @@
                                     <label id="txtIdNoError" class="trn" style="color:red;display:none;">Please enter Instrument Id Number</label>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ManagerEmail" class="trn">Signature Image</label>
+                                    <p id="SignImageName"></p>
+                                    @if (@Model.SignImageName != null)
+                                    {
+                                        <a href='~/Instrument/@Model.SignImageName' target="_blank">@Model.SignImageName</a>
+                                    }
+                                </div>
+                            </div>
                         </div>
-
+                        
                         <br>
                         @if (Model.Status == 29)
                         {
@@ -1543,7 +1572,7 @@
         $('#NewObservationTypeEd').select2();
         $('#NewCertificationEd').select2();
 
-            if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))') != null) {
+        if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))') != null) {
             var CalibFreqExternal = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))');
             console.log('******************************************CalibFreqExternal******************************************');
             console.log(CalibFreqExternal);
@@ -1555,6 +1584,24 @@
         }
 
 
+    @*   if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))') != null) {
+            var ObservationTypeList = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationTypeList))');
+            var ObservationType = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.ObservationType))');
+
+
+            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+            $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrform));
+            }
+            });
+            }
+            else {
+            $.each(ObservationTypeList, function (index, item) {
+            if (jQuery.inArray(item.id, ObservationType) == -1 && item.id == ObservationType) {
+            $("#NewObservationTypeEd").append($("<option></option>").val(item.id).html(item.attrformJp));
+            }
+            });
+            }
+            } *@
             });
 
     function enableFields() {
@@ -1567,7 +1614,7 @@
     function checkFileSize(element, maxSize, event) {
         var val = $(element).val(); //get file value
         var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
-        var fileSize = ($(element)[0].files[0].size); //size in MB
+        var fileSize = ($(element)[0].files[0].size); //size in MB               
         if (fileSize > MAX_FILE_SIZE) {
             alert("File Size Should Not Exceed More Than 20MB");// if Maxsize from Model > real file size alert this
             $("#ImageUpload").val("");

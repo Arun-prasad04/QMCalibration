@@ -830,7 +830,7 @@ function ValidateCheck() {
 }
 
 
-function DudeDateCalculation(dt) {
+function DudeDateCalculation_Old(dt) {
 
     var duedate;
     if (dt == 13) {
@@ -884,6 +884,60 @@ function DudeDateCalculation(dt) {
     return duedate;
 }
 
+function DudeDateCalculation(dt) {
+
+    var month;
+    if (dt == 13) {
+        month = 1;
+    }
+    else if (dt == 14) {
+        month = 2;
+    }
+    else if (dt == 15) {
+        month = 3;
+    }
+    else if (dt == 16) {
+        month = 4;
+    }
+    else if (dt == 17) {
+        month = 5;
+    }
+    else if (dt == 18) {
+        month = 6;
+    }
+    else if (dt == 19) {
+        month = 7;
+    }
+    else if (dt == 20) {
+        month = 8;
+    }
+    else if (dt == 21) {
+        month = 9;
+    }
+    else if (dt == 22) {
+        month = 10;
+    }
+    else if (dt == 23) {
+        month = 11;
+    }
+    else if (dt == 24) {
+        month = 12;
+    }
+    else if (dt == 25) {
+        month = 24;
+    }
+    else if (dt == 111) {
+        month = 36;
+    }
+    else if (dt == 154) {
+        month = 48;
+    }
+    else {
+        month = 0;
+    }
+    return month;
+}
+
 function getduedate(dt) {
     //debugger;
     var nowDate = new Date();
@@ -913,6 +967,16 @@ function AcceptRequest(type, lang) {
     dueDate = DudeDateCalculation(dt);
     console.log('duedate');
     console.log(dueDate);
+    console.log('Master Instrument Name...!');
+    console.log($('#MasterInstrument1').val());
+    console.log($('#MasterInstrument2').val());
+    console.log($('#MasterInstrument3').val());
+    console.log($('#MasterInstrument4').val());
+
+    if ($('#MasterInstrument1').val() == '' && $('#MasterInstrument2').val() == '' && $('#MasterInstrument3').val() == '' && $('#MasterInstrument4').val() == '') {
+        showWarning('Please Select and Add the Master Instrument Name...!', lang);
+        return false;
+    }
 
     data = {
         requestId: $('#RequestCalibId').val(),
@@ -1363,6 +1427,7 @@ function ExternalAcceptRequest(type, lang) {
     formData.append("acceptReason", $('#Acceptreason').val());
     formData.append("httpPostedFileBase", file);
     formData.append("StandardReffered", $('#StdReffer').val());
+    formData.append("CalibFreq", $('#CalibFreq').val());
     formData.append("DueDate", dueDate);
 
     ////formData.append("data", JSON.stringify(data1));
@@ -2976,7 +3041,7 @@ function newSubmitReqDepVisual(lang) {
     $.ajax({
         url: '../Tracker/SubmitDepartmentRequestVisual',
         type: 'POST',
-        data: { requestId: $('#RequestCalibId').val(), Result: $('#newResultDEP').val(), CollectedBy: $('#CollectedBy').val(), InstrumentIdNo: $('#IdNo').val(), DueDate: dueDate }
+        data: { requestId: $('#RequestCalibId').val(), Result: $('#newResultDEP').val(), CollectedBy: $('#CollectedBy').val(), InstrumentIdNo: $('#IdNo').val(), CalibFreq: dueDate }
     }).done(function (resultObject) {
         window.location.href = '../Tracker/Request?reqType=4';
         //AssignNewRequestValues(resultObject);
@@ -3055,10 +3120,10 @@ $(document).ready(function () {
     }
 });
 
-function CheckFileExtension(filename) {
+function CheckFileExtension(filename) {    
     var Filetype = false;
     for (var i = 0; i < filename.length; i++) {
-        var ext = filename[i].split('.')[1];
+        var ext = filename[i].split('.')[1];       
         if (ext == "pptx" || ext == "ppt") {
             Filetype = true;
         } else if (ext == "xls" || ext == "xlsx" || ext == "csv") {
@@ -3144,7 +3209,7 @@ function DueForCalibrationInstruments() {
             var oTable = $("#example1").dataTable();
             $(".one", oTable.fnGetNodes()).each(function (i, row) {
                 var currentRow3 = $(this).closest("tr");
-                if (typeof ($(this).closest('tr').find('td:eq(9) input[type="checkbox"]').html()) === "undefined") {
+                if (typeof ($(this).closest('tr').find('td:eq(11) input[type="checkbox"]').html()) === "undefined") {
                     currentRow3.hide();
                 }
                 else {
@@ -3379,10 +3444,13 @@ function DueInstrumentList() {
         }
 
 
+        var dt = $('#CalibFreqDue').val();
+        var dueDate = DudeDateCalculation(dt);
+
         $.ajax({
             url: '../Tracker/SaveExternalObs',
             type: 'POST',
-            data: { requestId: $('#RequestCalibId').val(), InstrumentID: $('#hdnInstrumentId').val(), InstrumentIdNo: $('#txtIdNo').val() },
+            data: { requestId: $('#RequestCalibId').val(), InstrumentID: $('#hdnInstrumentId').val(), InstrumentIdNo: $('#txtIdNo').val(), CalibFreq: dueDate },
             success: function (data) {
                 window.location.href = '../Tracker/Request?reqType=4';
                 //showSuccess("You are rejected the External request. LAB admin get notified!", lang);
@@ -3505,12 +3573,14 @@ function UpdateControlCardRequest() {
     $(".Inspect:text", oTable.fnGetNodes()).each(function (i, row) {
         var InspectData = {
             Inspectiondetails: $(this).val(),
+            //Inspectiondetails: $(this).closest('tr').find("td:eq(6) input[type='text']").val(),
             requestId: $(this).closest('tr').find("td:eq(6) input[type='hidden']").val(),
         }
 
         Request.push(InspectData);
-    })
-  
+    });
+    alert(Request);
+    console.log(Request);
     $.ajax({
         url: '../Instrument/updateRequestforInstrument',
         type: 'POST',

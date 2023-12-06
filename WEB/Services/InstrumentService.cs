@@ -1715,7 +1715,7 @@ public class InstrumentService : IInstrumentService
 						CalibrationMonth = dr["CalibrationMonth"].ToString(),
 						CalibrationRequestDate = dr["Duedate"].ToString(),
 						Inspectiondetails = dr["Inspectiondetails"].ToString(),
-						SectionCode = dr["SectionCode"].ToString(),
+						SectionCode = dr["SubSectionCode"].ToString(),
 						InstrumentType = dr["InstrumentType"].ToString(),
 						RequestId = Convert.ToInt32(dr["RequestId"]),
 
