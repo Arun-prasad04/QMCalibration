@@ -683,7 +683,7 @@
                     @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))@*  && (Model.TypeOfRequest == 1) *@
                     {
                         <div id="NewacceptSection" style="display: none;">
-                            @if (Model.TypeOfRequest == 1)
+                            @if (Model.TypeOfRequest == 1 || Model.TypeOfRequest == 3 )
                             {
                                 <div class="row">
                                     <div class="col-sm-4">
@@ -793,7 +793,7 @@
                     @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
                     {
                         <div>
-                            @if (Model.TypeOfRequest == 1)// && Model.TypeOfRequest == 2 && Model.TypeOfRequest == 3)
+                            @if (Model.TypeOfRequest == 1)// && Model.TypeOfRequest == 3 && Model.TypeOfRequest == 3)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -1450,20 +1450,22 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Model.Status == 29)
+                            @if ((Model.Status == 29) || ((Model.TypeOfRequest == 3) && (Model.InstrumentIdNo == null)))
                             {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <!-- text input -->
-                                        <div class="form-group" style="text-align:right;">
-                                            <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-                                                   onclick="newSubmitReqDepVisual(language)">
-                                            <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                              
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <!-- text input -->
+                                            <div class="form-group" style="text-align:right;">
+                                                <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                                                onclick="newSubmitReqDepVisual(language)">
+                                                <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                               
                             }
                         </div>
                     }

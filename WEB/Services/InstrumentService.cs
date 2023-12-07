@@ -984,10 +984,16 @@ public class InstrumentService : IInstrumentService
       newRequest.StatusId = (Int32)EnumRequestStatus.Requested;
       newRequest.CreatedBy = userId;
       newRequest.CreatedOn = DateTime.Now;
-     // newRequest.UserL4 = DeptuserByL4Id.Id;
-      newRequest.LabL4 = LabuserByL4Id.Id;
-      _unitOfWork.Repository<Request>().Insert(newRequest);
-      _unitOfWork.SaveChanges();
+            if (DeptuserByL4Id != null) {
+			 newRequest.UserL4 = DeptuserByL4Id.Id;
+			}
+            if (LabuserByL4Id != null)
+            {
+             newRequest.LabL4 = LabuserByL4Id.Id;
+			}
+
+			_unitOfWork.Repository<Request>().Insert(newRequest);
+            _unitOfWork.SaveChanges();
 
             RequestStatus ReqestStatus = new RequestStatus();
             ReqestStatus.RequestId = newRequest.Id;
@@ -1015,9 +1021,11 @@ public class InstrumentService : IInstrumentService
             UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(UserId)).SingleOrDefault());
             //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 2).SingleOrDefault());
             string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Created by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-
-            emailList.Add(DeptuserByL4Id.Email.Trim());
-            emailList.Add(LabuserByL4Id.Email.Trim());
+            if ((DeptuserByL4Id != null) && (labUserById != null))
+			{
+                emailList.Add(DeptuserByL4Id.Email.Trim());
+                emailList.Add(LabuserByL4Id.Email.Trim());
+           
             mailbody = mailbody.Replace("$NAME$", DeptuserByL4Id.FirstName + "/" + LabuserByL4Id.LastName).Replace("$USERNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQNO$", newRequest.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrument.InstrumentName).Replace("$INSTRUMENTID$", instrument.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(newRequest.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
             EmailViewModel emailViewModel = new EmailViewModel()
             {
@@ -1027,9 +1035,9 @@ public class InstrumentService : IInstrumentService
                 IsHtml = true
             };
             _emailService.SendEmailAsync(emailViewModel, true);
+			}
 
-
-            return new ResponseViewModel<InstrumentViewModel>
+			return new ResponseViewModel<InstrumentViewModel>
             {
                 ResponseCode = 200,
                 ResponseMessage = "Success",
@@ -1643,7 +1651,9 @@ public class InstrumentService : IInstrumentService
 					EqiupmentList.Add(new MasterViewModel
 					{
 						Id = Convert.ToInt32(dr["Id"]),
-						EquipName = Convert.ToString(dr["EquipName"])
+						EquipName = Convert.ToString(dr["EquipName"]),
+						EquipmentMasterId = Convert.ToString(dr["EquipmentMasterId"])
+
 					});
 
 				}

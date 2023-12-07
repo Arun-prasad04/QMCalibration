@@ -247,10 +247,7 @@
                     $('#example2').DataTable().destroy();
                 }
                 $('#example2 tbody').empty();
-              
-                console.log("-----data----------");
-                console.log(data);
-                //console.log(Object.keys(data).length);
+             
                 if (data.length > 0) {
                     $.each(data, function (i, item) {
                         var tdTypeofRequest = '';
@@ -294,7 +291,7 @@
                         }
 
                         var tdTest = '';
-                        if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 28 || item.status == 29 || item.status == 30 || item.status == 31) && item.typeOfEquipment != 'External') {
+                        if ((item.userRoleId == 2 || item.userRoleId == 3 || item.userRoleId == 4) && (item.status == 27 || item.status == 29 || item.status == 30 || item.status == 31) && item.typeOfEquipment != 'External') {
 
 
                             tdTest = "<td><a href='@Url.Action("InternalObservation","Observation")?requestId=" + item.id + "&instrumentId=" + item.instrumentId + "' ><i class='fas fa-check-circle' style = 'cursor:pointer'></i></td>"
@@ -326,18 +323,12 @@
                         
                         if (item.reqDueDate != null )
                         {
-                            
-                           // if ((moment(item.reqDueDate).format('MM/DD/YYYY') < moment(currentdate).format('MM/DD/YYYY')) && (item.typeOfRequest == 1 || item.typeOfRequest == 2 || item.typeOfRequest == 3) && (item.status == 26 || item.status == 27 || item.status == 28 || item.status == 29 || item.status == 31) )
+                          
                             if ((redate < currentdate) && (item.status != 30)) {
-                                // console.log("--date check---");
-                                // console.log(item.reqestNo);
-                                // console.log("currentdate");
-                                // console.log(currentdate);
-                                // console.log("redate");
-                                // console.log(redate);
+                               
                                 background = "background-color:  #fbefef;";
                             }
-                                // background = "background-color: lightsalmon,tomato,#FF7F50,lightcoral;";
+                               
                         }
                        
                         var rows = "<tr style='"+background +"' >"
@@ -368,7 +359,7 @@
                 //$('#example2').destroy();
                 $('#example2').dataTable({
                     "paging": true,
-                    "pageLength": 50,
+                    "pageLength": 100,
                     "lengthChange": true,
                     "searching": true,
                     "ordering": true,
