@@ -787,15 +787,15 @@ function ValidateCheck() {
     $('#StandardRefferedError').hide();
     $('#InstrumentConditionError').hide();
     //alert('NewObservation' + $('#NewObservation').val())
-    if (($('#InstrumentCondition').val()) == '') {
-        errCount = errCount + 1;
-        $('#InstrumentConditionError').show();
-    }
-    else {
-        //$('#').hide();
-    }
+    //if (($('#InstrumentCondition').val()) == '') {
+    //    errCount = errCount + 1;
+    //    $('#InstrumentConditionError').show();
+    //}
+    //else {
+    //    //$('#').hide();
+    //}
 
-    if (($('#StandardReffered').val()) == '') {
+    if (($('#StdReffer').val()) == '') {
         errCount = errCount + 1;
         $('#StandardRefferedError').show();
     }
@@ -816,12 +816,12 @@ function ValidateCheck() {
     else {
         //$('#CountryError').hide();
     }
-    if (($('#NewCertification').val()) == '') {
-        errCount = errCount + 1;
-    }
-    else {
-        //$('#CountryError').hide();
-    }
+    //if (($('#NewCertification').val()) == '') {
+    //    errCount = errCount + 1;
+    //}
+    //else {
+    //    //$('#CountryError').hide();
+    //}
     if ($('#TentativeCompletionDate').val().trim() == '') {
         errCount = errCount + 1;
     }
@@ -1312,16 +1312,16 @@ function AcceptRejectNewRequest(lang) {
             AcceptRequest(type, lang);
         }
         else {
-            showWarning('Please Select Tentative Closing Date, Observation Templates, Observation Template Type, Certification Template Values...!', lang);
+            showWarning('Please Select Tentative Closing Date, Observation Templates, Standard Refered/Calibration Method, Calibration Frequency Values...!', lang);
         }
 
     } else {
-        if ($('#Newreason').val() != '') {
+        if ($('#Newreason').val() != '' && $('#TentativeCompletionDate').val() != '') {
             $('#Newreason').removeClass('is-invalid');
             RejecttRequest(type, lang);
         } else {
             $('#Newreason').addClass('is-invalid');
-            showWarning("Please enter reason for rejection and try again.", lang);
+            showWarning("Please enter Tentative Closing Date & reason for rejection and try again.", lang);
         }
     }
 }
@@ -3665,7 +3665,7 @@ $(document).on('click', '.btnSaveApproval', (e) => {
         showWarning("Please enter the Visual Check", language);
         return false;
     }
-
+    $('#dvload').show();
     var ObservationContentValues = new Array();
     var ObservationContent = new Array();
     var ObservationContenMapping = new Array();
@@ -3790,6 +3790,7 @@ $(document).on('click', '.btnSaveApproval', (e) => {
         data: { dynamic: data },
         dataType: "json",
     }).done(function (resultObject) {
+        $('#dvload').hide();
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Data Saved Successfully", lang);
     });
