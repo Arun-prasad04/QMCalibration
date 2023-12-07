@@ -3818,7 +3818,7 @@ $(document).on('click', '.addCW', (e) => {
 $(document).on('click', '.addSW', (e) => {
     var SWcounter = $('#SWTblObservation >tbody >tr').length;
     var SWSNo = $('#SWTblObservation >tbody >tr').length;
-   
+    alert(SWcounter);
     tbLSWSNo += 1;
    
     $('#SWTblObservation > tbody:last-child').append('<tr><td style="width: 30%" id="SW"><input id="Head' + SWcounter + '" name="Head[' + SWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
