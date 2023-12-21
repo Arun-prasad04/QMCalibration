@@ -173,7 +173,7 @@ public class QualityCheckController : BaseController
             var masterInfo = new MasterListViewModel()
             {
                 MasterId = master.Id,
-                LabId = master.LabId,
+                LabId = master.EquipmentMasterId,
                 EquipmentName = master.EquipName,
                 CalibDate = master.CalibDate
             };

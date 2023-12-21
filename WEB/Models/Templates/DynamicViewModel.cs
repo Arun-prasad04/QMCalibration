@@ -56,7 +56,7 @@
 		public List<UserContentMappingView> UserContentMappingViewModel { get; set; }
 		public int? StatusId { get; set; }
 		public int? CalibFreq { get; set; }
-		
+		public string? PermissibleLimit { get; set; }
 	}
 	public class UserContentMappingView
 	{

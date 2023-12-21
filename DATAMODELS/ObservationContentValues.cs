@@ -15,6 +15,8 @@
 		public string? Average { get; set; }
 		public string? Percent { get; set; }
 		public int? ContentId { get; set; }
+		public string? PermissibleLimit { get; set; }
+		
 
 	}
 }

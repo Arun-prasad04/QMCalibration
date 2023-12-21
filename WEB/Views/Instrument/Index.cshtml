@@ -5,15 +5,15 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <style>
-    /* .OverDue tr:nth-child(odd), tr:nth-child(even) {
-                            background-color: lightsalmon;
-                                tomato
-                        } */
-    /* .table-striped tr:nth-child(even) {
-                            background-color: #e8e7e6;
-                        }
+	/* .OverDue tr:nth-child(odd), tr:nth-child(even) {
+				background-color: lightsalmon;
+					tomato
+			} */
+	/* .table-striped tr:nth-child(even) {
+				background-color: #e8e7e6;
+			}
 
-                        th:nth-child(even), td:nth-child(even) */
+			th:nth-child(even), td:nth-child(even) */
 </style>
 
 <section class="content">
@@ -78,110 +78,113 @@
                                         <input type="checkbox" id="selectAll" name="selectAll" />
                                     </th>
 
-                                }
-                                <th class="trn">Quarantine</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                            @foreach (var item in Model)
-                            {
-                            @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
-                            {
-                            <tr>
-                                        @* <td style="display:none;">@item.ReqDueDate</td>*@
-                            <td class="one">@item.InstrumentName</td>
-                            <td>@item.SlNo</td>
-                            <td>@item.IdNo</td>
-                            <td>@item.Range</td>
-                            <td>@item.DepartmentName</td>
-                            <td>@item.SubSecCode</td>
-                            <td>@item.TypeOfEquipment</td>
-                            <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
-                            @if (item.DueDate == null)
-                            {
-                            <td> </td>
-                            }
-                            else
-                            {
-                            <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-                            }
-                            <td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
-                            <td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
-                            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-                            {
-                            <td style="text-align:center;" class="chkpl">
-                            @if (@item.DueDate != null)
-                            {
-                            @if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
-                            {
-                            //@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27))// || @item.RequestStatus == 0)
-                            @if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-                            {
+								}
+								<th class="trn">Quarantine</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							@foreach (var item in Model)
+							{
+								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
+								{
+
+									<tr>
+										@* <td style="display:none;">@item.ReqDueDate</td> *@
+										<td class="one">@item.InstrumentName</td>
+										<td>@item.SlNo</td>
+										<td>@item.IdNo</td>
+										<td>@item.Range</td>
+										<td>@item.DepartmentName</td>
+										<td>@item.SubSecCode</td>
+										<td>@item.TypeOfEquipment</td>
+										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+										@if (item.DueDate == null)
+										{
+											<td> </td>
+										}
+										else
+										{
+											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+										}
+										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+										<td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+										{
+											<td style="text-align:center;" class="chkpl">
+												@if (@item.DueDate != null)
+												{
+													@* @if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+													{
+														//@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27))// || @item.RequestStatus == 0)
+														@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
+														{
+															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+															<input id="typeId" name="typeId" type="hidden" value="2" />
+															<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+															<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+															<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+															<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+														}
+
+													} *@
+													//else
+													@if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													//@if ((@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.AddMonths(1).Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													{
+													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
+														//{
+
+														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+														<input id="typeId" name="typeId" type="hidden" value="2" />
+														// to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
+														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+
+													}
+													else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													{
+													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
+														//{
+
                             <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
                             <input id="typeId" name="typeId" type="hidden" value="2" />
                             <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
                             <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
                             <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
                             <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-                            }
 
-                            }
-                            else if ((@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                            {
-                            //@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-                            //{
+													}
+													@* else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+															{
+													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
+														//{
 
-                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                            <input id="typeId" name="typeId" type="hidden" value="2" />
-                            // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
-                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+														<input id="typeId" name="typeId" type="hidden" value="2" />
+														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
 
-                            }
-                            else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                            {
-                            //@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-                            //{
+													} *@
+												}
+											</td>
+										}
+										@* far fa-id-card *@
 
-                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                            <input id="typeId" name="typeId" type="hidden" value="2" />
-                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+										{
+											<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
+										}
+										else
+										{
+											<td></td>
+										}
 
-                            }
-                            else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                            {
-                            //@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-                            //{
-
-                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                            <input id="typeId" name="typeId" type="hidden" value="3" />
-                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-
-                            }
-                            }
-                            </td>
-                            }
-                            @* far fa-id-card*@
-
-                            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-                            {
-                            <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
-                            }
-                            else
-                            {
-                            <td></td>
-                            }
-
-                            </tr>
+									</tr>
 
                             }
                             }
@@ -209,61 +212,45 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 
-
-    $(document).ready(function () {
-
-        // var currentdate = new Date();
-        // console.log(currentdate);
-        // $('#example1 tbody tr').each(function (row, tr) {
-        // 	console.log($(this).closest('tr').find('.clsReqDueDate').val());
-        // 	var redate = new Date($(this).closest('tr').find('.clsReqDueDate').val());
-        // 		if (redate < currentdate)
-        // 		{
-        // 			alert("test");
-        // 		//$(this).closest('tr').css('background-color', '#fbefef');
-        // 		$(row).css('background-color', '#fbefef');
-        // 		}
-        // 		});
-
-
-        // $('#example1').dataTable({
-        // 	"createdRow": function (row, data, dataIndex) {
-
-        // 		console.log("data");
-        // 		//console.log(data);
-        // 		console.log(data[8]);
-        // 		var edate =data[8];
-        // 		//var currentdate = moment(new Date()).format("DD-MM-YYYY");
-        // 		var currentdate = new Date()
-        // 		var redate = new Date(edate);
-        // 		console.log("currentdate");
-        // 		console.log(currentdate);
-        // 		console.log("redate");
-        // 		console.log(redate);
-        // 		if ((redate < currentdate) )//&& (item.status != 30))
-        // 		{
-        // 			//alert("");
-        // 			$(row).css('background-color', '#fbefef');
-        // 		}
-        // 	}
-        // });
-    });
-
     $(function () {
+        $('#example1').dataTable({});
+        $('#example1').dataTable({
+            "bDestroy": true,
+            "createdRow": function (row, data, dataIndex) {
+                console.log(data);
+                var date = data[8].substring(0, 2);
+                var month = data[8].substring(3, 5);
+                var year = data[8].substring(6, 10);
 
-        //GetAllInstrument();
+                var edate = new Date(year, month - 1, date);
 
-        
+                var currentdate = new Date()
+                var redate = data[8];
+
+                if (redate != "") {
+                    if (edate < currentdate) //&& (item.status != 30))
+                    {
+                        $(row).css('background-color', '#fbefef');
+                    }
+                }
+                else {
+                    //alert("empty");
+                }
+
+            }
+        });
         var oTable = $('#example1').dataTable({
             stateSave: true,
+            "bDestroy": true,
             "pageLength": 100,
             'columnDefs': [{
-                        'targets': [9], /* column index */
-                        'orderable': false, /* true or false */
-                    }],
-                    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                'targets': [9], /* column index */
+                'orderable': false, /* true or false */
+
+            }],
+            dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         });
 
         var allPages = oTable.fnGetNodes();

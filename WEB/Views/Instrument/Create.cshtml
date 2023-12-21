@@ -1,4 +1,4 @@
-﻿@{
+﻿ @{
 	ViewData["PageTitle"] = "Instrument Create";
 }
 @using Microsoft.AspNetCore.Http
@@ -586,7 +586,7 @@
 													{
 													
 														<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-															   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" @Model.IsDisabled /> 
+															   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" /> @* @Model.IsDisabled *@
 														
 													}
 													<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -889,6 +889,7 @@
 				unhighlight: function (element, errorClass, validClass) {
 					$(element).removeClass('is-invalid');
 				}
+					
 			});
 		});
 	}, 1000);	

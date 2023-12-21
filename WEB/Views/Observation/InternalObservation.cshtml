@@ -295,7 +295,7 @@
 						@* @if (@Model.ReviewStatus == null || @Model.ReviewStatus == 0)
 				{ *@
 
-						@if (Model.StatusId == 27 || Model.StatusId == 29)
+						@if (Model.StatusId == 27 )//|| Model.StatusId == 29)
 						{
 						<input type="button" class="btn btn-primary trn btnSaveApproval" value="Save" name="Save" id="btnSaveApproval">  @* onclick="SaveMicrometer(language)" *@
 						}
@@ -330,6 +330,12 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <script type="text/javascript">
+	
+
+	var tableIN = "";
+	var tableCW = "";
+	var tableSW = "";
+
 	var tbllengthcount;
 	
 	var tbLINContentId;
@@ -341,15 +347,6 @@
 	var tbLSWContentId;
 	var tbLSWSNo;
 	
-	$(document).ready(function () {
-		$('.trhideRejection').hide();
-		if ($('#TemplateObservationId').val() > 0) {
-			$("#dvTable").html("");
-			BindObservationTable();
-		}
-
-	});
-
 	$(document).on('keyup', '.MeasuedValue , .Actual', function () {
 
 		var Actual = $(this).closest('tr').find('.Actual').val();
@@ -365,23 +362,33 @@
 	});
 
 	//for Torque Wrench
-	$(document).on('keyup', '.Value1 , .Value2, .Value3, .Average, .Percentage', function () {
+	$(document).on('keyup', '.MeasuedValueCW, .Value1, .Value2, .Value3, .Average, .Percentage', function () {
 
 		var Value1 = $(this).closest('tr').find('.Value1').val();
 		var Value2 = $(this).closest('tr').find('.Value2').val();
 		var Value3 = $(this).closest('tr').find('.Value3').val();
-
+		console.log(Value1);
+		console.log(Value2);
+		console.log(Value3);
+		var MeasuedValueCW = $(this).closest('tr').find('.MeasuedValueCW').val();
 		Value1 = isNaN(Value1) || !Value1.trim() || null ? 0 : parseFloat(Value1);
 		Value2 = isNaN(Value2) || !Value2.trim() || null ? 0 : parseFloat(Value2);
 		Value3 = isNaN(Value3) || !Value3.trim() || null ? 0 : parseFloat(Value3);
+		MeasuedValueCW = isNaN(MeasuedValueCW) || !MeasuedValueCW.trim() || null ? 0 : parseFloat(MeasuedValueCW);
 		var Average = (Value1 + Value2 + Value3) / 3;
-		var Percentage = Average / 100;
+		var Percentage =((Average - MeasuedValueCW) / MeasuedValueCW) * 100;
 		$(this).closest('tr').find('.Average').val(Average.toFixed(3));
 		$(this).closest('tr').find('.Percentage').val(Percentage.toFixed(3));
 
 	});
 
 	$(function () {
+		$('.trhideRejection').hide();
+		if ($('#TemplateObservationId').val() > 0) {
+			$("#dvTable").html("");
+			var UserRole = @Json.Serialize(@ViewBag.UserRoleId);
+			BindInternalObservationTable(UserRole);
+		}
 		$('#ContentSelect').multiselect({
 			//console.log("multiselect");
 			allSelectedText: 'All',
@@ -444,8 +451,41 @@
 			$('#Reject').prop('checked', true);
 		}
 
-	
+		$('.btn-Generate').on('click', function () {
+			GenerateInternalObservationContent();
+		});
+		$('.btnSaveApproval').on('click', function () {
+			SaveInternalObservation();
+		});
+
+		// $('.addSW').on('click', function () {
+		// 	addSW();
+		// });
+		// $('.addCW').on('click', function () {
+		// 	addCW();
+		// });
+		// $('.addIN').on('click', function () {
+		// 	alert("IN");
+		// 	addIN();
+		// });
+
 	});
+	// $(document).on('click', '.btn-Generate', (e) => {
+	// 	GenerateInternalObservationContent();
+	// });
+	// $(document).on('click', '.btnSaveApproval', (e) => {
+	// 	SaveInternalObservation();
+	// });
+	$(document).on('click', '.addSW', (e) => {
+		addSW();
+	});
+	$(document).on('click', '.addCW', (e) => {
+		addCW();
+	});
+	$(document).on('click', '.addIN', (e) => {
+		addIN();
+	 });
+	
 	
 </script>
 
