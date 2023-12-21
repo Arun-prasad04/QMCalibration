@@ -187,23 +187,47 @@
                                                         @*<option value="@department.Id" selected="@sel.IsActive">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>*@
                                                     }
                                                     @*else
-                                        {
-                                        <option value="@department.Id">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>
-                                        } *@
+													{
+													<option value="@department.Id">@department.SubSectionCode || @department.SubSection || @department.Section || @department.Name</option>
+													} *@
                                                 }
                                                 if (check == true)
                                                 {
-                                                    <option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
-                                                }
+													@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+													{
+														<option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+													}
+													else
+													{
+														<option value="@department.Id" selected="check">@department.SubSectionCode - @department.SubSectionJP - @department.SectionJP - @department.NameJP</option>
+													}
+
+										}
                                                 else
                                                 {
-                                                    <option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+													@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+													{
+														<option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+													}
+													else
+													{
+														<option value="@department.Id">@department.SubSectionCode - @department.SubSectionJP - @department.SectionJP - @department.NameJP</option>
+													}
+                                                    
                                                 }
 
 											}
 											else
 											{
-												<option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+												@if (HttpContextAccessor.HttpContext.Session.GetString("Language") == "en")
+												{
+													<option value="@department.Id">@department.SubSectionCode - @department.SubSection - @department.Section - @department.Name</option>
+												}
+												else
+												{
+													<option value="@department.Id">@department.SubSectionCode - @department.SubSectionJP - @department.SectionJP - @department.NameJP</option>
+												}
+												
 											}
 
 										}

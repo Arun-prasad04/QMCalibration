@@ -678,7 +678,6 @@ public class RequestService : IRequestService
             instrumentById.IsNABL = newNABL;
 
             instrumentById.ToolInventory = ToolInventory;
-
             if (instrumentById != null && newObservation != null)
             { 
             
@@ -695,16 +694,37 @@ public class RequestService : IRequestService
                 instrumentById.MasterInstrument4 = MasterInstrument4;
             }
 
+            if(requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3)
+            {
+                if (CalibFreq != null || CalibFreq !=0)
+                {
+					instrumentById.CalibFreq = CalibFreq;
+				}
+				if (standardReffered != null || standardReffered != "")
+				{
+					instrumentById.StandardReffered = standardReffered;
+				}
+				if (MasterInstrument1 != null || MasterInstrument1 != 0)
+				{
+					instrumentById.MasterInstrument1 = MasterInstrument1;
+				}
+				if (MasterInstrument2 != null || MasterInstrument2 != 0)
+				{
+					instrumentById.MasterInstrument2 = MasterInstrument2;
+				}
+				if (MasterInstrument3 != null || MasterInstrument3 != 0)
+				{
+					instrumentById.MasterInstrument3 = MasterInstrument3;
+				}
+				if (MasterInstrument4 != null || MasterInstrument4 != 0)
+				{
+					instrumentById.MasterInstrument4 = MasterInstrument4;
+				}
+			}
+
             instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
-
-
-            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
-            if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
-            {
-                instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
-            }
-            _unitOfWork.Repository<Instrument>().Update(instrumentById);
+            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);           
             //To Update ToolInventory Status
             if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
             {
