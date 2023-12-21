@@ -678,7 +678,6 @@ public class RequestService : IRequestService
             instrumentById.IsNABL = newNABL;
 
             instrumentById.ToolInventory = ToolInventory;
-
             if (instrumentById != null && newObservation != null)
             { 
             
@@ -723,14 +722,7 @@ public class RequestService : IRequestService
 			//}
 			instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
-
-
-            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);
-            if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
-            {
-                instrumentById.ToolInventoryStatus = (Int32)ToolInventoryStatus.AcceptTool;
-            }
-            _unitOfWork.Repository<Instrument>().Update(instrumentById);
+            instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);           
             //To Update ToolInventory Status
             if (instrumentById.ToolInventory != null && instrumentById.ToolInventory == "Yes")
             {

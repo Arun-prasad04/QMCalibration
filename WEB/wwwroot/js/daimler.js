@@ -462,7 +462,7 @@ function InstrumentUnQuarantineClick(element, lang) {
         data: { instrumentId: element.id }
     }).done(function (resultObject) {
         showSuccess("Instrument Unquarantine successfully", lang);
-        window.location.href = '../Instrument/Index';
+        window.location.href = '../Instrument/QuratineList';
         $('#row_' + element.id).next("tr").remove()
         $('#row_' + element.id).remove();
     });
@@ -3251,9 +3251,9 @@ function DueForCalibrationInstruments_Old() {
 }
 
 function InsertRequestList() {
-    //debugger;
+    debugger;
     var Request = new Array();
-
+    $('#dvload').show();
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
@@ -3276,6 +3276,7 @@ function InsertRequestList() {
         dataType: "json",
     }).done(function (resultObject) {
         //showSuccess("Data Saved Successfully");
+        $('#dvload').hide();
         window.location.href = '../Instrument/Index';
     });
 }
