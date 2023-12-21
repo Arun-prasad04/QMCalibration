@@ -110,7 +110,7 @@ namespace WEB.Service
     {
       public string Server = "53.151.100.102";
       public string Port = "25";
-      public string FromAddress = "DICV-CMT@DAIMLER.COM";
+      public string FromAddress = "dta_qm_portal@daimlertruck.com";
       public string UserId = "DICV-EBOM@DAIMLER.COM";
       public string Pwd = "Dicv@123";
       public bool IsDevelopmentMode = true;
