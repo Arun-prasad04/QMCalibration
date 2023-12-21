@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Master Create";
 }
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <form name="frm" id="masterform" method="post" enctype="multipart/form-data" action='@Url.Action("MasterInsert","Master")'>
     <input type="hidden" name="Id" value="@Model.Id">
     <!-- Main content -->
@@ -188,12 +190,14 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="required trn">User Department</label>
-                                        <select class="form-control" name="DepartmentId" id="DepartmentId" value='@Model.DepartmentName'>
-                                            <option class="trn" selected="true" value="">--Select User Department--</option>
-                                            @foreach (var department in @Model.Departments)
+                                        <label class="required trn">Master Department</label>
+                                        <select class="form-control" name="DepartId" id="DepartId">
+                                           @*  @if (@HttpContextAccessor.HttpContext.Session.GetString("Language")=="en")
+                                            {  *@
+                                            <option class="trn" selected="true" value="">--Select Master Department--</option>
+                                           @foreach (var department in @Model.Departments)
                                             {
-                                                if (department.Id == Model.DepartmentId)
+                                                if (department.Id == Model.DepartId)
                                                 {
                                                     <option value="@department.Id" selected="selected">@department.Name</option>
                                                 }
@@ -201,11 +205,27 @@
                                                 {
                                                     <option value="@department.Id">@department.Name</option>
                                                 }
+                                                }
                                             }
+                                            @* else
+                                            {
+                                                <option class="trn" selected="true" value="">--Select Master Department--</option>
+                                                @foreach (var department in @Model.Departments)
+                                                {
+                                                    if (department.Id == Model.DepartmentId)
+                                                    {
+                                                        <option value="@department.Id" selected="selected">@department.NameJP</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@department.Id">@department.NameJP</option>
+                                                    }
+                                                }
+                                            } *@
                                         </select>
                                     </div>
                                 </div>
-                                @* <div class="col-sm-6">
+                                @* <div class="col-sm-6"> @Model.DepartmentName'
                                 <div class="form-group">
                                 <label class="required trn">Scope</label>
                                 <select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
@@ -235,7 +255,7 @@
                 </div>
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title trn">details 2</h3>
+                        <h3 class="card-title trn">Details 2</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -249,13 +269,13 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-6">
+                           @*  <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="required trn">Supplier/Agency</label>
                                     <input type="text" alt="Please provide the supplier or agency" id="Supplier" name="Supplier" value="@Model.Supplier" class="form-control"
                                            placeholder="">
                                 </div>
-                            </div>
+                            </div> *@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="CalibFreq" class="required trn">Calibration Frequency</label>

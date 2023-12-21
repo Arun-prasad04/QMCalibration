@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Instrument Quarantine List";
 }
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
     <section class="content">
         <div class="row">
             <div class="col-12">
@@ -35,8 +37,13 @@
                                     <th class="trn">Due Date</th>
                                     <th class="trn">Quarantine On</th>
                                     <th class="trn">Quarantine Reason</th>
-                                    <th class="trn">Activate</th>   
-                                </tr>
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+                                {
+                                    <th class="trn">Delete</th>
+                                }
+                                <th class="trn">Activate</th>
+                                   
+                            </tr>
                             </thead>
                             <tbody>
 
@@ -55,9 +62,14 @@
                                         <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
                                         <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>
                                         <td>@item.QuarantineReason</td>
-
+                                    @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+                                    {
+                                        <td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrowQuarantine(this,'@item.Id');"></i></td>
+                                    }
                                     <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentUnQuarantineClick(this, language)"></i></td>
-                                    </tr>
+                                   
+                                
+                                </tr>
                                 }
                             </tbody>
                         </table>

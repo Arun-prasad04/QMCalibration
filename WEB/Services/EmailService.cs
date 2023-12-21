@@ -110,8 +110,9 @@ namespace WEB.Service
     {
       public string Server = "53.151.100.102";
       public string Port = "25";
-      public string FromAddress = "dta_qm_portal@daimlertruck.com";
-      public string UserId = "DICV-EBOM@DAIMLER.COM";
+      //public string FromAddress = "DICV-CMT@DAIMLER.COM";Mail from address have been changed to MFTBC-CMT@DAIMLER.COM as per requirement-08-12-2023
+      public string FromAddress = "dta_qm_portal@daimlertruck.com";//"MFTBC-CMT@DAIMLER.COM";//dta_qm_portal@daimlertruck.com
+			public string UserId = "DICV-EBOM@DAIMLER.COM";
       public string Pwd = "Dicv@123";
       public bool IsDevelopmentMode = true;
     }
@@ -137,7 +138,7 @@ namespace WEB.Service
                 smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-              //  smtp.Send(message);
+                smtp.Send(message);
             }
       else
       {

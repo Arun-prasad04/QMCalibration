@@ -836,10 +836,9 @@
 			DepartmentTranslate(language);
 			ObservationTypeTranslation(language);
 			InstrumentObservationTypeTranslation(language);
-			LoadRole();
-			
-			setRoleSelectedVal(language);
-			
+			LoadRole();				
+			MasterDepartment(language);
+			setRoleSelectedVal(language);			
 			
 			var respmsg = '@ViewBag.ResponseMessage';
 
@@ -855,16 +854,14 @@
 
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
-				var dict = diction();
-				
+				var dict = diction();				
 				MasterTranslate(selected);
 				DepartmentTranslate(selected);
 				ObservationTypeTranslation(selected);
 				InstrumentObservationTypeTranslation(selected);
-				
+				MasterDepartment(selected);
 				language=selected;
-				
-				language = selected;
+	
 				$('#hdnLanguage').val(selected);
 
 				$.ajax({
@@ -1883,7 +1880,43 @@
 				});
 				return dict;
 			}
-			
+			function MasterDepartment(lang)
+			{
+				
+				var selectedMasterDept = $('#DepartId').find("option:selected").val();
+				//alert(selectedMasterDept);
+				$.ajax({
+					url: '../Home/MasterDepartmentTranslate',
+					type: 'POST',
+					data: ''
+				}).done(function (resultObject) {
+					if (lang == 'jp') {
+						optionhtml = '<option value=""> -- マスターを選択 -- </option>';
+					}
+					else {
+						optionhtml = '<option value="">--- Select Master Department ---</option>';
+					}
+					$("#DepartId").empty();
+					$("#DepartId").append(optionhtml);
+					$.each(resultObject, function (index, item) {
+
+						
+						optionhtml = '';
+						if (lang == 'jp') {
+							optionhtml = '<option value="' + item.id + '">' + item.nameJp+'</option>';
+							//optionhtml = '<option value="' + item.id + '">' + item.nameJp + ' - ' + item.subSectionCode + '</option>';
+						}
+						else {
+							optionhtml = '<option value="' + item.id + '">' + item.name +'</option>';
+							//optionhtml = '<option value="' + item.id + '">' + item.name + ' - ' + item.subSectionCode + '</option>';
+						}
+
+						$("#DepartId").append(optionhtml);
+
+					});
+					$('#DepartId').val(selectedMasterDept).prop("selected", true);
+				});
+			}
 			function DepartmentTranslate(lang) {
 				//DepartmentId
 				var selectedUserDept = $('#UserDept').find("option:selected").val();
@@ -1982,7 +2015,7 @@
 			function ObservationTypeTranslation(lang) {
 
 				//alert('1');
-				var SelectObservation = $('#NewObservation').find("option:selected").val();;
+				var SelectObservation = $('#NewObservation').find("option:selected").val();
 				var SelectMU = $('#NewMU').find("option:selected").val();
 				var SelectCertification = $('#NewCertification').find("option:selected").val();
 				var SelectCalibrationStatus = $('#CalibrationStatus').find("option:selected").val();

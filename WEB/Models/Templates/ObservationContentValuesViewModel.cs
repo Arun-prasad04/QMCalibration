@@ -17,7 +17,9 @@
 		public string? Percent { get; set; }
 		public int? ContentId { get; set; }
 		public int? ContentMappingId { get; set; }
-		
+
+		public string? PermissibleLimit { get; set; }
+
 
 
 	}

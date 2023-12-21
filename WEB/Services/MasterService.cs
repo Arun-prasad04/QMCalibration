@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Collections.Generic;
+using System.Data;
+using NPOI.SS.Formula.Functions;
 
 namespace WEB.Services;
 
@@ -16,11 +18,13 @@ public class MasterService : IMasterService
 	private readonly IMapper _mapper;
 	private IUnitOfWork _unitOfWork { get; set; }
 	private IUtilityService _utilityService;
-	public MasterService(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService)
+	private IConfiguration _configuration;
+	public MasterService(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService, IConfiguration configuration)
 	{
 		_unitOfWork = unitOfWork;
 		_mapper = mapper;
 		_utilityService = utilityService;
+		_configuration = configuration;
 	}
 	public ResponseViewModel<MasterViewModel> GetAllMasterList(string SessionLang)
 	{
@@ -106,7 +110,7 @@ public class MasterService : IMasterService
 				DueDate = s.DueDate,
 				Range = s.Range,
 				SerialNo = s.SerialNo,
-				LabId = s.LabId,
+				//LabId = s.LabId,
 				CertNo = s.CertNo,
 				Traceability = s.Traceability,
 				Name = s.SupplierModel.Name,
@@ -115,8 +119,8 @@ public class MasterService : IMasterService
 				MobileNo = s.SupplierModel.MobileNo,
 				EquipmentMasterId = s.EquipmentMasterId,
 				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
-			//	TypeOfEquipment=s.TypeOfEquipment,
-				DepartmentId = s.DepartmentModel.Id
+                //	TypeOfEquipment=s.TypeOfEquipment,
+                DepartId = s.DepartmentModel.Id
 				
 				}).FirstOrDefault();
 
@@ -125,7 +129,10 @@ public class MasterService : IMasterService
 			masterById.CurrencyList = lovsList.Where(W => W.AttrName == "Currency").ToList();
 			masterById.CalibrationSourceList = lovsList.Where(W => W.AttrName == "CalibrationSource").ToList();
 			masterById.CalibrationFreq = lovsList.Where(W => W.AttrName == "CalibrationFreq").ToList();
-			var DepartmentData = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			//List<DepartmentViewModel> DepartmentData =_mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());			
+           // var DepartmentData = GetMasterDepartmentSubSection();
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			var DepartmentData = _cmtdl.GetMasterDepartmentSubSection();
 			masterById.Departments = DepartmentData;
 			return new ResponseViewModel<MasterViewModel>
 			{
@@ -307,10 +314,10 @@ public class MasterService : IMasterService
 			{
 				masterById.SerialNo = master.SerialNo;
 			}
-			if (master.LabId != null)
-			{
-				masterById.LabId = master.LabId;
-			}
+			//if (master.LabId != null)
+			//{
+			//	masterById.LabId = master.LabId;
+			//}
 			if (master.CertNo != null)
 			{
 				masterById.CertNo = master.CertNo;
@@ -327,9 +334,9 @@ public class MasterService : IMasterService
 			//{
 			//	masterById.TypeOfEquipment = master.TypeOfEquipment;
 			//}
-			if (master.DepartmentId != null)
+			if (master.DepartId != null)
 			{
-				masterById.DepartmentId = master.DepartmentId;
+				masterById.DepartmentId = master.DepartId;
 			}
 
 			Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
@@ -429,7 +436,9 @@ public class MasterService : IMasterService
 		try
 		{
 			MasterViewModel masterViewModel = new MasterViewModel();
-			var Department = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			//var Department = _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());
+			CMTDL _cmtdl = new CMTDL(_configuration);
+			var Department = _cmtdl.GetMasterDepartmentSubSection();
 			List<LovsViewModel> lovsList = _mapper.Map<List<LovsViewModel>>(_unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Attrform == "Master").ToList());
 			masterViewModel.LocationList = lovsList.Where(W => W.AttrName == "Location").ToList();
 			masterViewModel.CurrencyList = lovsList.Where(W => W.AttrName == "Currency").ToList();
@@ -486,7 +495,7 @@ public class MasterService : IMasterService
 				DueDate = s.DueDate,
 				Range = s.Range,
 				SerialNo = s.SerialNo,
-				LabId = s.LabId,
+				LabId = s.EquipmentMasterId,
 				CertNo = s.CertNo,
 				Traceability = s.Traceability,
 				Name = s.SupplierModel.Name,
@@ -702,7 +711,7 @@ public class MasterService : IMasterService
 			.Select(s => new MasterViewModel()
 			{
 				Id = s.Id,
-				LabId = s.LabId,
+				LabId = s.EquipmentMasterId,
 				EquipName = s.EquipName,
 				CalibDate = s.CalibDate,
 				Range = s.Range
@@ -733,7 +742,48 @@ public class MasterService : IMasterService
 		}
 
 	}
+	//public List<DepartmentViewModel> GetMasterDepartmentSubSection()
+	//{
+	//	try
+	//	{// List<UserViewModel> userViewModelList = new List<UserViewModel>();
 
+			
+	//		CMTDL _cmtdl = new CMTDL(_configuration);
+
+	//		List<DepartmentViewModel> uv = new List<DepartmentViewModel>();
+
+	//		DataSet ds = _cmtdl.GetMasterEquipmentSubSection();
+
+	//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+	//		{
+	//			foreach (DataRow dr in ds.Tables[0].Rows)
+	//			{
+	//				DepartmentViewModel Dept = new DepartmentViewModel
+	//				{
+	//					Id = Convert.ToInt32(dr["Id"]),
+	//					Name = Convert.ToString(dr["Name"]),
+	//					SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
+	//					SubSection = Convert.ToString(dr["Subsection"]),
+	//					Section = Convert.ToString(dr["Section"])
+	//				};
+	//				uv.Add(Dept);
+
+	//			}
+				
+	//		}
+	//		return uv;
+			
+			
+	//	}
+	//	catch (Exception e)
+	//	{
+	//		ErrorViewModelTest.Log("MasterService - GetMasterDepartmentSubSection Method");
+	//		ErrorViewModelTest.Log("exception - " + e.Message);
+	//		return null;
+	//	}
+		
+
+	//}
 
 }
 

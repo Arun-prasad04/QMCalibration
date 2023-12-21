@@ -22,12 +22,14 @@ public class InstrumentController : BaseController
 	private IRequestService _requestService { get; set; }
 	private IUnitOfWork _unitOfWork { get; set; }
 	private IQRCodeGeneratorService _qrCodeGeneratorService { get; set; }
-	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService) : base(logger, contextAccessor)
+	private IConfiguration _configuration;
+	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService, IConfiguration configuration) : base(logger, contextAccessor)
 	{
 		_instrumentService = instrumentService;
 		_requestService = requestService;
 		_unitOfWork = unitOfWork;
 		_qrCodeGeneratorService = qrCodeGeneratorService;
+		_configuration = configuration;
 	}
 
 	public IActionResult Index()
@@ -193,10 +195,10 @@ public class InstrumentController : BaseController
 	}
 	//Due For Calibration 
 
-	public JsonResult PopUpInstrumentList(string InstrumentName, int InstrumentId)
+	public JsonResult PopUpInstrumentList(string InstrumentName, int InstrumentId,int SubsectionCode)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.PopUpList(InstrumentName, InstrumentId);
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.PopUpList(InstrumentName, InstrumentId, SubsectionCode);
 
 		return Json(response.ResponseDataList);
 	}
@@ -209,13 +211,6 @@ public class InstrumentController : BaseController
 		ResponseViewModel<RequestViewModel> response;
 		response = _requestService.InsertDueRequest(userViewModelList, userId);
 
-		//response = _requestService.InsertDueRequest(userViewModelList, userId);
-
-		//foreach (var user in userViewModelList)
-		//      {
-		//	
-		//}
-		//ResponseViewModel<RequestViewModel> response = _requestService.InsertDueRequest(Request, userId); 
 		return Json(true);
 	}
 	//For Tool Inventory Manager
@@ -307,5 +302,52 @@ public class InstrumentController : BaseController
 		return Json(response.ResponseDataList);
 	}
 
-	#endregion
+    #endregion
+    public JsonResult InActiveQuarantineInstrument(int instrumentId)
+    {
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.InActiveQuarantineInstrument(instrumentId);
+        
+        return Json(response.ResponseDataList);
+	}
+	//public IActionResult GetToolRoomSubSectionList()
+	//{
+
+	//	ResponseViewModel<ToolRoomMasterViewModel> response = _instrumentService.GetToolRoomSubSectionList();
+	//	return View(response.ResponseDataList);
+	//	//return View();
+
+	//}
+	public JsonResult GetToolRoomSubSectionList()
+	{
+		List<ToolRoomMasterViewModel> DepartmentList;
+		CMTDL _cmtdl = new CMTDL(_configuration);
+		//ResponseViewModel<ToolRoomMasterViewModel> toolroom = _cmtdl.GetToolRoomsSubSectionMasterList();
+		DepartmentList = _cmtdl.GetToolRoomsSubSectionMasterList(); //toolroom.ResponseDataList.ToList();
+		var DepartTranslaterMaster = new List<ToolRoomDepartmentlist>();
+		foreach (var item in DepartmentList)
+		{
+			DepartTranslaterMaster.Add(new ToolRoomDepartmentlist
+			{
+				id = item.Id,
+				Name = item.Name,
+				NameJp = item.NameJP,
+				SubSectionCode = item.SubSectionCode,
+				DepartmentId =item.DepartmentId
+
+			});
+		}
+		return Json(DepartTranslaterMaster);
+
+	}
+
+	public class ToolRoomDepartmentlist
+	{
+		public int id { get; set; }
+		public string? Name { get; set; }
+		public string? NameJp { get; set; }
+		public string? SubSectionCode { get; set; }
+		public int? DepartmentId { get; set; }
+
+
+	}
 }

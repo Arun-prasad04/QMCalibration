@@ -58,6 +58,7 @@ namespace CMT.DATAMODELS
 	public int? ToolRoomStatus { get; set; }
 	public string? IssueNo { get; set; }
 	public DateTime? ReplacementStartDate { get; set; }
+	public int? ReplacementDeptId { get; set; }
 
 	}
 }

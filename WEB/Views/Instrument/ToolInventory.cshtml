@@ -97,6 +97,7 @@
 												<input type="hidden" class="clsUserDept" id="UserDept" name="UserDept" value="@item.UserDept">
 												<input type="hidden" class="clsRequestId" id="HiddenRequestId_@item.Id" name"="HiddenRequestId_@item.Id">
 												<input type="hidden" class="clsIdno" id="HiddenIdno" name"="HiddenIdno" value="@item.IdNo">
+												<input type="hidden" class="clsReplacementDeptId" id="ReplacementDeptId_@item.Id" name"="ReplacementDeptId_@item.Id" value="">
 											</td>
 										}
 										else
@@ -115,6 +116,7 @@
 												<input type="hidden" class="clsUserDept" id=" UserDept" name="UserDept" value="@item.UserDept">
 												<input type="hidden" class="clsRequestId" id="HiddenRequestId_@item.Id" name"="HiddenRequestId_@item.Id">
 												<input type="hidden" class="clsIdno" id="HiddenIdno" name"="HiddenIdno" value="@item.IdNo">
+												<input type="hidden" class="clsReplacementDeptId" id="ReplacementDeptId_@item.Id" name"="ReplacementDeptId_@item.Id" value="">
 											</td>
 
 										}
@@ -136,16 +138,21 @@
 								</div>
 								<div class="modal-body">
 									<div class="card-body">
+										<label class="trn">ToomRoom Instrument Types</label>
+										<select id="Instrument_Type" name="Instrument_Type" class="form-control" onchange="PopUpListing1('','')">
+											<option value="" class="trn">--Select Tool Room Instrument Type / ツールルームのインストゥルメントタイプを選択--</option>
+											@* <option value="K1 tool room">K1 tool room</option>
+											<option value="Nakatsu Tool Room">Nakatsu Tool Room</option> *@
+										</select>
 										<table id="tblPopUp" class="table table-bordered table-striped" style="width:100%">
 											<thead>
 												<tr>
 													<th class="trn">Name</th>
 													<th class="trn">Lab ID Number</th>
-													@* <th class="trn">Department</th>
-													<th class="trn">Due Date</th> *@
-												</tr>
+													</tr>
 											</thead>
-											<tbody id="tbodypopup">
+											<tbody id="tbodypopup"> 
+											
 											</tbody>
 										</table>
 									</div>
@@ -178,20 +185,33 @@
 </form>
 <script>
 
-	$(function () {
-		$("#tblTool").DataTable({
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true,
-			"responsive": true,
-			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-				"<'row'<'col-sm-12'tr>>" +
-				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		});
-	});
+	// $(function () {
+	// 	var oTable = $('#tblTool').dataTable({
+	// 		stateSave: true,
+	// 		"bDestroy": true,
+	// 		"pageLength": 100,
+	// 		'columnDefs': [{
+	// 			'targets': [9], /* column index */
+	// 			'orderable': false, /* true or false */
+
+	// 		}],
+	// 		dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+	// 			"<'row'<'col-sm-12'tr>>" +
+	// 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+	// 	});
+	// 	// $("#tblTool").DataTable({
+	// 	// 	"paging": true,
+	// 	// 	"lengthChange": true,
+	// 	// 	"searching": true,
+	// 	// 	"ordering": true,
+	// 	// 	"info": true,
+	// 	// 	"autoWidth": true,
+	// 	// 	"responsive": true,
+	// 	// 	dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+	// 	// 		"<'row'<'col-sm-12'tr>>" +
+	// 	// 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+	// 	// });
+	// });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -199,7 +219,10 @@
  <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
  
  <script>
-
+	 var instrumentname;
+	 var id;
+	 instrumentname = localStorage['instrumentname'];
+	id = localStorage['id'];
 	$(function () {
 		//For Select All CheckBox Functionality
 		$('#selectAll').click(function (e) {
@@ -216,6 +239,20 @@
 
 		});
 
+		$('#tblTool').dataTable({
+			"paging": true,
+			"pageLength": 100,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": true,
+			"responsive": true,
+			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		});
+
 
 	});
 
@@ -228,12 +265,19 @@
 		$("#ToolHistoryDetails").modal('hide');
 
 	}
-	function PopUpListing1(InstrumentName, Id) {
+	function PopUpListing1(InstrumentName, Id) {	
+		if (InstrumentName == '') {
+			//alert(InstrumentName);
+			InstrumentName = instrumentname;
+		}
+		if (Id == '') {
+			//alert(Id);
+			Id = id;
+		}
+	
 		if ($.fn.dataTable.isDataTable('#tblPopUp')) {
 			$('#tblPopUp').DataTable().clear().destroy();
 		}
-		console.log(InstrumentName);
-		console.log(Id);
 		var table;
 		var rows = "";
 		//var SetData = $("#tbodypopup").empty(); 
@@ -241,10 +285,10 @@
 		$.ajax({
 			type: 'GET',
 			url: '../Instrument/PopUpInstrumentList',
-			data: { InstrumentName: InstrumentName, InstrumentId: Id },
+			data: { InstrumentName: InstrumentName, InstrumentId: Id, SubsectionCode: $("#Instrument_Type").val()},
 			dataType: 'json',
 			success: function (data) {
-				console.log("popup data");
+				console.log("PopUp data");
 				console.log(data);
 				$("#ToolHistoryDetails").modal('show');
 				$('#tblPopUp tbody').empty();				
@@ -267,7 +311,7 @@
 						var LabId = encodeURI(item.idNo);
 						rows = "<tr>"
 							+ "<td>"
-							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + "," + item.requestId + ");'>" + item.instrumentName
+							+ "<a href = '#' onclick='MasterToolListing(\"" + encodeURI(item.idNo) + "\"," + MasterLabID + "," + item.requestId + "," + item.replacementDeptId + ");'>" + item.instrumentName
 							+ "</a>"
 							+ "</td>"
 							+ "<td>" + item.idNo + "</td>"
@@ -311,23 +355,63 @@
 
 			}
 		});
-		HidePopUp();
+		if ($("#Instrument_Type").val() != '0') {
+		ToolRoomSubsection();
+		}
+		//HidePopUp();
+		instrumentname = InstrumentName;
+		id = Id;
+		localStorage['instrumentname'] = InstrumentName;
+		localStorage['id'] = Id;
 	}
 
-	function MasterToolListing(ReplacementidNo, MasterLabID, RequestId) {
-		//alert(RequestId);
+	function MasterToolListing(ReplacementidNo, MasterLabID, RequestId, ReplacementDeptId) {
+		
 		var RLabId = decodeURI(ReplacementidNo);
 		var id = "ReplacementLabID_" + MasterLabID;
 		var ChkId = "ChkInput_" + MasterLabID;
 		var HiddenLabID = "HiddenLabID_" + MasterLabID;
 		var RequestingId = "HiddenRequestId_" + MasterLabID;
+		var ReplacementDept = "ReplacementDeptId_" + MasterLabID;
 		//alert(id);
 		$("#" + id).text(RLabId);
 		$("#" + id).val(RLabId);
 		$("#" + HiddenLabID).val(RLabId);
 		$("#" + ChkId).prop("checked", true);
 		$("#" + RequestingId).val(RequestId);
+		$("#" + ReplacementDept).val(ReplacementDeptId);
+		//<input type="hidden" class="clsReplacementDeptId" id="ReplacementDeptId_item.Id" name"="ReplacementDeptId_item.Id" value="">
 		//alert($("#" + RequestingId).val(RequestId));
 		HidePopUp();
 	}
+	function ToolRoomSubsection() {
+
+		var Instrument_Type = $('#Instrument_Type').find("option:selected").val(); //For Instrument Mastr
+		$.ajax({
+			url: '../Instrument/GetToolRoomSubSectionList',
+			type: 'GET',
+			data: '',
+			dataType: 'json',
+			success: function (resultObject) {
+				$("#Instrument_Type").empty();
+				var optionhtml = '';
+				// alert(lang);
+				// if (lang == 'jp') {
+				// 	optionhtml = '<option value="">--- ツールルームインストゥルメントを選択 ---</option>';
+				// }
+				// else {
+				optionhtml = '<option value="">--- Select Tool Room Instrument Type / ツールルームのインストゥルメントタイプを選択---</option>';
+				//}
+				$("#Instrument_Type").append(optionhtml);
+				console.log(resultObject);
+				$.each(resultObject, function (index, item) {
+					optionhtml = '<option value="' + item.subSectionCode + '">' + item.name + '-' + item.nameJp + '</option>';
+					$('#Instrument_Type').append(optionhtml);
+				});
+				$('#Instrument_Type').val(Instrument_Type).prop("selected", true);
+			},
+		});
+	}
+
+
 </script>

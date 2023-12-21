@@ -67,7 +67,8 @@ namespace CMT.DATAMODELS
 		public virtual DbSet<ToolRoomMaster> ToolRoomMaster { get; set; }
 
 		public virtual DbSet<ToolRoomHistory> ToolRoomHistory { get; set; }
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public virtual DbSet<MasterEquipmentDepartment> MasterEquipmentDepartment { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Master>()
             .HasOne(p => p.SupplierModel)
@@ -78,7 +79,6 @@ namespace CMT.DATAMODELS
             .HasOne(p => p.Masters)
             .WithMany(b => b.QuarantineModel)
             .HasForeignKey(p => p.MasterId);
-
 
             modelBuilder.Entity<MasterFileUpload>()
             .HasOne(p => p.Masters)

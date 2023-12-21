@@ -20,12 +20,16 @@ public interface IInstrumentService
 ResponseViewModel<InstrumentViewModel> GetAllToolInventoryInstrumentList(int UserDept, int DueMonth);
 ResponseViewModel<InstrumentViewModel> SaveInventoryCalibration(List<Instrumentids> Instrumentid, int userId);
 ResponseViewModel<InstrumentViewModel> GetAllToolRoomDepartmentwiseInstrument(int DueMonth);
-ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId);
+ResponseViewModel<InstrumentViewModel> PopUpList(string InstrumentName, int InstrumentId, int SubsectionCode);
 
 DateTime GetcalibrationClosedate(int requid);
 ResponseViewModel<InstrumentViewModel> GetAllToolRoomInstrument();
 ResponseViewModel<InstrumentViewModel> GetInstrumentDetailById(int InstrumentId);
 ResponseViewModel<InstrumentViewModel> GetRequestListForInstrument(int InstrumentId);
 ResponseViewModel<InstrumentViewModel> UpdateControlCardRequestList(List<RequestAllData> reqlist, int InstrumentId, string IssueNo);
+ResponseViewModel<InstrumentViewModel> InActiveQuarantineInstrument(int instrumentId);
+//ResponseViewModel<ToolRoomMasterViewModel> GetToolRoomSubSectionList();
 
+
+	
 }

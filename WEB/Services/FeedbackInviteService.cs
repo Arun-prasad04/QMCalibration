@@ -72,7 +72,7 @@ public class FeedbackInviteService : IFeedbackInviteService
 				foreach (var user in feedbackInviteList)
 				{
 					//emailList.Add(user.Email.Trim());
-					string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 14pt; font-weight: Normal;'>        <p>            Dear Customer,</p>        <p>            DICV ($LABNAME$) team requested feedback from you about services. Your support in this regard much appreciated.</p>      <p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> Regards</b>,                <br />                <b>$LABNAME$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+					string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 14pt; font-weight: Normal;'>        <p>            Dear Customer,</p>        <p>            DICV ($LABNAME$) team requested feedback from you about services. Your support in this regard much appreciated.</p>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> Regards</b>,                <br />                <b>$LABNAME$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
 					mailbody = mailbody.Replace("$LABNAME$", user.LabName);
 					MailMessage message = new MailMessage();
 					SmtpClient smtp = new SmtpClient();
