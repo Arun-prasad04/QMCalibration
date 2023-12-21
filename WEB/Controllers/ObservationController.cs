@@ -1402,6 +1402,7 @@ public class ObservationController : BaseController
 	#region "Dynamic Observation"
 	public IActionResult InternalObservation(int instrumentId, int requestId)
 	{
+		ViewBag.UserRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string firstName = base.SessionGetString("FirstName");
 		string lastName = base.SessionGetString("LastName");
@@ -1426,6 +1427,7 @@ public class ObservationController : BaseController
     }
 	public JsonResult GetObservationById(int InstrumentId, int RequestId, int TemplateObservationId)
 	{
+          
 		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId,RequestId, TemplateObservationId);
 		return Json(response.ResponseDataList);
 

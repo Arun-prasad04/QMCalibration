@@ -4530,19 +4530,11 @@ public class ObservationTemplateService : IObservationTemplateService
 							instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.ClosedTool;
 							instrumentData.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
 							instrumentData.ReplacementLabID = null;
-						ResponseViewModel<ToolRoomMasterViewModel> toolroom =GetToolRoomSubSection();
-						
-						Department Dept = _unitOfWork.Repository<Department>().GetQueryAsNoTracking(Q => Q.SubSectionCode == toolroom.ResponseData.DeptSubSectionCode).SingleOrDefault();
-
-						if (instrumentData.UserDept != Dept.Id)
-							{
-								instrumentData.UserDept = Dept.Id;
-
-								//instrumentData.DueDate = null;// (instrumentData.DueDate.Equals(DBNull.Value) ? (DateTime?)null : (instrumentData.DueDate);
-								
-							}
-
-						}
+						//ResponseViewModel<ToolRoomMasterViewModel> toolroom =GetToolRoomSubSection();						
+						instrumentData.UserDept = (Int32)instrumentData.ReplacementDeptId;
+						instrumentData.ReplacementDeptId = null;
+						instrumentData.DueDate = null;
+					}
 						else
 						{
 							instrumentData.ToolInventoryStatus = (Int32)ToolInventoryStatus.RejectedTool;
@@ -4646,7 +4638,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (iRegularCount > 0)
 				{
 					//Mail For Instrument Created User-Start  
-					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qdg044/cmtlive/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
 					mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
 					_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
 					//Mail For Instrument Created User-End  
@@ -4654,7 +4646,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				if (iRecalibrationCount > 0)
 				{
 					//Mail For Instrument Created User-Start  
-					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qdg044/cmtlive/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
 					mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
 					_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
 					//Mail For Instrument Created User-End 
@@ -5365,36 +5357,37 @@ public class ObservationTemplateService : IObservationTemplateService
 					ObservationContentViewModel dynamicViewModel = new ObservationContentViewModel
 					{
 
-						ObservationTemplate = Convert.ToInt32(dr["ObservationTemplate"]),
-						ObservationType = Convert.ToInt32(dr["ObservationType"]),
-						ContentName = dr["ContentName"].ToString(),
-						ContentValue = dr["ContentValue"].ToString(),
-						ContentCount = dr["ContentCount"].ToString(),
-						ContentTitle1 = dr["ContentTitle1"].ToString(),
-						ContentTitle2 = dr["ContentTitle2"].ToString(),
-						ContentSubTitle1 = dr["ContentSubTitle1"].ToString(),
-						ContentSubTitle2 = dr["ContentSubTitle2"].ToString(),
-						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
-						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
-						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
+						ObservationTemplate = dr["ObservationTemplate"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ObservationTemplate"]),
+						ObservationType = dr["ObservationType"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ObservationType"]),
+						ContentName = dr["ContentName"].Equals(DBNull.Value) ? string.Empty : dr["ContentName"].ToString(),
+						ContentValue = dr["ContentValue"].Equals(DBNull.Value) ? string.Empty : dr["ContentValue"].ToString(),
+						ContentCount = dr["ContentCount"].Equals(DBNull.Value) ? string.Empty : dr["ContentCount"].ToString(),
+						ContentTitle1 = dr["ContentTitle1"].Equals(DBNull.Value) ? string.Empty : dr["ContentTitle1"].ToString(),
+						ContentTitle2 = dr["ContentTitle2"].Equals(DBNull.Value) ? string.Empty : dr["ContentTitle2"].ToString(),
+						ContentSubTitle1 = dr["ContentSubTitle1"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle1"].ToString(),
+						ContentSubTitle2 = dr["ContentSubTitle2"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle2"].ToString(),
+						ContentSubTitle3 = dr["ContentSubTitle3"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle3"].ToString(),
+						ContentSubTitle4 = dr["ContentSubTitle4"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle4"].ToString(),
+						ContentSubTitle5 = dr["ContentSubTitle5"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle5"].ToString(),
+						ContentSubTitle6 = dr["ContentSubTitle6"].Equals(DBNull.Value) ? string.Empty : dr["ContentSubTitle6"].ToString(),
 						Id = Convert.ToInt32(dr["Id"]),
-						TypeOfContent = dr["TypeOfContent"].ToString(),
-						//////////////////test////////////////
-						ObsContentValueId = Convert.ToInt32(dr["ObsContentValueId"]),
-						ParentId = Convert.ToInt32(dr["ParentId"]),
-						Sno = Convert.ToInt32(dr["Sno"]),
-						MeasuedValue = dr["MeasuedValue"].ToString(),
-						ActualValue = dr["ActualValue"].ToString(),
-						InstrumentError = dr["InstrumentError"].ToString(),
-						Diff = dr["Diff"].ToString(),
-						MeasuedValue1 = dr["MeasuedValue1"].ToString(),
-						MeasuedValue2 = dr["MeasuedValue2"].ToString(),
-						MeasuedValue3 = dr["MeasuedValue3"].ToString(),
-						Average = dr["Average"].ToString(),
-						Percent = dr["Percent"].ToString(),
-						ContentId = Convert.ToInt32(dr["ContentId"]),
-						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
-
+						TypeOfContent = dr["TypeOfContent"].Equals(DBNull.Value) ? string.Empty : dr["TypeOfContent"].ToString(),
+                        //////////////////test////////////////
+						ObsContentValueId = dr["ObsContentValueId"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ObsContentValueId"]),
+						ParentId = dr["ParentId"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ParentId"]),
+						Sno = dr["Sno"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["Sno"]),
+						MeasuedValue = dr["MeasuedValue"].Equals(DBNull.Value) ? string.Empty : dr["MeasuedValue"].ToString(),
+						ActualValue = dr["ActualValue"].Equals(DBNull.Value) ? string.Empty : dr["ActualValue"].ToString(),
+						InstrumentError = dr["InstrumentError"].Equals(DBNull.Value) ? string.Empty : dr["InstrumentError"].ToString(),
+						Diff = dr["Diff"].Equals(DBNull.Value) ? string.Empty : dr["Diff"].ToString(),
+						MeasuedValue1 = dr["MeasuedValue1"].Equals(DBNull.Value) ? string.Empty : dr["MeasuedValue1"].ToString(),
+						MeasuedValue2 = dr["MeasuedValue2"].Equals(DBNull.Value) ? string.Empty : dr["MeasuedValue2"].ToString(),
+						MeasuedValue3 = dr["MeasuedValue3"].Equals(DBNull.Value) ? string.Empty : dr["MeasuedValue3"].ToString(),
+						Average = dr["Average"].Equals(DBNull.Value) ? string.Empty : dr["Average"].ToString(),
+						Percent = dr["Percent"].Equals(DBNull.Value) ? string.Empty : dr["Percent"].ToString(),
+						ContentId = dr["Percent"].Equals(DBNull.Value) ? null :Convert.ToInt32(dr["ContentId"]),
+						ContentMappingId = dr["Percent"].Equals(DBNull.Value) ? null: Convert.ToInt32(dr["ContentMappingId"]),
+						PermissibleLimit = dr["PermissibleLimit"].Equals(DBNull.Value) ? string.Empty : dr["PermissibleLimit"].ToString()
                     };
 					ObservationInstrument.Add(dynamicViewModel);
 				}
@@ -5683,6 +5676,7 @@ public class ObservationTemplateService : IObservationTemplateService
 					CreatedOn = DateTime.Now,
 					// CalibrationReviewedBy = labTechnicalManager.Id,
 					CalibrationReviewedDate = DateTime.Now
+					//PermissibleLimit = dynamic.PermissibleLimit
 				};
 				_unitOfWork.Repository<TemplateObservation>().Insert(templateObservation);
 				_unitOfWork.SaveChanges();
@@ -5727,59 +5721,33 @@ public class ObservationTemplateService : IObservationTemplateService
 
 				dynamicId = observationById.Id;
 			}
-
-			if (dynamic.ObservationContentValuesList != null)
+            if (dynamic.ObservationContentValuesList != null)
 			{
-				dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
-				var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-										.Where(x => x.Id > 0).ToList());
-				if (detailData.Any())
-				{
-
-					foreach (var updateData in detailData)
-					{
-						_unitOfWork.Repository<ObservationContentValues>().Update(updateData);
-						_unitOfWork.SaveChanges();
-					}
-				}
-
-				detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-										.Where(x => x.Id == null).ToList());
-
-				if (detailData.Any())
-				{
-
-					_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
-					_unitOfWork.SaveChanges();
-				}
-			}
-
-			if (dynamic.ObservationContentMappingList != null)
-			{
-				//To insert ObservationContentMapping
-				//dynamic.ObservationContentMappingList.ForEach(x => x.ObservationId = dynamicId);
-				//dynamic.ObservationContentMappingList.ForEach(x => x.CreatedOn = DateTime.Now);
-				//dynamic.ObservationContentMappingList.ForEach(x => x.CreatedBy = dynamic.CreatedBy);
-
-			
-				//var MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
-				//						.Where(x => x.ContentId > 0).ToList());
-				//if (MappingData.Any())
+                dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = dynamicId);
+                dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
+                var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+                                        .Where(x => x.ParentId == dynamicId).ToList());
+				List <ObservationContentValues> ObsContentValuesById = _unitOfWork.Repository<ObservationContentValues>().GetQueryAsNoTracking(Q => Q.ParentId == dynamicId).ToList();
+				
+					
+                        _unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
+                        _unitOfWork.SaveChanges();
+                
+				//if (detailData.Any())
 				//{
-				//	foreach (var updateData in MappingData)
-				//	{
-				//		_unitOfWork.Repository<ObservationContentMapping>().Update(updateData);
-				//		_unitOfWork.SaveChanges();
-				//	}
-				//}
-				//MappingData = _mapper.Map<ObservationContentMapping[]>(dynamic.ObservationContentMappingList
-				//						.Where(x => x.ContentId == null).ToList());
-				//if (MappingData.Any())
-				//{
-				//	_unitOfWork.Repository<ObservationContentMapping>().InsertRange(MappingData);
+				//	_unitOfWork.Repository<ObservationContentValues>().UpdateRange(detailData);
 				//	_unitOfWork.SaveChanges();
 				//}
+				//detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+				//						.Where(x => x.Id == null).ToList());
+				//if (detailData.Any())
+				//{
+					_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
+					_unitOfWork.SaveChanges();
+				//}
 			}
+
+			
 			_unitOfWork.Commit();
 			return new ResponseViewModel<DynamicViewModel>
 			{
@@ -5943,7 +5911,8 @@ public class ObservationTemplateService : IObservationTemplateService
 						ContentSubTitle3 = dr["ContentSubTitle3"].ToString(),
 						ContentSubTitle4 = dr["ContentSubTitle4"].ToString(),
 						ContentSubTitle5 = dr["ContentSubTitle5"].ToString(),
-						Id = Convert.ToInt32(dr["Id"]),
+                        ContentSubTitle6 = dr["ContentSubTitle6"].ToString(),
+                        Id = Convert.ToInt32(dr["Id"]),
 						TypeOfContent = dr["TypeOfContent"].ToString(),
 						//////////////////test////////////////
 						ObsContentValueId = Convert.ToInt32(dr["ObsContentValueId"]),
@@ -5959,7 +5928,8 @@ public class ObservationTemplateService : IObservationTemplateService
 						Average = dr["Average"].ToString(),
 						Percent = dr["Percent"].ToString(),
 						ContentId = Convert.ToInt32(dr["ContentId"]),
-						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"])
+						ContentMappingId = Convert.ToInt32(dr["ContentMappingId"]),
+						PermissibleLimit = dr["PermissibleLimit"].ToString()
 
 					};
 					ObservationInstrument.Add(ContentViewModel);
@@ -6427,46 +6397,47 @@ public class ObservationTemplateService : IObservationTemplateService
         }
     }
 
-	public ResponseViewModel<ToolRoomMasterViewModel> GetToolRoomSubSection()
-	{
-		try
-		{
-			CMTDL _cmtdl = new CMTDL(_configuration);
-			ToolRoomMasterViewModel uv = new ToolRoomMasterViewModel();
-			DataSet ds = _cmtdl.GetToolRoomMaster();
+	//public ResponseViewModel<ToolRoomMasterViewModel> GetToolRoomSubSection()
+	//{
+	//	try
+	//	{
+	//		CMTDL _cmtdl = new CMTDL(_configuration);
+	//		ToolRoomMasterViewModel uv = new ToolRoomMasterViewModel();
+	//		DataSet ds = _cmtdl.GetToolRoomMaster();
 
-			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-			{
-				uv.Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]);
-				uv.DeptSubSectionCode = Convert.ToString(ds.Tables[0].Rows[0]["DeptSubSectionCode"]);
-				uv.CreatedBy = Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedBy"]);
-				uv.SubSectionName = Convert.ToString(ds.Tables[0].Rows[0]["SubSectionName"]);
-				uv.CreatedOn = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedOn"]);
-			}
-			return new ResponseViewModel<ToolRoomMasterViewModel>
-			{
-				ResponseCode = 200,
-				ResponseMessage = "Success",
-				ResponseData = uv,
-				ResponseDataList = null
-			};
-		}
-		catch (Exception e)
-		{
-			ErrorViewModelTest.Log("ObservationTemplateService - GetToolRoomSubSection Method");
-			ErrorViewModelTest.Log("exception - " + e.Message);
-			return new ResponseViewModel<ToolRoomMasterViewModel>
-			{
-				ResponseCode = 500,
-				ResponseMessage = "Failure",
-				ErrorMessage = e.Message,
-				ResponseData = null,
-				ResponseDataList = null,
-				ResponseService = "User",
-				ResponseServiceMethod = "GetToolRoomSubSection"
-			};
-		}
+	//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+	//		{
+	//			uv.Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]);
+	//			uv.SubSectionCode = Convert.ToString(ds.Tables[0].Rows[0]["DeptSubSectionCode"]);
+	//			uv.CreatedBy = Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedBy"]);
+	//			uv.SubSectionName = Convert.ToString(ds.Tables[0].Rows[0]["SubSectionName"]);
+	//			uv.CreatedOn = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedOn"]);
+	//		}
+	//		return new ResponseViewModel<ToolRoomMasterViewModel>
+	//		{
+	//			ResponseCode = 200,
+	//			ResponseMessage = "Success",
+	//			ResponseData = uv,
+	//			ResponseDataList = null
+	//		};
+	//	}
+	//	catch (Exception e)
+	//	{
+	//		ErrorViewModelTest.Log("ObservationTemplateService - GetToolRoomSubSection Method");
+	//		ErrorViewModelTest.Log("exception - " + e.Message);
+	//		return new ResponseViewModel<ToolRoomMasterViewModel>
+	//		{
+	//			ResponseCode = 500,
+	//			ResponseMessage = "Failure",
+	//			ErrorMessage = e.Message,
+	//			ResponseData = null,
+	//			ResponseDataList = null,
+	//			ResponseService = "User",
+	//			ResponseServiceMethod = "GetToolRoomSubSection"
+	//		};
+	//	}
 
-	}
+	//}
 
+	
 }

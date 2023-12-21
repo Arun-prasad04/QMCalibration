@@ -6,14 +6,14 @@
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 <style>
 	/* .OverDue tr:nth-child(odd), tr:nth-child(even) {
-			background-color: lightsalmon;
-				tomato
-		} */
+				background-color: lightsalmon;
+					tomato
+			} */
 	/* .table-striped tr:nth-child(even) {
-			background-color: #e8e7e6;
-		}
+				background-color: #e8e7e6;
+			}
 
-		th:nth-child(even), td:nth-child(even) */
+			th:nth-child(even), td:nth-child(even) */
 </style>
 
 <section class="content">
@@ -114,9 +114,9 @@
 											<td style="text-align:center;" class="chkpl">
 												@if (@item.DueDate != null)
 												{
-													@if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
+													@* @if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
 													{
-													//@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27))// || @item.RequestStatus == 0)
+														//@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27))// || @item.RequestStatus == 0)
 														@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
 														{
 															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
@@ -127,22 +127,24 @@
 															<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
 														}
 
-													}
-													else if ((@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													} *@
+													//else
+													@if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													//@if ((@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.AddMonths(1).Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
 													{
-														//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
+													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
 														//{
 
-															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
 														<input id="typeId" name="typeId" type="hidden" value="2" />
 														// to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
 														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-															<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-															<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-															<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-															
+														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+
 													}
-													else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
 													{
 													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
 														//{
@@ -155,19 +157,19 @@
 														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
 
 													}
-													else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-													{
+													@* else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+															{
 													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
 														//{
 
 														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-														<input id="typeId" name="typeId" type="hidden" value="3" />
+														<input id="typeId" name="typeId" type="hidden" value="2" />
 														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
 														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
 														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
 														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
 
-													}
+													} *@
 												}
 											</td>
 										}
@@ -181,7 +183,7 @@
 										{
 											<td></td>
 										}
-										
+
 									</tr>
 
 								}
@@ -209,195 +211,180 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 
+    $(function () {
+        $('#example1').dataTable({});
+        $('#example1').dataTable({
+            "bDestroy": true,
+            "createdRow": function (row, data, dataIndex) {
+                console.log(data);
+                var date = data[8].substring(0, 2);
+                var month = data[8].substring(3, 5);
+                var year = data[8].substring(6, 10);
 
-	$(document).ready(function () 
-	 {
-	
-		// var currentdate = new Date();
-		// console.log(currentdate);
-		// $('#example1 tbody tr').each(function (row, tr) {
-		// 	console.log($(this).closest('tr').find('.clsReqDueDate').val());
-		// 	var redate = new Date($(this).closest('tr').find('.clsReqDueDate').val());
-		// 		if (redate < currentdate) 
-		// 		{
-		// 			alert("test");
-		// 		//$(this).closest('tr').css('background-color', '#fbefef');
-		// 		$(row).css('background-color', '#fbefef');
-		// 		}
-		// 		});
+                var edate = new Date(year, month - 1, date);
 
-	
-		// $('#example1').dataTable({
-		// 	"createdRow": function (row, data, dataIndex) {
-				
-		// 		console.log("data");
-		// 		//console.log(data);
-		// 		console.log(data[8]);
-		// 		var edate =data[8];
-		// 		//var currentdate = moment(new Date()).format("DD-MM-YYYY");
-		// 		var currentdate = new Date()
-		// 		var redate = new Date(edate);
-		// 		console.log("currentdate");
-		// 		console.log(currentdate);
-		// 		console.log("redate");
-		// 		console.log(redate);
-		// 		if ((redate < currentdate) )//&& (item.status != 30))
-		// 		{
-		// 			//alert("");
-		// 			$(row).css('background-color', '#fbefef');
-		// 		}
-		// 	}
-		// });
-	});
-	
-	$(function () {
-		
-		var oTable = $('#example1').dataTable({
-			stateSave: true,
-			"pageLength": 100,			
-			'columnDefs': [{
-				'targets': [9], /* column index */
-				'orderable': false, /* true or false */
-			}],
-			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-				"<'row'<'col-sm-12'tr>>" +
-				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		});
+                var currentdate = new Date()
+                var redate = data[8];
 
-		var allPages = oTable.fnGetNodes();
+                if (redate != "") {
+                    if (edate < currentdate) //&& (item.status != 30))
+                    {
+                        $(row).css('background-color', '#fbefef');
+                    }
+                }
+                else {
+                    //alert("empty");
+                }
 
-		$('body').on('click', '#selectAll', function () {
-			if ($(this).hasClass('allChecked')) {
-				$('input[type="checkbox"]', allPages).prop('checked', false);
-			} else {
-				$('input[type="checkbox"]', allPages).prop('checked', true);
-			}
-			$(this).toggleClass('allChecked');
-		})
+            }
+        });
+        var oTable = $('#example1').dataTable({
+            stateSave: true,
+            "bDestroy": true,
+            "pageLength": 100,
+            'columnDefs': [{
+                'targets': [9], /* column index */
+                'orderable': false, /* true or false */
 
-		//$('td.ReqDueDate[value=Zero]').closest('tr').css('background-color', 'red');
-	});
-		//function GetAllInstrument(){
-			//	$('#dvload').show();
+            }],
+            dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        });
 
-			//	$.ajax({
-			//	type: 'GET',
-			//		url: '../Instrument/GetAllInstrumentList',
-			//		dataType: 'json',
-			//		success: function (data) {
-			//			$('#example1 tbody').empty();
-			//			console.log(data);
-			//			if (data.length>0){
-			//			$.each(data, function (i, item) {
-			//				//console.log(item.dueDate);
-			//				var date = new Date(item.dueDate)
-			//				//console.log(date);
-			//				month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
-			//					yr = date.getFullYear(),
-			//					console.log(yr);
+        var allPages = oTable.fnGetNodes();
 
-			//				var tdRequest = '';
-			//				var d = new Date($.now());
-			//				if (item.userRoleId == 1) {
-			//					if (item.dueDate != null) {
-			//						//if ((d.getMonth() + 1) == item.dueDate.Month && d.getFullYear() == item.dueDate.Year) {
-			//						if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
-			//							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+        $('body').on('click', '#selectAll', function () {
+            if ($(this).hasClass('allChecked')) {
+                $('input[type="checkbox"]', allPages).prop('checked', false);
+            } else {
+                $('input[type="checkbox"]', allPages).prop('checked', true);
+            }
+            $(this).toggleClass('allChecked');
+        })
+
+    });
+	//function GetAllInstrument(){
+				//	$('#dvload').show();
+
+				//	$.ajax({
+				//	type: 'GET',
+				//		url: '../Instrument/GetAllInstrumentList',
+				//		dataType: 'json',
+				//		success: function (data) {
+				//			$('#example1 tbody').empty();
+				//			console.log(data);
+				//			if (data.length>0){
+				//			$.each(data, function (i, item) {
+				//				//console.log(item.dueDate);
+				//				var date = new Date(item.dueDate)
+				//				//console.log(date);
+				//				month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
+				//					yr = date.getFullYear(),
+				//					console.log(yr);
+
+				//				var tdRequest = '';
+				//				var d = new Date($.now());
+				//				if (item.userRoleId == 1) {
+				//					if (item.dueDate != null) {
+				//						//if ((d.getMonth() + 1) == item.dueDate.Month && d.getFullYear() == item.dueDate.Year) {
+				//						if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
+				//							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
 
 
-			//								//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=2' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
-			//								//< a href = 'Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=2})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
+				//								//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=2' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
+				//								//< a href = 'Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=2})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
 
-			//									tdRequest = '<td style="text-align:center;">' +
+				//									tdRequest = '<td style="text-align:center;">' +
 
-			//										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
-			//										'<input id="typeId" name="typeId" type="hidden" value="2" />' +
-			//										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
-			//										'</td>'
+				//										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
+				//										'<input id="typeId" name="typeId" type="hidden" value="2" />' +
+				//										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
+				//										'</td>'
 
-			//								}
+				//								}
 
-			//						}
-			//						//else if (item.dueDate.Month < (d.getMonth() + 1) && d.getFullYear() >= item.dueDate.Year) {
-			//						else if (month < (d.getMonth() + 1) && d.getFullYear() >= yr)
-			//						{
-			//							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
-			//								//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=3' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
-			//								//<a href='Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=3})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
+				//						}
+				//						//else if (item.dueDate.Month < (d.getMonth() + 1) && d.getFullYear() >= item.dueDate.Year) {
+				//						else if (month < (d.getMonth() + 1) && d.getFullYear() >= yr)
+				//						{
+				//							if ((item.requestStatus != 26 && item.requestStatus != 29 && item.requestStatus != 27) || item.requestStatus == 0) {
+				//								//tdRequest = "<td style='text - align: center;'> <a href = '@Url.Action("Request","Instrument")?instrumentId=" + item.id + "&typeId=3' > <i class='fas fa-arrow-alt-circle-right' > </i></a > </td>"
+				//								//<a href='Url.Action("Request","Instrument",new {instumentId=item.Id,typeId=3})' > <i class="fas fa-arrow-alt-circle-right" > </i></a > </td>"
 
-			//									tdRequest = '<td style="text-align:center;">' +
-			//										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
-			//										'<input id="typeId" name="typeId" type="hidden" value="3" />' +
-			//										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
-			//										'</td>'
+				//									tdRequest = '<td style="text-align:center;">' +
+				//										'<input id="chkBox" name="chkBox" class="chkBox" type="checkbox" value=' + item.id + ' />' +
+				//										'<input id="typeId" name="typeId" type="hidden" value="3" />' +
+				//										'<input id="requestId" name="typeId" type="hidden" value=' + item.requestId + ' />' +
+				//										'</td>'
 
 
-			//								}
+				//								}
 
-			//						}
-			//						else {
-			//							tdRequest = "<td> </td>"
-			//						}
-			//					}
-			//					else {
-			//						tdRequest = "<td></td>"
-			//					}
+				//						}
+				//						else {
+				//							tdRequest = "<td> </td>"
+				//						}
+				//					}
+				//					else {
+				//						tdRequest = "<td></td>"
+				//					}
 
-			//				}
+				//				}
 
-			//				var tdQuarantine = '';
-			//				if (item.userRoleId == 2) {
-			//					tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id='+item.id+' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
-			//				}
-			//				else {
-			//					tdQuarantine = "<td> </td>"
-			//				}
-			//				console.log("tdRequest");
-			//				console.log(tdRequest);
-			//				var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
-			//				var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
+				//				var tdQuarantine = '';
+				//				if (item.userRoleId == 2) {
+				//					tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id='+item.id+' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
+				//				}
+				//				else {
+				//					tdQuarantine = "<td> </td>"
+				//				}
+				//				console.log("tdRequest");
+				//				console.log(tdRequest);
+				//				var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
+				//				var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
 
-			//					var rows = "<tr>"
-			//						+ "<td>" + item.instrumentName + "</td>"
-			//						+ "<td>" + item.slNo + "</td>"
-			//						+ "<td>" + item.idNo + "</td>"
-			//						+ "<td>" + item.range + "</td>"
-			//						+ "<td>" + item.departmentName + "</td>"
-			//						+ "<td>" + item.typeOfEquipment + "</td>"
-			//						+ "<td>" + calibDate + "</td>"
-			//						+ "<td>" + dueDate + "</td>"
-			//						+ "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
-			//						+ tdRequest
-			//						+ tdQuarantine
-			//						+ "</tr>";
-			//					$('#example1 tbody').append(rows);
-			//				$('#dvload').hide();
+				//					var rows = "<tr>"
+				//						+ "<td>" + item.instrumentName + "</td>"
+				//						+ "<td>" + item.slNo + "</td>"
+				//						+ "<td>" + item.idNo + "</td>"
+				//						+ "<td>" + item.range + "</td>"
+				//						+ "<td>" + item.departmentName + "</td>"
+				//						+ "<td>" + item.typeOfEquipment + "</td>"
+				//						+ "<td>" + calibDate + "</td>"
+				//						+ "<td>" + dueDate + "</td>"
+				//						+ "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
+				//						+ tdRequest
+				//						+ tdQuarantine
+				//						+ "</tr>";
+				//					$('#example1 tbody').append(rows);
+				//				$('#dvload').hide();
 
-			//			});
-			//			}
-			//			else {
-			//				$('#dvload').hide();
-			//			}
-			//			$("#example1").DataTable({
-			//				"paging": true,
-			//				"lengthChange": true,
-			//				"searching": true,
-			//				"ordering": true,
-			//				"info": true,
-			//				"autoWidth": true,
-			//				"responsive": true,
-			//				'columnDefs': [{
-			//					'targets': [9], /* column index */
-			//					'orderable': false, /* true or false */
-			//				}]
-			//			});
+				//			});
+				//			}
+				//			else {
+				//				$('#dvload').hide();
+				//			}
+				//			$("#example1").DataTable({
+				//				"paging": true,
+				//				"lengthChange": true,
+				//				"searching": true,
+				//				"ordering": true,
+				//				"info": true,
+				//				"autoWidth": true,
+				//				"responsive": true,
+				//				'columnDefs': [{
+				//					'targets': [9], /* column index */
+				//					'orderable': false, /* true or false */
+				//				}]
+				//			});
 
-			//		},
-			//		error: function (emp) {
-			//			$('#dvload').hide();
-			//			alert('error');
-			//		}
-			//	});
-			//}
+				//		},
+				//		error: function (emp) {
+				//			$('#dvload').hide();
+				//			alert('error');
+				//		}
+				//	});
+				//}
 
 </script>

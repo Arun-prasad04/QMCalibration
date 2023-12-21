@@ -789,72 +789,7 @@
 
                     }
 
-
-                    @if ((Model.Status == 27 || Model.Status == 29 || Model.Status == 30) && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
-                    {
-                        <div>
-                            @if (Model.TypeOfRequest == 1)// && Model.TypeOfRequest == 3 && Model.TypeOfRequest == 3)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="trn">Standard Refered/Calibration Method</label><br>
-                                            <input id="StdReffer" class="form-control" style="width: 100%;" value="">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-4">
-                                        <div class="col-sm-6">
-                                            <!-- text input -->
-                                            <div class="form-group">
-                                                <label class="trn">Observation Template</label>
-                                                @* <select id="NewObservationEd" onchange="LoadObservationTypePopupEd(language)" class="form-control" disabled> *@
-                                                <select id="NewObservationEd" class="form-control" disabled>
-                                                    @foreach (var freq in @Model.ObservationTemplateList)
-                                                    {
-                                                        if (@ViewBag.SessionLang == "en")
-                                                        {
-                                                            if (freq.Id == Model.ObservationTemplate)
-                                                            {
-                                                                <option value="@freq.Id" selected>@freq.AttrValue</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="@freq.Id">@freq.AttrValue</option>
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            if (freq.Id == Model.ObservationTemplate)
-                                                            {
-                                                                <option value="@freq.Id" selected>@freq.AttrValueJp</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="@freq.Id">@freq.AttrValueJp</option>
-                                                            }
-                                                        }
-
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            }
-                            <div class="row">
-
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Standard Refered/Calibration Method</label>
-                                        <input type="text" class="form-control" id="txtStadRef" value="@Model.StandardReffered" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    }
+                    
                     @if (Model.Status == 28 || Model.Status == 31)
                     {
                         <div>

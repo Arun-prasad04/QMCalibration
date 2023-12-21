@@ -44,15 +44,12 @@ namespace WEB.Models
         public IFormFile ImageUpload { get; set; }
         public List<UserViewModel> Labadminuserlist { get; set; }
         public int DeletingID { get; set; }
-
 		public string? subSection { get; set; }
-
         public string? SubSectionCodes { get; set; }
         public List<int> SubSectionCodeval { get; set; }
         //public List<string> SubSectionCodeName { get; set; }
         public List<UserDepartmentMappingView> SubSectionCodeName1 { get; set; }
         public List<UserDepartmentMappingView> SubSectionCodeList { get; set; }
-
         public string? DeptCordShortId { get; set; }
         public string? DeptCordName { get; set; }
         public string? DeptCordEmail { get; set; }
@@ -61,8 +58,9 @@ namespace WEB.Models
 
         public List<int> RoleSelect { get; set; }
         public List<UserRoleMappingView> RoleSelectVal { get; set; }
+		public string? SubSectionJP { get; set; }
 
-    }
+	}
     public class InviteUsers
     {
         public string? Email { get; set; }

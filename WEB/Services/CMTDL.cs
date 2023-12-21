@@ -7,6 +7,7 @@ using System.Data;
 using System.Text;
 using WEB.Models;
 using WEB.Services.Interface;
+using static iTextSharp.text.pdf.AcroFields;
 
 namespace WEB.Services
 {
@@ -399,8 +400,10 @@ namespace WEB.Services
                     uv.UserRoleId = Convert.ToInt16(ds.Tables[0].Rows[0]["UserRoleId"]);
                     uv.SignImageName = Convert.ToString(ds.Tables[0].Rows[0]["SignImageName"]);
                     uv.Id = Convert.ToInt16(ds.Tables[0].Rows[0]["Id"]);
+                    uv.subSection = ds.Tables[0].Rows[0]["subSection"].ToString();
+                    uv.SubSectionJP = ds.Tables[0].Rows[0]["SubSectionJP"].ToString();
 
-                }
+				}
 
                 //List<LovsViewModel> Lv = new List<LovsViewModel>();
                 //if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
@@ -909,8 +912,23 @@ namespace WEB.Services
 
             return dsResults;
         }
+		public DataSet GetToolRoomsSubSectionMaster()
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetToomRoomSubSectionCodelist");
+			cmd.CommandType = CommandType.StoredProcedure;
+			//cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
 
-        public DataSet InsertDueRequest(string reqist, int userId)
+			return dsResults;
+		}
+		public DataSet InsertDueRequest(string reqist, int userId)
         {
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
             SqlCommand cmd = new SqlCommand("InsertDueRequestlist");
@@ -1186,7 +1204,110 @@ namespace WEB.Services
             return dsResults;
         }
 
+		public List<DepartmentViewModel> GetMasterDepartmentSubSection()
+		{
+			try
+			{// List<UserViewModel> userViewModelList = new List<UserViewModel>();
 
-    }
+
+				CMTDL _cmtdl = new CMTDL(_configuration);
+
+				List<DepartmentViewModel> uv = new List<DepartmentViewModel>();
+
+				DataSet ds = _cmtdl.GetMasterEquipmentSubSection();
+
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					foreach (DataRow dr in ds.Tables[0].Rows)
+					{
+						DepartmentViewModel Dept = new DepartmentViewModel
+						{
+						
+							Id = Convert.ToInt32(dr["Id"]),
+							Name = Convert.ToString(dr["Name"]),
+							SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
+							NameJP = Convert.ToString(dr["NameJp"]),
+							//Section = Convert.ToString(dr["Section"])
+						};
+						uv.Add(Dept);
+
+					}
+
+				}
+				return uv;
+
+
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("MasterService - GetMasterDepartmentSubSection Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+				return null;
+			}
+
+
+		}
+		public DataSet GetMasterEquipmentSubSection()
+		{
+			var connectionString = _configuration.GetConnectionString("CMTDatabase");
+			SqlCommand cmd = new SqlCommand("GetMasterEquipmentSubSection");
+			cmd.CommandType = CommandType.StoredProcedure;
+			//cmd.Parameters.AddWithValue("@userid", UserId);
+			SqlConnection sqlConn = new SqlConnection(connectionString);
+			DataSet dsResults = new DataSet();
+			SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+			cmd.Connection = sqlConn;
+			cmd.CommandTimeout = 2000;
+			sqlAdapter.SelectCommand = cmd;
+			sqlAdapter.Fill(dsResults);
+
+			return dsResults;
+		}
+
+		public List<ToolRoomMasterViewModel> GetToolRoomsSubSectionMasterList()
+		{
+			try
+			{// List<UserViewModel> userViewModelList = new List<UserViewModel>();
+
+
+				CMTDL _cmtdl = new CMTDL(_configuration);
+
+				List<ToolRoomMasterViewModel> uv = new List<ToolRoomMasterViewModel>();
+
+				DataSet ds = _cmtdl.GetToolRoomsSubSectionMaster();
+
+				if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					foreach (DataRow dr in ds.Tables[0].Rows)
+					{
+						ToolRoomMasterViewModel Dept = new ToolRoomMasterViewModel
+						{
+
+							Id = Convert.ToInt32(dr["Id"]),
+							Name = Convert.ToString(dr["Name"]),
+							SubSectionCode = Convert.ToString(dr["SubSectionCode"]),
+							NameJP = Convert.ToString(dr["NameJp"]),
+                            DepartmentId = Convert.ToInt32(dr["DepartmentId"]),
+							//Section = Convert.ToString(dr["Section"])
+						};
+						uv.Add(Dept);
+
+					}
+
+				}
+				return uv;
+
+
+			}
+			catch (Exception e)
+			{
+				ErrorViewModelTest.Log("MasterService - GetMasterDepartmentSubSection Method");
+				ErrorViewModelTest.Log("exception - " + e.Message);
+				return null;
+			}
+
+
+		}
+	}
 
 }

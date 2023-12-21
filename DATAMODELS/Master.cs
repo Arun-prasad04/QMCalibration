@@ -1,3 +1,5 @@
+using DATAMODELS;
+
 namespace CMT.DATAMODELS
 {
     public partial class Master
@@ -18,8 +20,8 @@ namespace CMT.DATAMODELS
         public DateTime? DueDate { get; set; }
         public string? Range { get; set; }
         public string SerialNo { get; set; }
-        public string LabId { get; set; }
-        public string CertNo { get; set; }
+        public string? LabId { get; set; }
+        public string? CertNo { get; set; }
         public string? Traceability { get; set; }
         public int CreatedBy { get; set; }
         public int? ModifiedBy { get; set; }
@@ -37,5 +39,6 @@ namespace CMT.DATAMODELS
 		//public string? TypeOfEquipment { get; set; }
 		public int? DepartmentId { get; set; }
 		public virtual Department DepartmentModel { get; set; }
-	}
+       
+    }
 }

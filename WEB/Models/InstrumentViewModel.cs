@@ -20,8 +20,8 @@ namespace WEB.Models
         public int? Instrument_Type { get; set; }
         public int CalibFreq { get; set; }
         public DateTime? CalibDate { get; set; }
-		public DateTime? DueDate { get; set; }
-		public int UserDept { get; set; }
+        public DateTime? DueDate { get; set; }
+        public int UserDept { get; set; }
         public string? Make { get; set; }
         public string? CalibSource { get; set; }
         public string? StandardReffered { get; set; }
@@ -98,25 +98,28 @@ namespace WEB.Models
         public CertificateViewModel TempObservationData { get; set; }
 
         public List<ObservationContentViewModel> obsContent { get; set; }
-		public DateTime? CalibrationCloseDate { get; set; }
+        public DateTime? CalibrationCloseDate { get; set; }
         public string IssueNo { get; set; }
 
-		public string Inspectiondetails { get; set; }
+        public string Inspectiondetails { get; set; }
 
-		public string SectionCode { get; set; }
+        public string SectionCode { get; set; }
 
-		public string InstrumentType { get; set; }
-		public string? CalibrationMonth { get; set; }
+        public string InstrumentType { get; set; }
+        public string? CalibrationMonth { get; set; }
 
         public string? CalibrationRequestDate { get; set; }
-		public string? SubSectionCode { get; set; }
+        public string? SubSectionCode { get; set; }
         public int? Inscount { get; set; }
 
-		public DateTime? ReplacementStartDate { get; set; }
+        public DateTime? ReplacementStartDate { get; set; }
 
         public string? backcolor { get; set; }
 
         public DateTime? ReqDueDate { get; set; }
+
+		public int? ReplacementDeptId { get; set; }
+		
 
 	}
     public class Instrumentids
@@ -124,26 +127,30 @@ namespace WEB.Models
         public string InstrumentId { get; set; }
 
         public string ReplacementLabId { get; set; }
-		public int CalibFrequency { get; set; }
-		public int DueMonth { get; set; }
-		public int UserDept { get; set; }
-		public int RequestId { get; set; }
-		public string IdNo { get; set; }
+        public int CalibFrequency { get; set; }
+        public int DueMonth { get; set; }
+        public int UserDept { get; set; }
+        public int RequestId { get; set; }
+        public string IdNo { get; set; }
+		public string DueDate { get; set; }
+		public string ReplacementDeptId { get; set; }
+		
+
 	}
 
-	public class RequestAllView
+    public class RequestAllView
     {
         public int instrumentId { get; set; }
         public int TypeValue { get; set; }
         public string EmailServiceNo { get; set; }
-		public DateTime? DueDate { get; set; }
-		public DateTime? ReplacementStartDate { get; set; }
-		public int RequestId { get; set; }
-		
+        public DateTime? DueDate { get; set; }
+        public DateTime? ReplacementStartDate { get; set; }
+        public int RequestId { get; set; }
 
 
-	}
-		public class RequestMailList
+
+    }
+    public class RequestMailList
     {
         public int SNo { get; set; }
         public string? RequestNo { get; set; }
@@ -177,10 +184,19 @@ namespace WEB.Models
         public int InstrumentCreatedBy { get; set; }
         public int RequestId { get; set; }
     }
-	public class RequestAllData
-	{
-		public int requestId { get; set; }
-		public string Inspectiondetails { get; set; }
-		
-	}
+    public class RequestAllData
+    {
+        public int requestId { get; set; }
+        public string Inspectiondetails { get; set; }
+
+    }
+    public class GetToolRoomsSubSectionMaster
+    {
+        public int Id { get; set; }
+        public string? DeptSubSectionCode { get; set; }
+        public string? Name { get; set; }
+        public string? NameJP { get; set; }
+        public string? DepartmentId { get; set; }
+
+    }
 }

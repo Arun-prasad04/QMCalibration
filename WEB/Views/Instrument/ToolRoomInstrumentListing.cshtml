@@ -96,9 +96,9 @@
 <script>
 
 	$(function () {
-		
 		$('#tblToolInstruments').dataTable({
 			"paging": true,
+			"pageLength": 100,
 			"lengthChange": true,
 			"searching": true,
 			"ordering": true,
@@ -109,6 +109,20 @@
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		});
+
+		
+		// $('#tblToolInstruments').dataTable({
+		// 	"paging": true,
+		// 	"lengthChange": true,
+		// 	"searching": true,
+		// 	"ordering": true,
+		// 	"info": true,
+		// 	"autoWidth": true,
+		// 	"responsive": true,
+		// 	dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+		// 		"<'row'<'col-sm-12'tr>>" +
+		// 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		// });
 
 	});
 	</script>

@@ -18,8 +18,9 @@ public class MasterViewModel
     public DateTime? DueDate{get;set;}
     public string? Range{get;set;}
     public string SerialNo{get;set;}
-    public string LabId{get;set;}
-    public string CertNo{get;set;}
+
+    public string? LabId{get;set;}
+    public string? CertNo{get;set;}
     public string? Traceability {get;set;}
     public List<IFormFile> ImageUpload{get;set;}
     public string? Name{get;set;}
@@ -48,7 +49,7 @@ public class MasterViewModel
 
 	//public string? TypeOfEquipment { get; set; }
 
-    public int? DepartmentId { get; set; }
+    public int? DepartId { get; set; }
 
 	public List<DepartmentViewModel> Departments { get; set; }
 	public string? DepartmentName { get; set; }

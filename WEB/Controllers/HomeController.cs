@@ -201,14 +201,14 @@ public class HomeController : BaseController
 			int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 			List<DepartmentViewModel> DepartmentList;
 			CMTDL _cmtdl = new CMTDL(_configuration);
-			if (userRoleId == 2)
-			{
+			//if (userRoleId == 2)
+			//{
 				DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
-			}
-			else
-			{
-				DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
-			}
+			//}
+			//else
+			//{
+			//	DepartmentList = _cmtdl.GetUserDepartment(userId, userRoleId);
+			//}
 			//var DepartmentData
 			//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
 			//MasterLangTranslate MStranslater = new MasterLangTranslate();
@@ -239,8 +239,30 @@ public class HomeController : BaseController
 			CMTDL _cmtdl = new CMTDL(_configuration);
 			List<UserRolesView> UserRoles = _cmtdl.GetUserRoles(LoggedId);
 			return Json(UserRoles);
-		} 
+		}
+	public IActionResult MasterDepartmentTranslate()
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		List<DepartmentViewModel> DepartmentList;		
+		CMTDL _cmtdl = new CMTDL(_configuration);		
+		DepartmentList = _cmtdl.GetMasterDepartmentSubSection();	
+		var DepartTranslaterMaster = new List<DepartmentLangTranslate>();
+		foreach (var item in DepartmentList)
+		{
+			DepartTranslaterMaster.Add(new DepartmentLangTranslate
+			{
+				id = item.Id,
+				Name = item.Name,
+				NameJp = item.NameJP,
+				SubSectionCode = item.SubSectionCode
 
+
+			});
+		}
+		return Json(DepartTranslaterMaster);
+
+	}
 	public class DepartmentLangTranslate
 	{
 		public int id { get; set; }

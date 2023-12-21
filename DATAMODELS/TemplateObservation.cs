@@ -35,5 +35,7 @@ public class TemplateObservation
     public string? CalibrationResult { get; set; }
     public string? Remarks { get; set; }
     public string? Units { get; set; }
+   // public string? PermissibleLimit { get; set; }
+    
 
 }
