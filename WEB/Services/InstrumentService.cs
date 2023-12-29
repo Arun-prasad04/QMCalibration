@@ -81,7 +81,7 @@ public class InstrumentService : IInstrumentService
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSecCode = dr["SubSectionCode"].ToString(),
-                        //ToolInventory = dr["ToolInventory"].ToString(),
+                        ToolInventory = dr["ToolInventory"].ToString(),
 						//ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
 						//backcolor = dr["backcolor"].ToString(),
 						ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
