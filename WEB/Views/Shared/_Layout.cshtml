@@ -1929,9 +1929,7 @@
 					type: 'POST',
 					data: ''
 				}).done(function (resultObject) {
-					GlDicts = resultObject;
-					console.log("Department-----------------")
-					console.log(resultObject)
+					GlDicts = resultObject;					
 					var optionhtml;
 					var optionhtmlRole;
 					var optiinhtmlDeptId;
@@ -2223,7 +2221,7 @@
 
 				var TmpOBStype = @Json.Serialize(@ViewBag.ObservationType);
 
-				console.log(TmpOBStype);
+				//console.log(TmpOBStype);
 				$.ajax({
 					url: '../Home/ObservationTypeTranslation',
 					type: 'POST',
@@ -2231,7 +2229,7 @@
 				}).done(function (resultObject) {
 					//debugger;
 					GlDicts = resultObject;
-					console.log(resultObject);
+					//console.log(resultObject);
 					var optionhtml;
 					var optionhtmlMU;
 					var optionhtmlCT;
@@ -2458,15 +2456,10 @@
 
 
 					if (SelectCalibFreq == null) {
-
-
-						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
-						
+						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);						
 					}
 					//For Instrument
 					SelectObservationType = @Json.Serialize(@ViewBag.ObservationType);
-
-
 					if (SelectMU == null) {
 						SelectMU = @Json.Serialize(@ViewBag.MUTemplates);
 					}
@@ -2495,7 +2488,6 @@
 
 					if (SelectCalibFreqId == null) {
 						SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
-
 					}
 
 					$('#MUTemplate').val(SelectMU).prop("selected", true);
@@ -2553,8 +2545,8 @@
 				//$('#droprole').find('option[value=' + UserRoleLoad + ']').attr("selected", true);
 				setTimeout(function(){				
 				var UserRoleLoad = $('#UrRole').val();
-				console.log("*******************UserRole*******************");
-				console.log(UserRoleLoad);
+				//console.log("*******************UserRole*******************");
+				//console.log(UserRoleLoad);
 				$('#droprole').find('option[value='+UserRoleLoad+']').attr("selected",true);	
 				},500);
 						
@@ -2568,9 +2560,9 @@
 				var userURL = $('#UserRoleURl').val();
 				var urls = '?email=' + usermail + '&ln=en&role=' + selected + '';
 				//alert("User role change");
-				console.log("UserRole changed successfully!!");
-				console.log(selected);
-				console.log(userURL);
+				//console.log("UserRole changed successfully!!");
+				//console.log(selected);
+				//console.log(userURL);
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln='+language+'&role=' + selected + '';
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln=en&role=' + selected + '';
 				window.location.href = userURL+urls;
