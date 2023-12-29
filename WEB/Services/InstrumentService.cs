@@ -468,7 +468,10 @@ public class InstrumentService : IInstrumentService
         }
         catch (Exception e)
         {
-            return new ResponseViewModel<InstrumentViewModel>
+			ErrorViewModelTest.Log("InstrumentService - InsertInstrument Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			_unitOfWork.RollBack();
+			return new ResponseViewModel<InstrumentViewModel>
             {
                 ResponseCode = 500,
                 ResponseMessage = "Failure",
@@ -1866,6 +1869,43 @@ public class InstrumentService : IInstrumentService
             };
         }
     }
-	
-	
+
+    #region Comment
+    /*
+    public ResponseViewModel<IdNoModel> IfIdNoExist()
+    {
+        try
+        {
+            List<IdNoModel> instrumentList = new List<IdNoModel>();           
+            instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => (Q.IdNo != "" && Q.IdNo != null) && Convert.ToInt16(Q.ActiveStatus) == 1).Select(s => new IdNoModel()
+            {               
+                IdNo = s.IdNo
+            }).ToList();
+
+            return new ResponseViewModel<IdNoModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = instrumentList
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("InstrumentService - IfIdNoExist Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<IdNoModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseServiceMethod = "Instrument",
+                ResponseService = "IfIdNoExist"
+            };
+        }
+    }
+    */
+    #endregion
 }

@@ -789,7 +789,7 @@
 
                     }
 
-                    
+
                     @if (Model.Status == 28 || Model.Status == 31)
                     {
                         <div>
@@ -1499,6 +1499,7 @@
 <script>
 
     var selectlang;
+    var GlIDNo;
     $(function () {
         $('#CalibFreq').select2();
         $('#MasterInstrument').select2();
@@ -1510,14 +1511,9 @@
         $('#NewCertificationEd').select2();
 
         if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))') != null) {
-            var CalibFreqExternal = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))');
-            console.log('******************************************CalibFreqExternal******************************************');
-            console.log(CalibFreqExternal);
-            //alert('3');
-            //$('#CalibFreq').val(24).attr("selected", "selected");
+            var CalibFreqExternal = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))');                      
             $("#CalibFreq").select2().val(CalibFreqExternal).trigger("change");
-            //$('#CalibFreq').find('option[value=' + CalibFreqExternal + ']').prop("selected", "selected");
-            //$('#CalibFreq option[value='+ CalibFreqExternal +']').attr("selected", "selected");
+            
         }
 
 
@@ -1539,7 +1535,25 @@
             });
             }
             } *@
+
+
+                //IfIdNoExist($('#IdNo').val());
+        var GlIDNo = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.IdnoList))');
+
+        $('#IdNo').change(function () {           
+            if (GlIDNo.length > 0) {
+                var filterLine = $.grep(GlIDNo, function (element, index) {
+                    return element.idNo == $('#IdNo').val();
                 });
+
+                if (filterLine.length > 0) {
+                    ///alert('true');
+                    showWarning("Instrument IdNo Already Exists", language);
+                    return false;
+                }
+            }
+        });
+    });
 
     function enableFields() {
         document.getElementById("NewObservationEd").disabled = false;
@@ -1561,6 +1575,41 @@
         var result = "";
         result += input.files.item(0).name;
         output.innerHTML = result;
+    }
+
+
+
+    function IfIdNoExist(idno) {
+        var res;
+        $.ajax({
+            url: '../Instrument/IfIdNoExist',
+            type: 'GET',
+            data: '',
+            dataType: "json",
+        }).done(function (resultObject) {
+            //debugger;
+            GlIDNo = resultObject;
+
+            //alert(resultObject);
+            console.log('********************************************************** GlIDNo ********************************************************************');
+            console.log(GlIDNo);
+            console.log('******************************************************************************************************************************');
+            //var filterLine = $.grep(resultObject, function (element, index) {
+            //    return element.idNo == idno;
+            //});
+
+            //if (filterLine.length > 0) {
+            //    ///alert('true');
+            //    showWarning("Instrument IdNo Already Exists", lang);
+            //    return false;
+
+            //}
+            //else {
+            //    //alert('false');
+            //    return true;
+
+            //}
+        });
     }
     @*</script>
 

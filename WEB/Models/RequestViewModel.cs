@@ -113,6 +113,8 @@ public partial class RequestViewModel
     public int? ExObsTemplateReviewStatus { get; set; }
 	public DateTime? ReqDueDate { get; set; }
 	public DateTime? ReqStartDate { get; set; }
+
+    public List<IdNoModel> IdNoList { get; set; }
 }
 public class UploadFile
     {

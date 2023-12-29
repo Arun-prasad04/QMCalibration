@@ -146,6 +146,7 @@ public class TrackerController : BaseController
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		//ViewBag.ObservationTypeList = response.ResponseData.LovsList;
 		ViewBag.CalibFreqExternal = response.ResponseData.CalibFreq;
+		ViewBag.IdnoList = response.ResponseData.IdNoList;
 
 		return View(response.ResponseData);
 	}
@@ -174,6 +175,7 @@ public class TrackerController : BaseController
 
 	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy, string InstrumentIdNo, int CalibFreq)
 	{
+		return Json(true);
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy, InstrumentIdNo, CalibFreq);
 		//return RedirectToAction("Index", "Home"); 

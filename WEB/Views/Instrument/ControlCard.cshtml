@@ -198,6 +198,7 @@
 					<div class="form-group" style="text-align:right;">
 						<input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
 							   onclick="UpdateControlCardRequest();">
+						<a class="btn btn-primary trn" style="margin-top: 32px;" href='@Url.Action("ControlCardQRCodePrint","Instrument", new {instrumentId=@Model.Id})'>PrintQR Code</a>
 						<a href='@Url.Action("Index","Instrument")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
 					</div>
 	</div>

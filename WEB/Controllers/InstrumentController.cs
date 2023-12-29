@@ -302,6 +302,16 @@ public class InstrumentController : BaseController
 		return Json(response.ResponseDataList);
 	}
 
+    public IActionResult ControlCardQRCodePrint(string instrumentId)
+    {
+        QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId));
+        ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
+        ViewBag.QRDecodeText = "data:image/png;base64," +
+                                Convert.ToBase64String(qrCodeFilesViewModel.DecodeText, 0, qrCodeFilesViewModel.DecodeText.Length);
+
+        return View();
+    }
+
     #endregion
     public JsonResult InActiveQuarantineInstrument(int instrumentId)
     {
@@ -340,7 +350,14 @@ public class InstrumentController : BaseController
 
 	}
 
-	public class ToolRoomDepartmentlist
+    //public JsonResult IfIdNoExist()
+    //{
+    //    ResponseViewModel<IdNoModel> response = _instrumentService.IfIdNoExist();
+
+    //    return Json(response.ResponseDataList);
+    //}
+
+    public class ToolRoomDepartmentlist
 	{
 		public int id { get; set; }
 		public string? Name { get; set; }
@@ -350,4 +367,5 @@ public class InstrumentController : BaseController
 
 
 	}
+
 }
