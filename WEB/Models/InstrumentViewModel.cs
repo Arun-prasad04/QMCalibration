@@ -199,4 +199,9 @@ namespace WEB.Models
         public string? DepartmentId { get; set; }
 
     }
+
+    public class IdNoModel
+    {
+        public string IdNo { get; set; }
+    }
 }

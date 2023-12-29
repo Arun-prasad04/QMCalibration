@@ -138,7 +138,7 @@ namespace WEB.Service
                 smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-               // smtp.Send(message);
+                //smtp.Send(message);
             }
       else
       {

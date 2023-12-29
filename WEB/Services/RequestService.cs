@@ -391,7 +391,13 @@ public class RequestService : IRequestService
             {
                 RequestById.MUTemplateFileName = UploadList.Where(w => w.RequestId == RequestId).Select(q => q.FileName).Take(1).SingleOrDefault();
                 RequestById.SignImageName = UploadList.Where(w => w.RequestId == RequestId && w.TemplateType == "EX-AP").Select(q => q.FileName).Take(1).SingleOrDefault();
-            }            
+            }
+            List<IdNoModel> IdnoList = new List<IdNoModel>();
+            IdnoList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => (Q.IdNo != "" && Q.IdNo != null) && Convert.ToInt16(Q.ActiveStatus) == 1).Select(s => new IdNoModel()
+            {
+                IdNo = s.IdNo
+            }).ToList();
+            RequestById.IdNoList = IdnoList;
             return new ResponseViewModel<RequestViewModel>
 			{
 				ResponseCode = 200,

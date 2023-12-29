@@ -809,16 +809,16 @@
                 var tableCW = '<table id="CW' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';
                 var tableSW = '<table id="SW' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
                 //if (resultObject[i].contentCount == 0) {
-                if (IdName == 'CW') {
-                    var rowheadCW = '<thead><tr height="50" ><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
+                if (IdName == 'CW') {                    
+                    var rowheadCW = '<thead><tr height="50" ><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle6 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
 
                 }
-                else if (IdName == 'SW') {
-                    var rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
+                else if (IdName == 'SW') {                    
+                    var rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
 
                 }
-                else if (IdName == 'IN') {
-                    var rowheadIN = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">いいえ／No.</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+                else if (IdName == 'IN') {                    
+                    var rowheadIN = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
                 }
                 
                 var rowBodyCW = '<tbody>';
@@ -840,23 +840,20 @@
                         if (InCount == 2) {
                             title = resultObject[i].contentValue.trim();
                             console.log("title 2");
-                            console.log(title);
-                            //contentsubheadingIN = '<td style="width: 70%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+                            console.log(title);                            
                             contentsubheadingIN = '<td style="width: 70%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN1" > <label style="width:100%;text-align:center " id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
 
                         }
                         else {
                             console.log(" else title");
                             console.log(title);
-                            title = "";// resultObject[i].contentValue.trim();
-                            //contentsubheadingIN = '<td style="border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+                            title = "";// resultObject[i].contentValue.trim();                            
                             contentsubheadingIN = '<td style="border:none;"  id = "IN2" > <label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
                         }
                     }
                     else //if (InCount == 1)
                     {                       
-                        title = resultObject[i].contentValue.trim();
-                        //contentsubheadingIN = '<td style="width: 40%;border:none;"  id = "IN" > <input style="width:100%" id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox" value = "' + title + '" disabled />';
+                        title = resultObject[i].contentValue.trim();                        
                         contentsubheadingIN = '<td style="border:none;" id = "IN3"> <label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
                     }
 
@@ -864,8 +861,10 @@
 
                 if (IdName == 'CW') {
                     console.log('Check value 1')
-                    rowContentCW += '<tr><td style="width: 40%" id="CW"><label style="width: 100%" id="Head' + i + i + '" name="Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-                        '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    rowContentCW += '<tr><td style="width: 40%" id = "CW"><label id="Head' + i + i + '" name = "Head[' + i + '] class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label> <input type="hidden" id = "HiddenContentId" name = "HiddenContentId" value = "' + resultObject[i].id + '" /> <input type="hidden" id = "HiddenContentvalueId" name = "HiddenContentvalueId" value = "' + resultObject[i].obsContentValueId + '" /> </td>' +
+                        '<td id="CW"><label id="MeasuedValue" name="MeasuedValue[' + i + i + ']" class="Tables-AndTablesTextBox TblInHeader MeasuedValue">' + resultObject[i].measuedValue + '</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    // '<tr><td style="width: 40%" id="CW"><label style="width: 100%" id="Head' + i + i + '" name="Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
+                    //    //'<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value1" name="Value1[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader Value1">' + resultObject[i].measuedValue1 + '</label> </td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value2" name="Value2[' + i + i + ']"  class="Tables-AndTablesTextBox TblInHeader Value2">' + resultObject[i].measuedValue2 + ' </label></td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value3" name="Value3[' + i + i + ']"   class="Tables-AndTablesTextBox TblInHeader Value3">' + resultObject[i].measuedValue3 + '</label></td>' +
@@ -876,7 +875,7 @@
                 else if (IdName == 'SW') {
                     console.log('Check value 2')
                     rowContentSW += '<tr style="border: 1px solid;"><td style="width: 30%" id="SW"><label id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-                        '<td id="SW" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                        //'<td id="SW" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                         '<td id="SW" style="border: 1px solid; text-align:center"><label id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].measuedValue + '</label> </td>' +
                         '<td id="SW" style="border: 1px solid; text-align:center"style="border: 1px solid; text-align:center"><label id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].measuedValue1 + '</label> </td>' +
                         '<td id="SW" style="border: 1px solid; text-align:center"><label id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"> ' + resultObject[i].measuedValue2 + '</label></td>' +
@@ -885,8 +884,8 @@
                 else if (IdName == 'IN') {
                     console.log('Check value 3')
 
-                    rowContentIN += '<tr style="border: 1px solid;">' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-                        + '<td id="IN" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    rowContentIN += '<tr style="border: 1px solid;">' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'+ 
+                        //'<td id="IN" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
                         '<td id="IN" style="border: 1px solid; text-align:center"><label id="MeasuedValue" name="MeasuedValue[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader MeasuedValue">' + resultObject[i].measuedValue + '</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                         '<td id="IN" style="border: 1px solid; text-align:center"><label id="Actual" name="Actual[' + i + i + ']"   class="Tables-AndTablesTextBox TblInHeader Actual"></label>' + resultObject[i].actualValue + '</td>' +
                         '<td id="IN" style="border: 1px solid; text-align:center"><label id="Avg" name = "Avg[' + i + i + ']"  class="Tables-AndTablesTextBox TblInHeader Avg">' + resultObject[i].instrumentError + '</label> </td></tr>'

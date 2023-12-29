@@ -1924,9 +1924,7 @@
 					type: 'POST',
 					data: ''
 				}).done(function (resultObject) {
-					GlDicts = resultObject;
-					console.log("Department-----------------")
-					console.log(resultObject)
+					GlDicts = resultObject;					
 					var optionhtml;
 					var optionhtmlRole;
 					var optiinhtmlDeptId;
@@ -2559,9 +2557,9 @@
 				var userURL = $('#UserRoleURl').val();
 				var urls = '?email=' + usermail + '&ln=en&role=' + selected + '';
 				//alert("User role change");
-				console.log("UserRole changed successfully!!");
-				console.log(selected);
-				console.log(userURL);
+				//console.log("UserRole changed successfully!!");
+				//console.log(selected);
+				//console.log(userURL);
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln='+language+'&role=' + selected + '';
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln=en&role=' + selected + '';
 				window.location.href = userURL + urls;

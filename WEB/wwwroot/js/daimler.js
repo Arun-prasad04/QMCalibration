@@ -1,5 +1,6 @@
 ﻿var FileData = [];
 
+
 function logoShowHide() {
     var x = document.getElementById("logoheader");
     if (x.style.display === "none") {
@@ -4989,4 +4990,38 @@ function SaveInternalObservation() {
             window.location.href = '../Tracker/Request?reqType=4';
             showSuccess("Data Saved Successfully", lang);
         });
+}
+
+
+function IfIdNoExist(idno) {
+    var res;
+    $.ajax({
+        url: '../Instrument/IfIdNoExist',
+        type: 'GET',
+        data: '',
+        dataType: "json",
+    }).done(function (resultObject) {
+        //debugger;
+        GlIDNo = resultObject;
+        
+        //alert(resultObject);
+        //console.log('******************************************************************************************************************************');
+        //console.log(resultObject);
+        //console.log('******************************************************************************************************************************');
+        //var filterLine = $.grep(resultObject, function (element, index) {
+        //    return element.idNo == idno;
+        //});
+
+        //if (filterLine.length > 0) {
+        //    ///alert('true');
+        //    showWarning("Instrument IdNo Already Exists", lang);
+        //    return false;
+           
+        //}
+        //else {
+        //    //alert('false');
+        //    return true;
+           
+        //}
+    });    
 }
