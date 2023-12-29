@@ -34,7 +34,7 @@ public class InstrumentController : BaseController
 
 	public IActionResult Index()
 	{
-		//ViewBag.PageTitle="Instrument List";
+		
 		ViewBag.ResponseCode = TempData["ResponseCode"];
 		ViewBag.ResponseMessage = TempData["ResponseMessage"];
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
@@ -55,6 +55,7 @@ public class InstrumentController : BaseController
 
 	public IActionResult Create()
 	{
+		//ViewBag.Shared = "Instrument";
 		ViewBag.PageTitle = "Instrument Create";
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
@@ -112,6 +113,7 @@ public class InstrumentController : BaseController
 
 	public ActionResult InstrumentEdit(int instrumentId)
 	{
+		//ViewBag.Shared = "Instrument";
 		ViewBag.PageTitle = "Instrument Edit";
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 

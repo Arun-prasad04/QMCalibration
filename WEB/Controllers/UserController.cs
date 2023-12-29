@@ -28,6 +28,7 @@ public class UserController : BaseController
 
 	public IActionResult Index()
 	{
+		ViewBag.Shared = "User";
 		ViewBag.PageTitle = "User List";
 		ViewBag.ResponseCode = TempData["ResponseCode"];
 		ViewBag.ResponseMessage = TempData["ResponseMessage"];

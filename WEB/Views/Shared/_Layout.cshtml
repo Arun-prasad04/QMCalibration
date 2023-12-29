@@ -90,7 +90,7 @@
 			background-color: #00677F;
 		}
 
-		.roledrop{
+		.roledrop {
 			color: black;
 			text-decoration: none;
 			background-color: transparent;
@@ -123,79 +123,76 @@
 			border: none;
 		}
 
-	.loader {
-		border: 16px solid #f3f3f3;
-		border-radius: 50%;
-		border-top: 16px solid #3498db;
-		/*width: 120px;
-		height: 120px;*/		   
-		display: block;		
-		position: fixed;
-		top: 0;                 
-			right: 0;               
+		.loader {
+			border: 16px solid #f3f3f3;
+			border-radius: 50%;
+			border-top: 16px solid #3498db;
+			/*width: 120px;
+				height: 120px;*/
+			display: block;
+			position: fixed;
+			top: 0;
+			right: 0;
 			bottom: 0;
 			left: 0;
 			margin: auto;
-		z-index: 99;
-		background-position: center;   
-		width: 105px;
-		height: 105px;
-		-webkit-animation: spin 2s linear infinite; /* Safari */
-		animation: spin 2s linear infinite;			
+			z-index: 99;
+			background-position: center;
+			width: 105px;
+			height: 105px;
+			-webkit-animation: spin 2s linear infinite; /* Safari */
+			animation: spin 2s linear infinite;
+		}
 
-		
-	}
-
-	.overlay {
-  position: fixed;
-  display: none;
-  /*width: 100%;
-  height: 100%;*/
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 2;
-  cursor: pointer;
-}
+		.overlay {
+			position: fixed;
+			display: none;
+			/*width: 100%;
+		  height: 100%;*/
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0,0,0,0.5);
+			z-index: 2;
+			cursor: pointer;
+		}
 
 		.overlays {
-			/*/*background-color:darkgrey ; 	*/*/		       
-			position: absolute; 
-			top: 0;                 
-			right: 0;               
+			/*/*background-color:darkgrey ; 	*/ */ position: absolute;
+			top: 0;
+			right: 0;
 			bottom: 0;
 			left: 0;
 			opacity: 0.5;
 			z-index: -1;
 			backdrop-filter: blur(3px);
 		}
-	
-	.muldrop {
-		border: 2px solid #ced4da;
-        border-radius: 3px;
-		height: 33px !important;
+
+		.muldrop {
+			border: 2px solid #ced4da;
+			border-radius: 3px;
+			height: 33px !important;
 			margin-bottom: 0.7rem !important;
 			margin: 5px;
-	}
-	
+		}
 
-	/* Safari */
-	/*webkit-keyframes spin {
-	  0% { -webkit-transform: rotate(0deg); }
-	  100% { -webkit-transform: rotate(360deg); }
-	}
 
-	keyframes spin {
-	  0% { transform: rotate(0deg); }
-	  100% { transform: rotate(360deg); }
-	}*/
+		/* Safari */
+		/*webkit-keyframes spin {
+			  0% { -webkit-transform: rotate(0deg); }
+			  100% { -webkit-transform: rotate(360deg); }
+			}
+
+			keyframes spin {
+			  0% { transform: rotate(0deg); }
+			  100% { transform: rotate(360deg); }
+			}*/
 	</style>
 
 	<div class="wrapper">
 
-		
+
 		<!-- Navbar -->
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light navbg">
 			<!-- Left navbar links -->
@@ -228,7 +225,7 @@
 						<option value="jp" data-content='<span class="flag-icon flag-icon-jp"></span> 日本語'>日本語</option>
 					</select>
 				</li>
-				<span class="mt-3 ml-2" ><i class='fas fa-user-check' style='position:relative;top:3px'></i></span>
+				<span class="mt-3 ml-2"><i class='fas fa-user-check' style='position:relative;top:3px'></i></span>
 				<li class="nav-item text-center mt-2">
 					<select class=" roledrop" id="droprole" data-width="fit" style="">
 						@*<option value="en" data-content='<span class="flag-icon flag-icon-gb"></span> User'>Department User</option>
@@ -321,18 +318,18 @@
 						   with font-awesome or any other icon font library -->
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2"
 								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4"
-								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5"|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
+								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
 							<li class="nav-item">
 								<a href='@Url.Action("HomePage","Home")' class="nav-link">
-								@* <a href='@Url.Action("ToolInventory","Instrument")' class="nav-link"> *@
+									@* <a href='@Url.Action("ToolInventory","Instrument")' class="nav-link"> *@
 									<i class="nav-icon fas fa-home"></i>
 									<p class="trn">Home</p>
 								</a>
 							</li>
 						}
-					 	@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" 
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3"
 								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5"
 								|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
@@ -342,24 +339,24 @@
 									<p class="trn">Dashboard</p>
 								</a>
 							</li>
-						} 
+						}
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "5")
 						{
 							<li class="nav-item has-treeview">
 
 								<a href='@Url.Action("ToolRoomDepartment","Instrument",new {DueMonth = 0})' class="nav-link">
-									<i class="nav-icon fas fa-compass"></i> 
+									<i class="nav-icon fas fa-compass"></i>
 									<p class="trn">Request Tracker</p>
 								</a>
 							</li>
 							<li class="nav-item  has-treeview">
 								<a href='@Url.Action("ToolRoomInstrumentListing","Instrument")' class="nav-link">
-									
+
 									<i class="nav-icon fas fa-calendar-minus"></i>
 									<p class="trn">ToolRoom Instrument List</p>
 								</a>
 							</li>
-						}						
+						}
 						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "6")
 						{
 							<li class="nav-item has-treeview">
@@ -384,15 +381,15 @@
 								</a>
 								<ul class="nav nav-treeview">
 									@* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-									{
-										<li class="nav-item navIndend">
-											<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
-												<i class="fas fa-truck nav-icon"></i>
-												<p class="trn">External Request</p>
-											</a>
-										</li>
-									} *@
+								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+								{
+								<li class="nav-item navIndend">
+								<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
+								<i class="fas fa-truck nav-icon"></i>
+								<p class="trn">External Request</p>
+								</a>
+								</li>
+								} *@
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
@@ -404,7 +401,7 @@
 											</a>
 										</li>
 									}
-									@if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
 									{
 										<li class="nav-item navIndend">
 											<a href='@Url.Action("DueInstrument","Tracker", new {month=0})' class="nav-link">
@@ -570,59 +567,59 @@
 								</ul>
 							</li>
 						}
-						@if ( @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-								//|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "5" ||)
+						@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+						//|| @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "3" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "5" ||)
 						{
-							
-								<li class="nav-item has-treeview">
-									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-comment-dots"></i>
-										<p>
-											<span class="trn">Customer Feedback</span>
-											<i class="fas fa-angle-left right"></i>
-										</p>
-									</a>
 
-									<ul class="nav nav-treeview">
-										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-										{
-											<li class="nav-item navIndend">
-												<a href='@Url.Action("FeedbackInvite","Feedback")' class="nav-link">
-													<i class="nav-icon fas fa-clipboard-check"></i>
-													<p class="trn">Feedback Invite</p>
-												</a>
-											</li>
-										}
+							<li class="nav-item has-treeview">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-comment-dots"></i>
+									<p>
+										<span class="trn">Customer Feedback</span>
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
 
+								<ul class="nav nav-treeview">
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
 										<li class="nav-item navIndend">
-											<a href='@Url.Action("Index","Feedback", new {FeedbackInviteId = 0})' class="nav-link">
-												<i class="nav-icon fas fa-clipboard"></i>
-												<p class="trn">Feedback Form</p>
+											<a href='@Url.Action("FeedbackInvite","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-check"></i>
+												<p class="trn">Feedback Invite</p>
 											</a>
 										</li>
+									}
 
-										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-										{
-											<li class="nav-item navIndend">
-												<a href='@Url.Action("SubmittedList","Feedback")' class="nav-link">
-													<i class="nav-icon fas fa-clipboard-list "></i>
-													<p class="trn">Submitted List</p>
-												</a>
-											</li>
-											<li class="nav-item navIndend">
-												<a href='@Url.Action("ReviewedList","Feedback")' class="nav-link">
-													<i class="nav-icon fas fa-clipboard-list "></i>
-													<p class="trn">Reviewed List</p>
-												</a>
-											</li>
-										}
+									<li class="nav-item navIndend">
+										<a href='@Url.Action("Index","Feedback", new {FeedbackInviteId = 0})' class="nav-link">
+											<i class="nav-icon fas fa-clipboard"></i>
+											<p class="trn">Feedback Form</p>
+										</a>
+									</li>
 
-									</ul>
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+									{
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("SubmittedList","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-list "></i>
+												<p class="trn">Submitted List</p>
+											</a>
+										</li>
+										<li class="nav-item navIndend">
+											<a href='@Url.Action("ReviewedList","Feedback")' class="nav-link">
+												<i class="nav-icon fas fa-clipboard-list "></i>
+												<p class="trn">Reviewed List</p>
+											</a>
+										</li>
+									}
+
+								</ul>
 
 
 
-								</li>
-							
+							</li>
+
 							@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 							{
 								<li class="nav-item has-treeview">
@@ -688,7 +685,7 @@
 
 									</ul>
 								</li>
-							
+
 							}
 
 						}
@@ -709,7 +706,6 @@
 							<h1 class="m-0 text-dark"></h1>
 						</div><!-- /.col -->
 						<div class="col-sm-6">
-							
 						</div><!-- /.col -->
 					</div><!-- /.row -->
 				</div><!-- /.container-fluid -->
@@ -719,9 +715,9 @@
 			<div class="container">
 				<main role="main" style="background-color: white;" class="pb-3">
 					<div id="dvload" class="overlay" style="display:none">
-					<div id="dvloads" class="loader justify-content-center align-items-center" ></div>
+						<div id="dvloads" class="loader justify-content-center align-items-center"></div>
 					</div>
-					
+
 					@RenderBody()
 					<!-- Button trigger modal -->
 					<!-- Modal l̥-->
@@ -746,41 +742,41 @@
 	</div>
 	<!-- ./wrapper -->
 	<!-- Select2 CSS -->
-	
 
 
-	
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>	
+
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	
+
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
 	<!-- Select2 JS -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 	@RenderSection("Scripts", required: false)
-	
+
 
 	<div>
 
-		
-		
-		
+
+
+
 		<!-- jQuery -->
 		@*<script src="~/js/jquery.min.js"></script>*@
 		<!-- jQuery UI 1.11.4 -->
 		@*<script src="~/js/jquery-ui.min.js"></script>*@
 		<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-		
 
-		
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
 		<script>
 			$.widget.bridge('uibutton', $.ui.button)
 		</script>
 		<!-- Bootstrap 4 -->
-		<script src="~/js/bootstrap.bundle.min.js"></script>		
+		<script src="~/js/bootstrap.bundle.min.js"></script>
 		<!-- ChartJS -->
 		<script src="~/js/Chart.min.js"></script>
 		<!-- Sparkline -->
@@ -805,20 +801,20 @@
 		<script src="~/js/dashboard.js"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="~/js/demo.js"></script>
-        
+
 		<script src="~/js/jquery.dataTables.min.js"></script>
 		<script src="~/js/dataTables.bootstrap4.min.js"></script>
 		<script src="~/js/dataTables.responsive.min.js"></script>
 		<script src="~/js/responsive.bootstrap4.min.js"></script>
 		<script src="~/js/jquery.validate.min.js"></script>
-		
+
 		<script src="~/js/Chart.js"></script>
 		<script src="~/js/additional-methods.min.js"></script>
 		<script src="~/js/template.js"></script>
 		<script src="~/js/SweetAlert.js"></script>
 		<script src="~/js/jquery.translate.js"></script>
 		<script src="~/js/jquery.swaltranslate.js"></script>
-		<script src="~/js/bootstrap-select.min.js"></script>		
+		<script src="~/js/bootstrap-select.min.js"></script>
 		<script src="~/js/daimler.js"></script>
 
 
@@ -829,17 +825,17 @@
 			var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
 			var UserId = '@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")'
 			//var UserRoleLoad = '@HttpContextAccessor.HttpContext.Session.GetString("UserRoleLoad")'
-			
+
 			var dict = diction();
 
 			MasterTranslate(language);
 			DepartmentTranslate(language);
 			ObservationTypeTranslation(language);
-			InstrumentObservationTypeTranslation(language);
-			LoadRole();				
+			//InstrumentObservationTypeTranslation(language);
+			LoadRole();
 			MasterDepartment(language);
-			setRoleSelectedVal(language);			
-			
+			setRoleSelectedVal(language);
+
 			var respmsg = '@ViewBag.ResponseMessage';
 
 			showPopup('@ViewBag.ResponseCode', respmsg, language);
@@ -854,14 +850,14 @@
 
 			$('.Languagepicker').on('change', function () {
 				var selected = $(this).find("option:selected").val();
-				var dict = diction();				
+				var dict = diction();
 				MasterTranslate(selected);
 				DepartmentTranslate(selected);
 				ObservationTypeTranslation(selected);
-				InstrumentObservationTypeTranslation(selected);
+				//InstrumentObservationTypeTranslation(selected);
 				MasterDepartment(selected);
-				language=selected;
-	
+				language = selected;
+
 				$('#hdnLanguage').val(selected);
 
 				$.ajax({
@@ -879,7 +875,7 @@
 						console.log(response.responseText);
 					}
 				});
-				
+
 				if (selected == "en") {
 					var translator = $('body').translate({ lang: "en", t: dict });
 				}
@@ -907,933 +903,933 @@
 
 			function diction() {
 				dicts = {
-					"Master": { jp: "基準器・標準器・検査設備機器", en: "Master"},
-"Instruments": { jp: "計量器", en: "Instruments"},
-"Signout": { jp: "サインアウト", en: "Signout"},
-"Request": { jp: "依頼", en: "Request"},
-"More info ": { jp: "計量器情報", en: "More info "},
-"Dashboard": { jp: "選択画面", en: "Dashboard"},
-"Department": { jp: "部門", en: "Department"},
-"Department List": { jp: "部門一覧", en: "Department List"},
-"New Department": { jp: "新しい部門", en: "New Department"},
-"User": { jp: "計量器使用者", en: "User"},
-"User List": { jp: "計量器使用者一覧", en: "User List"},
-"New User": { jp: "新規計量器使用者", en: "New User"},
-"Contact": { jp: "連絡先", en: "Contact"},
-"Contact List": { jp: "連絡先リスト", en: "Contact List"},
-"New Contact": { jp: "新しい連絡先", en: "New Contact"},
-"Master List": { jp: "基準器・標準器・検査設備機器リスト", en: "Master List"},
-"New Master": { jp: "新規　基準器・標準器・検査設備機器", en: "New Master"},
-"Master Quarantine": { jp: "未使用基準器・標準器・検査設備機器", en: "Master Quarantine"},
-"Instruments List": { jp: "計量器一覧表", en: "Instruments List"},
-"New Instrument": { jp: "新しい計量器", en: "New Instrument"},
-"Qurataine Instrument": { jp: "未使用計量器（遊休・廃却など）", en: "Qurataine Instrument"},
-"Tracker": { jp: "検索", en: "Tracker"},
-"External Request": { jp: "外部測定", en: "External Request"},
-"Request Tracker": { jp: "依頼検索", en: "Request Tracker"},
-"Customer Feedback": { jp: "顧客からの声", en: "Customer Feedback"},
-"Feedback Invite": { jp: "計量器主任者", en: "Feedback Invite"},
-"Feedback Form": { jp: "フィードバックフォーム", en: "Feedback Form"},
-"Submitted List": { jp: "提出済みリスト", en: "Submitted List"},
-"Reviewed List": { jp: "レビュー済みリスト", en: "Reviewed List"},
-"Quality Check": { jp: "品質チェック", en: "Quality Check"},
-"Intermediate Template": { jp: "中間テンプレート", en: "Intermediate Template"},
-"Alternative Template": { jp: "代替テンプレート", en: "Alternative Template"},
-"Replicate Test": { jp: "テストを繰り返す", en: "Replicate Test"},
-"Re-Test": { jp: "再テスト", en: "Re-Test"},
-"Chart": { jp: "チャート", en: "Chart"},
-"Instrument Report": { jp: "計量器レポート", en: "Instrument Report"},
-"Calibration Lab - KPI": { jp: " KPI", en: "Calibration Lab - KPI"},
-"Add New Master": { jp: "新しいの基準器・標準器・検査設備機器追加", en: "Add New Master"},
-"Quarantine List": { jp: "未使用リスト", en: "Quarantine List"},
-"Serial Number": { jp: "シリアルナンバー", en: "Serial Number"},
-"Lab ID Number": { jp: "品名社番", en: "Lab ID Number"},
-"Calibration Frequency": { jp: "校正周期", en: "Calibration Frequency"},
-"Calibration Date": { jp: "校正日", en: "Calibration Date"},
-"Due Date": { jp: "次回定期検査年月", en: "Due Date"},
-"Edit": { jp: "編集", en: "Edit"},
-"External Calibration Request": { jp: "外部校正リクエスト", en: "External Calibration Request"},
-"Quarantine": { jp: "未使用", en: "Quarantine"},
-"History": { jp: "履歴", en: "History"},
-"Instrument Name": { jp: "計量器名称", en: "Instrument Name"},
-"Range": { jp: "能力", en: "Range"},
-"Department Name": { jp: "所属部門", en: "Department Name"},
-"Department Desc": { jp: "部門の説明", en: "Department Desc"},
-"Created Date": { jp: "作成日", en: "Created Date"},
-"Department Description": { jp: "部門の説明", en: "Department Description"},
-"Submit": { jp: "送信", en: "Submit"},
-"First Name": { jp: "名前", en: "First Name"},
-"Last Name": { jp: "苗字", en: "Last Name"},
-"Email": { jp: "Eメール", en: "Email"},
-"Phone No": { jp: "電話番号", en: "Phone No"},
-"Login Name": { jp: "ログイン名", en: "Login Name"},
-"CreatedDate": { jp: "作成日", en: "CreatedDate"},
-"L3 Contact": { jp: "L3コンタクト", en: "L3 Contact"},
-"L4 Contact": { jp: "L4コンタクト", en: "L4 Contact"},
-"L5 Contact": { jp: "L5 コンタクト", en: "L5 Contact"},
-"L6 Contact": { jp: "L6コンタクト", en: "L6 Contact"},
-"Delete": { jp: "消去", en: "Delete"},
-"User Creation": { jp: "ユーザーの作成", en: "User Creation"},
-"User Name": { jp: "ユーザー名", en: "User Name"},
-"Role": { jp: "管理者", en: "Role"},
-"Email Id": { jp: "電子メールID", en: "Email Id"},
-"Mobile No": { jp: "モバイル番号", en: "Mobile No"},
-"Designation": { jp: "役職", en: "Designation"},
-"Level": { jp: "レベル", en: "Level"},
-"Level 3 ShortID": { jp: "レベル 3 ショート ID", en: "Level 3 ShortID"},
-"Level 3 Name": { jp: "レベル 3 の名前", en: "Level 3 Name"},
-"Level 3 Email": { jp: "レベル 3 メール", en: "Level 3 Email"},
-"Level 4 ShortID": { jp: "レベル 4 ショート ID", en: "Level 4 ShortID"},
-"Level 4 Name": { jp: "レベル 4 の名前", en: "Level 4 Name"},
-"Level 4 Email": { jp: "レベル 4 メール", en: "Level 4 Email"},
-"Level 5 ShortID": { jp: "レベル 5 ショート ID", en: "Level 5 ShortID"},
-"Level 5 Name": { jp: "レベル 5 の名前", en: "Level 5 Name"},
-"Level 5 Email": { jp: "レベル 5 メール", en: "Level 5 Email"},
-"Level 6 ShortID": { jp: "レベル 6 ショート ID", en: "Level 6 ShortID"},
-"Level 6 Name": { jp: "レベル 6 の名前", en: "Level 6 Name"},
-"Level 6 Email": { jp: "レベル 6 メール", en: "Level 6 Email"},
-"Choose Signature": { jp: "サインアウトの選択", en: "Choose Signature"},
-"Signature Image": { jp: "サイン画像", en: "Signature Image"},
-"Profile Update": { jp: "プロフィールの更新", en: "Profile Update"},
-"Password": { jp: "パスワード", en: "Password"},
-"UserCreate": { jp: "ユーザー作成", en: "UserCreate"},
-"UserId": { jp: "ユーザーID", en: "UserId"},
-"UserName": { jp: "ユーザー名", en: "UserName"},
-"Email address": { jp: "電子メールアドレス", en: "Email address"},
-"RetypePassword": { jp: "パスワードを再入力してください", en: "RetypePassword"},
-"GroupCreate": { jp: "グループ作成", en: "GroupCreate"},
-"GroupName": { jp: "グループ名", en: "GroupName"},
-"EnterPerson": { jp: "人を入力", en: "EnterPerson"},
-"EntryDate": { jp: "申し込み日", en: "EntryDate"},
-"CreateGroup": { jp: "グループを作る", en: "CreateGroup"},
-"Name": { jp: "名前", en: "Name"},
-"Contact Creation": { jp: "連絡先の作成", en: "Contact Creation"},
-"Mobile Number": { jp: "携帯電話番号", en: "Mobile Number"},
-"Master Quarantine List": { jp: "基準器・標準器・検査設備機器（未使用リスト）", en: "Master Quarantine List"},
-"Serial No": { jp: "シリアル番号", en: "Serial No"},
-"Lab ID No": { jp: "計量器番号", en: "Lab ID No"},
-"Calibration Frequency": { jp: "校正周期", en: "Calibration Frequency"},
-"Calibration Date": { jp: "校正日", en: "Calibration Date"},
-"Due Date": { jp: "次回定期検査年月", en: "Due Date"},
-"Quarantine Date": { jp: "未使用発生日", en: "Quarantine Date"},
-"Quarantine Reason": { jp: "未使用理由", en: "Quarantine Reason"},
-"Activate": { jp: "アクティべート", en: "Activate"},
-"New Master": { jp: "新規　基準器・標準器・検査設備機器", en: "New Master"},
-"Equipment Name": { jp: "計量器名称", en: "Equipment Name"},
-"Location": { jp: "使用場所", en: "Location"},
-"P.O.Number": { jp: "―", en: "P.O.Number"},
-"P.O.Date": { jp: "発注日", en: "P.O.Date"},
-"Commissioned On": { jp: "初回登録日", en: "Commissioned On"},
-"Make": { jp: "製造社名", en: "Make"},
-"Cost": { jp: "購入金額", en: "Cost"},
-"Calibration Source": { jp: "校正方法", en: "Calibration Source"},
-"details 2": { jp: "詳細 3", en: "details 2"},
-"Supplier/Agency": { jp: "外部先", en: "Supplier/Agency"},
-"Lab ID": { jp: "計量器番号", en: "Lab ID"},
-"Certificate Number": { jp: "証明書番号", en: "Certificate Number"},
-"Traceability": { jp: "トレーサビリティ", en: "Traceability"},
-"Upload Image": { jp: "画像をアップロード", en: "Upload Image"},
-"Supplier Information": { jp: "外部先情報", en: "Supplier Information"},
-"Phone Number": { jp: "電話番号", en: "Phone Number"},
-"Master History - Breakdown List": { jp: "基準器・標準器・検査設備機器の履歴", en: "Master History - Breakdown List"},
-"Date": { jp: "実施日", en: "Date"},
-"Category": { jp: "カテゴリー", en: "Category"},
-"Description": { jp: "説明", en: "Description"},
-"Actions Taken / Calibration Results": { jp: "実行されたアクション/キャリブレーション結果", en: "Actions Taken / Calibration Results"},
-"From": { jp: "From", en: "From"},
-"To": { jp: "TO", en: "To"},
-"Date of Completion": { jp: "完成日", en: "Date of Completion"},
-"Breakdown Hrs/Days": { jp: "内訳時間/日", en: "Breakdown Hrs/Days"},
-"Status": { jp: "状態", en: "Status"},
-"Maintenance / Supplier Representative": { jp: "整備・仕入先代表", en: "Maintenance / Supplier Representative"},
-"Updated By": { jp: "更新者", en: "Updated By"},
-"Master History Creation": { jp: "基準器・標準器・検査設備機器の履歴作成", en: "Master History Creation"},
-"From Date": { jp: "開始日", en: "From Date"},
-"To Date": { jp: "現在まで", en: "To Date"},
-"Instrument Details": { jp: "計量器の詳細", en: "Instrument Details"},
-"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number"},
-"Unit": { jp: "単位", en: "Unit"},
-"Least Count": { jp: "最小数", en: "Least Count"},
-"Set Value for TW": { jp: "トルクレンチ設定値", en: "Set Value for TW"},
-"User Department": { jp: "使用部門", en: "User Department"},
-"Ref Standard/Calibration Method": { jp: "参照標準/校正方法", en: "Ref Standard/Calibration Method"},
-"Type of Instrument": { jp: "計量器の種類", en: "Type of Instrument"},
-"Drawing is attached": { jp: "図面が添付されています", en: "Drawing is attached"},
-"Decision rule for statement of Confirmity": { jp: "判定基準", en: "Decision rule for statement of Confirmity"},
-"Remarks": { jp: "備考", en: "Remarks"},
-"If yes provision for standard/drawing attachment": { jp: "はいの場合、標準/図面添付の規定", en: "If yes provision for standard/drawing attachment"},
-"Calibration Details": { jp: "校正の詳細", en: "Calibration Details"},
-"Master Instrument Name": { jp: "基準器・標準器・検査設備機器", en: "Master Instrument Name"},
-"Instrument Id Number": { jp: "計量器ＩＤ番号", en: "Instrument Id Number"},
-"Standard Reffered": { jp: "標準参照", en: "Standard Reffered"},
-"Date Of Receipt": { jp: "検査・校正完了日", en: "Date Of Receipt"},
-"Calibration Status": { jp: "校正ステータス", en: "Calibration Status"},
-"Is NABL": { jp: "NABLです", en: "Is NABL"},
-"Observation Template": { jp: "検査フォーム", en: "Observation Template"},
-"Observation Type": { jp: "記入フォーム", en: "Observation Type"},
-"MU Template": { jp: "MU テンプレート", en: "MU Template"},
-"Certification Template": { jp: "証明書テンプレート", en: "Certification Template"},
-"Quaratine Instruments List": { jp: "未使用計測器一覧", en: "Quaratine Instruments List"},
-"Instrument SNo": { jp: "計量器のシリアル番号", en: "Instrument SNo"},
-"Instrument ID No": { jp: "計量器ＩＤ番号", en: "Instrument ID No"},
-"Calibration Freq": { jp: "校正周期", en: "Calibration Freq"},
-"Quarantine On": { jp: "未使用　", en: "Quarantine On"},
-"Instrument Status": { jp: "計量器の状態", en: "Instrument Status"},
-"Template Name": { jp: "テンプレート名", en: "Template Name"},
-"Tracker List": { jp: "検索リスト", en: "Tracker List"},
-"Request No": { jp: "依頼番号", en: "Request No"},
-"Request Date": { jp: "依頼日", en: "Request Date"},
-"Master Name": { jp: "基準器・標準器・検査設備機器　名称", en: "Master Name"},
-"Master Serial": { jp: "基準器・標準器・検査設備機器シリアル", en: "Master Serial"},
-"View": { jp: "詳細", en: "View"},
-"Request Number": { jp: "要求番号", en: "Request Number"},
-"Requested Date": { jp: "依頼日", en: "Requested Date"},
-"Master Serial Number": { jp: "基準器・標準器・検査設備機器シリアル番号", en: "Master Serial Number"},
-"Master Id Number": { jp: "基準器・標準器・検査設備機器ID番号", en: "Master Id Number"},
-"Accept": { jp: "受入", en: "Accept"},
-"Reject": { jp: "却下", en: "Reject"},
-"Rejection Reason": { jp: "却下理由", en: "Rejection Reason"},
-"Submitted On": { jp: "提出日", en: "Submitted On"},
-"Rejected On": { jp: "拒否日", en: "Rejected On"},
-"Rejected Reason": { jp: "却下理由", en: "Rejected Reason"},
-"Record By": { jp: "記録者", en: "Record By"},
-"ClosedDate": { jp: "終了日", en: "ClosedDate"},
-"Result": { jp: "結果", en: "Result"},
-"Return Date": { jp: "返却日", en: "Return Date"},
-"Verified By": { jp: "検査員", en: "Verified By"},
-"LABResult": { jp: "検査結果", en: "LABResult"},
-"External Request Details": { jp: "外部測定の詳細", en: "External Request Details"},
-"OverAll": { jp: "全体", en: "OverAll"},
-"New Request": { jp: "新しい依頼", en: "New Request"},
-"Regular Request": { jp: "通常の依頼", en: "Regular Request"},
-"ReCalibration Request": { jp: "臨時検査の依頼", en: "ReCalibration Request"},
-"Request Type": { jp: "依頼の種類", en: "Request Type"},
-"Test": { jp: "テスト", en: "Test"},
-"Certificate": { jp: "証明書", en: "Certificate"},
-"Instrument Id": { jp: "計量器ＩＤ", en: "Instrument Id"},
-"Reason for Rejection": { jp: "却下理由", en: "Reason for Rejection"},
-"Feasible to Service": { jp: "検査可能", en: "Feasible to Service"},
-"Instument Returned On": { jp: "返却日", en: "Instument Returned On"},
-"If Feasible service, Yes": { jp: "実現可能なサービスの場合、はい", en: "If Feasible service, Yes"},
-"Service Responsibility": { jp: "サービス責任", en: "Service Responsibility"},
-"Collected By": { jp: "検査員", en: "Collected By"},
-"Closed Date": { jp: "終了日", en: "Closed Date"},
-"Instrument Condition": { jp: "計量器の状態", en: "Instrument Condition"},
-"Feasiblity": { jp: "実現可能性", en: "Feasiblity"},
-"Standard Reffered/Calibration Method": { jp: "標準参照/校正方法", en: "Standard Reffered/Calibration Method"},
-"NABL": { jp: "NABL", en: "NABL"},
-"Tentative Closing Date": { jp: "仮締め日", en: "Tentative Closing Date"},
-"Type Of Request": { jp: "依頼の内容", en: "Type Of Request"},
-"Request By": { jp: "依頼者", en: "Request By"},
-"Request Details": { jp: "依頼の詳細", en: "Request Details"},
-"Received Date": { jp: "受付日", en: "Received Date"},
-"Received By": { jp: "受信者", en: "Received By"},
-"Reference Standard/Calibration Method": { jp: "計量器精度検査方法", en: "Reference Standard/Calibration Method"},
-"Observation Template Type": { jp: "検査フォームタイプ", en: "Observation Template Type"},
-"Certification Tmeplate": { jp: "証明書フォーム", en: "Certification Tmeplate"},
-"Feedback User List": { jp: "フィードバック ユーザー リスト", en: "Feedback User List"},
-"Laboratory": { jp: "ラボ", en: "Laboratory"},
-"Submit List": { jp: "提出リスト", en: "Submit List"},
-"Short Id": { jp: "ショートID", en: "Short Id"},
-"Feedback Status": { jp: "フィードバックステータス", en: "Feedback Status"},
-"Reviewed List": { jp: "レビューリスト", en: "Reviewed List"},
-"You dont have access for the Feedback Form!!!": { jp: "フィードバック フォームにアクセスできません!!!", en: "You dont have access for the Feedback Form!!!"},
-"Invite Date": { jp: "登録日", en: "Invite Date"},
-"Feedback User List": { jp: "フィードバック ユーザー リスト", en: "Feedback User List"},
-"Intermediate Data List": { jp: "データ一覧", en: "Intermediate Data List"},
-"Master Equipment": { jp: "基準器・標準器・検査設備機器　", en: "Master Equipment"},
-"Accuracy Equipment Name": { jp: "精度機器名", en: "Accuracy Equipment Name"},
-"Study Performed by": { jp: "検査実施者", en: "Study Performed by"},
-"Study Performed Date": { jp: "検査実施日", en: "Study Performed Date"},
-"Document Status": { jp: "ドキュメントステータス", en: "Document Status"},
-"Alternative Calibration List": { jp: "代替校正リスト", en: "Alternative Calibration List"},
-"Equipment1 Name": { jp: "機器1名", en: "Equipment1 Name"},
-"Equipment2 Name": { jp: "機器2名", en: "Equipment2 Name"},
-"Mux1": { jp: "Mux1", en: "Mux1"},
-"Mux2": { jp: "Mux2", en: "Mux2"},
-"EnValue": { jp: "エンバリュー", en: "EnValue"},
-"Replicate Test": { jp: "再検査", en: "Replicate Test"},
-"Range or Size": { jp: "能力　または、サイズ", en: "Range or Size"},
-"LC": { jp: "最小値", en: "LC"},
-"Evaluated By": { jp: "評価者", en: "Evaluated By"},
-"Instrument Type": { jp: "計量器の種類", en: "Instrument Type"},
-"Generate Chart": { jp: "グラフ作成", en: "Generate Chart"},
-"Year": { jp: "年", en: "Year"},
-"Month": { jp: "火", en: "Month"},
-"Target%": { jp: "目標％", en: "Target%"},
-"Observation Sheet": { jp: "フォーム", en: "Observation Sheet"},
-"General": { jp: "全般的", en: "General"},
-"Observation Sheet<br> General": { jp: "フォーム<br> 一般", en: "Observation Sheet<br> General"},
-"Format No.": { jp: "フォーマット番号", en: "Format No."},
-"Rev No &  Date": { jp: "リビジョン番号と日付", en: "Rev No &  Date"},
-"Serial No.": { jp: "シリアル番号。", en: "Serial No."},
-"ID No.": { jp: "ID番号。", en: "ID No."},
-"Ref Std": { jp: "参照基準", en: "Ref Std"},
-"Humidity %RH": { jp: "湿度 %RH", en: "Humidity %RH"},
-"Condition of the Instrument": { jp: "計量器の状態", en: "Condition of the Instrument"},
-"Ref WI: ": { jp: "参照WI:", en: "Ref WI: "},
-"All Values Are In": { jp: "すべての値が入っています", en: "All Values Are In"},
-"Add New Row": { jp: "新しい行を追加", en: "Add New Row"},
-"Measured": { jp: "測定", en: "Measured"},
-"Trial-1": { jp: "試行-1", en: "Trial-1"},
-"Trial-2": { jp: "試行-2", en: "Trial-2"},
-"Trial-3": { jp: "試行-3", en: "Trial-3"},
-"Nominal": { jp: "公称", en: "Nominal"},
-"Average": { jp: "平均", en: "Average"},
-"Calibration Performed By": { jp: "キャリブレーション実施者", en: "Calibration Performed By"},
-"Reviewed By": { jp: "レビュー者", en: "Reviewed By"},
-"Date:": { jp: "日付", en: "Date:"},
-"Cancel": { jp: "キャンセル", en: "Cancel"},
-"Submit Review": { jp: "レビュー送信", en: "Submit Review"},
-"Temp@Start ": { jp: "温度@開始", en: "Temp@Start "},
-"Temp@End ": { jp: "温度@終了", en: "Temp@End "},
-"Approve": { jp: "承認", en: "Approve"},
-"Type / Model": { jp: "種類・型式", en: "Type / Model"},
-"Range/LC:": { jp: "範囲最小値", en: "Range/LC:"},
-"Make:": { jp: "製造社名", en: "Make:"},
-"ID No:": { jp: "ID番号", en: "ID No:"},
-"Ref Std.": { jp: "参照基準", en: "Ref Std."},
-"CALIBRATION RESULTS ": { jp: "校正結果", en: "CALIBRATION RESULTS "},
-"SL.No": { jp: "シリアルナンバー", en: "SL.No"},
-"NOMINALANGLE": { jp: "公称角度", en: "NOMINALANGLE"},
-"ERRORinDMS": { jp: "DMS のエラー", en: "ERRORinDMS"},
-"Quadrant-1": { jp: "象限-1", en: "Quadrant-1"},
-"Quadrant-2": { jp: "象限-2", en: "Quadrant-2"},
-"Quadrant-3": { jp: "象限-3", en: "Quadrant-3"},
-"Quadrant-4": { jp: "象限-4", en: "Quadrant-4"},
-"All Values are in mm ": { jp: "すべての値は mm 単位です", en: "All Values are in mm "},
-"Spec": { jp: "仕様", en: "Spec"},
-"Actual": { jp: "実際", en: "Actual"},
-"DevFromNom": { jp: "DevFromNom", en: "DevFromNom"},
-"Straightness of Working Edge": { jp: "切刃の真直度", en: "Straightness of Working Edge"},
-"Parallelism of Working Edge": { jp: "刃先の平行度", en: "Parallelism of Working Edge"},
-"Flatness of Blade": { jp: "刃の平面度", en: "Flatness of Blade"},
-"Calibration Performed By": { jp: "キャリブレーション検査員", en: "Calibration Performed By"},
-"Reveiwed By": { jp: "によってレビュー", en: "Reveiwed By"},
-"ID No": { jp: "ID番号", en: "ID No"},
-"Condition of the Dial Indicator ": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator "},
-"Sl No.": { jp: "シリアルNo", en: "Sl No."},
-"Parameter": { jp: "パラメータ", en: "Parameter"},
-"DirectionA": { jp: "方向", en: "DirectionA"},
-"DirectionB": { jp: "方向B", en: "DirectionB"},
-"Indicator Error": { jp: "インジケータエラー", en: "Indicator Error"},
-"Measuring Range": { jp: "測定範囲", en: "Measuring Range"},
-"10 Scale Division": { jp: "10スケール部門", en: "10 Scale Division"},
-"Hysteresis": { jp: "ヒステリシス", en: "Hysteresis"},
-"Repeatability": { jp: "再現性", en: "Repeatability"},
-"Linear Accuracy": { jp: "線形精度", en: "Linear Accuracy"},
-"Avg.": { jp: "平均", en: "Avg."},
-"MU": { jp: "ー", en: "MU"},
-"Trail1": { jp: "トレイル1", en: "Trail1"},
-"Trail2": { jp: "トレイル2", en: "Trail2"},
-"Trail3": { jp: "トレイル3", en: "Trail3"},
-"Interval": { jp: "間隔", en: "Interval"},
-"Flatness Spec": { jp: "平面度仕様", en: "Flatness Spec"},
-"Flatness1": { jp: "平面度1", en: "Flatness1"},
-"Flatness2": { jp: "平面度2", en: "Flatness2"},
-"Parallelism Spec:": { jp: "並列処理仕様:", en: "Parallelism Spec:"},
-"Actual :": { jp: "実際 ：", en: "Actual :"},
-"Condition of the Dial Indicator & observations if any : ": { jp: "ダイヤル インジケータの状態と所見 (ある場合) :", en: "Condition of the Dial Indicator & observations if any : "},
-"Mechanical Plunger Dial Indicator": { jp: "メカニカル プランジャ ダイヤル インジケータ", en: "Mechanical Plunger Dial Indicator"},
-"SI No.": { jp: "シリアルNo", en: "SI No."},
-"Whole Measuring Range": { jp: "全測定範囲", en: "Whole Measuring Range"},
-"½ Revolution": { jp: "½回転", en: "½ Revolution"},
-"1 Revolution": { jp: "1回転", en: "1 Revolution"},
-"Narrow range adjacent error": { jp: "狭範囲隣接誤差", en: "Narrow range adjacent error"},
-"Retrace Error": { jp: "リトレースエラー", en: "Retrace Error"},
-"Digital Plunger Dial Indicator": { jp: "デジタルプランジャダイヤルインジケータ", en: "Digital Plunger Dial Indicator"},
-"± 1 count": { jp: "±1カウント", en: "± 1 count"},
-"1 count = 1 least count": { jp: "1 カウント = 1 最小カウント", en: "1 count = 1 least count"},
-"1 count": { jp: "1カウント", en: "1 count"},
-"Accuracy Overall": { jp: "精度全体", en: "Accuracy Overall"},
-" ± 3 counts": { jp: "±3カウント", en: " ± 3 counts"},
-"Accuracy Micro calibration": { jp: "精度 マイクロキャリブレーション", en: "Accuracy Micro calibration"},
-"SI.No": { jp: "シリアルNo", en: "SI.No"},
-"Daimler": { jp: "ダイムラー", en: "Daimler"},
-"Rev.No & Date": { jp: "Rev.No & Date", en: "Rev.No & Date"},
-"Designation:": { jp: "指定：", en: "Designation:"},
-"Section/Dept": { jp: "課・部", en: "Section/Dept"},
-"Laboratory Name": { jp: "研究室名", en: "Laboratory Name"},
-"Rating scale": { jp: "評価尺度", en: "Rating scale"},
-"Rating (Please ✓ the appropriate box)": { jp: "評価 (該当するボックスに✓してください)", en: "Rating (Please ✓ the appropriate box)"},
-"Score": { jp: "スコア", en: "Score"},
-"10": { jp: "十", en: "10"},
-"9": { jp: "九", en: "9"},
-"8": { jp: "八", en: "8"},
-"7": { jp: "七", en: "7"},
-"Excellent": { jp: "素晴らしい", en: "Excellent"},
-"Good": { jp: "良い", en: "Good"},
-"Satisfactory": { jp: "満足", en: "Satisfactory"},
-"Poor": { jp: "貧しい", en: "Poor"},
-"Evaluation Criteria": { jp: "評価基準", en: "Evaluation Criteria"},
-"Rating": { jp: "評価", en: "Rating"},
-"Quality": { jp: "品質", en: "Quality"},
-"Quality of Services offered (Test / Calibration)": { jp: "提供されるサービスの品質 (テスト / 校正)", en: "Quality of Services offered (Test / Calibration)"},
-"Reliability of test / calibration results": { jp: "試験・校正結果の信頼性", en: "Reliability of test / calibration results"},
-"Personnel competency": { jp: "人事能力", en: "Personnel competency"},
-"Technical capability & support": { jp: "技術力とサポート", en: "Technical capability & support"},
-"Test / Calibration report accuracy": { jp: "テスト/校正レポートの精度", en: "Test / Calibration report accuracy"},
-"Safeguarding of customer data / drawing": { jp: "顧客データ/図面の保護", en: "Safeguarding of customer data / drawing"},
-"Delivery": { jp: "配達", en: "Delivery"},
-"On-time delivery of test / calibration reports": { jp: "テスト/校正レポートの納期厳守", en: "On-time delivery of test / calibration reports"},
-"Response to customer request / complaint": { jp: "お客様のご要望・苦情への対応", en: "Response to customer request / complaint"},
-"Complaint resolution": { jp: "苦情の解決", en: "Complaint resolution"},
-"Emergency support": { jp: "緊急サポート", en: "Emergency support"},
-"Handling of Test / calibration items": { jp: "試験・校正項目の取り扱い", en: "Handling of Test / calibration items"},
-"Commitment": { jp: "献身", en: "Commitment"},
-"Management": { jp: "管理", en: "Management"},
-"Communication & accessibility": { jp: "コミュニケーションとアクセシビリティ", en: "Communication & accessibility"},
-"Documentation & Reporting system": { jp: "文書化および報告システム", en: "Documentation & Reporting system"},
-"Facilities and Environment conditions": { jp: "施設・環境条件", en: "Facilities and Environment conditions"},
-"5S management": { jp: "5S管理", en: "5S management"},
-"Impartiality & confidentiality": { jp: "公平性と機密保持", en: "Impartiality & confidentiality"},
-"Overall score obtained": { jp: "獲得した総合スコア", en: "Overall score obtained"},
-"Overall percentage (%)": { jp: "全体の割合 (%)", en: "Overall percentage (%)"},
-"Comments / Suggestions if any :": { jp: "コメント/提案があれば:", en: "Comments / Suggestions if any :"},
-"Customer Name": { jp: "顧客名", en: "Customer Name"},
-"Laboratory Use": { jp: "検査室での使用", en: "Laboratory Use"},
-"Reviewed By: ": { jp: "によってレビューされた：", en: "Reviewed By: "},
-"Action Required": { jp: "必要なアクション", en: "Action Required"},
-"Yes": { jp: "はい", en: "Yes"},
-"No": { jp: "いいえ", en: "No"},
-"Proposed Actions": { jp: "提案された行動", en: "Proposed Actions"},
-"Target Date": { jp: "予定期限", en: "Target Date"},
-"Responsibility": { jp: "責任", en: "Responsibility"},
-"File Attachment": { jp: "添付ファイル", en: "File Attachment"},
-"Review": { jp: "レビュー", en: "Review"},
-"New Request Creation": { jp: "新しいリクエストの作成", en: "New Request Creation"},
-"Commisionned On:": { jp: "委託先:", en: "Commisionned On:"},
-"Request List": { jp: "依頼一覧", en: "Request List"},
-"SerialNo": { jp: "シリアル番号", en: "SerialNo"},
-"Group Name": { jp: "グループ名", en: "Group Name"},
-"No of requests received": { jp: "受け取ったリクエストの数", en: "No of requests received"},
-"Completed on same day": { jp: "即日完了", en: "Completed on same day"},
-"Within 1 day": { jp: "1日以内", en: "Within 1 day"},
-"Within 2 days": { jp: "2日以内", en: "Within 2 days"},
-"Within 3 days": { jp: "3日以内", en: "Within 3 days"},
-"More than 3 days": { jp: "3日以上", en: "More than 3 days"},
-"KPI% Calculation(Within 2 days)": { jp: "KPI%計算(3日以内)", en: "KPI% Calculation(Within 2 days)"},
-"Add New User": { jp: "新しいユーザーを追加", en: "Add New User"},
-"Add New Contact": { jp: "新しい連絡先を追加", en: "Add New Contact"},
-"Add New Instrument": { jp: "新しい計量器を追加", en: "Add New Instrument"},
-"Quratine List": { jp: "未使用リスト", en: "Quratine List"},
-"Instrument List": { jp: "計量器リスト", en: "Instrument List"},
-"Please enter Department Name": { jp: "部署名を入力してください", en: "Please enter Department Name"},
-"Please provide Department Description": { jp: "部門の説明を入力してください", en: "Please provide Department Description"},
-"Please enter a email address or short name": { jp: "メールアドレスまたは短い名前を入力してください", en: "Please enter a email address or short name"},
-"Please provide a password": { jp: "パスワードを入力してください", en: "Please provide a password"},
-"Please enter your name": { jp: "お名前を入力してください", en: "Please enter your name"},
-"Please enter your department name": { jp: "部署名を入力してください", en: "Please enter your department name"},
-"Please provide your email address": { jp: "メールアドレスを入力してください", en: "Please provide your email address"},
-"Please provide your phone number": { jp: "電話番号を入力してください", en: "Please provide your phone number"},
-"Please enter Instrument Name": { jp: "楽器名を入力してください", en: "Please enter Instrument Name"},
-"Please enter the Serial Number": { jp: "シリアル番号を入力してください", en: "Please enter the Serial Number"},
-"Please enter Range": { jp: "範囲を入力してください", en: "Please enter Range"},
-"Please enter Unit": { jp: "単位を入力してください", en: "Please enter Unit"},
-"Please enter the user department": { jp: "ユーザー部門を入力してください", en: "Please enter the user department"},
-"Please fill this field": { jp: "このフィールドに入力してください", en: "Please fill this field"},
-"Please enter the Status": { jp: "ステータスを入力してください", en: "Please enter the Status"},
-"Please provide the Calibration Source": { jp: "校正ソースを提供してください", en: "Please provide the Calibration Source"},
-"Please provide the Calibration Frequency": { jp: "校正頻度を入力してください", en: "Please provide the Calibration Frequency"},
-"Please enter Equipment Name": { jp: "計量器名称を入力してください", en: "Please enter Equipment Name"},
-"Please enter the location": { jp: "場所を入力してください", en: "Please enter the location"},
-"Please provide the P.O. Number": { jp: "P.O.を入力してください。番号", en: "Please provide the P.O. Number"},
-"Please provide the date": { jp: "日付を入力してください", en: "Please provide the date"},
-"Please provide the amount": { jp: "金額を教えてください", en: "Please provide the amount"},
-"Please provide the supplier or agency": { jp: "サプライヤーまたは代理店を入力してください", en: "Please provide the supplier or agency"},
-"Please provide lab Id": { jp: "ラボ ID を入力してください", en: "Please provide lab Id"},
-"Please provide supplier name": { jp: "サプライヤー名を入力してください", en: "Please provide supplier name"},
-"Please provide supplier phone number": { jp: "サプライヤーの電話番号を入力してください", en: "Please provide supplier phone number"},
-"Please provide supplier Email address": { jp: "サプライヤーの電子メールアドレスを入力してください", en: "Please provide supplier Email address"},
-"Please enter your first name": { jp: "お名前を入力してください", en: "Please enter your first name"},
-"Please enter your last name": { jp: "あなたの姓を入力", en: "Please enter your last name"},
-"Please provide user role": { jp: "ユーザーの役割を入力してください", en: "Please provide user role"},
-"Please provide the Email address": { jp: "メールアドレスを入力してください", en: "Please provide the Email address"},
-"Please provide the mobile number": { jp: "携帯番号を教えてください", en: "Please provide the mobile number"},
-"Please provide the department name": { jp: "部署名を教えてください", en: "Please provide the department name"},
-"Short Name": { jp: "略称", en: "Short Name"},
-"Email Address": { jp: "電子メールアドレス", en: "Email Address"},
-"ShortID": { jp: "ショートID", en: "ShortID"},
-"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email"},
-"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email"},
-"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email"},
-"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email"},
-"Enter Reason for Quarantine": { jp: "未使用理由を入力してください", en: "Enter Reason for Quarantine"},
-"Email Sended Succesfully": { jp: "メールが正常に送信されました", en: "Email Sended Succesfully"},
-"Please Check your Email": { jp: "メールを確認してください", en: "Please Check your Email"},
-"Email Address Not Present.": { jp: "メールアドレスがありません。", en: "Email Address Not Present."},
-"Password Updated Successfully.": { jp: "パスワードが正常に更新されました。", en: "Password Updated Successfully."},
-"Invite Feedback Id": { jp: "フィードバックの招待 ID", en: "Invite Feedback Id"},
-"Please choose appropriate Laboratory": { jp: "適切なを選択してください", en: "Please choose appropriate Laboratory"},
-"Please give rating for Quality of Service!": { jp: "サービスの質を評価してください!", en: "Please give rating for Quality of Service!"},
-"Please give rating for Reliability of Test!": { jp: "テストの信頼性を評価してください!", en: "Please give rating for Reliability of Test!"},
-"Please give rating for Personnel Competency!": { jp: "人事能力の評価をお願いします!", en: "Please give rating for Personnel Competency!"},
-"Please give rating for Technical Capability!": { jp: "技術力の評価をお願いします!", en: "Please give rating for Technical Capability!"},
-"Please give rating for Test Calibration!": { jp: "テストキャリブレーションの評価をお願いします!", en: "Please give rating for Test Calibration!"},
-"Please give rating for Response To Customer!": { jp: "Response To Customer の評価をお願いします!", en: "Please give rating for Response To Customer!"},
-"Please give rating for Complaint Resolution!": { jp: "苦情解決の評価をお願いします!", en: "Please give rating for Complaint Resolution!"},
-"File Size Should Not Exceed More Than 5MB": { jp: "ファイル サイズは 6 MB を超えてはなりません", en: "File Size Should Not Exceed More Than 5MB"},
-"Sucessfully Submited...": { jp: "正常に送信されました...", en: "Sucessfully Submited..."},
-"Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.": { jp: "無効なユーザーです。レベル アクセス権を付与するか、新しいユーザーを作成して、このユーザーにレベル アクセス権を付与してください。", en: "Invalid User, Please give Level Access or Create a new User and provide Level Access for this user."},
-"User Deleted Successfully": { jp: "ユーザーが正常に削除されました", en: "User Deleted Successfully"},
-"User Assigned succesfully": { jp: "ユーザーが正常に割り当てられました", en: "User Assigned succesfully"},
-"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it"},
-"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully"},
-"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!"},
-"Home": { jp: "HOME", en: "Home"},
-"Add New Intermediate Data": { jp: "新しい中間データを追加", en: "Add New Intermediate Data"},
-"Add New Calibration": { jp: "新しいキャリブレーションを追加", en: "Add New Calibration"},
-"Add New": { jp: "新しく追加する", en: "Add New"},
-"SendInvite": { jp: "送る", en: "SendInvite"},
-"Session Expired! Please login to continue your work.": { jp: "セッションの有効期限が切れ！ログインして作業を続けてください。", en: "Session Expired! Please login to continue your work."},
-"Please fill the reason for Quarantine": { jp: "未使用理由を記入してください", en: "Please fill the reason for Quarantine"},
-"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list"},
-"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。  管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!"},
-"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
-"Your visual check details recorded.": { jp: "目視チェックの詳細が記録されました。", en: "Your visual check details recorded."},
-"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
-"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
-"Enter Reason for Quarantine": { jp: "未使用理由を入力してください", en: "Enter Reason for Quarantine"},
-"Master moved to quarantine list": { jp: "マスターは未使用リストに移動しました", en: "Master moved to quarantine list"},
-"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully"},
-"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list"},
-"Instrument Unquarantine successfully": { jp: "未使用の解除しました", en: "Instrument Unquarantine successfully"},
-"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again."},
-"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again."},
-"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
-"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
-"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
-"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
-"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully"},
-"Maximum 4 Equipment Allowed": { jp: "最大5つの装備が許可されています", en: "Maximum 4 Equipment Allowed"},
-"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully"},
-"Please enter the Calibration Result!!!": { jp: "校正結果を入力してください!!!", en: "Please enter the Calibration Result!!!"},
-"You will save Certificate and Generate QR Code with Pdf file!": { jp: "証明書を保存し、PDF ファイルで QR コードを生成します。", en: "You will save Certificate and Generate QR Code with Pdf file!"},
-"Are you want Generate QR Code with Pdf file?": { jp: "PDFファイルでQRコードを生成しますか?", en: "Are you want Generate QR Code with Pdf file?"},
-"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
-"Your details recorded.": { jp: "あなたの詳細が記録されました。", en: "Your details recorded."},
-"Warning": { jp: "警告", en: "Warning"},
-"Error": { jp: "エラー", en: "Error"},
-"Please Select Observation Templates, Observation Template Type, MU Template, Certification Template Values...!": { jp: "観察テンプレート、観察テンプレート タイプ、MU テンプレート、証明書テンプレート値を選択してください...!", en: "Please Select Observation Templates, Observation Template Type, MU Template, Certification Template Values...!"},
-"Success": { jp: "成功", en: "Success"},
-"Failure": { jp: "失敗", en: "Failure"},
-"Invalid Password": { jp: "無効なパスワード", en: "Invalid Password"},
-"Invalid UserName": { jp: "無効なユーザー名", en: "Invalid UserName"},
-"No records found": { jp: "レコードが見つかりません", en: "No records found"},
-"Already user(s) has invited..!": { jp: "すでにユーザーが招待しています..!", en: "Already user(s) has invited..!"},
-"Successfully sent invite...": { jp: "招待状を送信しました...", en: "Successfully sent invite..."},
-"2021 - Calibration Management - ": { jp: "2021 - 校正管理 -", en: "2021 - Calibration Management - "},
-"Privacy": { jp: "プライバシー", en: "Privacy"},
-"Version": { jp: "バージョン", en: "Version"},
-"Version": { jp: "バージョン", en: "Version"},
-"Showing": { jp: "表示中", en: "Showing"},
-"to": { jp: "To", en: "to"},
-"of": { jp: "of", en: "of"},
-"entries": { jp: "エントリ", en: "entries"},
-"Previous": { jp: "前", en: "Previous"},
-"First": { jp: "最初", en: "First"},
-"Last": { jp: "最後", en: "Last"},
-"Next": { jp: "次", en: "Next"},
-"Show": { jp: "見せる", en: "Show"},
-"No data available in table": { jp: "テーブルにデータがありません", en: "No data available in table"},
-"Search:": { jp: "検索：", en: "Search:"},
-"No matching records found": { jp: "該当する記録が見つかりません", en: "No matching records found"},
-"filtered from": { jp: "からフィルタリング", en: "filtered from"},
-"total entries": { jp: "総エントリー数", en: "total entries"},
-"Please fill the reason for Quarantine": { jp: "未使用理由を記入してください", en: "Please fill the reason for Quarantine"},
-"Success": { jp: "成功", en: "Success"},
-"OK": { jp: "OK", en: "OK"},
-"Master moved to quarantine list": { jp: "マスターは未使用リストに移動しました", en: "Master moved to quarantine list"},
-"Master Activated Successfully": { jp: "マスターが正常にアクティブになりました。", en: "Master Activated Successfully"},
-"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list"},
-"Instrument Unquarantine successfully": { jp: "未使用の解除しました", en: "Instrument Unquarantine successfully"},
-"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!"},
-"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!"},
-"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!"},
-"Your visual check details recorded": { jp: "目視チェックの詳細が記録されました", en: "Your visual check details recorded"},
-"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully"},
-"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully"},
-"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully"},
-"Your details recorded": { jp: "あなたの詳細が記録されました", en: "Your details recorded"},
-"Equipment Name Japanese": { jp: "計量器名称　日本語", en: "Equipment Name Japanese"},
-"Instrument Id Number": { jp: "サブ部門", en: "Instrument Id Number"},
-"Sub Department": { jp: "計量器ＩＤ", en: "Sub Department"},
-"Asst.Foreman ShortID": { jp: "―", en: "Asst.Foreman ShortID"},
-"Asst.Foreman Name": { jp: "―", en: "Asst.Foreman Name"},
-"Asst.Foreman Email": { jp: "―", en: "Asst.Foreman Email"},
-"Foreman ShortID": { jp: "―", en: "Foreman ShortID"},
-"Foreman Name": { jp: "―", en: "Foreman Name"},
-"Foreman Email": { jp: "―", en: "Foreman Email"},
-"Kakaricho ShortID": { jp: "係長のショートID", en: "Kakaricho ShortID"},
-"Kakaricho Name": { jp: "係長名", en: "Kakaricho Name"},
-"Kakaricho Email": { jp: "係長名メールアドレス先", en: "Kakaricho Email"},
-"Manager ShortID": { jp: "マネージャーのショートID", en: "Manager ShortID"},
-"Manager Name": { jp: "マネージャー名", en: "Manager Name"},
-"Manager Email": { jp: "マネージャーのメールアドレス", en: "Manager Email"},
-"Asst.Foreman Contact": { jp: "―", en: "Asst.Foreman Contact"},
-"Foreman Contact": { jp: "―", en: "Foreman Contact"},
-"Kakaricho Contact": { jp: "係長連絡先", en: "Kakaricho Contact"},
-"Manager Contact": { jp: "マネージャーの連絡先", en: "Manager Contact"},
-"Micrometer": { jp: "マイクロメータ", en: "Micrometer"},
-"Range/LC": { jp: "範囲最小値", en: "Range/LC"},
-"Actuals": { jp: "実績", en: "Actuals"},
-"Save": { jp: "保存", en: "Save"},
-"Torque Wrenches": { jp: "トルクレンチ", en: "Torque Wrenches"},
-"Type / Model": { jp: "種類・型式", en: "Type / Model"},
-"Condition of Torque Wrench & observations if any:": { jp: "トルクレンチの状態と観察結果 (ある場合):", en: "Condition of Torque Wrench & observations if any:"},
-"WI no :  ": { jp: "WI いいえ:", en: "WI no :  "},
-"Master used :": { jp: "マスター使用:", en: "Master used :"},
-"AWS TWC with Transducers": { jp: "AWS TWC とトランスデューサー", en: "AWS TWC with Transducers"},
-"Norbar TWC with Transducers": { jp: "Norbar TWC トランスデューサ付き", en: "Norbar TWC with Transducers"},
-"All Values Are In ": { jp: "すべての値が入っています", en: "All Values Are In "},
-"Fixed Type Wrenches": { jp: "単能力型トルクレンチ", en: "Fixed Type Wrenches"},
-"Nominal Set Value": { jp: "設定値", en: "Nominal Set Value"},
-"Si No": { jp: "シリアルナンバー", en: "Si No"},
-"Actual Values": { jp: "実測値", en: "Actual Values"},
-"Spec Max(include MU)": { jp: "スペックマックス(MU含む)", en: "Spec Max(include MU)"},
-"Spec Min(include MU)": { jp: "スペック最小(MUを含む)", en: "Spec Min(include MU)"},
-"Adjustable Torque Wrenches": { jp: "調整式トルクレンチ", en: "Adjustable Torque Wrenches"},
-"Measuring Interval": { jp: "測定間隔", en: "Measuring Interval"},
-"Nominal Value": { jp: "公称値", en: "Nominal Value"},
-"Spec (Include MU)": { jp: "スペック（MU含む）", en: "Spec (Include MU)"},
-"Actual Values": { jp: "実際の値", en: "Actual Values"},
-"SI No": { jp: "SI いいえ", en: "SI No"},
-"Values": { jp: "価値観", en: "Values"},
-"Any Other Comments": { jp: "その他のコメント", en: "Any Other Comments"},
-"Condition of Torque Wrench &amp; observations if any:": { jp: "トルクレンチとトルクレンチの状態観察結果がある場合:", en: "Condition of Torque Wrench &amp; observations if any:"},
-"Thread Gauges": { jp: "ねじゲージ", en: "Thread Gauges"},
-"Condition of Thread Gauge": { jp: "ねじゲージの状態", en: "Condition of Thread Gauge"},
-"Thread Plug Gauge: Go": { jp: "ねじプラグゲージ：GO", en: "Thread Plug Gauge: Go"},
-"Thread Plug Gauge: NoGo": { jp: "ねじプラグゲージ: NoGo", en: "Thread Plug Gauge: NoGo"},
-"Effective Diameter Spec.": { jp: "有効径仕様", en: "Effective Diameter Spec."},
-"Max": { jp: "マックス", en: "Max"},
-"Min": { jp: "分", en: "Min"},
-"Wear Limit": { jp: "摩耗限界", en: "Wear Limit"},
-"Actual: Plane1": { jp: "実際: 平面 2", en: "Actual: Plane1"},
-"Actual: Plane2": { jp: "実際: 平面 2", en: "Actual: Plane2"},
-"Actual: Plane3": { jp: "実際: 平面 3", en: "Actual: Plane3"},
-"Thread Ring Gauge: Go": { jp: "スレッドリングゲージ: Go", en: "Thread Ring Gauge: Go"},
-"Thread Ring Gauge: NoGo": { jp: "スレッドリングゲージ: NoGo", en: "Thread Ring Gauge: NoGo"},
-"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial"},
-"Format No": { jp: "フォーマット番号", en: "Format No"},
-"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator"},
-"Specification": { jp: "仕様", en: "Specification"},
-"Direction A": { jp: "方向 あ", en: "Direction A"},
-"Direction B": { jp: "方向 B", en: "Direction B"},
-"Indication Error": { jp: "表示エラー", en: "Indication Error"},
-"Measuring Range": { jp: "測定範囲", en: "Measuring Range"},
-"10 scale Division": { jp: "10スケールディビジョン", en: "10 scale Division"},
-"Repeatability": { jp: "再現性", en: "Repeatability"},
-"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators"},
-"Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :"},
-"Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error"},
-"Vernier Caliper": { jp: "ノギス", en: "Vernier Caliper"},
-"Condition of Vernier Caliper :": { jp: "ノギスの状態：", en: "Condition of Vernier Caliper :"},
-"ExternalJaw": { jp: "外部顎", en: "ExternalJaw"},
-"Parallelism Details :": { jp: "並列処理の詳細:", en: "Parallelism Details :"},
-"InternalJaw": { jp: "内部顎", en: "InternalJaw"},
-"Depth": { jp: "深さ", en: "Depth"},
-"For MUcalculation": { jp: "MU計算用", en: "For MUcalculation"},
-"Description": { jp: "説明", en: "Description"},
-"Department Name": { jp: "部署名", en: "Department Name"},
-"Name": { jp: "名前", en: "Name"},
-"Email": { jp: "Eメール", en: "Email"},
-"Mobile No": { jp: "モバイル番号", en: "Mobile No"},
-"Short Name": { jp: "略称", en: "Short Name"},
-"First Name": { jp: "氏", en: "First Name"},
-"Last Name": { jp: "名", en: "Last Name"},
-"Email Address": { jp: "電子メールアドレス", en: "Email Address"},
-"Mobile Number": { jp: "携帯電話番号", en: "Mobile Number"},
-"ShortID": { jp: "ショートID", en: "ShortID"},
-"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email"},
-"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email"},
-"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email"},
-"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email"},
-"Choose Signature": { jp: "署名を選択", en: "Choose Signature"},
-"Sub Section Code": { jp: "使用部門コード", en: "Sub Section Code"},
-"Instrument Name": { jp: "計量器名称", en: "Instrument Name"},
-"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number"},
-"Range": { jp: "範囲", en: "Range"},
-"Unit": { jp: "単位", en: "Unit"},
-"Least Count": { jp: "最小表示量", en: "Least Count"},
-"Make": { jp: "製造社名", en: "Make"},
-"Grade": { jp: "精度等級", en: "Grade"},
-"Remarks": { jp: "備考", en: "Remarks"},
-"Reference standard/calibration method": { jp: "計量器精度検査要領書", en: "Reference standard/calibration method"},
-"Department Code": { jp: "部門コード", en: "Department Code"},
-"Plant / Location": { jp: "工場・所在地", en: "Plant / Location"},
-"Plant Code": { jp: "工場コード", en: "Plant Code"},
-"Department (EN)": { jp: "部門 (英語)", en: "Department (EN)"},
-"Department (JP)": { jp: "部門（日本", en: "Department (JP)"},
-"Section (EN)": { jp: "セクション (英語)", en: "Section (EN)"},
-"Section (JP)": { jp: "セクション（日本）", en: "Section (JP)"},
-"Sub Section (EN)": { jp: "使用部門（英語)", en: "Sub Section (EN)"},
-"Sub Section (JP)": { jp: "使用部門（日本語）", en: "Sub Section (JP)"},
-"Department Description (EN)": { jp: "部門の説明 (英語)", en: "Department Description (EN)"},
-"Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)"},
-"Certificate of calibration": { jp: "キャリブレーションの証明書", en: "Certificate of calibration"},
-"I. Descriptions of DUC": { jp: "外観・機能", en: "I. Descriptions of DUC"},
-"Report Issues Date": { jp: "発行日を報告します", en: "Report Issues Date"},
-"ULR No": { jp: "ULR　No", en: "ULR No"},
-"Date of Calibration": { jp: "キャリブレーションの日付", en: "Date of Calibration"},
-"Next Calibration Due": { jp: "次のキャリブレーション", en: "Next Calibration Due"},
-"Calibration Due": { jp: "次の校正期限", en: "Calibration Due"},
-"Name of the Customer": { jp: "顧客の名前", en: "Name of the Customer"},
-"Date of Receipt": { jp: "検査・校正完了日", en: "Date of Receipt"},
-"Description of Equipment": { jp: "校正対象品名", en: "Description of Equipment"},
-"Range": { jp: "範囲", en: "Range"},
-"Least Count": { jp: "最小表示量", en: "Least Count"},
-"Serial No": { jp: "シリアル番号", en: "Serial No"},
-" Make": { jp: "製造社名", en: " Make"},
-"Identification Number": { jp: "識別番号", en: "Identification Number"},
-"Condition of DUC": { jp: "外観・機能", en: "Condition of DUC"},
-"Calibration Procedure  /  Reference Standard :": { jp: "計量器精度検査校正手順", en: "Calibration Procedure  /  Reference Standard :"},
-"SI.": { jp: "SI.", en: "SI."},
-"Master Equipment": { jp: "基準器・標準器・検査設備機器　", en: "Master Equipment"},
-"Id No": { jp: "ID番号", en: "Id No"},
-"Make": { jp: "製造社名", en: "Make"},
-"Traceability": { jp: "トレーサビリティ", en: "Traceability"},
-"Validity": { jp: "有効", en: "Validity"},
-"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard"},
-"Environmental Condition:": { jp: "環境条件:", en: "Environmental Condition:"},
-"Uncertainty Of Measurement": { jp: "測定の不確かさ", en: "Uncertainty Of Measurement"},
-"The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2": { jp: "記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 96% の信頼水準で推定されます。", en: "The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2"},
-"Calibrated By": { jp: "校正者", en: "Calibrated By"},
-"Authorized Signatory": { jp: "承認された署名者", en: "Authorized Signatory"},
-"Lab admin": { jp: "ラボ管理者", en: "Lab admin"},
-"Technical Manager": { jp: "技術管理者", en: "Technical Manager"},
-"III. Mechanical Calibration Results": { jp: "Ⅲ．機械的校正結果", en: "III. Mechanical Calibration Results"},
-"Report Issue Date :": { jp: "検査成績発行日 :", en: "Report Issue Date :"},
-"Nominal": { jp: "公称", en: "Nominal"},
-"All Values are in": { jp: "すべての値が入っています", en: "All Values are in"},
-"Trial-1": { jp: "トライアル-1", en: "Trial-1"},
-"Trial-2": { jp: "トライアル-2", en: "Trial-2"},
-"Trial-3": { jp: "トライアル-3", en: "Trial-3"},
-"IV. Result Of Calibration :": { jp: "IV.キャリブレーションの結果:", en: "IV. Result Of Calibration :"},
-"V. Remarks :": { jp: "V. 備考:", en: "V. Remarks :"},
-"***End of Certificate***": { jp: "***証明書の終わり***", en: "***End of Certificate***"},
-"Format No : 365.QM.D.16, Rev No : 02": { jp: "フォーマット番号 : 365.QM.D.16、リビジョン番号 : 03", en: "Format No : 365.QM.D.16, Rev No : 02"},
-"Page 2 of 2": { jp: "2/2 ページ", en: "Page 2 of 2"},
-"Page 1 of 2": { jp: "1/2 ページ", en: "Page 1 of 2"},
-"Daimler India Commercial Vehicles Pvt. Ltd -Central Lab": { jp: "NA", en: "Daimler India Commercial Vehicles Pvt. Ltd -Central Lab"},
-"SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,": { jp: "NA", en: "SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,"},
-"Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.": { jp: "NA", en: "Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India."},
-"Phone: +91 44 4969 4456,": { jp: "NA", en: "Phone: +91 44 4969 4456,"},
-"Website: www.daimler-indiacv.com / .bharatbenz.com": { jp: "NA", en: "Website: www.daimler-indiacv.com / .bharatbenz.com"},
-"Print": { jp: "印刷する", en: "Print"},
-"Export": { jp: "移動", en: "Export"},
-"ReGenerate": { jp: "再生", en: "ReGenerate"},
-"Cancel": { jp: "キャンセル", en: "Cancel"},
-"PrintQR Code": { jp: "QRコードを印刷する", en: "PrintQR Code"},
-"Save": { jp: "保存", en: "Save"},
-"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard"},
-"II. Master & Equipment Used For Calibration & Traceability": { jp: "II.校正とトレーサビリティに使用されるマスターと機器", en: "II. Master & Equipment Used For Calibration & Traceability"},
-"2. The report shoult not be reproduced either in full or in part without out permission in writing.": { jp: "3. レポートの全部または一部を書面による許可なく複製することはできません。", en: "2. The report shoult not be reproduced either in full or in part without out permission in writing."},
-"3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.": { jp: "4. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。。", en: "3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE."},
-"Certificate No": { jp: "証明書の番号", en: "Certificate No"},
-"1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement.": { jp: "2. キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。", en: "1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement."},
-"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability"},
-"Remarks": { jp: "備考", en: "Remarks"},
-"Calibration Procedure / <br> Reference Standard :": { jp: "計量器精度検査校正手順", en: "Calibration Procedure / <br> Reference Standard :"},
-"Format No :": { jp: "形式番号:", en: "Format No :"},
-"External Measurement": { jp: "外部測定", en: "External Measurement"},
-"Deviation": { jp: "偏差", en: "Deviation"},
-"Internal Measurement": { jp: "内部校正", en: "Internal Measurement"},
-"Depth Measurement": { jp: "深さ測定", en: "Depth Measurement"},
-"Parallelism for External Jaws": { jp: "-", en: "Parallelism for External Jaws"},
-"Parallelism for Internal Jaws": { jp: "-", en: "Parallelism for Internal Jaws"},
-"Set Value": { jp: "設定値", en: "Set Value"},
-"Dev from Nom in N-m": { jp: "-", en: "Dev from Nom in N-m"},
-"Dev from Nom in %": { jp: "-", en: "Dev from Nom in %"},
-"Result : NoGo Member": { jp: "-", en: "Result : NoGo Member"},
-"Thread Plug Gauge : Go": { jp: "ねじプラグゲージ : Go", en: "Thread Plug Gauge : Go"},
-"Thread Plug Gauge : NoGo": { jp: "ねじプラグゲージ : NoGo", en: "Thread Plug Gauge : NoGo"},
-"Effective Diameter Max": { jp: "有効径最大値", en: "Effective Diameter Max"},
-"Effective Diameter Min": { jp: "最小有効径", en: "Effective Diameter Min"},
-"Effective Diameter Wear limit": { jp: "有効直径 摩耗限界", en: "Effective Diameter Wear limit"},
-"Department User": { jp: "計量器使用部門", en: "Department User"},
-"LAB Admin": { jp: "計量器管理者", en: "LAB Admin"},
-"Facility Manager": { jp: "施設管理者", en: "Facility Manager"},
-"Technical Manager": { jp: "技術管理者", en: "Technical Manager"},
-"--- Select User Role ---": { jp: "--- ユーザー役割の選択 ---", en: "--- Select User Role ---"},
-"--- Select Level ---": { jp: "--- レベルを選択 ---", en: "--- Select Level ---"},
-"Lab inspector": { jp: "検査員", en: "Lab inspector"},
-"LAB Technical": { jp: "承認者", en: "LAB Technical"},
-"Active": { jp: "アクティブ", en: "Active"},
-"All": { jp: "全て", en: "All"},
-"January": { jp: "1月", en: "January"},
-"February": { jp: "2月", en: "February"},
-"March": { jp: "3月", en: "March"},
-"April": { jp: "4月", en: "April"},
-"May": { jp: "5月", en: "May"},
-"June": { jp: "6月", en: "June"},
-"July": { jp: "7月", en: "July"},
-"August": { jp: "8月", en: "August"},
-"September": { jp: "9月", en: "September"},
-"October": { jp: "10月", en: "October"},
-"November": { jp: "11月", en: "November"},
-"December": { jp: "12月", en: "December"},
-"New": { jp: "新しい", en: "New"},
-"Regular": { jp: "定期検査", en: "Regular"},
-"Recalibration": { jp: "臨時検査", en: "Recalibration"},
-"Materials Lab": { jp: "マテリアルラボ", en: "Materials Lab"},
-"Polymer Lab": { jp: "-", en: "Polymer Lab"},
-"Calibration Lab": { jp: "計量器管理部門", en: "Calibration Lab"},
-"Sub Section Code Not Found...!": { jp: "使用部門コードが見つかりません...!", en: "Sub Section Code Not Found...!"},
-"Sub Section Code": { jp: "使用部門コード", en: "Sub Section Code"},
-"Sub Section Name": { jp: "使用部門名称", en: "Sub Section Name"},
-"Section Name": { jp: "セクション名", en: "Section Name"},
-"Section Code": { jp: "セクションコード", en: "Section Code"},
-"Department Name": { jp: "部署名", en: "Department Name"},
-"Department Code": { jp: "部門コード", en: "Department Code"},
-"Department coordinator ID": { jp: "部門コーディネーターID", en: "Department coordinator ID"},
-"Department coordinator Name": { jp: "部門コーディネーター名", en: "Department coordinator Name"},
-"Department coordinator Email": { jp: "部門コーディネーターのメールアドレス", en: "Department coordinator Email"},
-"Sub Section": { jp: "使用部門", en: "Sub Section"},
-"Department coordinator Contact": { jp: "部門コーディネーター連絡先", en: "Department coordinator Contact"},
-"--Select User Department--": { jp: "--ルールの確認を選択してください--", en: "--Select User Department--"},
-"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number"},
-"Equipment Name (EN)": { jp: "計量器名称（英語）", en: "Equipment Name (EN)"},
-"Equipment Name (JP)": { jp: "計量器名称（日本語）", en: "Equipment Name (JP)"},
-"--Select Drawing Attached--": { jp: "--添付された図面を選択--", en: "--Select Drawing Attached--"},
-"Yes": { jp: "はい", en: "Yes"},
-"No": { jp: "いいえ", en: "No"},
-"--Select Rule Confirmity--": { jp: "--ルールの確認を選択してください--", en: "--Select Rule Confirmity--"},
-"Include MU": { jp: "MUを含む", en: "Include MU"},
-"Exclude MU": { jp: "MUを除", en: "Exclude MU"},
-"--Select Type Of Instrument--": { jp: "計量器の種類", en: "--Select Type Of Instrument--"},
-"Dial": { jp: ">デジタル<", en: "Dial"},
-"Digital": { jp: "デジタル", en: "Digital"},
-"Analog": { jp: "アナログ", en: "Analog"},
-"--Select Is NABL--": { jp: "―", en: "--Select Is NABL--"},
-"--Select Plant Location--": { jp: "--工場所在地の選択--", en: "--Select Plant Location--"},
-"Set Value for Torque Wrench": { jp: "トルクレンチの設定値", en: "Set Value for Torque Wrench"},
-"Grade": { jp: "精度等級", en: "Grade"},
-"Plant / Location": { jp: "工場・所在地", en: "Plant / Location"},
-"Plant Code": { jp: "工場コード", en: "Plant Code"},
-"Department (EN)": { jp: "使用部門（英語)", en: "Department (EN)"},
-"Department (JP)": { jp: "使用部門（日本語）", en: "Department (JP)"},
-"Section (EN)": { jp: "使用部門（英語)", en: "Section (EN)"},
-"Section (JP)": { jp: "使用部門（日本語）", en: "Section (JP)"},
-"Sub Section (EN)": { jp: "使用部門（英語)", en: "Sub Section (EN)"},
-"Sub Section (JP)": { jp: "使用部門（日本語）", en: "Sub Section (JP)"},
-"Department Description (EN)": { jp: "使用部門（英語)", en: "Department Description (EN)"},
-"Department Description (JP)": { jp: "使用部門（日本語）", en: "Department Description (JP)"},
-"Type Of Instrument": { jp: "計量器の種類", en: "Type Of Instrument"},
-"--Select Type Of Instrument--": { jp: "計量器の種類を選択してください", en: "--Select Type Of Instrument--"},
-"Internal Instrument": { jp: "内部計器", en: "Internal Instrument"},
-"External Instrument": { jp: "外部機器", en: "External Instrument"},
-"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory"},
-"--Select Tool Inventory--": { jp: "選択", en: "--Select Tool Inventory--"},
-"Due For Calibration": { jp: "校正期限", en: "Due For Calibration"},
-"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request"},
-"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity"},
-"Amount in JPY": { jp: "日本円", en: "Amount in JPY"},
-"Comment": { jp: "コメント", en: "Comment"},
-"Equipment Station": { jp: "機器ステーション", en: "Equipment Station"},
-"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--"},
-"Inline": { jp: "インライン", en: "Inline"},
-"Lab": { jp: "校正室", en: "Lab"},
-"Scope": { jp: "区分", en: "Scope"},
-"--Select Type Of Scope--": { jp: "校正区分の選択", en: "--Select Type Of Scope--"},
-"Internal Instrument": { jp: "内部校正", en: "Internal Instrument"},
-"External Instrument": { jp: "外部校正", en: "External Instrument"},
-"Type Of Scope": { jp: "校正区分", en: "Type Of Scope"},
-"Type Of Instrument": { jp: "計量器の種類", en: "Type Of Instrument"},
-"--Select Type Of Instrument--": { jp: "--楽器の種類を選択してください--", en: "--Select Type Of Instrument--"},
-"Internal Instrument": { jp: "内部校正", en: "Internal Instrument"},
-"External Instrument": { jp: "外部校正", en: "External Instrument"},
-"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory"},
-"--Select Tool Inventory--": { jp: "工具室在庫の選択", en: "--Select Tool Inventory--"},
-"Due For Calibration": { jp: "校正期限", en: "Due For Calibration"},
-"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request"},
-"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity"},
-"Amount in JPY": { jp: "日本円での金額", en: "Amount in JPY"},
-"Comment": { jp: "コメント", en: "Comment"},
-"Equipment Station": { jp: "機器ステーション", en: "Equipment Station"},
-"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--"},
-"Inline": { jp: "ライン設置", en: "Inline"},
-"Lab": { jp: "検査場", en: "Lab"},
-"Scope": { jp: "区分", en: "Scope"},
-"--Select Type Of Scope--": { jp: "校正区分の選択", en: "--Select Type Of Scope--"},
-"Internal Instrument": { jp: "内部校正", en: "Internal Instrument"},
-"External Instrument": { jp: "外部校正", en: "External Instrument"},
-"Type Of Scope": { jp: "校正区分", en: "Type Of Scope"},
-"Please Select the Replacement-LabId": { jp: "計量器番号を選択してください", en: "Please Select the Replacement-LabId"},
-"Replacement-LabID": { jp: "交換用", en: "Replacement-LabID"},
-"DueDate": { jp: "定期検査年月", en: "DueDate"},
-"Select All": { jp: "すべて選択", en: "Select All"},
-"Tool Room Instruments": { jp: "工具室計量器", en: "Tool Room Instruments"},
-"Close": { jp: "閉じる", en: "Close"},
-"Number Of Equipments": { jp: "本数・個数", en: "Number Of Equipments"},
-"Status": { jp: "状態", en: "Status"},
-"Replacment Due Instruments": { jp: "交換期限のある機器", en: "Replacment Due Instruments"},
-"Please enter the Visual Check": { jp: "目視チェックを入力してください", en: "Please enter the Visual Check"},
-"Please enter the Humidity": { jp: "湿度を入力してください", en: "Please enter the Humidity"},
-"Please enter the Temperature": { jp: "温度を入力してください", en: "Please enter the Temperature"},
-"Please enter the Units": { jp: "単位を入力してください", en: "Please enter the Units"},
-"Home": { jp: "HOME", en: "Home"},
-"Due Instrument Tracker": { jp: "計量器定期検査月検索", en: "Due Instrument Tracker"},
-"Due Instrument List": { jp: "計量器定期検査月リスト", en: "Due Instrument List"},
-"Current Month Due": { jp: "今月分", en: "Current Month Due"},
-"January Due": { jp: "１月分", en: "January Due"},
-"February Due": { jp: "２月分", en: "February Due"},
-"March Due": { jp: "３月分", en: "March Due"},
-"External": { jp: "外部校正", en: "External"},
-"Internal": { jp: "内部校正", en: "Internal"},
-"Equipment Master ID": { jp: "計量器識別番号", en: "Equipment Master ID"},
-"Department User": { jp: "使用部門", en: "Department User"},
-"LAB Admin": { jp: "管理者", en: "LAB Admin"},
-"Lab inspector": { jp: "検査員", en: "Lab inspector"},
-"LAB Technical": { jp: "承認者", en: "LAB Technical"},
-"Tool Inventory": { jp: "工具室", en: "Tool Inventory"},
-"Approve Manager": { jp: "計量管理責任者", en: "Approve Manager"},
-"Plant Location": { jp: "工場区分", en: "Plant Location"},
-"Kawasaki Plant (K1)": { jp: "川崎工場", en: "Kawasaki Plant (K1)"},
-"Nakatsu Factory": { jp: "中津工場", en: "Nakatsu Factory"},
-"Kitsuregawa Institute": { jp: "喜連川研究所", en: "Kitsuregawa Institute"},
-"Higashi Ogishima": { jp: "東扇島", en: "Higashi Ogishima"},
-"ToolRoom Instrument List": { jp: "工具室在庫リスト", en: "ToolRoom Instrument List"},
-"Due Instrument Tracker": { jp: "次回定期検査検索", en: "Due Instrument Tracker"},
-"Due Tracker": { jp: "次回検索", en: "Due Tracker"},
-"SubSectionCode": { jp: "使用部門コード", en: "SubSectionCode"},
-"Tool Room Instruments List": { jp: "工具室在庫リスト", en: "Tool Room Instruments List"},
-"Standard Refered/Calibration Method": { jp: "標準参照/校正方法", en: "Standard Refered/Calibration Method"},
-"External Accept Reason": { jp: "外部校正　承認", en: "External Accept Reason"},
-"External Reject Reason": { jp: "外部校正　非承認", en: "External Reject Reason"},
-"Mitsubishi Fuso Truck and Bus Corporation": { jp: "三菱ふそうトラック・バス株式会社", en: "Mitsubishi Fuso Truck and Bus Corporation"},
-"Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522": { jp: "〒211-8522　神奈川県川崎市中原区大倉町10", en: "Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522"},
-"CERTIFICATE OF VERIFICATION": { jp: "検査成績書", en: "CERTIFICATE OF VERIFICATION"},
-"I. Description of device under verification (DUC)": { jp: "検査対象計量器", en: "I. Description of device under verification (DUC)"},
-"Certificate No.": { jp: "証明書番号", en: "Certificate No."},
-"Report issue date": { jp: "成績書発行日", en: "Report issue date"},
-"Next Calibrtaion due": { jp: "次回定期検査年月", en: "Next Calibrtaion due"},
-"Date of receipt": { jp: "検査日", en: "Date of receipt"},
-"Name of Dept.": { jp: "使用部門名称", en: "Name of Dept."},
-"Date of receipt": { jp: "検査日", en: "Date of receipt"},
-"Sub section code": { jp: "使用部門コード", en: "Sub section code"},
-"Description of equipment": { jp: "計量器名称", en: "Description of equipment"},
-"Identification No.": { jp: "計量器識別番号", en: "Identification No."},
-"Condition of DUV": { jp: "計量器状態", en: "Condition of DUV"},
-"Calibration procedure/Reference standard": { jp: "校正方法・参照標準器など", en: "Calibration procedure/Reference standard"},
-"II. Master & Equipment used": { jp: "II. 使用した参照標準器など", en: "II. Master & Equipment used"},
-"Refer external calibartion report": { jp: "外部校正成績に記載", en: "Refer external calibartion report"},
-"III. Calibration Results": { jp: "III. 校正結果", en: "III. Calibration Results"},
-"All values are in": { jp: "値が規格を満足している", en: "All values are in"},
-"External report result status": { jp: "社外検査報告結果", en: "External report result status"},
-"Refer the external calibartion report for more details": { jp: "詳細は、外部校正成績を参照願います。", en: "Refer the external calibartion report for more details"},
-"OK": { jp: "合格", en: "OK"},
-"Not OK": { jp: "不合格", en: "Not OK"},
-"Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate": { jp: "注: 適合性の宣言は、要求者によって合意された決定規則および外部証明書に基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate"},
-"1. The calibration results based on external certificate result": { jp: "1. 外部証明書の結果に基づく校正結果", en: "1. The calibration results based on external certificate result"},
-"2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "2. 次回の校正期限は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument."},
-"CERTIFICATE OF CALIBRATION": { jp: "校正証明書", en: "CERTIFICATE OF CALIBRATION"},
-"Note: Statement of conformity is given based on decision rule agreed by requestor": { jp: "注: 適合性の宣言は、要求者が合意した決定ルールに基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor"},
-"1. The calibration results are valid at the time of and under the stated condition of measurement.": { jp: "1. 校正結果は、測定時および指定された測定条件下で有効です。", en: "1. The calibration results are valid at the time of and under the stated condition of measurement."},
-"2. The report should not be reproduced either in full or in part without permission in writing.": { jp: "2. 報告書の全部または一部を書面による許可なく転載することはできません。", en: "2. The report should not be reproduced either in full or in part without permission in writing."},
-"3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "3. 次回の校正期日は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument."},
-"Environmental condition": { jp: "環境条件", en: "Environmental condition"},
-"SubSection Code": { jp: "使用部門コード", en: "SubSection Code"}
+					"Master": { jp: "基準器・標準器・検査設備機器", en: "Master" },
+					"Instruments": { jp: "計量器", en: "Instruments" },
+					"Signout": { jp: "サインアウト", en: "Signout" },
+					"Request": { jp: "依頼", en: "Request" },
+					"More info ": { jp: "計量器情報", en: "More info " },
+					"Dashboard": { jp: "選択画面", en: "Dashboard" },
+					"Department": { jp: "部門", en: "Department" },
+					"Department List": { jp: "部門一覧", en: "Department List" },
+					"New Department": { jp: "新しい部門", en: "New Department" },
+					"User": { jp: "計量器使用者", en: "User" },
+					"User List": { jp: "計量器使用者一覧", en: "User List" },
+					"New User": { jp: "新規計量器使用者", en: "New User" },
+					"Contact": { jp: "連絡先", en: "Contact" },
+					"Contact List": { jp: "連絡先リスト", en: "Contact List" },
+					"New Contact": { jp: "新しい連絡先", en: "New Contact" },
+					"Master List": { jp: "基準器・標準器・検査設備機器リスト", en: "Master List" },
+					"New Master": { jp: "新規　基準器・標準器・検査設備機器", en: "New Master" },
+					"Master Quarantine": { jp: "未使用基準器・標準器・検査設備機器", en: "Master Quarantine" },
+					"Instruments List": { jp: "計量器一覧表", en: "Instruments List" },
+					"New Instrument": { jp: "新しい計量器", en: "New Instrument" },
+					"Qurataine Instrument": { jp: "未使用計量器（遊休・廃却など）", en: "Qurataine Instrument" },
+					"Tracker": { jp: "検索", en: "Tracker" },
+					"External Request": { jp: "外部測定", en: "External Request" },
+					"Request Tracker": { jp: "依頼検索", en: "Request Tracker" },
+					"Customer Feedback": { jp: "顧客からの声", en: "Customer Feedback" },
+					"Feedback Invite": { jp: "計量器主任者", en: "Feedback Invite" },
+					"Feedback Form": { jp: "フィードバックフォーム", en: "Feedback Form" },
+					"Submitted List": { jp: "提出済みリスト", en: "Submitted List" },
+					"Reviewed List": { jp: "レビュー済みリスト", en: "Reviewed List" },
+					"Quality Check": { jp: "品質チェック", en: "Quality Check" },
+					"Intermediate Template": { jp: "中間テンプレート", en: "Intermediate Template" },
+					"Alternative Template": { jp: "代替テンプレート", en: "Alternative Template" },
+					"Replicate Test": { jp: "テストを繰り返す", en: "Replicate Test" },
+					"Re-Test": { jp: "再テスト", en: "Re-Test" },
+					"Chart": { jp: "チャート", en: "Chart" },
+					"Instrument Report": { jp: "計量器レポート", en: "Instrument Report" },
+					"Calibration Lab - KPI": { jp: " KPI", en: "Calibration Lab - KPI" },
+					"Add New Master": { jp: "新しいの基準器・標準器・検査設備機器追加", en: "Add New Master" },
+					"Quarantine List": { jp: "未使用リスト", en: "Quarantine List" },
+					"Serial Number": { jp: "シリアルナンバー", en: "Serial Number" },
+					"Lab ID Number": { jp: "品名社番", en: "Lab ID Number" },
+					"Calibration Frequency": { jp: "校正周期", en: "Calibration Frequency" },
+					"Calibration Date": { jp: "校正日", en: "Calibration Date" },
+					"Due Date": { jp: "次回定期検査年月", en: "Due Date" },
+					"Edit": { jp: "編集", en: "Edit" },
+					"External Calibration Request": { jp: "外部校正リクエスト", en: "External Calibration Request" },
+					"Quarantine": { jp: "未使用", en: "Quarantine" },
+					"History": { jp: "履歴", en: "History" },
+					"Instrument Name": { jp: "計量器名称", en: "Instrument Name" },
+					"Range": { jp: "能力", en: "Range" },
+					"Department Name": { jp: "所属部門", en: "Department Name" },
+					"Department Desc": { jp: "部門の説明", en: "Department Desc" },
+					"Created Date": { jp: "作成日", en: "Created Date" },
+					"Department Description": { jp: "部門の説明", en: "Department Description" },
+					"Submit": { jp: "送信", en: "Submit" },
+					"First Name": { jp: "名前", en: "First Name" },
+					"Last Name": { jp: "苗字", en: "Last Name" },
+					"Email": { jp: "Eメール", en: "Email" },
+					"Phone No": { jp: "電話番号", en: "Phone No" },
+					"Login Name": { jp: "ログイン名", en: "Login Name" },
+					"CreatedDate": { jp: "作成日", en: "CreatedDate" },
+					"L3 Contact": { jp: "L3コンタクト", en: "L3 Contact" },
+					"L4 Contact": { jp: "L4コンタクト", en: "L4 Contact" },
+					"L5 Contact": { jp: "L5 コンタクト", en: "L5 Contact" },
+					"L6 Contact": { jp: "L6コンタクト", en: "L6 Contact" },
+					"Delete": { jp: "消去", en: "Delete" },
+					"User Creation": { jp: "ユーザーの作成", en: "User Creation" },
+					"User Name": { jp: "ユーザー名", en: "User Name" },
+					"Role": { jp: "管理者", en: "Role" },
+					"Email Id": { jp: "電子メールID", en: "Email Id" },
+					"Mobile No": { jp: "モバイル番号", en: "Mobile No" },
+					"Designation": { jp: "役職", en: "Designation" },
+					"Level": { jp: "レベル", en: "Level" },
+					"Level 3 ShortID": { jp: "レベル 3 ショート ID", en: "Level 3 ShortID" },
+					"Level 3 Name": { jp: "レベル 3 の名前", en: "Level 3 Name" },
+					"Level 3 Email": { jp: "レベル 3 メール", en: "Level 3 Email" },
+					"Level 4 ShortID": { jp: "レベル 4 ショート ID", en: "Level 4 ShortID" },
+					"Level 4 Name": { jp: "レベル 4 の名前", en: "Level 4 Name" },
+					"Level 4 Email": { jp: "レベル 4 メール", en: "Level 4 Email" },
+					"Level 5 ShortID": { jp: "レベル 5 ショート ID", en: "Level 5 ShortID" },
+					"Level 5 Name": { jp: "レベル 5 の名前", en: "Level 5 Name" },
+					"Level 5 Email": { jp: "レベル 5 メール", en: "Level 5 Email" },
+					"Level 6 ShortID": { jp: "レベル 6 ショート ID", en: "Level 6 ShortID" },
+					"Level 6 Name": { jp: "レベル 6 の名前", en: "Level 6 Name" },
+					"Level 6 Email": { jp: "レベル 6 メール", en: "Level 6 Email" },
+					"Choose Signature": { jp: "サインアウトの選択", en: "Choose Signature" },
+					"Signature Image": { jp: "サイン画像", en: "Signature Image" },
+					"Profile Update": { jp: "プロフィールの更新", en: "Profile Update" },
+					"Password": { jp: "パスワード", en: "Password" },
+					"UserCreate": { jp: "ユーザー作成", en: "UserCreate" },
+					"UserId": { jp: "ユーザーID", en: "UserId" },
+					"UserName": { jp: "ユーザー名", en: "UserName" },
+					"Email address": { jp: "電子メールアドレス", en: "Email address" },
+					"RetypePassword": { jp: "パスワードを再入力してください", en: "RetypePassword" },
+					"GroupCreate": { jp: "グループ作成", en: "GroupCreate" },
+					"GroupName": { jp: "グループ名", en: "GroupName" },
+					"EnterPerson": { jp: "人を入力", en: "EnterPerson" },
+					"EntryDate": { jp: "申し込み日", en: "EntryDate" },
+					"CreateGroup": { jp: "グループを作る", en: "CreateGroup" },
+					"Name": { jp: "名前", en: "Name" },
+					"Contact Creation": { jp: "連絡先の作成", en: "Contact Creation" },
+					"Mobile Number": { jp: "携帯電話番号", en: "Mobile Number" },
+					"Master Quarantine List": { jp: "基準器・標準器・検査設備機器（未使用リスト）", en: "Master Quarantine List" },
+					"Serial No": { jp: "シリアル番号", en: "Serial No" },
+					"Lab ID No": { jp: "計量器番号", en: "Lab ID No" },
+					"Calibration Frequency": { jp: "校正周期", en: "Calibration Frequency" },
+					"Calibration Date": { jp: "校正日", en: "Calibration Date" },
+					"Due Date": { jp: "次回定期検査年月", en: "Due Date" },
+					"Quarantine Date": { jp: "未使用発生日", en: "Quarantine Date" },
+					"Quarantine Reason": { jp: "未使用理由", en: "Quarantine Reason" },
+					"Activate": { jp: "アクティべート", en: "Activate" },
+					"New Master": { jp: "新規　基準器・標準器・検査設備機器", en: "New Master" },
+					"Equipment Name": { jp: "計量器名称", en: "Equipment Name" },
+					"Location": { jp: "使用場所", en: "Location" },
+					"P.O.Number": { jp: "―", en: "P.O.Number" },
+					"P.O.Date": { jp: "発注日", en: "P.O.Date" },
+					"Commissioned On": { jp: "初回登録日", en: "Commissioned On" },
+					"Make": { jp: "製造社名", en: "Make" },
+					"Cost": { jp: "購入金額", en: "Cost" },
+					"Calibration Source": { jp: "校正方法", en: "Calibration Source" },
+					"details 2": { jp: "詳細 3", en: "details 2" },
+					"Supplier/Agency": { jp: "外部先", en: "Supplier/Agency" },
+					"Lab ID": { jp: "計量器番号", en: "Lab ID" },
+					"Certificate Number": { jp: "証明書番号", en: "Certificate Number" },
+					"Traceability": { jp: "トレーサビリティ", en: "Traceability" },
+					"Upload Image": { jp: "画像をアップロード", en: "Upload Image" },
+					"Supplier Information": { jp: "外部先情報", en: "Supplier Information" },
+					"Phone Number": { jp: "電話番号", en: "Phone Number" },
+					"Master History - Breakdown List": { jp: "基準器・標準器・検査設備機器の履歴", en: "Master History - Breakdown List" },
+					"Date": { jp: "実施日", en: "Date" },
+					"Category": { jp: "カテゴリー", en: "Category" },
+					"Description": { jp: "説明", en: "Description" },
+					"Actions Taken / Calibration Results": { jp: "実行されたアクション/キャリブレーション結果", en: "Actions Taken / Calibration Results" },
+					"From": { jp: "From", en: "From" },
+					"To": { jp: "TO", en: "To" },
+					"Date of Completion": { jp: "完成日", en: "Date of Completion" },
+					"Breakdown Hrs/Days": { jp: "内訳時間/日", en: "Breakdown Hrs/Days" },
+					"Status": { jp: "状態", en: "Status" },
+					"Maintenance / Supplier Representative": { jp: "整備・仕入先代表", en: "Maintenance / Supplier Representative" },
+					"Updated By": { jp: "更新者", en: "Updated By" },
+					"Master History Creation": { jp: "基準器・標準器・検査設備機器の履歴作成", en: "Master History Creation" },
+					"From Date": { jp: "開始日", en: "From Date" },
+					"To Date": { jp: "現在まで", en: "To Date" },
+					"Instrument Details": { jp: "計量器の詳細", en: "Instrument Details" },
+					"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number" },
+					"Unit": { jp: "単位", en: "Unit" },
+					"Least Count": { jp: "最小数", en: "Least Count" },
+					"Set Value for TW": { jp: "トルクレンチ設定値", en: "Set Value for TW" },
+					"User Department": { jp: "使用部門", en: "User Department" },
+					"Ref Standard/Calibration Method": { jp: "参照標準/校正方法", en: "Ref Standard/Calibration Method" },
+					"Type of Instrument": { jp: "計量器の種類", en: "Type of Instrument" },
+					"Drawing is attached": { jp: "図面が添付されています", en: "Drawing is attached" },
+					"Decision rule for statement of Confirmity": { jp: "判定基準", en: "Decision rule for statement of Confirmity" },
+					"Remarks": { jp: "備考", en: "Remarks" },
+					"If yes provision for standard/drawing attachment": { jp: "はいの場合、標準/図面添付の規定", en: "If yes provision for standard/drawing attachment" },
+					"Calibration Details": { jp: "校正の詳細", en: "Calibration Details" },
+					"Master Instrument Name": { jp: "基準器・標準器・検査設備機器", en: "Master Instrument Name" },
+					"Instrument Id Number": { jp: "計量器ＩＤ番号", en: "Instrument Id Number" },
+					"Standard Reffered": { jp: "標準参照", en: "Standard Reffered" },
+					"Date Of Receipt": { jp: "検査・校正完了日", en: "Date Of Receipt" },
+					"Calibration Status": { jp: "校正ステータス", en: "Calibration Status" },
+					"Is NABL": { jp: "NABLです", en: "Is NABL" },
+					"Observation Template": { jp: "検査フォーム", en: "Observation Template" },
+					"Observation Type": { jp: "記入フォーム", en: "Observation Type" },
+					"MU Template": { jp: "MU テンプレート", en: "MU Template" },
+					"Certification Template": { jp: "証明書テンプレート", en: "Certification Template" },
+					"Quaratine Instruments List": { jp: "未使用計測器一覧", en: "Quaratine Instruments List" },
+					"Instrument SNo": { jp: "計量器のシリアル番号", en: "Instrument SNo" },
+					"Instrument ID No": { jp: "計量器ＩＤ番号", en: "Instrument ID No" },
+					"Calibration Freq": { jp: "校正周期", en: "Calibration Freq" },
+					"Quarantine On": { jp: "未使用　", en: "Quarantine On" },
+					"Instrument Status": { jp: "計量器の状態", en: "Instrument Status" },
+					"Template Name": { jp: "テンプレート名", en: "Template Name" },
+					"Tracker List": { jp: "検索リスト", en: "Tracker List" },
+					"Request No": { jp: "依頼番号", en: "Request No" },
+					"Request Date": { jp: "依頼日", en: "Request Date" },
+					"Master Name": { jp: "基準器・標準器・検査設備機器　名称", en: "Master Name" },
+					"Master Serial": { jp: "基準器・標準器・検査設備機器シリアル", en: "Master Serial" },
+					"View": { jp: "詳細", en: "View" },
+					"Request Number": { jp: "要求番号", en: "Request Number" },
+					"Requested Date": { jp: "依頼日", en: "Requested Date" },
+					"Master Serial Number": { jp: "基準器・標準器・検査設備機器シリアル番号", en: "Master Serial Number" },
+					"Master Id Number": { jp: "基準器・標準器・検査設備機器ID番号", en: "Master Id Number" },
+					"Accept": { jp: "受入", en: "Accept" },
+					"Reject": { jp: "却下", en: "Reject" },
+					"Rejection Reason": { jp: "却下理由", en: "Rejection Reason" },
+					"Submitted On": { jp: "提出日", en: "Submitted On" },
+					"Rejected On": { jp: "拒否日", en: "Rejected On" },
+					"Rejected Reason": { jp: "却下理由", en: "Rejected Reason" },
+					"Record By": { jp: "記録者", en: "Record By" },
+					"ClosedDate": { jp: "終了日", en: "ClosedDate" },
+					"Result": { jp: "結果", en: "Result" },
+					"Return Date": { jp: "返却日", en: "Return Date" },
+					"Verified By": { jp: "検査員", en: "Verified By" },
+					"LABResult": { jp: "検査結果", en: "LABResult" },
+					"External Request Details": { jp: "外部測定の詳細", en: "External Request Details" },
+					"OverAll": { jp: "全体", en: "OverAll" },
+					"New Request": { jp: "新しい依頼", en: "New Request" },
+					"Regular Request": { jp: "通常の依頼", en: "Regular Request" },
+					"ReCalibration Request": { jp: "臨時検査の依頼", en: "ReCalibration Request" },
+					"Request Type": { jp: "依頼の種類", en: "Request Type" },
+					"Test": { jp: "テスト", en: "Test" },
+					"Certificate": { jp: "証明書", en: "Certificate" },
+					"Instrument Id": { jp: "計量器ＩＤ", en: "Instrument Id" },
+					"Reason for Rejection": { jp: "却下理由", en: "Reason for Rejection" },
+					"Feasible to Service": { jp: "検査可能", en: "Feasible to Service" },
+					"Instument Returned On": { jp: "返却日", en: "Instument Returned On" },
+					"If Feasible service, Yes": { jp: "実現可能なサービスの場合、はい", en: "If Feasible service, Yes" },
+					"Service Responsibility": { jp: "サービス責任", en: "Service Responsibility" },
+					"Collected By": { jp: "検査員", en: "Collected By" },
+					"Closed Date": { jp: "終了日", en: "Closed Date" },
+					"Instrument Condition": { jp: "計量器の状態", en: "Instrument Condition" },
+					"Feasiblity": { jp: "実現可能性", en: "Feasiblity" },
+					"Standard Reffered/Calibration Method": { jp: "標準参照/校正方法", en: "Standard Reffered/Calibration Method" },
+					"NABL": { jp: "NABL", en: "NABL" },
+					"Tentative Closing Date": { jp: "仮締め日", en: "Tentative Closing Date" },
+					"Type Of Request": { jp: "依頼の内容", en: "Type Of Request" },
+					"Request By": { jp: "依頼者", en: "Request By" },
+					"Request Details": { jp: "依頼の詳細", en: "Request Details" },
+					"Received Date": { jp: "受付日", en: "Received Date" },
+					"Received By": { jp: "受信者", en: "Received By" },
+					"Reference Standard/Calibration Method": { jp: "計量器精度検査方法", en: "Reference Standard/Calibration Method" },
+					"Observation Template Type": { jp: "検査フォームタイプ", en: "Observation Template Type" },
+					"Certification Tmeplate": { jp: "証明書フォーム", en: "Certification Tmeplate" },
+					"Feedback User List": { jp: "フィードバック ユーザー リスト", en: "Feedback User List" },
+					"Laboratory": { jp: "ラボ", en: "Laboratory" },
+					"Submit List": { jp: "提出リスト", en: "Submit List" },
+					"Short Id": { jp: "ショートID", en: "Short Id" },
+					"Feedback Status": { jp: "フィードバックステータス", en: "Feedback Status" },
+					"Reviewed List": { jp: "レビューリスト", en: "Reviewed List" },
+					"You dont have access for the Feedback Form!!!": { jp: "フィードバック フォームにアクセスできません!!!", en: "You dont have access for the Feedback Form!!!" },
+					"Invite Date": { jp: "登録日", en: "Invite Date" },
+					"Feedback User List": { jp: "フィードバック ユーザー リスト", en: "Feedback User List" },
+					"Intermediate Data List": { jp: "データ一覧", en: "Intermediate Data List" },
+					"Master Equipment": { jp: "基準器・標準器・検査設備機器　", en: "Master Equipment" },
+					"Accuracy Equipment Name": { jp: "精度機器名", en: "Accuracy Equipment Name" },
+					"Study Performed by": { jp: "検査実施者", en: "Study Performed by" },
+					"Study Performed Date": { jp: "検査実施日", en: "Study Performed Date" },
+					"Document Status": { jp: "ドキュメントステータス", en: "Document Status" },
+					"Alternative Calibration List": { jp: "代替校正リスト", en: "Alternative Calibration List" },
+					"Equipment1 Name": { jp: "機器1名", en: "Equipment1 Name" },
+					"Equipment2 Name": { jp: "機器2名", en: "Equipment2 Name" },
+					"Mux1": { jp: "Mux1", en: "Mux1" },
+					"Mux2": { jp: "Mux2", en: "Mux2" },
+					"EnValue": { jp: "エンバリュー", en: "EnValue" },
+					"Replicate Test": { jp: "再検査", en: "Replicate Test" },
+					"Range or Size": { jp: "能力　または、サイズ", en: "Range or Size" },
+					"LC": { jp: "最小値", en: "LC" },
+					"Evaluated By": { jp: "評価者", en: "Evaluated By" },
+					"Instrument Type": { jp: "計量器の種類", en: "Instrument Type" },
+					"Generate Chart": { jp: "グラフ作成", en: "Generate Chart" },
+					"Year": { jp: "年", en: "Year" },
+					"Month": { jp: "火", en: "Month" },
+					"Target%": { jp: "目標％", en: "Target%" },
+					"Observation Sheet": { jp: "フォーム", en: "Observation Sheet" },
+					"General": { jp: "全般的", en: "General" },
+					"Observation Sheet<br> General": { jp: "フォーム<br> 一般", en: "Observation Sheet<br> General" },
+					"Format No.": { jp: "フォーマット番号", en: "Format No." },
+					"Rev No &  Date": { jp: "リビジョン番号と日付", en: "Rev No &  Date" },
+					"Serial No.": { jp: "シリアル番号。", en: "Serial No." },
+					"ID No.": { jp: "ID番号。", en: "ID No." },
+					"Ref Std": { jp: "参照基準", en: "Ref Std" },
+					"Humidity %RH": { jp: "湿度 %RH", en: "Humidity %RH" },
+					"Condition of the Instrument": { jp: "計量器の状態", en: "Condition of the Instrument" },
+					"Ref WI: ": { jp: "参照WI:", en: "Ref WI: " },
+					"All Values Are In": { jp: "すべての値が入っています", en: "All Values Are In" },
+					"Add New Row": { jp: "新しい行を追加", en: "Add New Row" },
+					"Measured": { jp: "測定", en: "Measured" },
+					"Trial-1": { jp: "試行-1", en: "Trial-1" },
+					"Trial-2": { jp: "試行-2", en: "Trial-2" },
+					"Trial-3": { jp: "試行-3", en: "Trial-3" },
+					"Nominal": { jp: "公称", en: "Nominal" },
+					"Average": { jp: "平均", en: "Average" },
+					"Calibration Performed By": { jp: "キャリブレーション実施者", en: "Calibration Performed By" },
+					"Reviewed By": { jp: "レビュー者", en: "Reviewed By" },
+					"Date:": { jp: "日付", en: "Date:" },
+					"Cancel": { jp: "キャンセル", en: "Cancel" },
+					"Submit Review": { jp: "レビュー送信", en: "Submit Review" },
+					"Temp@Start ": { jp: "温度@開始", en: "Temp@Start " },
+					"Temp@End ": { jp: "温度@終了", en: "Temp@End " },
+					"Approve": { jp: "承認", en: "Approve" },
+					"Type / Model": { jp: "種類・型式", en: "Type / Model" },
+					"Range/LC:": { jp: "範囲最小値", en: "Range/LC:" },
+					"Make:": { jp: "製造社名", en: "Make:" },
+					"ID No:": { jp: "ID番号", en: "ID No:" },
+					"Ref Std.": { jp: "参照基準", en: "Ref Std." },
+					"CALIBRATION RESULTS ": { jp: "校正結果", en: "CALIBRATION RESULTS " },
+					"SL.No": { jp: "シリアルナンバー", en: "SL.No" },
+					"NOMINALANGLE": { jp: "公称角度", en: "NOMINALANGLE" },
+					"ERRORinDMS": { jp: "DMS のエラー", en: "ERRORinDMS" },
+					"Quadrant-1": { jp: "象限-1", en: "Quadrant-1" },
+					"Quadrant-2": { jp: "象限-2", en: "Quadrant-2" },
+					"Quadrant-3": { jp: "象限-3", en: "Quadrant-3" },
+					"Quadrant-4": { jp: "象限-4", en: "Quadrant-4" },
+					"All Values are in mm ": { jp: "すべての値は mm 単位です", en: "All Values are in mm " },
+					"Spec": { jp: "仕様", en: "Spec" },
+					"Actual": { jp: "実際", en: "Actual" },
+					"DevFromNom": { jp: "DevFromNom", en: "DevFromNom" },
+					"Straightness of Working Edge": { jp: "切刃の真直度", en: "Straightness of Working Edge" },
+					"Parallelism of Working Edge": { jp: "刃先の平行度", en: "Parallelism of Working Edge" },
+					"Flatness of Blade": { jp: "刃の平面度", en: "Flatness of Blade" },
+					"Calibration Performed By": { jp: "キャリブレーション検査員", en: "Calibration Performed By" },
+					"Reveiwed By": { jp: "によってレビュー", en: "Reveiwed By" },
+					"ID No": { jp: "ID番号", en: "ID No" },
+					"Condition of the Dial Indicator ": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator " },
+					"Sl No.": { jp: "シリアルNo", en: "Sl No." },
+					"Parameter": { jp: "パラメータ", en: "Parameter" },
+					"DirectionA": { jp: "方向", en: "DirectionA" },
+					"DirectionB": { jp: "方向B", en: "DirectionB" },
+					"Indicator Error": { jp: "インジケータエラー", en: "Indicator Error" },
+					"Measuring Range": { jp: "測定範囲", en: "Measuring Range" },
+					"10 Scale Division": { jp: "10スケール部門", en: "10 Scale Division" },
+					"Hysteresis": { jp: "ヒステリシス", en: "Hysteresis" },
+					"Repeatability": { jp: "再現性", en: "Repeatability" },
+					"Linear Accuracy": { jp: "線形精度", en: "Linear Accuracy" },
+					"Avg.": { jp: "平均", en: "Avg." },
+					"MU": { jp: "ー", en: "MU" },
+					"Trail1": { jp: "トレイル1", en: "Trail1" },
+					"Trail2": { jp: "トレイル2", en: "Trail2" },
+					"Trail3": { jp: "トレイル3", en: "Trail3" },
+					"Interval": { jp: "間隔", en: "Interval" },
+					"Flatness Spec": { jp: "平面度仕様", en: "Flatness Spec" },
+					"Flatness1": { jp: "平面度1", en: "Flatness1" },
+					"Flatness2": { jp: "平面度2", en: "Flatness2" },
+					"Parallelism Spec:": { jp: "並列処理仕様:", en: "Parallelism Spec:" },
+					"Actual :": { jp: "実際 ：", en: "Actual :" },
+					"Condition of the Dial Indicator & observations if any : ": { jp: "ダイヤル インジケータの状態と所見 (ある場合) :", en: "Condition of the Dial Indicator & observations if any : " },
+					"Mechanical Plunger Dial Indicator": { jp: "メカニカル プランジャ ダイヤル インジケータ", en: "Mechanical Plunger Dial Indicator" },
+					"SI No.": { jp: "シリアルNo", en: "SI No." },
+					"Whole Measuring Range": { jp: "全測定範囲", en: "Whole Measuring Range" },
+					"½ Revolution": { jp: "½回転", en: "½ Revolution" },
+					"1 Revolution": { jp: "1回転", en: "1 Revolution" },
+					"Narrow range adjacent error": { jp: "狭範囲隣接誤差", en: "Narrow range adjacent error" },
+					"Retrace Error": { jp: "リトレースエラー", en: "Retrace Error" },
+					"Digital Plunger Dial Indicator": { jp: "デジタルプランジャダイヤルインジケータ", en: "Digital Plunger Dial Indicator" },
+					"± 1 count": { jp: "±1カウント", en: "± 1 count" },
+					"1 count = 1 least count": { jp: "1 カウント = 1 最小カウント", en: "1 count = 1 least count" },
+					"1 count": { jp: "1カウント", en: "1 count" },
+					"Accuracy Overall": { jp: "精度全体", en: "Accuracy Overall" },
+					" ± 3 counts": { jp: "±3カウント", en: " ± 3 counts" },
+					"Accuracy Micro calibration": { jp: "精度 マイクロキャリブレーション", en: "Accuracy Micro calibration" },
+					"SI.No": { jp: "シリアルNo", en: "SI.No" },
+					"Daimler": { jp: "ダイムラー", en: "Daimler" },
+					"Rev.No & Date": { jp: "Rev.No & Date", en: "Rev.No & Date" },
+					"Designation:": { jp: "指定：", en: "Designation:" },
+					"Section/Dept": { jp: "課・部", en: "Section/Dept" },
+					"Laboratory Name": { jp: "研究室名", en: "Laboratory Name" },
+					"Rating scale": { jp: "評価尺度", en: "Rating scale" },
+					"Rating (Please ✓ the appropriate box)": { jp: "評価 (該当するボックスに✓してください)", en: "Rating (Please ✓ the appropriate box)" },
+					"Score": { jp: "スコア", en: "Score" },
+					"10": { jp: "十", en: "10" },
+					"9": { jp: "九", en: "9" },
+					"8": { jp: "八", en: "8" },
+					"7": { jp: "七", en: "7" },
+					"Excellent": { jp: "素晴らしい", en: "Excellent" },
+					"Good": { jp: "良い", en: "Good" },
+					"Satisfactory": { jp: "満足", en: "Satisfactory" },
+					"Poor": { jp: "貧しい", en: "Poor" },
+					"Evaluation Criteria": { jp: "評価基準", en: "Evaluation Criteria" },
+					"Rating": { jp: "評価", en: "Rating" },
+					"Quality": { jp: "品質", en: "Quality" },
+					"Quality of Services offered (Test / Calibration)": { jp: "提供されるサービスの品質 (テスト / 校正)", en: "Quality of Services offered (Test / Calibration)" },
+					"Reliability of test / calibration results": { jp: "試験・校正結果の信頼性", en: "Reliability of test / calibration results" },
+					"Personnel competency": { jp: "人事能力", en: "Personnel competency" },
+					"Technical capability & support": { jp: "技術力とサポート", en: "Technical capability & support" },
+					"Test / Calibration report accuracy": { jp: "テスト/校正レポートの精度", en: "Test / Calibration report accuracy" },
+					"Safeguarding of customer data / drawing": { jp: "顧客データ/図面の保護", en: "Safeguarding of customer data / drawing" },
+					"Delivery": { jp: "配達", en: "Delivery" },
+					"On-time delivery of test / calibration reports": { jp: "テスト/校正レポートの納期厳守", en: "On-time delivery of test / calibration reports" },
+					"Response to customer request / complaint": { jp: "お客様のご要望・苦情への対応", en: "Response to customer request / complaint" },
+					"Complaint resolution": { jp: "苦情の解決", en: "Complaint resolution" },
+					"Emergency support": { jp: "緊急サポート", en: "Emergency support" },
+					"Handling of Test / calibration items": { jp: "試験・校正項目の取り扱い", en: "Handling of Test / calibration items" },
+					"Commitment": { jp: "献身", en: "Commitment" },
+					"Management": { jp: "管理", en: "Management" },
+					"Communication & accessibility": { jp: "コミュニケーションとアクセシビリティ", en: "Communication & accessibility" },
+					"Documentation & Reporting system": { jp: "文書化および報告システム", en: "Documentation & Reporting system" },
+					"Facilities and Environment conditions": { jp: "施設・環境条件", en: "Facilities and Environment conditions" },
+					"5S management": { jp: "5S管理", en: "5S management" },
+					"Impartiality & confidentiality": { jp: "公平性と機密保持", en: "Impartiality & confidentiality" },
+					"Overall score obtained": { jp: "獲得した総合スコア", en: "Overall score obtained" },
+					"Overall percentage (%)": { jp: "全体の割合 (%)", en: "Overall percentage (%)" },
+					"Comments / Suggestions if any :": { jp: "コメント/提案があれば:", en: "Comments / Suggestions if any :" },
+					"Customer Name": { jp: "顧客名", en: "Customer Name" },
+					"Laboratory Use": { jp: "検査室での使用", en: "Laboratory Use" },
+					"Reviewed By: ": { jp: "によってレビューされた：", en: "Reviewed By: " },
+					"Action Required": { jp: "必要なアクション", en: "Action Required" },
+					"Yes": { jp: "はい", en: "Yes" },
+					"No": { jp: "いいえ", en: "No" },
+					"Proposed Actions": { jp: "提案された行動", en: "Proposed Actions" },
+					"Target Date": { jp: "予定期限", en: "Target Date" },
+					"Responsibility": { jp: "責任", en: "Responsibility" },
+					"File Attachment": { jp: "添付ファイル", en: "File Attachment" },
+					"Review": { jp: "レビュー", en: "Review" },
+					"New Request Creation": { jp: "新しいリクエストの作成", en: "New Request Creation" },
+					"Commisionned On:": { jp: "委託先:", en: "Commisionned On:" },
+					"Request List": { jp: "依頼一覧", en: "Request List" },
+					"SerialNo": { jp: "シリアル番号", en: "SerialNo" },
+					"Group Name": { jp: "グループ名", en: "Group Name" },
+					"No of requests received": { jp: "受け取ったリクエストの数", en: "No of requests received" },
+					"Completed on same day": { jp: "即日完了", en: "Completed on same day" },
+					"Within 1 day": { jp: "1日以内", en: "Within 1 day" },
+					"Within 2 days": { jp: "2日以内", en: "Within 2 days" },
+					"Within 3 days": { jp: "3日以内", en: "Within 3 days" },
+					"More than 3 days": { jp: "3日以上", en: "More than 3 days" },
+					"KPI% Calculation(Within 2 days)": { jp: "KPI%計算(3日以内)", en: "KPI% Calculation(Within 2 days)" },
+					"Add New User": { jp: "新しいユーザーを追加", en: "Add New User" },
+					"Add New Contact": { jp: "新しい連絡先を追加", en: "Add New Contact" },
+					"Add New Instrument": { jp: "新しい計量器を追加", en: "Add New Instrument" },
+					"Quratine List": { jp: "未使用リスト", en: "Quratine List" },
+					"Instrument List": { jp: "計量器リスト", en: "Instrument List" },
+					"Please enter Department Name": { jp: "部署名を入力してください", en: "Please enter Department Name" },
+					"Please provide Department Description": { jp: "部門の説明を入力してください", en: "Please provide Department Description" },
+					"Please enter a email address or short name": { jp: "メールアドレスまたは短い名前を入力してください", en: "Please enter a email address or short name" },
+					"Please provide a password": { jp: "パスワードを入力してください", en: "Please provide a password" },
+					"Please enter your name": { jp: "お名前を入力してください", en: "Please enter your name" },
+					"Please enter your department name": { jp: "部署名を入力してください", en: "Please enter your department name" },
+					"Please provide your email address": { jp: "メールアドレスを入力してください", en: "Please provide your email address" },
+					"Please provide your phone number": { jp: "電話番号を入力してください", en: "Please provide your phone number" },
+					"Please enter Instrument Name": { jp: "楽器名を入力してください", en: "Please enter Instrument Name" },
+					"Please enter the Serial Number": { jp: "シリアル番号を入力してください", en: "Please enter the Serial Number" },
+					"Please enter Range": { jp: "範囲を入力してください", en: "Please enter Range" },
+					"Please enter Unit": { jp: "単位を入力してください", en: "Please enter Unit" },
+					"Please enter the user department": { jp: "ユーザー部門を入力してください", en: "Please enter the user department" },
+					"Please fill this field": { jp: "このフィールドに入力してください", en: "Please fill this field" },
+					"Please enter the Status": { jp: "ステータスを入力してください", en: "Please enter the Status" },
+					"Please provide the Calibration Source": { jp: "校正ソースを提供してください", en: "Please provide the Calibration Source" },
+					"Please provide the Calibration Frequency": { jp: "校正頻度を入力してください", en: "Please provide the Calibration Frequency" },
+					"Please enter Equipment Name": { jp: "計量器名称を入力してください", en: "Please enter Equipment Name" },
+					"Please enter the location": { jp: "場所を入力してください", en: "Please enter the location" },
+					"Please provide the P.O. Number": { jp: "P.O.を入力してください。番号", en: "Please provide the P.O. Number" },
+					"Please provide the date": { jp: "日付を入力してください", en: "Please provide the date" },
+					"Please provide the amount": { jp: "金額を教えてください", en: "Please provide the amount" },
+					"Please provide the supplier or agency": { jp: "サプライヤーまたは代理店を入力してください", en: "Please provide the supplier or agency" },
+					"Please provide lab Id": { jp: "ラボ ID を入力してください", en: "Please provide lab Id" },
+					"Please provide supplier name": { jp: "サプライヤー名を入力してください", en: "Please provide supplier name" },
+					"Please provide supplier phone number": { jp: "サプライヤーの電話番号を入力してください", en: "Please provide supplier phone number" },
+					"Please provide supplier Email address": { jp: "サプライヤーの電子メールアドレスを入力してください", en: "Please provide supplier Email address" },
+					"Please enter your first name": { jp: "お名前を入力してください", en: "Please enter your first name" },
+					"Please enter your last name": { jp: "あなたの姓を入力", en: "Please enter your last name" },
+					"Please provide user role": { jp: "ユーザーの役割を入力してください", en: "Please provide user role" },
+					"Please provide the Email address": { jp: "メールアドレスを入力してください", en: "Please provide the Email address" },
+					"Please provide the mobile number": { jp: "携帯番号を教えてください", en: "Please provide the mobile number" },
+					"Please provide the department name": { jp: "部署名を教えてください", en: "Please provide the department name" },
+					"Short Name": { jp: "略称", en: "Short Name" },
+					"Email Address": { jp: "電子メールアドレス", en: "Email Address" },
+					"ShortID": { jp: "ショートID", en: "ShortID" },
+					"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email" },
+					"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email" },
+					"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email" },
+					"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email" },
+					"Enter Reason for Quarantine": { jp: "未使用理由を入力してください", en: "Enter Reason for Quarantine" },
+					"Email Sended Succesfully": { jp: "メールが正常に送信されました", en: "Email Sended Succesfully" },
+					"Please Check your Email": { jp: "メールを確認してください", en: "Please Check your Email" },
+					"Email Address Not Present.": { jp: "メールアドレスがありません。", en: "Email Address Not Present." },
+					"Password Updated Successfully.": { jp: "パスワードが正常に更新されました。", en: "Password Updated Successfully." },
+					"Invite Feedback Id": { jp: "フィードバックの招待 ID", en: "Invite Feedback Id" },
+					"Please choose appropriate Laboratory": { jp: "適切なを選択してください", en: "Please choose appropriate Laboratory" },
+					"Please give rating for Quality of Service!": { jp: "サービスの質を評価してください!", en: "Please give rating for Quality of Service!" },
+					"Please give rating for Reliability of Test!": { jp: "テストの信頼性を評価してください!", en: "Please give rating for Reliability of Test!" },
+					"Please give rating for Personnel Competency!": { jp: "人事能力の評価をお願いします!", en: "Please give rating for Personnel Competency!" },
+					"Please give rating for Technical Capability!": { jp: "技術力の評価をお願いします!", en: "Please give rating for Technical Capability!" },
+					"Please give rating for Test Calibration!": { jp: "テストキャリブレーションの評価をお願いします!", en: "Please give rating for Test Calibration!" },
+					"Please give rating for Response To Customer!": { jp: "Response To Customer の評価をお願いします!", en: "Please give rating for Response To Customer!" },
+					"Please give rating for Complaint Resolution!": { jp: "苦情解決の評価をお願いします!", en: "Please give rating for Complaint Resolution!" },
+					"File Size Should Not Exceed More Than 5MB": { jp: "ファイル サイズは 6 MB を超えてはなりません", en: "File Size Should Not Exceed More Than 5MB" },
+					"Sucessfully Submited...": { jp: "正常に送信されました...", en: "Sucessfully Submited..." },
+					"Invalid User, Please give Level Access or Create a new User and provide Level Access for this user.": { jp: "無効なユーザーです。レベル アクセス権を付与するか、新しいユーザーを作成して、このユーザーにレベル アクセス権を付与してください。", en: "Invalid User, Please give Level Access or Create a new User and provide Level Access for this user." },
+					"User Deleted Successfully": { jp: "ユーザーが正常に削除されました", en: "User Deleted Successfully" },
+					"User Assigned succesfully": { jp: "ユーザーが正常に割り当てられました", en: "User Assigned succesfully" },
+					"Deleting User and Assigning are same please Change verify it": { jp: "ユーザーの削除と割り当ては同じです変更を確認してください", en: "Deleting User and Assigning are same please Change verify it" },
+					"User Not Deleted Successfully": { jp: "ユーザーが正常に削除されませんでした", en: "User Not Deleted Successfully" },
+					"Please check uploaded files are Invalid!": { jp: "アップロードされたファイルが無効であることを確認してください!", en: "Please check uploaded files are Invalid!" },
+					"Home": { jp: "HOME", en: "Home" },
+					"Add New Intermediate Data": { jp: "新しい中間データを追加", en: "Add New Intermediate Data" },
+					"Add New Calibration": { jp: "新しいキャリブレーションを追加", en: "Add New Calibration" },
+					"Add New": { jp: "新しく追加する", en: "Add New" },
+					"SendInvite": { jp: "送る", en: "SendInvite" },
+					"Session Expired! Please login to continue your work.": { jp: "セッションの有効期限が切れ！ログインして作業を続けてください。", en: "Session Expired! Please login to continue your work." },
+					"Please fill the reason for Quarantine": { jp: "未使用理由を記入してください", en: "Please fill the reason for Quarantine" },
+					"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list" },
+					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。  管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"Your visual check details recorded.": { jp: "目視チェックの詳細が記録されました。", en: "Your visual check details recorded." },
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again." },
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again." },
+					"Enter Reason for Quarantine": { jp: "未使用理由を入力してください", en: "Enter Reason for Quarantine" },
+					"Master moved to quarantine list": { jp: "マスターは未使用リストに移動しました", en: "Master moved to quarantine list" },
+					"Master Activated Successfully": { jp: "マスターが正常にアクティブ化されました", en: "Master Activated Successfully" },
+					"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list" },
+					"Instrument Unquarantine successfully": { jp: "未使用の解除しました", en: "Instrument Unquarantine successfully" },
+					"Please choose either Accept / Reject and try again.": { jp: "承認/拒否のいずれかを選択して、もう一度やり直してください。", en: "Please choose either Accept / Reject and try again." },
+					"Please enter reason for rejection and try again.": { jp: "拒否の理由を入力して、もう一度お試しください。", en: "Please enter reason for rejection and try again." },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully" },
+					"Maximum 4 Equipment Allowed": { jp: "最大5つの装備が許可されています", en: "Maximum 4 Equipment Allowed" },
+					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully" },
+					"Please enter the Calibration Result!!!": { jp: "校正結果を入力してください!!!", en: "Please enter the Calibration Result!!!" },
+					"You will save Certificate and Generate QR Code with Pdf file!": { jp: "証明書を保存し、PDF ファイルで QR コードを生成します。", en: "You will save Certificate and Generate QR Code with Pdf file!" },
+					"Are you want Generate QR Code with Pdf file?": { jp: "PDFファイルでQRコードを生成しますか?", en: "Are you want Generate QR Code with Pdf file?" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"Your details recorded.": { jp: "あなたの詳細が記録されました。", en: "Your details recorded." },
+					"Warning": { jp: "警告", en: "Warning" },
+					"Error": { jp: "エラー", en: "Error" },
+					"Please Select Observation Templates, Observation Template Type, MU Template, Certification Template Values...!": { jp: "観察テンプレート、観察テンプレート タイプ、MU テンプレート、証明書テンプレート値を選択してください...!", en: "Please Select Observation Templates, Observation Template Type, MU Template, Certification Template Values...!" },
+					"Success": { jp: "成功", en: "Success" },
+					"Failure": { jp: "失敗", en: "Failure" },
+					"Invalid Password": { jp: "無効なパスワード", en: "Invalid Password" },
+					"Invalid UserName": { jp: "無効なユーザー名", en: "Invalid UserName" },
+					"No records found": { jp: "レコードが見つかりません", en: "No records found" },
+					"Already user(s) has invited..!": { jp: "すでにユーザーが招待しています..!", en: "Already user(s) has invited..!" },
+					"Successfully sent invite...": { jp: "招待状を送信しました...", en: "Successfully sent invite..." },
+					"2021 - Calibration Management - ": { jp: "2021 - 校正管理 -", en: "2021 - Calibration Management - " },
+					"Privacy": { jp: "プライバシー", en: "Privacy" },
+					"Version": { jp: "バージョン", en: "Version" },
+					"Version": { jp: "バージョン", en: "Version" },
+					"Showing": { jp: "表示中", en: "Showing" },
+					"to": { jp: "To", en: "to" },
+					"of": { jp: "of", en: "of" },
+					"entries": { jp: "エントリ", en: "entries" },
+					"Previous": { jp: "前", en: "Previous" },
+					"First": { jp: "最初", en: "First" },
+					"Last": { jp: "最後", en: "Last" },
+					"Next": { jp: "次", en: "Next" },
+					"Show": { jp: "見せる", en: "Show" },
+					"No data available in table": { jp: "テーブルにデータがありません", en: "No data available in table" },
+					"Search:": { jp: "検索：", en: "Search:" },
+					"No matching records found": { jp: "該当する記録が見つかりません", en: "No matching records found" },
+					"filtered from": { jp: "からフィルタリング", en: "filtered from" },
+					"total entries": { jp: "総エントリー数", en: "total entries" },
+					"Please fill the reason for Quarantine": { jp: "未使用理由を記入してください", en: "Please fill the reason for Quarantine" },
+					"Success": { jp: "成功", en: "Success" },
+					"OK": { jp: "OK", en: "OK" },
+					"Master moved to quarantine list": { jp: "マスターは未使用リストに移動しました", en: "Master moved to quarantine list" },
+					"Master Activated Successfully": { jp: "マスターが正常にアクティブになりました。", en: "Master Activated Successfully" },
+					"Instrument moved to quarantine list": { jp: "計測器は未使用リストに移動しました", en: "Instrument moved to quarantine list" },
+					"Instrument Unquarantine successfully": { jp: "未使用の解除しました", en: "Instrument Unquarantine successfully" },
+					"You are accepted the request. LAB admin get notified!": { jp: "リクエストを受け付けます。 LAB 管理者に通知を受け取ります。", en: "You are accepted the request. LAB admin get notified!" },
+					"You are rejected the request. LAB admin get notified!": { jp: "リクエストを拒否されました。 LAB 管理者に通知を受け取ります。", en: "You are rejected the request. LAB admin get notified!" },
+					"You are accepted the request. Department User get notified!": { jp: "リクエストを受け付けます。部門ユーザーに通知が届きます!", en: "You are accepted the request. Department User get notified!" },
+					"Your visual check details recorded": { jp: "目視チェックの詳細が記録されました", en: "Your visual check details recorded" },
+					"Data Saved Successfully": { jp: "データは正常に保存されました", en: "Data Saved Successfully" },
+					"Master Equipment Added Successfully": { jp: "マスター装備が正常に追加されました", en: "Master Equipment Added Successfully" },
+					"Certificate Updated Successfully": { jp: "証明書が正常に更新されました", en: "Certificate Updated Successfully" },
+					"Your details recorded": { jp: "あなたの詳細が記録されました", en: "Your details recorded" },
+					"Equipment Name Japanese": { jp: "計量器名称　日本語", en: "Equipment Name Japanese" },
+					"Instrument Id Number": { jp: "サブ部門", en: "Instrument Id Number" },
+					"Sub Department": { jp: "計量器ＩＤ", en: "Sub Department" },
+					"Asst.Foreman ShortID": { jp: "―", en: "Asst.Foreman ShortID" },
+					"Asst.Foreman Name": { jp: "―", en: "Asst.Foreman Name" },
+					"Asst.Foreman Email": { jp: "―", en: "Asst.Foreman Email" },
+					"Foreman ShortID": { jp: "―", en: "Foreman ShortID" },
+					"Foreman Name": { jp: "―", en: "Foreman Name" },
+					"Foreman Email": { jp: "―", en: "Foreman Email" },
+					"Kakaricho ShortID": { jp: "係長のショートID", en: "Kakaricho ShortID" },
+					"Kakaricho Name": { jp: "係長名", en: "Kakaricho Name" },
+					"Kakaricho Email": { jp: "係長名メールアドレス先", en: "Kakaricho Email" },
+					"Manager ShortID": { jp: "マネージャーのショートID", en: "Manager ShortID" },
+					"Manager Name": { jp: "マネージャー名", en: "Manager Name" },
+					"Manager Email": { jp: "マネージャーのメールアドレス", en: "Manager Email" },
+					"Asst.Foreman Contact": { jp: "―", en: "Asst.Foreman Contact" },
+					"Foreman Contact": { jp: "―", en: "Foreman Contact" },
+					"Kakaricho Contact": { jp: "係長連絡先", en: "Kakaricho Contact" },
+					"Manager Contact": { jp: "マネージャーの連絡先", en: "Manager Contact" },
+					"Micrometer": { jp: "マイクロメータ", en: "Micrometer" },
+					"Range/LC": { jp: "範囲最小値", en: "Range/LC" },
+					"Actuals": { jp: "実績", en: "Actuals" },
+					"Save": { jp: "保存", en: "Save" },
+					"Torque Wrenches": { jp: "トルクレンチ", en: "Torque Wrenches" },
+					"Type / Model": { jp: "種類・型式", en: "Type / Model" },
+					"Condition of Torque Wrench & observations if any:": { jp: "トルクレンチの状態と観察結果 (ある場合):", en: "Condition of Torque Wrench & observations if any:" },
+					"WI no :  ": { jp: "WI いいえ:", en: "WI no :  " },
+					"Master used :": { jp: "マスター使用:", en: "Master used :" },
+					"AWS TWC with Transducers": { jp: "AWS TWC とトランスデューサー", en: "AWS TWC with Transducers" },
+					"Norbar TWC with Transducers": { jp: "Norbar TWC トランスデューサ付き", en: "Norbar TWC with Transducers" },
+					"All Values Are In ": { jp: "すべての値が入っています", en: "All Values Are In " },
+					"Fixed Type Wrenches": { jp: "単能力型トルクレンチ", en: "Fixed Type Wrenches" },
+					"Nominal Set Value": { jp: "設定値", en: "Nominal Set Value" },
+					"Si No": { jp: "シリアルナンバー", en: "Si No" },
+					"Actual Values": { jp: "実測値", en: "Actual Values" },
+					"Spec Max(include MU)": { jp: "スペックマックス(MU含む)", en: "Spec Max(include MU)" },
+					"Spec Min(include MU)": { jp: "スペック最小(MUを含む)", en: "Spec Min(include MU)" },
+					"Adjustable Torque Wrenches": { jp: "調整式トルクレンチ", en: "Adjustable Torque Wrenches" },
+					"Measuring Interval": { jp: "測定間隔", en: "Measuring Interval" },
+					"Nominal Value": { jp: "公称値", en: "Nominal Value" },
+					"Spec (Include MU)": { jp: "スペック（MU含む）", en: "Spec (Include MU)" },
+					"Actual Values": { jp: "実際の値", en: "Actual Values" },
+					"SI No": { jp: "SI いいえ", en: "SI No" },
+					"Values": { jp: "価値観", en: "Values" },
+					"Any Other Comments": { jp: "その他のコメント", en: "Any Other Comments" },
+					"Condition of Torque Wrench &amp; observations if any:": { jp: "トルクレンチとトルクレンチの状態観察結果がある場合:", en: "Condition of Torque Wrench &amp; observations if any:" },
+					"Thread Gauges": { jp: "ねじゲージ", en: "Thread Gauges" },
+					"Condition of Thread Gauge": { jp: "ねじゲージの状態", en: "Condition of Thread Gauge" },
+					"Thread Plug Gauge: Go": { jp: "ねじプラグゲージ：GO", en: "Thread Plug Gauge: Go" },
+					"Thread Plug Gauge: NoGo": { jp: "ねじプラグゲージ: NoGo", en: "Thread Plug Gauge: NoGo" },
+					"Effective Diameter Spec.": { jp: "有効径仕様", en: "Effective Diameter Spec." },
+					"Max": { jp: "マックス", en: "Max" },
+					"Min": { jp: "分", en: "Min" },
+					"Wear Limit": { jp: "摩耗限界", en: "Wear Limit" },
+					"Actual: Plane1": { jp: "実際: 平面 2", en: "Actual: Plane1" },
+					"Actual: Plane2": { jp: "実際: 平面 2", en: "Actual: Plane2" },
+					"Actual: Plane3": { jp: "実際: 平面 3", en: "Actual: Plane3" },
+					"Thread Ring Gauge: Go": { jp: "スレッドリングゲージ: Go", en: "Thread Ring Gauge: Go" },
+					"Thread Ring Gauge: NoGo": { jp: "スレッドリングゲージ: NoGo", en: "Thread Ring Gauge: NoGo" },
+					"Lever Type Dial": { jp: "レバー式ダイヤル", en: "Lever Type Dial" },
+					"Format No": { jp: "フォーマット番号", en: "Format No" },
+					"Condition of the Dial Indicator": { jp: "ダイヤルインジケーターの状態", en: "Condition of the Dial Indicator" },
+					"Specification": { jp: "仕様", en: "Specification" },
+					"Direction A": { jp: "方向 あ", en: "Direction A" },
+					"Direction B": { jp: "方向 B", en: "Direction B" },
+					"Indication Error": { jp: "表示エラー", en: "Indication Error" },
+					"Measuring Range": { jp: "測定範囲", en: "Measuring Range" },
+					"10 scale Division": { jp: "10スケールディビジョン", en: "10 scale Division" },
+					"Repeatability": { jp: "再現性", en: "Repeatability" },
+					"Dial Indicators": { jp: "ダイヤルインジケーター", en: "Dial Indicators" },
+					"Condition of the Dial Indicator &amp; observations if any :": { jp: "ダイヤルインジケーターとダイヤルの状態観察結果がある場合:", en: "Condition of the Dial Indicator &amp; observations if any :" },
+					"Repeatability Error": { jp: "再現性誤差", en: "Repeatability Error" },
+					"Vernier Caliper": { jp: "ノギス", en: "Vernier Caliper" },
+					"Condition of Vernier Caliper :": { jp: "ノギスの状態：", en: "Condition of Vernier Caliper :" },
+					"ExternalJaw": { jp: "外部顎", en: "ExternalJaw" },
+					"Parallelism Details :": { jp: "並列処理の詳細:", en: "Parallelism Details :" },
+					"InternalJaw": { jp: "内部顎", en: "InternalJaw" },
+					"Depth": { jp: "深さ", en: "Depth" },
+					"For MUcalculation": { jp: "MU計算用", en: "For MUcalculation" },
+					"Description": { jp: "説明", en: "Description" },
+					"Department Name": { jp: "部署名", en: "Department Name" },
+					"Name": { jp: "名前", en: "Name" },
+					"Email": { jp: "Eメール", en: "Email" },
+					"Mobile No": { jp: "モバイル番号", en: "Mobile No" },
+					"Short Name": { jp: "略称", en: "Short Name" },
+					"First Name": { jp: "氏", en: "First Name" },
+					"Last Name": { jp: "名", en: "Last Name" },
+					"Email Address": { jp: "電子メールアドレス", en: "Email Address" },
+					"Mobile Number": { jp: "携帯電話番号", en: "Mobile Number" },
+					"ShortID": { jp: "ショートID", en: "ShortID" },
+					"L3 Manager Email": { jp: "L3 マネージャーの電子メール", en: "L3 Manager Email" },
+					"L4 Manager Email": { jp: "L4 マネージャーの電子メール", en: "L4 Manager Email" },
+					"L5 Manager Email": { jp: "L5 マネージャーの電子メール", en: "L5 Manager Email" },
+					"L6 Manager Email": { jp: "L6 マネージャーの電子メール", en: "L6 Manager Email" },
+					"Choose Signature": { jp: "署名を選択", en: "Choose Signature" },
+					"Sub Section Code": { jp: "使用部門コード", en: "Sub Section Code" },
+					"Instrument Name": { jp: "計量器名称", en: "Instrument Name" },
+					"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number" },
+					"Range": { jp: "範囲", en: "Range" },
+					"Unit": { jp: "単位", en: "Unit" },
+					"Least Count": { jp: "最小表示量", en: "Least Count" },
+					"Make": { jp: "製造社名", en: "Make" },
+					"Grade": { jp: "精度等級", en: "Grade" },
+					"Remarks": { jp: "備考", en: "Remarks" },
+					"Reference standard/calibration method": { jp: "計量器精度検査要領書", en: "Reference standard/calibration method" },
+					"Department Code": { jp: "部門コード", en: "Department Code" },
+					"Plant / Location": { jp: "工場・所在地", en: "Plant / Location" },
+					"Plant Code": { jp: "工場コード", en: "Plant Code" },
+					"Department (EN)": { jp: "部門 (英語)", en: "Department (EN)" },
+					"Department (JP)": { jp: "部門（日本", en: "Department (JP)" },
+					"Section (EN)": { jp: "セクション (英語)", en: "Section (EN)" },
+					"Section (JP)": { jp: "セクション（日本）", en: "Section (JP)" },
+					"Sub Section (EN)": { jp: "使用部門（英語)", en: "Sub Section (EN)" },
+					"Sub Section (JP)": { jp: "使用部門（日本語）", en: "Sub Section (JP)" },
+					"Department Description (EN)": { jp: "部門の説明 (英語)", en: "Department Description (EN)" },
+					"Department Description (JP)": { jp: "部門の説明 (日本語)", en: "Department Description (JP)" },
+					"Certificate of calibration": { jp: "キャリブレーションの証明書", en: "Certificate of calibration" },
+					"I. Descriptions of DUC": { jp: "外観・機能", en: "I. Descriptions of DUC" },
+					"Report Issues Date": { jp: "発行日を報告します", en: "Report Issues Date" },
+					"ULR No": { jp: "ULR　No", en: "ULR No" },
+					"Date of Calibration": { jp: "キャリブレーションの日付", en: "Date of Calibration" },
+					"Next Calibration Due": { jp: "次のキャリブレーション", en: "Next Calibration Due" },
+					"Calibration Due": { jp: "次の校正期限", en: "Calibration Due" },
+					"Name of the Customer": { jp: "顧客の名前", en: "Name of the Customer" },
+					"Date of Receipt": { jp: "検査・校正完了日", en: "Date of Receipt" },
+					"Description of Equipment": { jp: "校正対象品名", en: "Description of Equipment" },
+					"Range": { jp: "範囲", en: "Range" },
+					"Least Count": { jp: "最小表示量", en: "Least Count" },
+					"Serial No": { jp: "シリアル番号", en: "Serial No" },
+					" Make": { jp: "製造社名", en: " Make" },
+					"Identification Number": { jp: "識別番号", en: "Identification Number" },
+					"Condition of DUC": { jp: "外観・機能", en: "Condition of DUC" },
+					"Calibration Procedure  /  Reference Standard :": { jp: "計量器精度検査校正手順", en: "Calibration Procedure  /  Reference Standard :" },
+					"SI.": { jp: "SI.", en: "SI." },
+					"Master Equipment": { jp: "基準器・標準器・検査設備機器　", en: "Master Equipment" },
+					"Id No": { jp: "ID番号", en: "Id No" },
+					"Make": { jp: "製造社名", en: "Make" },
+					"Traceability": { jp: "トレーサビリティ", en: "Traceability" },
+					"Validity": { jp: "有効", en: "Validity" },
+					"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard" },
+					"Environmental Condition:": { jp: "環境条件:", en: "Environmental Condition:" },
+					"Uncertainty Of Measurement": { jp: "測定の不確かさ", en: "Uncertainty Of Measurement" },
+					"The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2": { jp: "記載されている拡張不確実性は、カバレッジ係数 k = 2 で約 96% の信頼水準で推定されます。", en: "The stated Expanded uncertainty is estimatd at a confidence level approximately 95% with a coverage factor k = 2" },
+					"Calibrated By": { jp: "校正者", en: "Calibrated By" },
+					"Authorized Signatory": { jp: "承認された署名者", en: "Authorized Signatory" },
+					"Lab admin": { jp: "ラボ管理者", en: "Lab admin" },
+					"Technical Manager": { jp: "技術管理者", en: "Technical Manager" },
+					"III. Mechanical Calibration Results": { jp: "Ⅲ．機械的校正結果", en: "III. Mechanical Calibration Results" },
+					"Report Issue Date :": { jp: "検査成績発行日 :", en: "Report Issue Date :" },
+					"Nominal": { jp: "公称", en: "Nominal" },
+					"All Values are in": { jp: "すべての値が入っています", en: "All Values are in" },
+					"Trial-1": { jp: "トライアル-1", en: "Trial-1" },
+					"Trial-2": { jp: "トライアル-2", en: "Trial-2" },
+					"Trial-3": { jp: "トライアル-3", en: "Trial-3" },
+					"IV. Result Of Calibration :": { jp: "IV.キャリブレーションの結果:", en: "IV. Result Of Calibration :" },
+					"V. Remarks :": { jp: "V. 備考:", en: "V. Remarks :" },
+					"***End of Certificate***": { jp: "***証明書の終わり***", en: "***End of Certificate***" },
+					"Format No : 365.QM.D.16, Rev No : 02": { jp: "フォーマット番号 : 365.QM.D.16、リビジョン番号 : 03", en: "Format No : 365.QM.D.16, Rev No : 02" },
+					"Page 2 of 2": { jp: "2/2 ページ", en: "Page 2 of 2" },
+					"Page 1 of 2": { jp: "1/2 ページ", en: "Page 1 of 2" },
+					"Daimler India Commercial Vehicles Pvt. Ltd -Central Lab": { jp: "NA", en: "Daimler India Commercial Vehicles Pvt. Ltd -Central Lab" },
+					"SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road,": { jp: "NA", en: "SIPCOT Insdustrial Estate, Oragadam Village,Singaperumal Koil Road," },
+					"Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India.": { jp: "NA", en: "Mathur(PO), Sriperumbadur Taluk, Kanchipuram -602105, Tamil Nadu, India." },
+					"Phone: +91 44 4969 4456,": { jp: "NA", en: "Phone: +91 44 4969 4456," },
+					"Website: www.daimler-indiacv.com / .bharatbenz.com": { jp: "NA", en: "Website: www.daimler-indiacv.com / .bharatbenz.com" },
+					"Print": { jp: "印刷する", en: "Print" },
+					"Export": { jp: "移動", en: "Export" },
+					"ReGenerate": { jp: "再生", en: "ReGenerate" },
+					"Cancel": { jp: "キャンセル", en: "Cancel" },
+					"PrintQR Code": { jp: "QRコードを印刷する", en: "PrintQR Code" },
+					"Save": { jp: "保存", en: "Save" },
+					"The master Equipment used for calibration are calibrated and traceable to National / International Standard": { jp: "校正に使用されるマスター機器は校正されており、国家/国際標準にトレーサブルです。", en: "The master Equipment used for calibration are calibrated and traceable to National / International Standard" },
+					"II. Master & Equipment Used For Calibration & Traceability": { jp: "II.校正とトレーサビリティに使用されるマスターと機器", en: "II. Master & Equipment Used For Calibration & Traceability" },
+					"2. The report shoult not be reproduced either in full or in part without out permission in writing.": { jp: "3. レポートの全部または一部を書面による許可なく複製することはできません。", en: "2. The report shoult not be reproduced either in full or in part without out permission in writing." },
+					"3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE.": { jp: "4. 次回の校正期日は、IMTE のステータスや状態に関係なく、お客様のご要望に応じてこの証明書に記載されます。。", en: "3. Next calibration due date given in this cetificate as per customer request irrespective of the status or condition of the IMTE." },
+					"Certificate No": { jp: "証明書の番号", en: "Certificate No" },
+					"1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement.": { jp: "2. キャリブレーション結果は、次の時点で有効です。記載された測定条件下で。", en: "1. The Calibration results are valid at the time of &amp; under the stated conditions of measurement." },
+					"II. Master &amp; Equipment Used For Calibration &amp; Traceability": { jp: "II.マスター＆校正および校正に使用される機器トレーサビリティ", en: "II. Master &amp; Equipment Used For Calibration &amp; Traceability" },
+					"Remarks": { jp: "備考", en: "Remarks" },
+					"Calibration Procedure / <br> Reference Standard :": { jp: "計量器精度検査校正手順", en: "Calibration Procedure / <br> Reference Standard :" },
+					"Format No :": { jp: "形式番号:", en: "Format No :" },
+					"External Measurement": { jp: "外部測定", en: "External Measurement" },
+					"Deviation": { jp: "偏差", en: "Deviation" },
+					"Internal Measurement": { jp: "内部校正", en: "Internal Measurement" },
+					"Depth Measurement": { jp: "深さ測定", en: "Depth Measurement" },
+					"Parallelism for External Jaws": { jp: "-", en: "Parallelism for External Jaws" },
+					"Parallelism for Internal Jaws": { jp: "-", en: "Parallelism for Internal Jaws" },
+					"Set Value": { jp: "設定値", en: "Set Value" },
+					"Dev from Nom in N-m": { jp: "-", en: "Dev from Nom in N-m" },
+					"Dev from Nom in %": { jp: "-", en: "Dev from Nom in %" },
+					"Result : NoGo Member": { jp: "-", en: "Result : NoGo Member" },
+					"Thread Plug Gauge : Go": { jp: "ねじプラグゲージ : Go", en: "Thread Plug Gauge : Go" },
+					"Thread Plug Gauge : NoGo": { jp: "ねじプラグゲージ : NoGo", en: "Thread Plug Gauge : NoGo" },
+					"Effective Diameter Max": { jp: "有効径最大値", en: "Effective Diameter Max" },
+					"Effective Diameter Min": { jp: "最小有効径", en: "Effective Diameter Min" },
+					"Effective Diameter Wear limit": { jp: "有効直径 摩耗限界", en: "Effective Diameter Wear limit" },
+					"Department User": { jp: "計量器使用部門", en: "Department User" },
+					"LAB Admin": { jp: "計量器管理者", en: "LAB Admin" },
+					"Facility Manager": { jp: "施設管理者", en: "Facility Manager" },
+					"Technical Manager": { jp: "技術管理者", en: "Technical Manager" },
+					"--- Select User Role ---": { jp: "--- ユーザー役割の選択 ---", en: "--- Select User Role ---" },
+					"--- Select Level ---": { jp: "--- レベルを選択 ---", en: "--- Select Level ---" },
+					"Lab inspector": { jp: "検査員", en: "Lab inspector" },
+					"LAB Technical": { jp: "承認者", en: "LAB Technical" },
+					"Active": { jp: "アクティブ", en: "Active" },
+					"All": { jp: "全て", en: "All" },
+					"January": { jp: "1月", en: "January" },
+					"February": { jp: "2月", en: "February" },
+					"March": { jp: "3月", en: "March" },
+					"April": { jp: "4月", en: "April" },
+					"May": { jp: "5月", en: "May" },
+					"June": { jp: "6月", en: "June" },
+					"July": { jp: "7月", en: "July" },
+					"August": { jp: "8月", en: "August" },
+					"September": { jp: "9月", en: "September" },
+					"October": { jp: "10月", en: "October" },
+					"November": { jp: "11月", en: "November" },
+					"December": { jp: "12月", en: "December" },
+					"New": { jp: "新しい", en: "New" },
+					"Regular": { jp: "定期検査", en: "Regular" },
+					"Recalibration": { jp: "臨時検査", en: "Recalibration" },
+					"Materials Lab": { jp: "マテリアルラボ", en: "Materials Lab" },
+					"Polymer Lab": { jp: "-", en: "Polymer Lab" },
+					"Calibration Lab": { jp: "計量器管理部門", en: "Calibration Lab" },
+					"Sub Section Code Not Found...!": { jp: "使用部門コードが見つかりません...!", en: "Sub Section Code Not Found...!" },
+					"Sub Section Code": { jp: "使用部門コード", en: "Sub Section Code" },
+					"Sub Section Name": { jp: "使用部門名称", en: "Sub Section Name" },
+					"Section Name": { jp: "セクション名", en: "Section Name" },
+					"Section Code": { jp: "セクションコード", en: "Section Code" },
+					"Department Name": { jp: "部署名", en: "Department Name" },
+					"Department Code": { jp: "部門コード", en: "Department Code" },
+					"Department coordinator ID": { jp: "部門コーディネーターID", en: "Department coordinator ID" },
+					"Department coordinator Name": { jp: "部門コーディネーター名", en: "Department coordinator Name" },
+					"Department coordinator Email": { jp: "部門コーディネーターのメールアドレス", en: "Department coordinator Email" },
+					"Sub Section": { jp: "使用部門", en: "Sub Section" },
+					"Department coordinator Contact": { jp: "部門コーディネーター連絡先", en: "Department coordinator Contact" },
+					"--Select User Department--": { jp: "--ルールの確認を選択してください--", en: "--Select User Department--" },
+					"Instrument Serial Number": { jp: "計量器のシリアル番号", en: "Instrument Serial Number" },
+					"Equipment Name (EN)": { jp: "計量器名称（英語）", en: "Equipment Name (EN)" },
+					"Equipment Name (JP)": { jp: "計量器名称（日本語）", en: "Equipment Name (JP)" },
+					"--Select Drawing Attached--": { jp: "--添付された図面を選択--", en: "--Select Drawing Attached--" },
+					"Yes": { jp: "はい", en: "Yes" },
+					"No": { jp: "いいえ", en: "No" },
+					"--Select Rule Confirmity--": { jp: "--ルールの確認を選択してください--", en: "--Select Rule Confirmity--" },
+					"Include MU": { jp: "MUを含む", en: "Include MU" },
+					"Exclude MU": { jp: "MUを除", en: "Exclude MU" },
+					"--Select Type Of Instrument--": { jp: "計量器の種類", en: "--Select Type Of Instrument--" },
+					"Dial": { jp: ">デジタル<", en: "Dial" },
+					"Digital": { jp: "デジタル", en: "Digital" },
+					"Analog": { jp: "アナログ", en: "Analog" },
+					"--Select Is NABL--": { jp: "―", en: "--Select Is NABL--" },
+					"--Select Plant Location--": { jp: "--工場所在地の選択--", en: "--Select Plant Location--" },
+					"Set Value for Torque Wrench": { jp: "トルクレンチの設定値", en: "Set Value for Torque Wrench" },
+					"Grade": { jp: "精度等級", en: "Grade" },
+					"Plant / Location": { jp: "工場・所在地", en: "Plant / Location" },
+					"Plant Code": { jp: "工場コード", en: "Plant Code" },
+					"Department (EN)": { jp: "使用部門（英語)", en: "Department (EN)" },
+					"Department (JP)": { jp: "使用部門（日本語）", en: "Department (JP)" },
+					"Section (EN)": { jp: "使用部門（英語)", en: "Section (EN)" },
+					"Section (JP)": { jp: "使用部門（日本語）", en: "Section (JP)" },
+					"Sub Section (EN)": { jp: "使用部門（英語)", en: "Sub Section (EN)" },
+					"Sub Section (JP)": { jp: "使用部門（日本語）", en: "Sub Section (JP)" },
+					"Department Description (EN)": { jp: "使用部門（英語)", en: "Department Description (EN)" },
+					"Department Description (JP)": { jp: "使用部門（日本語）", en: "Department Description (JP)" },
+					"Type Of Instrument": { jp: "計量器の種類", en: "Type Of Instrument" },
+					"--Select Type Of Instrument--": { jp: "計量器の種類を選択してください", en: "--Select Type Of Instrument--" },
+					"Internal Instrument": { jp: "内部計器", en: "Internal Instrument" },
+					"External Instrument": { jp: "外部機器", en: "External Instrument" },
+					"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory" },
+					"--Select Tool Inventory--": { jp: "選択", en: "--Select Tool Inventory--" },
+					"Due For Calibration": { jp: "校正期限", en: "Due For Calibration" },
+					"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request" },
+					"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity" },
+					"Amount in JPY": { jp: "日本円", en: "Amount in JPY" },
+					"Comment": { jp: "コメント", en: "Comment" },
+					"Equipment Station": { jp: "機器ステーション", en: "Equipment Station" },
+					"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--" },
+					"Inline": { jp: "インライン", en: "Inline" },
+					"Lab": { jp: "校正室", en: "Lab" },
+					"Scope": { jp: "区分", en: "Scope" },
+					"--Select Type Of Scope--": { jp: "校正区分の選択", en: "--Select Type Of Scope--" },
+					"Internal Instrument": { jp: "内部校正", en: "Internal Instrument" },
+					"External Instrument": { jp: "外部校正", en: "External Instrument" },
+					"Type Of Scope": { jp: "校正区分", en: "Type Of Scope" },
+					"Type Of Instrument": { jp: "計量器の種類", en: "Type Of Instrument" },
+					"--Select Type Of Instrument--": { jp: "--楽器の種類を選択してください--", en: "--Select Type Of Instrument--" },
+					"Internal Instrument": { jp: "内部校正", en: "Internal Instrument" },
+					"External Instrument": { jp: "外部校正", en: "External Instrument" },
+					"Applicable for Tool Inventory": { jp: "工具在庫に適用可能", en: "Applicable for Tool Inventory" },
+					"--Select Tool Inventory--": { jp: "工具室在庫の選択", en: "--Select Tool Inventory--" },
+					"Due For Calibration": { jp: "校正期限", en: "Due For Calibration" },
+					"SelectAll Request": { jp: "すべて選択リクエスト", en: "SelectAll Request" },
+					"Model/Capacity": { jp: "型式・容量", en: "Model/Capacity" },
+					"Amount in JPY": { jp: "日本円での金額", en: "Amount in JPY" },
+					"Comment": { jp: "コメント", en: "Comment" },
+					"Equipment Station": { jp: "機器ステーション", en: "Equipment Station" },
+					"--Select Equipment Station--": { jp: "--機器ステーションの選択--", en: "--Select Equipment Station--" },
+					"Inline": { jp: "ライン設置", en: "Inline" },
+					"Lab": { jp: "検査場", en: "Lab" },
+					"Scope": { jp: "区分", en: "Scope" },
+					"--Select Type Of Scope--": { jp: "校正区分の選択", en: "--Select Type Of Scope--" },
+					"Internal Instrument": { jp: "内部校正", en: "Internal Instrument" },
+					"External Instrument": { jp: "外部校正", en: "External Instrument" },
+					"Type Of Scope": { jp: "校正区分", en: "Type Of Scope" },
+					"Please Select the Replacement-LabId": { jp: "計量器番号を選択してください", en: "Please Select the Replacement-LabId" },
+					"Replacement-LabID": { jp: "交換用", en: "Replacement-LabID" },
+					"DueDate": { jp: "定期検査年月", en: "DueDate" },
+					"Select All": { jp: "すべて選択", en: "Select All" },
+					"Tool Room Instruments": { jp: "工具室計量器", en: "Tool Room Instruments" },
+					"Close": { jp: "閉じる", en: "Close" },
+					"Number Of Equipments": { jp: "本数・個数", en: "Number Of Equipments" },
+					"Status": { jp: "状態", en: "Status" },
+					"Replacment Due Instruments": { jp: "交換期限のある機器", en: "Replacment Due Instruments" },
+					"Please enter the Visual Check": { jp: "目視チェックを入力してください", en: "Please enter the Visual Check" },
+					"Please enter the Humidity": { jp: "湿度を入力してください", en: "Please enter the Humidity" },
+					"Please enter the Temperature": { jp: "温度を入力してください", en: "Please enter the Temperature" },
+					"Please enter the Units": { jp: "単位を入力してください", en: "Please enter the Units" },
+					"Home": { jp: "HOME", en: "Home" },
+					"Due Instrument Tracker": { jp: "計量器定期検査月検索", en: "Due Instrument Tracker" },
+					"Due Instrument List": { jp: "計量器定期検査月リスト", en: "Due Instrument List" },
+					"Current Month Due": { jp: "今月分", en: "Current Month Due" },
+					"January Due": { jp: "１月分", en: "January Due" },
+					"February Due": { jp: "２月分", en: "February Due" },
+					"March Due": { jp: "３月分", en: "March Due" },
+					"External": { jp: "外部校正", en: "External" },
+					"Internal": { jp: "内部校正", en: "Internal" },
+					"Equipment Master ID": { jp: "計量器識別番号", en: "Equipment Master ID" },
+					"Department User": { jp: "使用部門", en: "Department User" },
+					"LAB Admin": { jp: "管理者", en: "LAB Admin" },
+					"Lab inspector": { jp: "検査員", en: "Lab inspector" },
+					"LAB Technical": { jp: "承認者", en: "LAB Technical" },
+					"Tool Inventory": { jp: "工具室", en: "Tool Inventory" },
+					"Approve Manager": { jp: "計量管理責任者", en: "Approve Manager" },
+					"Plant Location": { jp: "工場区分", en: "Plant Location" },
+					"Kawasaki Plant (K1)": { jp: "川崎工場", en: "Kawasaki Plant (K1)" },
+					"Nakatsu Factory": { jp: "中津工場", en: "Nakatsu Factory" },
+					"Kitsuregawa Institute": { jp: "喜連川研究所", en: "Kitsuregawa Institute" },
+					"Higashi Ogishima": { jp: "東扇島", en: "Higashi Ogishima" },
+					"ToolRoom Instrument List": { jp: "工具室在庫リスト", en: "ToolRoom Instrument List" },
+					"Due Instrument Tracker": { jp: "次回定期検査検索", en: "Due Instrument Tracker" },
+					"Due Tracker": { jp: "次回検索", en: "Due Tracker" },
+					"SubSectionCode": { jp: "使用部門コード", en: "SubSectionCode" },
+					"Tool Room Instruments List": { jp: "工具室在庫リスト", en: "Tool Room Instruments List" },
+					"Standard Refered/Calibration Method": { jp: "標準参照/校正方法", en: "Standard Refered/Calibration Method" },
+					"External Accept Reason": { jp: "外部校正　承認", en: "External Accept Reason" },
+					"External Reject Reason": { jp: "外部校正　非承認", en: "External Reject Reason" },
+					"Mitsubishi Fuso Truck and Bus Corporation": { jp: "三菱ふそうトラック・バス株式会社", en: "Mitsubishi Fuso Truck and Bus Corporation" },
+					"Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522": { jp: "〒211-8522　神奈川県川崎市中原区大倉町10", en: "Ohkuracho 10, Nakahara Ward, Kawasaki City, Kanagawa Prefecture, Japan, 211-8522" },
+					"CERTIFICATE OF VERIFICATION": { jp: "検査成績書", en: "CERTIFICATE OF VERIFICATION" },
+					"I. Description of device under verification (DUC)": { jp: "検査対象計量器", en: "I. Description of device under verification (DUC)" },
+					"Certificate No.": { jp: "証明書番号", en: "Certificate No." },
+					"Report issue date": { jp: "成績書発行日", en: "Report issue date" },
+					"Next Calibrtaion due": { jp: "次回定期検査年月", en: "Next Calibrtaion due" },
+					"Date of receipt": { jp: "検査日", en: "Date of receipt" },
+					"Name of Dept.": { jp: "使用部門名称", en: "Name of Dept." },
+					"Date of receipt": { jp: "検査日", en: "Date of receipt" },
+					"Sub section code": { jp: "使用部門コード", en: "Sub section code" },
+					"Description of equipment": { jp: "計量器名称", en: "Description of equipment" },
+					"Identification No.": { jp: "計量器識別番号", en: "Identification No." },
+					"Condition of DUV": { jp: "計量器状態", en: "Condition of DUV" },
+					"Calibration procedure/Reference standard": { jp: "校正方法・参照標準器など", en: "Calibration procedure/Reference standard" },
+					"II. Master & Equipment used": { jp: "II. 使用した参照標準器など", en: "II. Master & Equipment used" },
+					"Refer external calibartion report": { jp: "外部校正成績に記載", en: "Refer external calibartion report" },
+					"III. Calibration Results": { jp: "III. 校正結果", en: "III. Calibration Results" },
+					"All values are in": { jp: "値が規格を満足している", en: "All values are in" },
+					"External report result status": { jp: "社外検査報告結果", en: "External report result status" },
+					"Refer the external calibartion report for more details": { jp: "詳細は、外部校正成績を参照願います。", en: "Refer the external calibartion report for more details" },
+					"OK": { jp: "合格", en: "OK" },
+					"Not OK": { jp: "不合格", en: "Not OK" },
+					"Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate": { jp: "注: 適合性の宣言は、要求者によって合意された決定規則および外部証明書に基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor and external certificate" },
+					"1. The calibration results based on external certificate result": { jp: "1. 外部証明書の結果に基づく校正結果", en: "1. The calibration results based on external certificate result" },
+					"2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "2. 次回の校正期限は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "2. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument." },
+					"CERTIFICATE OF CALIBRATION": { jp: "校正証明書", en: "CERTIFICATE OF CALIBRATION" },
+					"Note: Statement of conformity is given based on decision rule agreed by requestor": { jp: "注: 適合性の宣言は、要求者が合意した決定ルールに基づいて行われます。", en: "Note: Statement of conformity is given based on decision rule agreed by requestor" },
+					"1. The calibration results are valid at the time of and under the stated condition of measurement.": { jp: "1. 校正結果は、測定時および指定された測定条件下で有効です。", en: "1. The calibration results are valid at the time of and under the stated condition of measurement." },
+					"2. The report should not be reproduced either in full or in part without permission in writing.": { jp: "2. 報告書の全部または一部を書面による許可なく転載することはできません。", en: "2. The report should not be reproduced either in full or in part without permission in writing." },
+					"3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "3. 次回の校正期日は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument." },
+					"Environmental condition": { jp: "環境条件", en: "Environmental condition" },
+					"SubSection Code": { jp: "使用部門コード", en: "SubSection Code" }
 
 
 				}
@@ -1849,7 +1845,7 @@
 					type: 'POST',
 					data: ''
 				}).done(function (resultObject) {
-					GlDicts = resultObject;					
+					GlDicts = resultObject;
 					var optionhtml;
 
 					$("#MasterInstrument").empty();
@@ -1880,9 +1876,8 @@
 				});
 				return dict;
 			}
-			function MasterDepartment(lang)
-			{
-				
+			function MasterDepartment(lang) {
+
 				var selectedMasterDept = $('#DepartId').find("option:selected").val();
 				//alert(selectedMasterDept);
 				$.ajax({
@@ -1900,14 +1895,14 @@
 					$("#DepartId").append(optionhtml);
 					$.each(resultObject, function (index, item) {
 
-						
+
 						optionhtml = '';
 						if (lang == 'jp') {
-							optionhtml = '<option value="' + item.id + '">' + item.nameJp+'</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.subSectionCode + '</option>';
 							//optionhtml = '<option value="' + item.id + '">' + item.nameJp + ' - ' + item.subSectionCode + '</option>';
 						}
 						else {
-							optionhtml = '<option value="' + item.id + '">' + item.name +'</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.subSectionCode + '</option>';
 							//optionhtml = '<option value="' + item.id + '">' + item.name + ' - ' + item.subSectionCode + '</option>';
 						}
 
@@ -1920,10 +1915,10 @@
 			function DepartmentTranslate(lang) {
 				//DepartmentId
 				var selectedUserDept = $('#UserDept').find("option:selected").val();
-				
+
 				var selectedDepartmentId = $('#DepartmentId').find("option:selected").val();
-			
-				var test='';				
+
+				var test = '';
 				$.ajax({
 					url: '../Home/DepartmentTranslate',
 					type: 'POST',
@@ -1939,7 +1934,7 @@
 
 					$("#UserDept").empty();
 					$("#DepartmentId").empty();
-					$("#UserDept1").empty(); 
+					$("#UserDept1").empty();
 
 					if (lang == 'jp') {
 						optionhtml = '<option value=""> -- マスターを選択 -- </option>';
@@ -1956,11 +1951,11 @@
 						optionhtml = '';
 						if (lang == 'jp') {
 
-							optionhtml = '<option value="' + item.id + '">' + item.nameJp +' - '+ item.subSectionCode + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.nameJp + ' - ' + item.subSectionCode + '</option>';
 						}
 						else {
 
-							optionhtml = '<option value="' + item.id + '">' + item.name +' - '+ item.subSectionCode + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.name + ' - ' + item.subSectionCode + '</option>';
 						}
 
 						$("#UserDept").append(optionhtml);
@@ -1968,15 +1963,14 @@
 						$("#DepartmentId").append(optionhtml);
 					});
 					/////////////Code for select the value
-						if (selectedUserDept == null) 
-						{
+					if (selectedUserDept == null) {
 
-						
+
 						selectedUserDept = @Json.Serialize(@ViewBag.UserDept);
 					}
-					
+
 					$('#UserDept').val(selectedUserDept).prop("selected", true);
-					
+
 					$('#DepartmentId').val(selectedDepartmentId).prop("selected", true);
 
 
@@ -2086,13 +2080,13 @@
 
 
 
-					$.each(resultObject, function (index, item) {						
-						if (item.attrName == 'ObservationTemplate') {							
+					$.each(resultObject, function (index, item) {
+						if (item.attrName == 'ObservationTemplate') {
 							optionhtml = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtml = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtml = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2101,10 +2095,10 @@
 
 						if (item.attrName == 'MUTemplate') {
 							optionhtmlMU = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2112,12 +2106,12 @@
 						}
 
 						if (item.attrName == 'CerTemplate') {
-							
+
 							optionhtmlCT = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2125,24 +2119,24 @@
 						}
 
 						if (item.attrName == 'CalibrationFreq') {
-							optionhtmlCalibFreq = '';							
-							if (lang == 'jp') {								
+							optionhtmlCalibFreq = '';
+							if (lang == 'jp') {
 								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 							$("#CalibFreqId").append(optionhtmlCalibFreq);
 							$("#CalibFreq").append(optionhtmlCalibFreq);
-							
+
 						}
 
 						if (item.attrName == 'CalibrationStatus') {
 							optionhtmlCalibStatus = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2152,20 +2146,20 @@
 						//////////For Master////////////
 						if (item.attrName == 'CalibrationSource') {
 							optionhtmlCalibSource = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 							$("#CalibrationSourceId").append(optionhtmlCalibSource);
 						}
 						if (item.attrName == 'Location') {
 							optionhtmlLocation = '';
-							if (lang == 'jp') {								
+							if (lang == 'jp') {
 								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2174,11 +2168,11 @@
 						//Designation
 
 						if (item.attrName == 'Designation') {
-							optionhtmlDesignation = '';							
-							if (lang == 'jp') {								
+							optionhtmlDesignation = '';
+							if (lang == 'jp') {
 								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
 							}
-							else {								
+							else {
 								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 							}
 
@@ -2199,322 +2193,320 @@
 			/////////////TEMPLATE PART END ////////////////////////
 
 			/////////////TEMPLATE PART START ////////////////////////
-			function InstrumentObservationTypeTranslation(lang) {
-					//alert('2');
-				//debugger;
-				var SelectObservation = $('#ObservationTemplate').find("option:selected").val();
-				var SelectMU = $('#MUTemplte').find("option:selected").val();
-				var SelectCertification = $('#CertificationTemplate').find("option:selected").val();
-				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Master
-
-				var SelectObservationType = @Json.Serialize(@ViewBag.ObservationType); //For Instrument Maste
-
-				var SelectCalibrationStatus = $('#CalibrationStatus').find("option:selected").val();
-				var SelectCalibFreqId = $('#CalibFreqMaster').find("option:selected").val(); //For Equipment Master
-				var SelectCalibrationSourceId = $('#CalibrationSourceId').find("option:selected").val();
-				var SelectLocationId = $('#LocationId').find("option:selected").val();
-				var SelectDesignation = $('#Designation').find("option:selected").val();
-
-				if (SelectObservation == null) {
-
-					SelectObservation = @Json.Serialize(@ViewBag.Observation);
-				}
-
-
-				var TmpOBStype = @Json.Serialize(@ViewBag.ObservationType);
-
-				console.log(TmpOBStype);
-				$.ajax({
-					url: '../Home/ObservationTypeTranslation',
-					type: 'POST',
-					data: ''
-				}).done(function (resultObject) {
-					//debugger;
-					GlDicts = resultObject;
-					console.log(resultObject);
-					var optionhtml;
-					var optionhtmlMU;
-					var optionhtmlCT;
-					var optionhtmlCalibFreq;
-					var optionhtmlCalibStatus;
-					var optionhtmlCalibSource;
-					var optionhtmlLocation;
-					var optionhtmlDesignation;
-					var optionhtmlOBType;
-					var optionhtmlCalibFreqId;
-
-					$("#ObservationTemplate").empty();
-					$("#MUTemplate").empty();
-					$("#CertificationTemplate").empty();
-					$("#CalibFreqMaster").empty();
-					$("#CalibrationStatus").empty();
-					$("#CalibrationSourceId").empty();
-					$("#LocationId").empty();
-					$("#Designation").empty();
-					$("#CalibFreq").empty();
-					$("#ObservationType").empty();
-
-
-					if (lang == 'jp') {
-
-						optionhtmlOBType = '<option value="">--観測タイプの選択--</option>';
-						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
-						optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
-						optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
-						optionhtmlCalibFreq = '<option value="0"> -- 校正周波数の選択-- </option>';
-						optionhtmlCalibStatus = '<option value=""> -- 校正ステータスの選択 -- </option>';
-						optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
-						optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
-						optionhtmlDesignation = '<option value=""> -- 指定 -- </option>';
-						optionhtmlCalibFreqId = '<option value=""> -- 校正周波数の選択-- </option>';
-					}
-					else {
-						optionhtmlOBType = '<option value=""> -- Select Observation Type -- </option>';
-						optionhtml = '<option value=""> -- Select Observation Template -- </option>';
-						optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
-						optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
-						optionhtmlCalibFreq = '<option value="0"> -- Select Calibration Frequency -- </option>';
-						optionhtmlCalibStatus = '<option value=""> -- Select Calibration Status -- </option>';
-						optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
-						optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
-						optionhtmlDesignation = '<option value=""> -- Select User Designation -- </option>';
-						optionhtmlCalibFreqId = '<option value="0"> -- Select Calibration Frequency -- </option>';
-					}
-					$("#ObservationTemplate").append(optionhtml);
-					$("#MUTemplate").append(optionhtmlMU);
-					$("#CertificationTemplate").append(optionhtmlCT);
-					$("#CalibFreqMaster").append(optionhtmlCalibFreqId);//For Equipment Master
-					$("#CalibrationStatus").append(optionhtmlCalibStatus);
-					$("#CalibrationSourceId").append(optionhtmlCalibSource);
-					$("#LocationId").append(optionhtmlLocation);
-					$("#Designation").append(optionhtmlDesignation);
-					$("#CalibFreq").append(optionhtmlCalibFreq);//For Instrument Master
-					$("#ObservationType").append(optionhtmlOBType);
-
-
-					$.each(resultObject, function (index, item) {
-
-						
-						if (item.attrName == 'ObservationTemplate') {
-
-							optionhtml = '';
-							if (lang == 'jp') {
-
-								optionhtml = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// function InstrumentObservationTypeTranslation(lang) {
+			// 	//alert('2');
+			// 	//debugger;
+			// 	var SelectObservation = $('#ObservationTemplate').find("option:selected").val();
+			// 	var SelectMU = $('#MUTemplte').find("option:selected").val();
+			// 	var SelectCertification = $('#CertificationTemplate').find("option:selected").val();
+			// 	var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Master
+
+			// 	var SelectObservationType = @Json.Serialize(@ViewBag.ObservationType); //For Instrument Maste
+
+			// 	var SelectCalibrationStatus = $('#CalibrationStatus').find("option:selected").val();
+			// 	var SelectCalibFreqId = $('#CalibFreqMaster').find("option:selected").val(); //For Equipment Master
+			// 	var SelectCalibrationSourceId = $('#CalibrationSourceId').find("option:selected").val();
+			// 	var SelectLocationId = $('#LocationId').find("option:selected").val();
+			// 	var SelectDesignation = $('#Designation').find("option:selected").val();
+
+			// 	if (SelectObservation == null) {
+
+			// 		SelectObservation = @Json.Serialize(@ViewBag.Observation);
+			// 	}
+
+
+			// 	var TmpOBStype = @Json.Serialize(@ViewBag.ObservationType);
+
+			// 	console.log(TmpOBStype);
+			// 	$.ajax({
+			// 		url: '../Home/ObservationTypeTranslation',
+			// 		type: 'POST',
+			// 		data: ''
+			// 	}).done(function (resultObject) {
+			// 		//debugger;
+			// 		GlDicts = resultObject;
+			// 		console.log(resultObject);
+			// 		var optionhtml;
+			// 		var optionhtmlMU;
+			// 		var optionhtmlCT;
+			// 		var optionhtmlCalibFreq;
+			// 		var optionhtmlCalibStatus;
+			// 		var optionhtmlCalibSource;
+			// 		var optionhtmlLocation;
+			// 		var optionhtmlDesignation;
+			// 		var optionhtmlOBType;
+			// 		var optionhtmlCalibFreqId;
+
+			// 		$("#ObservationTemplate").empty();
+			// 		$("#MUTemplate").empty();
+			// 		$("#CertificationTemplate").empty();
+			// 		$("#CalibFreqMaster").empty();
+			// 		$("#CalibrationStatus").empty();
+			// 		$("#CalibrationSourceId").empty();
+			// 		$("#LocationId").empty();
+			// 		$("#Designation").empty();
+			// 		$("#CalibFreq").empty();
+			// 		$("#ObservationType").empty();
+
+
+			// 		if (lang == 'jp') {
+
+			// 			optionhtmlOBType = '<option value="">--観測タイプの選択--</option>';
+			// 			optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
+			// 			optionhtmlMU = '<option value=""> -- MU テンプレートの選択 -- </option>';
+			// 			optionhtmlCT = '<option value=""> -- 証明書テンプレートの選択 -- </option>';
+			// 			optionhtmlCalibFreq = '<option value="0"> -- 校正周波数の選択-- </option>';
+			// 			optionhtmlCalibStatus = '<option value=""> -- 校正ステータスの選択 -- </option>';
+			// 			optionhtmlCalibSource = '<option value=""> -- キャリブレーションソースの選択-- </option>';
+			// 			optionhtmlLocation = '<option value=""> -- 校正場所の選択 -- </option>';
+			// 			optionhtmlDesignation = '<option value=""> -- 指定 -- </option>';
+			// 			optionhtmlCalibFreqId = '<option value=""> -- 校正周波数の選択-- </option>';
+			// 		}
+			// 		else {
+			// 			optionhtmlOBType = '<option value=""> -- Select Observation Type -- </option>';
+			// 			optionhtml = '<option value=""> -- Select Observation Template -- </option>';
+			// 			optionhtmlMU = '<option value=""> -- Select MU Template -- </option>';
+			// 			optionhtmlCT = '<option value=""> -- Select Certification Template -- </option>';
+			// 			optionhtmlCalibFreq = '<option value="0"> -- Select Calibration Frequency -- </option>';
+			// 			optionhtmlCalibStatus = '<option value=""> -- Select Calibration Status -- </option>';
+			// 			optionhtmlCalibSource = '<option value=""> -- Select Calibration Source -- </option>';
+			// 			optionhtmlLocation = '<option value=""> -- Select Calibration Location -- </option>';
+			// 			optionhtmlDesignation = '<option value=""> -- Select User Designation -- </option>';
+			// 			optionhtmlCalibFreqId = '<option value="0"> -- Select Calibration Frequency -- </option>';
+			// 		}
+			// 		$("#ObservationTemplate").append(optionhtml);
+			// 		$("#MUTemplate").append(optionhtmlMU);
+			// 		$("#CertificationTemplate").append(optionhtmlCT);
+			// 		$("#CalibFreqMaster").append(optionhtmlCalibFreqId);//For Equipment Master
+			// 		$("#CalibrationStatus").append(optionhtmlCalibStatus);
+			// 		$("#CalibrationSourceId").append(optionhtmlCalibSource);
+			// 		$("#LocationId").append(optionhtmlLocation);
+			// 		$("#Designation").append(optionhtmlDesignation);
+			// 		$("#CalibFreq").append(optionhtmlCalibFreq);//For Instrument Master
+			// 		$("#ObservationType").append(optionhtmlOBType);
+
 
-								optionhtml = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 		$.each(resultObject, function (index, item) {
+
 
-							$("#ObservationTemplate").append(optionhtml);
-						}
+			// 			if (item.attrName == 'ObservationTemplate') {
+
+			// 				optionhtml = '';
+			// 				if (lang == 'jp') {
 
-						$('#ObservationTemplate').val(SelectObservation).prop("selected", true);
-						var SelectObservationTxt = $('#ObservationTemplate').find("option:selected").text();
-						SelectObservationTxt = $.trim(SelectObservationTxt);
-						
-						//var obsattform = item.attrform;
-						if (lang == 'jp')
-						{
-							var obsattform = item.attrformJp;
-						}
-						else
-						{
-							var obsattform = item.attrform;
-						}
-						
-						if (obsattform == $.trim(SelectObservationTxt)) {
+			// 					optionhtml = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-							optionhtmlOBType = '';
+			// 					optionhtml = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-							if (lang == 'jp') {
+			// 				$("#ObservationTemplate").append(optionhtml);
+			// 			}
 
-								optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
-								optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 			$('#ObservationTemplate').val(SelectObservation).prop("selected", true);
+			// 			var SelectObservationTxt = $('#ObservationTemplate').find("option:selected").text();
+			// 			SelectObservationTxt = $.trim(SelectObservationTxt);
 
-							}
+			// 			//var obsattform = item.attrform;
+			// 			if (lang == 'jp') {
+			// 				var obsattform = item.attrformJp;
+			// 			}
+			// 			else {
+			// 				var obsattform = item.attrform;
+			// 			}
 
-							$("#ObservationType").append(optionhtmlOBType);
-						}
+			// 			if (obsattform == $.trim(SelectObservationTxt)) {
 
+			// 				optionhtmlOBType = '';
 
-						if (item.attrName == 'MUTemplate') {
-							optionhtmlMU = '';
+			// 				if (lang == 'jp') {
 
-							if (lang == 'jp') {
+			// 					optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
+			// 					optionhtmlOBType = '<option value="' + item.id + '">' + item.attrValue + '</option>';
 
-								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 				}
 
-								optionhtmlMU = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
-							$("#MUTemplate").append(optionhtmlMU);
+			// 				$("#ObservationType").append(optionhtmlOBType);
+			// 			}
 
-						}
 
-						if (item.attrName == 'CerTemplate') {
+			// 			if (item.attrName == 'MUTemplate') {
+			// 				optionhtmlMU = '';
 
-							optionhtmlCT = '';
-							if (lang == 'jp') {
+			// 				if (lang == 'jp') {
 
-								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 					optionhtmlMU = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-								optionhtmlCT = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 					optionhtmlMU = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
+			// 				$("#MUTemplate").append(optionhtmlMU);
 
-							$("#CertificationTemplate").append(optionhtmlCT);
-						}
+			// 			}
 
-						if (item.attrName == 'CalibrationFreq') {
-							optionhtmlCalibFreq = '';
+			// 			if (item.attrName == 'CerTemplate') {
 
-							if (lang == 'jp') {
+			// 				optionhtmlCT = '';
+			// 				if (lang == 'jp') {
 
-								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 					optionhtmlCT = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 					optionhtmlCT = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-							//debugger;
-							$("#CalibFreq").append(optionhtmlCalibFreq);
+			// 				$("#CertificationTemplate").append(optionhtmlCT);
+			// 			}
 
-							$("#CalibFreqMaster").append(optionhtmlCalibFreq);
+			// 			if (item.attrName == 'CalibrationFreq') {
+			// 				optionhtmlCalibFreq = '';
 
+			// 				if (lang == 'jp') {
 
-						}
+			// 					optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-						if (item.attrName == 'CalibrationStatus') {
+			// 					optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-							optionhtmlCalibStatus = '';
-							if (lang == 'jp') {
+			// 				//debugger;
+			// 				$("#CalibFreq").append(optionhtmlCalibFreq);
 
-								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 				$("#CalibFreqMaster").append(optionhtmlCalibFreq);
 
-								optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
 
-							$("#CalibrationStatus").append(optionhtmlCalibStatus);
-						}
+			// 			}
 
-						//////////For Master////////////
-						if (item.attrName == 'CalibrationSource') {
+			// 			if (item.attrName == 'CalibrationStatus') {
 
-							optionhtmlCalibSource = '';
-							if (lang == 'jp') {
+			// 				optionhtmlCalibStatus = '';
+			// 				if (lang == 'jp') {
 
-								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 					optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-								optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 					optionhtmlCalibStatus = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-							$("#CalibrationSourceId").append(optionhtmlCalibSource);
-						}
-						if (item.attrName == 'Location') {
+			// 				$("#CalibrationStatus").append(optionhtmlCalibStatus);
+			// 			}
 
-							optionhtmlLocation = '';
-							if (lang == 'jp') {
+			// 			//////////For Master////////////
+			// 			if (item.attrName == 'CalibrationSource') {
 
-								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 				optionhtmlCalibSource = '';
+			// 				if (lang == 'jp') {
 
-								optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 					optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-							$("#LocationId").append(optionhtmlLocation);
-						}
-						//////////For Master End////////////
+			// 					optionhtmlCalibSource = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
+			// 				$("#CalibrationSourceId").append(optionhtmlCalibSource);
+			// 			}
+			// 			if (item.attrName == 'Location') {
 
-						//Designation
+			// 				optionhtmlLocation = '';
+			// 				if (lang == 'jp') {
 
-						if (item.attrName == 'Designation') {
-							optionhtmlDesignation = '';
-							
-							if (lang == 'jp') {
+			// 					optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
-								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
-							}
-							else {
+			// 					optionhtmlLocation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-								optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
-							}
+			// 				$("#LocationId").append(optionhtmlLocation);
+			// 			}
+			// 			//////////For Master End////////////
 
-							$("#Designation").append(optionhtmlDesignation);
-						}
-					});
 
+			// 			//Designation
 
-					if (SelectCalibFreq == null) {
+			// 			if (item.attrName == 'Designation') {
+			// 				optionhtmlDesignation = '';
 
+			// 				if (lang == 'jp') {
 
-						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
-						
-					}
-					//For Instrument
-					SelectObservationType = @Json.Serialize(@ViewBag.ObservationType);
+			// 					optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValueJp + '</option>';
+			// 				}
+			// 				else {
 
+			// 					optionhtmlDesignation = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+			// 				}
 
-					if (SelectMU == null) {
-						SelectMU = @Json.Serialize(@ViewBag.MUTemplates);
-					}
-					if (SelectCertification == null) {
+			// 				$("#Designation").append(optionhtmlDesignation);
+			// 			}
+			// 		});
 
-						SelectCertification = @Json.Serialize(@ViewBag.CertificationTemplate);
-					}
-					if (SelectObservation == null) {
-						SelectObservation = @Json.Serialize(@ViewBag.Observation);
 
-					}
-					if (SelectCalibFreq == null) {
-						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
+			// 		if (SelectCalibFreq == null) {
 
-					}
 
-					if (SelectCalibFreqId == null) {
-						SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
+			// 			SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
 
-					}
+			// 		}
+			// 		//For Instrument
+			// 		SelectObservationType = @Json.Serialize(@ViewBag.ObservationType);
 
-					if (SelectCalibFreq == null) {
-						SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
 
-					}
+			// 		if (SelectMU == null) {
+			// 			SelectMU = @Json.Serialize(@ViewBag.MUTemplates);
+			// 		}
+			// 		if (SelectCertification == null) {
 
-					if (SelectCalibFreqId == null) {
-						SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
+			// 			SelectCertification = @Json.Serialize(@ViewBag.CertificationTemplate);
+			// 		}
+			// 		if (SelectObservation == null) {
+			// 			SelectObservation = @Json.Serialize(@ViewBag.Observation);
 
-					}
+			// 		}
+			// 		if (SelectCalibFreq == null) {
+			// 			SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
 
-					$('#MUTemplate').val(SelectMU).prop("selected", true);
-					$('#CertificationTemplate').val(SelectCertification).prop("selected", true);
-					$('#CalibrationStatus').val(SelectCalibrationStatus).prop("selected", true);
-					$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);					
-					$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
-					$('#ObservationType').val(TmpOBStype).prop("selected", true);
+			// 		}
 
+			// 		if (SelectCalibFreqId == null) {
+			// 			SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
 
-					//For Master
-					
-					$('#CalibFreqMaster').val(SelectCalibFreqId).prop("selected", true);
-					$('#LocationId').val(SelectLocationId).prop("selected", true);
-					//For User
-					$('#Designation').val(SelectDesignation).prop("selected", true);
-					
-				});
-			}
+			// 		}
+
+			// 		if (SelectCalibFreq == null) {
+			// 			SelectCalibFreq = @Json.Serialize(@ViewBag.CalibFreq);
+
+			// 		}
+
+			// 		if (SelectCalibFreqId == null) {
+			// 			SelectCalibFreqId = @Json.Serialize(@ViewBag.CalibFreqMaster);
+
+			// 		}
+
+			// 		$('#MUTemplate').val(SelectMU).prop("selected", true);
+			// 		$('#CertificationTemplate').val(SelectCertification).prop("selected", true);
+			// 		$('#CalibrationStatus').val(SelectCalibrationStatus).prop("selected", true);
+			// 		$('#CalibrationSourceId').val(SelectCalibrationSourceId).prop("selected", true);
+			// 		$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
+			// 		$('#ObservationType').val(TmpOBStype).prop("selected", true);
+
+
+			// 		//For Master
+
+			// 		$('#CalibFreqMaster').val(SelectCalibFreqId).prop("selected", true);
+			// 		$('#LocationId').val(SelectLocationId).prop("selected", true);
+			// 		//For User
+			// 		$('#Designation').val(SelectDesignation).prop("selected", true);
+
+			// 	});
+			// }
 			/////////////TEMPLATE PART END ////////////////////////
 			function LoadRole() {
 				$.ajax({
@@ -2523,17 +2515,17 @@
 					//data: { lang: selected },
 					dataType: "json",
 					contentType: "application/json; charset=utf-8",
-					success: function (data) {					
+					success: function (data) {
 						$("#droprole").empty();
-					
+
 						optionhtml = '';
 						optionhtml1 = '';
-					$.each(data, function (index, item) {							
+						$.each(data, function (index, item) {
 							optionhtml1 = '<i class="fas fa-user-circle"></i>';
 							optionhtml = '<option value="' + item.id + '">' + optionhtml1 + item.roleName + ' </option>';
 							$("#droprole").append(optionhtml);
 						});
-						
+
 					},
 					failure: function (response) {
 						console.log(response.responseText);
@@ -2542,28 +2534,27 @@
 						console.log(response.responseText);
 					}
 				});
-				
+
 			}
 
-			function setRoleSelectedVal()
-			{
+			function setRoleSelectedVal() {
 				//var UserRoleLoad = $('#UrRole').val();
 				//console.log("*******************UserRole*******************");
 				//console.log(UserRoleLoad);
 				//$('#droprole').find('option[value=' + UserRoleLoad + ']').attr("selected", true);
-				setTimeout(function(){				
-				var UserRoleLoad = $('#UrRole').val();
-				console.log("*******************UserRole*******************");
-				console.log(UserRoleLoad);
-				$('#droprole').find('option[value='+UserRoleLoad+']').attr("selected",true);	
-				},500);
-						
+				setTimeout(function () {
+					var UserRoleLoad = $('#UrRole').val();
+					console.log("*******************UserRole*******************");
+					console.log(UserRoleLoad);
+					$('#droprole').find('option[value=' + UserRoleLoad + ']').attr("selected", true);
+				}, 500);
+
 			}
 
 			$('#droprole').on('change', function () {
-				
+
 				var selected = $(this).find("option:selected").val();
-				
+
 				var usermail = $('#UrEmail').val();
 				var userURL = $('#UserRoleURl').val();
 				var urls = '?email=' + usermail + '&ln=en&role=' + selected + '';
@@ -2573,9 +2564,9 @@
 				console.log(userURL);
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln='+language+'&role=' + selected + '';
 				//window.location.href = 'https://localhost:7161/User/ValidateLogins?email=' + usermail + '&ln=en&role=' + selected + '';
-				window.location.href = userURL+urls;
-						
-				$('#droprole').find('option[value='+selected+']').attr("selected",true);				
+				window.location.href = userURL + urls;
+
+				$('#droprole').find('option[value=' + selected + ']').attr("selected", true);
 			});
 		</script>
 	</div>

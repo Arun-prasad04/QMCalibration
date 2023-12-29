@@ -4511,7 +4511,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				else
 				{
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
-					//ReqstData.ReqStartDate = DateTime.Now;
+					ReqstData.ReqStartDate = DateTime.Now;
 					//ReqstData.ReqDueDate = DueDate;
 				}
 			}
@@ -4531,7 +4531,7 @@ public class ObservationTemplateService : IObservationTemplateService
 							instrumentData.ToolRoomStatus = (Int32)ToolRoomStatus.Pending;
 							instrumentData.ReplacementLabID = null;
 						//ResponseViewModel<ToolRoomMasterViewModel> toolroom =GetToolRoomSubSection();						
-						instrumentData.UserDept = (Int32)instrumentData.ReplacementDeptId;
+						instrumentData.UserDept = instrumentData.ReplacementDeptId.Equals(null)?0: (Int32)instrumentData.ReplacementDeptId;
 						instrumentData.ReplacementDeptId = null;
 						instrumentData.DueDate = null;
 					}
@@ -4577,7 +4577,7 @@ public class ObservationTemplateService : IObservationTemplateService
 						_unitOfWork.SaveChanges();
 					}
 				}
-				_unitOfWork.Commit();
+				//_unitOfWork.Commit();
 
 			//---ToolRoomHistory
 			if (instrumentData.ToolInventory == "Yes" && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
@@ -4593,11 +4593,11 @@ public class ObservationTemplateService : IObservationTemplateService
 				ToolRoomHistoryById.InstrumentId = instrumentData.Id;
 				_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
 				_unitOfWork.SaveChanges();
-				_unitOfWork.Commit();
+				
 			}
-
+			_unitOfWork.Commit();
 			//For Regular / Recalibration Mail
-			string SendingEmailRegular = "";
+				string SendingEmailRegular = "";
 				string SendingEmailRecalibration = "";
 				string ObjSendingEmailRegular = "";
 				string ObjSendingEmailRecalibration = "";

@@ -3223,7 +3223,6 @@ function DueForCalibrationInstruments() {
         window.location.href = '../Instrument/Index';
     }
 }
-
 function DueForCalibrationInstruments_Old() {
     //debugger;
     if ($("#checkdueonly").is(":checked")) {
@@ -3232,10 +3231,8 @@ function DueForCalibrationInstruments_Old() {
             $('#example1 > tbody > tr').each(function (row, tr) {
                 var currentRow = $(this).closest("tr");
                 //console.log(currentRow)
-                if (currentRow.find("td:eq(9)").text() != " ") {
-                    //alert(currentRow.find("td:eq(9)").text());
-                    //console.log(currentRow.find("td:eq(9)").text());
-                    var checkedvalue = $(tr).find("td:eq(9) input[type='checkbox']")[0].checked;
+                if (currentRow.find(".class1").text() != " ") {
+                   
                     currentRow.show();
                 }
                 else {
@@ -3262,7 +3259,7 @@ function InsertRequestList() {
             RequestId: $(this).closest('tr').find('.clsRequestId').val(),
             DueDate: $(this).closest('tr').find('.clsDueDate').val(),
             ReplacementStartDate: $(this).closest('tr').find('.clsReplacementStartDate').val(),
-        }
+        } 
         
         Request.push(UserView);
     });

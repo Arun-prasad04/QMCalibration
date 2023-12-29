@@ -86,8 +86,9 @@
 
 							@foreach (var item in Model)
 							{
-								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
-								{
+								//@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
+								@if ((@item.RequestStatus != 28) || (@item.RequestStatus != 30) || (@item.RequestStatus != 31))
+                                {
 
 									<tr>
 										@* <td style="display:none;">@item.ReqDueDate</td> *@
@@ -114,62 +115,35 @@
 											<td style="text-align:center;" class="chkpl">
 												@if (@item.DueDate != null)
 												{
-													@* @if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)
-													{
-														//@if ((@item.RequestStatus != 26 && @item.RequestStatus != 29 && @item.RequestStatus != 27))// || @item.RequestStatus == 0)
-														@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-														{
-															<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-															<input id="typeId" name="typeId" type="hidden" value="2" />
-															<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-															<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-															<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-															<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-														}
-
-													} *@
-													//else
+													
 													@if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-													//@if ((@item.DueDate.Month < DateTime.Now.Month && DateTime.Now.AddMonths(1).Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
 													{
-													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-														//{
+                                                        @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))// && @item.ToolInventory=="Yes" && @item.ToolInventoryStatus=="1")
+                                                        {
 
-														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-														<input id="typeId" name="typeId" type="hidden" value="2" />
-														// to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
-														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+                                                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+                                                            <input id="typeId" name="typeId" type="hidden" value="2" />
+                                                            // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
+                                                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+                                                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+                                                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+                                                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+                                                        }
+                                                    }
+                                                    else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+                                                     {
+                                                        @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))
+                                                            {
 
-													}
-													else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-													{
-													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-														//{
-
-                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                            <input id="typeId" name="typeId" type="hidden" value="2" />
-                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-
-													}
-													@* else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.Year + 1 == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-															{
-													//@if (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28)
-														//{
-
-														<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-														<input id="typeId" name="typeId" type="hidden" value="2" />
-														<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-														<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-														<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-														<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-
-													} *@
+                                                                <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+                                                                <input id="typeId" name="typeId" type="hidden" value="2" />
+                                                                <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+                                                                <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+                                                                <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+                                                                <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+                                                            }
+                                                    }
+													
 												}
 											</td>
 										}

@@ -22,6 +22,7 @@ public class MasterController : BaseController
 
 	public IActionResult Index()
 	{
+		
 		ViewBag.PageTitle = "Master List";
 		ViewBag.ResponseCode = TempData["ResponseCode"];
 		ViewBag.ResponseMessage = TempData["ResponseMessage"];
@@ -32,12 +33,13 @@ public class MasterController : BaseController
 
 	public IActionResult Edit()
 	{
-
+		//ViewBag.Shared = "Master";
 		return View();
 	}
 
 	public IActionResult Create()
 	{
+		//ViewBag.Shared = "Master";
 		ViewBag.PageTitle = "Master Create";
 		ResponseViewModel<MasterViewModel> response = _masterService.CreateNewMaster();
 		return View(response.ResponseData);
