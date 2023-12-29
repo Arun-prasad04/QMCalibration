@@ -199,14 +199,15 @@
                                             {
                                                 if (department.Id == Model.DepartId)
                                                 {
-                                                    <option value="@department.Id" selected="selected">@department.Name</option>
+                                                    <option value="@department.Id" selected="selected">@department.SubSectionCode</option>
                                                 }
                                                 else
                                                 {
-                                                    <option value="@department.Id">@department.Name</option>
+                                                    <option value="@department.Id">@department.SubSectionCode</option>
                                                 }
                                                 }
                                             }
+
                                             @* else
                                             {
                                                 <option class="trn" selected="true" value="">--Select Master Department--</option>
@@ -280,7 +281,7 @@
                                 <div class="form-group">
                                     <label for="CalibFreq" class="required trn">Calibration Frequency</label>
                                     <select id="CalibFreqMaster" name="CalibFreqId" class="form-control">
-                                        <option value="">--Select Calibration Frequency --</option>
+                                        <option value="0">--Select Calibration Frequency --</option>
 
                                         @foreach (var freq in @Model.CalibrationFreq)
                                         {

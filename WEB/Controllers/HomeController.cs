@@ -195,7 +195,7 @@ public class HomeController : BaseController
 			}
 			return Json(ObservationType);
 		}
-		public IActionResult DepartmentTranslate()
+	public IActionResult DepartmentTranslate()
 		{
 			int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 			int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
@@ -230,7 +230,7 @@ public class HomeController : BaseController
 
 		}
 
-		public IActionResult LoadRole()
+	public IActionResult LoadRole()
 		{
 			int LoggedId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 
@@ -242,8 +242,8 @@ public class HomeController : BaseController
 		}
 	public IActionResult MasterDepartmentTranslate()
 	{
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		//int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		List<DepartmentViewModel> DepartmentList;		
 		CMTDL _cmtdl = new CMTDL(_configuration);		
 		DepartmentList = _cmtdl.GetMasterDepartmentSubSection();	

@@ -18,7 +18,8 @@ public class DepartmentController : BaseController
     }
     public IActionResult Index()
     {
-        ViewBag.PageTitle="Department List";
+		ViewBag.Shared = "Department";
+		ViewBag.PageTitle="Department List";
         ViewBag.ResponseCode=TempData["ResponseCode"];
         ViewBag.ResponseMessage=TempData["ResponseMessage"];
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
@@ -66,8 +67,6 @@ public class DepartmentController : BaseController
 
       ResponseViewModel<DepartmentViewModel>response= _departmentService.GetDepartmentById(departmentId);
         ViewBag.Location = response.ResponseData.locationList;
-		
-
 		return View("Create",response.ResponseData);
 
     }

@@ -8,6 +8,6 @@
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedOn { get; set; }
 		public bool? IsActive { get; set; }
-		//public virtual List<Department> DepartmentModel { get; set; }
+		
 	}
 }
