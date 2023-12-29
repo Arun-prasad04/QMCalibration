@@ -216,10 +216,10 @@ namespace CMT.DATAMODELS
             .WithMany(b => b.Master)
             .HasForeignKey(p => p.CalibFreqId);
 
-			modelBuilder.Entity<Master>()
-		   .HasOne(p => p.DepartmentModel)
-		   .WithMany(b => b.MasterModel)
-		   .HasForeignKey(p => p.DepartmentId);
+			//modelBuilder.Entity<Master>()
+		 //  .HasOne(p => p.DepartmentModel)
+		 //  .WithMany(b => b.MasterModel)
+		 //  .HasForeignKey(p => p.DepartmentId);
 
 			modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.MeasuedValue).HasColumnType("decimal(18, 6)");
             modelBuilder.Entity<ObsGeneralMeasuredValues>().Property(x => x.Trial1).HasColumnType("decimal(18, 6)");

@@ -85,7 +85,7 @@
 						<tbody>
 
 							@foreach (var item in Model)
-							{
+							{                                                             
 								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
 								{
 
@@ -187,6 +187,7 @@
 									</tr>
 
                             }
+                                
                             }
                             
                         </tbody>
@@ -213,9 +214,9 @@
 <script>
 
     $(function () {
-        $('#example1').dataTable({});
+        
         $('#example1').dataTable({
-            "bDestroy": true,
+            "bDestroy": true,           
             "createdRow": function (row, data, dataIndex) {
                 console.log(data);
                 var date = data[8].substring(0, 2);
@@ -240,7 +241,7 @@
             }
         });
         var oTable = $('#example1').dataTable({
-            stateSave: true,
+            stateSave: true,         
             "bDestroy": true,
             "pageLength": 100,
             'columnDefs': [{
