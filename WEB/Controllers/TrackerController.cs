@@ -79,52 +79,91 @@ public class TrackerController : BaseController
 		string SessionLang = base.SessionGetString("Language");
 		//ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
 		//ViewBag.MasterData = masterResponse.ResponseDataList;
-		//ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+		ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList1(userRoleId, userId);
 
-		//if (reqType == 1 && response.ResponseDataList != null)
-		//{
-		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
-		//}
-		//else if (reqType == 2 && response.ResponseDataList != null)
-		//{
-		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
-		//}
-		//else if (reqType == 3 && response.ResponseDataList != null)
-		//{
-		//	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
-		//}
-		//else
-		//{
-		//	return View(response.ResponseDataList);
-		//}
+		if (reqType == 1 && response.ResponseDataList != null)
+		{
+			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
+		}
+		else if (reqType == 2 && response.ResponseDataList != null)
+		{
+			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+		}
+		else if (reqType == 3 && response.ResponseDataList != null)
+		{
+			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+		}
+		else
+		{
+			return View(response.ResponseDataList);
+		}
 		return View();
     }
-    public IActionResult GetAllRequestList(int reqType)
-	{
-		//int reqType = 4;
+
+    public JsonResult GetAllRequestList(DataTableParameters dparam)
+    {
+        var TotalCount = 0;
+
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+        ResponseViewModel<RequestViewModel> response;
+        string Search = string.Empty;
+        string Reqtype = ViewBag.ReqType;
+        if (Reqtype == null)
+        {
+            Reqtype = "4";
 
-        if (reqType == 1 && response.ResponseDataList != null)
-        {
-            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
         }
-        else if (reqType == 2 && response.ResponseDataList != null)
+        List<RequestViewModel> ins = new List<RequestViewModel>();
+        response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype);
+
+        if (response.ResponseDataList.Count > 0)
         {
-            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+            TotalCount = (Int32)response.ResponseDataList[0].TotalCount;
         }
-        else if (reqType == 3 && response.ResponseDataList != null)
+        //      }
+        int pageNo = 1;
+        if (dparam.iDisplayStart >= dparam.iDisplayLength)
         {
-            return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+
+            pageNo = (dparam.iDisplayStart / dparam.iDisplayLength) + 1;
         }
-        else
+       
+        return Json(new
         {
-            return Json(response.ResponseDataList);
-        }
+            dparam.sEcho,
+            iTotalRecords = response.ResponseDataList.Count,
+            iTotalDisplayRecords = TotalCount,
+            aaData = response.ResponseDataList
+        });
+        
     }
-	public IActionResult GetRequestById(int requestId)
+    //   public IActionResult GetAllRequestList(int reqType)
+    //{
+    //	//int reqType = 4;
+    //       int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+    //       int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+    //	//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+    //	ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId);
+
+    //       if (reqType == 1 && response.ResponseDataList != null)
+    //       {
+    //           return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
+    //       }
+    //       else if (reqType == 2 && response.ResponseDataList != null)
+    //       {
+    //           return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+    //       }
+    //       else if (reqType == 3 && response.ResponseDataList != null)
+    //       {
+    //           return Json(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+    //       }
+    //       else
+    //       {
+    //           return Json(response.ResponseDataList);
+    //       }
+    //   }
+    public IActionResult GetRequestById(int requestId)
 	{
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
 		return Json(response.ResponseData);
