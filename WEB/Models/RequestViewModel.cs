@@ -115,6 +115,7 @@ public partial class RequestViewModel
 	public DateTime? ReqStartDate { get; set; }
 
     public List<IdNoModel> IdNoList { get; set; }
+    public int? TotalCount { get; set; }
 }
 public class UploadFile
     {

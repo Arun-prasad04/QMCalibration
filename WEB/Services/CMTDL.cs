@@ -739,7 +739,7 @@ namespace WEB.Services
         }
 
         //GetRequestList
-        public DataSet GetRequestList(int userid, int userroleid)
+        public DataSet GetRequestList1(int userid, int userroleid)
         {
 
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
@@ -748,6 +748,30 @@ namespace WEB.Services
             cmd.Parameters.AddWithValue("@userid", userid);
             cmd.Parameters.AddWithValue("@userroleid", userroleid);
             //cmd.Parameters.AddWithValue("@deptid", deptid);
+            //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+
+            return dsResults;
+        }
+        //GetRequestList
+        public DataSet GetRequestList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string ReqType)
+        {
+            // string sSearch = Search.Equals(null) ?string.Empty:Search;
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("GetRequestList");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@userid", userid);
+            cmd.Parameters.AddWithValue("@userroleid", userroleid);
+            cmd.Parameters.AddWithValue("@Startingrow", Startingrow);
+            cmd.Parameters.AddWithValue("@Endingrow", Endingrow);
+            cmd.Parameters.AddWithValue("@Search", Search);
+            cmd.Parameters.AddWithValue("@ReqType", ReqType);
             //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
             SqlConnection sqlConn = new SqlConnection(connectionString);
             DataSet dsResults = new DataSet();

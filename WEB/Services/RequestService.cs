@@ -50,15 +50,241 @@ public class RequestService : IRequestService
 									  .ToList();
 		return templateObservation;
 	}
+    public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType)
+    {
+        try
+        {
 
-	public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId)
+
+            //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+            List<RequestViewModel> RequestList = new List<RequestViewModel>();
+            CMTDL _cmtdl = new CMTDL(_configuration);
+            if (Search == null)
+            { Search = string.Empty; }
+            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType);
+            //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+            var TotalCount = 0;
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    RequestViewModel REQlist = new RequestViewModel
+                    {
+                        Id = Convert.ToInt32(dr["RequestId"]),
+                        ReqestNo = dr["ReqestNo"].ToString(),
+                        InstrumentName = dr["InstrumentName"].ToString(),
+                        InstrumentId = Convert.ToInt32(dr["InstruementId"]),
+                        InstrumentIdNo = dr["IdNo"].ToString(),
+                        Range = dr["Range"].ToString(),
+                        InstrumentSerialNumber = dr["SlNo"].ToString(),
+                        RequestDate = Convert.ToDateTime(dr["RequestDate"]),
+                        TypeOfRequest = Convert.ToInt32(dr["TypeOfReqest"]),
+                        Status = Convert.ToInt16(dr["StatusId"]),
+                        UserDept = Convert.ToInt16(dr["UserDept"]),
+                        CertificationTemplate = Convert.ToInt16(dr["CertificationTemplate"]),
+                        UserRoleId = userRoleId,
+                        SubSectionCode = dr["SubSectionCode"].ToString(),
+                        TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+                        ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
+                        LC = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]).ToShortDateString(),
+                    };
+                    RequestList.Add(REQlist);
+
+                }
+            }
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+            {
+                TotalCount = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+                RequestList.ForEach(x => x.TotalCount = Convert.ToInt32(TotalCount));
+            }
+            #region MyRegion
+            /*
+
+            if (userRoleId == 2)
+            {
+                RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking()
+                .Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1)).Include(I => I.RequestStatusModel)
+                .Select(s => new RequestViewModel()
+                {
+                    Id = s.Id,
+                    ReqestNo = s.ReqestNo,
+                    InstrumentName = s.InstrumentModel.InstrumentName,
+                    InstrumentIdNo = s.InstrumentModel.IdNo,
+                    InstrumentId = s.InstrumentId,
+                    RequestDate = s.RequestDate,
+                    TypeOfRequest = s.TypeOfReqest,
+                    Range = s.InstrumentModel.Range,
+                    InstrumentSerialNumber = s.InstrumentModel.SlNo,
+                    //CalibDate = s.InstrumentModel.CalibDate,
+                    //DueDate = s.InstrumentModel.DueDate,
+                    UserDept = s.InstrumentModel.UserDept,
+                    //SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+                    //RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                    Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
+                    //ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
+                    //ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
+                    //RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                    //Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
+                    Status = s.StatusId,
+                    //ReceivedBy = s.ReceivedBy,
+                    //InstrumentCondition = s.InstrumentCondition,
+                    //Feasiblity = s.Feasiblity,
+                    //TentativeCompletionDate = s.TentativeCompletionDate,
+                    //ReceivedDate = s.ReceivedDate,
+                    //IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+                    //ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+                    //ObservationType = s.InstrumentModel.ObservationType,
+                    //MUTemplate = s.InstrumentModel.MUTemplate,
+                    CertificationTemplate = s.InstrumentModel.CertificationTemplate,
+                    UserRoleId = userRoleId,
+                    LabResult = s.Result
+                }).ToList();
+            }
+            else if (userRoleId == 4)
+            {
+                RequestList = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(x => x.StatusId== (int)EnumRequestStatus.Approved)
+                .Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
+                .Include(I => I.RequestStatusModel).Where(t => t.StatusId == (int)EnumRequestStatus.Approved)
+                .Select(s => new RequestViewModel()
+                {
+                    Id = s.Id,
+                    ReqestNo = s.ReqestNo,
+                    InstrumentName = s.InstrumentModel.InstrumentName,
+                    InstrumentIdNo = s.InstrumentModel.IdNo,
+                    InstrumentId = s.InstrumentId,
+                    RequestDate = s.RequestDate,
+                    TypeOfRequest = s.TypeOfReqest,
+                    Range = s.InstrumentModel.Range,
+                    InstrumentSerialNumber = s.InstrumentModel.SlNo,
+                    //CalibDate = s.InstrumentModel.CalibDate,
+                    //DueDate = s.InstrumentModel.DueDate,
+                    UserDept = s.InstrumentModel.UserDept,
+                    //SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+                    //RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                    Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.Comment).FirstOrDefault(),
+      //              ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
+      //              ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.CreatedOn).FirstOrDefault(),
+      //              RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                     //Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId ).FirstOrDefault(),
+                    //Status = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved).Select(S => S.StatusId).FirstOrDefault(),
+                    Status = s.StatusId,
+                    //ReceivedBy = s.ReceivedBy,
+                    //InstrumentCondition = s.InstrumentCondition,
+                    //Feasiblity = s.Feasiblity,
+                    //TentativeCompletionDate = s.TentativeCompletionDate,
+                    //ReceivedDate = s.ReceivedDate,
+                    //IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+                    //ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+                    //ObservationType = s.InstrumentModel.ObservationType,
+                    //MUTemplate = s.InstrumentModel.MUTemplate,
+                    CertificationTemplate = s.InstrumentModel.CertificationTemplate,
+                    UserRoleId = userRoleId,
+                    LabResult = s.Result
+                }).ToList();
+            }
+            else
+            {
+                RequestList = _unitOfWork.Repository<Request>()
+                                       .GetQueryAsNoTracking(x => x.CreatedBy == userId || x.LabL4 == userId || x.UserL4 == userId)
+                                       .Include(I => I.InstrumentModel).Where(t => t.InstrumentModel.ActiveStatus == Convert.ToBoolean(1))
+                                       .Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
+                                       {
+                                           Id = s.Id,
+                                           ReqestNo = s.ReqestNo,
+                                           InstrumentName = s.InstrumentModel.InstrumentName,
+                                           InstrumentIdNo = s.InstrumentModel.IdNo,
+                                           InstrumentId = s.InstrumentId,
+                                           RequestDate = s.RequestDate,
+                                           TypeOfRequest = s.TypeOfReqest,
+                                           Range = s.InstrumentModel.Range,
+                                           InstrumentSerialNumber = s.InstrumentModel.SlNo,
+                                           //CalibDate = s.InstrumentModel.CalibDate,
+                                           //DueDate = s.InstrumentModel.DueDate,
+                                           UserDept = s.InstrumentModel.UserDept,
+                                           //SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
+                                           //RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                                           Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
+                                           //ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
+                                           //ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
+                                           //RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
+                                           //Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
+                                           Status = s.StatusId,
+             //                              ReceivedBy = s.ReceivedBy,
+                                           //InstrumentCondition = s.InstrumentCondition,
+                                           //Feasiblity = s.Feasiblity,
+                                           //TentativeCompletionDate = s.TentativeCompletionDate,
+                                           //ReceivedDate = s.ReceivedDate,
+                                           //IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
+                                           //ObservationTemplate = s.InstrumentModel.ObservationTemplate,
+                                           //ObservationType = s.InstrumentModel.ObservationType,
+                                           //MUTemplate = s.InstrumentModel.MUTemplate,
+                                           CertificationTemplate = s.InstrumentModel.CertificationTemplate,
+                                           UserRoleId = userRoleId,
+                                           LabResult = s.Result
+                                       }).ToList();
+            }
+            */
+            #endregion
+            if (RequestList.Any())
+            {
+                var templateObservationList = GetTemplateObservations();
+                int? reviewStatus = 0;
+                int? ExObsreviewStatus = 0;
+                foreach (var data in RequestList)
+                {
+                    var observationData = templateObservationList.Where(x => x.InstrumentId == data.InstrumentId
+                                                                      && x.RequestId == data.Id)
+                                                           .FirstOrDefault();
+                    if (observationData != null)
+                    {
+                        reviewStatus = observationData.ReviewStatus;
+                        ExObsreviewStatus = observationData.ExternalObsStatus;
+                    }
+                    else
+                    {
+                        reviewStatus = 0;
+                        ExObsreviewStatus = 0;
+                    }
+
+
+                    data.TemplateReviewStatus = reviewStatus == null ? 0 : reviewStatus;
+                    data.ExObsTemplateReviewStatus = ExObsreviewStatus == null ? 0 : ExObsreviewStatus;
+
+                }
+            }
+
+            return new ResponseViewModel<RequestViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = RequestList
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("RequestService - GetAllRequestList Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<RequestViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseServiceMethod = "Request",
+                ResponseService = "GetAllRequestList"
+            };
+        }
+    }
+    public ResponseViewModel<RequestViewModel> GetAllRequestList1(int userRoleId, int userId)
 	{
 		try
 		{			
 			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 			List<RequestViewModel> RequestList = new List<RequestViewModel>();
             CMTDL _cmtdl = new CMTDL(_configuration);
-            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId);
+            DataSet ds = _cmtdl.GetRequestList1(userId, userRoleId);
             //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
 			{
