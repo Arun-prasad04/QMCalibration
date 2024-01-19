@@ -7,6 +7,7 @@ using WEB.Models;
 using WEB.Services;
 using WEB.Services.Interface;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using System;
 
 namespace WEB.Controllers;
 
@@ -70,48 +71,66 @@ public class TrackerController : BaseController
 		ResponseViewModel<ExternalRequestViewModel> response = _externalRequestService.SubmitLABExternalRequest(externalRequestId, Result, userId);
 		return Json(response.ResponseData);
 	}
-	public IActionResult Request(int? reqType)
+	public IActionResult Request(string? reqType)
 	{
-		// ViewBag.PageTitle = "Request";
-		ViewBag.ReqType = reqType;
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        //string parameter = HttpContext.Request.Query["reqType"].ToString();
+       // string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("param1");
+       // ViewBag.PageTitle = HttpContext.Request.Query["reqType"].ToString();
+
+        //ViewBag.ReqType = reqType; 
+		//int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string SessionLang = base.SessionGetString("Language");
+		//int Startingrow = 0;
+		//int Endingrow = 0;
+		//String Search = "";
 		//ResponseViewModel<MasterViewModel> masterResponse = _masterService.GetAllMasterList(SessionLang);
 		//ViewBag.MasterData = masterResponse.ResponseDataList;
-		ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList1(userRoleId, userId);
+		//ResponseViewModel<RequestViewModel> response = _requestService.GetAllRequestList(userRoleId, userId, Startingrow, Endingrow, Search, reqType);
 
-		if (reqType == 1 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
-		}
-		else if (reqType == 2 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
-		}
-		else if (reqType == 3 && response.ResponseDataList != null)
-		{
-			return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
-		}
-		else
-		{
-			return View(response.ResponseDataList);
-		}
-		return View();
+        //if (reqType == 1 && response.ResponseDataList != null)
+        //{
+        //	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 1).ToList());
+        //}
+        //else if (reqType == 2 && response.ResponseDataList != null)
+        //{
+        //	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 2).ToList());
+        //}
+        //else if (reqType == 3 && response.ResponseDataList != null)
+        //{
+        //	return View(response.ResponseDataList.Where(W => W.TypeOfRequest == 3).ToList());
+        //}
+        //else
+        //{
+        //	return View(response.ResponseDataList);
+        //}
+        return View();
+       // return View(response.ResponseDataList);
+
     }
 
-    public JsonResult GetAllRequestList(DataTableParameters dparam)
+    public JsonResult GetAllRequestList(DataTableParameters dparam,int reqType)
     {
         var TotalCount = 0;
-
+        string Reqtype = string.Empty;
+        //var RequestType = 0;
+        //RequestType = dparam.reqType;
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
         ResponseViewModel<RequestViewModel> response;
-        string Search = string.Empty;
-        string Reqtype = ViewBag.ReqType;
-        if (Reqtype == null)
+       // string Search = string.Empty;
+
+        //string parameter = RouteData.Values["reqType"].ToString();
+      
+        // string Reqtype = HttpContext.Request.Query["reqType"].ToString();
+        if (dparam.reqType == null || dparam.reqType == 0)
         {
             Reqtype = "4";
+
+        }
+        else
+        {
+            Reqtype = dparam.reqType.ToString();
 
         }
         List<RequestViewModel> ins = new List<RequestViewModel>();
@@ -214,7 +233,7 @@ public class TrackerController : BaseController
 
 	public IActionResult SubmitDepartmentRequestVisual(int requestId, string Result, string CollectedBy, string InstrumentIdNo, int CalibFreq)
 	{
-		return Json(true);
+		//return Json(true);
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		ResponseViewModel<RequestViewModel> response = _requestService.SubmitDepartmentRequestVisual(requestId, Result, userId, CollectedBy, InstrumentIdNo, CalibFreq);
 		//return RedirectToAction("Index", "Home"); 

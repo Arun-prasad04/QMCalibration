@@ -3188,16 +3188,16 @@ function FileUpload(filedata, filename, filesize) {
 function getrequest(type) {
 
     if ($('input[name="ReqTracker"]:checked').val() == 'New') {
-        window.location.href = '../Tracker/Request?reqType=' + type + '';
+        window.location.href = '../Tracker/GetAllRequestList?reqType=' + type + '';
         //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'Regular') {
-        window.location.href = '../Tracker/Request?reqType=' + type + '';
+        window.location.href = '../Tracker/GetAllRequestList?reqType=' + type + '';
         //GetAllRequest(type) 
     } else if ($('input[name="ReqTracker"]:checked').val() == 'ReCalibration') {
         window.location.href = '../Tracker/Request?reqType=' + type + '';
         //GetAllRequest(type) 
     } else {
-        window.location.href = '../Tracker/Request?reqType=' + type + '';
+        window.location.href = '../Tracker/GetAllRequestList?reqType=' + type + '';
         //GetAllRequest(type) 
     }
 }
@@ -3249,9 +3249,9 @@ function DueForCalibrationInstruments_Old() {
 }
 
 function InsertRequestList() {
-    debugger;
+   // debugger;
     var Request = new Array();
-    $('#dvload').show();
+   // $('#dvload').show();
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
@@ -3259,23 +3259,23 @@ function InsertRequestList() {
             TypeValue: $(this).closest('tr').find("td:eq(11) input[type='hidden']").val(),
             RequestId: $(this).closest('tr').find('.clsRequestId').val(),
             DueDate: $(this).closest('tr').find('.clsDueDate').val(),
-            ReplacementStartDate: $(this).closest('tr').find('.clsReplacementStartDate').val(),
+            //ReplacementStartDate: $(this).closest('tr').find('.clsReplacementStartDate').val(),
         } 
         
         Request.push(UserView);
     });
-    
+     console.log("Request");
     console.log(Request);
    
     $.ajax({
-        url: '../Instrument/RegularRecaliRequest',
+       url: '../Instrument/RegularRecaliRequest',
         type: 'POST',
         data: { userViewModelList: Request },
-        dataType: "json",
+       dataType: "json",
     }).done(function (resultObject) {
-        //showSuccess("Data Saved Successfully");
-        $('#dvload').hide();
-        window.location.href = '../Instrument/Index';
+        showSuccess("Data Saved Successfully");
+       //$('#dvload').hide();
+       window.location.href = '../Instrument/Index';
     });
 }
 function DueInstrumentList() {

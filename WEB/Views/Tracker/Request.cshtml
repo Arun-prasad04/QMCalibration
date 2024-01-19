@@ -27,13 +27,13 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <label class="trn">OverAll</label>
-                                @if (ViewBag.reqType == 4)
+                                @if (ViewBag.reqType == "4")
                                 {
-                                    <input type="radio" name="ReqTracker" value="OverAll" onclick="getrequest(5)" checked="true">
+                                    <input type="radio" id="chkOverAll" name="ReqTracker" value="OverAll" onclick="BindTable(4)" checked>
                                 }
                                 else
                                 {
-                                    <input type="radio" name="ReqTracker" value="OverAll" onclick="getrequest(5)">
+                                    <input type="radio" id="chkOverAll" name="ReqTracker" value="OverAll" onclick="BindTable(4)">
                                 }
 
                             </div>
@@ -42,13 +42,13 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <label class="trn">New Request</label>
-                                @if (ViewBag.reqType == 1)
+                                @if (ViewBag.reqType == "1")
                                 {
-                                    <input type="radio" name="ReqTracker" value="New" onclick="getrequest(1)" checked="true">
+                                    <input type="radio" id="chkNew" name="ReqTracker" value="New" onclick="BindTable(1)" checked="true">
                                 }
                                 else
                                 {
-                                    <input type="radio" name="ReqTracker" value="New" onclick="getrequest(1)">
+                                    <input type="radio" id="chkNew" name="ReqTracker" value="New" onclick="BindTable(1)">
                                 }
 
                             </div>
@@ -56,26 +56,26 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="trn">Regular Request</label>
-                                @if (ViewBag.reqType == 2)
+                                @if (ViewBag.reqType == "2")
                                 {
-                                    <input type="radio" name="ReqTracker" value="Regular" onclick="getrequest(2)" checked="true">
+                                    <input type="radio" name="ReqTracker" id="chkRegular" value="Regular" onclick="BindTable(2)" checked="true">
                                 }
                                 else
                                 {
-                                    <input type="radio" name="ReqTracker" value="Regular" onclick="getrequest(2)">
+                                    <input type="radio" name="ReqTracker" id="chkRegular" value="Regular" onclick="BindTable(2)">
                                 }
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="trn">ReCalibration Request</label>
-                                @if (ViewBag.reqType == 3)
+                                @if (ViewBag.reqType == "3")
                                 {
-                                    <input type="radio" name="ReqTracker" value="ReCalibration" onclick="getrequest(3)" checked="true">
+                                    <input type="radio" name="ReqTracker"  id="chkReCalibration" value="ReCalibration" onclick="BindTable(3)" checked="true">
                                 }
                                 else
                                 {
-                                    <input type="radio" name="ReqTracker" value="ReCalibration" onclick="getrequest(3)">
+                                    <input type="radio" name="ReqTracker" id="chkReCalibration" value="ReCalibration" onclick="BindTable(3)">
                                 }
                             </div>
                         </div>
@@ -97,6 +97,48 @@
                                 <th class="trn">Certificate</th>
                                 <th class="trn">Type Of Scope</th>
                             </tr>
+                          @*   <tr class="filter">
+                               
+                                <th class="filtertxt">
+                                    <input id="txrequestno" type="text" class="form-control" />
+                                </th>
+                               
+                                <th class="filtertxt">
+                                    <input id="txClaimno" type="text" class="form-control" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txInwdate" type="text" class="form-control due-date" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txPartno" type="text" class="form-control" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txPartDesc" type="text" class="form-control" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txReturnTp" type="text" class="form-control" />
+                                </th>
+                              
+                                <th class="filtertxt">
+                                    <input id="txGroup" type="text" class="form-control" />
+                                </th>
+                                <th class="filterdrop"></th>
+                                <th class="filtertxt">
+                                    <input id="txLoc" type="text" class="form-control" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txReturnCon" type="text" class="form-control" />
+                                </th>
+                                <th class="filtertxt">
+                                    <input id="txPQRNo" type="text" class="form-control" />
+                                </th>
+
+                                <th class="filtertxt">
+                                    <input id="txPQRNo1" type="text" class="form-control" />
+                                </th>
+
+                            </tr> *@
+
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -123,34 +165,45 @@
 
 
 <script type="text/javascript">
+
+   
     $(function () {
+         $('#example1').dataTable({});
         BindTable();
     });
     var BindTable = function (response) {
+        //reqType=rType;
+        console.log("reqType");
+          console.log(response);
+        var  reqType=response;
         $('#example2').dataTable(
             {
+                "bDestroy": true,
                 "bProcessing": true,
                 "bServerSide": true,
-                // "bInfo": true,
+               // "bFilter": true,
+               // "sDom": "lrtip",
                 "sAjaxSource": '../Tracker/GetAllRequestList',
+                "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType }) },
                 "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
                     $.ajax({
                         type: 'GET',
                         url: sSource,
-                        data: aoData,
+                        data:aoData,
                         success: fnCallback
                     })
-                    //console.log(aoData);
                 },
-
+                 // "fnServerParams": function ( aoData ) {
+                 //     aoData.push( { "name": reqType, "value":reqType } );
+                 // },
                 "aoColumns": [
-
-                    { "data": "reqestNo", "name": "Request No" },
-                    { "data": "lc", "name": "Request Date" },// { "data": "reqDueDate", "name": "Request Date" },
-                    { "data": "subSectionCode", "name": "Sub Section Code" },
-                    { "data": "instrumentName", "name": "Instrument Name" },
-                    { "data": "instrumentIdNo", "name": "Instrument Id" },
-                    { "data": "range", "name": "Range" },
+                    //{ "orderSequence": ["desc", "asc", "asc"] },
+                    { "data": "reqestNo", "name": "Request No"},
+                    { "data": "lc", "name": "Request Date"},// { "data": "reqDueDate", "name": "Request Date" },
+                    { "data": "subSectionCode", "name": "Sub Section Code"},
+                    { "data": "instrumentName", "name": "Instrument Name"},
+                    { "data": "instrumentIdNo", "name": "Instrument Id"},
+                    { "data": "range", "name": "Range"},
 
                     {
                         "render": function (data, type, row, meta) {
@@ -215,9 +268,7 @@
 
                             var tdTest = '';
                             var userRoleId = @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId");
-                            // console.log("userRoleId"+userRoleId);
-                            // console.log(row);//+','+data+','+type+','+meta);
-
+                           
                             if ((userRoleId == 2 || userRoleId == 3 || userRoleId == 4) && (row.status == 27 || row.status == 29 || row.status == 30 || row.status == 31) && row.typeOfEquipment != 'External') {
 
                                 tdTest = '<a href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
@@ -247,40 +298,100 @@
                         }
                     },
 
-                    { "data": "typeOfEquipment", "name": "Type Of Scope" },
+                    { "data": "typeOfEquipment", "name": "Type Of Scope" },//, "sortable": true, "orderable": true
                 ],
+               // "order": [[5, 'asc'], [5, 'desc']],
+                //ordering: true,
+                // columnDefs: [
+                //     { orderable: true, targets: 2 }
+                // ],
+                // "columnDefs": [
+                //    // { "orderSequence": ["asc"], "targets": [1] },
+                //     { "orderSequence": ["desc", "asc", "asc"], "targets": [2] },
+                //   //  { "orderSequence": ["desc"], "targets": [3] }
+                // ],
+            "createdRow": function (row, data, dataIndex) {
+              
+                if (data["reqDueDate"] != null) {
 
+                        //var date = data["reqDueDate"].substring(0, 2);
+                        //var month = data["reqDueDate"].substring(3, 5);
+                        //var year = data["reqDueDate"].substring(6, 10);
+                       // var edate = new Date(year, month - 1, date);
+                        var edate=new Date(data["reqDueDate"]);
+                        var currentdate = new Date();
+                        
+                        if (edate < currentdate) //&& (item.status != 30))
+                        {
+                          
+                            $(row).css('background-color', '#fbefef');
+                        }
+                        else {
+                        
+                        }
+                        }
+                },
+
+                // initComplete: function (index) {
+                //     this.api().columns().every(function (i) {
+                //         var column = this;
+                //         var columnIndex = this.index()
+                //         if (columnIndex == 7) {
+                           
+                //             var select = $('<select id="txStatus"  class="tableheadinput form-control input-sm"><option value="">Select</option></select>')
+                //                 .appendTo($(".filter th:eq(" + columnIndex + ")").empty()).on('change', function () {
+                //                     column
+                //                         .search($(this).val())
+                //                         .draw();
+                //                 });
+
+                //             column.data().unique().sort().each(function (d, j) {
+                //                 if (d != '') {
+                //                     select.append('<option value="' + d + '">' + d + '</option>')
+                //                 }
+                //             });
+                //         }
+
+                //         else {
+
+                       
+
+                //                 $('input', $(".filter th:eq(" + columnIndex + ")")).on('keyup change', function () {
+                //                     if (column.search() !== this.value) {
+
+                //                         column
+                //                             .search(this.value)
+                //                             .draw();
+
+
+                //                     }
+
+
+                //                 });
+                              
+                //         }
+
+                //     });
+
+
+                // },
+                             
                 "pageLength": "100",
+                //order: [3, 'asc','desc'],
+               // "order": [[0, 'asc'], [1, 'asc']],
                 "language": {
                     //"emptyTable": "No record found.",
                     "processing":
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
-
+                 dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
             });
     }
 
 
-            // function binding(selectedValue, Startingrow, Endingrow, Search) {
-
-            //     $('#example2').dataTable({
-
-            //             "ajax":{
-            //                 type: 'POST',
-            //                 url: '../Tracker/GetAllRequestList',
-            //                 dataType: 'json',
-            //             },
-            //             "columns":[
-            //                 {"data":"Request No":"name":"ReqestNo"}
-            //                 {"data":"Request Date":"name":"RequestDate"}
-            //                 {"data":"Sub Section Code":"name":"SubSectionCode"}
-            //                 {"data":"Instrument Name":"name":"InstrumentName"}
-            //                 {"data":"Instrument Id":"name":"IdNo"}
-            //             ],
-            //             "serverside":true,
-            //             "order":[0."asc"],
-
-            //     });
-            // }
+  
 </script>
+  

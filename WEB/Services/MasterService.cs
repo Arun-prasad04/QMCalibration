@@ -56,6 +56,7 @@ public class MasterService : IMasterService
 				PhoneNo = s.SupplierModel.PhoneNo,
 				EmailId = s.SupplierModel.EmailId,
 				MobileNo = s.SupplierModel.MobileNo,
+				EquipmentMasterId= s.EquipmentMasterId,
 				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList()
 			}).ToList();
 			return new ResponseViewModel<MasterViewModel>

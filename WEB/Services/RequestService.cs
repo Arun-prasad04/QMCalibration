@@ -70,23 +70,23 @@ public class RequestService : IRequestService
                 {
                     RequestViewModel REQlist = new RequestViewModel
                     {
-                        Id = Convert.ToInt32(dr["RequestId"]),
-                        ReqestNo = dr["ReqestNo"].ToString(),
-                        InstrumentName = dr["InstrumentName"].ToString(),
-                        InstrumentId = Convert.ToInt32(dr["InstruementId"]),
-                        InstrumentIdNo = dr["IdNo"].ToString(),
-                        Range = dr["Range"].ToString(),
-                        InstrumentSerialNumber = dr["SlNo"].ToString(),
-                        RequestDate = Convert.ToDateTime(dr["RequestDate"]),
-                        TypeOfRequest = Convert.ToInt32(dr["TypeOfReqest"]),
-                        Status = Convert.ToInt16(dr["StatusId"]),
-                        UserDept = Convert.ToInt16(dr["UserDept"]),
-                        CertificationTemplate = Convert.ToInt16(dr["CertificationTemplate"]),
+                        Id = dr["RequestId"].Equals(DBNull.Value) ? 0 : Convert.ToInt32(dr["RequestId"]),
+                        ReqestNo = dr["ReqestNo"].Equals(DBNull.Value) ? null : dr["ReqestNo"].ToString(),
+                        InstrumentName = dr["InstrumentName"].Equals(DBNull.Value) ? null : dr["InstrumentName"].ToString(),
+                        InstrumentId = dr["InstruementId"].Equals(DBNull.Value) ? 0 : Convert.ToInt32(dr["InstruementId"]),
+                        InstrumentIdNo = dr["IdNo"].Equals(DBNull.Value) ? null : dr["IdNo"].ToString(),
+                        Range = dr["Range"].Equals(DBNull.Value) ? null : dr["Range"].ToString(),
+                        InstrumentSerialNumber = dr["SlNo"].Equals(DBNull.Value) ? null : dr["SlNo"].ToString(),
+                        //RequestDate = Convert.ToDateTime(dr["RequestDate"]),
+                        TypeOfRequest = dr["TypeOfReqest"].Equals(DBNull.Value) ? 0 : Convert.ToInt32(dr["TypeOfReqest"]),
+                        Status = dr["StatusId"].Equals(DBNull.Value) ? 0 : Convert.ToInt16(dr["StatusId"]),
+                        UserDept = dr["UserDept"].Equals(DBNull.Value) ? 0 : Convert.ToInt16(dr["UserDept"]),
+                        CertificationTemplate = dr["CertificationTemplate"].Equals(DBNull.Value) ? 0 : Convert.ToInt16(dr["CertificationTemplate"]),
                         UserRoleId = userRoleId,
-                        SubSectionCode = dr["SubSectionCode"].ToString(),
-                        TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+                        SubSectionCode = dr["SubSectionCode"].Equals(DBNull.Value) ? null : dr["SubSectionCode"].ToString(),
+                        TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
                         ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
-                        LC = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]).ToShortDateString(),
+                        LC = dr["RequestDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["RequestDate"]).ToShortDateString(),
                     };
                     RequestList.Add(REQlist);
 
@@ -2536,7 +2536,7 @@ public class RequestService : IRequestService
 			data.Append(string.Format("<EmailServiceNo>{0}</EmailServiceNo>", ObjEmailseriaLNo));
 			data.Append(string.Format("<DueDate>{0}</DueDate>",sd.DueDate.ToString()));//ReplacementStartDate
 		//	data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
-			data.Append(string.Format("<ReplacementStartDate>{0}</ReplacementStartDate>", sd.ReplacementStartDate.ToString()));
+			//data.Append(string.Format("<ReplacementStartDate>{0}</ReplacementStartDate>", sd.ReplacementStartDate.ToString()));
 			data.Append("</RequestList>");
         }
         data.Append("</Root>");

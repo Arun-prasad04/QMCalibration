@@ -4,7 +4,9 @@ using WEB.Models;
 namespace WEB.Services.Interface;
 public interface IInstrumentService
 {
-    ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId);
+    ResponseViewModel<InstrumentViewModel> GetAllInstrumentList1(int userId, int userRoleId);
+
+    ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search);
     ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId);
     int GetObservationTemplateId(int instrumentId, string Type);
     ResponseViewModel<InstrumentViewModel> InsertInstrument(InstrumentViewModel instrument);

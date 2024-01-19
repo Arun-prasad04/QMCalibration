@@ -20,29 +20,30 @@
         public List<String> iSortDir { get; set; }
 
         public string sEcho { get; set; }
+        public int reqType { get; set; }
 
 
     //    public DataTableParameters()
     //    {
 
-    //        sColumnName = new List<string>();
-    //        bSearchable = new List<bool>();
-    //        bSortable = new List<bool>();
-    //        sSearchValue = new List<string>();
-    //        iSortDir = new List<string>();
-    //        iSortCol= new List<int>();
+        //        sColumnName = new List<string>();
+        //        bSearchable = new List<bool>();
+        //        bSortable = new List<bool>();
+        //        sSearchValue = new List<string>();
+        //        iSortDir = new List<string>();
+        //        iSortCol= new List<int>();
 
-    //    }
+        //    }
 
-    //    public DataTableParameters(int iColumns)
-    //    {
-    //        this.iColumns = iColumns;
-    //        sColumnName= new List<string>(iColumns);
-    //        bSearchable = new List<bool>(iColumns);
-    //        bSortable = new List<bool>(iColumns);
-    //        sSearchValue = new List<string>(iColumns);
-    //        iSortDir= new List<string>(iColumns);
-    //        iSortCol= new List<int>(iColumns);
-    //}
+        //    public DataTableParameters(int iColumns)
+        //    {
+        //        this.iColumns = iColumns;
+        //        sColumnName= new List<string>(iColumns);
+        //        bSearchable = new List<bool>(iColumns);
+        //        bSortable = new List<bool>(iColumns);
+        //        sSearchValue = new List<string>(iColumns);
+        //        iSortDir= new List<string>(iColumns);
+        //        iSortCol= new List<int>(iColumns);
+        //}
     }
 }

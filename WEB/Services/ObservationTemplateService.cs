@@ -4481,12 +4481,12 @@ public class ObservationTemplateService : IObservationTemplateService
 
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 					ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); 
-					ReqstData.ReqStartDate = DateTime.Now;
+					//ReqstData.ReqStartDate = DateTime.Now;
 				}
 				else
 				{
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
-					ReqstData.ReqStartDate = DateTime.Now;
+					//ReqstData.ReqStartDate = DateTime.Now;
 				}
 			}
 			else
@@ -4499,22 +4499,23 @@ public class ObservationTemplateService : IObservationTemplateService
 					if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "No")
 					{
 						ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); ;
-						ReqstData.ReqStartDate = DateTime.Now;
+						//ReqstData.ReqStartDate = DateTime.Now;
 					}
 					else if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
 					{
 						ReqstData.ReqDueDate = null;
-						ReqstData.ReqStartDate = null;
-					}
+						//ReqstData.ReqStartDate = DateTime.Now;//null;
+                    }
 
 				}
 				else
 				{
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
-					ReqstData.ReqStartDate = DateTime.Now;
+					//ReqstData.ReqStartDate = DateTime.Now;
 					//ReqstData.ReqDueDate = DueDate;
 				}
 			}
+            ReqstData.ReqStartDate = DateTime.Now;
             ReqstData.ReceivedDate = DateTime.Now;
             _unitOfWork.Repository<Request>().Update(ReqstData);
 			_unitOfWork.SaveChanges();

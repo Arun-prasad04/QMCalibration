@@ -41,14 +41,14 @@ public class InstrumentService : IInstrumentService
         //_cmtdl = cmtdl;
     }
 
-	public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId)
+	public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList1(int userId, int userRoleId)
 	{
 		try
 		{
 			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 			List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
 			CMTDL _cmtdl = new CMTDL(_configuration);
-			DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId);
+			DataSet ds = _cmtdl.GetInstruentList1(userId, userRoleId);
 			//List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
 			if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
 			{
@@ -57,13 +57,13 @@ public class InstrumentService : IInstrumentService
 					InstrumentViewModel inst = new InstrumentViewModel
 					{
 						Id = Convert.ToInt32(dr["Id"]),
-						InstrumentName = dr["InstrumentName"].ToString(),
-						SlNo = dr["SlNo"].ToString(),
-						IdNo = dr["IdNo"].ToString(),
-						Range = dr["Range"].ToString(),
-						//LC = dr["LC"].ToString(),
-						//CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
-						CalibDate = Convert.ToDateTime(dr["CalibDate"]),
+						InstrumentName = dr["InstrumentName"].Equals(DBNull.Value) ? null : dr["InstrumentName"].ToString(),
+						SlNo = dr["SlNo"].Equals(DBNull.Value) ? null : dr["SlNo"].ToString(),
+                        IdNo = dr["IdNo"].Equals(DBNull.Value) ? null : dr["IdNo"].ToString(),
+						Range = dr["Range"].Equals(DBNull.Value) ? null : dr["Range"].ToString(),
+                        //LC = dr["LC"].ToString(),
+                        //CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+                        CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
 						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
 						//Make = dr["Make"].ToString(),
 						//CalibSource = dr["CalibSource"].ToString(),
@@ -76,12 +76,13 @@ public class InstrumentService : IInstrumentService
                         //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
                         //NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
                         DepartmentName = dr["deptName"].ToString(),						
-						RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						RequestStatus = dr["RequestStatus"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["RequestStatus"]),
 						UserRoleId = userRoleId,
-						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
-						ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+						TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
+                        
+						ToolInventoryStatus = dr["ToolInventoryStatus"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ToolInventoryStatus"]),
 						SubSecCode = dr["SubSectionCode"].ToString(),
-                        ToolInventory = dr["ToolInventory"].ToString(),
+                        ToolInventory = dr["ToolInventory"].Equals(DBNull.Value) ? null : dr["ToolInventory"].ToString(),
 						//ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
 						//backcolor = dr["backcolor"].ToString(),
 						ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
@@ -211,7 +212,186 @@ public class InstrumentService : IInstrumentService
         }
     }
     //public static ConnectionStringSettings sql_cs = ConfigurationManager.ConnectionStrings["dbConnectionString"];
+    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search)
+    {
+        try
+        {
+            //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+            List<InstrumentViewModel> instrumentList = new List<InstrumentViewModel>();
+            CMTDL _cmtdl = new CMTDL(_configuration);
+            if (Search == null)
+            { Search = string.Empty; }
+            //if (Startingrow == 0)
+            //{ Startingrow = 1; }
+            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId, Startingrow, Endingrow, Search);
+            //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+            var TotalCount = 0;
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    InstrumentViewModel inst = new InstrumentViewModel
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        InstrumentName = dr["InstrumentName"].ToString(),
+                        SlNo = dr["SlNo"].ToString(),
+                        IdNo = dr["IdNo"].ToString(),
+                        Range = dr["Range"].ToString(),
+                //LC = dr["LC"].ToString(),
+                //CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+                //CalibDate = Convert.ToDateTime(dr["CalibDate"]),
+                        DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
+                        sCalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]).ToShortDateString(),
+                        sDueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]).ToShortDateString(),
+                //Make = dr["Make"].ToString(),
+                //CalibSource = dr["CalibSource"].ToString(),
+                //StandardReffered = dr["StandardReffered"].ToString(),
+                //Remarks = dr["Remarks"].ToString(),
+                        Status = Convert.ToInt16(dr["Status"]),
+                        RequestId = Convert.ToInt32(dr["RequestId"]),
+                    //FileList = 
+                    //CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
+                    //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
+                    //NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
+                        DepartmentName = dr["deptName"].ToString(),
+                        RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+                        UserRoleId = userRoleId,
+                        TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+                        ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+                        SubSecCode = dr["SubSectionCode"].ToString(),
+                        ToolInventory = dr["ToolInventory"].Equals(DBNull.Value) ? null : dr["ToolInventory"].ToString(),
+                        //ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
+                        //backcolor = dr["backcolor"].ToString(),
+                        ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
+                    };
+                    instrumentList.Add(inst);
 
+                }
+            }
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+            {
+                TotalCount = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+                instrumentList.ForEach(x => x.TotalCount = Convert.ToInt32(TotalCount));
+            }
+            #region
+            /*
+			//if (userRoleId == 2 || userRoleId == 4)
+			if (userRoleId == 2 || labUserById.DepartmentId == 66)
+			{
+
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(I => I.RequestModel)
+					.Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+					{
+						Id = s.Id,
+						InstrumentName = s.InstrumentName,
+						SlNo = s.SlNo,
+						IdNo = s.IdNo,
+						Range = s.Range,
+						LC = s.LC,
+						CalibFreq = s.CalibFreq,
+						CalibDate = s.CalibDate,
+						DueDate = s.DueDate,
+						Make = s.Make,
+						CalibSource = s.CalibSource,
+						StandardReffered = s.StandardReffered,
+						Remarks = s.Remarks,
+						Status = s.Status,
+						FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+						CalibrationStatus = s.CalibrationStatus,
+						InstrumentStatus = s.InstrumentStatus,
+						DateOfReceipt = s.DateOfReceipt,
+						DepartmentName = s.DepartmenttModel.Name,
+						NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+						RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault()
+
+					}
+					).ToList();
+				
+			}
+			else if (userRoleId == 1)
+			{
+
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+				{
+					Id = s.Id,
+					InstrumentName = s.InstrumentName,
+					SlNo = s.SlNo,
+					IdNo = s.IdNo,
+					Range = s.Range,
+					LC = s.LC,
+					CalibFreq = s.CalibFreq,
+					CalibDate = s.CalibDate,
+					DueDate = s.DueDate,
+					Make = s.Make,
+					CalibSource = s.CalibSource,
+					StandardReffered = s.StandardReffered,
+					Remarks = s.Remarks,
+					Status = s.Status,
+					FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+					CalibrationStatus = s.CalibrationStatus,
+					InstrumentStatus = s.InstrumentStatus,
+					DateOfReceipt = s.DateOfReceipt,
+					DepartmentName = s.DepartmenttModel.Name,
+					NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+					RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
+				}
+				).ToList();
+
+			}
+			else if (userRoleId == 4)
+			{
+				instrumentList = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2 && Convert.ToInt16(Q.ActiveStatus) == 1 && (Q.IdNo != "" && Q.IdNo != null) && (Q.CreatedBy == userId && Q.UserDept == labUserById.DepartmentId)).Include(I => I.QuarantineModel).Include(I => I.FileUploadModel).Include(G => G.DepartmenttModel).Select(s => new InstrumentViewModel()
+				{
+					Id = s.Id,
+					InstrumentName = s.InstrumentName,
+					SlNo = s.SlNo,
+					IdNo = s.IdNo,
+					Range = s.Range,
+					LC = s.LC,
+					CalibFreq = s.CalibFreq,
+					CalibDate = s.CalibDate,
+					DueDate = s.DueDate,
+					Make = s.Make,
+					CalibSource = s.CalibSource,
+					StandardReffered = s.StandardReffered,
+					Remarks = s.Remarks,
+					Status = s.Status,
+					FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
+					CalibrationStatus = s.CalibrationStatus,
+					InstrumentStatus = s.InstrumentStatus,
+					DateOfReceipt = s.DateOfReceipt,
+					DepartmentName = s.DepartmenttModel.Name,
+					NewReqAcceptStatus = s.RequestModel.Where(W => W.TypeOfReqest == 1).Select(S => S.StatusId).FirstOrDefault(),
+					RequestStatus = s.RequestModel.Where(x => x.InstrumentId == s.Id).OrderByDescending(U => U.Id).Select(D => D.StatusId).FirstOrDefault(),
+				}
+				).ToList();
+			}
+			*/
+            #endregion
+            return new ResponseViewModel<InstrumentViewModel>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = instrumentList
+            };
+        }
+        catch (Exception e)
+        {
+            ErrorViewModelTest.Log("InstrumentService - GetAllInstrumentList Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<InstrumentViewModel>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseServiceMethod = "Instrument",
+                ResponseService = "GetAllInstrumentList"
+            };
+        }
+    }
     public ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId)
     {
         try
