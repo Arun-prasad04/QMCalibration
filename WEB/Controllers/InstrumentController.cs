@@ -37,23 +37,52 @@ public class InstrumentController : BaseController
 		
 		ViewBag.ResponseCode = TempData["ResponseCode"];
 		ViewBag.ResponseMessage = TempData["ResponseMessage"];
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
-		return View(response.ResponseDataList);
-		//return View();
+		//int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		//int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
+		//return View(response.ResponseDataList);
+		return View();
 
 	}
 
-	public JsonResult GetAllInstrumentList()
+	public JsonResult GetAllInstrumentList1()
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId);
-		return Json(response.ResponseDataList);
-	}
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList1(userId, userRoleId);
+        return Json(new { data = response.ResponseDataList });
+        //return Json(response.ResponseDataList);
+    }
+    public JsonResult GetAllInstrumentList(DataTableParameters InsDparam)
+    {
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+        var TotalCount = 0;
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength,InsDparam.sSearch);
 
-	public IActionResult Create()
+        if (response.ResponseDataList.Count > 0)
+        {
+            TotalCount = (Int32)response.ResponseDataList[0].TotalCount;
+        }
+        //      }
+        int pageNo = 1;
+        if (InsDparam.iDisplayStart >= InsDparam.iDisplayLength)
+        {
+
+            pageNo = (InsDparam.iDisplayStart / InsDparam.iDisplayLength) + 1;
+        }
+
+        return Json(new
+        {
+            InsDparam.sEcho,
+            iTotalRecords = response.ResponseDataList.Count,
+            iTotalDisplayRecords = TotalCount,
+            aaData = response.ResponseDataList
+        });
+        //return Json(new { data = response.ResponseDataList });
+        //return Json(response.ResponseDataList);
+    }
+    public IActionResult Create()
 	{
 		//ViewBag.Shared = "Instrument";
 		ViewBag.PageTitle = "Instrument Create";

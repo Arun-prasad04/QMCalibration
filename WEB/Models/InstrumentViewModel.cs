@@ -119,9 +119,12 @@ namespace WEB.Models
         public DateTime? ReqDueDate { get; set; }
 
 		public int? ReplacementDeptId { get; set; }
-		
 
-	}
+        public int? TotalCount { get; set; }
+
+        public string? sCalibDate { get; set; }
+        public string? sDueDate { get; set; }
+    }
     public class Instrumentids
     {
         public string InstrumentId { get; set; }

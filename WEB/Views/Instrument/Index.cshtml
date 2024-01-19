@@ -1,19 +1,23 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Instrument List";
 }
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
-<style>
-    /* .OverDue tr:nth-child(odd), tr:nth-child(even) {
-                background-color: lightsalmon;
-                    tomato
-            } */
-    /* .table-striped tr:nth-child(even) {
-                background-color: #e8e7e6;
-            }
+    @*<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
 
-            th:nth-child(even), td:nth-child(even) */
+<style>
+	/* .OverDue tr:nth-child(odd), tr:nth-child(even) {
+				background-color: lightsalmon;
+					tomato
+			} */
+	/* .table-striped tr:nth-child(even) {
+				background-color: #e8e7e6;
+			}
+
+			th:nth-child(even), td:nth-child(even) */
 </style>
 
 <section class="content">
@@ -68,56 +72,56 @@
                                 <th class="trn">Edit</th>
                                 <th class="trn">Control Card</th>
                                 <!--<th>Delete</th>-->
-                                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-                                {
-                                    @*<th class="trn">Request</th>*@
-                                    @* <input id="instrumentId" name="instrumentId" type="checkbox" value=' + item.id + ' checked="checked" /> *@
+                              
                                     <th style="text-align:center;">
+                                          @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+                                     {   
                                         <span class="trn">SelectAll Request</span>
                                         <br>
                                         <input type="checkbox" id="selectAll" name="selectAll" />
-                                    </th>
+                                    }
+                                </th>
 
-                                }
-                                <th class="trn">Quarantine</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var item in Model)
-                            {
-                                //@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
-                                @if ((@item.RequestStatus != 28) || (@item.RequestStatus != 30) || (@item.RequestStatus != 31))
+							
+								<th class="trn">Quarantine</th>
+							</tr>
+						</thead>
+						<tbody>
+                        @*
+							@foreach (var item in Model)
+							{
+								//@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
+								@if ((@item.RequestStatus != 28) || (@item.RequestStatus != 30) || (@item.RequestStatus != 31))
                                 {
 
-                                    <tr>
-                                        @* <td style="display:none;">@item.ReqDueDate</td> *@
-                                        <td class="one">@item.InstrumentName</td>
-                                        <td>@item.SlNo</td>
-                                        <td>@item.IdNo</td>
-                                        <td>@item.Range</td>
-                                        <td>@item.DepartmentName</td>
-                                        <td>@item.SubSecCode</td>
-                                        <td>@item.TypeOfEquipment</td>
-                                        <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
-                                        @if (item.DueDate == null)
-                                        {
-                                            <td> </td>
-                                        }
-                                        else
-                                        {
-                                            <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-                                        }
-                                        <td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
-                                        <td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
-                                        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-                                        {
-                                            <td style="text-align:center;" class="chkpl">
-                                                @if (@item.DueDate != null)
-                                                {
-
-                                                    @if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                                                    {
+									<tr>
+										
+										<td class="one">@item.InstrumentName</td>
+										<td>@item.SlNo</td>
+										<td>@item.IdNo</td>
+										<td>@item.Range</td>
+										<td>@item.DepartmentName</td>
+										<td>@item.SubSecCode</td>
+										<td>@item.TypeOfEquipment</td>
+										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+										@if (item.DueDate == null)
+										{
+											<td> </td>
+										}
+										else
+										{
+											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+										}
+										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
+										<td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+										{
+											<td style="text-align:center;" class="chkpl">
+												@if (@item.DueDate != null)
+												{
+													
+													@if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
+													{
                                                         @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))// && @item.ToolInventory=="Yes" && @item.ToolInventoryStatus=="1")
                                                         {
 
@@ -131,38 +135,39 @@
                                                         }
                                                     }
                                                     else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                                                    {
+                                                     {
                                                         @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))
-                                                        {
+                                                            {
 
-                                                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                                                            <input id="typeId" name="typeId" type="hidden" value="2" />
-                                                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                                                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                                                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                                                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-                                                        }
+                                                                <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
+                                                                <input id="typeId" name="typeId" type="hidden" value="2" />
+                                                                <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
+                                                                <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
+                                                                <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
+                                                                <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
+                                                            }
                                                     }
+													
+												}
+											</td>
+										}
+										
 
-                                                }
-                                            </td>
-                                        }
-                                        @* far fa-id-card *@
+										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+										{
+											<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
+										}
+										else
+										{
+											<td></td>
+										}
 
-                                        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-                                        {
-                                            <td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
+									</tr>
 
-                                    </tr>
-
-                                }
                             }
-
+                                
+                            }
+                            *@
                         </tbody>
                     </table>
                 </div>
@@ -172,7 +177,7 @@
                     <div class="form-group" style="text-align:right;">
                         <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
                                onclick="InsertRequestList();">
-                        <a href='@Url.Action("Request","Tracker")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                        <a href='@Url.Action("Index","Instrument")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
                     </div>
                 }
                 <!-- /.card-body -->
@@ -184,62 +189,325 @@
     <!-- /.row -->
 </section>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script>
 
-    $(function () {
-        $('#example1').dataTable({});
-        $('#example1').dataTable({
-            "bDestroy": true,
-            "createdRow": function (row, data, dataIndex) {
-                console.log(data);
-                var date = data[8].substring(0, 2);
-                var month = data[8].substring(3, 5);
-                var year = data[8].substring(6, 10);
+    
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-                var edate = new Date(year, month - 1, date);
 
-                var currentdate = new Date()
-                var redate = data[8];
+<!--Data Table-->
+<script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 
-                if (redate != "") {
-                    if (edate < currentdate) //&& (item.status != 30))
-                    {
-                        $(row).css('background-color', '#fbefef');
-                    }
+
+<script type="text/javascript">
+
+       $(function()
+        {
+           $('#example1').dataTable({
+                
+                  "bDestroy": true,
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": '../Instrument/GetAllInstrumentList',
+               // "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType }) },
+                "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
+                    $.ajax({
+                        type: 'GET',
+                        url: sSource,
+                        data:aoData,
+                        success: fnCallback
+                    })
+                },
+                 "columns":[
+                     {"data":"instrumentName","name":"Instrument Name"},
+                     {"data":"slNo","name":"Serial Number"},
+                     {"data":"idNo","name":"Lab ID Number"},
+                     {"data":"range","name":"Range"},
+                     {"data":"departmentName","name":"Department"},
+                     {"data":"subSecCode","name":"Sub section code"},
+                     {"data":"typeOfEquipment","name":"Scope"},
+                     {"data":"sCalibDate","name":"Calibration Date"},
+                     {"data":"sDueDate","name":"DueDate"},
+                     {"render" : function(data,type,row,meta){
+                            var linkedit = '<a href="@Url.Action("InstrumentEdit","Instrument")?instrumentId='+row.id+'"><i class="fas fa-edit"></i></a>';
+                            return linkedit;
+                        }
+                     },
+                     {"render" : function(data, type, row, meta){
+                             var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId='+row.id+'"><i class="fas fa-id-badge"></i></a>';
+                             return linkControlCard;
+                        }
+                    },
+                    {"render": function(data, type, row, meta){
+                        var linkCheckbox='';
+                            if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+                            {
+                                 //var linkCheckbox='';
+                                 var d = new Date($.now());
+
+                                 var date = new Date(row.dueDate);
+                                
+                                 d.setMonth(d.getMonth()+1);
+                                 var CurrMonth=d.getMonth();
+                                 var CurrYear=d.getFullYear();
+                                 month = date.getMonth();
+                                 yr = date.getFullYear();
+                                
+                                  d.setMonth(d.getMonth() + 1);
+                                 var NextMonth=d.getMonth();
+                                 var NextYear=d.getFullYear();
+                                
+                                     if (row.dueDate != null)
+                                    {
+                                        if ((Date.parse(date) <= Date.parse(d))  && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
+                                            { console.log('********************less & Curr*********************');
+                                             if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
+                                              {
+                                    //  //if ((month <= (d.getMonth() + 1) && d.getFullYear() >= yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
+                                       // if ((month <= CurrMonth) && (CurrYear >= yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
+                                           //  { console.log('********************less & Curr*********************');
+                                            
+                                    //               if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
+                                    //                {
+                                    //                                      console.log('less & Curr');
+                                    //                             linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
+                                    //                             '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+ row.id +' />'+
+                                    //                             '<input id="typeId" name="typeId" type="hidden" value="2" />'+
+                                    //                             // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
+                                    //                             '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
+                                    //                             '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
+                                    //                             '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
+                                    //                             '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
+                                    //                             '</td>'
+                                    //                             console.log(linkCheckbox);
+                                    //                         }
+                                    //                     }
+                                    //                     //else if ((month == (d.getMonth() + 1) && d.getFullYear() == yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
+                                    //                      else if ((month == NextMonth) && (NextYear == yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28)) 
+                                    //                     {
+                                                            
+                                    //                         if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
+                                    //                             {
+                                    //                                console.log('Next');
+                                    //                                 linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
+                                    //                                 '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.Id+' />'+
+                                    //                                 '<input id="typeId" name="typeId" type="hidden" value="2" />'+
+                                    //                                 '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
+                                    //                                 '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
+                                    //                                 '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
+                                    //                                '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
+                                    //                                '</td>'
+                                    //                                console.log(linkCheckbox);
+                                    //                             }
+                                    //                     }
+                                       
+                                    //                 }
+                                            
+                                               // }
+                                      linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
+                                                                    '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.id+' />'+
+                                                                    '<input id="typeId" name="typeId" type="hidden" value="2" />'+
+                                                                    '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
+                                                                    '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
+                                                                   // '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
+                                                                   '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
+                                                                  '</td>'
+                                              }
+                                             }
+                                            }
+                                           
+                            }
+                              console.log("******************");
+                             console.log(linkCheckbox);
+                                 return linkCheckbox;
+                        }
+                    },
+                    {"render": function(data, type, row, meta){
+                        var linkQuarantine = '';
+                        if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+                                            {
+                                                 linkQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='+row.id+' onclick="InstrumentQuarantineClick(this, language)"></i></td>';
+                                            }
+                    
+                      return linkQuarantine;
+                   
+                     }
+                     },
+                 ],
+                  "createdRow": function (row, data, dataIndex) {
+
+                    if (data["dueDate"] != null) {
+
+                       
+                        var edate=new Date(data["dueDate"]);
+                        var currentdate = new Date();
+                        
+                        if (edate < currentdate) //&& (item.status != 30))
+                        {
+                          
+                            $(row).css('background-color', '#fbefef');
+                        }
+                        else {
+                        
+                        }
+                        }
+                },
+              
+                 "columnDefs": [
+                {
+                'orderable': false,
+               'targets': 11,
+               'checkboxes': {
+               'selectRow': true
                 }
-                else {
-                    //alert("empty");
-                }
-
             }
-        });
-        var oTable = $('#example1').dataTable({
-            stateSave: true,
-            "bDestroy": true,
-            "pageLength": 100,
-            'columnDefs': [{
-                'targets': [9], /* column index */
-                'orderable': false, /* true or false */
+             ],
+             'select': {
+            'style': 'multi'
+          },
 
-            }],
-            dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                // "serverside":"true",
+                 "order":[0,"asc"],
+                 "pageLength": "100",
+                 "language": {
+                    //"emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                 dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            });
         });
 
-        var allPages = oTable.fnGetNodes();
+       $('body').on('change', '#selectAll', function() {
+       var rows, checked;
 
-        $('body').on('click', '#selectAll', function () {
-            if ($(this).hasClass('allChecked')) {
-                $('input[type="checkbox"]', allPages).prop('checked', false);
-            } else {
-                $('input[type="checkbox"]', allPages).prop('checked', true);
+       //rows = $('#example1').find('tbody tr');
+       rows = $('#example1').dataTable().fnGetNodes();
+
+       checked = $(this).prop('checked');
+       $.each(rows, function() {
+          var checkbox = $($(this).find('td').eq(11)).find('input').prop('checked', checked);
+       });
+     });
+
+    //$(function () {
+        
+    //    //$('#example1').dataTable({
+    //    //    "bDestroy": true,           
+    //    //    "createdRow": function (row, data, dataIndex) {
+    //    //        console.log(data);
+    //    //        var date = data[8].substring(0, 2);
+    //    //        var month = data[8].substring(3, 5);
+    //    //        var year = data[8].substring(6, 10);
+
+    //    //        var edate = new Date(year, month - 1, date);
+
+    //    //        var currentdate = new Date()
+    //    //        var redate = data[8];
+
+    //    //        if (redate != "") {
+    //    //            if (edate < currentdate) //&& (item.status != 30))
+    //    //            {
+    //    //                $(row).css('background-color', '#fbefef');
+    //    //            }
+    //    //        }
+    //    //        else {
+    //    //            //alert("empty");
+    //    //        }
+
+    //    //    }
+    //    //});
+    //    //var oTable = $('#example1').dataTable({
+    //    //    stateSave: true,         
+    //    //    "bDestroy": true,
+    //    //    "pageLength": 100,
+    //    //    'columnDefs': [{
+    //    //        'targets': [9], /* column index */
+    //    //        'orderable': false, /* true or false */
+
+    //    //    }],
+    //    //    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+    //    //        "<'row'<'col-sm-12'tr>>" +
+    //    //        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    //    //});
+
+    //    //var allPages = oTable.fnGetNodes();
+
+    //    //$('body').on('click', '#selectAll', function () {
+    //    //    if ($(this).hasClass('allChecked')) {
+    //    //        $('input[type="checkbox"]', allPages).prop('checked', false);
+    //    //    } else {
+    //    //        $('input[type="checkbox"]', allPages).prop('checked', true);
+    //    //    }
+    //    //    $(this).toggleClass('allChecked');
+    //    //});
+
+    //    //$('td.ReqDueDate[value=Zero]').closest('tr').css('background-color', 'red');
+
+    //    GetAllInstrument();
+    //});
+
+ //   $(function()
+ //   {
+ //      $('#example1').dataTable({
+
+ //            "ajax":{
+ //                "type": 'GET',
+ //                "url": '../Instrument/GetAllInstrumentList',
+ //                "dataType": 'json'
+ //                },
+ //            "columns":[                 
+ //                {"data":"instrumentName","name":"Instrument Name"},
+ //                {"data":"slNo","name":"Serial Number"},
+ //                {"data":"idNo","name":"Lab ID Number"},
+ //                {"data":"range","name":"Range"},
+ //                {"data":"departmentName","name":"Department"},
+ //                {"data":"departmentName","name":"Department"},
+ //                {"data":"typeOfEquipment","name":"Scope"},
+ //            ],
+ //            "serverside":"true",
+ //            "order":[0,"asc"]
+ //    });
+ //});
+
+    function GetAllInstrument(){
+        $.ajax({
+            type: "GET",
+            url: "../Instrument/GetAllInstrumentList",            
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccess,
+            failure: function (response) {
+                alert(response.d);
+            },
+            error: function (response) {
+                alert(response.d);
             }
-            $(this).toggleClass('allChecked');
         });
+    }
 
-        //$('td.ReqDueDate[value=Zero]').closest('tr').css('background-color', 'red');
-    });
+    function OnSuccess(response) {
+        console.log('********************************** response ******************************************');
+        console.log(response);
+        $("#example1").DataTable(
+        {
+            bLengthChange: true,
+            lengthMenu: [[5, 10, -1], [5, 10, "All"]],
+            bFilter: true,
+            bSort: true,
+            bPaginate: true,
+            data: response,
+            columns: [
+                {"data":"instrumentName","name":"Instrument Name"},
+                 //{"data":"slNo","name":"Serial Number"},
+                 //{"data":"idNo","name":"Lab ID Number"},
+                 //{"data":"range","name":"Range"},
+                 //{"data":"departmentName","name":"Department"},                 
+                 //{"data":"typeOfEquipment","name":"Scope"},                     
+            ]
+        });
+    };
 
     @*function GetAllInstrument() {
         $('#dvload').show();
@@ -257,7 +525,7 @@
                 console.log(data);
                 if (data.length > 0) {
                     $.each(data, function (i, item) {
-
+                        
                         var date = new Date(item.dueDate);
                         //console.log(item.dueDate);
                         //console.log(date.getMonth());
@@ -266,7 +534,7 @@
                         //console.log(date.getMonth() + 1);
                         month = date.getMonth() + 1;
                         yr = date.getFullYear();
-
+                            
                         if ((item.requestStatus != 28 && item.toolInventoryStatus != 2) || (item.requestStatus != 30 && item.toolInventoryStatus != 2) || (item.requestStatus != 31 && item.toolInventoryStatus != 2)) {
 
                             var tdRequest = '';

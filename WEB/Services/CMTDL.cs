@@ -822,13 +822,36 @@ namespace WEB.Services
             return dsResults;
         }
         //GetInstrumentList
-        public DataSet GetInstruentList(int userid, int userroleid)
+        public DataSet GetInstruentList1(int userid, int userroleid)
         {
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
             SqlCommand cmd = new SqlCommand("GetInstrumentList");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@userid", userid);
             cmd.Parameters.AddWithValue("@userroleid", userroleid);
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+
+            return dsResults;
+        }
+
+        public DataSet GetInstruentList(int userid, int userroleid, int Startingrow, int Endingrow, string Search)
+        {
+            // string sSearch = Search.Equals(null) ?string.Empty:Search;
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("GetInstrumentList");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@userid", userid);
+            cmd.Parameters.AddWithValue("@userroleid", userroleid);
+            cmd.Parameters.AddWithValue("@Startingrow", Startingrow);
+            cmd.Parameters.AddWithValue("@Endingrow", Endingrow);
+            cmd.Parameters.AddWithValue("@Search", Search);
+           
             SqlConnection sqlConn = new SqlConnection(connectionString);
             DataSet dsResults = new DataSet();
             SqlDataAdapter sqlAdapter = new SqlDataAdapter();
