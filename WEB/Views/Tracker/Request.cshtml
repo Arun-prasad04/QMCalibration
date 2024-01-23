@@ -4,6 +4,12 @@
 
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<style>
+    .dataTables_filter{
+        display:none;
+
+    }
+</style>
 
 <section class="content">
     <div class="row">
@@ -90,12 +96,28 @@
                                 <th class="trn">Instrument Name</th>
                                 <th class="trn">Instrument Id</th>
                                 <th class="trn">Range</th>
+                                
                                 <th class="trn">Request Type</th>
                                 <th class="trn">Status</th>
                                 <th class="trn">View</th>
                                 <th class="trn">Test</th>
                                 <th class="trn">Certificate</th>
                                 <th class="trn">Type Of Scope</th>
+                            </tr>
+                             <tr>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                                <th class="trn"></th>
+                               
                             </tr>
                           @*   <tr class="filter">
                                
@@ -166,10 +188,12 @@
 
 <script type="text/javascript">
 
+
+
    
     $(function () {
-         $('#example1').dataTable({});
-        BindTable();
+        //  $('#example1').dataTable({});
+         BindTable();
     });
     var BindTable = function (response) {
         //reqType=rType;
@@ -183,8 +207,15 @@
                 "bServerSide": true,
                // "bFilter": true,
                // "sDom": "lrtip",
+                "bSortCellsTop": true,
                 "sAjaxSource": '../Tracker/GetAllRequestList',
-                "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType }) },
+                "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType })
+                    aoData.push({ "name": "sscode", "value": $('#txtsearch2').val() })
+                    aoData.push({ "name": "instrumentname", "value": $('#txtsearch3').val() })
+                    aoData.push({ "name": "instrumentid", "value": $('#txtsearch4').val() })
+                    aoData.push({ "name": "status", "value": $('#drpstatus').val() })
+                    aoData.push({ "name": "requestno", "value": $('#txtsearch0').val() })
+                },
                 "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
                     $.ajax({
                         type: 'GET',
@@ -204,6 +235,7 @@
                     { "data": "instrumentName", "name": "Instrument Name"},
                     { "data": "instrumentIdNo", "name": "Instrument Id"},
                     { "data": "range", "name": "Range"},
+                   // { "data": "statusname", "name": "Status"},
 
                     {
                         "render": function (data, type, row, meta) {
@@ -332,49 +364,30 @@
                         }
                 },
 
-                // initComplete: function (index) {
-                //     this.api().columns().every(function (i) {
-                //         var column = this;
-                //         var columnIndex = this.index()
-                //         if (columnIndex == 7) {
-                           
-                //             var select = $('<select id="txStatus"  class="tableheadinput form-control input-sm"><option value="">Select</option></select>')
-                //                 .appendTo($(".filter th:eq(" + columnIndex + ")").empty()).on('change', function () {
-                //                     column
-                //                         .search($(this).val())
-                //                         .draw();
-                //                 });
-
-                //             column.data().unique().sort().each(function (d, j) {
-                //                 if (d != '') {
-                //                     select.append('<option value="' + d + '">' + d + '</option>')
-                //                 }
-                //             });
-                //         }
-
-                //         else {
-
-                       
-
-                //                 $('input', $(".filter th:eq(" + columnIndex + ")")).on('keyup change', function () {
-                //                     if (column.search() !== this.value) {
-
-                //                         column
-                //                             .search(this.value)
-                //                             .draw();
-
-
-                //                     }
-
-
-                //                 });
-                              
-                //         }
-
-                //     });
-
-
-                // },
+    //              "initComplete": function() {
+    //   // Select the column whose header we need replaced using its index(0 based)
+    //   this.api().column(6).every(function() {
+    //             var $table = $("#example2");
+    //         var title = $(this).text();
+    //     var column = this;
+    //     // Put the HTML of the <select /> filter along with any default options
+    //         var select = $('<select style="width: 100px;" id="drpstatus"  onchange="Drpstatus(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
+    //       // remove all content from this column's header and 
+    //       // append the above <select /> element HTML code into it 
+    //      // .appendTo($(column.header()).empty())
+    //       .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
+    //       // execute callback when an option is selected in our <select /> filter
+          
+    //     // populate options in the <select /> filter with unique values from the column's data
+    //     column.data().unique().sort().each(function(d, j) {
+    //         if(d !=null)
+    //         {
+    //               select.append("<option value='" + d + "'>" + d + "</option>")
+    //         }
+         
+    //     });
+    //   });
+    // },
                              
                 "pageLength": "100",
                 //order: [3, 'asc','desc'],
@@ -391,7 +404,64 @@
             });
     }
 
+    function Drpstatus(val) {
+         var table = $('#example2').DataTable();
+          if (table.search() !== val) {
+                        table.search(val).draw();
+                  
+         }
+     }
 
+     $(document).ready(function() {
+
+   // $("#example2 thead tr").clone(true).appendTo("#example2 thead");
+   $("#example2 thead tr:eq(1) th").each(function (i) {
+        var title1 = $(this).text();
+        var title = title1.trim();
+     if(i==0 ||i==2 || i==3|| i==4)
+     {
+       $(this).html('<input id="txtsearch'+i+'" style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
+
+     }
+    else if(i==7)
+      {
+    $(this).html('<select name=""  id="drpstatus"  class="form-control" onchange="Drpstatus(this.value)" </select>>');
+
+      }
+     else
+     {
+       $(this).html('<input  style="width: auto;display:none"  class="form-control filter" type="text" placeholder="Search" />');
+
+     }
+    });
+
+    var option=[];
+        option.push('<option value="">All</option>')
+        option.push('<option value="26">Requested</option>')
+        option.push('<option value="27">Approved</option>')
+        option.push('<option value="28">Request Rejected</option>')
+        option.push('<option value="29">Verification done</option>')
+        option.push('<option value="29">Calibration done</option>')
+        option.push('<option value="30">Closed</option>')
+        option.push('<option value="31">Calibration Rejected</option>')
+        
+        $('#drpstatus').append(option);
+        
+
+        var table = $('#example2').DataTable();
+           table.columns().every(function () {
+         //var table = this;
+          $('input').on('keyup change', function () {
+                if (table.search() !== this.value) {
+                	table.search(this.value).draw();
+                  
+                }
+            });
+        });
+
+ 
+
+      })
   
 </script>
   
