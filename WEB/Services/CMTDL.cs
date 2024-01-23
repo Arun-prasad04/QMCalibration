@@ -760,7 +760,7 @@ namespace WEB.Services
             return dsResults;
         }
         //GetRequestList
-        public DataSet GetRequestList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string ReqType)
+        public DataSet GetRequestList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno)
         {
             // string sSearch = Search.Equals(null) ?string.Empty:Search;
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
@@ -772,6 +772,12 @@ namespace WEB.Services
             cmd.Parameters.AddWithValue("@Endingrow", Endingrow);
             cmd.Parameters.AddWithValue("@Search", Search);
             cmd.Parameters.AddWithValue("@ReqType", ReqType);
+
+            cmd.Parameters.AddWithValue("@sscode", sscode);
+            cmd.Parameters.AddWithValue("@instrumentname", instrumentname);
+            cmd.Parameters.AddWithValue("@instrumentid", instrumentid);
+            cmd.Parameters.AddWithValue("@status", status);
+            cmd.Parameters.AddWithValue("@requestno", requestno);
             //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
             SqlConnection sqlConn = new SqlConnection(connectionString);
             DataSet dsResults = new DataSet();

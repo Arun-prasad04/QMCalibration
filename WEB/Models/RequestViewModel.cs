@@ -107,6 +107,7 @@ public partial class RequestViewModel
 	public string? TypeOfEquipment { get; set; }
     public string? SignImageName { get; set; }
     public string? ToolInventory { get; set; }
+   
 
     public int? AdminReviewStatus { get; set; }
 
@@ -116,6 +117,7 @@ public partial class RequestViewModel
 
     public List<IdNoModel> IdNoList { get; set; }
     public int? TotalCount { get; set; }
+    public string? statusname { get; set; }
 }
 public class UploadFile
     {

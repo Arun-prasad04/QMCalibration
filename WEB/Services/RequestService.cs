@@ -50,7 +50,7 @@ public class RequestService : IRequestService
 									  .ToList();
 		return templateObservation;
 	}
-    public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType)
+    public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno)
     {
         try
         {
@@ -61,7 +61,7 @@ public class RequestService : IRequestService
             CMTDL _cmtdl = new CMTDL(_configuration);
             if (Search == null)
             { Search = string.Empty; }
-            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType);
+            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType, sscode, instrumentname,instrumentid, status, requestno);
             //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
             var TotalCount = 0;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -85,8 +85,10 @@ public class RequestService : IRequestService
                         UserRoleId = userRoleId,
                         SubSectionCode = dr["SubSectionCode"].Equals(DBNull.Value) ? null : dr["SubSectionCode"].ToString(),
                         TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
-                        ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
+                        //ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
                         LC = dr["RequestDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["RequestDate"]).ToShortDateString(),
+                        statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
+
                     };
                     RequestList.Add(REQlist);
 
