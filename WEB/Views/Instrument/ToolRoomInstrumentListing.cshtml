@@ -37,17 +37,17 @@
 								<th class="trn">DueDate</th>
 								@* <th class="trn">Edit</th> *@
 								<!--<th>Delete</th>-->
-								@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-								{
+								@* @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
+								{ *@ 
 									@*<th class="trn">Request</th>*@
 									@* <input id="instrumentId" name="instrumentId" type="checkbox" value=' + item.id + ' checked="checked" /> *@
-									<th style="text-align:center;">
+									@* <th style="text-align:center;">
 										<span class="trn">SelectAll Request</span>
 										<br>
 										<input type="checkbox" id="selectAll" name="selectAll" />
-									</th>
+									</th> *@
 
-								}
+								@* } *@
 								@* <th class="trn">Quarantine</th> *@
 							</tr>
 						</thead>
@@ -55,8 +55,8 @@
 
 							@foreach (var item in Model)
 							{
-								@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
-								{
+								@* @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
+								{ *@
 									<tr>
 										<td class="trn one">@item.InstrumentName</td>
 										<td class="trn">@item.SlNo</td>
@@ -77,7 +77,7 @@
 
 									</tr>
 
-								}
+								@* } *@
 							}
 						</tbody>
 					</table>

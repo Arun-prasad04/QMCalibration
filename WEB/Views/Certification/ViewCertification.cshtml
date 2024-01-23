@@ -86,9 +86,11 @@
 					}
 					<table>
 						<tbody>
+                            @if (@Model.TempObservationData != null )
+                            { 
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber</td>
+								<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
 							</tr>
@@ -96,8 +98,15 @@
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
-                                <td style="width:400px;padding-bottom: 25px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
-							</tr>
+                                @if(@Model.DueDate != null)
+                                {
+                                        <td style="width:400px;padding-bottom: 25px;"> : @Model.DueDate.ToString("dd-MM-yyyy")</td>
+                                    }
+                                    else
+                                    {
+                                         <td style="width:400px;padding-bottom: 25px;"> :</td>
+                                    }
+                                </tr>
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
@@ -123,7 +132,7 @@
 								}
 								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
 							</tr>
-
+                        } 
 						</tbody>
 					</table>
 
@@ -141,38 +150,43 @@
 
 							</tr>
 							<tr>
-								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-									<p>@Model.Range</p>
-								</td>
-								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-									<p>@Model.LC</p>
-								</td>
-								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-									<p>@Model.SlNo</p>
-								</td>
-								<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-									<p>@Model.Make</p>
-								</td>
-							</tr>
+                                @if (@Model.TempObservationData != null)
+                                {
+                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                        <p>@Model.Range</p>
+                                    </td>
+                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                        <p>@Model.LC</p>
+                                    </td>
+                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                        <p>@Model.SlNo</p>
+                                    </td>
+                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
+                                        <p>@Model.Make</p>
+                                    </td>
+                                }
+                            </tr>
 						</table>
 
 						<table style="margin-top:15px">
 							<tbody>
 								<tr>
-									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
-									<td style="width:400px;padding-bottom: 25px;">: @Model.StandardReffered</td>
-									@if (@Model.TypeOfEquipment == "Internal")
-									{
-										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
-										<td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
-									}
-									@if (@Model.TypeOfEquipment == "External")
-									{
-										<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
-										<td style="width:400px;padding-bottom: 25px;"></td>
-									}
-
-								</tr>
+                                    @if (@Model.TempObservationData != null)
+                                    {
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
+                                        <td style="width:400px;padding-bottom: 25px;">: @Model.StandardReffered</td>
+                                        @if (@Model.TypeOfEquipment == "Internal")
+                                        {
+                                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Environmental condition</td>
+                                            <td style="width:400px;padding-bottom: 25px;">: 22±2°C/50±10% RH</td>
+                                        }
+                                        @if (@Model.TypeOfEquipment == "External")
+                                        {
+                                            <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
+                                            <td style="width:400px;padding-bottom: 25px;"></td>
+                                        }
+                                    }
+                                </tr>
 							</tbody>
 						</table>
 					</div>
@@ -237,7 +251,10 @@
 									<td style="width:400px;padding-bottom: 25px;"></td>
 
 									<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">All values are in</td>
+                                      @if (@Model.TempObservationData != null)
+                            {
 									<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.Allvalues</td>
+                            }
 								</tr>
 							</tbody>
 						</table>
@@ -280,7 +297,11 @@
                                     @*<input class="form-control"
                                            placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
                                            value="@Model.TempObservationData.CalibrationResult"> @*Model.TempObservationData.CalibrationResult*@
-                                    <label id="CalibrationResult" class="form-control">@Model.TempObservationData.CalibrationResult</label>
+                                                       @if (@Model.TempObservationData != null)
+                            {
+									 <label id="CalibrationResult" class="form-control">@Model.TempObservationData.CalibrationResult</label>
+                            }
+                                   
                                 
                                 </td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
@@ -292,7 +313,10 @@
                                     @*<input class="form-control"
                                            placeholder="Remarks" id="Remarks" name="Remarks"
                                            value="@Model.TempObservationData.Remarks"> @*Model.TempObservationData.Remarks*@
+                                                                     @if (@Model.TempObservationData != null)
+                            {
                                     <label id="CalibrationResult" class="form-control">@Model.TempObservationData.Remarks</label>
+                            }
                                 </td>
                                 <td style="width:325px; font-weight: 900;padding-bottom: 25px;"></td>
                                 <td style="width:400px;padding-bottom: 25px;"></td>
@@ -312,22 +336,25 @@
 
                     <table style="margin-top:15px">
                         <tbody>
-                            <tr>
-                                <td style="width:325px; padding-bottom: 25px; width: 800px;">
-                                    <div class="col-6 text-start">
-                                        <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
-                                        <img src="../UserSignature/@Model.TempObservationData.PerformedBySign" alt="PerformedBySign" style="width: 100px;" />
-                                        <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
-                                        <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
-                                    </div>
-                                </td>
-                                <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
-                                    <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
-                                    <img src="../UserSignature/@Model.TempObservationData.ReviewedBySign" alt="ReviewedBySign" style="width: 100px;" />
-                                    <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
-                                    <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
-                                </td>
-                            </tr>
+                            @if (@Model.TempObservationData!= null)
+                            {
+                                <tr>
+                                    <td style="width:325px; padding-bottom: 25px; width: 800px;">
+                                        <div class="col-6 text-start">
+                                            <h5 class="trn" style="margin-bottom: 5px;">Calibrated By</h5>
+                                            <img src="../UserSignature/@Model.TempObservationData.PerformedBySign" alt="PerformedBySign" style="width: 100px;" />
+                                            <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
+                                            <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
+                                        </div>
+                                    </td>
+                                    <td style="width:400px;padding-bottom: 25px; width: 800px; text-align: right;">
+                                        <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory</h5>
+                                        <img src="../UserSignature/@Model.TempObservationData.ReviewedBySign" alt="ReviewedBySign" style="width: 100px;" />
+                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
+                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
 
@@ -372,7 +399,10 @@
 	@*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
 	<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
 	<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
+                              @if (@Model.TempObservationData != null)
+                            {
 	<input type="hidden" id="ExternalObsStatus" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
+                            }
 	@* <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
  *@
 	<!-- page1 end-->
@@ -382,23 +412,27 @@
         <input type="hidden" id="instrumentId" value="@ViewBag.InstrumentId">
         <input type="hidden" id="isDownloadPdf" value="@ViewBag.IsDownloadPdf">
         <input type="hidden" name="FileName" id="FileName" value="@ViewBag.FileName" />
-        @if (@Model.isExportCertificate)
+        @if (@Model.TempObservationData != null)
         {
-            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+            @if (@Model.isExportCertificate)
             {
-                <input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                    <input type="button" value="ReGenerate" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+                }
+                <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
+                <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
             }
-            <input type="button" class="btn btn-primary trn" id="btnExport" name="btnExport" value="Export" onclick="downloadPdfFile()" />
-            <a class="btn btn-primary trn" href='@Url.Action("QRCodePrint","Certification", new {requestId=@ViewBag.RequestId, instrumentId=@ViewBag.InstrumentId})'>PrintQR Code</a>
-        }
-        else
-        {
-            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+            else
             {
-                <input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+                {
+                    <input type="button" value="Save" onclick="SaveCertificateTemp(language)" class="btn btn-primary trn">
+                }
             }
-        }
+       
         <a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+        }
     </div>
     </div>
 </body>
@@ -469,45 +503,54 @@
                         }
                         <table style="width:100%">
                             <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Certificate No. / 証明書の番号。</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.CertificateNumber</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Report issue date / レポート発行日</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Date of Calibration / 校正日</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Next Calibrtaion due / 次回の校正期限</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.DueDate.ToString("dd-MM-yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Name of Dept. / 部署名</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.DepartmentName.</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Date of receipt / 領収書の日付</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Sub section code / サブセクションコード</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.SubSecCode</td>
-                                    <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Description of equipment / 設備の説明</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.InstrumentName</td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Identification No. / 識別番号。</td>
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.IdNo</td>
-                                    @if (@Model.TypeOfEquipment == "Internal")
-                                    {
-                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Condition of DUC / DUCの状態</td>
+                                                          @if (@Model.TempObservationData != null)
+                                {
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Certificate No. / 証明書の番号。</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.CertificateNumber</td>
+                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Report issue date / レポート発行日</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Date of Calibration / 校正日</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
+                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Next Calibrtaion due / 次回の校正期限</td>
+                                         @if(@Model.DueDate != null)
+                                     {
+                                        <td style="width:400px;padding-bottom: 25px;"> : @Model.DueDate.ToString("dd-MM-yyyy")</td>
                                     }
-                                    @if (@Model.TypeOfEquipment == "External")
+                                    else
                                     {
-                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Condition of DUV / DUVの状態</td>
+                                         <td style="width:400px;padding-bottom: 25px;"> :</td>
                                     }
-                                    <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.InstrumentCondition</td>
-                                </tr>
-
-							</tbody>
+                                    </tr>
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Name of Dept. / 部署名</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.DepartmentName.</td>
+                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Date of receipt / 領収書の日付</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Sub section code / サブセクションコード</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.SubSecCode</td>
+                                        <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Description of equipment / 設備の説明</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.InstrumentName</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Identification No. / 識別番号。</td>
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.IdNo</td>
+                                        @if (@Model.TypeOfEquipment == "Internal")
+                                        {
+                                            <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Condition of DUC / DUCの状態</td>
+                                        }
+                                        @if (@Model.TypeOfEquipment == "External")
+                                        {
+                                            <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Condition of DUV / DUVの状態</td>
+                                        }
+                                        <td style="width:400px;padding-bottom: 10px;">: @Model.TempObservationData.InstrumentCondition</td>
+                                    </tr>
+                                }
+                            </tbody>
 						</table>
 
 
@@ -656,30 +699,33 @@
 
                         <table style="width:100%">
                             <tbody>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 5px;">IV. Result Of Calibration / 校正結果 :</td>
+                                                          @if (@Model.TempObservationData != null)
+                                {
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 5px;">IV. Result Of Calibration / 校正結果 :</td>
 
-                                    <td class="trn" style="width:400px;padding-bottom: 5px;">
-                                        @*<input class="form-control"
+                                        <td class="trn" style="width:400px;padding-bottom: 5px;">
+                                            @*<input class="form-control"
                                                placeholder="Result Of Calibration" id="CalibrationResult" name="CalibrationResult"
                                                value="PDF_Certificate_Results"> @*Model.GeneralData.CalibrationResult   @Model.TempObservationData.CalibrationResult*@
-                                        <label id="CalibrationResult" class="form-control">@Model.TempObservationData.CalibrationResult</label>
+                                            <label id="CalibrationResult" class="form-control">@Model.TempObservationData.CalibrationResult</label>
 
-                                    </td>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 5px;"></td>
-                                    <td style="width:400px;padding-bottom: 5px;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 5px;">V. Remarks / 備考 :</td>
-                                    <td class="trn" style="width:400px;padding-bottom: 5px;">
-                                        @*<input class="form-control"
+                                        </td>
+                                        <td style="width:325px; font-weight: 900;padding-bottom: 5px;"></td>
+                                        <td style="width:400px;padding-bottom: 5px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 5px;">V. Remarks / 備考 :</td>
+                                        <td class="trn" style="width:400px;padding-bottom: 5px;">
+                                            @*<input class="form-control"
                                                placeholder="Remarks" id="Remarks" name="Remarks"
                                                value="PDF_Certificate_Remarks"> @*Model.TempObservationData.Remarks  @Model.TempObservationData.Remarks*@
-                                        <label id="CalibrationResult" class="form-control">@Model.TempObservationData.Remarks</label>
-                                    </td>
-                                    <td style="width:325px; font-weight: 900;padding-bottom: 5px;"></td>
-                                    <td style="width:400px;padding-bottom: 5px;"></td>
-                                </tr>
+                                            <label id="CalibrationResult" class="form-control">@Model.TempObservationData.Remarks</label>
+                                        </td>
+                                        <td style="width:325px; font-weight: 900;padding-bottom: 5px;"></td>
+                                        <td style="width:400px;padding-bottom: 5px;"></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
 
@@ -694,22 +740,25 @@
                         
                         <table style="margin-top:10px; width:100%">
                             <tbody>
-                                <tr>
-                                    <td style="width:325px; padding-bottom: 15px; width: 800px;">
-                                        <div class="col-6 text-start">
-                                            <h5 class="trn" style="margin-bottom: 5px;">Calibrated By / 校正者</h5>
-                                            <img src="../UserSignature/@Model.TempObservationData.PerformedBySign" alt="PerformedBySign" style="width: 100px;" />
-                                            <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
-                                            <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
-                                        </div>
-                                    </td>
-                                    <td style="width:400px;padding-bottom: 15px; width: 800px; text-align: right;">
-                                        <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory / 承認された署名者</h5>
-                                        <img src="../UserSignature/@Model.TempObservationData.ReviewedBySign" alt="ReviewedBySign" style="width: 100px;" />
-                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
-                                        <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
-                                    </td>
-                                </tr>
+                                                          @if (@Model.TempObservationData != null)
+                                {
+                                    <tr>
+                                        <td style="width:325px; padding-bottom: 15px; width: 800px;">
+                                            <div class="col-6 text-start">
+                                                <h5 class="trn" style="margin-bottom: 5px;">Calibrated By / 校正者</h5>
+                                                <img src="../UserSignature/@Model.TempObservationData.PerformedBySign" alt="PerformedBySign" style="width: 100px;" />
+                                                <p style="margin: 0px;">@Model.TempObservationData.CalibrationPerformedBy</p>
+                                                <p style="margin: 0px;">@Model.TempObservationData.PerformedByDesignation</p>
+                                            </div>
+                                        </td>
+                                        <td style="width:400px;padding-bottom: 15px; width: 800px; text-align: right;">
+                                            <h5 class="trn" style="margin-bottom: 5px;">Authorized Signatory / 承認された署名者</h5>
+                                            <img src="../UserSignature/@Model.TempObservationData.ReviewedBySign" alt="ReviewedBySign" style="width: 100px;" />
+                                            <p style="margin: 0px;">@Model.TempObservationData.ReviewedBy</p>
+                                            <p style="margin: 0px;">@Model.TempObservationData.ReviewedByDesignation</p>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
 
@@ -743,9 +792,12 @@
         @*<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">*@
         <input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
         <input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
-        <input type="hidden" id="ExternalObsStatus1" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
-        <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TempObservationData.Id">
+                                  @if (@Model.TempObservationData != null)
+        {
+            <input type="hidden" id="ExternalObsStatus1" name="ExternalObsStatus" value="@Model.TempObservationData.ExternalObsStatus">
 
+            <input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TempObservationData.Id">
+        }
 
         
 	</body>
