@@ -109,7 +109,7 @@ public class TrackerController : BaseController
 
     }
 
-    public JsonResult GetAllRequestList(DataTableParameters dparam,int reqType)
+    public JsonResult GetAllRequestList(DataTableParameters dparam,int reqType,string sscode,string instrumentname, string instrumentid,string status,string requestno)
     {
         var TotalCount = 0;
         string Reqtype = string.Empty;
@@ -134,7 +134,7 @@ public class TrackerController : BaseController
 
         }
         List<RequestViewModel> ins = new List<RequestViewModel>();
-        response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype);
+        response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype, sscode, instrumentname, instrumentid, status, requestno);
 
         if (response.ResponseDataList.Count > 0)
         {

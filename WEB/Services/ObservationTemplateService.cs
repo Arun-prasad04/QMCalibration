@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using WEB.Controllers;
-using MathNet.Numerics;
+//using MathNet.Numerics;
 using System;
 using WEB.Models.Templates;
 using Microsoft.VisualBasic;

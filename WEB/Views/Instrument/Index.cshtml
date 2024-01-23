@@ -169,6 +169,7 @@
                             }
                             *@
                         </tbody>
+                       
                     </table>
                 </div>
 
@@ -200,9 +201,36 @@
 
 <script type="text/javascript">
 
-       $(function()
-        {
-           $('#example1').dataTable({
+    $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+   //    $("#example1 thead tr").clone(true).appendTo("#example1 thead");
+   // $("#example1 thead tr:eq(0) th").each(function (i) {
+   //      var title1 = $(this).text();
+   //      var title = title1.trim();
+   //      if(i==6)
+   //    {
+   //     // $(this).html(' <input id="" name="" type="text" placeholder="'+title+'" value="" />' );
+   //     $(this).html('<input  style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
+
+
+   //    }
+   //  } );
+
+   //     $(".filter", this).on("keyup change", function (i) {
+   //          if ($("#example1").DataTable().column(i).search() !== this.value) {
+   //              $("#example1").DataTable().column(i).search(this.value).draw();
+   //              GetAllInstrument();
+   //          }
+   //      });
+    
+
+    // $('#example1 thead th').each(function () {
+    //         var title = $(this).text();
+    //         $(this).html(title+' <input type="text" class="col-search-input" placeholder="Search ' + title + '" />');
+    //     });
+
+
+         $('#example1').dataTable({
                 
                   "bDestroy": true,
                 "bProcessing": true,
@@ -218,15 +246,15 @@
                     })
                 },
                  "columns":[
-                     {"data":"instrumentName","name":"Instrument Name"},
-                     {"data":"slNo","name":"Serial Number"},
-                     {"data":"idNo","name":"Lab ID Number"},
-                     {"data":"range","name":"Range"},
-                     {"data":"departmentName","name":"Department"},
-                     {"data":"subSecCode","name":"Sub section code"},
-                     {"data":"typeOfEquipment","name":"Scope"},
-                     {"data":"sCalibDate","name":"Calibration Date"},
-                     {"data":"sDueDate","name":"DueDate"},
+                     {"data":"instrumentName","name":"Instrument Name","search" : true},
+                     {"data":"slNo","name":"Serial Number","search" : true},
+                     {"data":"idNo","name":"Lab ID Number","search" : true},
+                     {"data":"range","name":"Range","search" : true},
+                     {"data":"departmentName","name":"Department","search" : true},
+                         {"data":"subSecCode","name":"Sub section code","search" : true},
+                     {"data":"typeOfEquipment","name":"Scope","search" : true},
+                     {"data":"sCalibDate","name":"Calibration Date","search" : true},
+                     {"data":"sDueDate","name":"DueDate","search" : true},
                      {"render" : function(data,type,row,meta){
                             var linkedit = '<a href="@Url.Action("InstrumentEdit","Instrument")?instrumentId='+row.id+'"><i class="fas fa-edit"></i></a>';
                             return linkedit;
@@ -367,6 +395,7 @@
 
                 // "serverside":"true",
                  "order":[0,"asc"],
+
                  "pageLength": "100",
                  "language": {
                     //"emptyTable": "No record found.",
@@ -376,8 +405,32 @@
                  dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            });
+                "initComplete": function() {
+      // Select the column whose header we need replaced using its index(0 based)
+      this.api().column(2).every(function() {
+            var title = $(this).text();
+        var column = this;
+        // Put the HTML of the <select /> filter along with any default options
+            var select = $('<select style="width: 100px;" id="drpstatus"  onchange="Drpstatus(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
+          // remove all content from this column's header and 
+          // append the above <select /> element HTML code into it 
+          .appendTo($(column.header()).empty())
+          // execute callback when an option is selected in our <select /> filter
+          
+        // populate options in the <select /> filter with unique values from the column's data
+        column.data().unique().sort().each(function(d, j) {
+          select.append("<option value='" + d + "'>" + d + "</option>")
         });
+      });
+    },
+            });
+
+         
+      
+            
+        });
+      
+
 
        $('body').on('change', '#selectAll', function() {
        var rows, checked;
@@ -389,87 +442,67 @@
        $.each(rows, function() {
           var checkbox = $($(this).find('td').eq(11)).find('input').prop('checked', checked);
        });
+
      });
 
-    //$(function () {
+     function Drpstatus(val) {
+         var table = $('#example1').DataTable();
+          if (table.search() !== val) {
+                        table.search(val).draw();
+                  
+                }
+     }
+
+ function Filtering()
+ {
+    //     var table = $('#example1').DataTable();
+    // // Apply the search
+    // table.columns().every( function () {
+    //     var that = this;
+    //     $('input').on( 'keyup change clear', function () {
+    //         if ( that.search() !== this.value ) {
+    //             that
+    //                 .search(this.value)
+    //                 .draw();
+    //         }
+    //     } );
+    // } );
+ }
+
+
+
+  $(document).ready(function() {
+   
+    // $('#example1 thead th').each(function () {
+    //         var title = $(this).text();
+    //         $(this).html(title+' <input type="text" class="col-search-input" placeholder="Search ' + title + '" />');
+    //     });
+
+
+       $("#example1 thead tr").clone(true).appendTo("#example1 thead");
+   $("#example1 thead tr:eq(0) th").each(function (i) {
+        var title1 = $(this).text();
+        var title = title1.trim();
+     
+       // $(this).html(' <input id="" name="" type="text" placeholder="'+title+'" value="" />' );
+       $(this).html('<input  style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
+    });
         
-    //    //$('#example1').dataTable({
-    //    //    "bDestroy": true,           
-    //    //    "createdRow": function (row, data, dataIndex) {
-    //    //        console.log(data);
-    //    //        var date = data[8].substring(0, 2);
-    //    //        var month = data[8].substring(3, 5);
-    //    //        var year = data[8].substring(6, 10);
+        var table = $('#example1').DataTable();
+           table.columns().every(function () {
+         //var table = this;
+            $('input', this.header()).on('keyup change', function () {
+                if (table.search() !== this.value) {
+                	table.search(this.value).draw();
+                  
+                }
+            });
+        });
 
-    //    //        var edate = new Date(year, month - 1, date);
+ 
 
-    //    //        var currentdate = new Date()
-    //    //        var redate = data[8];
+      })
 
-    //    //        if (redate != "") {
-    //    //            if (edate < currentdate) //&& (item.status != 30))
-    //    //            {
-    //    //                $(row).css('background-color', '#fbefef');
-    //    //            }
-    //    //        }
-    //    //        else {
-    //    //            //alert("empty");
-    //    //        }
-
-    //    //    }
-    //    //});
-    //    //var oTable = $('#example1').dataTable({
-    //    //    stateSave: true,         
-    //    //    "bDestroy": true,
-    //    //    "pageLength": 100,
-    //    //    'columnDefs': [{
-    //    //        'targets': [9], /* column index */
-    //    //        'orderable': false, /* true or false */
-
-    //    //    }],
-    //    //    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-    //    //        "<'row'<'col-sm-12'tr>>" +
-    //    //        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    //    //});
-
-    //    //var allPages = oTable.fnGetNodes();
-
-    //    //$('body').on('click', '#selectAll', function () {
-    //    //    if ($(this).hasClass('allChecked')) {
-    //    //        $('input[type="checkbox"]', allPages).prop('checked', false);
-    //    //    } else {
-    //    //        $('input[type="checkbox"]', allPages).prop('checked', true);
-    //    //    }
-    //    //    $(this).toggleClass('allChecked');
-    //    //});
-
-    //    //$('td.ReqDueDate[value=Zero]').closest('tr').css('background-color', 'red');
-
-    //    GetAllInstrument();
-    //});
-
- //   $(function()
- //   {
- //      $('#example1').dataTable({
-
- //            "ajax":{
- //                "type": 'GET',
- //                "url": '../Instrument/GetAllInstrumentList',
- //                "dataType": 'json'
- //                },
- //            "columns":[                 
- //                {"data":"instrumentName","name":"Instrument Name"},
- //                {"data":"slNo","name":"Serial Number"},
- //                {"data":"idNo","name":"Lab ID Number"},
- //                {"data":"range","name":"Range"},
- //                {"data":"departmentName","name":"Department"},
- //                {"data":"departmentName","name":"Department"},
- //                {"data":"typeOfEquipment","name":"Scope"},
- //            ],
- //            "serverside":"true",
- //            "order":[0,"asc"]
- //    });
- //});
 
     function GetAllInstrument(){
         $.ajax({
