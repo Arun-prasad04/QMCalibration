@@ -87,7 +87,11 @@ public class RequestService : IRequestService
                         TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
                         //ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
                         LC = dr["RequestDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["RequestDate"]).ToShortDateString(),
+
                         //statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
+
+                       // statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
+
 
                     };
                     RequestList.Add(REQlist);
