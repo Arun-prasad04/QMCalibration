@@ -224,9 +224,7 @@
                         success: fnCallback
                     })
                 },
-                 // "fnServerParams": function ( aoData ) {
-                 //     aoData.push( { "name": reqType, "value":reqType } );
-                 // },
+                 
                 "aoColumns": [
                     //{ "orderSequence": ["desc", "asc", "asc"] },
                     { "data": "reqestNo", "name": "Request No"},
@@ -310,9 +308,7 @@
 
                                 tdTest = '<a href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
                             }
-                            // else {
-                            //     tdTest = ""
-                            // }
+                           
                             return tdTest;
                         }
                     },
@@ -323,33 +319,18 @@
                             {
                                 tdCertificate = '<a href="@Url.Action("ViewCertification","Certification")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '"><i class="fas fa-user-graduate" style = "cursor:pointer"></i>'
                             }
-                            // else {
-                            //     tdCertificate = ''
-                            //     }
+                           
                             return tdCertificate;
                         }
                     },
 
                     { "data": "typeOfEquipment", "name": "Type Of Scope" },//, "sortable": true, "orderable": true
                 ],
-               // "order": [[5, 'asc'], [5, 'desc']],
-                //ordering: true,
-                // columnDefs: [
-                //     { orderable: true, targets: 2 }
-                // ],
-                // "columnDefs": [
-                //    // { "orderSequence": ["asc"], "targets": [1] },
-                //     { "orderSequence": ["desc", "asc", "asc"], "targets": [2] },
-                //   //  { "orderSequence": ["desc"], "targets": [3] }
-                // ],
+             
             "createdRow": function (row, data, dataIndex) {
               
                 if (data["reqDueDate"] != null) {
 
-                        //var date = data["reqDueDate"].substring(0, 2);
-                        //var month = data["reqDueDate"].substring(3, 5);
-                        //var year = data["reqDueDate"].substring(6, 10);
-                       // var edate = new Date(year, month - 1, date);
                         var edate=new Date(data["reqDueDate"]);
                         var currentdate = new Date();
                         
@@ -363,37 +344,11 @@
                         }
                         }
                 },
-
-    //              "initComplete": function() {
-    //   // Select the column whose header we need replaced using its index(0 based)
-    //   this.api().column(6).every(function() {
-    //             var $table = $("#example2");
-    //         var title = $(this).text();
-    //     var column = this;
-    //     // Put the HTML of the <select /> filter along with any default options
-    //         var select = $('<select style="width: 100px;" id="drpstatus"  onchange="Drpstatus(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
-    //       // remove all content from this column's header and 
-    //       // append the above <select /> element HTML code into it 
-    //      // .appendTo($(column.header()).empty())
-    //       .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
-    //       // execute callback when an option is selected in our <select /> filter
-          
-    //     // populate options in the <select /> filter with unique values from the column's data
-    //     column.data().unique().sort().each(function(d, j) {
-    //         if(d !=null)
-    //         {
-    //               select.append("<option value='" + d + "'>" + d + "</option>")
-    //         }
-         
-    //     });
-    //   });
-    // },
-                             
+//                        
                 "pageLength": "100",
-                //order: [3, 'asc','desc'],
-               // "order": [[0, 'asc'], [1, 'asc']],
+               
                 "language": {
-                    //"emptyTable": "No record found.",
+                   
                     "processing":
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
@@ -414,7 +369,6 @@
 
      $(document).ready(function() {
 
-   // $("#example2 thead tr").clone(true).appendTo("#example2 thead");
    $("#example2 thead tr:eq(1) th").each(function (i) {
         var title1 = $(this).text();
         var title = title1.trim();
