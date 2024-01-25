@@ -8,6 +8,7 @@ using CMT.DATAMODELS;
 using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using WEB.Models;
 using WEB.Services;
@@ -53,12 +54,12 @@ public class InstrumentController : BaseController
         return Json(new { data = response.ResponseDataList });
         //return Json(response.ResponseDataList);
     }
-    public JsonResult GetAllInstrumentList(DataTableParameters InsDparam)
+    public JsonResult GetAllInstrumentList(DataTableParameters InsDparam,string sscode, string instrumentname, string labid, string typeOfEquipment,string serialno,string range,string department,string calibrationdate,string duedate)
     {
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
         var TotalCount = 0;
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength,InsDparam.sSearch);
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength,InsDparam.sSearch,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate, duedate);
 
         if (response.ResponseDataList.Count > 0)
         {
