@@ -212,7 +212,7 @@ public class InstrumentService : IInstrumentService
         }
     }
     //public static ConnectionStringSettings sql_cs = ConfigurationManager.ConnectionStrings["dbConnectionString"];
-    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search)
+    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate)
     {
         try
         {
@@ -223,7 +223,7 @@ public class InstrumentService : IInstrumentService
             { Search = string.Empty; }
             //if (Startingrow == 0)
             //{ Startingrow = 1; }
-            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId, Startingrow, Endingrow, Search);
+            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId, Startingrow, Endingrow, Search,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate,  duedate);
             //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
             var TotalCount = 0;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
