@@ -4,6 +4,11 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
+<style>
+	.dataTables_filter{
+		display:none;
+	}
+</style>
 
 <section class="content">
 	<div class="row">
@@ -50,35 +55,23 @@
 								@* } *@
 								@* <th class="trn">Quarantine</th> *@
 							</tr>
+							 <tr>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                          
+                               
+                            </tr>
 						</thead>
 						<tbody>
 
-							@foreach (var item in Model)
-							{
-								@* @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
-								{ *@
-									<tr>
-										<td class="trn one">@item.InstrumentName</td>
-										<td class="trn">@item.SlNo</td>
-										<td class="trn">@item.IdNo</td>
-										<td class="trn">@item.Range</td>
-										<td class="trn">@item.DepartmentName</td>
-										<td class="trn">@item.SubSectionCode</td>
-										<td class="trn">@item.TypeOfEquipment</td>
-										<td class="trn">@item.CalibDate.ToString("dd-MM-yyyy")</td>
-										@if (item.DueDate == null)
-										{
-											<td> </td>
-										}
-										else
-										{
-											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-										}
-
-									</tr>
-
-								@* } *@
-							}
+							
 						</tbody>
 					</table>
 				</div>
@@ -93,36 +86,12 @@
 	<!-- /.row -->
 </section>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script>
 
-	$(function () {
-		$('#tblToolInstruments').dataTable({
-			"paging": true,
-			"pageLength": 100,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true,
-			"responsive": true,
-			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-				"<'row'<'col-sm-12'tr>>" +
-				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		});
+    
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--Data Table-->
+<script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 
-		
-		// $('#tblToolInstruments').dataTable({
-		// 	"paging": true,
-		// 	"lengthChange": true,
-		// 	"searching": true,
-		// 	"ordering": true,
-		// 	"info": true,
-		// 	"autoWidth": true,
-		// 	"responsive": true,
-		// 	dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-		// 		"<'row'<'col-sm-12'tr>>" +
-		// 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		// });
+<script src="~/plugins/toolroominstrument.js"></script> 
 
-	});
-	</script>
+	

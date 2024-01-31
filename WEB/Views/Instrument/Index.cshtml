@@ -22,7 +22,7 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-12">
+        <div class="col-15">
 
             <div class="card card-primary">
                 <div class="card-header">
@@ -85,6 +85,23 @@
 							
 								<th class="trn">Quarantine</th>
 							</tr>
+                             <tr>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                                <th class=""></th>
+                               
+                            </tr>
+
 						</thead>
 						<tbody>
                         @*
@@ -200,43 +217,26 @@
 
 
 <script type="text/javascript">
-
-    $(document).ready(function() {
-    // Setup - add a text input to each footer cell
-   //    $("#example1 thead tr").clone(true).appendTo("#example1 thead");
-   // $("#example1 thead tr:eq(0) th").each(function (i) {
-   //      var title1 = $(this).text();
-   //      var title = title1.trim();
-   //      if(i==6)
-   //    {
-   //     // $(this).html(' <input id="" name="" type="text" placeholder="'+title+'" value="" />' );
-   //     $(this).html('<input  style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
-
-
-   //    }
-   //  } );
-
-   //     $(".filter", this).on("keyup change", function (i) {
-   //          if ($("#example1").DataTable().column(i).search() !== this.value) {
-   //              $("#example1").DataTable().column(i).search(this.value).draw();
-   //              GetAllInstrument();
-   //          }
-   //      });
-    
-
-    // $('#example1 thead th').each(function () {
-    //         var title = $(this).text();
-    //         $(this).html(title+' <input type="text" class="col-search-input" placeholder="Search ' + title + '" />');
-    //     });
-
-
+     $(function () {
          $('#example1').dataTable({
-                
                   "bDestroy": true,
                 "bProcessing": true,
+               // "scrollX": true,
                 "bServerSide": true,
+                "bSortCellsTop": true,
                 "sAjaxSource": '../Instrument/GetAllInstrumentList',
-               // "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType }) },
+               "fnServerParams": function (aoData) { 
+                    aoData.push({ "name": "sscode", "value": $('#txtsearch5').val() })
+                    aoData.push({ "name": "instrumentname", "value": $('#txtsearch0').val() })
+                    aoData.push({ "name": "labid", "value": $('#txtsearch2').val() })
+                    aoData.push({ "name": "typeOfEquipment", "value": $('#drptypeOfEquipment').val() })
+                   
+                    aoData.push({ "name": "serialno", "value": $('#txtsearch1').val() })
+                    aoData.push({ "name": "range", "value": $('#txtsearch3').val() })
+                    aoData.push({ "name": "department", "value": $('#txtsearch4').val() })
+                    aoData.push({ "name": "calibrationdate", "value": $('#txtsearch7').val() })
+                    aoData.push({ "name": "duedate", "value": $('#txtsearch8').val() })
+                },
                 "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
                     $.ajax({
                         type: 'GET',
@@ -246,15 +246,15 @@
                     })
                 },
                  "columns":[
-                     {"data":"instrumentName","name":"Instrument Name","search" : true},
-                     {"data":"slNo","name":"Serial Number","search" : true},
-                     {"data":"idNo","name":"Lab ID Number","search" : true},
-                     {"data":"range","name":"Range","search" : true},
+                     {"data":"instrumentName","name":"Instrument Name"},
+                     {"data":"slNo","name":"Serial Number"},
+                     {"data":"idNo","name":"Lab ID Number"},
+                     {"data":"range","name":"Range"},
                      {"data":"departmentName","name":"Department","search" : true},
-                         {"data":"subSecCode","name":"Sub section code","search" : true},
-                     {"data":"typeOfEquipment","name":"Scope","search" : true},
-                     {"data":"sCalibDate","name":"Calibration Date","search" : true},
-                     {"data":"sDueDate","name":"DueDate","search" : true},
+                         {"data":"subSecCode","name":"Sub section code"},
+                     {"data":"typeOfEquipment","name":"Scope"},
+                     {"data":"sCalibDate","name":"Calibration Date"},
+                     {"data":"sDueDate","name":"DueDate"},
                      {"render" : function(data,type,row,meta){
                             var linkedit = '<a href="@Url.Action("InstrumentEdit","Instrument")?instrumentId='+row.id+'"><i class="fas fa-edit"></i></a>';
                             return linkedit;
@@ -290,47 +290,7 @@
                                             { console.log('********************less & Curr*********************');
                                              if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
                                               {
-                                    //  //if ((month <= (d.getMonth() + 1) && d.getFullYear() >= yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
-                                       // if ((month <= CurrMonth) && (CurrYear >= yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
-                                           //  { console.log('********************less & Curr*********************');
-                                            
-                                    //               if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
-                                    //                {
-                                    //                                      console.log('less & Curr');
-                                    //                             linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
-                                    //                             '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+ row.id +' />'+
-                                    //                             '<input id="typeId" name="typeId" type="hidden" value="2" />'+
-                                    //                             // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
-                                    //                             '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
-                                    //                             '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
-                                    //                             '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
-                                    //                             '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
-                                    //                             '</td>'
-                                    //                             console.log(linkCheckbox);
-                                    //                         }
-                                    //                     }
-                                    //                     //else if ((month == (d.getMonth() + 1) && d.getFullYear() == yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
-                                    //                      else if ((month == NextMonth) && (NextYear == yr) && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28)) 
-                                    //                     {
-                                                            
-                                    //                         if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
-                                    //                             {
-                                    //                                console.log('Next');
-                                    //                                 linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
-                                    //                                 '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.Id+' />'+
-                                    //                                 '<input id="typeId" name="typeId" type="hidden" value="2" />'+
-                                    //                                 '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
-                                    //                                 '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
-                                    //                                 '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
-                                    //                                '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
-                                    //                                '</td>'
-                                    //                                console.log(linkCheckbox);
-                                    //                             }
-                                    //                     }
-                                       
-                                    //                 }
-                                            
-                                               // }
+                                  
                                       linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
                                                                     '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.id+' />'+
                                                                     '<input id="typeId" name="typeId" type="hidden" value="2" />'+
@@ -406,27 +366,91 @@
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
+           "initComplete": function() {
+      // Select the column whose header we need replaced using its index(0 based)
+      this.api().column(6).every(function() {
+          var $table = $("#example1");
+            var title = $(this).text();
+        var column = this;
+            var select = $('<select style="width: 100px;" id="drptypeOfEquipment"  onchange="DrptypeOfEquipment(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
+        
+          .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
+          
+        column.data().unique().sort().each(function(d, j) {
+            if(d !=null)
+            {
+                  select.append("<option value='" + d + "'>" + d + "</option>")
+            }
+         
+        });
+      });
+    },
+
+
             });
 
          
       
-            
-        });
+            })
+    
       
 
 
-       $('body').on('change', '#selectAll', function() {
-       var rows, checked;
+       // $('body').on('change', '#selectAll', function() {
+       // var rows, checked;
 
-       //rows = $('#example1').find('tbody tr');
-       rows = $('#example1').dataTable().fnGetNodes();
+       // //rows = $('#example1').find('tbody tr');
+       // rows = $('#example1').dataTable().fnGetNodes();
 
-       checked = $(this).prop('checked');
-       $.each(rows, function() {
-          var checkbox = $($(this).find('td').eq(11)).find('input').prop('checked', checked);
-       });
+       // checked = $(this).prop('checked');
+       // $.each(rows, function() {
+       //    var checkbox = $($(this).find('td').eq(11)).find('input').prop('checked', checked);
+       // });
 
-     });
+    // });
+
+        function DrptypeOfEquipment(val) {
+         var table = $('#example1').DataTable();
+          if (table.search() !== val) {
+             table.search(val).draw();
+                  
+         }
+     }
+
+   $(document).ready(function() {
+
+
+   $("#example1 thead tr:eq(1) th").each(function (i) {
+        var title1 = $(this).text();
+        var title = title1.trim();
+     if(i==0 ||i==1 ||i==2 || i==3|| i==4|| i==5|| i==7|| i==8)
+     {
+       $(this).html('<input id="txtsearch'+i+'" style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
+
+     }
+  
+     else
+     {
+       $(this).html('<input  style="width: auto;display:none"  class="form-control filter" type="text" placeholder="Search" />');
+
+     }
+    });
+   
+        var table = $('#example1').DataTable();
+           table.columns().every(function () {
+         //var table = this;
+          $('input').on('keyup change', function () {
+                if (table.search() !== this.value) {
+                	table.search(this.value).draw();
+                  
+                }
+            });
+        });
+
+ 
+
+      })
+
 
 
 

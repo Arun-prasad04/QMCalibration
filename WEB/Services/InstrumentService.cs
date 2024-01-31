@@ -212,7 +212,7 @@ public class InstrumentService : IInstrumentService
         }
     }
     //public static ConnectionStringSettings sql_cs = ConfigurationManager.ConnectionStrings["dbConnectionString"];
-    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search)
+    public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate)
     {
         try
         {
@@ -223,7 +223,7 @@ public class InstrumentService : IInstrumentService
             { Search = string.Empty; }
             //if (Startingrow == 0)
             //{ Startingrow = 1; }
-            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId, Startingrow, Endingrow, Search);
+            DataSet ds = _cmtdl.GetInstruentList(userId, userRoleId, Startingrow, Endingrow, Search,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate,  duedate);
             //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
             var TotalCount = 0;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -2050,8 +2050,116 @@ public class InstrumentService : IInstrumentService
         }
     }
 
-    #region Comment
-    /*
+
+
+	public ResponseViewModel<InstrumentViewModel> ToolRoomDepartmentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate)
+	{
+		try
+		{
+			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+			List<InstrumentViewModel> ToolRoomInstrumentListing = new List<InstrumentViewModel>();
+			DataSet dsToolInventory = DsToolRoomDepartmentList(userId, userRoleId, Startingrow, Endingrow, Search,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate,  duedate);
+			if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[0].Rows.Count > 0)
+			{
+				foreach (DataRow dr in dsToolInventory.Tables[0].Rows)
+				{
+					InstrumentViewModel inst = new InstrumentViewModel
+					{
+						Id = Convert.ToInt32(dr["Id"]),
+						InstrumentName = dr["InstrumentName"].ToString(),
+						SlNo = dr["SlNo"].ToString(),
+						IdNo = dr["IdNo"].ToString(),
+						Range = dr["Range"].ToString(),
+						//LC = dr["LC"].ToString(),
+						//CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+						CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
+						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
+						//Make = dr["Make"].ToString(),
+						//CalibSource = dr["CalibSource"].ToString(),
+						//StandardReffered = dr["StandardReffered"].ToString(),
+						//Remarks = dr["Remarks"].ToString(),
+						//Status = Convert.ToInt16(dr["Status"]),
+						//RequestId = Convert.ToInt32(dr["RequestId"]),
+						DepartmentName = dr["deptName"].ToString(),
+						//RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						//UserRoleId = userRoleId,
+						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+						//ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+						SubSectionCode = dr["SubSectionCode"].ToString(),
+					};
+					ToolRoomInstrumentListing.Add(inst);
+
+				}
+			}
+            var TotalCount = 0;
+            if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[1].Rows.Count > 0)
+            {
+                TotalCount = Convert.ToInt32(dsToolInventory.Tables[1].Rows[0][0]);
+                ToolRoomInstrumentListing.ForEach(x => x.TotalCount = Convert.ToInt32(TotalCount));
+            }
+
+            return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = ToolRoomInstrumentListing
+			};
+		}
+		catch (Exception e)
+		{
+			ErrorViewModelTest.Log("InstrumentService - GetAllToolInventoryInstrumentList Method");
+			ErrorViewModelTest.Log("exception - " + e.Message);
+			return new ResponseViewModel<InstrumentViewModel>
+			{
+				ResponseCode = 500,
+				ResponseMessage = "Failure",
+				ErrorMessage = e.Message,
+				ResponseData = null,
+				ResponseDataList = null,
+				ResponseServiceMethod = "Instrument",
+				ResponseService = "GetAllToolInventoryInstrumentList"
+			};
+		}
+	}
+
+	public DataSet DsToolRoomDepartmentList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate)
+	{
+		var connectionString = _configuration.GetConnectionString("CMTDatabase");
+		SqlCommand cmd = new SqlCommand("[GetToolRoomInstrumentList]");
+		cmd.CommandType = CommandType.StoredProcedure;
+
+		SqlConnection sqlConn = new SqlConnection(connectionString);
+		DataSet dsResults = new DataSet();
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+        cmd.Parameters.AddWithValue("@userid", userid);
+        cmd.Parameters.AddWithValue("@userroleid", userroleid);
+        cmd.Parameters.AddWithValue("@Startingrow", Startingrow);
+        cmd.Parameters.AddWithValue("@Endingrow", Endingrow);
+        cmd.Parameters.AddWithValue("@Search", Search);
+
+        cmd.Parameters.AddWithValue("@sscode", sscode);
+        cmd.Parameters.AddWithValue("@instrumentname", instrumentname);
+        cmd.Parameters.AddWithValue("@labid", labid);
+        cmd.Parameters.AddWithValue("@typeOfEquipment", typeOfEquipment);
+
+
+        cmd.Parameters.AddWithValue("@serialno", serialno);
+        cmd.Parameters.AddWithValue("@range", range);
+        cmd.Parameters.AddWithValue("@department", department);
+        cmd.Parameters.AddWithValue("@calibrationdate", calibrationdate);
+        cmd.Parameters.AddWithValue("@duedate", duedate);
+        cmd.Connection = sqlConn;
+		cmd.CommandTimeout = 2000;
+		sqlAdapter.SelectCommand = cmd;
+		sqlAdapter.Fill(dsResults);
+		return dsResults;
+	}
+
+
+
+	#region Comment
+	/*
     public ResponseViewModel<IdNoModel> IfIdNoExist()
     {
         try
@@ -2087,5 +2195,5 @@ public class InstrumentService : IInstrumentService
         }
     }
     */
-    #endregion
+	#endregion
 }
