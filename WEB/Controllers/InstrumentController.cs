@@ -285,6 +285,7 @@ public class InstrumentController : BaseController
 	{
 		var TotalCount = 0;
 		string Reqtype = string.Empty;
+
 		//var RequestType = 0;
 		//RequestType = dparam.reqType;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));

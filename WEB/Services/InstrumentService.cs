@@ -2056,7 +2056,7 @@ public class InstrumentService : IInstrumentService
 	{
 		try
 		{
-			//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
+		//UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
 			List<InstrumentViewModel> ToolRoomInstrumentListing = new List<InstrumentViewModel>();
 			DataSet dsToolInventory = DsToolRoomDepartmentList(userId, userRoleId, Startingrow, Endingrow, Search,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate,  duedate);
 			if (dsToolInventory != null && dsToolInventory.Tables.Count > 0 && dsToolInventory.Tables[0].Rows.Count > 0)
