@@ -77,7 +77,7 @@
                                 <label class="trn">ReCalibration Request</label>
                                 @if (ViewBag.reqType == "3")
                                 {
-                                    <input type="radio" name="ReqTracker"  id="chkReCalibration" value="ReCalibration" onclick="BindTable(3)" checked="true">
+                                    <input type="radio" name="ReqTracker"  id="chkReCalibration" value="ReCalibration" onclick="BindTable(3)" checked>
                                 }
                                 else
                                 {
@@ -179,11 +179,11 @@
 *@
 
 <!--Import jQuery before export.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="~/js/jquery.min.js"></script>
 
 
 <!--Data Table-->
-<script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>
 
 
 <script type="text/javascript">
@@ -192,13 +192,11 @@
 
    
     $(function () {
-        //  $('#example1').dataTable({});
+        
          BindTable();
     });
     var BindTable = function (response) {
-        //reqType=rType;
-        console.log("reqType");
-          console.log(response);
+        
         var  reqType=response;
         $('#example2').dataTable(
             {
@@ -214,9 +212,14 @@
                     aoData.push({ "name": "instrumentname", "value": $('#txtsearch3').val() })
                     aoData.push({ "name": "instrumentid", "value": $('#txtsearch4').val() })
                     aoData.push({ "name": "status", "value": $('#drpstatus').val() })
-                    aoData.push({ "name": "requestno", "value": $('#txtsearch0').val() })
+                    aoData.push({ "name": "requestno", "value": $('#txtsearch0').val() })//$('#drptypeOfEquipment').val() 
+                    aoData.push({ "name": "requestdate", "value": $('#txtsearch1').val() })
+                    aoData.push({ "name": "range", "value": $('#txtsearch5').val() })
+                    aoData.push({ "name": "typeofrequest", "value": $('#drprequesttype').val() })
+                    aoData.push({ "name": "typeofequipment", "value": $('#drpscope').val() })
+                      
                 },
-                "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
+                "fnServerData": function (sSource, aoData, fnCallback) {
                     $.ajax({
                         type: 'GET',
                         url: sSource,
@@ -366,6 +369,22 @@
                   
          }
      }
+     function drpreqtype(val) {
+       // alert(val);
+         var table = $('#example2').DataTable();
+          if (table.search() !== val) {
+                        table.search(val).draw();
+                  
+         }
+     }
+     function Drpscop(val) {
+        // alert(val);
+         var table = $('#example2').DataTable();
+          if (table.search() !== val) {
+                        table.search(val).draw();
+                  
+         }
+     }
 
      $(document).ready(function() {
 
@@ -373,14 +392,24 @@
    $("#example2 thead tr:eq(1) th").each(function (i) {
         var title1 = $(this).text();
         var title = title1.trim();
-     if(i==0 ||i==2 || i==3|| i==4)
+     if(i==0 ||i==1 || i==2 || i==3|| i==4|| i==5)
      {
        $(this).html('<input id="txtsearch'+i+'" style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
 
      }
     else if(i==7)
       {
-    $(this).html('<select name=""  id="drpstatus"  class="form-control" onchange="Drpstatus(this.value)" </select>>');
+    $(this).html('<select name=""  id="drpstatus"  class="form-control" onchange="Drpstatus(this.value)" </select>');
+
+      }
+      else if( i==6)
+      {
+    $(this).html('<select name=""  id="drprequesttype"  class="form-control" onchange="drpreqtype(this.value)" </select>');
+
+      }
+      else if(i==11)
+      {
+    $(this).html('<select name=""  id="drpscope"  class="form-control" onchange="Drpscop(this.value)" </select>');
 
       }
      else
@@ -402,10 +431,24 @@
         
         $('#drpstatus').append(option);
         
+        var optionscope=[];
+        optionscope.push('<option value="">All</option>')
+        optionscope.push('<option value="Internal">Internal</option>')
+        optionscope.push('<option value="External">External</option>')
+         $('#drpscope').append(optionscope);
+
+        var optionreqtype=[];
+        optionreqtype.push('<option value="">All</option>')
+        optionreqtype.push('<option value="1">New</option>')
+        optionreqtype.push('<option value="2">Regular</option>')
+         optionreqtype.push('<option value="3">ReCalibration</option>')
+         $('#drprequesttype').append(optionreqtype);
+
+
 
         var table = $('#example2').DataTable();
            table.columns().every(function () {
-         //var table = this;
+         
           $('input').on('keyup change', function () {
                 if (table.search() !== this.value) {
                 	table.search(this.value).draw();

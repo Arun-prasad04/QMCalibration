@@ -306,7 +306,7 @@ public class MasterService : IMasterService
 			if (master.DueDate != null)
 			{
 				masterById.DueDate = master.DueDate;
-			}
+			 }
 			if (master.Range != null)
 			{
 				masterById.Range = master.Range;
@@ -339,8 +339,11 @@ public class MasterService : IMasterService
 			{
 				masterById.DepartmentId = master.DepartId;
 			}
-
-			Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
+            if (master.Name != null)
+            {
+                masterById.EquipName = master.Name;
+            }
+            Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
 			if (supplierById != null)
 			{
 				supplierById.Name = master.Supplier;

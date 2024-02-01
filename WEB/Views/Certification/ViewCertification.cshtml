@@ -90,7 +90,17 @@
                             { 
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-								<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>
+                                @if(@Model.TempObservationData.CertificateNumber == null)
+                                {
+                                        <td style="width:400px;padding-bottom: 25px;">: string.Empty </td>
+
+                                }
+                                else
+                                {
+                                        <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber </td>
+
+                                }
+								@*<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>*@
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
 							</tr>

@@ -4711,15 +4711,19 @@ public class ObservationTemplateService : IObservationTemplateService
     {
 		int? ulrNumber = 0;
 		int? certificateNumber = 0;
-		int? year = 2022;
+		int year = 2022;
 		isNABL = true;
 
+        DateTime firstDay = new DateTime(year, 1, 1);
+        DateTime lastDay = new DateTime(DateTime.Now.Year, 12, 31);
 
-        var startDate = DateTime.Parse(string.Concat("01-01-", year.ToString()));
-		var endDate = DateTime.Parse(string.Concat("31-12-", DateTime.Now.Year.ToString()));
+		var startDate = firstDay;// DateTime.Parse(string.Concat("01-01-", year.ToString()));
+
+		var endDate = lastDay;//DateTime.Parse(string.Concat("31-12-", DateTime.Now.Year.ToString()));
 
 
-		var templateObservation = _unitOfWork.Repository<TemplateObservation>()
+
+        var templateObservation = _unitOfWork.Repository<TemplateObservation>()
 											 .GetQueryAsNoTracking(x => x.CalibrationReviewedDate.Date >= startDate.Date
 																   && x.CalibrationReviewedDate.Date <= endDate.Date)
 											 .ToList();

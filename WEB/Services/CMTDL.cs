@@ -760,7 +760,7 @@ namespace WEB.Services
             return dsResults;
         }
         //GetRequestList
-        public DataSet GetRequestList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno)
+        public DataSet GetRequestList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno, string requestdate, string range, string typeofrequest, string typeofequipment)
         {
             // string sSearch = Search.Equals(null) ?string.Empty:Search;
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
@@ -778,6 +778,10 @@ namespace WEB.Services
             cmd.Parameters.AddWithValue("@instrumentid", instrumentid);
             cmd.Parameters.AddWithValue("@status", status);
             cmd.Parameters.AddWithValue("@requestno", requestno);
+            cmd.Parameters.AddWithValue("@requestdate", requestdate);
+            cmd.Parameters.AddWithValue("@range", range);
+            cmd.Parameters.AddWithValue("@typeofrequest", typeofrequest);
+            cmd.Parameters.AddWithValue("@typeofequipment", typeofequipment);
             //SqlConnection sqlConn = new SqlConnection("Data Source=(localdb)\\Local;Initial Catalog=QM_CMT;user id=sa;password=sql@123;");
             SqlConnection sqlConn = new SqlConnection(connectionString);
             DataSet dsResults = new DataSet();
@@ -846,7 +850,7 @@ namespace WEB.Services
             return dsResults;
         }
 
-        public DataSet GetInstruentList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate)
+        public DataSet GetInstruentList(int userid, int userroleid, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate, string chkDue)
         {
             // string sSearch = Search.Equals(null) ?string.Empty:Search;
             var connectionString = _configuration.GetConnectionString("CMTDatabase");
@@ -869,7 +873,8 @@ namespace WEB.Services
             cmd.Parameters.AddWithValue("@department", department);
             cmd.Parameters.AddWithValue("@calibrationdate", calibrationdate);
             cmd.Parameters.AddWithValue("@duedate", duedate);
-           
+            cmd.Parameters.AddWithValue("@chkdue", chkDue);
+            
             SqlConnection sqlConn = new SqlConnection(connectionString);
             DataSet dsResults = new DataSet();
             SqlDataAdapter sqlAdapter = new SqlDataAdapter();

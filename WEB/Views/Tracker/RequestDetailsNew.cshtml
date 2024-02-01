@@ -312,7 +312,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Received Date</label>
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" >@*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -359,7 +359,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Received Date</label>
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
+                                   @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
+                                  <div class="input-group date" id="reservationdate1" data-target-input="nearest"> @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -373,7 +374,9 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
-                                    <div class="input-group date" id="reservationdate7" data-target-input="nearest" onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">
+                                    @*<input type="date" id="TentativeCompletionDate" name="TentativeCompletionDate">*@
+                                    <div class="input-group date" id="reservationdate7" data-target-input="nearest">
+                                        @*onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
                                                id="TentativeCompletionDate" name="TentativeCompletionDate" value="">
                                         <div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
@@ -413,8 +416,9 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="trn">Received Date</label>
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">
+                                   <label class="trn">Received Date</label>
+                                   @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest"> @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@Model.ReceivedDate' disabled />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -423,65 +427,12 @@
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="trn">Instrument Condition</label>
-                        <input type"text" id="InstrumentCondition" class="form-control" value="@Model.InstrumentCondition" disabled>
-                        </div>
-                        </div>*@
-                            @*<div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="trn">Scope</label>
-                        <select id="Scope" class="form-control" disabled>
-                        @if (Model.Feasiblity == "Internal")
-                        {
-                        <option value="Internal Instrument" selected=true>Internal Instrument</option>
-                        }
-                        else
-                        {
-                        <option value="Internal Instrument">Internal Instrument</option>
-                        }
-                        @if (Model.Feasiblity == "External Instrument")
-                        {
-                        <option value="External Instrument" selected=true>External Instrument</option>
-                        }
-                        else
-                        {
-                        <option value="External Instrument">External Instrument</option>
-                        }
-                        </select>
-                        </div>
-                        </div>*@
-
-                            @* <div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="required trn">Standard Reffered/Calibration Method</label>
-                        <input type="text" id="StandardReffered" name="StandardReffered" value="@Model.StandardReffered"
-                        class="form-control" placeholder="" disabled>
-                        </div>
-                        </div>*@
-                            @* <div class="col-sm-6">
-                        <!-- text input -->
-                        <div class="form-group">
-                        <label class="trn">NABL</label>
-                        <select id="ddIsNABL" name="ddIsNABL" class="form-control" onchange="getNABLValue(this)" disabled>
-                        @if (Model.IsNABL == false)
-                        {
-                        <option value="false" selected>No</option>
-                        <option value="true">Yes</option>
-                        }
-                        else if (Model.IsNABL == true)
-                        {
-                        <option value="true" selected>Yes</option>
-                        <option value="false">No</option>
-                        }
-                        </select>
-                        </div>
-                        </div>*@
+                           
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
-                                    <div class="input-group date" id="reservationdate7" data-target-input="nearest" onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">
+                                    @*<input type="date" id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate">*@
+                                  <div class="input-group date" id="reservationdate7" data-target-input="nearest"> @*onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
                                                id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate" disabled>
                                         <div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
@@ -850,7 +801,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Closed Date</label>
-                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest"> @*onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
                                             <input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
                                             <div class="input-group-append" data-target="#reservationdate2"
@@ -902,7 +853,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Calibration Date</label>
-                                    <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
+                                    <div class="input-group date" id="reservationdate4" data-target-input="nearest" >@*onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                                                id="CalibDate" name="CalibDate" onloadeddata="" value="" />
                                         <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
@@ -914,7 +865,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Due Date</label>
-                                    <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+                                    <div class="input-group date" id="reservationdate5" data-target-input="nearest">@* onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                                                id="DueDate" name="DueDate" value="" />
                                         <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
@@ -952,7 +903,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Instument Returned On</label>
-                                        <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                        <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                             <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate3" />
                                             <div class="input-group-append" data-target="#reservationdate3"
@@ -1016,7 +967,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="trn">Instument Returned On</label>
-                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                 <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                        class="form-control datetimepicker-input" data-target="#reservationdate3" />
                                                 <div class="input-group-append" data-target="#reservationdate3"
@@ -1086,7 +1037,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Closed Date</label>
-                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest" onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest">@* onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
                                             <input type="text" id="newClosedDate" name="newClosedDate" value="@Model.ClosedDate.ToShortDateString()"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
                                             <div class="input-group-append" data-target="#reservationdate2"
@@ -1120,7 +1071,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Calibration Date</label>
-                                        <div class="input-group date" id="reservationdate4" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">
+                                        <div class="input-group date" id="reservationdate4" data-target-input="nearest" >@* onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
                                             <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                                                    id="CalibDate" name="CalibDate" onloadeddata="" value="@Model.CalibDate" disabled />
                                             <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
@@ -1132,7 +1083,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Due Date</label>
-                                        <div class="input-group date" id="reservationdate5" data-target-input="nearest" onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+                                        <div class="input-group date" id="reservationdate5" data-target-input="nearest"> @*onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
                                             <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                                                    id="DueDate" name="DueDate" value="@Model.DueDate" disabled />
                                             <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
@@ -1213,7 +1164,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="trn">Instument Returned On</label>
-                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest"> @*onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                 <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@Model.InstrumentReturnedOn.ToShortDateString()"
                                                        class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
                                                 <div class="input-group-append" data-target="#reservationdate3"
@@ -1316,7 +1267,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="trn">Instument Returned On</label>
-                                                <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">
+                                                <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                            class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
                                                     <div class="input-group-append" data-target="#reservationdate3"
@@ -1354,7 +1305,7 @@
                                     <div class="form-group">
                                         <label class="trn">Return Date</label>
 
-                                        <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest" onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">
+                                        <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest">@* onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">*@
                                             <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now.AddHours(3).AddMinutes(30).ToString("yyyy/MM/dd HH:mm:ss") JST"
                                                    class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
                                             <div class="input-group-append" data-target="#newReturnDatePicker"
@@ -1833,6 +1784,29 @@
             document.getElementById("DueDate").value = result3;
         }
     }
+     setTimeout(function () {
+      $('#reservationdate1').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate2').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate3').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate4').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate5').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate6').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#reservationdate7').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+    }, 1000);
 
 </script>
 

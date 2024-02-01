@@ -197,7 +197,7 @@
                                             <option class="trn" selected="true" value="">--Select Master Department--</option>
                                            @foreach (var department in @Model.Departments)
                                             {
-                                                if (department.Id == Model.DepartId)
+                                                @if (department.Id == Model.DepartId)
                                                 {
                                                     <option value="@department.Id" selected="selected">@department.SubSectionCode</option>
                                                 }
@@ -302,9 +302,16 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    @*<div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                        <input type="text" id="PODate" name="PODate" value="@Model.PODate"
+                                               class="form-control datetimepicker-input" data-target="#reservationdate1" />
+                                        <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>*@
                                     <label class="trn">Calibration Date</label>
-                                    <div class="input-group date" id="reservationdate3" data-target-input="nearest" onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">
-                                        <input type="text" id="CalibDate" name="CalibDate" value="@Model.CalibDate"
+                                    <div class="input-group date" id="reservationdate3" data-target-input="nearest">
+                                        <input type="text" id="MasCalibDate" name="CalibDate" value="@Model.CalibDate"
                                                class="form-control datetimepicker-input" data-target="#reservationdate3" />
                                         <div class="input-group-append" data-target="#reservationdate3" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -316,7 +323,7 @@
                                 <div class="form-group">
                                     <label class="trn">Due Date</label>
                                     <div class="input-group date" id="reservationdate4" data-target-input="nearest">
-                                        <input type="text" id="DueDate" name="DueDate" value="@Model.DueDate"
+                                        <input type="text" id="MasDueDate" name="DueDate" value="@Model.DueDate"
                                                class="form-control datetimepicker-input" data-target="#reservationdate4" />
                                         <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>

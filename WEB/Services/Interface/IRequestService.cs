@@ -3,7 +3,7 @@ using WEB.Models;
 namespace WEB.Services.Interface; 
 public interface IRequestService
 {
- ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno);
+    ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno, string requestdate, string range, string typeofrequest, string typeofequipment);
  ResponseViewModel<RequestViewModel> GetAllRequestList1(int userRoleId,int userId);
  ResponseViewModel<RequestViewModel> GetRequestById(int RequestId);
  ResponseViewModel<RequestViewModel> InsertRequest(int instrumentId,int userId,int typeId);

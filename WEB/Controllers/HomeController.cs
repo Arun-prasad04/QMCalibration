@@ -82,8 +82,9 @@ public class HomeController : BaseController
 				ViewBag.InstrumentCount = 0;
 			}
 		}
-		if (userRoleId == 2 || userRoleId == 4 || userRoleId == 3)
-		{
+        //if (userRoleId == 2 || userRoleId == 4 || userRoleId == 3)
+        if (userRoleId == 2 || userRoleId == 3)
+        {
             #region Commend
             //if (userRoleId == 3)
             //{
@@ -131,7 +132,19 @@ public class HomeController : BaseController
 				ViewBag.RequestCount = 0;
 			}
 		}
-		
+		if (userRoleId == 4)
+		{
+
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[5].Rows.Count > 0)
+            {
+                ViewBag.RequestCount = Convert.ToString(ds.Tables[5].Rows[0]["RequestCount3"]);
+            }
+            else
+            {
+                ViewBag.RequestCount = 0;
+            }
+
+        }
 		return View();
 	}
 

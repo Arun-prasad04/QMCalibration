@@ -50,7 +50,7 @@ public class RequestService : IRequestService
 									  .ToList();
 		return templateObservation;
 	}
-    public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno)
+    public ResponseViewModel<RequestViewModel> GetAllRequestList(int userRoleId, int userId, int Startingrow, int Endingrow, string Search, string ReqType, string sscode, string instrumentname, string instrumentid, string status, string requestno,string requestdate,string range, string typeofrequest, string typeofequipment)   
     {
         try
         {
@@ -61,7 +61,7 @@ public class RequestService : IRequestService
             CMTDL _cmtdl = new CMTDL(_configuration);
             if (Search == null)
             { Search = string.Empty; }
-            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType, sscode, instrumentname,instrumentid, status, requestno);
+            DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType, sscode, instrumentname,instrumentid, status, requestno, requestdate, range, typeofrequest, typeofequipment);
             //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
             var TotalCount = 0;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -882,37 +882,24 @@ public class RequestService : IRequestService
             reqestStatus.CreatedOn = DateTime.Now;
             reqestStatus.CreatedBy = userId;
             _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
-
+			ErrorViewModelTest.Log("RequestService - Save Request/before duedate");
 			string calibfreqDate = _cmtdl.CalculateDuedate(DueDate);
-
+			ErrorViewModelTest.Log("RequestService - Save Request/after duedate"+ calibfreqDate);
 			Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
             requestById.StatusId = (Int32)EnumRequestStatus.Approved;
             requestById.InstrumentCondition = InstrumentCondition;
             requestById.ReceivedBy = userId;
             requestById.Feasiblity = "";// Feasiblity;
-
-            //---------start of converting Default date to null to fix out of range issue--------
-
-            //int Tyear = TentativeCompletionDate.Year;
-            ////int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
-
-            //if (Tyear.Equals(1))
-            //{
-            //    requestById.TentativeCompletionDate = null;
-            //}
-            //else
-            //{
-            requestById.TentativeCompletionDate = TentativeCompletionDate;
-            //}
-            //---------end of converting date---------------------
-
-            requestById.TentativeCompletionDate = TentativeCompletionDate;
-            requestById.ReceivedDate = DateTime.Now;
+            requestById.TentativeCompletionDate = Convert.ToDateTime(TentativeCompletionDate);
+			ErrorViewModelTest.Log("RequestService - Save Request TentativeCompletionDate"+ TentativeCompletionDate);
+			requestById.ReceivedDate = DateTime.Now;
             requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
-            _unitOfWork.Repository<Request>().Update(requestById);
+			ErrorViewModelTest.Log("RequestService - Save Request ReqDueDate");
+			_unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
-
-            Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
+			ErrorViewModelTest.Log("RequestService - Save Request date");
+		
+			Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
             instrumentById.IsNABL = newNABL;
 
             instrumentById.ToolInventory = ToolInventory;
@@ -969,6 +956,7 @@ public class RequestService : IRequestService
 
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
+			ErrorViewModelTest.Log("RequestService - Save Request");
 			//---ToolRoomHistory
 			if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
 			{
@@ -1012,9 +1000,6 @@ public class RequestService : IRequestService
 
 
             _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
-
-
-
 
 
             //RequestViewModel RequestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
@@ -2417,15 +2402,15 @@ public class RequestService : IRequestService
             requestById.Feasiblity = Feasiblity;
             //---------start of converting Default date to null to fix out of range issue--------
             int Tyear = TentativeCompletionDate.Year;
-            //int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
-            if (Tyear.Equals(1))
-            {
-                requestById.TentativeCompletionDate = null;
-            }
-            else
-            {
-                requestById.TentativeCompletionDate = TentativeCompletionDate;
-            }
+            ////int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
+            //if (Tyear.Equals(1))
+            //{
+            //    requestById.TentativeCompletionDate = null;
+            //}
+            //else
+            //{
+            //    requestById.TentativeCompletionDate = TentativeCompletionDate;
+            //}
             //---------end of converting date---------------------
 
             requestById.TentativeCompletionDate = TentativeCompletionDate;

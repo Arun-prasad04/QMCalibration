@@ -92,37 +92,17 @@
 	</div>
 	<!-- /.row -->
 </section>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script>
+@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
 
-	$(function () {
-		$('#tblToolInstruments').dataTable({
-			"paging": true,
-			"pageLength": 100,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true,
-			"responsive": true,
-			dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-				"<'row'<'col-sm-12'tr>>" +
-				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		});
+@*    
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--Data Table-->
+<script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>*@
+<script type="text/javascript" src="~/js/jquery.min.js"></script>
 
-		
-		// $('#tblToolInstruments').dataTable({
-		// 	"paging": true,
-		// 	"lengthChange": true,
-		// 	"searching": true,
-		// 	"ordering": true,
-		// 	"info": true,
-		// 	"autoWidth": true,
-		// 	"responsive": true,
-		// 	dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-		// 		"<'row'<'col-sm-12'tr>>" +
-		// 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		// });
 
-	});
-	</script>
+<!--Data Table-->
+<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/plugins/toolroominstrument.js"></script> 
+
+	
