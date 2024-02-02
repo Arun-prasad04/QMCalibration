@@ -87,11 +87,13 @@ public class RequestService : IRequestService
                         TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
                         //ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
                         LC = dr["RequestDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["RequestDate"]).ToShortDateString(),
-
+                        ObservationTemplate= dr["ObservationTemplate"].Equals(DBNull.Value) ? null : Convert.ToInt16(dr["ObservationTemplate"]),
                         //statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
-
-                       // statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
-
+                      //if(userRoleId == "2")
+                      //{ 
+                        templateId = dr["templateId"].Equals(DBNull.Value) ? null : Convert.ToInt16(dr["templateId"]),
+                        // statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
+                       // }
 
                     };
                     RequestList.Add(REQlist);

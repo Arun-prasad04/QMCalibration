@@ -4,7 +4,11 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
-
+<style>
+	.dataTables_filter {
+		display: none;
+	}
+</style>
 <section class="content">
 	<div class="row">
 		<div class="col-12">
@@ -15,11 +19,11 @@
 						<div class="col-md-6">
 							<h3 class="card-title trn">Tool Room Instruments List</h3>
 						</div>
-						
+
 
 					</div>
 				</div>
-	
+
 
 				<!-- /.card-header -->
 				<div class="card-body">
@@ -38,52 +42,38 @@
 								@* <th class="trn">Edit</th> *@
 								<!--<th>Delete</th>-->
 								@* @* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-								{ *@ 
-									@*<th class="trn">Request</th>*@
-									@* <input id="instrumentId" name="instrumentId" type="checkbox" value=' + item.id + ' checked="checked" /> *@
-									@* <th style="text-align:center;">
-										<span class="trn">SelectAll Request</span>
-										<br>
-										<input type="checkbox" id="selectAll" name="selectAll" />
-									</th> *@
+								{ *@
+								@*<th class="trn">Request</th>*@
+								@* <input id="instrumentId" name="instrumentId" type="checkbox" value=' + item.id + ' checked="checked" /> *@
+								@* <th style="text-align:center;">
+								<span class="trn">SelectAll Request</span>
+								<br>
+								<input type="checkbox" id="selectAll" name="selectAll" />
+								</th> *@
 
 								@* } *@
 								@* <th class="trn">Quarantine</th> *@
 							</tr>
+							<tr>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+								<th class=""></th>
+
+
+							</tr>
 						</thead>
 						<tbody>
-
-							@foreach (var item in Model)
-							{
-								@* @if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2))
-								{ *@
-									<tr>
-										<td class="trn one">@item.InstrumentName</td>
-										<td class="trn">@item.SlNo</td>
-										<td class="trn">@item.IdNo</td>
-										<td class="trn">@item.Range</td>
-										<td class="trn">@item.DepartmentName</td>
-										<td class="trn">@item.SubSectionCode</td>
-										<td class="trn">@item.TypeOfEquipment</td>
-										<td class="trn">@item.CalibDate.ToString("dd-MM-yyyy")</td>
-										@if (item.DueDate == null)
-										{
-											<td> </td>
-										}
-										else
-										{
-											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-										}
-
-									</tr>
-
-								@* } *@
-							}
 						</tbody>
 					</table>
 				</div>
 
-				
+
 				<!-- /.card-body -->
 			</div>
 			<!-- /.card -->
@@ -92,17 +82,12 @@
 	</div>
 	<!-- /.row -->
 </section>
-@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-@*    
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <!--Data Table-->
 <script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>*@
-<script type="text/javascript" src="~/js/jquery.min.js"></script>
 
+<script src="~/plugins/toolroominstrument.js"></script>
 
-<!--Data Table-->
-<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>
-<script src="~/plugins/toolroominstrument.js"></script> 
-
-	

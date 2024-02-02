@@ -119,6 +119,7 @@
                                 <th class="trn"></th>
                                
                             </tr>
+                            
                           @*   <tr class="filter">
                                
                                 <th class="filtertxt">
@@ -297,19 +298,70 @@
                         }
                     },
                     {
+                        data: 'observationTemplate',
                         "render": function (data, type, row, meta) {
-
+                            console.log("----------------");
+                            console.log(data);
+                                console.log(row.observationTemplate)
+                             console.log("----------------");
                             var tdTest = '';
                             var userRoleId = @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId");
                            
                             if ((userRoleId == 2 || userRoleId == 3 || userRoleId == 4) && (row.status == 27 || row.status == 29 || row.status == 30 || row.status == 31) && row.typeOfEquipment != 'External') {
+                                if ((row.templateId > 0) && (row.status == 27))//&& row.
+                                 { 
+                                    tdTest = '<span title="Approved!"><a style="color:orange" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                 }
+                                else if  (row.status == 30) {
 
-                                tdTest = '<a href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                    tdTest = '<span title="closed!"><a style="color:green" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
+                                 }
+                                else if (row.status == 31) {
+
+                                    tdTest = '<span title="Calibration Rejected!"><a style="color:red" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+
+                                }
+                                 else if (row.status == 29) {
+
+                                    tdTest = '<span title="Calibration Done!"><a style="color:yellow" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+
+                                }
+                                else  {
+
+                                    tdTest = '<span title="Requested!"><a href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+
+                                }
                             }
                             else if ((row.userRoleId == 2 || row.userRoleId == 3 || row.userRoleId == 4) && (row.status == 27 || row.status == 29 || row.status == 30) && row.typeOfEquipment == 'External') {
+                               
+                                //tdTest = '<a href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                if ((row.templateId > 0) && (row.status == 27))//&& row.
+                                {
+                                   
+                                    tdTest = '<a style="color:orange" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                }
+                                else if  (row.status == 30){
 
-                                tdTest = '<a href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                    tdTest = '<a style="color:green" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+
+                                }
+                                else if (row.status == 31) {
+
+                                    tdTest = '<a style="color:red" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+
+                                }
+                                  else if (row.status == 29) {
+
+                                        tdTest = '<span title="Calibration Done!"><a style="color:yellow" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+
+                                }
+                                else {
+
+                                    tdTest = '<span title="Requested!"><a href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+
+                                }
+                            
                             }
                            
                             return tdTest;
@@ -331,7 +383,10 @@
                 ],
              
             "createdRow": function (row, data, dataIndex) {
-              
+             //    console.log(dataIndex);
+             // console.log(row);
+             //console.log(data[63]);
+             //   console.log("createdRow********************");
                 if (data["reqDueDate"] != null) {
 
                         var edate=new Date(data["reqDueDate"]);
@@ -347,7 +402,21 @@
                         }
                         }
                 },
-
+                "columnDefs": [ {
+    "targets":9,
+    "createdCell": function (td, cellData, rowData, row, col) {
+        //console.log(td);
+        // console.log(cellData);
+        //  console.log(rowData);
+        //      console.log(row);
+        //   console.log(rowData.observationTemplate);
+       // alert(cellData);
+    // if ( rowData["observationTemplate"] > 0 ) {
+      //  $(td).css('color', 'red')
+//$(td).css('background-color', 'yellow');
+     // }
+    }
+  } ],
                 "pageLength": "100",
                
                 "language": {
