@@ -36,7 +36,11 @@
                      {"data":"idNo","name":"Lab ID Number"},
                      {"data":"range","name":"Range"},
                      {"data":"departmentName","name":"Department"},
+
                      { "data":"subSectionCode","name":"Sub section code"},
+
+                         {"data":"subSecCode","name":"Sub section code"},
+
                      {"data":"typeOfEquipment","name":"Scope"},
                      {"data":"sCalibDate","name":"Calibration Date"},
                       {"data":"sDueDate","name":"DueDate"},

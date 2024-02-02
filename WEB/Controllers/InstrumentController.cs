@@ -305,8 +305,8 @@ public class InstrumentController : BaseController
 	{
 
 		ResponseViewModel<InstrumentViewModel> response  = _instrumentService.GetAllToolRoomInstrument();
-		return View(response.ResponseDataList);
-		//return View();
+		//return View(response.ResponseDataList);
+		return View();
 
 	}
 
@@ -315,6 +315,7 @@ public class InstrumentController : BaseController
 	{
 		var TotalCount = 0;
 		string Reqtype = string.Empty;
+
 		//var RequestType = 0;
 		//RequestType = dparam.reqType;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));

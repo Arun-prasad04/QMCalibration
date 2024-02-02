@@ -2065,6 +2065,7 @@ public class InstrumentService : IInstrumentService
 						SlNo = dr["SlNo"].ToString(),
 						IdNo = dr["IdNo"].ToString(),
 						Range = dr["Range"].ToString(),
+
 						sCalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]).ToShortDateString(),//String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"])),
 						sDueDate = dr["DueDate"].Equals(DBNull.Value) ? null :   Convert.ToDateTime(dr["DueDate"]).ToShortDateString(),//String.Format("{0:dd/MM/yyyy}", (dr["DueDate"])),
 																																	   //CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"])), String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"]))
@@ -2073,6 +2074,23 @@ public class InstrumentService : IInstrumentService
 						DepartmentName = dr["deptName"].ToString(),
 						
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+
+						//LC = dr["LC"].ToString(),
+						//CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
+						CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
+						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
+						//Make = dr["Make"].ToString(),
+						//CalibSource = dr["CalibSource"].ToString(),
+						//StandardReffered = dr["StandardReffered"].ToString(),
+						//Remarks = dr["Remarks"].ToString(),
+						//Status = Convert.ToInt16(dr["Status"]),
+						//RequestId = Convert.ToInt32(dr["RequestId"]),
+						DepartmentName = dr["deptName"].ToString(),
+						//RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
+						//UserRoleId = userRoleId,
+						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
+						//ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
+
 						SubSectionCode = dr["SubSectionCode"].ToString(),
 					};
 					ToolRoomInstrumentListing.Add(inst);
@@ -2183,5 +2201,5 @@ public class InstrumentService : IInstrumentService
         }
     }
     */
-    #endregion
+	#endregion
 }
