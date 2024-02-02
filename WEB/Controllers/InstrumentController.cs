@@ -7,6 +7,7 @@ using CMT.DAL;
 using CMT.DATAMODELS;
 using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
@@ -54,12 +55,41 @@ public class InstrumentController : BaseController
         return Json(new { data = response.ResponseDataList });
         //return Json(response.ResponseDataList);
     }
-    public JsonResult GetAllInstrumentList(DataTableParameters InsDparam,string sscode, string instrumentname, string labid, string typeOfEquipment,string serialno,string range,string department,string calibrationdate,string duedate)
+	public JsonResult GetAllInstrumentList(DataTableParameters InsDparam, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate,string chkDue)
+	{
+		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
+		var TotalCount = 0;
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength, InsDparam.sSearch, sscode, instrumentname, labid, typeOfEquipment, serialno, range, department, calibrationdate, duedate,chkDue);
+
+		if (response.ResponseDataList.Count > 0)
+		{
+			TotalCount = (Int32)response.ResponseDataList[0].TotalCount;
+		}
+		//      }
+		int pageNo = 1;
+		if (InsDparam.iDisplayStart >= InsDparam.iDisplayLength)
+		{
+
+			pageNo = (InsDparam.iDisplayStart / InsDparam.iDisplayLength) + 1;
+		}
+
+		return Json(new
+		{
+			InsDparam.sEcho,
+			iTotalRecords = response.ResponseDataList.Count,
+			iTotalDisplayRecords = TotalCount,
+			aaData = response.ResponseDataList
+		});
+		//return Json(new { data = response.ResponseDataList });
+		//return Json(response.ResponseDataList);
+	}
+	public JsonResult GetAllInstrumentList1(DataTableParameters InsDparam,string sscode, string instrumentname, string labid, string typeOfEquipment,string serialno,string range,string department,string calibrationdate,string duedate)
     {
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
         var TotalCount = 0;
-        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength,InsDparam.sSearch,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate, duedate);
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetAllInstrumentList(userId, userRoleId, InsDparam.iDisplayStart, InsDparam.iDisplayLength,InsDparam.sSearch,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate, duedate,"");
 
         if (response.ResponseDataList.Count > 0)
         {
@@ -271,7 +301,7 @@ public class InstrumentController : BaseController
 
 		return View(response.ResponseDataList);
 	}
-	public IActionResult ToolRoomInstrumentListing()
+	public IActionResult ToolRoomInstrumentListing()//
 	{
 
 		ResponseViewModel<InstrumentViewModel> response  = _instrumentService.GetAllToolRoomInstrument();

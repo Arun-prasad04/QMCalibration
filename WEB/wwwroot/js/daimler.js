@@ -1329,7 +1329,7 @@ function AcceptRejectNewRequest(lang) {
 }
 
 function AcceptRejectExternalRequest(lang) {
-    debugger;
+   // debugger;
     var type = $('#hdntype').val();
     if ($('input[name="NewAcceptReject"]:checked').val() == undefined || $('input[name="NewAcceptReject"]:checked').val() == '') {
         showWarning("Please choose either Accept / Reject and try again.", lang);
@@ -3075,7 +3075,7 @@ function SubmitReview(lang) {
     var dt = $('#InsCalibFreq').val();
     //debugger;
     dueDate = DudeDateCalculation(dt);
-
+   // alert($('#ReviewDate').val());
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',

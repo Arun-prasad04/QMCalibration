@@ -6,7 +6,7 @@ public interface IInstrumentService
 {
     ResponseViewModel<InstrumentViewModel> GetAllInstrumentList1(int userId, int userRoleId);
 
-    ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate);
+    ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate,string chkDue);
     ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId);
     int GetObservationTemplateId(int instrumentId, string Type);
     ResponseViewModel<InstrumentViewModel> InsertInstrument(InstrumentViewModel instrument);
@@ -31,6 +31,9 @@ public interface IInstrumentService
     ResponseViewModel<InstrumentViewModel> UpdateControlCardRequestList(List<RequestAllData> reqlist, int InstrumentId, string IssueNo);
     ResponseViewModel<InstrumentViewModel> InActiveQuarantineInstrument(int instrumentId);
 	//ResponseViewModel<IdNoModel> IfIdNoExist();
+
+	ResponseViewModel<InstrumentViewModel> ToolRoomDepartmentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate);
+
 
 	ResponseViewModel<InstrumentViewModel> ToolRoomDepartmentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate);
 

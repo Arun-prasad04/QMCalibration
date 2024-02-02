@@ -118,6 +118,7 @@ public partial class RequestViewModel
     public List<IdNoModel> IdNoList { get; set; }
     public int? TotalCount { get; set; }
     public string? statusname { get; set; }
+    public int? templateId { get; set; }
 }
 public class UploadFile
     {

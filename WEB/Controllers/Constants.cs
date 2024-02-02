@@ -1,11 +1,13 @@
 
+using System.Globalization;
+
 namespace WEB.Controllers;
 public static class Constants
 {
     public static string FORMATNUMER = "1221";
     public static string REVISION_AND_DATE = "011 & 2021";
     public static string REVISION_NUMBER = "1001";
-    public static DateTime REVISION_DATE = DateTime.Parse("02-01-2022");
+    public static DateTime REVISION_DATE = new DateTime(2022, 01, 02); // DateTime.Parse("02-01-2022");
     public static string DEFAULT_PASSWORD = "Passwd@123";
     public static int REPORT_START_YEAR = 2020;
     public static string DEFAULT_DESIGNATION = "Product Executive";
@@ -15,22 +17,22 @@ public static class Constants
     public static string INTERMEDIATE_FORMATNUMER = "365.QM.D.855";
     public static string INTERMEDIATE_REVISIONNO_DATE = "00/28.03.2016";
     public static string INTERMEDIATE_REVISIONNO = "00";
-    public static DateTime INTERMEDIATE_REVISIONDATE = DateTime.Parse("28.03.2016");
+    public static DateTime INTERMEDIATE_REVISIONDATE = new DateTime(2016,03,28); //DateTime.ParseExact("28-03-2016", "MM/dd/yyyy", CultureInfo.InvariantCulture);//DateTime.Parse("28.03.2016");
 
-    public static string ALTERNATIVE_FORMATNUMER = "365.QM.D.886";
+	public static string ALTERNATIVE_FORMATNUMER = "365.QM.D.886";
     public static string ALTERNATIVE_REVISIONNO_DATE = "00/26.07.2018";
     public static string ALTERNATIVE_REVISIONNO = "00";
-    public static DateTime ALTERNATIVE_REVISIONDATE = DateTime.Parse("26.07.2018");
+    public static DateTime ALTERNATIVE_REVISIONDATE = new DateTime(2018, 07, 26); //DateTime.ParseExact("26.07.2018", "dd/MM/yyyy", null);
 
-    public static string REPLICATE_FORMATNUMER = "365.QM.D.865";
+	public static string REPLICATE_FORMATNUMER = "365.QM.D.865";
     public static string REPLICATE_REVISIONNO_DATE = "00/28.03.2016";
     public static string REPLICATE_REVISIONNO = "00";
-    public static DateTime REPLICATE_REVISIONDATE = DateTime.Parse("28.03.16");
-    public static string RESTEST_FORMATNUMER = "365.QM.D.855";
+    public static DateTime REPLICATE_REVISIONDATE = new DateTime(2016, 03, 28);// DateTime.ParseExact("28.03.16", "dd/MM/yyyy", null);
+	public static string RESTEST_FORMATNUMER = "365.QM.D.855";
     public static string RESTEST_REVISIONNO_DATE = "00/28.03.16";
     public static string RESTEST_REVISIONNO = "00";
-    public static DateTime RETEST_REVISIONDATE = DateTime.Parse("28.03.16");
-    public static string MICROMETER_REFERENCE_WITH_INDICATOR = "365.QM.C.074";
+    public static DateTime RETEST_REVISIONDATE = new DateTime(2016, 03, 28);// DateTime.ParseExact("28.03.16", "dd/MM/yyyy", null);
+	public static string MICROMETER_REFERENCE_WITH_INDICATOR = "365.QM.C.074";
     public static string VERNIER_CALIPER_REFERENCE_WITH_INDICATOR = "365.QM.C.072";
     public static string PLUNGER_DIAL_REFERENCE_WITH_INDICATOR = "365.QM.C.077";
     public static string LEVER_DIAL_REFERENCE_WITH_INDICATOR = "365.QM.C.076";

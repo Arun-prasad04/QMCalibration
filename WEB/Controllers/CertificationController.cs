@@ -722,8 +722,7 @@ public class CertificationController : BaseController
         {
             instrumentresponse.ResponseData.Range = string.Concat(instrumentresponse.ResponseData.Range, instrumentresponse.ResponseData.Unit1);
             instrumentresponse.ResponseData.LC = string.Concat(instrumentresponse.ResponseData.LC, instrumentresponse.ResponseData.Unit2);
-            instrumentresponse.ResponseData.RuleConfirmityStatement = string.Format(Constants.DECISION_RULE_CONFIRMITY,
-                                                                                   instrumentresponse.ResponseData.Rule_Confirmity);
+            instrumentresponse.ResponseData.RuleConfirmityStatement = "";// instrumentresponse.ResponseData.Rule_Confirmity == null ? string.Empty:string.Format(Constants.DECISION_RULE_CONFIRMITY,                                                                                  instrumentresponse.ResponseData.Rule_Confirmity);//  instrumentresponse.ResponseData.Rule_Confirmity == null ? string.Empty 
             instrumentresponse.ResponseData.RequestId = requestId;
 
             DateTime calibrationClosedate = _instrumentService.GetcalibrationClosedate(requestId);

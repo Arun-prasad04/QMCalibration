@@ -238,7 +238,7 @@
 			{
 				var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
 				<td>
-					<input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+					<input type="text" value="@Model.CalibrationPerformedDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
 						   class="Tables-AndTablesTextBox TblInHeader" disabled>
 				</td>
 			}
@@ -255,8 +255,8 @@
 			{
 				var ReviewDate = @Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");
 				<td>
-					<input type="text" name="CalibrationReviewedDate" id="ReviewDate"
-						   value="@ReviewDate" class="Tables-AndTablesTextBox TblInHeader" disabled>
+					<input type="text" name="ReviewDate" id="ReviewDate"
+						   value=" @Model.CalibrationReviewedDate" class="Tables-AndTablesTextBox TblInHeader" disabled>
 				</td>
 
 			}

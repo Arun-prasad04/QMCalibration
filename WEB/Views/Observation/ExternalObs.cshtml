@@ -180,7 +180,7 @@
                 {
                     var performDate = @Model.CalibrationPerformedDate.ToString("dd-MM-yyyy");
                     <td>
-                        <input type="text" value="@performDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
+                        <input type="text" value="@Model.CalibrationPerformedDate" id="CalibrationPerformedDate" name="CalibrationPerformedDate"
                                class="Border0px" disabled>
                     </td>
                 }
@@ -200,7 +200,7 @@
                         <div class="form-group">
                             <div class="input-group date" id="reservationdate" data-target-input="nearest" onchange="$('#ReviewDate').attr('value',$('#ReviewDate').val());">
                                 <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
-                                       id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate" @Model.IsDisabled>
+                                       id="ReviewDate" name="ReviewDate" value="@Model.CalibrationReviewedDate.ToString("dd-MM-yyyy");" @Model.IsDisabled>
                                 <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
