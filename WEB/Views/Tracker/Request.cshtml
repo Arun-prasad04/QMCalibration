@@ -190,14 +190,14 @@
 <script type="text/javascript">
 
 
-
-   
+    var filters = [];
+    var actions = "pageload";
     $(function () {
         
          BindTable();
     });
     var BindTable = function (response) {
-        
+        filters = [];
         var  reqType=response;
         $('#example2').dataTable(
             {
@@ -218,6 +218,7 @@
                     aoData.push({ "name": "range", "value": $('#txtsearch5').val() })
                     aoData.push({ "name": "typeofrequest", "value": $('#drprequesttype').val() })
                     aoData.push({ "name": "typeofequipment", "value": $('#drpscope').val() })
+                    aoData.push({ "name": "actions", "value": actions })
                       
                 },
                 "fnServerData": function (sSource, aoData, fnCallback) {
@@ -225,8 +226,16 @@
                         type: 'GET',
                         url: sSource,
                         data:aoData,
-                        success: fnCallback
-                    })
+                        "success": function (json) {
+                            filters = json.filter;
+                            fnCallback(json);
+                            BindingFilters(filters);
+                        }
+                    });
+                        // success: function(data) {
+                           
+                        // }
+                    
                 },
                  
                 "aoColumns": [
@@ -430,31 +439,49 @@
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
             });
+        
     }
 
     function Drpstatus(val) {
          var table = $('#example2').DataTable();
-          if (table.search() !== val) {
-                        table.search(val).draw();
+        actions = "click";
+        if (table.search() !== val || val == "") {
+              table.search(val).draw();
+           
                   
          }
      }
      function drpreqtype(val) {
        // alert(val);
+        actions = "click";
          var table = $('#example2').DataTable();
-          if (table.search() !== val) {
-                        table.search(val).draw();
-                  
-         }
+        if (table.search() !== val || val == "") {
+         table.search(val).draw();
+           
+        }
      }
      function Drpscop(val) {
         // alert(val);
+        actions = "click";
          var table = $('#example2').DataTable();
-          if (table.search() !== val) {
-                        table.search(val).draw();
-                  
-         }
+        if (table.search() !== val || val=="") {
+             table.search(val).draw();
+           
+        }
      }
+
+    function BindingFilters(filters) {
+        $('#txtsearch0').val(filters.requestno);
+        $('#txtsearch1').val(filters.requestdate);
+        $('#txtsearch2').val(filters.sscode);
+        $('#txtsearch3').val(filters.instrumentname);
+        $('#txtsearch4').val(filters.instrumentid);
+        $('#txtsearch4').val(filters.range);
+        $('#drprequesttype').val(filters.typeofrequest);
+        $('#drpstatus').val(filters.status);
+        $('#drpscope').val(filters.typeofequipment);
+       
+    }
 
      $(document).ready(function() {
 
@@ -514,12 +541,13 @@
          optionreqtype.push('<option value="3">ReCalibration</option>')
          $('#drprequesttype').append(optionreqtype);
 
-
+     
 
         var table = $('#example2').DataTable();
            table.columns().every(function () {
          
           $('input').on('keyup change', function () {
+                actions = "click";
                 if (table.search() !== this.value) {
                 	table.search(this.value).draw();
                   

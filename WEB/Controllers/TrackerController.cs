@@ -8,6 +8,8 @@ using WEB.Services;
 using WEB.Services.Interface;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using System;
+using NPOI.SS.Formula.Functions;
+using Microsoft.AspNetCore.Http;
 
 namespace WEB.Controllers;
 
@@ -110,7 +112,7 @@ public class TrackerController : BaseController
 
     }
 
-    public JsonResult GetAllRequestList(DataTableParameters dparam,int reqType,string sscode,string instrumentname, string instrumentid,string status,string requestno,string requestdate, string range, string typeofrequest, string typeofequipment)
+    public JsonResult GetAllRequestList(DataTableParameters dparam,int reqType,string sscode,string instrumentname, string instrumentid,string status,string requestno,string requestdate, string range, string typeofrequest, string typeofequipment,string actions)
     {
         var TotalCount = 0;
         string Reqtype = string.Empty;
@@ -134,8 +136,61 @@ public class TrackerController : BaseController
             Reqtype = dparam.reqType.ToString();
 
         }
+        var value = HttpContext.Session.Get<Requestfilterclass>("filter");
         List<RequestViewModel> ins = new List<RequestViewModel>();
-        response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype, sscode, instrumentname, instrumentid, status, requestno, requestdate, range, typeofrequest, typeofequipment);
+
+		Requestfilterclass filter = new Requestfilterclass();
+		if(actions == "click")
+		{
+            filter.sscode = sscode;
+            filter.instrumentname = instrumentname;
+            filter.instrumentid = instrumentid;
+            filter.status = status;
+            filter.requestno = requestno;
+            filter.requestdate = requestdate;
+            filter.range = range;
+            filter.typeofrequest = typeofrequest;
+            filter.typeofequipment = typeofequipment;
+        }
+
+		else if(value !=null)
+		{
+
+        filter.sscode=sscode==null?value.sscode: sscode;
+        filter.instrumentname = instrumentname == null ? value.instrumentname: instrumentname;
+        filter.instrumentid= instrumentid == null ? value.instrumentid : instrumentid;
+        filter.status= status == null ? value.status : status;
+        filter.requestno= requestno == null ? value.requestno : requestno;
+        filter.requestdate= requestdate == null ? value.requestdate : requestdate;
+        filter.range= range == null ? value.range : range;
+        filter.typeofrequest= typeofrequest == null ? value.typeofrequest : typeofrequest;
+        filter.typeofequipment= typeofequipment == null ? value.typeofequipment : typeofequipment;
+        }
+		else
+		{
+            filter.sscode = sscode ;
+            filter.instrumentname = instrumentname;
+            filter.instrumentid = instrumentid;
+            filter.status = status;
+            filter.requestno = requestno;
+            filter.requestdate = requestdate;
+            filter.range = range;
+            filter.typeofrequest = typeofrequest;
+			filter.typeofequipment = typeofequipment;
+
+        }
+        //base.SessionGetString(filter);
+
+        //base.SessionGetString<List<Requestfilterclass>>(filter);
+
+
+        HttpContext.Session.Set<Requestfilterclass>("filter", filter);
+        var values = HttpContext.Session.Get<Requestfilterclass>("filter");
+
+
+        response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype, filter.sscode, filter.instrumentname, filter.instrumentid, filter.status, filter.requestno, filter.requestdate, filter.range, filter.typeofrequest, filter.typeofequipment);
+
+       
 
         if (response.ResponseDataList.Count > 0)
         {
@@ -154,7 +209,8 @@ public class TrackerController : BaseController
             dparam.sEcho,
             iTotalRecords = response.ResponseDataList.Count,
             iTotalDisplayRecords = TotalCount,
-            aaData = response.ResponseDataList
+            aaData = response.ResponseDataList,
+            filter = values,
         });
         
     }
@@ -183,6 +239,8 @@ public class TrackerController : BaseController
     //           return Json(response.ResponseDataList);
     //       }
     //   }
+
+
     public IActionResult GetRequestById(int requestId)
 	{
 		ResponseViewModel<RequestViewModel> response = _requestService.GetRequestById(requestId);
