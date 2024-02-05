@@ -58,9 +58,36 @@
                                         <td>@item.LC</td>
                                         <td>@item.DepartmentName</td>
                                         <td>@item.CalibFreq</td>
-                                        <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+                                   @*     <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
                                         <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>*@
+                                    @if (@item.CalibDate == null || @item.CalibDate == DateTime.MinValue)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+
+                                        <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
+                                    }
+                                    @if (@item.DueDate == null || @item.DueDate == DateTime.MinValue)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+
+                                        <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                    }
+                                    @if (@item.QuaraantineOn == null || @item.QuaraantineOn == DateTime.MinValue)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+
                                         <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>
+                                    }
                                         <td>@item.QuarantineReason</td>
                                     @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
                                     {

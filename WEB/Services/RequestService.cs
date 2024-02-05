@@ -2402,19 +2402,7 @@ public class RequestService : IRequestService
             requestById.InstrumentCondition = InstrumentCondition;
             requestById.ReceivedBy = userId;
             requestById.Feasiblity = Feasiblity;
-            //---------start of converting Default date to null to fix out of range issue--------
-            int Tyear = TentativeCompletionDate.Year;
-            ////int? Tyear = TentativeCompletionDate.Year == 1 ? null :;
-            //if (Tyear.Equals(1))
-            //{
-            //    requestById.TentativeCompletionDate = null;
-            //}
-            //else
-            //{
-            //    requestById.TentativeCompletionDate = TentativeCompletionDate;
-            //}
-            //---------end of converting date---------------------
-
+  
             requestById.TentativeCompletionDate = TentativeCompletionDate;
             requestById.ReceivedDate = DateTime.Now;
             requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
