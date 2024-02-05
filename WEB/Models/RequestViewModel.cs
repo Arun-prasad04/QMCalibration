@@ -1,4 +1,5 @@
 using CMT.DATAMODELS;
+using System.Text.Json;
 
 namespace WEB.Models;
 public partial class RequestViewModel
@@ -148,3 +149,29 @@ public class RequestKPIViewModel
 
 	    public string? Inspectiondetails { get; set; }
 }
+public class Requestfilterclass
+{
+    public string sscode { get; set; }
+    public string instrumentname { get; set; }
+    public string instrumentid { get; set; }
+    public string status { get; set; }
+    public string requestno { get; set; }
+    public string requestdate { get; set; }
+    public string range { get; set; }
+    public string typeofrequest { get; set; }
+    public string typeofequipment { get; set; }
+}
+public static class SessionExtensions
+{
+    public static void Set<T>(this ISession session, string key, T value)
+    {
+        session.SetString(key, JsonSerializer.Serialize(value));
+    }
+
+    public static T Get<T>(this ISession session, string key)
+    {
+        var value = session.GetString(key);
+        return value == null ? default : JsonSerializer.Deserialize<T>(value);
+    }
+}
+
