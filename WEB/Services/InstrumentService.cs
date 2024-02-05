@@ -237,22 +237,11 @@ public class InstrumentService : IInstrumentService
                         SlNo = dr["SlNo"].ToString(),
                         IdNo = dr["IdNo"].ToString(),
                         Range = dr["Range"].ToString(),
-                //LC = dr["LC"].ToString(),
-                //CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
-                //CalibDate = Convert.ToDateTime(dr["CalibDate"]),
                         DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
                         sCalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : String.Format("{0:dd/MM/yyyy}" , (dr["CalibDate"])),//Convert.ToDateTime(dr["CalibDate"]).ToShortDateString(),
 						sDueDate = dr["DueDate"].Equals(DBNull.Value) ? null : String.Format("{0:dd/MM/yyyy}", (dr["DueDate"])),  //Convert.ToDateTime(dr["DueDate"]).ToShortDateString(),
-                //Make = dr["Make"].ToString(),
-                //CalibSource = dr["CalibSource"].ToString(),
-                //StandardReffered = dr["StandardReffered"].ToString(),
-                //Remarks = dr["Remarks"].ToString(),
                         Status = Convert.ToInt16(dr["Status"]),
                         RequestId = Convert.ToInt32(dr["RequestId"]),
-                    //FileList = 
-                    //CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
-                    //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
-                    //NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
                         DepartmentName = dr["deptName"].ToString(),
                         RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
                         UserRoleId = userRoleId,
@@ -260,8 +249,6 @@ public class InstrumentService : IInstrumentService
                         ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
                         SubSecCode = dr["SubSectionCode"].ToString(),
                         ToolInventory = dr["ToolInventory"].Equals(DBNull.Value) ? null : dr["ToolInventory"].ToString(),
-                        //ReplacementStartDate = dr["ReplacementStartDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReplacementStartDate"]),// (DateTime?)Convert.ToDateTime(dr["ReplacementStartDate"]),
-                        //backcolor = dr["backcolor"].ToString(),
                         ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
                     };
                     instrumentList.Add(inst);
@@ -674,6 +661,10 @@ public class InstrumentService : IInstrumentService
             {
                 instrumentById.InstrumentName = instrument.InstrumentName;
             }
+            if (instrument.AmountJPY != null)
+            {
+                instrumentById.AmountJPY = instrument.AmountJPY;
+            }
             if (instrument.SlNo != null)
             {
                 instrumentById.SlNo = instrument.SlNo;
@@ -955,23 +946,18 @@ public class InstrumentService : IInstrumentService
                         Range = dr["Range"].ToString(),
                         LC = dr["LC"].ToString(),
                         CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
-                        CalibDate = Convert.ToDateTime(dr["CalibDate"]),
-                        DueDate = Convert.ToDateTime(dr["DueDate"]),
+                        CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
+                        DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
                         Make = dr["Make"].ToString(),
                         CalibSource = dr["CalibSource"].ToString(),
                         StandardReffered = dr["StandardReffered"].ToString(),
                         Remarks = dr["Remarks"].ToString(),
                         Status = Convert.ToInt16(dr["Status"]),
-                        //FileList = 
-                        //CalibrationStatus = Convert.ToInt16(dr["CalibrationStatus"]),
-                        //InstrumentStatus = Convert.ToInt16(dr["InstrumentStatus"]),
-                        //DateOfReceipt = Convert.ToDateTime(dr["DateOfReceipt"]),
-                        //NewReqAcceptStatus = Convert.ToInt32(dr["NewReqAcceptStatus"]),
                         DepartmentName = dr["deptName"].ToString(),
                         RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
                         UserRoleId = userRoleId,
                         TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
-                        QuaraantineOn = Convert.ToDateTime(dr["QuarantineCreatedOn"]),
+                        QuaraantineOn = dr["QuarantineCreatedOn"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["QuarantineCreatedOn"]),
                         QuarantineReason = dr["Reason"].ToString(),
 
                     };
@@ -2068,29 +2054,14 @@ public class InstrumentService : IInstrumentService
 
 						sCalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]).ToShortDateString(),//String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"])),
 						sDueDate = dr["DueDate"].Equals(DBNull.Value) ? null :   Convert.ToDateTime(dr["DueDate"]).ToShortDateString(),//String.Format("{0:dd/MM/yyyy}", (dr["DueDate"])),
-																																	   //CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"])), String.Format("{0:dd/MM/yyyy}", (dr["CalibDate"]))
-																																	   //DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
-
+						
 						DepartmentName = dr["deptName"].ToString(),
 						
 						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
 
-						//LC = dr["LC"].ToString(),
-						//CalibFreq = Convert.ToInt16(dr["CalibFreq"]),
 						CalibDate = dr["CalibDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["CalibDate"]),
 						DueDate = dr["DueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["DueDate"]),
-						//Make = dr["Make"].ToString(),
-						//CalibSource = dr["CalibSource"].ToString(),
-						//StandardReffered = dr["StandardReffered"].ToString(),
-						//Remarks = dr["Remarks"].ToString(),
-						//Status = Convert.ToInt16(dr["Status"]),
-						//RequestId = Convert.ToInt32(dr["RequestId"]),
-						DepartmentName = dr["deptName"].ToString(),
-						//RequestStatus = Convert.ToInt32(dr["RequestStatus"]),
-						//UserRoleId = userRoleId,
-						TypeOfEquipment = dr["TypeOfEquipment"].ToString(),
-						//ToolInventoryStatus = Convert.ToInt32(dr["ToolInventoryStatus"]),
-
+						
 						SubSectionCode = dr["SubSectionCode"].ToString(),
 					};
 					ToolRoomInstrumentListing.Add(inst);

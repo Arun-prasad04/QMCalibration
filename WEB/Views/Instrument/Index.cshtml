@@ -272,7 +272,7 @@
                              var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId='+row.id+'"><i class="fas fa-id-badge"></i></a>';
                              return linkControlCard;
                         }
-                    },
+                    }, 
                     {"render": function(data, type, row, meta){
                         var linkCheckbox='';
                             if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
@@ -295,7 +295,7 @@
                                      if (row.dueDate != null)
                                     {
                                         if ((Date.parse(date) <= Date.parse(d))  && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
-                                            { console.log('********************less & Curr*********************');
+                                            { //console.log('********************less & Curr*********************');
                                              if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
                                               {
                                   
@@ -310,10 +310,14 @@
                                               }
                                              }
                                             }
-                                           
-                            }
-                              console.log("******************");
-                             console.log(linkCheckbox);
+                                            //else
+                                            //{
+
+                                            //    row.hide();
+                                            //}
+                                          
+                                 }
+                              
                                  return linkCheckbox;
                         }
                     },
@@ -343,6 +347,8 @@
                             $(row).css('background-color', '#fbefef');
                         }
                         else {
+                           // console.log('test');
+                           //  $(row).hide();
                         
                         }
                         }

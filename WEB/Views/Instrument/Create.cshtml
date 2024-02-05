@@ -573,20 +573,35 @@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label class="trn">Due Date</label>
-													<div class="input-group date" id="reservationdate1" data-target-input="nearest"
-													onchange="$('#DueDate').attr('value',$('#DueDate').val());">
+													<div class="input-group date" id="reservationdate1" data-target-input="nearest">
+													@*onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
 													@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
 													{
-														
-														<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-														id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" />  @* @Model.IsDisabled *@
+														@if (@Model.DueDate == null || @Model.DueDate == DateTime.MinValue)
+														{
+															<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+																   id="DueDate" name="DueDate" value="" />
+													}
+													else{
+															<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+																   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" />  
+														}
+																	
 														
 													}
 													else
 													{
+														@if (@Model.DueDate == null || @Model.DueDate == DateTime.MinValue)
+														{
+															<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+																   id="DueDate" name="DueDate" value="" @Model.IsDisabled />
+														}
+														else
+														{
+															<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
+																   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()"  @Model.IsDisabled/>
+														}
 													
-														<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
-															   id="DueDate" name="DueDate" value="@Model.DueDate.ToShortDateString()" /> @* @Model.IsDisabled *@
 														
 													}
 													<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
