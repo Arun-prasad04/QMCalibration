@@ -116,7 +116,8 @@
 										<div class="form-group">
 											<label class="required trn">User Department</label>
 											<select class="form-control" name="UserDept" id="UserDept">
-												@*<option class="trn" value=" ">--Select User Department--</option>
+												@*<select class="form-control" name="UserDept11" id="UserDept">
+												<option class="trn" value=" ">--Select User Department--</option>
 												@foreach (var department in @Model.Departments)
 												{
 													if (department.Id == Model.UserDept)
@@ -135,7 +136,7 @@
 									{
 										<div class="form-group">
 											<label class="required trn">User Department</label>
-											<input type="text" id="UserDept11" name="UserDept" value='@Model.DepartmentName' class="form-control"
+											<input type="text" id="UserDept" name="UserDept" value='@Model.DepartmentName' class="form-control"
 												   placeholder="" disabled>
 										</div>
 									}
@@ -147,7 +148,7 @@
 											@*<input type="text" id="UserDept1" name="UserDept"
 												   value='@HttpContextAccessor.HttpContext.Session.GetString("DepartmentName")' class="form-control"
 												   placeholder="" disabled>*@
-												<select class="form-control" name="UserDept" id="UserDept1">
+											<select class="form-control" name="UserDept" id="UserDept">
 												@*<option class="trn" selected="true" value="">--Select User Department--</option>
 												@foreach (var department in @Model.Departments)
 												{
@@ -550,7 +551,7 @@
 												<div class="form-group">
 													<label for="exampleSelectRounded0" class="trn">Calibration Status</label>
 													<select id="CalibrationStatus" name="CalibrationStatus" class="form-control" @Model.IsDisabled>
-													@foreach (var calibrationstatus in @Model.CalibrationStatusList)
+													@*@foreach (var calibrationstatus in @Model.CalibrationStatusList)
 													{
 														if (calibrationstatus.Id == Model.CalibrationStatus)
 														{
@@ -562,7 +563,7 @@
 														{
 																		<option value="@calibrationstatus.Id">@calibrationstatus.AttrValue</option>
 														}
-													}
+													}*@
 
 													</select>
 												</div>
@@ -575,7 +576,7 @@
 													<label class="trn">Due Date</label>
 													<div class="input-group date" id="reservationdate1" data-target-input="nearest">
 													@*onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
-													@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
+													@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")@* && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))*@
 													{
 														@if (@Model.DueDate == null || @Model.DueDate == DateTime.MinValue)
 														{
@@ -642,15 +643,16 @@
 												<div class="col-sm-6">
 														<div class="form-group">
 															<label class="trn">Calibration Frequency</label><br>
-															<select id="CalibFreq" name="CalibFreq" class="form-control" style="width:100%; height:100%; padding:5px">
+													<select class="form-control" name="CalibFreq" id="CalibFreq">
+													@*<select id="CalibFreq" name="CalibFreq" class="form-control" value="@Model.CalibFreq" style="width:100%; height:100%; padding:5px">*@
 															</select>
 														</div>
 													</div>
-													
-														
-													
 
-												@* 	<label class="required trn">Observation Template</label>
+
+
+
+											@* value="@Model.CalibFreq" 	<label class="required trn">Observation Template</label>
 													<select id="ObservationTemplate" name="ObservationTemplate" class="form-control" @Model.IsDisabled> *@
 														@*onchange="LoadObservationType(language)"<option value=""> -- Select Observation Template --</option>
 														@foreach (var observation in @Model.ObservationTemplateList)

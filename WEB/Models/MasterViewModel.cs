@@ -17,7 +17,7 @@ public class MasterViewModel
     public DateTime? CalibDate{get;set;}
     public DateTime? DueDate{get;set;}
     public string? Range{get;set;}
-    public string SerialNo{get;set;}
+    public string? SerialNo{get;set;}
 
     public string? LabId{get;set;}
     public string? CertNo{get;set;}

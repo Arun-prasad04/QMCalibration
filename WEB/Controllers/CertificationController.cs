@@ -717,15 +717,19 @@ public class CertificationController : BaseController
     {
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-        ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
-        if (instrumentresponse.ResponseData != null)
+		// ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);//Linq Query
+		
+
+			ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentsForId(instrumentId);
+
+		if (instrumentresponse.ResponseData != null)
         {
             instrumentresponse.ResponseData.Range = string.Concat(instrumentresponse.ResponseData.Range, instrumentresponse.ResponseData.Unit1);
             instrumentresponse.ResponseData.LC = string.Concat(instrumentresponse.ResponseData.LC, instrumentresponse.ResponseData.Unit2);
             instrumentresponse.ResponseData.RuleConfirmityStatement = "";// instrumentresponse.ResponseData.Rule_Confirmity == null ? string.Empty:string.Format(Constants.DECISION_RULE_CONFIRMITY,                                                                                  instrumentresponse.ResponseData.Rule_Confirmity);//  instrumentresponse.ResponseData.Rule_Confirmity == null ? string.Empty 
             instrumentresponse.ResponseData.RequestId = requestId;
 
-            DateTime calibrationClosedate = _instrumentService.GetcalibrationClosedate(requestId);
+            DateTime calibrationClosedate = _instrumentService.GetcalibrationClosedate(requestId);//linkq Query
             instrumentresponse.ResponseData.CalibrationCloseDate = calibrationClosedate;
             //TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
             //                                             .GetQueryAsNoTracking(Q => Q.RequestId == levertypedial.RequestId
@@ -745,13 +749,13 @@ public class CertificationController : BaseController
                      TemplateObservationId = response.ResponseData.Id;
 
 				}
-				ResponseViewModel<ObservationContentViewModel> responseObs = _ObservationTemplateService.GetObservationById(instrumentId, requestId,TemplateObservationId);
+				ResponseViewModel<ObservationContentViewModel> responseObs = _ObservationTemplateService.GetObservationById(instrumentId, requestId,TemplateObservationId);// sp
                 if (responseObs != null)
                 {
                     instrumentresponse.ResponseData.obsContent = responseObs.ResponseDataList;
                 }
 
-                QRCodeFilesViewModel existingData = _qrCodeGeneratorService.GetQRCodeDetailsForCertificate(requestId, instrumentId);
+                QRCodeFilesViewModel existingData = _qrCodeGeneratorService.GetQRCodeDetailsForCertificate(requestId, instrumentId);//linq
 
                 if (existingData != null)
                 {
@@ -762,7 +766,7 @@ public class CertificationController : BaseController
                     instrumentresponse.ResponseData.isExportCertificate = false;
                 }                
 
-                ResponseViewModel<RequestViewModel> requestResponse = _requestService.GetRequestById(requestId);
+                ResponseViewModel<RequestViewModel> requestResponse = _requestService.GetRequestById(requestId);//linq
                 if (requestResponse.ResponseData != null)
                 {
                     instrumentresponse.ResponseData.DateOfReceipt = requestResponse.ResponseData.ReceivedDate;

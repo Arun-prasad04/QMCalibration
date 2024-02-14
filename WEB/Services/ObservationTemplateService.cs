@@ -1,4 +1,4 @@
-﻿using CMT.DAL;
+﻿ using CMT.DAL;
 using CMT.DATAMODELS;
 using WEB.Services.Interface;
 using AutoMapper;
@@ -4448,7 +4448,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				if ((instrumentData.IdNo != "") && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
 				{
 
-					reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.Rejected;
+					reqestStatus.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 
 				}
 				else
@@ -4486,8 +4486,8 @@ public class ObservationTemplateService : IObservationTemplateService
 				else
 				{
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
-					//ReqstData.ReqStartDate = DateTime.Now;
-				}
+                    ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate);
+                }
 			}
 			else
 			{
@@ -4498,8 +4498,9 @@ public class ObservationTemplateService : IObservationTemplateService
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Closed : (Int32)EnumRequestStatus.CalibrationReject;
 					if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "No")
 					{
-						ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); ;
+						ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate); 
 						//ReqstData.ReqStartDate = DateTime.Now;
+						
 					}
 					else if (instrumentData.ToolInventory != null && instrumentData.ToolInventory == "Yes")
 					{
@@ -4512,8 +4513,8 @@ public class ObservationTemplateService : IObservationTemplateService
 				{
 					ReqstData.StatusId = reviewStatus == 1 ? (Int32)EnumRequestStatus.Sent : (Int32)EnumRequestStatus.CalibrationReject;
 					//ReqstData.ReqStartDate = DateTime.Now;
-					//ReqstData.ReqDueDate = DueDate;
-				}
+					ReqstData.ReqDueDate = Convert.ToDateTime(calibfreqDate);
+                }
 			}
             ReqstData.ReqStartDate = DateTime.Now;
             ReqstData.ReceivedDate = DateTime.Now;
@@ -4534,7 +4535,8 @@ public class ObservationTemplateService : IObservationTemplateService
 						//ResponseViewModel<ToolRoomMasterViewModel> toolroom =GetToolRoomSubSection();						
 						instrumentData.UserDept = instrumentData.ReplacementDeptId.Equals(null)?0: (Int32)instrumentData.ReplacementDeptId;
 						instrumentData.ReplacementDeptId = null;
-						instrumentData.DueDate = null;
+                        instrumentData.CalibDate = DateTime.Now;
+                        instrumentData.DueDate = null;
 					}
 						else
 						{
@@ -4545,8 +4547,15 @@ public class ObservationTemplateService : IObservationTemplateService
 					else if (ReqstData.TypeOfReqest == 1)
 					{
 						instrumentData.ToolInventoryStatus = reviewStatus == 1 ? (Int32)ToolInventoryStatus.SentTool : (Int32)ToolInventoryStatus.RejectedTool;
-					}
+                       instrumentData.CalibDate = DateTime.Now;
+                }
 				}
+				else
+				{
+                instrumentData.DueDate= Convert.ToDateTime(calibfreqDate);
+                instrumentData.CalibDate= DateTime.Now;
+				}
+
 				string objToolInventory = instrumentData.ToolInventory;
 				_unitOfWork.Repository<Instrument>().Update(instrumentData);
 				_unitOfWork.SaveChanges();

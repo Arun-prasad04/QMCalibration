@@ -120,6 +120,8 @@ public partial class RequestViewModel
     public int? TotalCount { get; set; }
     public string? statusname { get; set; }
     public int? templateId { get; set; }
+
+    public int? ExternalObsStatus { get; set; }
 }
 public class UploadFile
     {

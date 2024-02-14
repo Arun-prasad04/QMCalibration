@@ -86,28 +86,39 @@
 					}
 					<table>
 						<tbody>
-                            @if (@Model.TempObservationData != null )
-                            { 
+                           
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-                                @if(@Model.TempObservationData.CertificateNumber == null)
+                                @if (@Model.TempObservationData != null)
                                 {
+                                    @if (@Model.TempObservationData.CertificateNumber == null)
+                                    {
                                         <td style="width:400px;padding-bottom: 25px;">: string.Empty </td>
 
-                                }
-                                else
-                                {
+                                    }
+                                    else
+                                    {
                                         <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber </td>
 
+                                    }
                                 }
-								@*<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>*@
+                                @*<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>*@
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
 							</tr>
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Date of Calibration</td>
-								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>
-								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
+								@*<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CalibrationReviewedDate.ToString("dd-MM-yyyy")</td>*@
+                                   
+                                     @if(@Model.CalibDate != null)
+                                    {
+                                        <td style="width:400px;padding-bottom: 25px;"> : @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+                                    }
+                                    else
+                                    {
+                                         <td style="width:400px;padding-bottom: 25px;"> :</td>
+                                    }
+                                <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Next Calibrtaion due</td>
                                 @if(@Model.DueDate != null)
                                 {
                                         <td style="width:400px;padding-bottom: 25px;"> : @Model.DueDate.ToString("dd-MM-yyyy")</td>
@@ -121,7 +132,15 @@
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Name of Dept.</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.DepartmentName.</td>
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Date of receipt</td>
-								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+
+								 @if(@Model.CalibDate != null)
+                                    {
+                                        <td style="width:400px;padding-bottom: 25px;"> : @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+                                    }
+                                    else
+                                    {
+                                         <td style="width:400px;padding-bottom: 25px;"> :</td>
+                                    }
 							</tr>
 							<tr>
 								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Sub section code</td>
@@ -140,9 +159,12 @@
 								{
 									<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Condition of DUV</td>
 								}
+                                 @if (@Model.TempObservationData != null)
+                                 {
 								<td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.InstrumentCondition</td>
+                                }
 							</tr>
-                        } 
+                       @* } *@
 						</tbody>
 					</table>
 
@@ -160,8 +182,8 @@
 
 							</tr>
 							<tr>
-                                @if (@Model.TempObservationData != null)
-                                {
+                              @*  @if (@Model.TempObservationData != null)
+                                {*@
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
                                         <p>@Model.Range</p>
                                     </td>
@@ -174,15 +196,15 @@
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
                                         <p>@Model.Make</p>
                                     </td>
-                                }
+                                @*}*@
                             </tr>
 						</table>
 
 						<table style="margin-top:15px">
 							<tbody>
 								<tr>
-                                    @if (@Model.TempObservationData != null)
-                                    {
+                                  @*  @if (@Model.TempObservationData != null)
+                                    {*@
                                         <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Calibration procedure/Reference standard</td>
                                         <td style="width:400px;padding-bottom: 25px;">: @Model.StandardReffered</td>
                                         @if (@Model.TypeOfEquipment == "Internal")
@@ -195,7 +217,7 @@
                                             <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">External</td>
                                             <td style="width:400px;padding-bottom: 25px;"></td>
                                         }
-                                    }
+                                   @* }*@
                                 </tr>
 							</tbody>
 						</table>
@@ -237,8 +259,17 @@
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
+                                            @if(@item.DueDate != null)
+                                            {
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
-                                        </tr>
+                                        }
+                                        else
+                                        {
+                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"></td>
+
+                                        }
+
+                                            </tr>
                                         i++;
                                     }
                                 
@@ -538,7 +569,14 @@
                                         <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Name of Dept. / 部署名</td>
                                         <td style="width:400px;padding-bottom: 10px;">: @Model.DepartmentName.</td>
                                         <td class="trn" style="width:340px; font-weight: 900;padding-bottom: 10px;">Date of receipt / 領収書の日付</td>
-                                        <td style="width:400px;padding-bottom: 10px;">: @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+                                        @if (@Model.CalibDate != null)
+                                        {
+                                            <td style="width:400px;padding-bottom: 25px;"> : @Model.CalibDate.ToString("dd-MM-yyyy")</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="width:400px;padding-bottom: 25px;"> :</td>
+                                        }
                                     </tr>
                                     <tr>
                                         <td class="trn" style="width:325px; font-weight: 900;padding-bottom: 10px;">Sub section code / サブセクションコード</td>
@@ -648,7 +686,16 @@
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
-													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                                @if (@item.DueDate != null)
+                                                {
+                                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"></td>
+
+                                                }
+                                                    
 												</tr>
 											i++;
 										}

@@ -60,7 +60,7 @@ public class HomeController : BaseController
 		{
 			ViewBag.MasterCount = 0;
 		}
-		if (userRoleId == 2 || userRoleId == 4)// || userRoleId == 5)
+		if (userRoleId == 2 || userRoleId == 3)//4// || userRoleId == 5)
 		{
 			if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
 			{

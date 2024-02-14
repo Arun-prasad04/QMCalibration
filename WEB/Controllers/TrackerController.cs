@@ -116,16 +116,11 @@ public class TrackerController : BaseController
     {
         var TotalCount = 0;
         string Reqtype = string.Empty;
-        //var RequestType = 0;
-        //RequestType = dparam.reqType;
+        
         int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
         int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
         ResponseViewModel<RequestViewModel> response;
-       // string Search = string.Empty;
-
-        //string parameter = RouteData.Values["reqType"].ToString();
-      
-        // string Reqtype = HttpContext.Request.Query["reqType"].ToString();
+   
         if (dparam.reqType == null || dparam.reqType == 0)
         {
             Reqtype = "4";
@@ -173,21 +168,31 @@ public class TrackerController : BaseController
             filter.instrumentid = instrumentid;
             filter.status = status;
             filter.requestno = requestno;
-            filter.requestdate = requestdate;
+			filter.requestdate = requestdate;
             filter.range = range;
             filter.typeofrequest = typeofrequest;
 			filter.typeofequipment = typeofequipment;
 
         }
-        //base.SessionGetString(filter);
-
-        //base.SessionGetString<List<Requestfilterclass>>(filter);
-
-
+        
         HttpContext.Session.Set<Requestfilterclass>("filter", filter);
         var values = HttpContext.Session.Get<Requestfilterclass>("filter");
 
+		if((filter.status == "32") && (filter.typeofequipment == null))
+		{
+			//32-verification done
 
+			filter.typeofequipment = "External";
+            filter.status = "29";
+        }
+        if ((filter.status == "33") && (filter.typeofequipment == null))
+        {
+            //33-verification Rejected
+
+            filter.typeofequipment = "External";
+			filter.status ="31";
+
+        }
         response = _requestService.GetAllRequestList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch, Reqtype, filter.sscode, filter.instrumentname, filter.instrumentid, filter.status, filter.requestno, filter.requestdate, filter.range, filter.typeofrequest, filter.typeofequipment);
 
        
