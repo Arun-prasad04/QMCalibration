@@ -272,7 +272,7 @@
                              var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId='+row.id+'"><i class="fas fa-id-badge"></i></a>';
                              return linkControlCard;
                         }
-                    }, 
+                    },
                     {"render": function(data, type, row, meta){
                         var linkCheckbox='';
                             if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
@@ -295,29 +295,38 @@
                                      if (row.dueDate != null)
                                     {
                                         if ((Date.parse(date) <= Date.parse(d))  && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
-                                            { //console.log('********************less & Curr*********************');
+                                           { console.log('********************less & Curr*********************');
                                              if ((row.toolInventoryStatus == 1) || (row.toolInventory == "No") || (row.typeOfEquipment == "External"))
                                               {
-                                  
+                                  if($("#selectAll").is(":checked"))
+                                  {
                                       linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
+                                                                    '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.id+' checked/>'+
+                                                                    '<input id="typeId" name="typeId" type="hidden" value="2" />'+
+                                                                    '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
+                                                                    '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
+                                                                   '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
+                                                                  '</td>'
+                                   }
+                                   else
+                                   {
+
+                                        linkCheckbox = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
                                                                     '<input id="chkBox" name="chkBox" class="class1" type="checkbox" value='+row.id+' />'+
                                                                     '<input id="typeId" name="typeId" type="hidden" value="2" />'+
                                                                     '<input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='+row.requestId+' />'+
                                                                     '<input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='+row.dueDate+' />'+
-                                                                   // '<input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='+row.replacementStartDate+' />'+
                                                                    '<input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='+row.reqDueDate+' />'+
                                                                   '</td>'
+
+                                   }
+
                                               }
                                              }
                                             }
-                                            //else
-                                            //{
-
-                                            //    row.hide();
-                                            //}
-                                          
-                                 }
-                              
+                                           
+                            }
+                            
                                  return linkCheckbox;
                         }
                     },
@@ -341,14 +350,12 @@
                         var edate=new Date(data["dueDate"]);
                         var currentdate = new Date();
                         
-                        if (edate < currentdate) //&& (item.status != 30))
+                        if (edate < currentdate) 
                         {
                           
                             $(row).css('background-color', '#fbefef');
                         }
                         else {
-                           // console.log('test');
-                           //  $(row).hide();
                         
                         }
                         }
@@ -367,14 +374,11 @@
             'style': 'multi'
           },
 
-                // "serverside":"true",
                  "order":[0,"asc"],
-
                  "pageLength": "100",
                  "language": {
-                    //"emptyTable": "No record found.",
-                    "processing":
-                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                 "processing":
+                 '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
                  dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 "<'row'<'col-sm-12'tr>>" +
@@ -399,13 +403,9 @@
         });
       });
     },
+    });
 
-
-            });
-
-         
-      
-            })
+   })
     
           $('body').on('change', '#selectAll', function() {
         var rows, checked;
@@ -457,12 +457,7 @@
                 }
             });
         });
-
- 
-
       })
-
-
 
 
     function GetAllInstrument(){
@@ -503,151 +498,5 @@
         });
     };
 
-    @*function GetAllInstrument() {
-        $('#dvload').show();
-
-        $.ajax({
-            type: 'GET',
-            url: '../Instrument/GetAllInstrumentList',
-            dataType: 'json',
-            success: function (data) {
-                if ($.fn.DataTable.isDataTable('#example1')) {
-                    $('#example1').DataTable().destroy();
-                }
-                $('#example1 tbody').empty();
-                console.log('instrument data');
-                console.log(data);
-                if (data.length > 0) {
-                    $.each(data, function (i, item) {
-                        
-                        var date = new Date(item.dueDate);
-                        //console.log(item.dueDate);
-                        //console.log(date.getMonth());
-                        //month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
-                        //console.log(yr);
-                        //console.log(date.getMonth() + 1);
-                        month = date.getMonth() + 1;
-                        yr = date.getFullYear();
-                            
-                        if ((item.requestStatus != 28 && item.toolInventoryStatus != 2) || (item.requestStatus != 30 && item.toolInventoryStatus != 2) || (item.requestStatus != 31 && item.toolInventoryStatus != 2)) {
-
-                            var tdRequest = '';
-                            var d = new Date($.now());
-                            if (item.userRoleId == 1) {
-                                //<td style="text-align:center;" class="chkpl" >
-                                if (item.dueDate != null) {
-                                    if ((d.getMonth() + 1) == month && d.getFullYear() == yr) {
-                                        if (item.requestStatus == 30 || item.requestStatus == 31 || item.requestStatus == 28) {
-                                            tdRequest = '<td style="text-align:center;"> <td style="text-align:center;" class="chkpl" >' +
-                                                '<input id="chkBox" name = "chkBox" class="class1" type = "checkbox" value = ' + item.id + ' />' +
-                                                '<input id="typeId" name = "typeId" type = "hidden" value = "2" />' +
-                                                '<input id="RequestId" name = "RequestId" class="clsRequestId" type = "hidden" value = ' + item.RequestId + ' />' +
-                                                '<input id="DueDate" name = "DueDate" class="clsDueDate" type = "hidden" value = ' + item.DueDate + ' />' +
-                                                '<input id="ReplacementStartDate" name = "ReplacementStartDate" class="clsReplacementStartDate" type = "hidden" value = ' + item.ReplacementStartDate + ' />' +
-                                                '<input id="ReqDueDate" name = "ReqDueDate" class="clsReqDueDate" type = "hidden" value = ' + item.ReqDueDate + ' />' +
-                                                '</td></td>'
-                                        }
-                                    }
-                                    else if ((month < (d.getMonth() + 1) && d.getFullYear() >= yr) && (item.requestStatus == 30 || item.requestStatus == 31 || item.requestStatus == 28)) {
-
-                                        tdRequest = '<td style="text-align:center;"><td style="text-align:center;" class="chkpl" >' +
-                                            '<input id="chkBox" name = "chkBox" class="class1" type = "checkbox" value = ' + item.Id + ' />' +
-                                            '<input id="typeId" name = "typeId" type = "hidden" value = "2" /> ' +
-                                            // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
-                                            '<input id="RequestId" name = "RequestId" class="clsRequestId" type = "hidden" value = ' + item.RequestId + ' />' +
-                                            '<input id = "DueDate" name = "DueDate" class="clsDueDate" type = "hidden" value = ' + item.DueDate + ' /> ' +
-                                            '<input id="ReplacementStartDate" name = "ReplacementStartDate" class="clsReplacementStartDate" type = "hidden" value = ' + item.ReplacementStartDate + ' />' +
-                                            '<input id = "ReqDueDate" name = "ReqDueDate" class="clsReqDueDate" type = "hidden" value = ' + item.ReqDueDate + ' /> ' +
-                                            '</td></td>'
-
-                                    }
-                                    else if ((month == (d.getMonth() + 1) && d.getFullYear() == yr) && (item.requestStatus == 30 || item.requestStatus == 31 || item.requestStatus == 28)) {
-
-                                        tdRequest = '<td style="text-align:center;"><td style="text-align:center;" class="chkpl" >' +
-                                            '<input id="chkBox" name = "chkBox" class="class1" type = "checkbox" value = ' + item.Id + ' />' +
-                                            '<input id="typeId" name = "typeId" type = "hidden" value = "2" />' +
-                                            '<input id="RequestId" name = "RequestId" class="clsRequestId" type = "hidden" value = ' + item.RequestId + ' />' +
-                                            '<input id="DueDate" name = "DueDate" class="clsDueDate" type = "hidden" value = ' + item.DueDate + ' />' +
-                                            '<input id="ReplacementStartDate" name = "ReplacementStartDate" class="clsReplacementStartDate" type = "hidden" value = ' + item.ReplacementStartDate + ' />' +
-                                            '<input id="ReqDueDate" name = "ReqDueDate" class="clsReqDueDate" type = "hidden" value = ' + item.ReqDueDate + ' />' +
-                                            '</td></td>'
-
-                                    }
-                                    else if ((month == (d.getMonth() + 1) && d.getFullYear() == yr) && (item.RequestStatus == 30 || item.RequestStatus == 31 || item.RequestStatus == 28)) {
-
-                                        tdRequest = '<td style="text-align:center;"><td style="text-align:center;" class="chkpl" >' +
-                                            '<input id="chkBox" name = "chkBox" class="class1" type = "checkbox" value = ' + item.Id + ' />' +
-                                            '<input id="typeId" name = "typeId" type = "hidden" value = "3" />' +
-                                            '<input id="RequestId" name = "RequestId" class="clsRequestId" type = "hidden" value = ' + item.RequestId + ' />' +
-                                            '<input id="DueDate" name = "DueDate" class="clsDueDate" type = "hidden" value = ' + item.DueDate + ' />' +
-                                            '<input id="ReplacementStartDate" name = "ReplacementStartDate" class="clsReplacementStartDate" type = "hidden" value = ' + item.ReplacementStartDate + ' />' +
-                                            '<input id="ReqDueDate" name = "ReqDueDate" class="clsReqDueDate" type = "hidden" value = ' + item.ReqDueDate + ' />' +
-                                            '</td></td>'
-
-                                    }
-                                }
-                                //</td>
-                            }
-                            else {
-                                tdRequest = "<td></td>"
-                            }
-
-                        }
-
-                        var tdQuarantine = '';
-                        if (item.userRoleId == 2 || item.userRoleId == 3) {
-                            tdQuarantine = '<td><i class="fas fa-arrow-alt-circle-right" style = "cursor:pointer; background-position:center" id=' + item.id + ' onclick = "InstrumentQuarantineClick(this, language)" ></i></td>'
-                        }
-                        else {
-                            tdQuarantine = "<td> </td>"
-                        }
-                        var calibDate = moment(item.calibDate).format("DD-MM-YYYY");
-                        var dueDate = moment(item.dueDate).format("DD-MM-YYYY");
-
-                        var rows = "<tr>"
-                            + "<td>" + item.instrumentName + "</td>"
-                            + "<td>" + item.slNo + "</td>"
-                            + "<td>" + item.idNo + "</td>"
-                            + "<td>" + item.range + "</td>"
-                            + "<td>" + item.departmentName + "</td>"
-                            + "<td>" + item.typeOfEquipment + "</td>"
-                            + "<td>" + calibDate + "</td>"
-                            + "<td>" + dueDate + "</td>"
-                            + "<td style='text-align: center;'><a href='@Url.Action("InstrumentEdit","Instrument")?instrumentId=" + item.id + "'><i class='fas fa-edit'></i></a></td>"
-                            + tdRequest
-                            + tdQuarantine
-                            + "</tr>";
-                        $('#example1 tbody').append(rows);
-                        $('#dvload').hide();
-                    });
-                }
-                else {
-                    $('#dvload').hide();
-                }
-                $("#example1").DataTable({
-
-                    "paging": true,
-                    "lengthChange": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": true,
-                    "responsive": true,
-                    //'columnDefs': [{
-                    //    'targets': [9], /* column index */
-                    //    'orderable': false, /* true or false */
-                    //}],
-                    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                });
-
-            },
-            error: function (emp) {
-                $('#dvload').hide();
-                alert('error');
-            }
-        });
-    }
-*@
+ 
 </script>

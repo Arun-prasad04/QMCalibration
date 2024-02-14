@@ -8,7 +8,9 @@ public interface IInstrumentService
 
     ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate,string chkDue);
     ResponseViewModel<InstrumentViewModel> GetInstrumentById(int instrumentId);
-    int GetObservationTemplateId(int instrumentId, string Type);
+	ResponseViewModel<InstrumentViewModel> GetInstrumentsForId(int instrumentId);
+	
+	int GetObservationTemplateId(int instrumentId, string Type);
     ResponseViewModel<InstrumentViewModel> InsertInstrument(InstrumentViewModel instrument);
     ResponseViewModel<InstrumentViewModel> UpdateInstrument(InstrumentViewModel instrument);
     ResponseViewModel<InstrumentViewModel> DeleteInstrument(int instrumentId);

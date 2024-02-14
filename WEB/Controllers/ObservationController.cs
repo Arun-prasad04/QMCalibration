@@ -1476,7 +1476,9 @@ public class ObservationController : BaseController
             //if (response.ResponseData.RefWi == null || response.ResponseData.RefWi == string.Empty)
             //response.ResponseData.RefWi = Constants.VERNIER_CALIPER_REFERENCE_WITH_INDICATOR;
 
-            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            //ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentsForId(instrumentId);
             response.ResponseData.InstrumentId = instrumentId;
             response.ResponseData.RequestId = requestId;
             response.ResponseData.Name = instrumentresponse.ResponseData.InstrumentName;

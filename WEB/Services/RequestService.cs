@@ -19,6 +19,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Text;
 using static iTextSharp.text.pdf.AcroFields;
+using NPOI.SS.Formula.Functions;
 
 namespace WEB.Services;
 
@@ -77,7 +78,6 @@ public class RequestService : IRequestService
                         InstrumentIdNo = dr["IdNo"].Equals(DBNull.Value) ? null : dr["IdNo"].ToString(),
                         Range = dr["Range"].Equals(DBNull.Value) ? null : dr["Range"].ToString(),
                         InstrumentSerialNumber = dr["SlNo"].Equals(DBNull.Value) ? null : dr["SlNo"].ToString(),
-                        //RequestDate = Convert.ToDateTime(dr["RequestDate"]),
                         TypeOfRequest = dr["TypeOfReqest"].Equals(DBNull.Value) ? 0 : Convert.ToInt32(dr["TypeOfReqest"]),
                         Status = dr["StatusId"].Equals(DBNull.Value) ? 0 : Convert.ToInt16(dr["StatusId"]),
                         UserDept = dr["UserDept"].Equals(DBNull.Value) ? 0 : Convert.ToInt16(dr["UserDept"]),
@@ -85,16 +85,10 @@ public class RequestService : IRequestService
                         UserRoleId = userRoleId,
                         SubSectionCode = dr["SubSectionCode"].Equals(DBNull.Value) ? null : dr["SubSectionCode"].ToString(),
                         TypeOfEquipment = dr["TypeOfEquipment"].Equals(DBNull.Value) ? null : dr["TypeOfEquipment"].ToString(),
-                        //ReqDueDate = dr["ReqDueDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["ReqDueDate"]),
                         LC = dr["RequestDate"].Equals(DBNull.Value) ? null : Convert.ToDateTime(dr["RequestDate"]).ToShortDateString(),
                         ObservationTemplate= dr["ObservationTemplate"].Equals(DBNull.Value) ? null : Convert.ToInt16(dr["ObservationTemplate"]),
-                        //statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
-                      //if(userRoleId == "2")
-                      //{ 
                         templateId = dr["templateId"].Equals(DBNull.Value) ? null : Convert.ToInt16(dr["templateId"]),
-                        // statusname = dr["StatusName"].Equals(DBNull.Value) ? null : dr["StatusName"].ToString(),
-                       // }
-
+                       // ExternalObsStatus = dr["ExternalObsStatus"].Equals(DBNull.Value) ? null : Convert.ToInt16(dr["ExternalObsStatus"]),
                     };
                     RequestList.Add(REQlist);
 
@@ -884,23 +878,22 @@ public class RequestService : IRequestService
             reqestStatus.CreatedOn = DateTime.Now;
             reqestStatus.CreatedBy = userId;
             _unitOfWork.Repository<RequestStatus>().Insert(reqestStatus);
-			ErrorViewModelTest.Log("RequestService - Save Request/before duedate");
+			
 			string calibfreqDate = _cmtdl.CalculateDuedate(DueDate);
-			ErrorViewModelTest.Log("RequestService - Save Request/after duedate"+ calibfreqDate);
+			
 			Request requestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).SingleOrDefault();
             requestById.StatusId = (Int32)EnumRequestStatus.Approved;
             requestById.InstrumentCondition = InstrumentCondition;
             requestById.ReceivedBy = userId;
             requestById.Feasiblity = "";// Feasiblity;
             requestById.TentativeCompletionDate = Convert.ToDateTime(TentativeCompletionDate);
-			ErrorViewModelTest.Log("RequestService - Save Request TentativeCompletionDate"+ TentativeCompletionDate);
+			
 			requestById.ReceivedDate = DateTime.Now;
             requestById.ReqDueDate = Convert.ToDateTime(calibfreqDate);
-			ErrorViewModelTest.Log("RequestService - Save Request ReqDueDate");
+			
 			_unitOfWork.Repository<Request>().Update(requestById);
             _unitOfWork.SaveChanges();
-			ErrorViewModelTest.Log("RequestService - Save Request date");
-		
+					
 			Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
             instrumentById.IsNABL = newNABL;
 
@@ -920,33 +913,7 @@ public class RequestService : IRequestService
                 instrumentById.MasterInstrument3 = MasterInstrument3;
                 instrumentById.MasterInstrument4 = MasterInstrument4;
             }
-			//if (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3)
-			//{
-			//	if (CalibFreq != null || CalibFreq != 0)
-			//	{
-			//		instrumentById.CalibFreq = CalibFreq;
-			//	}
-			//	if (standardReffered != null || standardReffered != "")
-			//	{
-			//		instrumentById.StandardReffered = standardReffered;
-			//	}
-			//	if (MasterInstrument1 != null || MasterInstrument1 != 0)
-			//	{
-			//		instrumentById.MasterInstrument1 = MasterInstrument1;
-			//	}
-			//	if (MasterInstrument2 != null || MasterInstrument2 != 0)
-			//	{
-			//		instrumentById.MasterInstrument2 = MasterInstrument2;
-			//	}
-			//	if (MasterInstrument3 != null || MasterInstrument3 != 0)
-			//	{
-			//		instrumentById.MasterInstrument3 = MasterInstrument3;
-			//	}
-			//	if (MasterInstrument4 != null || MasterInstrument4 != 0)
-			//	{
-			//		instrumentById.MasterInstrument4 = MasterInstrument4;
-			//	}
-			//}
+			
 			instrumentById.MUTemplate = newMU;
             instrumentById.CertificationTemplate = newCertification;
             instrumentById.DueDate = Convert.ToDateTime(calibfreqDate);           
@@ -958,7 +925,7 @@ public class RequestService : IRequestService
 
             _unitOfWork.Repository<Instrument>().Update(instrumentById);
             _unitOfWork.SaveChanges();
-			ErrorViewModelTest.Log("RequestService - Save Request");
+			//ErrorViewModelTest.Log("RequestService - Save Request");
 			//---ToolRoomHistory
 			if (instrumentById.ToolInventory == "Yes" && (requestById.TypeOfReqest == 2 || requestById.TypeOfReqest == 3))
 			{

@@ -22,7 +22,7 @@
                     </div>  
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table table-bordered table-striped" style="width:100%">
                             <thead>
                                 <tr>
                                    
@@ -30,11 +30,11 @@
                                     <th class="trn">Instrument SNo</th>
                                     <th class="trn">Instrument ID No</th>
                                     <th class="trn">Range</th>
-                                    <th class="trn">Lc</th>
+                                   @* <th class="trn">Lc</th>*@
                                     <th class="trn">Department</th>
-                                    <th class="trn">Calibration Freq</th>
+                                   @* <th class="trn">Calibration Freq</th>*@
                                     <th class="trn">Calibration Date</th>
-                                    <th class="trn">Due Date</th>
+                                    <th class="trn">DueDate</th>
                                     <th class="trn">Quarantine On</th>
                                     <th class="trn">Quarantine Reason</th>
                                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
@@ -55,9 +55,9 @@
                                         <td>@item.SlNo</td>
                                         <td>@item.IdNo</td>
                                         <td>@item.Range</td>
-                                        <td>@item.LC</td>
+                                     @*   <td>@item.LC</td>*@
                                         <td>@item.DepartmentName</td>
-                                        <td>@item.CalibFreq</td>
+                                       @* <td>@item.CalibFreq</td>*@
                                    @*     <td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
                                         <td>@item.DueDate.ToString("dd-MM-yyyy")</td>
                                         <td>@item.QuaraantineOn.ToString("dd-MM-yyyy")</td>*@

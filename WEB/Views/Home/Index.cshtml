@@ -25,7 +25,8 @@
 					</div>
 					@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 3)
 					{
-						<a href="../Tracker/ExternalRequest" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
+						@*<a href="../Tracker/ExternalRequest" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>*@
+							<a href="../Tracker/Request" class="small-box-footer"><span class="trn">More info </span><i class="fas fa-arrow-circle-right"></i></a>
 					}
 					else 
 					{

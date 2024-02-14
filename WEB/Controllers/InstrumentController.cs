@@ -116,7 +116,7 @@ public class InstrumentController : BaseController
     public IActionResult Create()
 	{
 		//ViewBag.Shared = "Instrument";
-		ViewBag.PageTitle = "Instrument Create";
+		//ViewBag.PageTitle = "Instrument Create";
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
@@ -177,14 +177,14 @@ public class InstrumentController : BaseController
 		ViewBag.PageTitle = "Instrument Edit";
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
-
-		ViewBag.ObservationType = response.ResponseData.ObservationType;
+		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentsForId(instrumentId);
+		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		ViewBag.UserDept = response.ResponseData.UserDept;
-		ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
+		//ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
 		ViewBag.CalibFreq = response.ResponseData.CalibFreq;
-		ViewBag.MUTemplates = response.ResponseData.MUTemplate;
-		ViewBag.Observation = response.ResponseData.ObservationTemplate;
+		//ViewBag.MUTemplates = response.ResponseData.MUTemplate;
+		//ViewBag.Observation = response.ResponseData.ObservationTemplate;
 
 		if (userRoleId == 1 || userRoleId == 3)
 		{
@@ -362,8 +362,17 @@ public class InstrumentController : BaseController
 		//ResponseViewModel<RequestViewModel> response = _requestService.ExternalCalibrationReject(requestId, rejectReason, userId);
 		//return Json(response.ResponseData);
 	}
-
 	
+	//public IActionResult GetInstrumentForById(int instrumentId)
+	//{
+	//	ViewBag.InstrumentId = instrumentId;
+	//	QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
+	//	ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
+	//	ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+
+	//	return View(response.ResponseData);
+
+	//}
 	#region Control Card
 	public IActionResult ControlCard(int instrumentId)
 	{

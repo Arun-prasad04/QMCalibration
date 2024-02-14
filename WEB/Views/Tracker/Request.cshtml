@@ -229,13 +229,12 @@
                         "success": function (json) {
                             filters = json.filter;
                             fnCallback(json);
+                            if (actions == "pageload") {
                             BindingFilters(filters);
+                            }
                         }
                     });
-                        // success: function(data) {
-                           
-                        // }
-                    
+                      
                 },
                  
                 "aoColumns": [
@@ -286,16 +285,19 @@
                             else if (row.status == 29 && row.labResult != "Rejected" && row.typeOfEquipment == 'External') {
                                 tdStatus = "Verification done"
                             }
-                            else if (row.status == 29 && row.labResult != "Rejected") {
-                                tdStatus = "Calibration done"
+                            //else if (row.status == 29 && row.labResult != "Rejected") {
+                            else if (row.status == 29 && row.typeOfEquipment == 'Internal'){
+                                    tdStatus = "Calibration done"
                             }
                             else if (row.status == 30) {
                                 tdStatus = "Closed"
                             }
-                            else if (row.status == 31) {
+                            else if (row.status == 31 && row.typeOfEquipment == 'Internal') {
                                 tdStatus = "Calibration Rejected"
                             }
-
+                            else if (row.status == 31 && row.typeOfEquipment == 'External') {
+                                tdStatus = "Verification Rejected"
+                            }
                             return tdStatus;
                         }
                     },
@@ -348,22 +350,22 @@
                                 if ((row.templateId > 0) && (row.status == 27))//&& row.
                                 {
                                    
-                                    tdTest = '<a style="color:orange" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                    tdTest = '<span title="Verification Approved!"><a style="color:orange" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
                                 //for commit test                                
                                 }
                                 else if  (row.status == 30){
 
-                                    tdTest = '<a style="color:green" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                    tdTest = '<span title="Verification Closed!"><a style="color:green" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
 
                                 }
                                 else if (row.status == 31) {
 
-                                    tdTest = '<a style="color:red" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
+                                    tdTest = '<span title="Verification Rejected!"><a style="color:red" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i>'
 
                                 }
                                   else if (row.status == 29) {
 
-                                        tdTest = '<span title="Calibration Done!"><a style="color:yellow" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                        tdTest = '<span title="Verification Done!"><a style="color:yellow" href="@Url.Action("ExternalObs","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
                                 }
                                 else {
@@ -393,10 +395,7 @@
                 ],
              
             "createdRow": function (row, data, dataIndex) {
-             //    console.log(dataIndex);
-             // console.log(row);
-             //console.log(data[63]);
-             //   console.log("createdRow********************");
+             
                 if (data["reqDueDate"] != null) {
 
                         var edate=new Date(data["reqDueDate"]);
@@ -415,16 +414,7 @@
                 "columnDefs": [ {
     "targets":9,
     "createdCell": function (td, cellData, rowData, row, col) {
-        //console.log(td);
-        // console.log(cellData);
-        //  console.log(rowData);
-        //      console.log(row);
-        //   console.log(rowData.observationTemplate);
-       // alert(cellData);
-    // if ( rowData["observationTemplate"] > 0 ) {
-      //  $(td).css('color', 'red')
-//$(td).css('background-color', 'yellow');
-     // }
+      
     }
   } ],
                 "pageLength": "100",
@@ -521,10 +511,11 @@
         option.push('<option value="26">Requested</option>')
         option.push('<option value="27">Approved</option>')
         option.push('<option value="28">Request Rejected</option>')
-        option.push('<option value="29">Verification done</option>')
+        option.push('<option value="32">Verification done</option>')
         option.push('<option value="29">Calibration done</option>')
         option.push('<option value="30">Closed</option>')
         option.push('<option value="31">Calibration Rejected</option>')
+        option.push('<option value="33">Verificationration Rejected</option>')
         
         $('#drpstatus').append(option);
         

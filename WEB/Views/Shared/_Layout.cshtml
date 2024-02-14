@@ -128,7 +128,7 @@
 			border-radius: 50%;
 			border-top: 16px solid #3498db;
 			/*width: 120px;
-				height: 120px;*/
+						height: 120px;*/
 			display: block;
 			position: fixed;
 			top: 0;
@@ -148,7 +148,7 @@
 			position: fixed;
 			display: none;
 			/*width: 100%;
-		  height: 100%;*/
+				  height: 100%;*/
 			top: 0;
 			left: 0;
 			right: 0;
@@ -180,14 +180,14 @@
 
 		/* Safari */
 		/*webkit-keyframes spin {
-			  0% { -webkit-transform: rotate(0deg); }
-			  100% { -webkit-transform: rotate(360deg); }
-			}
+					  0% { -webkit-transform: rotate(0deg); }
+					  100% { -webkit-transform: rotate(360deg); }
+					}
 
-			keyframes spin {
-			  0% { transform: rotate(0deg); }
-			  100% { transform: rotate(360deg); }
-			}*/
+					keyframes spin {
+					  0% { transform: rotate(0deg); }
+					  100% { transform: rotate(360deg); }
+					}*/
 	</style>
 
 	<div class="wrapper">
@@ -380,16 +380,7 @@
 									</p>
 								</a>
 								<ul class="nav nav-treeview">
-									@* @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" ||
-								@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-								{
-								<li class="nav-item navIndend">
-								<a href='@Url.Action("ExternalRequest","Tracker")' class="nav-link">
-								<i class="fas fa-truck nav-icon"></i>
-								<p class="trn">External Request</p>
-								</a>
-								</li>
-								} *@
+									
 									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3" ||
 											@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")
@@ -816,13 +807,13 @@
 		<script src="~/js/jquery.swaltranslate.js"></script>
 		<script src="~/js/bootstrap-select.min.js"></script>
 		<script src="~/js/daimler.js"></script>
-		   
-@*<!--Import jQuery before export.js-->
-<script type="text/javascript" src="~/js/jquery.min.js"></script>
+
+		@*<!--Import jQuery before export.js-->
+		<script type="text/javascript" src="~/js/jquery.min.js"></script>
 
 
-<!--Data Table-->
-<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>*@
+		<!--Data Table-->
+		<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>*@
 
 		<script type="text/javascript">
 			var dicts;
@@ -1835,10 +1826,11 @@
 					"2. The report should not be reproduced either in full or in part without permission in writing.": { jp: "2. 報告書の全部または一部を書面による許可なく転載することはできません。", en: "2. The report should not be reproduced either in full or in part without permission in writing." },
 					"3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument.": { jp: "3. 次回の校正期日は、機器の状態や状態に関係なく、要求者に従ってこの証明書に記載されます。", en: "3. Next calibration due date given in this certificate as per requestor irrespective of the status or condition of instrument." },
 					"Environmental condition": { jp: "環境条件", en: "Environmental condition" },
-					"SubSection Code": { jp: "使用部門コード", en: "SubSection Code" }
-
-
-				}
+					"SubSection Code": { jp: "使用部門コード", en: "SubSection Code" },
+					"Master Department": { jp: "マスター部門", en: "Master Department" },
+					"Select Calibration Frequency": { jp: "キャリブレーション周波数の選択", en: "Select Calibration Frequency" },
+					"Select Plant Location": { jp: "プラントの場所を選択", en: "Select Plant Location" }
+							}
 
 				return dicts;
 			}
@@ -1921,7 +1913,7 @@
 			function DepartmentTranslate(lang) {
 				//DepartmentId
 				var selectedUserDept = $('#UserDept').find("option:selected").val();
-
+				//alert(selectedUserDept);
 				var selectedDepartmentId = $('#DepartmentId').find("option:selected").val();
 
 				var test = '';
@@ -1930,7 +1922,7 @@
 					type: 'POST',
 					data: ''
 				}).done(function (resultObject) {
-					GlDicts = resultObject;					
+					GlDicts = resultObject;
 					var optionhtml;
 					var optionhtmlRole;
 					var optiinhtmlDeptId;
@@ -2022,6 +2014,8 @@
 				var SelectLocationId = $('#LocationId').find("option:selected").val();
 				var SelectDesignation = $('#Designation').find("option:selected").val();
 				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Mastr
+				//alert(SelectCalibFreq);
+				//var SelectCalibFreqId1 = $('#CalibFreqMaster').find("option:selected").val();
 				$.ajax({
 					url: '../Home/ObservationTypeTranslation',
 					type: 'POST',
@@ -2049,7 +2043,7 @@
 					$("#LocationId").empty();
 					$("#Designation").empty();
 					$("#CalibFreq").empty();
-
+					//$("#CalibFreqMaster").empty();
 
 					if (lang == 'jp') {
 						optionhtml = '<option value=""> -- 観察テンプレートの選択 -- </option>';
@@ -2081,7 +2075,7 @@
 					$("#LocationId").append(optionhtmlLocation);
 					$("#Designation").append(optionhtmlDesignation);
 					$("#CalibFreq").append(optionhtmlCalibFreq);//For Instrument Master
-
+					//$("#CalibFreqMaster").append(optionhtmlCalibFreqId);//For Equipment Master
 
 
 					$.each(resultObject, function (index, item) {
@@ -2132,7 +2126,7 @@
 							}
 							$("#CalibFreqId").append(optionhtmlCalibFreq);
 							$("#CalibFreq").append(optionhtmlCalibFreq);
-
+							//$("#CalibFreqMaster").append(optionhtmlCalibFreq);
 						}
 
 						if (item.attrName == 'CalibrationStatus') {
@@ -2192,6 +2186,7 @@
 					$('#LocationId').val(SelectLocationId).prop("selected", true);
 					$('#Designation').val(SelectDesignation).prop("selected", true);
 					$('#CalibFreq').val(SelectCalibFreq).prop("selected", true);
+					//$('#CalibFreqMaster').val(SelectCalibFreqId1).prop("selected", true);
 				});
 			}
 			/////////////TEMPLATE PART END ////////////////////////
