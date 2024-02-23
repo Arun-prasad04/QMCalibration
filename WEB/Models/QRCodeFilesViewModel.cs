@@ -16,6 +16,7 @@ public class QRCodeFilesViewModel
         public string QRFilename { get; set; }
         public string QRImageUrl { get; set; }
         public string DrawText { get; set; }
+     public string InstrumentIdNo { get; set; }
 
-         public Byte[] DecodeText { get; set; } 
+    public Byte[] DecodeText { get; set; } 
 }

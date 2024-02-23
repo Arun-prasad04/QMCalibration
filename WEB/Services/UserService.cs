@@ -915,8 +915,9 @@ public class UserService : IUserService
 				return new ResponseViewModel<UserViewModel>
 				{
 					ResponseCode = 500,
-					ResponseMessage = "Invalid UserName",
-					ResponseData = null,
+                    //ResponseMessage = "Invalid UserName",
+                    //ResponseMessage="",
+                    ResponseData = null,
 					ResponseDataList = null
 				};
 

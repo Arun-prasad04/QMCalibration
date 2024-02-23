@@ -289,7 +289,7 @@ namespace WEB.Services
 
 
 		#region ControlCard
-		public QRCodeFilesViewModel QRCodeGenerationForInstrument(QRCodeFilesViewModel qrCodeGenInputViewModel, int instrumentid)
+		public QRCodeFilesViewModel QRCodeGenerationForInstrument(QRCodeFilesViewModel qrCodeGenInputViewModel, int instrumentid, string IdNo)
 		{
 
 			string applicationUrl = _configuration["ControlCardAppUrl"];
@@ -299,7 +299,7 @@ namespace WEB.Services
 
 			Bitmap qrCodeImage = GetQRCodeImage(qrEncodeText);
 
-			qrCodeImage = GenerateQRBitmapTextandImageForInstrument(qrCodeImage);
+			qrCodeImage = GenerateQRBitmapTextandImageForInstrument(qrCodeImage, IdNo);
 
 			var QRDecodeByteData = BitmapToBytes(qrCodeImage);
 
@@ -308,13 +308,14 @@ namespace WEB.Services
 				QRImageUrl = String.Format(Constants.QRCODE_IMAGE_FORMAT, Convert.ToBase64String(QRDecodeByteData)),
 				DecodeText = ResizeImage(QRDecodeByteData),
 				InstrumentId = qrCodeGenInputViewModel.InstrumentId,
-				UrlGuid = guid,
+                InstrumentIdNo = qrCodeGenInputViewModel.InstrumentIdNo,
+                UrlGuid = guid,
 				QRFilepath = qrEncodeText
 			};
 
 			return outputData;
 		}
-		private Bitmap GenerateQRBitmapTextandImageForInstrument(Bitmap bmImage)
+		private Bitmap GenerateQRBitmapTextandImageForInstrument(Bitmap bmImage,string IdNo)
 		{
 			var newBitmap = new Bitmap(bmImage.Width + 150, bmImage.Height + 150);
 			Graphics graphics = Graphics.FromImage(newBitmap);
@@ -322,14 +323,17 @@ namespace WEB.Services
 			graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 			graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 			graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-			string drawText = string.Empty;
+			string drawText = IdNo;// string.Empty;
 			StringFormat format = new StringFormat()
 			{
 				Alignment = StringAlignment.Center,
 				LineAlignment = StringAlignment.Far
+
 			};
 			RectangleF rectfDrawText = new RectangleF(0, 0, newBitmap.Width - 100, newBitmap.Height - 60);
+			//RectangleF rectfDrawText = new RectangleF(0, 0, 500, 500);
 			Rectangle rectDrawImage = new Rectangle(0, 0, bmImage.Width, bmImage.Height);
+			//Rectangle rectDrawImage = new Rectangle(0, 0, 500, 500);
 			graphics.DrawString(drawText, new Font(Constants.QRCODE_FONT_NAME, Constants.QRCODE_FONT_SIZE, FontStyle.Bold), Brushes.Black, rectfDrawText, format);
 			graphics.DrawImage(bmImage, rectDrawImage);
 			graphics.Flush();

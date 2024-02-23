@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <form name="frm" id="instrumentform" enctype="multipart/form-data" method="post"
-   action='@Url.Action("InsertInstrument","Instrument")'>
+ action='@Url.Action("InsertInstrument","Instrument")'>
 	
 	<input type="hidden" name="Id" value="@Model.Id">
 	<input type="hidden" name="IsNABL" id="IsNABL" value="@Model.IsNABL">
@@ -261,50 +261,7 @@
 							</div>
 							<div class="row">
 
-								@*<div class="col-sm-6">
-									<div class="form-group">
-										<label class="trn">Decision rule for statement of Confirmity</label>
-										<select id="Rule_Confirmity" name="Rule_Confirmity" class="form-control">
-											<option value="" selected="true" class="trn">--Select Rule Confirmity--</option>
-											@if (Model.Rule_Confirmity == "Include MU")
-											{
-												<option value="Include MU" selected="true" class="trn">Include MU</option>
-											}
-											else
-											{
-												<option value="Include MU" class="trn">Include MU</option>
-											}
-											@if (Model.Rule_Confirmity == "Exclude MU")
-											{
-												<option value="Exclude MU" selected="true" class="trn">Exclude MU</option>
-											}
-											else
-											{
-												<option value="Exclude MU" class="trn">Exclude MU</option>
-											}
-										</select>
-									</div>
-								</div>*@
-								@*<div class="col-sm-6">								
-										<div class="form-group">
-											<label class="trn">Calibration Frequency</label>
-										<select id="CalibFreq" name="CalibFreq" class="form-control">
-											@*<option value="">--Calibration Frequency--</option>
-												@foreach (var freq in @Model.CalibFreqList)
-												{
-													if (freq.Id == Model.CalibFreq)
-													{
-														<option value="@freq.Id" selected="selected">@freq.AttrValue</option>
-													}
-													else
-													{
-														<option value="@freq.Id">@freq.AttrValue</option>
-													}
-												}
-											</select>
-										</div>									
-								</div>*@
-
+								
 							</div>
 							<div class="row">
 
@@ -367,20 +324,7 @@
 											   placeholder="Remarks">
 								</div>
 								</div>
-								@*<div class="col-sm-6">
-									<div class="form-group">
-										<label for="exampleInputFile" class="trn">If yes provision for standard/drawing attachment</label>
-										<div class="input-group">
-											<div class="custom-file">
-												<input type="file" class="custom-file-input"
-													   accept=" .doc,.docx,image/jpg,image/png,image/jpeg,application/pdf, application/vnd.ms-excel,application/vnd.ms-powerpoint,.ppt,.pptx,"
-													   onchange="checkFileSize(this,MaxSize=4,event)" value="@Model.FileList" name="ImageUpload"
-													   id="ImageUpload" multiple />
-												<label class="custom-file-label" for="exampleInputFile">Choose file</label>
-											</div>
-										</div>
-									</div>
-								</div>*@
+								
 							</div>
 							<div class="row">
 								<div class="col-sm-6">
@@ -459,13 +403,13 @@
 												<div class="form-group">
 													<label class="trn">Master Instrument Name</label>
 													<select id="MasterInstrument" name="MasterInstrument" class="form-control" @Model.IsDisabled>
-														<option>--Select Master--</option>
+														@*<option>--Select Master--</option>
 														@foreach (var master in @Model.MasterData)
 														{
 
 															<option value="@master.Id">@master.EquipName</option>
 														}
-														}
+														}*@
 													</select>
 												</div>
 											</div>
@@ -479,8 +423,8 @@
 											</div>
 										}		
 										<div class="col-sm-2">
-											@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-											{*@
+											@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+											{
 												<input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
 												value="@Model.MasterInstrument1">
 												<input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
@@ -495,22 +439,22 @@
 													{
 														int i = 1;
 														@foreach (var master in Model.MasterEqiupmentList)
-													{
-																										
-														
-																string identifier = "masvalue" + @i;
+														{
+
+
+															string identifier = "masvalue" + @i;
 															<div id='@identifier'>
-															
+
 																@master.EquipName <i class="fas fa-trash"
 																onclick="DeleteMasterEqiupment(@i)"></i><br>
-															
+
 															</div>
 															;
 															i = i + 1;
 														}
 													}
 												</div>
-											 
+											}
 										</div>
 
 										<div class="col-sm-6">
@@ -537,8 +481,8 @@
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="trn">Calibration Date</label>
-												<div class="input-group date" id="reservationdate" data-target-input="nearest"
-													 onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">
+												<div class="input-group date" id="reservationdate" data-target-input="nearest">
+													@* onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()">*@
 													<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"
 														   id="CalibDate" name="CalibDate" value="@Model.CalibDate" @Model.IsDisabled>
 													<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
@@ -628,7 +572,7 @@
 										</div>
 									</div>
 									
-									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
+									@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")@* && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))*@
 									{
 										<div class="row">
 											
@@ -648,38 +592,7 @@
 															</select>
 														</div>
 													</div>
-
-
-
-
-											@* value="@Model.CalibFreq" 	<label class="required trn">Observation Template</label>
-													<select id="ObservationTemplate" name="ObservationTemplate" class="form-control" @Model.IsDisabled> *@
-														@*onchange="LoadObservationType(language)"<option value=""> -- Select Observation Template --</option>
-														@foreach (var observation in @Model.ObservationTemplateList)
-														{
-															if (observation.Id == Model.ObservationTemplate)
-															{
-																<option value="@observation.Id" selected="selected">
-																	@observation.AttrValue
-																</option>
-															}
-															else
-															{
-																<option value="@observation.Id">@observation.AttrValue</option>
-															}
-														}
-
-											</select>*@
-												@* </div>
-											</div> *@
-											@* <div class="col-sm-6">
-												<div class="form-group">
-													<label class="required trn">Observation Type</label>
-													<select id="ObservationType" name="ObservationType" class="form-control" @Model.IsDisabled value=@Model.ObservationType>
-														@*value=@Model.ObservationType*@
-													@* </select>
-												</div>
-											</div> *@ 
+										
 										</div>
 										
 										<div class="row">
@@ -714,22 +627,27 @@
 	<!-- /.content -->
 	@*</fieldset>*@
 </form>
-@*<script src="~/js/3.3.1Version/jquery.min.js"></script>*@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>	
-	
-		@*var attrSubmitButton = @Json.Serialize(@ViewBag.ShowDetails);*@
-		@*if (attrSubmitButton == false) {
-   			$('fieldset').attr('disabled', 'disabled');
-		}*@
+<script type="text/javascript" src="~/js/jquery-3.6.0.js"></script>
 
-	$(function () {
+<script>
 
-		$('#UserDept').select2();
-		$('#UserDept1').select2();
+		$(function () {
+
+			$('#UserDept').select2();
+			$('#UserDept1').select2();
+		if ($('#MasterInstrument').length) {   //please add this condition
+			$('#MasterInstrument').val().prop("selected", true);
 			$('#MasterInstrument').select2();
+		}
+			@*$('#MasterInstrument').val(@Model.MasterInstrument1).prop("selected", true);
+			$('#MasterInstrument').select2();*@
+			$('#CalibFreq').val(@Model.CalibFreq);
+			
+	@*if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreq))') != null) {
+			var CalibFreq = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreq))');
+			$("#CalibFreq1").select2().val(CalibFreq).trigger("change");
 
-		//LoadDepartmentUserWise()
+		}*@
 
 			$('#reservationdate1').datetimepicker({
 				format: 'DD/MM/YYYY'
@@ -738,61 +656,61 @@
 				format: 'DD/MM/YYYY'
 			});
 
-		$("#TypeOfEquipment").change(function () {
-			var eq = $('#TypeOfEquipment').val();
-			console.log(eq);
+			$.validator.addMethod("CalibFreq", function (value, element) {
+				if (!$('#CalibFreq').length)
+					return true;
+				else {
+					var check = value != 0 && value != null && value != undefined;
+					return check;
+				}
+
+			});
+
+
+			$.validator.addMethod("DueDate", function (value, element) {
+				var check = value != 0 && value != null && value != undefined;
+				return check;
+			});
+
+			$("#TypeOfEquipment").change(function () {
+				
+				var eq = $('#TypeOfEquipment').val();
+		
+				console.log(eq);
 				if (eq == "External" || eq == "外部の") {
-			$('#ToolInventory').val('');
-				$('#ToolInventory').prop("disabled", true);
-			} else {
-				$("#ToolInventory").prop("disabled", false);
-			}
-		});			
-	});
-	
-	@*$("#DueDate").change(function () {
-		debugger;
-		selectedDate = $('#DueDate').datetimepicker({ format: 'DD/MM/YYYY' }).val();
-		alert(selectedDate);
-	});*@
+					$('#ToolInventory').val('');
+					$('#ToolInventory').prop('disabled', true);
+				} else {
+					$('#ToolInventory').prop('disabled', false);
+				}
+			});
 
-	@*function LoadDepartmentUserWise(){
-		var TmpDept = @Json.Serialize(@ViewBag.UserBaseDepartment);
-		console.log('TmpDept');
-		console.log(TmpDept);
-		var language = '@HttpContextAccessor.HttpContext.Session.GetString("Language")';
-		console.log(language);
-		$.each(TmpDept, function (index, item) {
-			optionhtmlUserDept = '';
+			$("#UserDept").change(function () {
 
-			if (lang == 'jp') {
+				var ud = $('#UserDept').val();
+				var defaultVal = ud == "" || ud == null || ud == undefined;
+				var span = $("#UserDept").closest('.form-group').find('span:last');
 
-				optionhtmlUserDept = '<option value="' + item.id + '">' + item.nameJP + '</option>';
-			}
-			else {
-				optionhtmlUserDept = '<option value="' + item.id + '">' + item.name + '</option>';
+				if (!defaultVal && span.hasClass('invalid-feedback')) {
 
-			}
+					$("#UserDept").next(".select2").find(".select2-selection").css('border-color', '#ced4da');
+					span.remove();
+				}
+			});
 
-			$("#UserDept1").append(optionhtmlUserDept);
-		});
-	}*@
+			$("#UserDept1").change(function () {
 
-	setTimeout(function () {
+				var ud1 = $('#UserDept1').val();
+				var defaultVal1 = ud1 == "" || ud1 == null || ud1 == undefined;
+				var span1 = $("#UserDept1").closest('.form-group').find('span:last');
 
-		$('#reservationdate').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#reservationdate1').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#reservationdate2').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$('#DueDate').datetimepicker({
-			format: 'DD/MM/YYYY'
-		});
-		$(function () {
+				if (!defaultVal1 && span1.hasClass('invalid-feedback')) {
+
+					$("#UserDept1").next(".select2").find(".select2-selection").css('border-color', '#ced4da');
+					span1.remove();
+				}
+			});
+@*//$(nfuction () {*@
 			$('#instrumentform').validate({
 				rules: {
 					InstrumentName: {
@@ -802,7 +720,7 @@
 						required: true,
 					},
 					Range: {
-						required: true,  
+						required: true,
 					},
 					Unit1: {
 						required: true,
@@ -835,88 +753,122 @@
 						required: false,
 					},
 					CalibFreq: {
-						required: true,
-					},
-					TypeOfEquipment: {
-						required: true,
-					},
-					ToolInventory: {
-						required: true,
-					},
-				},
-				messages: {
-					InstrumentName: {
-						required: "Please enter Instrument Name",
-					},
-					SlNo: {
-						required: "Please enter the Serial Number",
-					},
-					Range: {
-						required: "Please enter Range",
-					},
-					Unit1: {
-						required: "Please enter Unit",
-					},
-					Unit2: {
-						required: "Please enter Unit",
-					},
-					Unit3: {
-						required: "Please enter Unit",
-					},
-					UserDept: {
-						required: "Please enter the UserDepartment",
-					},
-					Make: {
-						required: "Please Fill This Field",
-					},
-					StandardReffered: {
-						required: "Please Fill This Field",
-					},
-					IdNo: {
-						required: "Please Fill This Field",
-					},
-					TemplateName: {
-						required: "Please Fill This Field",
-					},
-					Status: {
-						required: "Please enter the Status",
-					},
-					CalibSource: {
-						required: " Please provide The Calibration Source",
-					},
-					CalibFreq: {
-						required: "Please provide The Calibration Frequency",
-					},
-					TypeOfEquipment: {
-						required: "Please Select Scope Of Instrument",
-					},
-					ToolInventory: {
-						required: "Please Select the Tool Inventory",
-					},
-				},
-
-				errorElement: 'span',
-				errorPlacement: function (error, element) {
-					error.addClass('invalid-feedback');
-					element.closest('.form-group').append(error);
-				},
-				highlight: function (element, errorClass, validClass) {
-					$(element).addClass('is-invalid');
-				},
-				unhighlight: function (element, errorClass, validClass) {
-					$(element).removeClass('is-invalid');
-				}
-					
-			});
-		});
-	}, 1000);	
-@*</script>
-<script>*@
-
-	function getNABLValue(option) {
-		document.getElementById("IsNABL").value = option.value;
-		//alert(document.getElementById("IsNABL").value);
+						CalibFreq: true,
+	@*//required: true,*@
+							},
+			TypeOfEquipment: {
+			required: true,
+		},
+			ToolInventory: {
+			required: true,
+		},
+			DueDate: {
+			DueDate: true,
+		}
+						},
+		messages: {
+		InstrumentName: {
+			required: "Please enter Instrument Name",
+		},
+		SlNo: {
+			required: "Please enter the Serial Number",
+		},
+		Range: {
+			required: "Please enter Range",
+		},
+		Unit1: {
+			required: "Please enter Unit",
+		},
+		Unit2: {
+			required: "Please enter Unit",
+		},
+		Unit3: {
+			required: "Please enter Unit",
+		},
+		UserDept: {
+			required: "Please enter the UserDepartment",
+		},
+		Make: {
+			required: "Please Fill This Field",
+		},
+		StandardReffered: {
+			required: "Please Fill This Field",
+		},
+		IdNo: {
+			required: "Please Fill This Field",
+		},
+		TemplateName: {
+			required: "Please Fill This Field",
+		},
+		Status: {
+			required: "Please enter the Status",
+		},
+		CalibSource: {
+			required: " Please provide The Calibration Source",
+		},
+		CalibFreq: {
+			CalibFreq: "Please provide The Calibration Frequency",
+	@*//CalibFreq1 required: "Please provide The Calibration Frequency",*@
+							},
+		TypeOfEquipment: {
+		required: "Please Select Scope Of Instrument",
+	},
+		ToolInventory: {
+		required: "Please Select the Tool Inventory",
+	},
+		DueDate: {
+		DueDate: "Please Select the Due Date",
 	}
+						},
+
+
+		errorElement: 'span',
+		errorPlacement: function (error, element) {
+			error.addClass('invalid-feedback');
+			element.closest('.form-group').append(error);
+		},
+		highlight: function (element, errorClass, validClass) {
+
+			if (!$(element).hasClass("select2-hidden-accessible"))
+				$(element).addClass('is-invalid');
+			else {
+				var selectedSpan = $(element).next(".select2").find(".select2-selection");
+				selectedSpan.css('border-color', '#dc3545');
+			}
+
+		},
+		unhighlight: function (element, errorClass, validClass) {
+		$(element).removeClass('is-invalid');
+
+		}
+
+			});
+				@*//});*@
+		});
+
+		setTimeout(function () {
+
+			$('#reservationdate').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+			$('#reservationdate1').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+			$('#reservationdate2').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+			$('#DueDate').datetimepicker({
+				format: 'DD/MM/YYYY'
+			});
+			
+		}, 1000);
+	@*</script>
+		<script>*@
+
+		function getNABLValue(option) {
+			document.getElementById("IsNABL").value = option.value;
+			//alert(document.getElementById("IsNABL").value);
+		}
 
 	function checkFileSize(element, maxSize, event) {
 		var val = $(element).val(); //get file value
@@ -934,182 +886,196 @@
 		output.innerHTML = result;
 
 	}
-@*</script>
-<script>*@
-	function loaddate() {
-		//debugger;
-		var date1 = document.getElementById("CalibDate").value;
-		var e = document.getElementById("CalibFreq");
-		var type = e.options[e.selectedIndex].text;
-		var datestr = (date1.split(" ")[0]).split("/");
-		var newDate = new Date(datestr[2], datestr[1], datestr[0]);
-		if (type == "One Month") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 1));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+	@*</script>
+		<script>*@
+		function loaddate() {
+			//debugger;
+			var date1 = document.getElementById("CalibDate").value;
+			var e = document.getElementById("CalibFreq");
+			var type = e.options[e.selectedIndex].text;
+			var datestr = (date1.split(" ")[0]).split("/");
+			var newDate = new Date(datestr[2], datestr[1], datestr[0]);
+			if (type == "One Month") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 1));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Two Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 2));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Two Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 2));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Three Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 3));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Three Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 3));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Four Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 4));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Four Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 4));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Five Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 5));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Five Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 5));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Six Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 6));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Six Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 6));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Seven Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 7));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Seven Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 7));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Eight Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 8));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Eight Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 8));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Nine Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 9));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Nine Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 9));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Ten Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 10));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Ten Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 10));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "Eleven Months") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth() + 11));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "Eleven Months") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth() + 11));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear();
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear();
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "1 Year") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "1 Year") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth()));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear() + 1;
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear() + 1;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "2 Years") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "2 Years") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth()));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear() + 2;
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear() + 2;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
-		}
-		if (type == "3 Years") {
-			var d = new Date(newDate);
-			var newDate = new Date(d.setMonth(d.getMonth()));
-			var day = newDate.getDate();
-			var month = newDate.getMonth();
-			if (month == 0) {
-				month = 12
+			if (type == "3 Years") {
+				var d = new Date(newDate);
+				var newDate = new Date(d.setMonth(d.getMonth()));
+				var day = newDate.getDate();
+				var month = newDate.getMonth();
+				if (month == 0) {
+					month = 12
+				}
+				var year = newDate.getFullYear() + 3;
+				var result3 = day + "/" + month + "/" + year;
+				document.getElementById("DueDate").value = result3;
 			}
-			var year = newDate.getFullYear() + 3;
-			var result3 = day + "/" + month + "/" + year;
-			document.getElementById("DueDate").value = result3;
 		}
-	}
+
+function validateFields() {
+		alert('test');
+		alert(ValidateCheckInstrument());
+		if (ValidateCheckInstrument() == 0) {
+			alert('ok test');
+		}
+		else
+		{
+			showWarning('Please Select Tentative Closing Date, Observation Templates, Standard Refered/Calibration Method, Calibration Frequency Values...!', lang);
+		return false;
+		}
+}
 </script>
+

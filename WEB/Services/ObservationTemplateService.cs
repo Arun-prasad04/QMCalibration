@@ -4590,78 +4590,78 @@ public class ObservationTemplateService : IObservationTemplateService
 				//_unitOfWork.Commit();
 
 			//---ToolRoomHistory
-			if (instrumentData.ToolInventory == "Yes" && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
-			{
-				ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
+			//if (instrumentData.ToolInventory == "Yes" && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
+			//{
+			//	ToolRoomHistory ToolRoomHistoryById = new ToolRoomHistory();
 
-				ToolRoomHistoryById.StatusId = reviewStatus == 1 ? (Int32)ToolInventoryStatus.BackToToolRoom : (Int32)ToolInventoryStatus.CalibrationReject;
-				ToolRoomHistoryById.Comment = reviewStatus == 1 ? "BackToToolRoom" : "Calibration Rejected";
-				ToolRoomHistoryById.ReplacementId = instrumentData.ReplacementLabID;
-				ToolRoomHistoryById.CreatedBy = reviewedBy;
-				ToolRoomHistoryById.CreatedOn = DateTime.Now;
-				ToolRoomHistoryById.LabId = instrumentData.IdNo;
-				ToolRoomHistoryById.InstrumentId = instrumentData.Id;
-				_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
-				_unitOfWork.SaveChanges();
+			//	ToolRoomHistoryById.StatusId = reviewStatus == 1 ? (Int32)ToolInventoryStatus.BackToToolRoom : (Int32)ToolInventoryStatus.CalibrationReject;
+			//	ToolRoomHistoryById.Comment = reviewStatus == 1 ? "BackToToolRoom" : "Calibration Rejected";
+			//	ToolRoomHistoryById.ReplacementId = instrumentData.ReplacementLabID;
+			//	ToolRoomHistoryById.CreatedBy = reviewedBy;
+			//	ToolRoomHistoryById.CreatedOn = DateTime.Now;
+			//	ToolRoomHistoryById.LabId = instrumentData.IdNo;
+			//	ToolRoomHistoryById.InstrumentId = instrumentData.Id;
+			//	_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
+			//	_unitOfWork.SaveChanges();
 				
-			}
+			//}
 			_unitOfWork.Commit();
 			//For Regular / Recalibration Mail
 				string SendingEmailRegular = "";
-				string SendingEmailRecalibration = "";
-				string ObjSendingEmailRegular = "";
-				string ObjSendingEmailRecalibration = "";
-				int iRegularCount = 0;
-				int iRecalibrationCount = 0;
-				
-				string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
-				UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-				List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(ReqstData.Id);
-				foreach (var getrqlist in getrqlisting)
+			string SendingEmailRecalibration = "";
+			string ObjSendingEmailRegular = "";
+			string ObjSendingEmailRecalibration = "";
+			int iRegularCount = 0;
+			int iRecalibrationCount = 0;
+
+			string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+			UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+			List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(ReqstData.Id);
+			foreach (var getrqlist in getrqlisting)
+			{
+
+				if (getrqlist.EquipmentType == "Regular")
 				{
+					// SendEmailRegular(getrqlist);
 
-					if (getrqlist.EquipmentType == "Regular")
-					{
-						// SendEmailRegular(getrqlist);
+					SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
 
-						SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
-
-						SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-						ObjSendingEmailRegular += SendingEmailRegular;
-						iRegularCount += 1;
-
-					}
-					else if (getrqlist.EquipmentType == "Recalibration")
-					{
-						SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
-
-						SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-						ObjSendingEmailRecalibration += SendingEmailRecalibration;
-						iRecalibrationCount += 1;
-						//SendEmailRecalibration(getrqlist);
-					}
+					SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+					ObjSendingEmailRegular += SendingEmailRegular;
+					iRegularCount += 1;
 
 				}
+				else if (getrqlist.EquipmentType == "Recalibration")
+				{
+					SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+					SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+					ObjSendingEmailRecalibration += SendingEmailRecalibration;
+					iRecalibrationCount += 1;
+					//SendEmailRecalibration(getrqlist);
+				}
+
+			}
 
 
-				string mailbody = "";
-				if (iRegularCount > 0)
-				{
-					//Mail For Instrument Created User-Start  
-					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-					mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-					_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
-					//Mail For Instrument Created User-End  
-				}
-				if (iRecalibrationCount > 0)
-				{
-					//Mail For Instrument Created User-Start  
-					mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-					mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-					_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
-					//Mail For Instrument Created User-End 
-				}
-				return new ResponseViewModel<LeverTypeDialViewModel>
+			string mailbody = "";
+			if (iRegularCount > 0)
+			{
+				//Mail For Instrument Created User-Start  
+				mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+				mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+				_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+				//Mail For Instrument Created User-End  
+			}
+			if (iRecalibrationCount > 0)
+			{
+				//Mail For Instrument Created User-Start  
+				mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+				mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+				_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+				//Mail For Instrument Created User-End 
+			}
+			return new ResponseViewModel<LeverTypeDialViewModel>
 				{
 					ResponseCode = 200,
 					ResponseMessage = "Success",
@@ -5439,6 +5439,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		cmd.Parameters.AddWithValue("@InstrumentId", InstrumentId);
 		cmd.Parameters.AddWithValue("@RequestId", RequestId);
 		cmd.Parameters.AddWithValue("@TemplateObservationId", TemplateObservationId);
+		//cmd.Parameters.AddWithValue("@istemplate", istemplate);
 		SqlConnection sqlConn = new SqlConnection(connectionString);
 		DataSet dsResults = new DataSet();
 		SqlDataAdapter sqlAdapter = new SqlDataAdapter();
@@ -5493,6 +5494,7 @@ public class ObservationTemplateService : IObservationTemplateService
 				ObservationInstrument.TemplateObservationId = Convert.ToInt32(dr["TemplateObservationId"]);
 				ObservationInstrument.StatusId = Convert.ToInt32(dr["StatusId"]);
 				ObservationInstrument.CalibFreq = Convert.ToInt32(dr["CalibFreq"]);
+				ObservationInstrument.istemplate = Convert.ToInt32(dr["istemplate"]);
 			}
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
 			{
@@ -5671,7 +5673,7 @@ public class ObservationTemplateService : IObservationTemplateService
 			_unitOfWork.BeginTransaction();
 			int dynamicId = 0;
 			TemplateObservation observationById = _unitOfWork.Repository<TemplateObservation>()
-																 .GetQueryAsNoTracking(Q => Q.InstrumentId == dynamic.InstrumentId)
+																 .GetQueryAsNoTracking(Q => Q.InstrumentId == dynamic.InstrumentId && Q.RequestId==dynamic.RequestId)
 																 .SingleOrDefault();
 			//.GetQueryAsNoTracking(Q => Q.RequestId == dynamic.RequestId	&& Q.InstrumentId == dynamic.InstrumentId).SingleOrDefault();
 			if ((dynamic.TemplateObservationId == null) && (observationById == null))
@@ -5721,10 +5723,10 @@ public class ObservationTemplateService : IObservationTemplateService
 					{
 						observationById.Allvalues = dynamic.Units;
 					}
-					if (dynamic.RequestId != null)
-					{
-						observationById.RequestId = dynamic.RequestId;
-					}
+					//if (dynamic.RequestId != null)
+					//{
+					//	observationById.RequestId = dynamic.RequestId;
+					//}
 									
 					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
 				}
@@ -6224,7 +6226,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		{  //.GetQueryAsNoTracking(Q => Q.RequestId == requestId && Q.InstrumentId == instrumentId)
 
 			CertificateViewModel templateObservation = _unitOfWork.Repository<TemplateObservation>()
-                                                                    .GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId)
+                                                                    .GetQueryAsNoTracking(Q => Q.InstrumentId == instrumentId &&  Q.RequestId == requestId)
 																	 
                                                     .Select(s => new CertificateViewModel()
                                                     {

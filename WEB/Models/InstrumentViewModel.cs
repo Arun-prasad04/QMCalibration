@@ -124,6 +124,9 @@ namespace WEB.Models
 
         public string? sCalibDate { get; set; }
         public string? sDueDate { get; set; }
+        public int? RequestCount { get; set; }
+        public int? InspectionCount { get; set; }
+
     }
     public class Instrumentids
     {

@@ -269,7 +269,16 @@
                         }
                      },
                      {"render" : function(data, type, row, meta){
+                        //requestCount,inspectionCount
+                        if (row.requestCount == row.inspectionCount)
+                        {
+                          
+                            var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId=' + row.id + '"><i style="color:green" class="fas fa-id-badge"></i></a>';
+                        }
+                        else
+                        {
                              var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId='+row.id+'"><i class="fas fa-id-badge"></i></a>';
+                        }
                              return linkControlCard;
                         }
                     },
@@ -281,17 +290,25 @@
                                  var d = new Date($.now());
 
                                  var date = new Date(row.dueDate);
+                           
+                            console.log("---duedate----");
+                            console.log(date);
+                            console.log(Date.parse(date));
+                            d.setMonth(d.getMonth()+1);
+                            console.log("----current date------");
+                            console.log(d);
+                            console.log(Date.parse(d));
+
+
+                                 //var CurrMonth=d.getMonth();
+                                 //var CurrYear=d.getFullYear();
+                                 //month = date.getMonth();
+                                 //yr = date.getFullYear();
                                 
-                                 d.setMonth(d.getMonth()+1);
-                                 var CurrMonth=d.getMonth();
-                                 var CurrYear=d.getFullYear();
-                                 month = date.getMonth();
-                                 yr = date.getFullYear();
-                                
-                                  d.setMonth(d.getMonth() + 1);
-                                 var NextMonth=d.getMonth();
-                                 var NextYear=d.getFullYear();
-                                
+                                 // d.setMonth(d.getMonth() + 1);
+                                 //var NextMonth=d.getMonth();
+                                 //var NextYear=d.getFullYear();
+                            //requestCount,inspectionCount
                                      if (row.dueDate != null)
                                     {
                                         if ((Date.parse(date) <= Date.parse(d))  && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))

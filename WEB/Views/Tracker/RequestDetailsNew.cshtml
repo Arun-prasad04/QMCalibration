@@ -300,7 +300,8 @@
                     </div>
                     <div class="row">
                     </div>
-                    @if (Model.TypeOfRequest == 3 && (Model.LabL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsLabL4Accepted == null) || (Model.UserL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsUserL4Accepted == null))
+                    @if (Model.TypeOfRequest == 3)
+                    @*&& (Model.LabL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && (Model.IsLabL4Accepted == null) || (Model.UserL4 == Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("LoggedId")) && Model.IsUserL4Accepted == null))*@
                     {
                         <div class="row">
                             <div class="col-sm-6">
@@ -337,14 +338,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6" style="text-align:right;">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                       class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest(language)">
-                                <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                        {
+                            <div class="col-sm-6" style="text-align:right;">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                    class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest(language)">
+                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                </div>
                             </div>
-                        </div>
+                        }
                     }
                     @*@if (Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 && ((Model.TypeOfRequest == 1 || Model.TypeOfRequest == 2) && Model.Status == 26) || ((Model.TypeOfRequest == 3 && Model.IsLabL4Accepted == 1 && Model.IsUserL4Accepted == 1) && Model.Status == 26))*@
                     @if ((Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 2 || Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("UserRoleId")) == 3) && ((Model.TypeOfRequest == 1 || Model.TypeOfRequest == 2 || Model.TypeOfRequest == 3) && Model.Status == 26))
@@ -489,14 +493,17 @@
                                         <textarea id="Newreason" class="form-control" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
-                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                                {
+                                    <div class="col-sm-6" style="text-align:right;">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                            class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     }
@@ -548,17 +555,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
-                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6" style="text-align:right;">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                            class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            }
                         </div>
                     }
                     @if ((Model.Status == 27 || Model.Status == 29) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の"))
@@ -627,7 +636,7 @@
                     @if (Model.Status == 26 && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))@*  && (Model.TypeOfRequest == 1) *@
                     {
                         <div id="NewacceptSection" style="display: none;">
-                            @if (Model.TypeOfRequest == 1 || Model.TypeOfRequest == 3)
+                            @if (Model.TypeOfRequest == 1) @*|| Model.TypeOfRequest == 2 || Model.TypeOfRequest == 2)*@
                             {
                                 <div class="row">
                                     <div class="col-sm-4">
@@ -719,14 +728,17 @@
                             <div class="row">
                             </div>
                         </div>
-                        <div class="col-sm-6" style="text-align:right;">
-                            <!-- text input -->
-                            <div class="form-group mt-4">
-                                <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                       class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
-                                <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                        {
+                            <div class="col-sm-6" style="text-align:right;">
+                                <!-- text input -->
+                                <div class="form-group mt-4">
+                                    <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                    class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
+                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                     }
 
@@ -986,6 +998,8 @@
                                 <!-- text input -->
 
                             </div>
+                            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
+                           {
                             <div class="col-sm-3">
                                 <!-- text input -->
                                 <div class="form-group">
@@ -994,6 +1008,7 @@
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
+                            }
                         </div>
                     }
                     @* @if ((@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3") && Model.Status == 27 && Model.ReviewedStatus != 1 && (Model.TypeOfEquipment != "External" || Model.TypeOfEquipment != "外部の") && Model.AdminReviewStatus != 1)
@@ -1328,7 +1343,8 @@
                             </div>
                             @if ((Model.Status == 29) || ((Model.TypeOfRequest == 3) && (Model.InstrumentIdNo == null)))
                             {
-
+                                @if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                                {
                                 <div class="row">
                                     <div class="col-sm-6">
                                     </div>
@@ -1341,7 +1357,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                }
                             }
                         </div>
                     }
@@ -1379,6 +1395,8 @@
                         <br>
                         @if (Model.Status == 29)
                         {
+                            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                            {
                             <div class="row">
                                 <div class="col-sm-6" style="text-align:right;">
                                     <!-- text input -->
@@ -1389,6 +1407,7 @@
                                     </div>
                                 </div>
                             </div>
+                            }
                         }
                     }
                     @if ((Model.Status == 27 || Model.Status == 30) && (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の") && Model.AdminReviewStatus == 2)
@@ -1401,14 +1420,17 @@
                                         <textarea id="Newreason" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="ExternalCalibrationRequest(language)">
-                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                                {
+                                    <div class="col-sm-6" style="text-align:right;">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                            class="btn btn-primary trn" onclick="ExternalCalibrationRequest(language)">
+                                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     }
