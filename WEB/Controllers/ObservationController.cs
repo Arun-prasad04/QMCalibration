@@ -1409,7 +1409,7 @@ public class ObservationController : BaseController
 
 
 		ResponseViewModel<DynamicViewModel> response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
-		if ((response.ResponseData.TemplateObservationId == 0) || (response.ResponseData.TemplateObservationId == null))
+		if ((response.ResponseData.TemplateObservationId == 0) || (response.ResponseData.TemplateObservationId == null) || (response.ResponseData.TemplateObservationId == 00))
 		 { 
 		response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;
 		response.ResponseData.CalibrationPerformedDate = DateTime.Now;
@@ -1428,6 +1428,7 @@ public class ObservationController : BaseController
 	public JsonResult GetObservationById(int InstrumentId, int RequestId, int TemplateObservationId)
 	{
           
+		
 		ResponseViewModel<ObservationContentViewModel> response = _ObservationTemplateService.GetObservationById(InstrumentId,RequestId, TemplateObservationId);
 		return Json(response.ResponseDataList);
 
@@ -1524,7 +1525,7 @@ public class ObservationController : BaseController
         else
         {
             ResponseViewModel<ExternalObsViewModel> responseempty = new ResponseViewModel<ExternalObsViewModel>();
-            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentById(instrumentId);
+            ResponseViewModel<InstrumentViewModel> instrumentresponse = _instrumentService.GetInstrumentsForId(instrumentId);
             ExternalObsViewModel extObs = new ExternalObsViewModel();
             extObs.InstrumentId = instrumentId;
             extObs.RequestId = requestId;

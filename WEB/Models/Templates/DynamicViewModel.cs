@@ -57,6 +57,8 @@
 		public int? StatusId { get; set; }
 		public int? CalibFreq { get; set; }
 		public string? PermissibleLimit { get; set; }
+
+		public int ? istemplate { get; set; }
 	}
 	public class UserContentMappingView
 	{

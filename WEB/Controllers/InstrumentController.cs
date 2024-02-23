@@ -376,10 +376,11 @@ public class InstrumentController : BaseController
 	#region Control Card
 	public IActionResult ControlCard(int instrumentId)
 	{
-		ViewBag.InstrumentId = instrumentId;
-		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
+        ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+        ViewBag.InstrumentId = instrumentId;
+		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId,response.ResponseData.IdNo);
 		ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
-		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
 
 		return View(response.ResponseData);
 		
@@ -390,16 +391,17 @@ public class InstrumentController : BaseController
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetRequestListForInstrument(instrumentId);
 		return Json(response.ResponseDataList);
 	}
-	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId)
+	private QRCodeFilesViewModel GetQRCodeImageForInstru(int instrumentId,string IdNo)
 	{
 	
 		QRCodeFilesViewModel qrCodeGenInputViewModel = new QRCodeFilesViewModel()
 		{
 			TemplateName = Constants.INSCONTROLLERNAME,
-			InstrumentId = instrumentId
-		};
+			InstrumentId = instrumentId,
+             InstrumentIdNo  = IdNo
+        };
 
-		QRCodeFilesViewModel qrCodeGenOutputViewModel = _qrCodeGeneratorService.QRCodeGenerationForInstrument(qrCodeGenInputViewModel, instrumentId);
+		QRCodeFilesViewModel qrCodeGenOutputViewModel = _qrCodeGeneratorService.QRCodeGenerationForInstrument(qrCodeGenInputViewModel, instrumentId, IdNo);
 
 
 		if (qrCodeGenOutputViewModel == null)
@@ -418,9 +420,11 @@ public class InstrumentController : BaseController
 		return Json(response.ResponseDataList);
 	}
 
+    //public IActionResult ControlCardQRCodePrint(string instrumentId,string Idno)
     public IActionResult ControlCardQRCodePrint(string instrumentId)
     {
-        QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId));
+        //QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId), Idno);
+        QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId),"");
         ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
         ViewBag.QRDecodeText = "data:image/png;base64," +
                                 Convert.ToBase64String(qrCodeFilesViewModel.DecodeText, 0, qrCodeFilesViewModel.DecodeText.Length);
