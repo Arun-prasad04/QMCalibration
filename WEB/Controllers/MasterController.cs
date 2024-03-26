@@ -82,8 +82,7 @@ public class MasterController : BaseController
 
 	public ActionResult MasterEdit(int masterId)
 	{
-		ViewBag.PageTitle = "Master Edit";
-		
+		ViewBag.PageTitle = "Master Edit";		
 		ResponseViewModel<MasterViewModel> response = _masterService.GetMasterById(masterId);
 		ViewBag.CalibFreqMaster = response.ResponseData.CalibFreqId;
 		return View("Create", response.ResponseData);
@@ -95,8 +94,16 @@ public class MasterController : BaseController
 		TempData["ResponseMessage"] = response.ResponseMessage;
 		return RedirectToAction("Index", "Master");
 	}
+    public ActionResult DeleteMasterFile(int MasterId, string filename)
+    {
+		ResponseViewModel<MasterFileUploadViewModel> response = _masterService.DeleteMasterFile(MasterId, filename);
+        TempData["ResponseCode"] = response.ResponseCode;
+        TempData["ResponseMessage"] = response.ResponseMessage;
+        return Json(response.ResponseData);
+    }
+   
 
-	public ActionResult ExternalRequest(int masterId)
+    public ActionResult ExternalRequest(int masterId)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		ResponseViewModel<ExternalRequestViewModel> response = _externalRequestService.InsertExternalRequest(masterId, userId);

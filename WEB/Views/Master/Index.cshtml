@@ -32,8 +32,8 @@
 								<th class="trn" width="150px">Calibration Frequency</th>
 								<th class="trn">Calibration Date</th>
 								<th class="trn">Due Date</th>
+								<th class="trn" width="50px">SubSectionCode</th>
 								<th class="trn">Edit</th>
-
 								<th class="trn" width="150px">External Calibration Request</th>
 								<th class="trn" width="50px">Quarantine</th>
 								<th class="trn" width="50px">History</th>
@@ -50,6 +50,8 @@
 									<td>@item.CalibrationFrequency</td>
 									<td style="width:300px;">@item.CalibDate.ToString("dd-MM-yyyy")</td>
 									<td style="width:300px;">@item.DueDate.ToString("dd-MM-yyyy")</td>
+									<td>@item.SubSectionCode</td>
+									
 									<td><a href='@Url.Action("MasterEdit","Master",new {masterId=@item.Id})'><i class="fas fa-edit"></i></a></td>
 
 									<td>@if (DateTime.Now.Month == @item.DueDate.Month && DateTime.Now.Year == @item.DueDate.Year)

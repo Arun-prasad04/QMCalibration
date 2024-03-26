@@ -11,5 +11,7 @@ public string FilePath{get;set;}
 public int RequestId	 {get;set;}
 public string? TemplateType	 {get;set;}
 public virtual List<MasterFileUpload> MasterUpload{get;set;}
+public int MasterId { get; set; }
+        
     }
 }

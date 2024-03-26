@@ -13,8 +13,8 @@
                      aoData.push({ "name": "sscode", "value": $('#txtsearch5').val() })
                     aoData.push({ "name": "instrumentname", "value": $('#txtsearch0').val() })
                     aoData.push({ "name": "labid", "value": $('#txtsearch2').val() })
-                    aoData.push({ "name": "typeOfEquipment", "value": $('#drptypeOfEquipment').val() })
-                   
+                   // aoData.push({ "name": "typeOfEquipment", "value": $('#drptypeOfEquipment').val() })
+                   aoData.push({ "name": "typeOfEquipment", "value":"" })
                     aoData.push({ "name": "serialno", "value": $('#txtsearch1').val() })
                     aoData.push({ "name": "range", "value": $('#txtsearch3').val() })
                     aoData.push({ "name": "department", "value": $('#txtsearch4').val() })
@@ -36,12 +36,8 @@
                      {"data":"idNo","name":"Lab ID Number"},
                      {"data":"range","name":"Range"},
                      {"data":"departmentName","name":"Department"},
-
                      { "data":"subSectionCode","name":"Sub section code"},
-
-                         {"data":"subSecCode","name":"Sub section code"},
-
-                     {"data":"typeOfEquipment","name":"Scope"},
+                     /*{"data":"typeOfEquipment","name":"Scope"},*/
                      {"data":"sCalibDate","name":"Calibration Date"},
                       {"data":"sDueDate","name":"DueDate"},
                   
@@ -49,18 +45,18 @@
                  ],
                   "createdRow": function (row, data, dataIndex) {
                       },
-                         "columnDefs": [
-                {
-                'orderable': false,
-               'targets': 0,
-               'checkboxes': {
-               'selectRow': true
-                }
-            }
-             ],
-             'select': {
-            'style': 'multi'
-          },
+                     //    "columnDefs": [
+             //   {
+             //   'orderable': false,
+             //  'targets': 0,
+            //   'checkboxes': {
+            //   'selectRow': true
+            //    }
+           // }
+          ///   ],
+           //  'select': {
+          //  'style': 'multi'
+         // },
 
                 // "serverside":"true",
                  "order":[0,"asc"],
@@ -74,31 +70,37 @@
                  dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                  "initComplete": function() {
+                //  "initComplete": function() {
       // Select the column whose header we need replaced using its index(0 based)
-      this.api().column(6).every(function() {
-          var $table = $("#tblToolInstruments");
-            var title = $(this).text();
-        var column = this;
-            var select = $('<select style="width: 100px;" id="drptypeOfEquipment"  onchange="DrptypeOfEquipment(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
+      //this.api().column(6).every(function() {
+         // var $table = $("#tblToolInstruments");
+           // var title = $(this).text();
+      //  var column = this;
+          //  var select = $('<select style="width: 100px;" id="drptypeOfEquipmentTool"  onchange="DrptypeOfEquipmentTool(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
         
-          .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
+        //  .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
           
-        column.data().unique().sort().each(function(d, j) {
-            if(d !=null)
-            {
-                  select.append("<option value='" + d + "'>" + d + "</option>")
-            }
+         //    column.data().unique().sort().each(function(d, j) {
+         //   if(d !=null)
+        //    {
+                //  select.append("<option value='" + d + "'>" + d + "</option>")
+//}
          
-        });
-      });
-    },
+      //  });
+     // });
+   // },
 
 
  
  })
  })
-
+// function DrptypeOfEquipmentTool(val) {
+     //    var table = $('#tblToolInstruments').DataTable();
+    //      if (table.search() !== val) {
+      //       table.search(val).draw();
+    //              
+     //    }
+    // }
 
   $(document).ready(function() {
 
@@ -106,7 +108,7 @@
    $("#tblToolInstruments thead tr:eq(1) th").each(function (i) {
         var title1 = $(this).text();
         var title = title1.trim();
-     if(i==0 ||i==1 ||i==2 || i==3|| i==4|| i==5|| i==7|| i==8)
+     if(i==0 ||i==1 ||i==2 || i==3|| i==4|| i==5|| i==6|| i==7)
      {
        $(this).html('<input id="txtsearch'+i+'" style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
 

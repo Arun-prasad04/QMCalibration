@@ -102,8 +102,8 @@
 										}
 										else
 										{
-											<td id="ReplacementLabID_@item.Id" class="LabIDCell"  onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">
-
+											@*<td id="ReplacementLabID_@item.Id" class="LabIDCell"  onclick="PopUpListing1('@item.InstrumentName','@item.Id');" href="#">*@
+											<td id="ReplacementLabID_@item.Id" class="LabIDCell" onclick="PopUpListing1('@item.IdNo','@item.Id');" href="#">
 												<input type="hidden" id="popupcount_@item.Id" name="popupcount" value="">
 
 											</td>

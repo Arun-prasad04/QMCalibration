@@ -495,12 +495,12 @@
 											<p class="trn">User List</p>
 										</a>
 									</li>
-									<li class="nav-item navIndend">
+									@*<li class="nav-item navIndend">
 										<a href='@Url.Action("Create","User")' class="nav-link">
 											<i class="fas fa-user-plus nav-icon"></i>
 											<p class="trn">New User</p>
 										</a>
-									</li>
+									</li>*@
 								</ul>
 							</li>
 
@@ -767,9 +767,10 @@
 
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-
+		@*	<script src="~/js/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>*@
 		<script>
-			$.widget.bridge('uibutton', $.ui.button)
+			//$.widget.bridge('uibutton', $.ui.button)
+			$.widget.bridge('uibuttonset', $.ui.buttonset);
 		</script>
 		<!-- Bootstrap 4 -->
 		<script src="~/js/bootstrap.bundle.min.js"></script>
@@ -1834,8 +1835,10 @@
 					"SubSection Code": { jp: "使用部門コード", en: "SubSection Code" },
 					"Master Department": { jp: "マスター部門", en: "Master Department" },
 					"Select Calibration Frequency": { jp: "キャリブレーション周波数の選択", en: "Select Calibration Frequency" },
-					"Select Plant Location": { jp: "プラントの場所を選択", en: "Select Plant Location" }
-							}
+					"Select Plant Location": { jp: "プラントの場所を選択", en: "Select Plant Location" },
+					"Select Plant Location": { jp: "ファイルを削除してもよろしいですか", en: "Select Plant Location" },
+					"Master SubSectionCode": { jp: "マスターサブセクションコード", en: "Master SubSectionCode" },
+					}
 
 				return dicts;
 			}
@@ -1981,8 +1984,7 @@
 			}
 
 			function AlertPopup(message) {
-				console.log(message);
-				console.log(language);
+				
 				alert(dict[message][language]);
 			}
 
@@ -2018,7 +2020,8 @@
 				var SelectCalibrationSourceId = $('#CalibrationSourceId').find("option:selected").val();
 				var SelectLocationId = $('#LocationId').find("option:selected").val();
 				var SelectDesignation = $('#Designation').find("option:selected").val();
-				var SelectCalibFreq = $('#CalibFreq').find("option:selected").val(); //For Instrument Mastr
+				var SelectCalibFreq =@Json.Serialize(@ViewBag.CalibFreq);// $('#CalibFreq').find("option:selected").val(); //For Instrument Mastr
+			
 				//alert(SelectCalibFreq);
 				//var SelectCalibFreqId1 = $('#CalibFreqMaster').find("option:selected").val();
 				$.ajax({
@@ -2128,6 +2131,11 @@
 							}
 							else {
 								optionhtmlCalibFreq = '<option value="' + item.id + '">' + item.attrValue + '</option>';
+							}
+							$("#CalibFreq").val(SelectCalibFreq);
+							
+							if ($("#CalibFreq").val(SelectCalibFreq) == SelectCalibFreq) {
+							optionhtmlCalibFreq.attr('selected', 'selected');
 							}
 							$("#CalibFreqId").append(optionhtmlCalibFreq);
 							$("#CalibFreq").append(optionhtmlCalibFreq);

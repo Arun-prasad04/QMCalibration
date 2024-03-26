@@ -8,6 +8,7 @@ using AutoMapper;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Diagnostics.Metrics;
 using WEB.Models.Templates;
+using WEB.Services;
 
 
 namespace WEB.Controllers;
@@ -1007,10 +1008,10 @@ public class ObservationController : BaseController
 		}
 		return View(response.ResponseData);
 	}
-	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks, int RequestId, int DueDate)
+	public IActionResult SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, string Remarks, int RequestId, int DueDate, DynamicViewModel dynamic)
 	{
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
-        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks, RequestId, DueDate);
+        ResponseViewModel<LeverTypeDialViewModel> response = _ObservationTemplateService.SubmitReview(observationId, reviewDate, reviewStatus, userId, Remarks, RequestId, DueDate, dynamic);
 		return Json(response.ResponseData);
 	}
 	public IActionResult GeneralNew(int requestId, int instrumentId)
@@ -1450,7 +1451,26 @@ public class ObservationController : BaseController
 
 		return Json(response.ResponseData);
 	}
-	public IActionResult GetObservationContentValuesById(int InstrumentId, int RequestId)
+  //  public void SaveFiles(string FileData, string FileName, string Refno)
+  //  {
+		//string filePath = _utilityService.UploadImage(fileObj, "Master");
+		//var bytes = Convert.FromBase64String(FileData.Split(',')[1]);
+  //      var Path = this.Configuration.GetSection("AppSettings")["UploadFile"] + "\\" + Refno;
+
+  //      if (!Directory.Exists(Path))
+  //      {
+  //          Directory.CreateDirectory(Path);
+  //      }
+  //      string filePath = this.Configuration.GetSection("AppSettings")["UploadFile"] + "\\" + Refno + "\\" + FileName;
+  //      using (var imageFile = new FileStream(filePath, FileMode.Create))
+  //      {
+
+  //          imageFile.Write(bytes, 0, bytes.Length);
+  //          imageFile.Flush();
+  //      }
+  //  }
+
+    public IActionResult GetObservationContentValuesById(int InstrumentId, int RequestId)
 	{
 		ResponseViewModel<ObservationContentValuesViewModel> response = _ObservationTemplateService.GetObservationContentValuesById(InstrumentId, RequestId);
 
@@ -1590,6 +1610,13 @@ public class ObservationController : BaseController
 
         return Json(response.ResponseData);
 
+    }
+    public ActionResult DeleteObservationFile(int Id, string filename)
+    {
+        ResponseViewModel<Uploads> response = _ObservationTemplateService.DeleteObservationFile(Id, filename);
+        TempData["ResponseCode"] = response.ResponseCode;
+        TempData["ResponseMessage"] = response.ResponseMessage;
+        return Json(response.ResponseData);
     }
 }
 

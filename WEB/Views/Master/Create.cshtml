@@ -190,7 +190,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="required trn">Master Department</label>
+                                        <label class="required trn">Master SubSectionCode</label>
                                         <select class="form-control" name="DepartId" id="DepartId">
                                            @*  @if (@HttpContextAccessor.HttpContext.Session.GetString("Language")=="en")
                                             {  *@
@@ -226,30 +226,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                @* <div class="col-sm-6"> @Model.DepartmentName'
-                                <div class="form-group">
-                                <label class="required trn">Scope</label>
-                                <select id="TypeOfEquipment" name="TypeOfEquipment" class="form-control">
-                                <option value="" selected="true" class="trn">--Select Type Of Scope--</option>
-                                @if (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部")
-                                {
-                                <option value="Internal" selected="true" class="trn">Internal</option>
-                                }
-                                else
-                                {
-                                <option value="Internal" class="trn">Internal</option>
-                                }
-                                @if (Model.TypeOfEquipment == "External" || Model.TypeOfEquipment == "外部の")
-                                {
-                                <option value="External" selected="true" class="trn">External</option>
-                                }
-                                else
-                                {
-                                <option value="External" class="trn">External</option>
-                                }
-                                </select>
-                                </div>
-                                </div> *@
+                               
                             </div>
                         </div>                        
                     </div>
@@ -369,11 +346,11 @@
                         </div>
                         <div class="row">
                             @*<div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="trn">Traceability</label>
-                                    <input type="text" id="Traceability" name="Traceability" value="@Model.Traceability"
-                                           class="form-control" placeholder="">
-                                </div>
+                            <div class="form-group">
+                            <label class="trn">Traceability</label>
+                            <input type="text" id="Traceability" name="Traceability" value="@Model.Traceability"
+                            class="form-control" placeholder="">
+                            </div>
                             </div>*@
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -385,6 +362,7 @@
                                                    onchange="checkFileSize(this,MaxSize=4,event)" value="@Model.FileList" name="ImageUpload"
                                                    id="ImageUpload" multiple />
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                          
                                         </div>
 
                                     </div>
@@ -395,7 +373,7 @@
                             <div class="col-sm-6">
                             </div>
                             <div class="col-sm-6">
-                                <div>
+                                <div id="Filediv">
                                     <p id="FileList"></p>
                                 </div>
                             </div>
@@ -404,47 +382,27 @@
                             <div class="col-sm-6">
                             </div>
                             <div id="imageSection" class="col-md-6">
-                                @if (@Model.FileList != null)
+                               @* @if (@Model.FileList != null)
                                 {
                                     foreach (var img in @Model.FileList)
                                     {
-                                        string[] imgarray = @img.ToString().Split('.');
-                                        if (imgarray[1] == "doc" || imgarray[1] == "docx")
-                                        {
-                                            <img height="25" width="25" src="https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg">
 
-                                        }
-                                        if (imgarray[1] == "jpg" || imgarray[1] == "jpeg" || imgarray[1] == "PNG")
-                                        {
-                                            <img height="25" width="25"
-                                                 src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Picture_icon_BLACK.svg">
 
-                                        }
-                                        if (imgarray[1] == "pdf")
-                                        {
-                                            <img height="25" width="25"
-                                                 src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg">
-
-                                        }
-                                        if (imgarray[1] == "ppt" || imgarray[1] == "pptx")
-                                        {
-                                            <img height="25" width="25"
-                                                 src="https://upload.wikimedia.org/wikipedia/commons/a/a0/.pptx_icon_%282019%29.svg">
-
-                                        }
-                                        if (imgarray[1] == "xls" || imgarray[1] == "xlsx")
-                                        {
-                                            <img height="25" width="25"
-                                                 src="https://cdn3.iconfinder.com/data/icons/document-icons-2/30/647702-excel-512.png">
-
-                                        }
-                                        <a href='~/Master/@img' target="_blank">@img</a>
-
-                                        <br />
+                                        <div id="@img">
+                                           @* <img id="imgs" height="20" width="20" src="~/image/word.png">
+                                            <div onload="Imageload(@img);"></div>
+                                           <a id="pic" href='~/Master/@img' target="_blank">@img</a>
+                                           <i id="@img" class="fas fa-trash" onclick="MasterFileDeleteAlert(this,'doc','@img','@Model.Id');"></i>
+                                                <br />
+                                            </div>
+                                       
+                                       
+                                    
                                     }
-                                }
+                                }*@
                             </div>
                         </div>
+                                              
                     </div>
                 </div>
                 <div class="card card-default">
@@ -462,10 +420,11 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        Please provide supplier name
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="required trn">Name</label>
+                                    <label class="trn">Name</label>
                                     <input type="text" alt="Please provide supplier name" id="Name" name="Name" value="@Model.Name" class="form-control" placeholder="">
                                 </div>
                             </div>
@@ -519,137 +478,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
+    var tags = @Html.Raw(Json.Serialize(Model.FileList));
+    var result ="";
+    var input = document.getElementById('ImageUpload');
+   // console.log(result);
+    //$('#imageSection').append(result);
+   
     $(function () {
-
+       
         $('#UserDept').select2();
+        for (var i = 0; i < tags.length; i++) {
+          // alert(tags[i]);
+            var ids = tags[i].split('.')[0];
+            var masterid=@Model.Id;
+            var filename=tags[i];
+            //alert(filename);
+            result += '<div id="' + ids + '" ><img height="20" width="20" alt="" src="../image/' + CheckFileType(tags[i]) + '" />'
+                + '<a id="pic" href = "../Master/' + filename + '">' + filename + '</a>'
+                + ' <a onclick="MasterFileDeleteAlert(\'' + masterid + '\',\'' + filename + '\',\'' + ids + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fas fa-trash"><span class="glyphicon glyphicon-remove"></span></a>'
+                + '</div>';
+
+        }
+        console.log(result);
+        imageSection.innerHTML = result;
+       // Filediv.innerHTML = "innerHTMLinnerHTMLinnerHTMLinnerHTMLinnerHTMLinnerHTML"
     });
-    //$(function () {
-    //	$('#masterform').validate({
-    //		rules: {
-    //			EquipName: {
-    //				required: true,
-    //			},
-    //			//EquipNameJP: {
-    //			//	required: true,
-    //			//},
-    //			//LocationId: {
-    //			//	required: true,
-    //			//},
-    //			//PONo: {
-    //			//	required: true,
-    //			//},
-    //			//CommissionedOn: {
-    //			//	required: true,
-    //			//},
-    //			//Make: {
-    //			//	required: true,
-    //			//},
-    //			//Cost: {
-    //			//	required: true,
-    //			//},
-    //			//CalibrationSourceId: {
-    //			//	required: true,
-    //			//},
-    //			//Supplier: {
-    //			//	required: true,
-    //			//},
-    //			//CalibFreqId: {
-    //			//	required: true,
-    //			//},
-    //			//LabId: {
-    //			//	required: true,
-    //			//},
-    //			//Name: {
-    //			//	required: true,
-    //			//},
-    //			//PhoneNo: {
-    //			//	required: true,
-    //			//},
-    //			//EmailId: {
-    //			//	required: true,
-    //			//},
-    //			//EquipmentMasterId: {
-    //			//	required: true,
-    //			//},
-    //		},
-    //		messages: {
-    //			EquipName: {
-    //				required: "Please enter Equipment Name",
-    //			},
-    //			//EquipNameJP: {
-    //			//	required: "Please enter the EquipNameJP",
-    //			//},
-    //			//LocationId: {
-    //			//	required: "Please enter the location",
-    //			//},
-    //			//PONo: {
-    //			//	required: "Please provide the P.O. Number",
-    //			//},
-    //			//CommissionedOn: {
-    //			//	required: "Please provide the date",
-    //			//},
-    //			//Make: {
-    //			//	required: "Please fill this field",
-    //			//},
-    //			//Cost: {
-    //			//	required: "Please provide the amount",
-    //			//},
-    //			//CalibrationSourceId: {
-    //			//	required: "Please provide the Calibration Source",
-    //			//},
-    //			//Supplier: {
-    //			//	required: "Please provide the supplier or agency",
-    //			//},
-    //			//CalibFreqId: {
-    //			//	required: "Please provide the Calibration Frequency",
-    //			//},
-    //			//LabId: {
-    //			//	required: "Please provide lab Id",
-    //			//},
-    //			//Name: {
-    //			//	required: "Please provide supplier name",
-    //			//},
-    //			//PhoneNo: {
-    //			//	required: "Please provide supplier phone number",
-    //			//},
-    //			//EmailId: {
-    //			//	required: "Please provide supplier Email address",
-    //			//},
-    //			//EquipmentMasterId: {
-    //			//	required: "Please provide the Equipment Master ID",
-    //			//},
-    //		},
-    //		errorElement: 'span',
-    //		errorPlacement: function (error, element) {
-    //			error.addClass('invalid-feedback');
-    //			element.closest('.form-group').append(error);
-    //		},
-    //		highlight: function (element, errorClass, validClass) {
-    //			$(element).addClass('is-invalid');
-    //		},
-    //		unhighlight: function (element, errorClass, validClass) {
-    //			$(element).removeClass('is-invalid');
-    //		}
-    //	});
 
-    //	$('#LocationId').select2();
-    //	$('#CalibFreqMaster').select2();
-
-    //	$('#reservationdate1').datetimepicker({
-    //		format: 'DD/MM/YYYY'
-    //	});
-    //	$('#reservationdate2').datetimepicker({
-    //		format: 'DD/MM/YYYY'
-    //	});
-    //	$('#reservationdate3').datetimepicker({
-    //		format: 'DD/MM/YYYY'
-    //	});
-    //	$('#reservationdate4').datetimepicker({
-    //		format: 'DD/MM/YYYY'
-    //	});
-    //});
-
-
+  
     setTimeout(function () {
 
         //$(function () {
@@ -685,9 +541,9 @@
                 CalibFreqId: {
                     required: true,
                 },                
-                Name: {
-                    required: true,
-                },
+                //Name: {
+                //    required: true,
+                //},
                 PhoneNo: {
                     required: true,
                 },
@@ -732,9 +588,9 @@
                 CalibFreqId: {
                     required: "Please provide the Calibration Frequency",
                 },
-                Name: {
-                    required: "Please provide supplier name",
-                },
+                //Name: {
+                //    required: "Please provide supplier name",
+                //},
                 PhoneNo: {
                     required: "Please provide supplier phone number",
                 },
@@ -781,6 +637,7 @@
 
 
     function checkFileSize(element, maxSize, event) {
+        //alert("upload");
         var val = $(element).val(); //get file value
         var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
         if (fileSize > maxSize) {
@@ -791,9 +648,22 @@
         var output = document.getElementById('FileList')
         var result = "";
         for (var i = 0; i < input.files.length; i++) {
-            result += input.files.item(i).name + '<br />';
+            console.log(input.files);
+            console.log(input.files.item(i).name);
+            //var ids = input.files.item(i).size;
+            var ids = input.files.item(i).name.split('.')[0];
+            var masterid = @Model.Id;
+            var filename = input.files.item(i).name;
+            result += '<div id="' + ids + '" ><img height="20" width="20" alt="" src="../image/' + CheckFileType(input.files.item(i).name) + '" />'
+                + input.files.item(i).name + ''
+                + ' <a onclick="deleteFile(\'' + ids + '\',\'' + input.files.item(i).name + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fas fa-trash"><span class="glyphicon glyphicon-remove"></span></a>'
+                + '</div>';
+
+          //  result += input.files.item(i).name + '<br />';
         }
-        output.innerHTML = result;
+      //  console.log(result);
+       // output.innerHTML = result;
+        Filediv.innerHTML = result;
 
     }
 

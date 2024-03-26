@@ -34,7 +34,15 @@
 		public int? ContentMappingId { get; set; }
         public string? ContentSubTitle6 { get; set; }
 		public string? PermissibleLimit { get; set; }
-		
+		public string[] FileName { get; set; }
+
+		public string[] FileData { get; set; }
+
+
+		public string[] FileSize { get; set; }
+
+		public string[] FileGuid { get; set; }
+		public List<fileuploadmappingNew> fileuploadmapping { get; set; }
 	}
 	public class Contentids
 	{
@@ -44,5 +52,23 @@
 
 
 	}
+	public class fileuploadmappingNew
+	{
 
+		public int Id { get; set; }
+		public string FileName { get; set; }
+
+		public string FileData { get; set; }
+
+
+		public string FileSize { get; set; }
+
+		public string Serialno { get; set; }
+		public string FileGuid { get; set; }
+		public string FilePath { get; set; }
+		public int ContentId { get; set; }
+
+		public int tempId { get; set; }
+	}
 }
+

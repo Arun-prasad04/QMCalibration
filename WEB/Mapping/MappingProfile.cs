@@ -111,6 +111,8 @@ public class MappingProfile : Profile
 
 		CreateMap<ToolRoomMaster, ToolRoomMasterViewModel>();
 		CreateMap<ToolRoomMasterViewModel, ToolRoomMaster>();
-		//This comment added For Git merge conflict issue   
-	}
+
+        CreateMap<MasterFileUpload, MasterFileUploadViewModel>();
+        //This comment added For Git merge conflict issue   
+    }
 }

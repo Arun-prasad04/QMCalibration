@@ -4,16 +4,16 @@ public class MasterViewModel
 {
  public int Id{get;set;}
     public string? EquipName{get; set;}
-    public int LocationId {get;set;}
-    public string PONo{get; set;}
+    public int? LocationId {get;set;}
+    public string? PONo{get; set;}
     public DateTime? PODate{get;set;}
     public DateTime? CommissionedOn{get;set;}
     public string? Make{get; set;}
-    public decimal Cost{get;set;}
-    public int CurrencyId{get;set;}
-    public int CalibrationSourceId{get;set;}
+    public decimal? Cost{get;set;}
+    public int? CurrencyId{get;set;}
+    public int? CalibrationSourceId{get;set;}
     public string? Supplier{get;set;}
-    public int CalibFreqId{get;set;}
+    public int? CalibFreqId{get;set;}
     public DateTime? CalibDate{get;set;}
     public DateTime? DueDate{get;set;}
     public string? Range{get;set;}
@@ -40,7 +40,7 @@ public class MasterViewModel
     public List<LovsViewModel> CurrencyList{get;set;}
      public List<LovsViewModel> CalibrationSourceList{get;set;}
     public List<LovsViewModel> CalibrationFreq{get;set;}
-    public int SupplierId { get; set; }
+    public int? SupplierId { get; set; }
     public List<string> FileList{get;set;}
     public string? CalibrationFrequency {get;set;}
 
@@ -48,11 +48,12 @@ public class MasterViewModel
 	public string? EquipmentMasterId { get; set; }
 
 	//public string? TypeOfEquipment { get; set; }
-
     public int? DepartId { get; set; }
 
 	public List<DepartmentViewModel> Departments { get; set; }
 	public string? DepartmentName { get; set; }
+    public List<MasterFileUploadViewModel> MasterFileUploads { get; set; }
+    public string? SubSectionCode { get; set; }
 
-	}
+    }
 }

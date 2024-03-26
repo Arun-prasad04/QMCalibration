@@ -42,7 +42,7 @@ public class HomeController : BaseController
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string SessionLang = base.SessionGetString("Language");
 		ViewBag.RoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-		//var objtype = 1159;
+		
 		//Lovs objlovs = _unitOfWork.Repository<Lovs>().GetQueryAsNoTracking(Q => Q.Id == objtype).SingleOrDefault();
 
 		//Convert.ToInt32(instrumentresponse.ResponseData.ObservationType) 1159
@@ -171,6 +171,8 @@ public class HomeController : BaseController
 		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
 		//MasterLangTranslate MStranslater = new MasterLangTranslate();
 		var MStranslater = new List<MasterLangTranslate>();
+		if(MasterList != null)
+		{ 
 		foreach (var item in MasterList)
 		{
 
@@ -182,6 +184,7 @@ public class HomeController : BaseController
 				EquipmentMasterId = item.EquipmentMasterId,
 
 			});
+		}
 		}
 		return Json(MStranslater);
 
@@ -226,6 +229,8 @@ public class HomeController : BaseController
 			//List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
 			//MasterLangTranslate MStranslater = new MasterLangTranslate();
 			var DepartTranslater = new List<DepartmentLangTranslate>();
+		if(DepartmentList != null)
+		{ 
 			foreach (var item in DepartmentList)
 			{
 
@@ -239,7 +244,8 @@ public class HomeController : BaseController
 
 				});
 			}
-			return Json(DepartTranslater);
+		}
+		return Json(DepartTranslater);
 
 		}
 

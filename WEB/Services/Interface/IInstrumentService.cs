@@ -35,6 +35,6 @@ public interface IInstrumentService
 	//ResponseViewModel<IdNoModel> IfIdNoExist();
 
 	ResponseViewModel<InstrumentViewModel> ToolRoomDepartmentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate);
-
-
+    Task<bool> MailInsertInstrument();
+    ResponseViewModel<InstrumentViewModel> removeRequestRowFromControlCard(int RequestId);
 }

@@ -23,6 +23,10 @@ using Microsoft.VisualBasic;
 using System.Data.SqlTypes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Net;
+using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
+
+
 
 namespace WEB.Services;
 public class ObservationTemplateService : IObservationTemplateService
@@ -33,9 +37,10 @@ public class ObservationTemplateService : IObservationTemplateService
 	private QRCodeSettings _qrCodeSettings { get; set; }
 
 	private IConfiguration _configuration;
-
+	private IUtilityService _utilityService;
 	private IHttpContextAccessor _contextAccessor { get; set; }
 	private IEmailService _emailService;
+
 	private Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
 	public ObservationTemplateService(IOptions<QRCodeSettings> qrCodeSettings, IUnitOfWork unitOfWork, IMapper mapper,
 										IUtilityService utilityService, IQRCodeGeneratorService qrCodeGeneratorService,
@@ -51,6 +56,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		_configuration = configuration;
 		_contextAccessor = contextAccessor;
 		_emailService = emailService;
+		_utilityService = utilityService;
 
 	}
 	#region "Lever Type Dial Template"
@@ -4377,7 +4383,7 @@ public class ObservationTemplateService : IObservationTemplateService
 	}
 
 
-	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks, int RequestId, int DueDate)
+	public ResponseViewModel<LeverTypeDialViewModel> SubmitReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy, string Remarks, int RequestId, int DueDate, DynamicViewModel dynamic)
 	{
 		try
 		{
@@ -4587,7 +4593,68 @@ public class ObservationTemplateService : IObservationTemplateService
 						_unitOfWork.SaveChanges();
 					}
 				}
-				//_unitOfWork.Commit();
+			//for Observation Content update
+		
+			if (dynamic.ObservationContentValuesList != null)
+			{
+				dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = observationId);
+				dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
+				var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+										.Where(x => x.ParentId == observationId).ToList());
+				List<ObservationContentValues> ObsContentValuesById = _unitOfWork.Repository<ObservationContentValues>().GetQueryAsNoTracking(Q => Q.ParentId == observationId).ToList();
+
+				_unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
+				_unitOfWork.SaveChanges();
+
+				foreach (var lstdata in detailData)
+				{
+					if (lstdata.Diff == "SE")
+					{
+						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+						_unitOfWork.SaveChanges();
+						if (dynamic.FileName != null && dynamic.FileName.Length > 0)
+						{
+							// _unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+							//_unitOfWork.SaveChanges();
+							for (int i = 0; i < dynamic.FileName.Length; i++)
+							{
+								//_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+								//_unitOfWork.SaveChanges();								
+								int contentid = (Int32)lstdata.Id;
+								string refno = dynamic.RevNo.ToString();
+								//string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + dynamicId + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+								string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+								var filePath = _utilityService.SaveFiles(dynamic.FileData[i], FileName, dynamic.Serialno[i], observationId, contentid);
+
+								Uploads upload = new Uploads()
+								{
+									FileName = FileName,//dynamic.FileName[i],
+									FileGuid = Guid.NewGuid(),
+									CreatedOn = DateTime.Now,
+									ModifiedOn = DateTime.Now,
+									FilePath = filePath,
+									TemplateType = "OBS-" + lstdata.Diff,
+									RequestId = observationId,//Convert.ToInt32(dynamic.TemplateObservationId),
+									MasterId = Convert.ToInt32(lstdata.Id)
+
+								};
+								_unitOfWork.Repository<Uploads>().Insert(upload);
+								_unitOfWork.SaveChanges();
+							}
+						}
+
+					}
+					else
+					{
+						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+						_unitOfWork.SaveChanges();
+
+					}
+
+				}
+			}
+			//for Observation Content List update
+
 
 			//---ToolRoomHistory
 			//if (instrumentData.ToolInventory == "Yes" && (ReqstData.TypeOfReqest == 2 || ReqstData.TypeOfReqest == 3))
@@ -4603,64 +4670,93 @@ public class ObservationTemplateService : IObservationTemplateService
 			//	ToolRoomHistoryById.InstrumentId = instrumentData.Id;
 			//	_unitOfWork.Repository<ToolRoomHistory>().Insert(ToolRoomHistoryById);
 			//	_unitOfWork.SaveChanges();
-				
+
 			//}
+
+			// 
 			_unitOfWork.Commit();
-			//For Regular / Recalibration Mail
-				string SendingEmailRegular = "";
-			string SendingEmailRecalibration = "";
-			string ObjSendingEmailRegular = "";
-			string ObjSendingEmailRecalibration = "";
-			int iRegularCount = 0;
-			int iRecalibrationCount = 0;
 
-			string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
-			UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-			List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(ReqstData.Id);
-			foreach (var getrqlist in getrqlisting)
+			_contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentData.CreatedOn.ToString());
+
+			if (instrumentData.IdNo == null)
+			{
+				instrumentData.IdNo = string.Empty;
+			}
+			
+			_contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentData.InstrumentName);
+			_contextAccessor.HttpContext.Session.SetString("IdNo", instrumentData.IdNo);
+			_contextAccessor.HttpContext.Session.SetString("UserDept", instrumentData.UserDept.ToString());
+
+			//_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+			_contextAccessor.HttpContext.Session.SetString("TypeOfRequest", ReqstData.TypeOfReqest.ToString());
+			if (ReqstData.StatusId == 29)
+			{
+                _contextAccessor.HttpContext.Session.SetString("RequestNo", "0");
+            }
+			else
 			{
 
-				if (getrqlist.EquipmentType == "Regular")
-				{
-					// SendEmailRegular(getrqlist);
+                _contextAccessor.HttpContext.Session.SetString("RequestNo", ReqstData.ReqestNo);
+            }
+			
+			_contextAccessor.HttpContext.Session.SetString("StatusId", ReqstData.StatusId.ToString());
+			_contextAccessor.HttpContext.Session.SetString("RequestId", ReqstData.Id.ToString());
+			_contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentData.TypeOfEquipment);
+			////For Regular / Recalibration Mail
+			//	string SendingEmailRegular = "";
+			//string SendingEmailRecalibration = "";
+			//string ObjSendingEmailRegular = "";
+			//string ObjSendingEmailRecalibration = "";
+			//int iRegularCount = 0;
+			//int iRecalibrationCount = 0;
 
-					SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+			//string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+			//UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+			// List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(ReqstData.Id);
+			//foreach (var getrqlist in getrqlisting)
+			//{
 
-					SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-					ObjSendingEmailRegular += SendingEmailRegular;
-					iRegularCount += 1;
+			//	if (getrqlist.EquipmentType == "Regular")
+			//	{
+			//		// SendEmailRegular(getrqlist);
 
-				}
-				else if (getrqlist.EquipmentType == "Recalibration")
-				{
-					SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+			//		SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
 
-					SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-					ObjSendingEmailRecalibration += SendingEmailRecalibration;
-					iRecalibrationCount += 1;
-					//SendEmailRecalibration(getrqlist);
-				}
+			//		SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+			//		ObjSendingEmailRegular += SendingEmailRegular;
+			//		iRegularCount += 1;
 
-			}
+			//	}
+			//	else if (getrqlist.EquipmentType == "Recalibration")
+			//	{
+			//		SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+			//		SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+			//		ObjSendingEmailRecalibration += SendingEmailRecalibration;
+			//		iRecalibrationCount += 1;
+			//		//SendEmailRecalibration(getrqlist);
+			//	}
+
+			//}
 
 
-			string mailbody = "";
-			if (iRegularCount > 0)
-			{
-				//Mail For Instrument Created User-Start  
-				mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-				mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-				_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
-				//Mail For Instrument Created User-End  
-			}
-			if (iRecalibrationCount > 0)
-			{
-				//Mail For Instrument Created User-Start  
-				mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-				mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-				_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
-				//Mail For Instrument Created User-End 
-			}
+			//string mailbody = "";
+			//if (iRegularCount > 0)
+			//{
+			//	//Mail For Instrument Created User-Start  
+			//	mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+			//	mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+			//	_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+			//	//Mail For Instrument Created User-End  
+			//}
+			//if (iRecalibrationCount > 0)
+			//{
+			//	//Mail For Instrument Created User-Start  
+			//	mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+			//	mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+			//	_emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+			//	//Mail For Instrument Created User-End 
+			//}
 			return new ResponseViewModel<LeverTypeDialViewModel>
 				{
 					ResponseCode = 200,
@@ -5362,13 +5458,36 @@ public class ObservationTemplateService : IObservationTemplateService
 		{
 
 			List<ObservationContentViewModel> ObservationInstrument = new List<ObservationContentViewModel>();
-
+			var obsfileuploadmapping = new List<fileuploadmappingNew>();
 			DataSet dsObservationContent = GetObservationContent(InstrumentId, RequestId, TemplateObservationId);
+			ObservationContentViewModel dynamicViewModel;
+			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
+			{
+				//var obsfileuploadmapping = new List<fileuploadmappingNew>();
+				foreach (DataRow drUpload in dsObservationContent.Tables[1].Rows)
+				{
+					obsfileuploadmapping.Add(new fileuploadmappingNew
+					{
+						//Id  FileName    FileGuid    CreatedOn   ModifiedOn  FilePath    RequestId   TemplateType    MasterId
+						Id = Convert.ToInt32(drUpload["Id"]),
+						FileName = Convert.ToString(drUpload["FileName"]),
+						FileGuid = Convert.ToString(drUpload["FileGuid"]),
+						ContentId = Convert.ToInt32(drUpload["MasterId"]),
+						tempId = Convert.ToInt32(drUpload["RequestId"]),
+						FilePath = Convert.ToString(drUpload["FilePath"]),
+						//ObservationId = Convert.ToInt32(drUpload["ObservationId"]),
+						//InstrumentId = Convert.ToInt32(dr["InstrumentId"])
+					});
+
+				}
+				//dynamicViewModel.fileuploadmapping = obsfileuploadmapping;
+				//ObservationInstrument.Add(dynamicViewModel.fileuploadmapping = obsfileuploadmapping);
+			}
 			if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[0].Rows.Count > 0)
 			{
 				foreach (DataRow dr in dsObservationContent.Tables[0].Rows)
 				{
-					ObservationContentViewModel dynamicViewModel = new ObservationContentViewModel
+					 dynamicViewModel = new ObservationContentViewModel
 					{
 
 						ObservationTemplate = dr["ObservationTemplate"].Equals(DBNull.Value) ? null : Convert.ToInt32(dr["ObservationTemplate"]),
@@ -5401,10 +5520,36 @@ public class ObservationTemplateService : IObservationTemplateService
 						Percent = dr["Percent"].Equals(DBNull.Value) ? string.Empty : dr["Percent"].ToString(),
 						ContentId = dr["Percent"].Equals(DBNull.Value) ? null :Convert.ToInt32(dr["ContentId"]),
 						ContentMappingId = dr["Percent"].Equals(DBNull.Value) ? null: Convert.ToInt32(dr["ContentMappingId"]),
-						PermissibleLimit = dr["PermissibleLimit"].Equals(DBNull.Value) ? string.Empty : dr["PermissibleLimit"].ToString()
-                    };
+						PermissibleLimit = dr["PermissibleLimit"].Equals(DBNull.Value) ? string.Empty : dr["PermissibleLimit"].ToString(),
+						fileuploadmapping = obsfileuploadmapping,
+					 };
 					ObservationInstrument.Add(dynamicViewModel);
 				}
+
+				//dynamicViewModel.fileuploadmapping = obsfileuploadmapping;
+
+				//if (dsObservationContent != null && dsObservationContent.Tables.Count > 0 && dsObservationContent.Tables[1].Rows.Count > 0)
+				//	{
+				//		//var obsfileuploadmapping = new List<fileuploadmappingNew>();
+				//		foreach (DataRow drUpload in dsObservationContent.Tables[1].Rows)
+				//		{
+				//			obsfileuploadmapping.Add(new fileuploadmappingNew
+				//			{
+				//				//Id  FileName    FileGuid    CreatedOn   ModifiedOn  FilePath    RequestId   TemplateType    MasterId
+				//				Id = Convert.ToInt32(drUpload["Id"]),
+				//				FileName = Convert.ToString(drUpload["FileName"]),
+				//				FileGuid = Convert.ToString(drUpload["FileGuid"]),
+				//				ContentId = Convert.ToInt32(drUpload["MasterId"]),
+				//				tempId = Convert.ToInt32(drUpload["RequestId"]),
+				//				FilePath = Convert.ToString(drUpload["FilePath"]),
+								
+				//			});
+
+				//		}
+				
+				//}
+
+				
 			}
 			return new ResponseViewModel<ObservationContentViewModel>
 			{
@@ -5618,6 +5763,16 @@ public class ObservationTemplateService : IObservationTemplateService
 
 
 					};
+			
+
+					if (dsObservationContent.Tables[1].Rows.Count > 0)
+					{
+						foreach (DataRow dr1 in dsObservationContent.Tables[1].Rows)
+						{
+							dynamicViewModel.FileGuid.Append(dr1["FileGuid"].Equals(DBNull.Value) ? string.Empty : dr1["FileGuid"].ToString());
+							dynamicViewModel.FileName.Append(dr1["FileName"].Equals(DBNull.Value) ? string.Empty : dr1["FileName"].ToString());
+						}
+					}
 					ObservationInstrument.Add(dynamicViewModel);
 				}
 			}
@@ -5723,18 +5878,13 @@ public class ObservationTemplateService : IObservationTemplateService
 					{
 						observationById.Allvalues = dynamic.Units;
 					}
-					//if (dynamic.RequestId != null)
-					//{
-					//	observationById.RequestId = dynamic.RequestId;
-					//}
-									
+							
 					_unitOfWork.Repository<TemplateObservation>().Update(observationById);
 				}
 			}
 			_unitOfWork.SaveChanges();
 			if (observationById != null)
 			{
-
 				dynamicId = observationById.Id;
 			}
             if (dynamic.ObservationContentValuesList != null)
@@ -5744,25 +5894,57 @@ public class ObservationTemplateService : IObservationTemplateService
                 var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
                                         .Where(x => x.ParentId == dynamicId).ToList());
 				List <ObservationContentValues> ObsContentValuesById = _unitOfWork.Repository<ObservationContentValues>().GetQueryAsNoTracking(Q => Q.ParentId == dynamicId).ToList();
-				
-					
-                        _unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
-                        _unitOfWork.SaveChanges();
-                
-				//if (detailData.Any())
-				//{
-				//	_unitOfWork.Repository<ObservationContentValues>().UpdateRange(detailData);
-				//	_unitOfWork.SaveChanges();
-				//}
-				//detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-				//						.Where(x => x.Id == null).ToList());
-				//if (detailData.Any())
-				//{
-					_unitOfWork.Repository<ObservationContentValues>().InsertRange(detailData);
-					_unitOfWork.SaveChanges();
-				//}
-			}
+									
+                _unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
+                _unitOfWork.SaveChanges();
+               
+				foreach (var lstdata in detailData)
+				{
+					if (lstdata.Diff == "SE")
+					{
+						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+						_unitOfWork.SaveChanges();
+						if (dynamic.FileName != null && dynamic.FileName.Length > 0)
+						{
+                           // _unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+                            //_unitOfWork.SaveChanges();
+                            for (int i = 0; i < dynamic.FileName.Length; i++)
+							{
+								//_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+								//_unitOfWork.SaveChanges();								
+								int contentid = (Int32)lstdata.Id;
+								string refno = dynamic.RevNo.ToString();
+								//string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + dynamicId + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+                                string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+                                var filePath =_utilityService.SaveFiles(dynamic.FileData[i], FileName, dynamic.Serialno[i], dynamicId, contentid);
+								
+								Uploads upload = new Uploads()
+								{
+									FileName = FileName,//dynamic.FileName[i],
+									FileGuid = Guid.NewGuid(),
+									CreatedOn = DateTime.Now,
+									ModifiedOn = DateTime.Now,
+									FilePath = filePath,
+									TemplateType = "OBS-"+lstdata.Diff,
+									RequestId =dynamicId ,//Convert.ToInt32(dynamic.TemplateObservationId),
+									MasterId =Convert.ToInt32(lstdata.Id)
 
+								};
+								_unitOfWork.Repository<Uploads>().Insert(upload);
+								_unitOfWork.SaveChanges();
+							}	
+						}
+
+					}
+					else
+					{
+						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+						_unitOfWork.SaveChanges();
+
+					}
+
+				}
+			}
 			
 			_unitOfWork.Commit();
 			return new ResponseViewModel<DynamicViewModel>
@@ -5791,7 +5973,7 @@ public class ObservationTemplateService : IObservationTemplateService
 		}
 	}
 
-
+	
 	public ResponseViewModel<LeverTypeDialViewModel> SubmitObservationReview(int observationId, DateTime reviewDate, int reviewStatus, int reviewedBy)
 	{
 		try
@@ -6412,48 +6594,84 @@ public class ObservationTemplateService : IObservationTemplateService
             };
         }
     }
+    public ResponseViewModel<Uploads> DeleteObservationFile(int Id, string filename)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+           
+                Uploads Uploaddata = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.Id == Id).SingleOrDefault();
 
-	//public ResponseViewModel<ToolRoomMasterViewModel> GetToolRoomSubSection()
-	//{
-	//	try
-	//	{
-	//		CMTDL _cmtdl = new CMTDL(_configuration);
-	//		ToolRoomMasterViewModel uv = new ToolRoomMasterViewModel();
-	//		DataSet ds = _cmtdl.GetToolRoomMaster();
+                _unitOfWork.Repository<Uploads>().Delete(Uploaddata);
+                _unitOfWork.SaveChanges();
+                _unitOfWork.Commit();
+           
+            return new ResponseViewModel<Uploads>
+            {
+                ResponseCode = 200,
+                ResponseMessage = "Success",
+                ResponseData = null,
+                ResponseDataList = null
+            };
+        }
+        catch (Exception e)
+        {
+            _unitOfWork.RollBack();
+            ErrorViewModelTest.Log("ObservationTemplateServices - DeleteObservationFile Method");
+            ErrorViewModelTest.Log("exception - " + e.Message);
+            return new ResponseViewModel<Uploads>
+            {
+                ResponseCode = 500,
+                ResponseMessage = "Failure",
+                ErrorMessage = e.Message,
+                ResponseData = null,
+                ResponseDataList = null,
+                ResponseService = "ObservationTemplateServices",
+                ResponseServiceMethod = "DeleteObservationFile"
+            };
+        }
+    }
+    //public ResponseViewModel<ToolRoomMasterViewModel> GetToolRoomSubSection()
+    //{
+    //	try
+    //	{
+    //		CMTDL _cmtdl = new CMTDL(_configuration);
+    //		ToolRoomMasterViewModel uv = new ToolRoomMasterViewModel();
+    //		DataSet ds = _cmtdl.GetToolRoomMaster();
 
-	//		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-	//		{
-	//			uv.Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]);
-	//			uv.SubSectionCode = Convert.ToString(ds.Tables[0].Rows[0]["DeptSubSectionCode"]);
-	//			uv.CreatedBy = Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedBy"]);
-	//			uv.SubSectionName = Convert.ToString(ds.Tables[0].Rows[0]["SubSectionName"]);
-	//			uv.CreatedOn = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedOn"]);
-	//		}
-	//		return new ResponseViewModel<ToolRoomMasterViewModel>
-	//		{
-	//			ResponseCode = 200,
-	//			ResponseMessage = "Success",
-	//			ResponseData = uv,
-	//			ResponseDataList = null
-	//		};
-	//	}
-	//	catch (Exception e)
-	//	{
-	//		ErrorViewModelTest.Log("ObservationTemplateService - GetToolRoomSubSection Method");
-	//		ErrorViewModelTest.Log("exception - " + e.Message);
-	//		return new ResponseViewModel<ToolRoomMasterViewModel>
-	//		{
-	//			ResponseCode = 500,
-	//			ResponseMessage = "Failure",
-	//			ErrorMessage = e.Message,
-	//			ResponseData = null,
-	//			ResponseDataList = null,
-	//			ResponseService = "User",
-	//			ResponseServiceMethod = "GetToolRoomSubSection"
-	//		};
-	//	}
+    //		if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+    //		{
+    //			uv.Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]);
+    //			uv.SubSectionCode = Convert.ToString(ds.Tables[0].Rows[0]["DeptSubSectionCode"]);
+    //			uv.CreatedBy = Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedBy"]);
+    //			uv.SubSectionName = Convert.ToString(ds.Tables[0].Rows[0]["SubSectionName"]);
+    //			uv.CreatedOn = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedOn"]);
+    //		}
+    //		return new ResponseViewModel<ToolRoomMasterViewModel>
+    //		{
+    //			ResponseCode = 200,
+    //			ResponseMessage = "Success",
+    //			ResponseData = uv,
+    //			ResponseDataList = null
+    //		};
+    //	}
+    //	catch (Exception e)
+    //	{
+    //		ErrorViewModelTest.Log("ObservationTemplateService - GetToolRoomSubSection Method");
+    //		ErrorViewModelTest.Log("exception - " + e.Message);
+    //		return new ResponseViewModel<ToolRoomMasterViewModel>
+    //		{
+    //			ResponseCode = 500,
+    //			ResponseMessage = "Failure",
+    //			ErrorMessage = e.Message,
+    //			ResponseData = null,
+    //			ResponseDataList = null,
+    //			ResponseService = "User",
+    //			ResponseServiceMethod = "GetToolRoomSubSection"
+    //		};
+    //	}
 
-	//}
+    //}
 
-	
+
 }
