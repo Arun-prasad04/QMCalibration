@@ -18,8 +18,12 @@ using System.ComponentModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Text;
+using Newtonsoft.Json;
 using static iTextSharp.text.pdf.AcroFields;
 using NPOI.SS.Formula.Functions;
+using System.Reflection.Metadata.Ecma335;
+using Org.BouncyCastle.Ocsp;
+
 
 namespace WEB.Services;
 
@@ -593,7 +597,7 @@ public class RequestService : IRequestService
 				RequestById.ReviewedStatus = TemplateObservationList.Where(w => w.RequestId == RequestById.Id).Select(q => q.ReviewStatus).FirstOrDefault();
 				RequestById.AdminReviewStatus = TemplateObservationList.Where(w => w.RequestId == RequestById.Id).Select(q => q.ExternalObsStatus).FirstOrDefault();
 			}            
-            //List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
+            List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
             //RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
             //RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
             //RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
@@ -944,34 +948,47 @@ public class RequestService : IRequestService
 			}
 			_unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
+           // _contextAccessor.HttpContext.Session.SetString("Instrumentdata", JsonConvert.SerializeObject(instrumentById));
+            _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+            _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
 
-
-            UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-            UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
-            string RequestType = string.Empty;
-            string mailSubject = string.Empty;
-            if (requestById.TypeOfReqest == 1)
+            if (instrumentById.IdNo == null)
             {
-                RequestType = "New";
-                mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+                instrumentById.IdNo = string.Empty;
             }
-            else if (requestById.TypeOfReqest == 2)
-            {
-                RequestType = "Regular";
-                mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
-            }
-            else if (requestById.TypeOfReqest == 3)
-            {
-                RequestType = "Recalibration";
-                mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
-            }
-            string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Accepted by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
 
+            _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+            _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
 
-            _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
-
-
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+            _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString()); 
+            _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+            _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+            
+            //UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            //UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+            //string RequestType = string.Empty;
+            //string mailSubject = string.Empty;
+            //if (requestById.TypeOfReqest == 1)
+            //{
+            //    RequestType = "New";
+            //    mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+            //}
+            //else if (requestById.TypeOfReqest == 2)
+            //{
+            //    RequestType = "Regular";
+            //    mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+            //}
+            //else if (requestById.TypeOfReqest == 3)
+            //{
+            //    RequestType = "Recalibration";
+            //    mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+            //}
+            //string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Accepted by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+            //mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+            //_emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
 
             return new ResponseViewModel<RequestViewModel>
             {
@@ -997,6 +1014,208 @@ public class RequestService : IRequestService
                 ResponseServiceMethod = "InsertExternalCalibrationRequest"
             };
         }
+    }
+
+    public async Task<bool> EmailForTracker()
+    {
+        try
+        { 
+       // Instrument instrumentdata = JsonConvert.DeserializeObject<Instrument>(_contextAccessor.HttpContext.Session.GetString("Instrumentdata"));
+            // Request Request = JsonConvert.DeserializeObject<Request>(_contextAccessor.HttpContext.Session.GetString("Request"));         
+            string InstrumentName = _contextAccessor.HttpContext.Session.GetString("InstrumentName").ToString();
+            string CreatedOn = _contextAccessor.HttpContext.Session.GetString("CreatedOn").ToString();
+            string IdNo = _contextAccessor.HttpContext.Session.GetString("IdNo").ToString();
+            string UserDept = _contextAccessor.HttpContext.Session.GetString("UserDept").ToString();
+            string TypeOfEquipment = _contextAccessor.HttpContext.Session.GetString("TypeOfEquipment").ToString();
+            int UserId = Convert.ToInt32(_contextAccessor.HttpContext.Session.GetString("LoggedId"));
+
+            string ReqestNo = _contextAccessor.HttpContext.Session.GetString("RequestNo").ToString();
+        string TypeOfRequest = _contextAccessor.HttpContext.Session.GetString("TypeOfRequest").ToString();
+
+        int RequestId = Convert.ToInt32(_contextAccessor.HttpContext.Session.GetString("LoggedId"));
+        int StatusId = Convert.ToInt32(_contextAccessor.HttpContext.Session.GetString("StatusId"));
+        string RejectReason = _contextAccessor.HttpContext.Session.GetString("RejectReason");
+            
+        //Accept Request
+        CMTDL _cmtdl = new CMTDL(_configuration);
+        UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+        UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+        string RequestType = string.Empty;
+        string mailSubject = string.Empty;
+        //28,31
+        if (TypeOfRequest == "1")
+        {
+            RequestType = "New";
+            if ((TypeOfEquipment == "Internal") && (StatusId == 26))
+
+            {
+                mailSubject = "New Calibration Request Accept Notification-" + ReqestNo + "";
+            }
+            else if (TypeOfEquipment == "External")
+            {
+                mailSubject = "New External Calibration Request Accept Notification-" + ReqestNo + "";
+
+            }
+            else
+            {
+
+                mailSubject = "New Calibration Request Reject Notification-" + ReqestNo + "";
+            }
+        }
+        else if (TypeOfRequest == "2")
+        {
+            RequestType = "Regular";
+            //mailSubject = "Regular Calibration Request Accept Notification-" + ReqestNo + "";
+            if (TypeOfEquipment == "Internal")
+            {
+                mailSubject = "Regular Calibration Request Accept Notification-" + ReqestNo + "";
+            }
+            else
+            {
+                mailSubject = "Regular External Calibration Request Accept Notification-" + ReqestNo + "";
+
+            }
+        }
+        else if (TypeOfRequest == "3")
+        {
+            RequestType = "Recalibration";
+            //  mailSubject = "Recalibration Calibration Request Accept Notification-" + ReqestNo + "";
+            if (TypeOfEquipment == "Internal")
+            {
+                mailSubject = "Recalibration Request Accept Notification-" + ReqestNo + "";
+            }
+            else
+            {
+                mailSubject = "External Recalibration Request Accept Notification-" + ReqestNo + "";
+
+            }
+
+        }
+
+        string mailbody = string.Empty;
+        if (StatusId == 27)
+        {
+            mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Accepted by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", InstrumentName).Replace("$INSTRUMENTID$", IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", CreatedOn).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+
+        }//  string mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+        else if ((StatusId == 28) || (StatusId == 31))
+        {
+            if (TypeOfEquipment == "External")
+            {
+
+                mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            External Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+                mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", InstrumentName).Replace("$INSTRUMENTID$", IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", CreatedOn).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
+                mailSubject = "External Calibration Request Reject Notification-" + ReqestNo + "";
+
+            }
+            else if (TypeOfEquipment == "Internal")
+            {
+                mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+                mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", InstrumentName).Replace("$INSTRUMENTID$", IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", CreatedOn).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
+                mailSubject = "Internal Calibration Request Reject Notification-" + ReqestNo + "";
+            }
+        }
+        else if (((TypeOfRequest == "2") || (TypeOfRequest == "3")) && (StatusId == 30))
+        {
+                      
+            //For Regular / Recalibration Mail
+            string SendingEmailRegular = "";
+            string SendingEmailRecalibration = "";
+            string ObjSendingEmailRegular = "";
+            string ObjSendingEmailRecalibration = "";
+            int iRegularCount = 0;
+            int iRecalibrationCount = 0;
+
+          //  string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+            UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            List<RequestMailList> getrqlisting = _cmtdl.GetRequestDetailsForEMail(RequestId);
+            foreach (var getrqlist in getrqlisting)
+            {
+
+                if (getrqlist.EquipmentType == "Regular")
+                {
+                    // SendEmailRegular(getrqlist);
+
+                    SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+                    SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+                    ObjSendingEmailRegular += SendingEmailRegular;
+                    iRegularCount += 1;
+
+                }
+                else if (getrqlist.EquipmentType == "Recalibration")
+                {
+                    SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+                    SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", getrqlist.SNo.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+                    ObjSendingEmailRecalibration += SendingEmailRecalibration;
+                    iRecalibrationCount += 1;
+                    //SendEmailRecalibration(getrqlist);
+                }
+
+            }
+
+            //string mailbody = "";
+            if (iRegularCount > 0)
+            {
+                //Mail For Instrument Created User-Start  
+                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+                //Mail For Instrument Created User-End  
+            }
+            if (iRecalibrationCount > 0)
+            {
+                //Mail For Instrument Created User-Start  
+                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been closed by Lab.</p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p><p>Lab team</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+                //Mail For Instrument Created User-End 
+            }
+
+        }
+        else if ((StatusId == 30) && (TypeOfRequest == "1"))
+        {//InstrumentReturnedOn
+            if (TypeOfEquipment == "Internal")
+            { 
+                RequestType = "New";
+            mailSubject = "New calibration request / 新規計量器登録完了の件" + ReqestNo + "-closed";
+             }
+            else if (TypeOfEquipment == "External")
+            {
+                RequestType = "New";
+                mailSubject = "New External calibration request / 新規計量器登録完了の件" + ReqestNo + "-closed";
+            }
+            mailbody = "\r\n<!DOCTYPE html>  \r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n<head>     \r\n\t<meta charset=\"utf-8\">  \r\n\t<meta name=\"viewport\" content=\"width=device-width\">     \r\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">     \r\n\t<meta name=\"x-apple-disable-message-reformatting\">   \r\n\t<title></title> <!--[if mso]><style>*{font-family:sans-serif !important}</style><![endif]-->    \r\n\t<style>         \r\n\t\thtml, body {              \r\n\t\t\tmargin: 0 auto !important;             \r\n\t\t\tpadding: 0 !important;              \r\n\t\t\theight: 100% !important;              \r\n\t\t\twidth: 100% !important          }          \r\n\t\t\tp {              font-size: 11px          }     \r\n\t\t\t* {              -ms-text-size-adjust: 100%;              -webkit-text-size-adjust: 100%          }\r\n\t\t\tdiv[style*=\"margin: 16px 0\"] {              margin: 0 !important          }        \r\n\t\t\ttable, td {              mso-table-lspace: 0pt !important;              mso-table-rspace: 0pt !important          }  \r\n\t\t\ttable {              border-spacing: 0 !important;              border-collapse: collapse !important;              table-layout: fixed !important;              margin: 0 auto !important          }     \r\n\t\t\ttable table table {                  table-layout: auto              }            a {              text-decoration: none          } \r\n\t\t\timg {              -ms-interpolation-mode: bicubic          }            *[x-apple-data-detectors], .unstyle-auto-detected-links *, .aBn {              border-bottom: 0 !important;              cursor: default !important;              color: inherit !important;              text-decoration: none !important;              font-size: inherit !important;              font-family: inherit !important;              font-weight: inherit !important;              line-height: inherit !important          }            .a6S {              display: none !important;              opacity: 0.01 !important          }         \r\n\t\t\timg.g-img + div {              display: none !important          }           \r\n\t\t\t@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {         \r\n\t\t\t\t.email-container {                  min-width: 320px !important              }          }  \r\n\t\t\t\t@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {             \r\n\t\t\t\t\t.email-container {                  min-width: 375px !important              }          }       \r\n\t\t\t\t\t@media only screen and (min-device-width: 414px) {              \r\n\t\t\t\t\t\t.email-container {                  min-width: 414px !important              }          }      \r\n\t\t\t\t\t\t</style>    \r\n\t\t\t\t\t\t<style>        \r\n\t\t\t\t\t\t\t.button-td, .button-a {              transition: all 100ms ease-in          }     \r\n\t\t\t\t\t\t\t.button-td-primary:hover, \r\n\t\t\t\t\t\t\t.button-a-primary:hover {              background: #555 !important;              border-color: #555 !important          }   \r\n\t\t\t\t\t\t\t@media screen and (max-width: 600px) {             \r\n\t\t\t\t\t\t\t\t.email-container {                  width: 100% !important;                  margin: auto !important              }           \r\n\t\t\t\t\t\t\t\t.fluid {                  max-width: 100% !important;                  height: auto !important;                  margin-left: auto !important;                  margin-right: auto !important              }              \r\n\t\t\t\t\t\t\t\t.stack-column, .stack-column-center {                  display: block !important;                  width: 100% !important;                  max-width: 100% !important;                  direction: ltr !important              }                .stack-column-center {                  text-align: center !important              }                .center-on-narrow {                  text-align: center !important;                  display: block !important;                  margin-left: auto !important;                  margin-right: auto !important;                  float: none !important              }                table.center-on-narrow {                  display: inline-block !important              }                .email-container p {                  font-size: 20px !important              }          }      \r\n\t\t</style><!--[if gte mso 9]>\r\n\r\n\t\t<xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]--> \r\n\t\t</head>  \r\n\t\t<body width=\"100%\" style=\"margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;\">      \r\n\t\t\t<center style=\"width: 100%; background-color: #f1f1f1;\">          <!--[if mso | IE]><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f1f1f1;\"><tr><td> <![endif]-->          <span style=\"font-size: 18px\">英語版は日本語に続きます。</span>     \r\n<table align=\"center\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto;\" class=\"email-container\">\r\n\t\t\t\t\t\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">Dear User,\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">New calibration request has been closed by lab\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request no:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request type:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>New</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument name:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested by:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Date:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument return on:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">User</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n \r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n\r\n\r\n<br />  \r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">計量管理部門の皆様\r\n\r\n</h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">新規測定器登録を作成しました。<span>\r\n</span></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">依頼№:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">種類　:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>新規</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">計量器名:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">に要求された:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">日付:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">機器のリターンオン:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">使用部門:</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n</table>\r\n</td></tr>\r\n</table>\r\n</table>  \r\n <!--[if mso | IE]></td></tr></table> <![endif]-->      </center>      <br /> \r\n\t\t\r\n\t\t\r\n\t\t</body>  </html>";
+            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", ReqestNo).Replace("$TYPEREQUEST$", Convert.ToString(TypeOfRequest)).Replace("$INSTRUMENTNAME$",InstrumentName).Replace("$INSTRUMENTID$", IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", CreatedOn).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$DUEDATE$", Convert.ToString(DateTime.Now));
+
+        }
+        if (StatusId != 29)
+        _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
+            //  _contextAccessor.HttpContext.Session.Clear();
+            _contextAccessor.HttpContext.Session.SetString("InstrumentName", string.Empty);
+            _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", string.Empty);
+            _contextAccessor.HttpContext.Session.SetString("RequestNo", string.Empty);
+
+            _contextAccessor.HttpContext.Session.SetString("CreatedOn", string.Empty);
+
+
+            _contextAccessor.HttpContext.Session.SetString("IdNo", string.Empty);
+            _contextAccessor.HttpContext.Session.SetString("UserDept", string.Empty);
+
+             _contextAccessor.HttpContext.Session.SetString("StatusId", string.Empty);
+            _contextAccessor.HttpContext.Session.SetString("RequestId", string.Empty);
+            _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", string.Empty);
+
+
+        }
+       
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return true;
     }
     public ResponseViewModel<RequestViewModel> AcceptRequestRecalibration(int requestId, int userId, int AcceptValue, int departmentId)
     {
@@ -1151,93 +1370,60 @@ public class RequestService : IRequestService
 				_unitOfWork.SaveChanges();
 
 			}
-			_unitOfWork.Commit();
+           // _contextAccessor.HttpContext.Session.SetString("Instrument", JsonConvert.SerializeObject(instrumentById));
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            _unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
+            _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
+
+            if (instrumentById.IdNo == null)
+            {
+                instrumentById.IdNo = string.Empty;
+            }
+
+            _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+            _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+            _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
+
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+            _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+            _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+            _contextAccessor.HttpContext.Session.SetString("RejectReason", RejectReason);
+            //RejectReason
+            //EmailForTracker();
             //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
             //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
-            CMTDL _cmtdl = new CMTDL(_configuration);
-            UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-            UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
-            List<string> emailList = new List<string>();
-            emailList.Add(fmUserById.Email);
-            string RequestType = string.Empty;
-			var mailSubject = string.Empty;
+            //         CMTDL _cmtdl = new CMTDL(_configuration);
+            //         UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            //         UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+            //         List<string> emailList = new List<string>();
+            //         emailList.Add(fmUserById.Email);
+            //         string RequestType = string.Empty;
+            //var mailSubject = string.Empty;
 
-			if (requestById.TypeOfReqest == 1)
-            {
-                RequestType = "New";
-				 mailSubject = "New Calibration Request Reject Notification-" + requestById.ReqestNo + "";
-			}
-            else if (requestById.TypeOfReqest == 2)
-            {
-                RequestType = "Regular";
-				 mailSubject = "Regular Calibration Request Reject Notification-" + requestById.ReqestNo + "";
-			}
-            else if (requestById.TypeOfReqest == 3)
-            {
-                RequestType = "Recalibration";
-				 mailSubject = "Recalibration Request Reject Notification-" + requestById.ReqestNo + "";
-			}
-            string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
-           
-            _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
-
-            //RequestViewModel RequestById = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id == requestId).Include(I => I.InstrumentModel).Include(I => I.RequestStatusModel).Select(s => new RequestViewModel()
-            //{
-            //	Id = s.Id,
-            //	ReqestNo = s.ReqestNo,
-            //	InstrumentName = s.InstrumentModel.InstrumentName,
-            //	InstrumentIdNo = s.InstrumentModel.IdNo,
-            //	InstrumentId = s.InstrumentId,
-            //	RequestDate = s.RequestDate,
-            //	TypeOfRequest = s.TypeOfReqest,
-            //	Range = s.InstrumentModel.Range,
-            //	InstrumentSerialNumber = s.InstrumentModel.SlNo,
-            //	CalibDate = s.InstrumentModel.CalibDate,
-            //	DueDate = s.InstrumentModel.DueDate,
-            //	UserDept = s.InstrumentModel.UserDept,
-            //	SubmittedOn = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Approved || W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.CreatedOn.GetValueOrDefault()).FirstOrDefault(),
-            //	RecordBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-            //	Result = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-            //	ClosedDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.CreatedOn).FirstOrDefault(),
-            //	ReturnDate = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.CreatedOn).FirstOrDefault(),
-            //	RecodedByLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-            //	ReqestBy = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Requested).Select(S => S.UserModel.FirstName + " " + S.UserModel.LastName).FirstOrDefault(),
-            //	Status = s.RequestStatusModel.OrderByDescending(O => O.CreatedOn).Select(S => S.StatusId).FirstOrDefault(),
-            //	DepartmentName = s.InstrumentModel.DepartmenttModel.Name,
-            //	RejectReason = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Rejected).Select(S => S.Comment).FirstOrDefault(),
-            //	ResultLAB = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Sent).Select(S => S.Comment).FirstOrDefault(),
-            //	ResultDEP = s.RequestStatusModel.Where(W => W.StatusId == (int)EnumRequestStatus.Closed).Select(S => S.Comment).FirstOrDefault(),
-            //	ReceivedBy = s.ReceivedBy,
-            //	InstrumentCondition = s.InstrumentCondition,
-            //	Feasiblity = s.Feasiblity,
-            //	TentativeCompletionDate = s.TentativeCompletionDate,
-            //	ReceivedDate = s.ReceivedDate,
-            //	MasterInstrument1 = s.InstrumentModel.MasterInstrument1,
-            //	MasterInstrument2 = s.InstrumentModel.MasterInstrument2,
-            //	MasterInstrument3 = s.InstrumentModel.MasterInstrument3,
-            //	MasterInstrument4 = s.InstrumentModel.MasterInstrument4,
-            //	CalibSource = s.InstrumentModel.CalibSource,
-            //	StandardReffered = s.InstrumentModel.StandardReffered,
-            //	DateOfReceipt = s.InstrumentModel.DateOfReceipt,
-            //	IsNABL = s.InstrumentModel.IsNABL == null ? false : s.InstrumentModel.IsNABL,
-            //	ObservationTemplate = s.InstrumentModel.ObservationTemplate,
-            //	ObservationType = s.InstrumentModel.ObservationType,
-            //	MUTemplate = s.InstrumentModel.MUTemplate,
-            //	CertificationTemplate = s.InstrumentModel.CertificationTemplate,
-
-            //}).SingleOrDefault();
-            //if (RequestById.ReceivedBy != null)
-            //{
-            //	UserViewModel ReceivedUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(RequestById.ReceivedBy)).SingleOrDefault());
-            //	RequestById.ReceivedByName = ReceivedUserById.FirstName + " " + ReceivedUserById.LastName;
+            //if (requestById.TypeOfReqest == 1)
+            //         {
+            //             RequestType = "New";
+            //	 mailSubject = "New Calibration Request Reject Notification-" + requestById.ReqestNo + "";
             //}
-            //List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.Id == RequestById.MasterInstrument1 || g.Id == RequestById.MasterInstrument2 || g.Id == RequestById.MasterInstrument3 || g.Id == RequestById.MasterInstrument4).ToList();
-            //RequestById.MasterInstrumentName1 = MasterList.Where(w => w.Id == RequestById.MasterInstrument1).Select(q => q.EquipName).SingleOrDefault();
-            //RequestById.MasterInstrumentName2 = MasterList.Where(w => w.Id == RequestById.MasterInstrument2).Select(q => q.EquipName).SingleOrDefault();
-            //RequestById.MasterInstrumentName3 = MasterList.Where(w => w.Id == RequestById.MasterInstrument3).Select(q => q.EquipName).SingleOrDefault();
-            //RequestById.MasterInstrumentName4 = MasterList.Where(w => w.Id == RequestById.MasterInstrument4).Select(q => q.EquipName).SingleOrDefault();
+            //         else if (requestById.TypeOfReqest == 2)
+            //         {
+            //             RequestType = "Regular";
+            //	 mailSubject = "Regular Calibration Request Reject Notification-" + requestById.ReqestNo + "";
+            //}
+            //         else if (requestById.TypeOfReqest == 3)
+            //         {
+            //             RequestType = "Recalibration";
+            //	 mailSubject = "Recalibration Request Reject Notification-" + requestById.ReqestNo + "";
+            //}
+            //         string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+            //         mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
+
+            //         _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
+
 
             return new ResponseViewModel<RequestViewModel>
             {
@@ -1333,23 +1519,51 @@ public class RequestService : IRequestService
 
 				_unitOfWork.Commit();
                 //Email Service
-                long UserId = requestById.CreatedBy;
 
-                
-                UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-                UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
-                string RequestType = string.Empty;
-                string mailbody = string.Empty;
-                string mailSubject = string.Empty;
-                if (requestById.TypeOfReqest == 1)
+                _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+                _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
+
+                if (instrumentById.IdNo == null)
                 {
-                    RequestType = "New";
-                    mailSubject = "New calibration request / 新規計量器登録完了の件" + requestById.ReqestNo + "-closed";
-                    mailbody = "\r\n<!DOCTYPE html>  \r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n<head>     \r\n\t<meta charset=\"utf-8\">  \r\n\t<meta name=\"viewport\" content=\"width=device-width\">     \r\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">     \r\n\t<meta name=\"x-apple-disable-message-reformatting\">   \r\n\t<title></title> <!--[if mso]><style>*{font-family:sans-serif !important}</style><![endif]-->    \r\n\t<style>         \r\n\t\thtml, body {              \r\n\t\t\tmargin: 0 auto !important;             \r\n\t\t\tpadding: 0 !important;              \r\n\t\t\theight: 100% !important;              \r\n\t\t\twidth: 100% !important          }          \r\n\t\t\tp {              font-size: 11px          }     \r\n\t\t\t* {              -ms-text-size-adjust: 100%;              -webkit-text-size-adjust: 100%          }\r\n\t\t\tdiv[style*=\"margin: 16px 0\"] {              margin: 0 !important          }        \r\n\t\t\ttable, td {              mso-table-lspace: 0pt !important;              mso-table-rspace: 0pt !important          }  \r\n\t\t\ttable {              border-spacing: 0 !important;              border-collapse: collapse !important;              table-layout: fixed !important;              margin: 0 auto !important          }     \r\n\t\t\ttable table table {                  table-layout: auto              }            a {              text-decoration: none          } \r\n\t\t\timg {              -ms-interpolation-mode: bicubic          }            *[x-apple-data-detectors], .unstyle-auto-detected-links *, .aBn {              border-bottom: 0 !important;              cursor: default !important;              color: inherit !important;              text-decoration: none !important;              font-size: inherit !important;              font-family: inherit !important;              font-weight: inherit !important;              line-height: inherit !important          }            .a6S {              display: none !important;              opacity: 0.01 !important          }         \r\n\t\t\timg.g-img + div {              display: none !important          }           \r\n\t\t\t@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {         \r\n\t\t\t\t.email-container {                  min-width: 320px !important              }          }  \r\n\t\t\t\t@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {             \r\n\t\t\t\t\t.email-container {                  min-width: 375px !important              }          }       \r\n\t\t\t\t\t@media only screen and (min-device-width: 414px) {              \r\n\t\t\t\t\t\t.email-container {                  min-width: 414px !important              }          }      \r\n\t\t\t\t\t\t</style>    \r\n\t\t\t\t\t\t<style>        \r\n\t\t\t\t\t\t\t.button-td, .button-a {              transition: all 100ms ease-in          }     \r\n\t\t\t\t\t\t\t.button-td-primary:hover, \r\n\t\t\t\t\t\t\t.button-a-primary:hover {              background: #555 !important;              border-color: #555 !important          }   \r\n\t\t\t\t\t\t\t@media screen and (max-width: 600px) {             \r\n\t\t\t\t\t\t\t\t.email-container {                  width: 100% !important;                  margin: auto !important              }           \r\n\t\t\t\t\t\t\t\t.fluid {                  max-width: 100% !important;                  height: auto !important;                  margin-left: auto !important;                  margin-right: auto !important              }              \r\n\t\t\t\t\t\t\t\t.stack-column, .stack-column-center {                  display: block !important;                  width: 100% !important;                  max-width: 100% !important;                  direction: ltr !important              }                .stack-column-center {                  text-align: center !important              }                .center-on-narrow {                  text-align: center !important;                  display: block !important;                  margin-left: auto !important;                  margin-right: auto !important;                  float: none !important              }                table.center-on-narrow {                  display: inline-block !important              }                .email-container p {                  font-size: 20px !important              }          }      \r\n\t\t</style><!--[if gte mso 9]>\r\n\r\n\t\t<xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]--> \r\n\t\t</head>  \r\n\t\t<body width=\"100%\" style=\"margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;\">      \r\n\t\t\t<center style=\"width: 100%; background-color: #f1f1f1;\">          <!--[if mso | IE]><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f1f1f1;\"><tr><td> <![endif]-->          <span style=\"font-size: 18px\">英語版は日本語に続きます。</span>     \r\n<table align=\"center\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto;\" class=\"email-container\">\r\n\t\t\t\t\t\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">Dear User,\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">New calibration request has been closed by lab\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request no:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request type:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>New</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument name:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested by:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Date:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument return on:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">User</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n \r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n\r\n\r\n<br />  \r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">計量管理部門の皆様\r\n\r\n</h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">新規測定器登録を作成しました。<span>\r\n</span></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">依頼№:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">種類　:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>新規</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">計量器名:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">に要求された:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">日付:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">機器のリターンオン:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">使用部門:</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n</table>\r\n</td></tr>\r\n</table>\r\n</table>  \r\n <!--[if mso | IE]></td></tr></table> <![endif]-->      </center>      <br /> \r\n\t\t\r\n\t\t\r\n\t\t</body>  </html>";
-                    mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", Convert.ToString(requestById.TypeOfReqest)).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$DUEDATE$", Convert.ToString(requestById.InstrumentReturnedOn));
-
+                    instrumentById.IdNo = string.Empty;
                 }
-                _emailService.EmailSendingFunction(labUserById.Email, mailbody, mailSubject);
+
+                _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+                _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
+
+                //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+                _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+                _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+                _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+                _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+                _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+
+                // _contextAccessor.HttpContext.Session.SetString("Instrument", JsonConvert.SerializeObject(instrumentById));
+                //// _contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+
+                // _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+                // _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+                // _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+                // _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+
+
+
+
+                //long UserId = requestById.CreatedBy;                
+                //UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+                //UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+                //string RequestType = string.Empty;
+                //string mailbody = string.Empty;
+                //string mailSubject = string.Empty;
+                //if (requestById.TypeOfReqest == 1)
+                //{
+                //    RequestType = "New";
+                //    mailSubject = "New calibration request / 新規計量器登録完了の件" + requestById.ReqestNo + "-closed";
+                //    mailbody = "\r\n<!DOCTYPE html>  \r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n<head>     \r\n\t<meta charset=\"utf-8\">  \r\n\t<meta name=\"viewport\" content=\"width=device-width\">     \r\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">     \r\n\t<meta name=\"x-apple-disable-message-reformatting\">   \r\n\t<title></title> <!--[if mso]><style>*{font-family:sans-serif !important}</style><![endif]-->    \r\n\t<style>         \r\n\t\thtml, body {              \r\n\t\t\tmargin: 0 auto !important;             \r\n\t\t\tpadding: 0 !important;              \r\n\t\t\theight: 100% !important;              \r\n\t\t\twidth: 100% !important          }          \r\n\t\t\tp {              font-size: 11px          }     \r\n\t\t\t* {              -ms-text-size-adjust: 100%;              -webkit-text-size-adjust: 100%          }\r\n\t\t\tdiv[style*=\"margin: 16px 0\"] {              margin: 0 !important          }        \r\n\t\t\ttable, td {              mso-table-lspace: 0pt !important;              mso-table-rspace: 0pt !important          }  \r\n\t\t\ttable {              border-spacing: 0 !important;              border-collapse: collapse !important;              table-layout: fixed !important;              margin: 0 auto !important          }     \r\n\t\t\ttable table table {                  table-layout: auto              }            a {              text-decoration: none          } \r\n\t\t\timg {              -ms-interpolation-mode: bicubic          }            *[x-apple-data-detectors], .unstyle-auto-detected-links *, .aBn {              border-bottom: 0 !important;              cursor: default !important;              color: inherit !important;              text-decoration: none !important;              font-size: inherit !important;              font-family: inherit !important;              font-weight: inherit !important;              line-height: inherit !important          }            .a6S {              display: none !important;              opacity: 0.01 !important          }         \r\n\t\t\timg.g-img + div {              display: none !important          }           \r\n\t\t\t@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {         \r\n\t\t\t\t.email-container {                  min-width: 320px !important              }          }  \r\n\t\t\t\t@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {             \r\n\t\t\t\t\t.email-container {                  min-width: 375px !important              }          }       \r\n\t\t\t\t\t@media only screen and (min-device-width: 414px) {              \r\n\t\t\t\t\t\t.email-container {                  min-width: 414px !important              }          }      \r\n\t\t\t\t\t\t</style>    \r\n\t\t\t\t\t\t<style>        \r\n\t\t\t\t\t\t\t.button-td, .button-a {              transition: all 100ms ease-in          }     \r\n\t\t\t\t\t\t\t.button-td-primary:hover, \r\n\t\t\t\t\t\t\t.button-a-primary:hover {              background: #555 !important;              border-color: #555 !important          }   \r\n\t\t\t\t\t\t\t@media screen and (max-width: 600px) {             \r\n\t\t\t\t\t\t\t\t.email-container {                  width: 100% !important;                  margin: auto !important              }           \r\n\t\t\t\t\t\t\t\t.fluid {                  max-width: 100% !important;                  height: auto !important;                  margin-left: auto !important;                  margin-right: auto !important              }              \r\n\t\t\t\t\t\t\t\t.stack-column, .stack-column-center {                  display: block !important;                  width: 100% !important;                  max-width: 100% !important;                  direction: ltr !important              }                .stack-column-center {                  text-align: center !important              }                .center-on-narrow {                  text-align: center !important;                  display: block !important;                  margin-left: auto !important;                  margin-right: auto !important;                  float: none !important              }                table.center-on-narrow {                  display: inline-block !important              }                .email-container p {                  font-size: 20px !important              }          }      \r\n\t\t</style><!--[if gte mso 9]>\r\n\r\n\t\t<xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]--> \r\n\t\t</head>  \r\n\t\t<body width=\"100%\" style=\"margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;\">      \r\n\t\t\t<center style=\"width: 100%; background-color: #f1f1f1;\">          <!--[if mso | IE]><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f1f1f1;\"><tr><td> <![endif]-->          <span style=\"font-size: 18px\">英語版は日本語に続きます。</span>     \r\n<table align=\"center\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto;\" class=\"email-container\">\r\n\t\t\t\t\t\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">Dear User,\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">New calibration request has been closed by lab\r\n</h1></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request no:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Request type:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>New</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument name:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Requested by:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Date:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">Instrument return on:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">User</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n \r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p></p></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n\r\n\r\n<br />  \r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">計量管理部門の皆様\r\n\r\n</h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\">新規測定器登録を作成しました。<span>\r\n</span></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">依頼№:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNO$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">種類　:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>新規</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">計量器名:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$INSTRUMENTNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">に要求された:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$REQNAME$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">日付:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DATE$</span></p></td></tr></table>\r\n</td></tr>\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"font-size: 15px;\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:600;\">機器のリターンオン:</p></td>\r\n<td align=\"left\" style=\"width:65%;text-align:left;padding-top: 1px;padding-left:3px;padding-right:0px;padding-bottom:0px; font-family: sans-serif; font-size: 30px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;\"><span>$DUEDATE$</span></p></td></tr></table>\r\n</td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><p><a href='http://s365id1qdg044/cmtlive/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">使用部門:</p></td></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td align=\"left\" style=\"width:25%;text-align:left;padding-top: 1px;padding-left:20px;padding-right:0px;padding-bottom:2px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;\"><p style=\"margin: 0 0 8px;text-align:left;font-weight:normal;\">$REQNAME$</p></td></table></td></tr>\r\n\r\n\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"background-color: #ffffff;\">\r\n<table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr><td style=\"padding-top: 5px;padding-left:20px;padding-right:10px;padding-bottom:1px; font-family: sans-serif; font-size: 12px; line-height: 20px; color: #555555;\"><h1 style=\"margin: 0 0 15px;text-align:left;font-size: 13px; line-height: 30px; color: #333333; font-weight: normal;\"></h1></table></td></tr>\r\n\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n<tr><td style=\"padding: 0 20px 20px;\"></td></tr>\r\n\r\n</table>\r\n</td></tr>\r\n</table>\r\n</table>  \r\n <!--[if mso | IE]></td></tr></table> <![endif]-->      </center>      <br /> \r\n\t\t\r\n\t\t\r\n\t\t</body>  </html>";
+                //    mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", Convert.ToString(requestById.TypeOfReqest)).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$DUEDATE$", Convert.ToString(requestById.InstrumentReturnedOn));
+
+                //}
+                //_emailService.EmailSendingFunction(labUserById.Email, mailbody, mailSubject);
 
             }
 			return new ResponseViewModel<RequestViewModel>
@@ -1600,6 +1814,27 @@ public class RequestService : IRequestService
                 }
                 _unitOfWork.SaveChanges();
 
+                //for Email
+                //_contextAccessor.HttpContext.Session.SetString("Instrument", JsonConvert.SerializeObject(instrumentById));
+                //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+                _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
+
+                if (instrumentById.IdNo == null)
+                {
+                    instrumentById.IdNo = string.Empty;
+                }
+
+                _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+                _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+                _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
+
+                //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+                _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+                _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+                _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+                _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+                _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+               // _contextAccessor.HttpContext.Session.SetString("RejectReason", RejectReason);
 
                 if (Result == "Rejected")
                 {
@@ -1623,7 +1858,7 @@ public class RequestService : IRequestService
             }
             _unitOfWork.Commit();
 
-            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestbyIdd.ReqestNo).Replace("$TYPEREQUEST$", Type).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestbyIdd.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$RETURNEDDATE$", DateTime.Now.ToShortDateString()).Replace("$COLLECTED$", CollectedBy).Replace("$REASON$", ReasonforRejection);
+           // mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestbyIdd.ReqestNo).Replace("$TYPEREQUEST$", Type).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestbyIdd.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$RETURNEDDATE$", DateTime.Now.ToShortDateString()).Replace("$COLLECTED$", CollectedBy).Replace("$REASON$", ReasonforRejection);
             //   EmailViewModel emailViewModel = new EmailViewModel()
             //   {
             //     ToList = emailList,
@@ -2233,38 +2468,52 @@ public class RequestService : IRequestService
             _unitOfWork.SaveChanges();
 
             Instrument instrumentById = _unitOfWork.Repository<Instrument>().GetQueryAsNoTracking(Q => Q.Id == requestById.InstrumentId).SingleOrDefault();
-            //instrumentById.StandardReffered = standardReffered;
-            //_unitOfWork.Repository<Instrument>().Update(instrumentById);
-            //_unitOfWork.SaveChanges();
-
-
+           // _contextAccessor.HttpContext.Session.SetString("Instrument", JsonConvert.SerializeObject(instrumentById));
+           // _contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
 
             _unitOfWork.Commit();
-            long UserId = requestById.CreatedBy;
-            //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == UserId).SingleOrDefault());
-            //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
-            CMTDL _cmtdl = new CMTDL(_configuration);
-            UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-            UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
-            List<string> emailList = new List<string>();
-            emailList.Add(fmUserById.Email);
-            string RequestType = string.Empty;
-            if (requestById.TypeOfReqest == 1)
+            _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
+
+            if (instrumentById.IdNo == null)
             {
-                RequestType = "New";
+                instrumentById.IdNo = string.Empty;
             }
-            else if (requestById.TypeOfReqest == 2)
-            {
-                RequestType = "Regular";
-            }
-            else if (requestById.TypeOfReqest == 3)
-            {
-                RequestType = "Recalibration";
-            }
-            string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            External Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
-            var mailSubject = "External Calibration Request Reject Notification-" + requestById.ReqestNo + "";
-            _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
+
+            _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+            _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+            _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
+
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+            _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+            _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+            _contextAccessor.HttpContext.Session.SetString("RejectReason", RejectReason);
+            //EmailForTracker();
+            //long UserId = requestById.CreatedBy;
+            //CMTDL _cmtdl = new CMTDL(_configuration);
+            //UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            //UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+            //List<string> emailList = new List<string>();
+            //emailList.Add(fmUserById.Email);
+            //string RequestType = string.Empty;
+            //if (requestById.TypeOfReqest == 1)
+            //{
+            //    RequestType = "New";
+            //}
+            //else if (requestById.TypeOfReqest == 2)
+            //{
+            //    RequestType = "Regular";
+            //}
+            //else if (requestById.TypeOfReqest == 3)
+            //{
+            //    RequestType = "Recalibration";
+            //}
+            //string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            External Calibration Request has been Rejected by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr><tr><td align='left'>Reason of Rejection</td><td>:</td>                <td>                    $Reason$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+            //mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName).Replace("$Reason$", RejectReason);
+            //var mailSubject = "External Calibration Request Reject Notification-" + requestById.ReqestNo + "";
+            //_emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
 
             return new ResponseViewModel<RequestViewModel>
             {
@@ -2352,32 +2601,49 @@ public class RequestService : IRequestService
 
             _unitOfWork.Commit();
             long UserId = requestById.CreatedBy;
-            //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == Convert.ToInt32(UserId)).SingleOrDefault());
-            //UserViewModel fmUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.UserRoleId == 4 && Q.Level != "L4").SingleOrDefault());
-            //List<string> emailList = new List<string>();
-            //emailList.Add(fmUserById.Email);
-            
-            UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-            UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
-            string RequestType = string.Empty;
-            if (requestById.TypeOfReqest == 1)
-            {
-                RequestType = "New";
-            }
-            else if (requestById.TypeOfReqest == 2)
-            {
-                RequestType = "Regular";
-            }
-            else if (requestById.TypeOfReqest == 3)
-            {
-                RequestType = "Recalibration";
-            }
-            string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Accepted by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
-            mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+            _contextAccessor.HttpContext.Session.SetString("InstrumentName", instrumentById.InstrumentName);
+            _contextAccessor.HttpContext.Session.SetString("CreatedOn", instrumentById.CreatedOn.ToString());
 
-            string mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+            if (instrumentById.IdNo == null)
+            {
+                instrumentById.IdNo = string.Empty;
+            }
 
-            _emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
+            _contextAccessor.HttpContext.Session.SetString("IdNo", instrumentById.IdNo);
+            _contextAccessor.HttpContext.Session.SetString("UserDept", instrumentById.UserDept.ToString());
+
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            _contextAccessor.HttpContext.Session.SetString("TypeOfRequest", requestById.TypeOfReqest.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestNo", requestById.ReqestNo);
+            _contextAccessor.HttpContext.Session.SetString("StatusId", requestById.StatusId.ToString());
+            _contextAccessor.HttpContext.Session.SetString("RequestId", requestById.Id.ToString());
+            _contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentById.TypeOfEquipment);
+
+
+            //_contextAccessor.HttpContext.Session.SetString("Instrument", JsonConvert.SerializeObject(instrumentById));
+            //_contextAccessor.HttpContext.Session.SetString("Request", JsonConvert.SerializeObject(requestById));
+            //EmailForTracker();
+            //UserViewModel labUserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            //UserViewModel fmUserById = _cmtdl.GetLadTechnicalManagerUsers();
+            //string RequestType = string.Empty;
+            //if (requestById.TypeOfReqest == 1)
+            //{
+            //    RequestType = "New";
+            //}
+            //else if (requestById.TypeOfReqest == 2)
+            //{
+            //    RequestType = "Regular";
+            //}
+            //else if (requestById.TypeOfReqest == 3)
+            //{
+            //    RequestType = "Recalibration";
+            //}
+            //string mailbody = "<!DOCTYPE html><html><head><title></title></head><body>    <div style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>        <p>            Dear <b>$NAME$,</b></p>        <p>            New Calibration Request has been Accepted by <b>$USERNAME$</b>.</p>    <p><b>Request Details :</b></p>  <table style='font-family: CorpoS; font-size: 10pt; font-weight: Normal;'>            <tr>                <td align='left'>                    Request No.                </td>  <td>:</td>              <td>                    $REQNO$                </td>            </tr>            <tr>                <td align='left'>                    Type of Request                </td><td>:</td>                <td>                    $TYPEREQUEST$                </td>            </tr>            <tr>                <td align='left'>                    Instrument Name                </td><td>:</td>                <td>                    $INSTRUMENTNAME$                </td>            </tr>     <tr>                <td align='left'>                    Instrument ID.No                </td>     <td>:</td>           <td>                    $INSTRUMENTID$                </td>            </tr>    <tr>                <td align='left'>                    Requested By                </td>     <td>:</td>           <td>                    $REQNAME$                </td>            </tr><tr>                <td align='left'>                    Date                </td><td>:</td>                <td>                    $DATE$                </td>            </tr></table>  <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/' style='font-family: CorpoS; font-size: 10pt; font-weight: Bold;'>CMT Portal</a></p>     <p>                <b> $REQNAME$</b>,                <br />                <b>$REQDEPT$</b></p>         <p>            This is a system generated message. So do not reply to this email.</p>    </div></body></html>";
+            //mailbody = mailbody.Replace("$NAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$USERNAME$", fmUserById.FirstName + " " + fmUserById.LastName).Replace("$REQNO$", requestById.ReqestNo).Replace("$TYPEREQUEST$", RequestType).Replace("$INSTRUMENTNAME$", instrumentById.InstrumentName).Replace("$INSTRUMENTID$", instrumentById.IdNo).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$DATE$", Convert.ToString(requestById.CreatedOn)).Replace("$REQNAME$", labUserById.FirstName + " " + labUserById.LastName).Replace("$REQDEPT$", labUserById.DepartmentName);
+
+            //string mailSubject = "New Calibration Request Accept Notification-" + requestById.ReqestNo + "";
+
+            //_emailService.EmailSendingFunction(fmUserById.Email, mailbody, mailSubject);
 
             return new ResponseViewModel<RequestViewModel>
             {
@@ -2406,135 +2672,135 @@ public class RequestService : IRequestService
     }
 
 
-    public ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId)
-    {
-        DataTable dt = new DataTable();
+  //  public ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId)
+  //  {
+  //      DataTable dt = new DataTable();
 
-        StringBuilder data = new StringBuilder("");
-		//Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
-		//long maxId = 1;
-		//if (getMaxId != null)
-		//{
-		//	maxId = getMaxId.Id + 1;
-		//}
+  //      StringBuilder data = new StringBuilder("");
+		////Request getMaxId = _unitOfWork.Repository<Request>().GetQueryAsNoTracking(Q => Q.Id > 0).OrderByDescending(O => O.Id).FirstOrDefault();
+		////long maxId = 1;
+		////if (getMaxId != null)
+		////{
+		////	maxId = getMaxId.Id + 1;
+		////}
 
-        string ObjEmailseriaLNo = "EMS" + DateTime.Now.Year;// + maxId.ToString().PadLeft(4, '0');
-		data.Append("<Root>");
-        foreach (var sd in reqlist)
-        {
-            data.Append("<RequestList>");
-            data.Append(string.Format("<instrumentId>{0}</instrumentId>", sd.instrumentId));
-            data.Append(string.Format("<TypeValue>{0}</TypeValue>", sd.TypeValue));
-			data.Append(string.Format("<EmailServiceNo>{0}</EmailServiceNo>", ObjEmailseriaLNo));
-			data.Append(string.Format("<DueDate>{0}</DueDate>",sd.DueDate.ToString()));//ReplacementStartDate
-		//	data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
-			//data.Append(string.Format("<ReplacementStartDate>{0}</ReplacementStartDate>", sd.ReplacementStartDate.ToString()));
-			data.Append("</RequestList>");
-        }
-        data.Append("</Root>");
-
-
-        CMTDL _cmtdl = new CMTDL(_configuration);
-        var status = _cmtdl.InsertDueRequest(data.ToString(), userId);
-        //For Email
-
-        string SendingEmailRegular = "";
-        string SendingEmailRecalibration = "";
-        string ObjSendingEmailRegular = "";
-        string ObjSendingEmailRecalibration = "";
-
-        int iRegularCount = 0;
-        int iRecalibrationCount = 0;
-        int i = 0;
-        foreach (var rql in reqlist)
-        {
-            i += 1;
-            RequestMailList getrqlist = _cmtdl.GetDataForInstrumentRequest(rql.instrumentId, rql.TypeValue);
-            if (getrqlist.EquipmentType == "Regular")
-            {
-                // SendEmailRegular(getrqlist);
-
-                SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
-
-                SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-                ObjSendingEmailRegular += SendingEmailRegular;
-                iRegularCount += 1;
-
-            }
-            else if (getrqlist.EquipmentType == "Recalibration")
-            {
-                SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
-
-                SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
-                ObjSendingEmailRecalibration += SendingEmailRecalibration;
-                iRecalibrationCount += 1;
-                //SendEmailRecalibration(getrqlist);
-            }
-
-        }
-        string mailbody = "";
-        string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
-        UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
-        int LabDeptUser = 0;
-        List<UserViewModel> fmUserById = _cmtdl.GetLadAdminUsers();
-        List<string> emailList = new List<string>();
-
-        foreach (var item in fmUserById)
-        {
-            if (item.Id == UserById.Id)
-            {
-                LabDeptUser += 1;
-            }
-            emailList.Add(item.Email.Trim());
-            if (iRegularCount > 0)
-            {
-
-                //Mail For Labamin-Start  
-                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>Regular instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>      <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
-                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-                _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
-                //Mail For Labamin-end  
-            }
-            if (iRecalibrationCount > 0)
-            {
-                //Mail For Labamin-Start  
-                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>ReCalibration instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>        <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
-                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-                _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
-                //Mail For Labamin-End
-            }
-
-        }
-
-        if (iRegularCount > 0 && LabDeptUser == 0)
-        {
-            //Mail For Instrument Created User-Start  
-            mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.       <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-            mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-            _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
-            //Mail For Instrument Created User-End  
-        }
-        if (iRecalibrationCount > 0 && LabDeptUser == 0)
-        {
-            //Mail For Instrument Created User-Start  
-            mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.         <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
-            mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
-            _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
-            //Mail For Instrument Created User-End 
-        }
+  //      string ObjEmailseriaLNo = "EMS" + DateTime.Now.Year;// + maxId.ToString().PadLeft(4, '0');
+		//data.Append("<Root>");
+  //      foreach (var sd in reqlist)
+  //      {
+  //          data.Append("<RequestList>");
+  //          data.Append(string.Format("<instrumentId>{0}</instrumentId>", sd.instrumentId));
+  //          data.Append(string.Format("<TypeValue>{0}</TypeValue>", sd.TypeValue));
+		//	data.Append(string.Format("<EmailServiceNo>{0}</EmailServiceNo>", ObjEmailseriaLNo));
+		//	data.Append(string.Format("<DueDate>{0}</DueDate>",sd.DueDate.ToString()));//ReplacementStartDate
+		////	data.Append(string.Format("<RequestId>{0}</RequestId>", sd.RequestId));
+		//	//data.Append(string.Format("<ReplacementStartDate>{0}</ReplacementStartDate>", sd.ReplacementStartDate.ToString()));
+		//	data.Append("</RequestList>");
+  //      }
+  //      data.Append("</Root>");
 
 
-        return new ResponseViewModel<RequestViewModel>
-        {
-            ResponseCode = 500,
-            ResponseMessage = "Failure",
-            ErrorMessage = "",
-            ResponseData = null,
-            ResponseDataList = null,
-            ResponseService = "CalibrationRequest",
-            ResponseServiceMethod = "AcceptCalibrationRequest"
-        };
-    }
+  //      CMTDL _cmtdl = new CMTDL(_configuration);
+  //      var status = _cmtdl.InsertDueRequest(data.ToString(), userId);
+  //      //For Email
+
+  //      string SendingEmailRegular = "";
+  //      string SendingEmailRecalibration = "";
+  //      string ObjSendingEmailRegular = "";
+  //      string ObjSendingEmailRecalibration = "";
+
+  //      int iRegularCount = 0;
+  //      int iRecalibrationCount = 0;
+  //      int i = 0;
+  //      foreach (var rql in reqlist)
+  //      {
+  //          i += 1;
+  //          RequestMailList getrqlist = _cmtdl.GetDataForInstrumentRequest(rql.instrumentId, rql.TypeValue);
+  //          if (getrqlist.EquipmentType == "Regular")
+  //          {
+  //              // SendEmailRegular(getrqlist);
+
+  //              SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+  //              SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+  //              ObjSendingEmailRegular += SendingEmailRegular;
+  //              iRegularCount += 1;
+
+  //          }
+  //          else if (getrqlist.EquipmentType == "Recalibration")
+  //          {
+  //              SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+  //              SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+  //              ObjSendingEmailRecalibration += SendingEmailRecalibration;
+  //              iRecalibrationCount += 1;
+  //              //SendEmailRecalibration(getrqlist);
+  //          }
+
+  //      }
+  //      string mailbody = "";
+  //      string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+  //      UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+  //      int LabDeptUser = 0;
+  //      List<UserViewModel> fmUserById = _cmtdl.GetLadAdminUsers();
+  //      List<string> emailList = new List<string>();
+
+  //      foreach (var item in fmUserById)
+  //      {
+  //          if (item.Id == UserById.Id)
+  //          {
+  //              LabDeptUser += 1;
+  //          }
+  //          emailList.Add(item.Email.Trim());
+  //          if (iRegularCount > 0)
+  //          {
+
+  //              //Mail For Labamin-Start  
+  //              mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>Regular instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>      <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
+  //              mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+  //              _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+  //              //Mail For Labamin-end  
+  //          }
+  //          if (iRecalibrationCount > 0)
+  //          {
+  //              //Mail For Labamin-Start  
+  //              mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>ReCalibration instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>        <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
+  //              mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+  //              _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+  //              //Mail For Labamin-End
+  //          }
+
+  //      }
+
+  //      if (iRegularCount > 0 && LabDeptUser == 0)
+  //      {
+  //          //Mail For Instrument Created User-Start  
+  //          mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.       <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+  //          mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+  //          _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+  //          //Mail For Instrument Created User-End  
+  //      }
+  //      if (iRecalibrationCount > 0 && LabDeptUser == 0)
+  //      {
+  //          //Mail For Instrument Created User-Start  
+  //          mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.         <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+  //          mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+  //          _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+  //          //Mail For Instrument Created User-End 
+  //      }
+
+
+  //      return new ResponseViewModel<RequestViewModel>
+  //      {
+  //          ResponseCode = 500,
+  //          ResponseMessage = "Failure",
+  //          ErrorMessage = "",
+  //          ResponseData = null,
+  //          ResponseDataList = null,
+  //          ResponseService = "CalibrationRequest",
+  //          ResponseServiceMethod = "AcceptCalibrationRequest"
+  //      };
+  //  }
 
     public DataTable ListToDataTable(List<RequestAllView> data)
     {
@@ -3269,6 +3535,141 @@ public class RequestService : IRequestService
                 ResponseServiceMethod = "ExternalCalibrationReject"
             };
         }
+    }
+    public async Task<bool> MailInsertDueRequest(List<RequestAllView> reqlist, int userId)
+    {
+        try
+        {
+            
+            CMTDL _cmtdl = new CMTDL(_configuration);
+            
+            //For Email
+            string SendingEmailRegular = "";
+            string SendingEmailRecalibration = "";
+            string ObjSendingEmailRegular = "";
+            string ObjSendingEmailRecalibration = "";
+
+            int iRegularCount = 0;
+            int iRecalibrationCount = 0;
+            int i = 0;
+            foreach (var rql in reqlist)
+            {
+                i += 1;
+                RequestMailList getrqlist = _cmtdl.GetDataForInstrumentRequest(rql.instrumentId, rql.TypeValue);
+                if (getrqlist.EquipmentType == "Regular")
+                {
+                    // SendEmailRegular(getrqlist);
+
+                    SendingEmailRegular = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+                    SendingEmailRegular = SendingEmailRegular.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+                    ObjSendingEmailRegular += SendingEmailRegular;
+                    iRegularCount += 1;
+
+                }
+                else if (getrqlist.EquipmentType == "Recalibration")
+                {
+                    SendingEmailRecalibration = " <tr><td>$S.No$</td><td>$RequestNo$</td><td>$LabId$</td><td>$EquType$</td><td>$EquName$</td><td>$Subcode$</td><td>$CalibType$</td></tr>";
+
+                    SendingEmailRecalibration = SendingEmailRecalibration.Replace("$S.No$", i.ToString()).Replace("$RequestNo$", getrqlist.RequestNo).Replace("$LabId$", getrqlist.LabId).Replace("$EquType$", getrqlist.EquipmentType).Replace("$EquName$", getrqlist.EquipmentName).Replace("$Subcode$", getrqlist.SubsectionCode).Replace("$CalibType$", getrqlist.CalibrationType);
+                    ObjSendingEmailRecalibration += SendingEmailRecalibration;
+                    iRecalibrationCount += 1;
+                    //SendEmailRecalibration(getrqlist);
+                }
+
+            }
+            string mailbody = "";
+            string UserId = _contextAccessor.HttpContext.Session.GetString("LoggedId");
+            UserViewModel UserById = _cmtdl.GetUserMasterById(Convert.ToInt32(UserId));
+            int LabDeptUser = 0;
+            List<UserViewModel> fmUserById = _cmtdl.GetLadAdminUsers();
+            List<string> emailList = new List<string>();
+
+            foreach (var item in fmUserById)
+            {
+                if (item.Id == UserById.Id)
+                {
+                    LabDeptUser += 1;
+                }
+                emailList.Add(item.Email.Trim());
+                if (iRegularCount > 0)
+                {
+
+                    //Mail For Labamin-Start  
+                    mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>Regular instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>      <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
+                    mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                    _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+                    //Mail For Labamin-end  
+                }
+                if (iRecalibrationCount > 0)
+                {
+                    //Mail For Labamin-Start  
+                    mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear lab Team,</p>   <p>ReCalibration instrument calibration request has been created by <b>$USERNAME$</b></p>          <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>User</p>   <p><b>$USERNAME$</b></p>   <br/>   <br/>        <p>計量管理部門の皆様</p>   <p>計量器定期検査依頼がありました。<b>$USERNAME$</b></p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p>使用部門</p>   <p><b>$USERNAME$</b></p>   </body>  </html>";
+                    mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                    _emailService.EmailSendingFunction(item.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+                    //Mail For Labamin-End
+                }
+
+            }
+
+            if (iRegularCount > 0 && LabDeptUser == 0)
+            {
+                //Mail For Instrument Created User-Start  
+                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.       <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>   <br/>      <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRegular + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Regular instrument calibration request / 計量器定期検査の依頼の件");
+                //Mail For Instrument Created User-End  
+            }
+            if (iRecalibrationCount > 0 && LabDeptUser == 0)
+            {
+                //Mail For Instrument Created User-Start  
+                mailbody = "<!DOCTYPE html> <html lang=\"en\">  <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />   <title></title>   <style>     table,     th,     td {         border: 1px solid black;         border-collapse: collapse;     }     </style> </head>  <body>      <p>Dear User,</p>   <p>Regular instrument calibration request has been created.         <table>       <tr>         <th>Sr.No</th>         <th>Request No.</th>         <th>Lab Id</th>         <th>Equipment Type</th>         <th>Equipment Name</th>         <th>Sub Section Code</th>         <th>Calibration Type</th>       </tr>    " + ObjSendingEmailRegular + "    </table>    <p>Regards</p>  <br/>  <br/> <p>親愛なるユーザー</p>   <p>計量器定期検査依頼がありました。</p>      <table>       <tr>         <th>シリアル№</th>         <th>依頼№</th>         <th>計量器№</th>         <th>計量器タイプ</th>         <th>計量器名</th>         <th>部門コード</th>         <th>内部校正or外部校正</th>       </tr>" + ObjSendingEmailRecalibration + "</table>      <p><a href='http://s365id1qf042.in365.corpintra.net/DTAQMPortalUAT/'>CMT Portal</a></p>   <p>計量管理部門</p>   </body>  </html>";
+                mailbody = mailbody.Replace("$USERNAME$", UserById.FirstName + " " + UserById.LastName);
+                _emailService.EmailSendingFunction(UserById.Email.Trim(), mailbody, "Re-calibration calibration request / 計量器臨時検査依頼の件");
+                //Mail For Instrument Created User-End 
+            }
+
+
+        }
+       
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return true;
+    }
+    public ResponseViewModel<RequestViewModel> InsertDueRequest(List<RequestAllView> reqlist, int userId)
+    {
+        DataTable dt = new DataTable();
+
+        StringBuilder data = new StringBuilder("");
+
+        string ObjEmailseriaLNo = "EMS" + DateTime.Now.Year;// + maxId.ToString().PadLeft(4, '0');
+        data.Append("<Root>");
+        foreach (var sd in reqlist)
+        {
+            data.Append("<RequestList>");
+            data.Append(string.Format("<instrumentId>{0}</instrumentId>", sd.instrumentId));
+            data.Append(string.Format("<TypeValue>{0}</TypeValue>", sd.TypeValue));
+            data.Append(string.Format("<EmailServiceNo>{0}</EmailServiceNo>", ObjEmailseriaLNo));
+            data.Append(string.Format("<DueDate>{0}</DueDate>", sd.DueDate.ToString()));
+            data.Append("</RequestList>");
+        }
+        data.Append("</Root>");
+
+        CMTDL _cmtdl = new CMTDL(_configuration);
+        var status = _cmtdl.InsertDueRequest(data.ToString(), userId);
+
+        return new ResponseViewModel<RequestViewModel>
+        {
+            ResponseCode = 500,
+            ResponseMessage = "Failure",
+            ErrorMessage = "",
+            ResponseData = null,
+            ResponseDataList = null,
+            ResponseService = "CalibrationRequest",
+            ResponseServiceMethod = "AcceptCalibrationRequest"
+        };
     }
 
 }

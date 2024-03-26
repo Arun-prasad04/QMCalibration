@@ -87,8 +87,7 @@ function showWarning(warningMsg, lang) {
         didOpen: function (ele) {
             $(ele).find('div.swal2-html-container')
                 .addClass('swal2-trn')
-
-            console.log(lang);
+//            console.log(lang);
             if (lang == "en") {
                 translator = $('body').swaltranslate({ lang: "en", t: dict });
 
@@ -782,21 +781,35 @@ function AcceptRejectRequest(lang) {
         }
     }
 }
+function ValidateCheckInstrument() {
+    //alert($('#CalibFreq1').val());
+    var errCount1 = 0;
+    if ((($('#CalibFreq1').val()) == '') || (($('#CalibFreq1').val()) == '0') || (($('#CalibFreq1').val()) == null)) {
+        //alert('#CalibFreq1');
+       // alert($('#CalibFreq1').val());
+        errCount1 = errCount1 + 1;
+       // alert(errCount1);
+    }
+   
 
+    if ($('#DueDate').val().trim() == '') {
+        errCount1 = errCount1 + 1;
+    }
+   
+    //return errCount1;
+    if (errCount1 >0)
+    {
+        showWarning('Please Select Due Date, Calibration Frequency Values...!', lang);
+        return false;
+    }
+
+}
 function ValidateCheck() {
     //debugger;
     var errCount = 0;
     $('#StandardRefferedError').hide();
     $('#InstrumentConditionError').hide();
-    //alert('NewObservation' + $('#NewObservation').val())
-    //if (($('#InstrumentCondition').val()) == '') {
-    //    errCount = errCount + 1;
-    //    $('#InstrumentConditionError').show();
-    //}
-    //else {
-    //    //$('#').hide();
-    //}
-
+   
     if (($('#StdReffer').val()) == '') {
         errCount = errCount + 1;
         $('#StandardRefferedError').show();
@@ -818,12 +831,7 @@ function ValidateCheck() {
     else {
         //$('#CountryError').hide();
     }
-    //if (($('#NewCertification').val()) == '') {
-    //    errCount = errCount + 1;
-    //}
-    //else {
-    //    //$('#CountryError').hide();
-    //}
+  
     if ($('#TentativeCompletionDate').val().trim() == '') {
         errCount = errCount + 1;
     }
@@ -960,21 +968,13 @@ function getduedate(dt) {
 }
 
 function AcceptRequest(type, lang) {
-    //debugger;
+  //  $('#dvload').show();
     var data;
     var Id = $('#RequestCalibId').val();
 
     var dueDate;
     var dt = $('#CalibFreq').val();
     dueDate = DudeDateCalculation(dt);
-    console.log('duedate');
-    console.log(dueDate);
-    console.log('Master Instrument Name...!');
-    console.log($('#MasterInstrument1').val());
-    console.log($('#MasterInstrument2').val());
-    console.log($('#MasterInstrument3').val());
-    console.log($('#MasterInstrument4').val());
-
     if ($('#MasterInstrument1').val() == '' && $('#MasterInstrument2').val() == '' && $('#MasterInstrument3').val() == '' && $('#MasterInstrument4').val() == '') {
         showWarning('Please Select and Add the Master Instrument Name...!', lang);
         return false;
@@ -1005,13 +1005,9 @@ function AcceptRequest(type, lang) {
         type: 'POST',
         data: data
     }).done(function (resultObject) {
-        // if (resultObject.TypeOfRequest == 1) {
-        //     AssignNewRequestValues(resultObject);
-        // } else {
-        //     AssignRequestValues(resultObject);
-        // }
+       
         window.location.href = '../Tracker/Request?reqType=4';
-
+        //$('#dvload').hide();
         showSuccess("You are accepted the request. Department User get notified!", lang);
     });
 }
@@ -1288,10 +1284,10 @@ function CloseNewRequestPopup() {
 }
 
 function NewReqEnableReason1() {
-   
+   // alert($('input[name = "NewAcceptReject"]: checked').val());
     if ($('input[name="NewAcceptReject"]:checked').val() == 'Accept') {
-        
-        $('#NewReasonSection').css('display', 'none');//
+       
+        $('#NewReasonSection').css('display', 'none');
         $('#NewacceptSection').css('display', 'block');
         $('#ExternalRejectSection').css('display', 'none');
         $('#ExternalAcceptSection').css('display', 'block');
@@ -1353,7 +1349,7 @@ function AcceptRejectExternalRequest(lang) {
 }
 
 function ExternalRejecttRequest(type, lang) {
-    debugger;
+   // debugger;
     console.log($('#TentativeCompletionDate').val());
     var data1;
     if (type == 1) {
@@ -1846,9 +1842,20 @@ function InsertRequestListold() {
     }).done(function (resultObject) {
 
         showSuccess("Data Saved Successfully", lang);
+
+        $.ajax({
+            url: '../Instrument/MailInsertDueRequest',
+            type: 'POST',
+            data: { userViewModelList: Request },
+            dataType: "json",
+        }).done(function (resultObject) {
+            showSuccess("Data Saved Successfully");
+        });
         window.location.href = '../Instrument/ToolInventory';
 
     });
+
+
 }
 
 function SaveMicrometer(lang) {
@@ -2899,6 +2906,10 @@ function DeleteMasterEqiupment(id) {
     $('#MasterInstrument' + id).remove();
     $('#masvalue' + id).remove();
 }
+function DeleteMasterEqiupmentFile(id) {
+    //$('#MasterInstrument' + id).remove();
+    //$('#masvalue' + id).remove();
+}
 
 function SaveCertificate(templtatename, lang) {
 
@@ -3052,12 +3063,10 @@ function newSubmitReqDepVisual(lang) {
 }
 
 function SubmitReview(lang) {
-   // debugger;
+  
+    $('#dvload').show();
     var revstat = $('#ReviewStatus').val();
-    console.log('revstat');
-    console.log(revstat);
-
-
+   
     if (revstat == '') {
         showWarning("Please select Judgement", lang);
         return false;
@@ -3070,22 +3079,256 @@ function SubmitReview(lang) {
             return false;
         }
     }
+    // for content updates
+    var ObservationContentValues = new Array();
+    var ObservationContent = new Array();
+    var ObservationContenMapping = new Array();
+    var footerPermissiable = "";
+    $(".content").each(function () {
 
+        $(this).find('table').each(function () {
+
+            var tbl_id = $(this).attr("id");//.split("-")[2];
+
+            if (tbl_id.substring(0, 2) == "CW") {
+                footerPermissiable = $('#tblCW_footer').find("input.PermissibleLimit").val();
+            }
+            $(this).find('tr').each(function () {
+                var rowid = $(this).find('tr').attr('id');
+                var currentRow = $(this).find('td').attr('id');
+
+                var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
+
+
+                if ((contentvalueid == "0") || (contentvalueid == "")) {
+                    contentvalueid = null
+                }
+
+                if ($(this).find("input[name = HiddenContentId]").val() > 0) {
+
+                    var ObservationContenMappingData = {
+
+                        Id: $(this).find("input[name = HiddenMappingId]").val(),
+                        Sno: $(this).find("td:eq(1) input[type='text']").val(),
+                        ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                        ObservationId: $('#TemplateObservationId').val(),
+                        InstrumentId: $('#InstrumentId').val(),
+                        CreatedBy: "",
+                        CreatedOn: "",
+                        IsActive: true
+                    }
+                    ObservationContenMapping.push(ObservationContenMappingData);
+                    if (currentRow == 'CW') {
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: 0,// $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue: "",
+                            ActualValue: "",
+                            InstrumentError: "",
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue1: $(this).find("td:eq(2) input[type='text']").val(),
+                            MeasuedValue2: $(this).find("td:eq(3) input[type='text']").val(),
+                            MeasuedValue3: $(this).find("td:eq(4) input[type='text']").val(),
+                            Average: $(this).find("td:eq(5) input[type='text']").val(),
+                            Percent: $(this).find("td:eq(6) input[type='text']").val(),
+                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                            PermissibleLimit: footerPermissiable
+                            //<th rowspan="1" colspan="1">Parcela</th> $('tfoot input').
+                        }
+                        //}
+                        ObservationContentValues.push(ObservationContenValuesData);
+                    }
+                    else if (currentRow == 'SW') {
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: 0,// $(this).find("td:eq(1) input[type='text']").val(),
+                            MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+                            ActualValue: "",
+                            InstrumentError: "",
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: $(this).find("td:eq(2) input[type='text']").val(),//3,4,5
+                            MeasuedValue2: $(this).find("td:eq(3) input[type='text']").val(),
+                            MeasuedValue3: $(this).find("td:eq(4) input[type='text']").val(),
+                            Average: "",
+                            Percent: "",
+                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                            PermissibleLimit: ""
+                        }
+                        //}
+                        ObservationContentValues.push(ObservationContenValuesData);
+                    }
+                    else if (currentRow == 'IN') {
+
+                        //console.log($(this).closest("tr").find("td:eq(3)").text());
+
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: 0,//$(this).find("td:eq(1) input[type='text']").val(),//2,3,4
+                            MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+                            ActualValue: $(this).find("td:eq(2) input[type='text']").val(),
+                            InstrumentError: $(this).find("td:eq(3) input[type='text']").val(),
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: "",
+                            MeasuedValue2: "",
+                            MeasuedValue3: "",
+                            Average: "",
+                            Percent: "",
+                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                            PermissibleLimit: ""
+                            //}
+                        }
+                        ObservationContentValues.push(ObservationContenValuesData);
+
+                    }
+                    else if (currentRow == 'SE') {
+                        //alert($(this).closest("tr").attr('id'));
+                        console.log($(this).closest("tr").attr('id'));
+                        console.log($(this).closest("tr").find("td:eq(3)").text());
+
+                        var data = $(this).closest("tr").attr('id');//$(this).closest("tr").find("td:eq(3)").text();
+
+                        var ObservationContenValuesData = {
+
+                            Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
+                            ParentId: $('#TemplateObservationId').val(),
+                            Sno: data,//$(this).find("td:eq(1) input[type='text']").val(),//2,3,4
+                            MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+                            ActualValue: $(this).find("td:eq(2) input[type='text']").val(),
+                            InstrumentError: $(this).closest("tr").find("td:eq(3)").text(),
+                            Diff: $(this).find('td').attr('id'),
+                            MeasuedValue1: "",
+                            MeasuedValue2: "",
+                            MeasuedValue3: "",
+                            Average: "",
+                            Percent: "",
+                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                            PermissibleLimit: ""
+                            //}
+                        }
+                        ObservationContentValues.push(ObservationContenValuesData);
+
+                    }
+                }
+
+            });
+        });
+
+    });
+    var filedataOBS = [];
+    var filenameOBS = [];
+    var filesizeOBS = [];
+    var fileSerialNoOBS = [];
+    $.each(FileData, function (key, value) {
+
+        filesizeOBS.push(value.size);
+        filenameOBS.push(value.name.trim());
+        filedataOBS.push(value.data);
+        fileSerialNoOBS.push(value.slno);
+
+    })
+
+    var data = {
+        Id: $('#Id').val(),
+        InstrumentId: $('#InstrumentId').val(),
+        RequestId: $('#RequestId').val(),
+        TempStart: $('#TempStart').val(),
+        Humidity: $('#Humidity').val(),
+        Units: $('#Units').val(),
+        Condition: $('#VisualCheckCondition').val(),
+        ObservationContentValuesList: ObservationContentValues,
+        ObservationContentMappingList: ObservationContenMapping,
+        FileName: filenameOBS,
+        FileData: filedataOBS,
+        FileSize: filesizeOBS,
+        Serialno: fileSerialNoOBS,
+        PermissibleLimit: $('#PermissibleLimit').val()
+    }
+
+    console.log(data);
+
+
+
+    //
     var dueDate;
     var dt = $('#InsCalibFreq').val();
-    //debugger;
+   
     dueDate = DudeDateCalculation(dt);
-   // alert($('#ReviewDate').val());
+
     $.ajax({
         url: '../Observation/SubmitReview',
         type: 'POST',
-        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val(), DueDate: dueDate }
+        data: { observationId: $('#TemplateObservationId').val(), reviewDate: $('#ReviewDate').val(), reviewStatus: $('#ReviewStatus').val(), Remarks: $('#Remarks').val(), RequestId: $('#RequestId').val(), DueDate: dueDate, dynamic: data }
     }).done(function (resultObject) {
+        $('#dvload').hide();
         window.location.href = '../Tracker/Request?reqType=4';
         showSuccess("Your details recorded", lang);
     });
 }
+$(document).on('change', '.clsFile', (e) => {
+    if (window.File && window.FileList && window.FileReader) {
+       
+        var serial = e.target.name;
+       
+            var filedata = [];
+            var filename = [];
+        var filesize = [];
+        var fileslno = [];
+            var files = e.target.files,
+                filesLength = files.length, loaded = 0;
+            var filejson;
 
+            for (var i = 0; i < filesLength; i++) {
+                var fileReader = new FileReader();
+                var f = files[i];
+                
+                var namesfile = guid();
+                var fna = f.name;
+               
+                var finalname = fna.replace(/[0-9`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi, '', '');
+                if (finalname == "")
+                    finalname = namesfile;
+               
+                filename.push(finalname);
+                filesize.push(f.size);
+                fileslno.push(e.target.name);
+                fileReader.onload = (function (e) {
+
+                    var file = e.target;
+                    filedata.push(e.target.result);
+                    loaded++;
+
+                    if (loaded == filesLength) {
+                        console.log(fileslno);
+                        FileUpload1(filedata, filename, filesize, fileslno);
+                    }
+
+
+                });
+                fileReader.readAsDataURL(f);
+            }
+
+       // });
+    }
+});
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
 $(document).ready(function () {
     if (window.File && window.FileList && window.FileReader) {
         $("#ImageUpload").on("change", function (e) {
@@ -3119,6 +3362,49 @@ $(document).ready(function () {
                 fileReader.readAsDataURL(f);
             }
         });
+        $("#files1").find('.clsFile').on("change", function (e) {
+       // $(".clsFile").on("change", function (e) {
+           // alert("filess");
+            //var filedata = [];
+            //var filename = [];
+            //var filesize = [];
+            //var files = e.target.files,
+            //    filesLength = files.length, loaded = 0;
+            //var filejson;
+
+            //for (var i = 0; i < filesLength; i++) {
+            //    var fileReader = new FileReader();
+            //    var f = files[i];
+            //    // filename.push(f.name.replace('.', '$'));
+            //    var namesfile = guid();
+            //    var fna = f.name;
+            //    // filename.push(namesfile.substring(0, 5) + "." + fna.substring(fna.lastIndexOf(".") + 1));
+            //    //filename.push(fna.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '') + "." + fna.substring(fna.lastIndexOf(".") + 1));
+
+            //    var finalname = fna.replace(/[0-9`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '', '');
+
+            //    if (finalname == "")
+            //        finalname = namesfile;
+
+            //    filename.push(finalname + "." + fna.substring(fna.lastIndexOf(".") + 1));
+
+            //    filesize.push(f.size);
+            //    fileReader.onload = (function (e) {
+
+            //        var file = e.target;
+            //        filedata.push(e.target.result);
+            //        loaded++;
+
+            //        if (loaded == filesLength) {
+            //            FileUpload1(filedata, filename, filesize);
+            //        }
+
+
+            //    });
+            //    fileReader.readAsDataURL(f);
+            //}
+
+        });
     }
 });
 
@@ -3150,11 +3436,14 @@ function CheckFileExtension(filename) {
 }
 
 function CheckFileType(filename) {
+    
     var ext = filename.split('.')[1];
     var Filetype = '';
+   
     if (ext == "pptx" || ext == "ppt") {
         Filetype = "ppt.png";
     } else if (ext == "xls" || ext == "xlsx" || ext == "csv") {
+       
         Filetype = "excel.png";
     } else if (ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "svg") {
         Filetype = "image.png";
@@ -3171,7 +3460,7 @@ function CheckFileType(filename) {
     } else {
         Filetype = "notype.png";
     }
-
+    //alert(Filetype);
     return Filetype;
 }
 
@@ -3181,10 +3470,65 @@ function FileUpload(filedata, filename, filesize) {
         var fs = (filesize[i] / 1024 / 1024).toFixed(2);
         json = { "Name": filename[i], "Size": fs, "Data": filedata[i] };
         FileData.push(json);
-        console.log(FileData);
+       
+      /*  <i id="@img" class="fas fa-trash" onclick="MasterFileDeleteAlert(this,'@img','@Model.Id');"></i>*/
     }
 }
+function downloadFile() {
+    alert('Please save the data and then download the file');
+}
+function deleteFile(id, filename) {
+    FileData = $.grep(FileData, function (element, index) {
+        return element.name != filename;
+    });
+    $('#' + id).remove();
+}
+function FileUpload1(filedata, filename, filesize,serialno) {
+   
+    var json = {};
+    var html = '';
+    for (var i = 0; i < filename.length; i++) {
+        var ids = guid();
+        var fs = (filesize[i] / 1024 / 1024).toFixed(2);
+        var joinfilename = filename[i];
+       
+        html += '<div id="' + ids + '" ><span class=""><img height="13" width="13" src="../image/' + CheckFileType(joinfilename) + '" /></span>'
+            + joinfilename + ''
+            + ' <a onclick="deleteFile(\'' + ids + '\',\'' + joinfilename + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fa fa-fw fa-trash"></a>'
+            + '</div>';
+    
+        json = { "name": joinfilename, "size": fs, "data": filedata[i], "slno":serialno };
+        FileData.push(json);
 
+    }
+    console.log(html);
+    $('#dfileattach').append(html);
+}
+function Filedownload(fileguid, filename) {
+
+   // var json = {};id
+    var html = '';
+    for (var i = 0; i < filename.length; i++) {
+        var ids = fileguid[i];
+        var fs = (filesize[i] / 1024 / 1024).toFixed(2);
+        var joinfilename = filename[i];
+
+        html += '<div id="' + ids + '" class=" doctabledesign" ><img alt="" class="img-responsive" src="../image/' + CheckFileType(joinfilename) + '" />'
+            + '<p class="dfileuploadon"> ' + joinfilename + ''// new Date().toString().split('GMT')[0] + ''
+            + '<span class="pull-right btn-group">'
+            // + ' <a onclick="downloadFile();" data-container="body" data-toggle="tooltip" data-placement="top" title="Download"  type="button" class=" btn btn-success rejectbtn btn-xs"><span class="glyphicon glyphicon-save"></span></a>'
+            + ' <a onclick="filename[i]" data-container="body" data-toggle="tooltip" data-placement="top" title="Download"  type="button" class=" btn btn-success fa fa-fw fa-trash btn-xs"><span class="glyphicon glyphicon-save"></span></a>'
+            + ' <a onclick="deleteFile(\'' + ids + '\',\'' + joinfilename + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class=" btn btn-danger fa fa-fw fa-trash btn-xs"><span class="glyphicon glyphicon-remove"></span></a>'
+            + '</span></p></div>';
+       
+
+        //json = { "name": joinfilename, "size": fs, "data": filedata[i], "slno": serialno };
+        //FileData.push(json);
+
+    }
+    console.log(html);
+    $('#dfileattach').append(html);
+}
 function getrequest(type) {
 
     if ($('input[name="ReqTracker"]:checked').val() == 'New') {
@@ -3203,24 +3547,27 @@ function getrequest(type) {
 }
 
 function DueForCalibrationInstruments() {
-    //debugger;
+   
     if ($("#checkdueonly").is(":checked")) {
+    //    alert("checked");
         var tblRowsCoun = $("#example1 td").length;
         if (tblRowsCoun > 0) {
-            console.log('count');
-            var oTable = $("#example1").dataTable();
-            $(".one", oTable.fnGetNodes()).each(function (i, row) {
-                var currentRow3 = $(this).closest("tr");
-                if (typeof ($(this).closest('tr').find('td:eq(11) input[type="checkbox"]').html()) === "undefined") {
-                    currentRow3.hide();
-                }
+          console.log('count');
+           var oTable = $("#example1").dataTable();
+          $(".one", oTable.fnGetNodes()).each(function (i, row) {
+               var currentRow3 = $(this).closest("tr");
+               if (typeof ($(this).closest('tr').find('td:eq(11) input[type="checkbox"]').html()) === "undefined") {
+                   currentRow3.hide();
+               }
                 else {
                     currentRow3.show();
-                }
-            });
-        }
+               }
+           });
+       }
+       // GetInstruments();
     }
     else {
+        // alert("un checked");
         window.location.href = '../Instrument/Index';
     }
 }
@@ -3251,7 +3598,7 @@ function DueForCalibrationInstruments_Old() {
 function InsertRequestList() {
    // debugger;
     var Request = new Array();
-   // $('#dvload').show();
+    $('#dvload').show();
     var oTable = $("#example1").dataTable();
     $(".class1:checked", oTable.fnGetNodes()).each(function (i, row) {
         var UserView = {
@@ -3264,9 +3611,7 @@ function InsertRequestList() {
         
         Request.push(UserView);
     });
-     console.log("Request");
-    console.log(Request);
-   
+  
     $.ajax({
        url: '../Instrument/RegularRecaliRequest',
         type: 'POST',
@@ -3274,7 +3619,16 @@ function InsertRequestList() {
        dataType: "json",
     }).done(function (resultObject) {
         showSuccess("Data Saved Successfully");
-       //$('#dvload').hide();
+        $('#dvload').hide();
+
+        $.ajax({
+            url: '../Instrument/MailInsertDueRequest',
+            type: 'POST',
+            data: { userViewModelList: Request },
+            dataType: "json",
+        }).done(function (resultObject) {
+            showSuccess("Data Saved Successfully");
+        });
        window.location.href = '../Instrument/Index';
     });
 }
@@ -3437,7 +3791,7 @@ function DueInstrumentList() {
     }
 
     function SaveExternalObs(lang) {
-        debugger;
+       // debugger;
         if ($('#txtIdNo').val().trim() == '') {
             showWarning("Please Enter Instrument Id Number", lang);
             return false;
@@ -3565,6 +3919,11 @@ function SaveCertificateTemp(lang) {
 }
 function UpdateControlCardRequest() {
     //debugger;
+    var Issueno1 = $('#Issueno').val();
+    if (Issueno1 == null || Issueno1 == "") {
+        showWarning("Please enter the Issue No/発行№", language);
+        return false;
+    }
     var InstrumentId = $('#InstrumentId').val();
     var Issueno = $('#Issueno').val();
     var Request = new Array();
@@ -3579,7 +3938,7 @@ function UpdateControlCardRequest() {
 
         Request.push(InspectData);
     });
-    
+
     $.ajax({
         url: '../Instrument/updateRequestforInstrument',
         type: 'POST',
@@ -3591,6 +3950,38 @@ function UpdateControlCardRequest() {
     });
 
 }
+
+//function UpdateControlCardRequest() {
+//    //debugger;
+//    var InstrumentId = $('#InstrumentId').val();
+//    var Issueno = $('#Issueno').val();
+//    var Request = new Array();
+
+//    var oTable = $("#TblRequest").dataTable();
+//    $(".Inspect:text", oTable.fnGetNodes()).each(function (i, row) {
+//        console.log(row);
+//        var InspectData = {
+//            Inspectiondetails: $(this).val(),
+//           // rowdta: row,
+//            //Inspectiondetails: $(this).closest('tr').find("td:eq(6) input[type='text']").val(),
+//            requestId: $(this).closest('tr').find("td:eq(6) input[type='hidden']").val(),
+//        }
+
+//        Request.push(InspectData);
+//    });
+//    console.log("InspectData");
+//    console.log(Request);
+//    $.ajax({
+//        url: '../Instrument/updateRequestforInstrument',
+//        type: 'POST',
+//        data: { reqlist: Request, InstrumentId: InstrumentId, IssueNo: Issueno },
+//        dataType: "json",
+//    }).done(function (resultObject) {
+//        //showSuccess("Data Saved Successfully");
+//        window.location.href = '../Instrument/Index';
+//    });
+
+//}
 
 function getDepartmantDueInstruments(DueMonth) {
     window.location.href = '../Instrument/ToolRoomDepartment?DueMonth=' + DueMonth + '';
@@ -3620,26 +4011,14 @@ function getDueInstruments(DueMonth) {
 
 }
 function removeTrow(Row) {
-
- //  if ($('INTblObservation tr').length > 1) {
-	//// 		$(this).closest('tr').remove();
-	// 		$('td.order').text(function (i) {
-	// 			return i + 1;
-	//	});
-	// 	}
+     
     $(Row).closest('tr').remove();
 }
   
 function addIN() {
     var counter = $('#INTblObservation >tbody >tr').length;
-    //var SNo = $('#INTblObservation >tbody >tr').length;
-   // alert(SNo);
+    
     var headingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + counter + '" name = "Head[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "" disabled />';
-
-    //tbLINSNo += 1; 
-    //if (tbLINSNo > 1) {
-    //    counter = tbLINSNo;
-    //}
     
     $('#INTblObservation > tbody:last-child').append('<tr>' + headingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=" "/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLINContentId + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
        // + '<td id="IN"><input id="SNO' + counter + '" name="SNO[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + counter + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLINContentId + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
@@ -3648,178 +4027,14 @@ function addIN() {
         '<td id="IN"><input id="Avg" name = "Avg[' + counter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td>' +
         '<td><i style="width: 50px;" class="btn-remove-tr fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>');
     counter++;
-   // SNo++;
+
     return false;
 }
-//$(document).on('click', '.btnSaveApproval', (e) => {
 
-
-//    var Unit = $('#Units').val();
-//    if (Unit == null || Unit == "") {
-//        showWarning("Please enter the Units", language);
-//        return false;;
-//    }
-//    var Temprature = $('#TempStart').val();
-//    if (Temprature == null || Temprature == "") {
-//        showWarning("Please enter the Temprature !!!", language);
-//        return false;
-//    }
-//    var Humidity = $('#Humidity').val();
-//    if (Humidity == null || Humidity == "") {
-//        showWarning("Please enter the Humidity", language);
-//        return false;
-//    }
-//    var VisualCheckCondition = $('#VisualCheckCondition').val();
-//    if (VisualCheckCondition == null || VisualCheckCondition == "") {
-//        showWarning("Please enter the Visual Check", language);
-//        return false;
-//    }
-//   // var PermissibleLimit = $('#PermissibleLimit').val();
-//    $('#dvload').show();
-//    var ObservationContentValues = new Array();
-//    var ObservationContent = new Array();
-//    var ObservationContenMapping = new Array();
-//    var footerPermissiable = "";
-//    $(".content").each(function () {
-
-//        $(this).find('table').each(function () {
-            
-//            var tbl_id = $(this).attr("id");//.split("-")[2];
-            
-//            if (tbl_id.substring(0, 2) == "CW") {
-//                footerPermissiable = $('#tblCW_footer').find("input.PermissibleLimit").val();
-//                   }
-//            $(this).find('tr').each(function () {
-              
-//                var currentRow = $(this).find('td').attr('id');
-
-//                var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
-               
-
-//                if ((contentvalueid == "0") || (contentvalueid == "")) {
-//                    contentvalueid = null
-//                }
-               
-//                if ($(this).find("input[name = HiddenContentId]").val() > 0) {
-
-//                    var ObservationContenMappingData = {
-
-//                        Id: $(this).find("input[name = HiddenMappingId]").val(),
-//                        Sno: $(this).find("td:eq(1) input[type='text']").val(),
-//                        ContentId: $(this).find("input[name = HiddenContentId]").val(),
-//                        ObservationId: $('#TemplateObservationId').val(),
-//                        InstrumentId: $('#InstrumentId').val(),
-//                        CreatedBy: "",
-//                        CreatedOn: "",
-//                        IsActive: true
-//                    }
-//                    ObservationContenMapping.push(ObservationContenMappingData);
-//                    if (currentRow == 'CW') {
-                       
-//                        var ObservationContenValuesData = {
-
-//                            Id: contentvalueid,
-//                            ParentId: $('#TemplateObservationId').val(),
-//                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
-//                            MeasuedValue: "",
-//                            ActualValue: "",
-//                            InstrumentError: "",
-//                            Diff: $(this).find('td').attr('id'),
-//                            MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
-//                            MeasuedValue1: $(this).find("td:eq(2) input[type='text']").val(),
-//                            MeasuedValue2: $(this).find("td:eq(3) input[type='text']").val(),
-//                            MeasuedValue3: $(this).find("td:eq(4) input[type='text']").val(),
-//                            Average: $(this).find("td:eq(5) input[type='text']").val(),
-//                            Percent: $(this).find("td:eq(6) input[type='text']").val(),
-//                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
-//                            PermissibleLimit: footerPermissiable 
-//                            //<th rowspan="1" colspan="1">Parcela</th> $('tfoot input').
-//                        }
-//                        //}
-//                        ObservationContentValues.push(ObservationContenValuesData);
-//                    }
-//                    else if (currentRow == 'SW') {
-
-//                        var ObservationContenValuesData = {
-
-//                            Id: contentvalueid,
-//                            ParentId: $('#TemplateObservationId').val(),
-//                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
-//                            MeasuedValue: $(this).find("td:eq(2) input[type='text']").val(),
-//                            ActualValue: "",
-//                            InstrumentError: "",
-//                            Diff: $(this).find('td').attr('id'),
-//                            MeasuedValue1: $(this).find("td:eq(3) input[type='text']").val(),
-//                            MeasuedValue2: $(this).find("td:eq(4) input[type='text']").val(),
-//                            MeasuedValue3: $(this).find("td:eq(5) input[type='text']").val(),
-//                            Average: "",
-//                            Percent: "",
-//                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
-//                            PermissibleLimit: ""
-//                        }
-//                        //}
-//                        ObservationContentValues.push(ObservationContenValuesData);
-//                    }
-//                    else if (currentRow == 'IN') {
-
-//                        var ObservationContenValuesData = {
-
-//                            Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
-//                            ParentId: $('#TemplateObservationId').val(),
-//                            Sno: $(this).find("td:eq(1) input[type='text']").val(),
-//                            MeasuedValue: $(this).find("td:eq(2) input[type='text']").val(),
-//                            ActualValue: $(this).find("td:eq(3) input[type='text']").val(),
-//                            InstrumentError: $(this).find("td:eq(4) input[type='text']").val(),
-//                            Diff: $(this).find('td').attr('id'),
-//                            MeasuedValue1: "",
-//                            MeasuedValue2: "",
-//                            MeasuedValue3: "",
-//                            Average: "",
-//                            Percent: "",
-//                            ContentId: $(this).find("input[name = HiddenContentId]").val(),
-//                            PermissibleLimit: ""
-//                            //}
-//                        }
-//                        ObservationContentValues.push(ObservationContenValuesData);
-                        
-//                    }
-//                }
-
-//            });
-//        });
-
-//    });
-
-//    var data = {
-//        Id: $('#Id').val(),
-//        InstrumentId: $('#InstrumentId').val(),
-//        RequestId: $('#RequestId').val(),
-//        TempStart: $('#TempStart').val(),
-//        Humidity: $('#Humidity').val(),
-//        Units: $('#Units').val(),
-//        Condition: $('#VisualCheckCondition').val(),
-//        ObservationContentValuesList: ObservationContentValues,
-//        ObservationContentMappingList: ObservationContenMapping
-//       //PermissibleLimit: $('#PermissibleLimit').val()
-//    }
-//    console.log(data);
-//    $.ajax({
-//        url: '../Observation/InsertDynamicObservationContent',
-//        type: 'POST',
-//        data: { dynamic: data },
-//        dataType: "json",
-//    }).done(function (resultObject) {
-//        $('#dvload').hide();
-//        window.location.href = '../Tracker/Request?reqType=4';
-//        showSuccess("Data Saved Successfully", lang);
-//    });
-
-//});
 function addCW() {
     
     var CWcounter = $('#CWTblObservation >tbody >tr').length;
-   // var CWSNo = $('#CWTblObservation >tbody >tr').length;
-    //tbLCWSNo += 1;
+
     
     $('#CWTblObservation > tbody').append('<tr><td style="width: 30%" id="CW"><input id="Head' + CWcounter + '" name="Head[' + CWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLCWContentId + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
        //'<td id="CW"><input id="SNO' + CWcounter + '" name="SNO[' + CWcounter + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + tbLCWSNo + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + tbLCWContentId + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
@@ -3852,386 +4067,39 @@ function addSW() {
     //SWSNo++;
     return false;
 }
-//$(document).on('click', '.btn-Generate', (e) => {
 
-//    //$('#dvTable').html("");
-//    var rowNewContentCW = "";
-//    var rowNewContentIN = "";
-//    var rowNewContentSW = "";
-//    var obsContentValueId = "";
-//    var rowContentCW = "";
-//    var rowContentIN = "";
-//    var rowContentSW = "";
-//    var rowBodyCW = "";
-//    var rowBodyIN = "";
-//    var rowBodySW = "";
-//    var tblId = "";
-//    var tableIN = "";
-//    var tableCW = "";
-//    var tableSW = "";
-//    var rowheadCW = "";
-//    var rowheadSW = "";
-//    var rowheadIN = "";
-//    var icount = 0;
-//    var ContentDataList = new Array();
-//    var addInRow = "";
-//    var addCWRow = "";
-//    var addSWRow = "";
-//    var tblContentRowcount = 0;
-//    var Permissible = "";
-//    $('#ContentSelect > :selected').each(function () {
-//        //for xml start       
-//        var ContentData =
-//        {
-//            ContentId: $(this).val()//,
-          
-//        }
-//        ContentDataList.push(ContentData);
-
-//    });
-//    $.ajax({
-//        dataType: 'json',
-//        url: '../Observation/GetObservationContentSelectedList',
-//        type: 'POST',
-//        data: { Contents: ContentDataList, InstrumentId: $('#InstrumentId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
-//    }).done(function (resultObject) {
-        
-//        tbllengthcount = resultObject.length;
-//        var InCount = 0;
-//        for (let i = 0; i < resultObject.length; i++) {
-//            var IdName = resultObject[i].typeOfContent;
-//            if (tbLINContentId == resultObject[i].id) {
-
-//                tblContentRowcount += 1;
-//            }
-//            else {
-
-//                tblContentRowcount = 1;
-//            }
-//            tblId = 'TblObservation' + i;
-//            if (IdName == 'CW') {
-
-//                rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>' + resultObject[i].contentSubTitle6 + '</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
-
-//            }
-//            else if (IdName == 'SW') {
-
-//                rowheadSW = '<thead><tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td></tr></thead>';
-
-//            }
-//            else if (IdName == 'IN') {
-
-//                rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
-//            }
-//            ///////////////////// contentvalueid>0////////////////<td style="width: 15%">
-//            tbLINContentId = resultObject[i].id;
-//            tbLCWContentId = resultObject[i].id;
-//            tbLSWContentId = resultObject[i].id;
-
-//            if (tblContentRowcount == 1) {
-
-//                title = resultObject[i].contentValue.trim(); // resultObject[i].contentValue.trim();
-//                contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                contentsubheadingSW = '<td style="width: 30%;border:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
-//                contentsubheadingCW = '<td style="width: 30%;border:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
-
-//            }
-//            else {
-//                title = "";
-//                contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                contentsubheadingSW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
-//                contentsubheadingCW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
-//            }
-
-//            if (resultObject[i].obsContentValueId > 0) {
-//                var sno = resultObject[i].sno;
-//                var addsno = sno + 1;
-//                var objcontentCount = resultObject[i].contentCount;
-
-//                var title = "";
-//                var contentsubheadingIN = "";
-
-//                if (IdName == 'IN') {
-
-//                    if (InCount == 3) {
-//                        InCount = 0;
-//                    }
-//                    if (objcontentCount > 1) {
-//                        InCount = InCount + 1;
-//                        if (InCount == 2) {
-//                            title = resultObject[i].contentValue.trim();
-
-//                            contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-
-//                        }
-//                        else {
-
-//                            title = "";// resultObject[i].contentValue.trim();
-//                            contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                        }
-//                    }
-//                    else //if (InCount == 1)
-//                    {
-//                        title = resultObject[i].contentValue.trim();
-//                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                    }
-
-//                }
-              
-//                sno = resultObject[i].sno;
-//                if (IdName == 'CW') {
-//                    tbLCWContentId = resultObject[i].id;
-//                    rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim().slice(0, resultObject[i].contentValue - 3) + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-//                        '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                        '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-//                        '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-//                        '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-//                        '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
-//                        '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled ></td>';
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-
-//                    addsno = sno + 1;
-//                    tbLCWSNo = addsno;
-                  
-//                    rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" class="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/><input type="hidden" id="HiddenContentId" class="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-//                        '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                     // '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                        '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
-//                        '<td id="CW"><input id="Value2" name="Value2[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
-//                        '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
-//                        '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
-//                        '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td>'+
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-
-//                }
-//                else if (IdName == 'SW') {
-//                    tbLSWContentId = resultObject[i].id;
-//                    rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-//                        '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                        '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
-//                        '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-//                        '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-//                        '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td>'+
-//                    '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-//                    addsno = sno + 1;
-//                    tbLSWSNo = addsno;
-                  
-//                    rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "0" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
-//                        '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                        '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                        '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                        '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                        '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td>' +
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-
-//                }
-//                else if (IdName == 'IN') {
-//                    tbLINContentId = resultObject[i].id;
-//                    rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-//                        + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-//                        '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                        '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-//                        '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>'+
-//                    '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-//                    addsno = sno + 1;                    
-//                    tbLINSNo = addsno;                   
-//                    title = "";
-//                    rowNewContentIN = '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""/></td>'
-//                        + '<td id="IN"><input id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
-//                        '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                        '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-//                        '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>'+
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-//                    }
-//                icount += i;
-
-//            }
-
-//            ///////////////////// contentvalueid>0 ////////////////
-//            else if (resultObject[i].obsContentValueId == 0) {
-
-//                for (let j = 1; j <= resultObject[i].contentCount; j++) {
-
-//                    var objcontentCount = resultObject[i].contentCount;
-
-//                    var title = "";
-//                    var contentsubheadingIN = "";
-
-//                    if ((objcontentCount > 1) && (j == 2)) {//new mode
-
-//                        title = resultObject[i].contentValue.trim();
-//                        contentsubheadingIN = '<td class="TblInHeader" style="width: 45%;border:2px solid #f6f6f5;border-left:none;border-right:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-
-//                    }
-//                    else if (objcontentCount == 1) {
-
-//                        title = resultObject[i].contentValue.trim();
-//                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                    }
-//                    else {
-
-//                        title = " ";
-//                        contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + j + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
-//                    }
-//                    if (IdName == 'CW') {
-
-//                        rowContentCW += '<tr><td style="width: 30%" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.slice(0, resultObject[i].contentValue.length - 4) + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" class="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" class="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
-//                         //   '<td id="CW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + j + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                            '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValueCW" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                            '<td id="CW"><input id="Value1" name="Value1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-//                            '<td id="CW"><input id="Value2" name="Value2[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-//                            '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
-//                            '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
-//                            '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td>' +
-//                            '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-
-//                        rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/><input type="hidden" id="HiddenContentId"  class="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><td> ' +
-//                          //  '<td id="CW"><input id="SNO' + icount + '" name="SNO[' + icount + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = ' + j + 1 + ' disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                            '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValueCW" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                            '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
-//                            '<td id="CW"><input id="Value2" name="Value2[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value2" value = "" /> </td>' +
-//                            '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
-//                            '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
-//                            '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td>' +
-//                            '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-//                        // tbLCWContentId = resultObject[i].id;
-//                        tbLCWSNo = j;
-//                        Permissible = '<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="' + resultObject[i].permissibleLimit + '" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
-
-//                    }
-//                    else if (IdName == 'SW') {
-//                        rowContentSW += '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].contentValue.trim() + '" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-//                            '<td id="SW"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                            '<td id="SW"><input id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue + '" /> </td>' +
-//                            '<td id="SW"><input id="SWValue2" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue1 + '" /> </td>' +
-//                            '<td id="SW"><input id="SWValue3" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
-//                            '<td id="SW"><input id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td>' +
-//                            '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>'
-
-
-//                        rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + icount + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
-//                            '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + icount + 1 + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + 1 + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                            '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                            '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                            '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
-//                            '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td>' +
-//                            '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>'
-
-
-//                        // tbLSWContentId = resultObject[i].id;
-//                        tbLSWSNo = j;
-//                    }
-//                    else if (IdName == 'IN') {
-
-//                        rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'
-//                            + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-//                            '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-//                            '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
-//                            '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>'+
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-//                        var headingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + icount + '" name = "Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "" disabled />';
-
-//                        rowNewContentIN = '<tr>' + headingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""/></td>'
-//                            + '<td id="IN"><iheadingINnput id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + j + 1 + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
-//                            '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-//                            '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "" /> </td>' +
-//                            '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td>'+
-//                        '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>'
-
-//                        tbLINContentId = resultObject[i].id;
-//                        tbLINSNo = j;
-                       
-//                    }
-//                    icount = i + j;
-
-//                }
-
-//            }
-
-//        }
-        
-//        icount = icount + 1;
-
-//        rowBodyCW = rowContentCW;
-//        rowBodyIN = rowContentIN;
-//        rowBodySW = rowContentSW;
-       
-//        tableIN = '<table id="INTblObservation" style="text-align:center;">';
-//        tableCW = '<table id="CWTblObservation" style="text-align:center;">';
-//        tableSW = '<table id="SWTblObservation" style="text-align:center;">';
-//       rowNewContentCW = "";//no new row for and add row for CW
-//        var Permissible = '<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
-//        rowBodyCW = rowBodyCW + rowNewContentCW + '</tbody><tfoot id="tblCW_footer" class="tblCW_footer" style="font-weight:900;">' + Permissible + '</tfoot></table><br/>';
-//       // rowBodyCW = '<tbody>' + rowContentCW + '</tbody></table><br/>';
-//        tableCW += rowheadCW;
-//        tableCW += rowBodyCW;
-
-//        rowBodyIN = '<tbody>' + rowContentIN + '</tbody></table><br/>';
-//        tableIN += rowheadIN;
-//        tableIN += rowBodyIN;
-
-//        rowBodySW = '<tbody>' + rowContentSW + '</tbody></table><br/>';
-//        tableSW += rowheadSW;
-//        tableSW += rowBodySW;
-
-//        // add new button
-//        addInRow = '<br><tr><p align="right"><button style="align-content: right;" class="addIN" id = "addIN" name = "addIN" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
-
-//        addCWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addCW" id = "addCW" name = "addCW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
-
-//        addSWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addSW" id = "addSW" name = "addSW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
-//        // add new button
-//        if (rowContentSW == "") {
-            
-//            tableSW = "";
-//            addSWRow = "";
-//        }
-//        if (rowContentIN == "") {
-            
-//            tableIN = "";
-//            addInRow = "";
-//        }
-//        if (rowContentCW == "") {
-            
-//            tableCW = "";
-//            addCWRow = "";
-//        }
-       
-//        $("#dvTable").html("");
-//        var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW;
-//        var dvTable = $("#dvTable");
-//        dvTable.append(tables);
-//    });
-
-//});
 function BindInternalObservationTable(UserRole)
 {
     $.ajax({
         type: 'GET',
         url: '../Observation/GetObservationById',
         dataType: 'json',
-        data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
+        data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val()},
     }).done(function (resultObject) {
         var rowNewContentCW = "";
         var rowNewContentIN = "";
         var rowNewContentSW = "";
+        var rowNewContentSE = "";
+
         var rowhead = "";
         var rowContentCW = '';
         var rowContentIN = '';
         var rowContentSW = '';
+        var rowContentSE = '';
+        
+        
         var icount = 0;
         var InCount = 0;
         var tblContentRowcount = 0;
         var Permissible = "";
-        console.log("observation resultObject");
-
-        //console.log(resultObject);
+       
         for (let i = 0; i < resultObject.length; i++) {
             var IdName = resultObject[i].typeOfContent;
 
              tableIN = '<table id="INTblObservation" style="text-align:center;">';
              tableCW = '<table id="CWTblObservation" style="text-align:center;">';
-             tableSW = '<table id="SWTblObservation" style="text-align:center;">';
+            tableSW = '<table id="SWTblObservation" style="text-align:center;">';
+            tableSE = '<table id="SETblObservation" style="text-align:center;">';
             if (IdName == 'CW') {
                // var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
                 var rowheadCW = '<thead><tr height="50" ><td>説明/ Description</td><td>' + resultObject[i].contentSubTitle6 + '</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td><td>' + resultObject[i].contentSubTitle4 + '</td><td>' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
@@ -4246,13 +4114,15 @@ function BindInternalObservationTable(UserRole)
                // var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
                 var rowheadIN = '<tr><td height="50">説明/ Description</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
             }
-
-            //var rowBodyCW = '<tbody>';
-            //var rowBodyIN = '<tbody>';
-            //var rowBodySW = '<tbody>';
-             rowBodyCW = '<tbody>';
-             rowBodyIN = '<tbody>';
-             rowBodySW = '<tbody>';
+            else if (IdName == 'SE') {
+                // var rowheadIN = '<tr><td height="50">説明/ Description</td><td>いいえ／No.</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+                var rowheadSE = '<thead><tr><td height="50">説明/ Description</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+            }
+            
+            rowBodyCW = '<tbody>';
+            rowBodyIN = '<tbody>';
+            rowBodySW = '<tbody>';
+            rowBodySE = '<tbody>';
             var objcontentCount = resultObject[i].contentCount;
 
             var title = "";
@@ -4304,7 +4174,8 @@ function BindInternalObservationTable(UserRole)
                 contentsubheadingIN = '<td style="width: 45%;border:2px;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
                 contentsubheadingSW = '<td style="width: 30%;border:none;"  id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
                 contentsubheadingCW = '<td style="width: 30%;border:none;"  id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
-
+                contentsubheadingSE = '<td style="width: 30%;border:2px;"  id = "SE" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                console.log(contentsubheadingSE);
             }
             else {
                 title = "";
@@ -4312,8 +4183,9 @@ function BindInternalObservationTable(UserRole)
                 contentsubheadingIN = '<td style="width: 45%;border:2px;border-left:none;border-right:none;border-top:2px solid #f6f6f6;"  id = "IN"> <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
                 contentsubheadingSW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
                 contentsubheadingCW = '<td style="width: 30%;border:2px solid;border-left:none;border-right:none;border-top:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
+                contentsubheadingSE = '<td style="width: 30%;border:2px;border-left:none;border-right:none;border-top:2px solid #f6f6f6;"  id = "SE"> <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                
             }
-
             var sno = resultObject[i].sno;
             var addsno = sno + 1;
             tbLINContentId = resultObject[i].id;
@@ -4335,7 +4207,7 @@ function BindInternalObservationTable(UserRole)
                     '<td id="CW"><input id="Value3" name="Value3[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "' + resultObject[i].measuedValue3 + '" /></td>' +
                     '<td id="CW"><input id="Average" name="Average[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "' + resultObject[i].average + '" /></td>' +
                     '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled > </td>' + deleteRow
-                    //'<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>'
+                 
                 rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" class="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" class="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
                     '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValueCW" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                     '<td id="CW"><input id="Value1" name="Value1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader Value1" value = "" /> </td>' +
@@ -4343,9 +4215,9 @@ function BindInternalObservationTable(UserRole)
                     '<td id="CW"><input id="Value3" name="Value3[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Value3" value = "" /></td>' +
                     '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
                     '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td>' + deleteRow
-                    //'<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
+                   
                 Permissible ='<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="' + resultObject[i].permissibleLimit + '" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
-               // tbLCWSNo = addsno;
+           
             }
             else if (IdName == 'SW') {
             
@@ -4390,30 +4262,60 @@ function BindInternalObservationTable(UserRole)
                     '<td id="IN"><input id="Actual" name="Actual[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "" /> </td>' +
                     '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "" disabled /> </td>' + deleteRow
                     //'<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-                console.log(rowContentIN);
-                /* tbLINContentId = resultObject[i].id; */
-               // tbLINSNo = addsno;
+                
             }
-
+            else if (IdName == 'SE')
+            {
+                
+                var filedatamap = resultObject[i].fileuploadmapping;
+               
+                var filecount = filedatamap.length;
+                var enable = "";
+                var hideval = "";
+                if (UserRole == 4) {
+                   
+                    enable = "disabled";
+                    hideval = "hidden";
+                }
+                var html = "";
+                for (var j = 0; j < filecount; j++)
+                {              
+                    var joinfilename = filedatamap[j].fileName;                   
+                    var ids = filedatamap[j].id;
+                    html += '<div id="' + ids + '" ><span class=""><img height="15" width="15" src="../image/' + CheckFileType(joinfilename) + '" />'
+                        + '<a id="pic" href="../Observation/' + joinfilename + '">' + joinfilename +'</a>'
+                        + ' <a onclick="ObservationFileDeleteAlert(\'' + ids + '\',\'' + joinfilename + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fa fa-fw fa-trash" ' + hideval +'><span class="glyphicon glyphicon-remove" ' + enable +'></span></a>'
+                        + '</div>';
+                }
+                tbLSEContentId = resultObject[i].id;
+                rowContentSE += '<tr id=SE_' + addsno + '>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    // +btn btn-danger rejectbtn btn-xs '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    '<td id="SE"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="" value = "Refer attached file/添付ファイル参照" disabled/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    '<td id="SE"><input id="files_' + j + '" name="SE_' + j + '" class="clsFile" type="file" multiple ' + enable +' ContentEditable="false"/></td>' +
+                    '<td id="SE"><div class="form-group dynAttachmentfiles" id="dfileattach">'+html+'</div></td></td></tr>';
+                addsno = sno + 1;
+            }
+            console.log('data SE');
+            console.log(rowContentSE);
+            /*<button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data - placement="top" onclick = "document.getElementById("files1").click();" > <span class="trn">Browse</span></button >*/
         }
         if (UserRole == 4) {
             rowNewContentCW = "";
             rowNewContentIN = "";
             rowNewContentSW = "";
+            rowNewContentSE = "";
         }
-        rowNewContentCW = "";//no new row for CW
-       // rowNewContentIN = "";
+        rowNewContentCW = "";      
         rowNewContentSW = "";
         rowBodyCW += rowContentCW;
         rowBodyIN += rowContentIN;
         rowBodySW += rowContentSW;
-        //To add '+@Model.PermissibleLimit+'
-      //  var Permissible = '<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
+        rowBodySE += rowContentSE;
         rowBodyCW = rowBodyCW + rowNewContentCW + '</tbody><tfoot id="tblCW_footer" class="tblCW_footer" style="font-weight:900;">' + Permissible +'</tfoot></table><br/>';
         rowBodyIN = rowBodyIN + rowNewContentIN + '</tbody></table><br/>';
         rowBodySW = rowBodySW + rowNewContentSW + '</tbody></table><br/>';
-       // alert(rowNewContentCW);
-       // alert(rowNewContentIN);
+        rowBodySE = rowBodySE + rowNewContentSE + '</tbody></table><br/>';
+       
         tableCW += rowheadCW;
         tableCW += rowBodyCW;
 
@@ -4422,8 +4324,11 @@ function BindInternalObservationTable(UserRole)
 
         tableSW += rowheadSW;
         tableSW += rowBodySW;
-      //  alert(UserRole);
-        // add new button
+
+        tableSE += rowheadSE;
+        
+        tableSE += rowBodySE;
+       
         if (UserRole != 4) {
             addInRow = '<br><tr><p align="right"><button style="align-content: right;" class="addIN" id = "addIN" name = "addIN" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
 
@@ -4436,32 +4341,36 @@ function BindInternalObservationTable(UserRole)
             addInRow = "";
             addCWRow = "";
 
-        }// add new button
+        }
         if (rowContentSW == "") {
-            //alert("sw");
+            
             tableSW = "";
             addSWRow = "";
         }
         if (rowContentIN == "") {
-            //alert("IN");
+            
             tableIN = "";
             addInRow = "";
         }
         if (rowContentCW == "") {
-            //alert("cw");
+           
             tableCW = "";
             addCWRow = "";
+        }
+
+        if (rowContentSE == "") {
+            
+            tableSE = "";
+            addSERow = "";
         }
         //temp
        
         $("#dvTable").html("");
-        var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW;
-        //var tables = tableCW + "<br/>" + addInRow + tableIN + "<br/>" + tableSW;
+        var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW + "<br/>" +  tableSE;
+       
         var dvTable = $("#dvTable");
         dvTable.append(tables);
-        console.log(tableIN);
-        console.log("-----in----");
-        console.log(tableSW);
+        
     });
 
 }
@@ -4483,28 +4392,36 @@ function GenerateInternalObservationContent() {
         $('#dvTable').html("");
         var rowNewContentCW = "";
         var rowNewContentIN = "";
-        var rowNewContentSW = "";
+    var rowNewContentSW = "";
+    var rowNewContentSE = "";
         var obsContentValueId = "";
         var rowContentCW = "";
         var rowContentIN = "";
-        var rowContentSW = "";
+    var rowContentSW = "";
+    var rowContentSE = "";
         var rowBodyCW = "";
         var rowBodyIN = "";
-        var rowBodySW = "";
+    var rowBodySW = "";
+    var rowBodySE = "";
         var tblId = "";
         var tableIN = "";
-        var tableCW = "";
-        var tableSW = "";
+    var tableCW = "";
+    var tableCW = "";
+    var tableSE = "";
+    var tableSM = "";
+
         var rowheadCW = "";
         var rowheadSW = "";
         var rowheadIN = "";
+    var rowheadSE = "";
         var icount = 0;
         var ContentDataList = new Array();
         var addInRow = "";
         var addCWRow = "";
         var addSWRow = "";
         var tblContentRowcount = 0;
-        var Permissible = "";
+    var Permissible = "";
+    var serialno = 1;
         $('#ContentSelect > :selected').each(function () {
             //for xml start       
             var ContentData =
@@ -4526,6 +4443,7 @@ function GenerateInternalObservationContent() {
             var InCount = 0;
             for (let i = 0; i < resultObject.length; i++) {
                 var IdName = resultObject[i].typeOfContent;
+               // alert(IdName);
                 if (tbLINContentId == resultObject[i].id) {
 
                     tblContentRowcount += 1;
@@ -4549,34 +4467,43 @@ function GenerateInternalObservationContent() {
 
                     rowheadIN = '<tr><td height="50">説明/ Description</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
                 }
+                else if (IdName == 'SE') {
+                   // alert(IdName);
+                    rowheadSE = '<tr><td height="50">説明/ Description</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr>';
+                }
                 ///////////////////// contentvalueid>0////////////////<td style="width: 15%">
                 tbLINContentId = resultObject[i].id;
                 tbLCWContentId = resultObject[i].id;
                 tbLSWContentId = resultObject[i].id;
 
                 if (tblContentRowcount == 1) {
-
+                   // alert("1");
                     title = resultObject[i].contentValue.trim(); // resultObject[i].contentValue.trim();
+                   // alert(title);
                     contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
                     contentsubheadingSW = '<td style="width: 30%;border:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
                     contentsubheadingCW = '<td style="width: 30%;border:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
-
+                    contentsubheadingSE = '<td style="width: 30%;border:none;"  id = "SE" id="SE"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
+                    //alert(contentsubheadingSE);
                 }
                 else {
+                   // alert("2");
                     title = "";
                     contentsubheadingIN = '<td style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
                     contentsubheadingSW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "SW" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
                     contentsubheadingCW = '<td style="width: 30%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "CW" id="CW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title.slice(0, title.length - 4) + '" disabled />';
+                    contentsubheadingSE = '<td style="width: 45%;border:2px solid #f6f6f6;border-left:none;border-right:none;border-top:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+                    // contentsubheadingSE = '<td style="width: 30%;border:none;"  id = "SM" id="SM"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + title + '" disabled />';
                 }
 
                 if (resultObject[i].obsContentValueId > 0) {
                     var sno = resultObject[i].sno;
                     var addsno = sno + 1;
                     var objcontentCount = resultObject[i].contentCount;
-
+                  
                     var title = "";
                     var contentsubheadingIN = "";
-
+                    var contentsubheadingSE = "";
                     if (IdName == 'IN') {
 
                         if (InCount == 3) {
@@ -4600,10 +4527,16 @@ function GenerateInternalObservationContent() {
                         {
                             title = resultObject[i].contentValue.trim();
                             contentsubheadingIN = '<td style="width: 45%;border:none;"  id = "IN" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
+
                         }
 
                     }
+                    //if (IdName == 'SE') {
+                    //    alert("se");
+                    //    title = resultObject[i].contentValue.trim();
+                    //    contentsubheadingSM = '<td style="width: 45%;border:none;"  id = "SM" > <input id="Head' + i + i + '" name = "Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader" value = "' + title + '" disabled />';
 
+                    //}
                    // sno = resultObject[i].sno;
                     if (IdName == 'CW') {
                         tbLCWContentId = resultObject[i].id;
@@ -4616,8 +4549,8 @@ function GenerateInternalObservationContent() {
                             '<td id="CW"><input id="Percentage" name = "Percentage[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = "' + resultObject[i].percent + '"  disabled ></td>';
                         '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
 
-                       // addsno = sno + 1;
-                      //  tbLCWSNo = addsno;
+                        // addsno = sno + 1;
+                        //  tbLCWSNo = addsno;
 
                         rowNewContentCW = '<tr><td style="width: 30%" id="CW"><input id="Head' + icount + '" name="Head[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "" disabled /><input type="hidden" id="HiddenContentvalueId" class="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/><input type="hidden" id="HiddenContentId" class="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/></td>' +
                             '<td id="CW"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
@@ -4639,11 +4572,11 @@ function GenerateInternalObservationContent() {
                             '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue2 + '" /> </td>' +
                             '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + resultObject[i].measuedValue3 + '"  /> </td>' +
                             '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-                       // addsno = sno + 1;
-                       // tbLSWSNo = addsno;
+                        // addsno = sno + 1;
+                        // tbLSWSNo = addsno;
 
                         rowNewContentSW = '<tr><td style="width: 30%" id="SW"><input id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "0" disabled /><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
-                           // '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
+                            // '<td id="SW"><input id="SNO' + icount + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="0"/></td>' +
                             '<td id="SW"><input id="SWValue1" name="SWValue1[' + icount + '] " type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
                             '<td id="SW"><input id="SWValue2" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
                             '<td id="SW"><input id="SWValue3" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = "" /> </td>' +
@@ -4654,13 +4587,13 @@ function GenerateInternalObservationContent() {
                     else if (IdName == 'IN') {
                         tbLINContentId = resultObject[i].id;
                         rowContentIN += '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-                           // + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                            // + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
                             '<td id="IN"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                             '<td id="IN"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
                             '<td id="IN"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>' +
                             '<td><i style="width: 40px;" class="fa fa-fw fa-trash btn-remove-tr" onclick="removeTrow(this);"></i></td></tr>';
                         addsno = sno + 1;
-                       // tbLINSNo = addsno;
+                        // tbLINSNo = addsno;
                         title = "";
                         rowNewContentIN = '<tr>' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value=""/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
                             //+ '<td id="IN"><input id="SNO' + icount + '" name="SNO[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + addsno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="0"/></td>' +
@@ -4669,9 +4602,31 @@ function GenerateInternalObservationContent() {
                             '<td id="IN"><input id="Avg" name = "Avg[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>' +
                             '<td><i style="width: 40px;" class="fa fa-fw fa-trash btn-remove-tr" onclick="removeTrow(this);"></i></td></tr>';
                     }
+                    else if (IdName == 'SE') {
+                        //alert(IdName);
+                        tbLSEContentId = resultObject[i].id;
+                        rowContentSE += '<tr id=SE_' + serialno + '>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                        // + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                            '<td id="SE"><label id="MeasuedValue" name="MeasuedValue[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader MeasuedValue">"Refer attached file/添付ファイル参照"</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '" /></td > ' +
+//                            < input id = "MeasuedValue" name = "MeasuedValue[' + i + i + '] " type = "text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "Refer attached file/添付ファイル参照" /> <input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '" /></td > ' +
+                            '<td id="SE"><input id="files_' + serialno + '" name="SE_' + serialno + '" class="clsFile" type="file" multiple ContentEditable="false"/></td>' +
+                        '<td id="SE" ><div class="Tables-AndTablesTextBox form-group dynAttachmentfiles" id="dfileattach"></div></td></td></tr>';
+                        addsno = sno + 1;
+                    }
+                        //else if (IdName == 'SE') {
+                    //    tbLSEContentId = resultObject[i].id;
+                    //    rowContentSE += '<tr>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    //        // + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                    //        '<td id="SM"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "' + resultObject[i].measuedValue + '" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                    //        '<td id="SM"><input id="Actual" name="Actual[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Actual" value = "' + resultObject[i].actualValue + '" /> </td>' +
+                    //        '<td id="SM"><input id="Avg" name = "Avg[' + i + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Avg"   value = "' + resultObject[i].instrumentError + '" disabled /> </td>' +
+                    //        '<td><i style="width: 40px;" class="fa fa-fw fa-trash btn-remove-tr" onclick="removeTrow(this);"></i></td></tr>';
+                    //    addsno = sno + 1;
+                    //}
                     icount += i;
 
                 }
+
                 ///////////////////// contentvalueid>0 ////////////////
                 else if (resultObject[i].obsContentValueId == 0) {
 
@@ -4719,8 +4674,7 @@ function GenerateInternalObservationContent() {
                                 '<td id="CW"><input id="Average" name="Average[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader Average" value = "" /></td>' +
                                 '<td id="CW"><input id="Percentage" name = "Percentage[' + icount + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader Percentage" value = ""  disabled > </td>' +
                                 '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>';
-                            // tbLCWContentId = resultObject[i].id;
-                           //  tbLCWSNo = j;
+                        
                             Permissible = '<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="' + resultObject[i].permissibleLimit + '" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
 
                         }
@@ -4742,9 +4696,6 @@ function GenerateInternalObservationContent() {
                                 '<td id="SW"><input id="SWValue4" name="SWValue1[' + icount + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"  value = ""  /> </td>' +
                                 '<td><i style="width: 40px;" class="fa fa-fw fa-trash" onclick="removeTrow(this);"></i></td></tr>'
 
-
-                            // tbLSWContentId = resultObject[i].id;
-                           // tbLSWSNo = j;
                         }
                         else if (IdName == 'IN') {
 
@@ -4767,6 +4718,22 @@ function GenerateInternalObservationContent() {
                            // tbLINSNo = j;
 
                         }
+                        else if (IdName == 'SE') {
+                           // alert("test");
+                            rowContentSE += '<tr id=SE_'+serialno +'>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                                // + '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                               // '<td id="SE"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader MeasuedValue" value = "Refer attached file/添付ファイル参照" /><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                                '<td id="SE"><label id="MeasuedValue" name="MeasuedValue[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader MeasuedValue">"Refer attached file/添付ファイル参照"</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '" /></td > ' +
+                                '<td id="SE"><input id="files_' + serialno + '" name="SE_' + serialno + '" class="clsFile" type="file" multiple/></td>' +
+                                '<td id="SE" style=""><div class="form-group dynAttachmentfiles" id="dfileattach"></div></td></td></tr>';
+                           // console.log(rowContentSE);
+                           //<button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data - placement="top" onclick = "document.getElementById("files1").click();" ><span class="trn">Browse</span></button >
+                            // '<td id="SE"><button id="bfile" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="" onclick="document.getElementById("files1").click();" data-title="Add Attachments"> <span class="trn">Browse</span></button><input type="file" id="files1" name="files[]" multiple style="display: none;" ></input></td>' +
+                            //<input id="files1" name="files1" class="clsFile" type="file" multiple/><button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data - placement="top" onclick = "document.getElementById("files1").click();" > <span class="trn">Browse</span></button >
+                            //style="display:none;" <button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data - placement="top" onclick = "document.getElementById("files1").click();" > <span class="trn">Browse</span></button >
+                            addsno = sno + 1;
+                            serialno = serialno + 1;
+                        }
                         icount = i + j;
 
                     }
@@ -4780,10 +4747,12 @@ function GenerateInternalObservationContent() {
             rowBodyCW = rowContentCW;
             rowBodyIN = rowContentIN;
             rowBodySW = rowContentSW;
+            rowBodySE = rowContentSE;
 
             tableIN = '<table id="INTblObservation" style="text-align:center;">';
             tableCW = '<table id="CWTblObservation" style="text-align:center;">';
             tableSW = '<table id="SWTblObservation" style="text-align:center;">';
+            tableSE = '<table id="SETblObservation" style="text-align:center;">';
             rowNewContentCW = "";//no new row for and add row for CW
             var Permissible = '<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="" id="PermissibleLimit" class="PermissibleLimit" required="required"></td></tr>';
             rowBodyCW = rowBodyCW + rowNewContentCW + '</tbody><tfoot id="tblCW_footer" class="tblCW_footer" style="font-weight:900;">' + Permissible + '</tfoot></table><br/>';
@@ -4799,12 +4768,16 @@ function GenerateInternalObservationContent() {
             tableSW += rowheadSW;
             tableSW += rowBodySW;
 
-            // add new button
+            rowBodySE = '<tbody>' + rowContentSE + '</tbody></table><br/>';
+            tableSE += rowheadSE;
+            tableSE += rowBodySE;
+            //alert(tableSE);
             addInRow = '<br><tr><p align="right"><button style="align-content: right;" class="addIN" id = "addIN" name = "addIN" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
 
             addCWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addCW" id = "addCW" name = "addCW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
 
             addSWRow = '<br><tr><p align="right"><button style="align-content: right;" class="addSW" id = "addSW" name = "addSW" type = "button"	class="btn btn-primary trn">Add New Row	</button></p></tr>';
+
             // add new button
             if (rowContentSW == "") {
 
@@ -4821,9 +4794,10 @@ function GenerateInternalObservationContent() {
                 tableCW = "";
                 addCWRow = "";
             }
+            //alert(tableSE);
             console.log(tableIN);
             $("#dvTable").html("");
-            var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW;
+            var tables = addCWRow + tableCW + "<br/>" + addInRow + tableIN + "<br/>" + addSWRow + tableSW + "<br/>" + tableSE ;
             var dvTable = $("#dvTable");
             dvTable.append(tables);
         });
@@ -4834,7 +4808,7 @@ function SaveInternalObservation() {
         var Unit = $('#Units').val();
         if (Unit == null || Unit == "") {
             showWarning("Please enter the Units", language);
-            return false;;
+            return false;
         }
         var Temprature = $('#TempStart').val();
         if (Temprature == null || Temprature == "") {
@@ -4867,7 +4841,7 @@ function SaveInternalObservation() {
                     footerPermissiable = $('#tblCW_footer').find("input.PermissibleLimit").val();
                 }
                 $(this).find('tr').each(function () {
-
+                    var rowid = $(this).find('tr').attr('id');
                     var currentRow = $(this).find('td').attr('id');
 
                     var contentvalueid = $(this).find("input[name = HiddenContentvalueId]").val();
@@ -4939,6 +4913,9 @@ function SaveInternalObservation() {
                         }
                         else if (currentRow == 'IN') {
 
+                            //console.log($(this).closest("tr").find("td:eq(3)").text());
+                          
+                          
                             var ObservationContenValuesData = {
 
                                 Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
@@ -4960,12 +4937,52 @@ function SaveInternalObservation() {
                             ObservationContentValues.push(ObservationContenValuesData);
 
                         }
+                        else if (currentRow == 'SE') {
+                            //alert($(this).closest("tr").attr('id'));
+                            console.log($(this).closest("tr").attr('id'));
+                            console.log($(this).closest("tr").find("td:eq(3)").text());
+
+                            var data = $(this).closest("tr").attr('id');//$(this).closest("tr").find("td:eq(3)").text();
+
+                            var ObservationContenValuesData = {
+
+                                Id: contentvalueid,// $(this).find("input[name = HiddenContentvalueId]").val(),
+                                ParentId: $('#TemplateObservationId').val(),
+                                Sno: data,//$(this).find("td:eq(1) input[type='text']").val(),//2,3,4
+                                MeasuedValue: $(this).find("td:eq(1) input[type='text']").val(),
+                                ActualValue: $(this).find("td:eq(2) input[type='text']").val(),
+                                InstrumentError: $(this).closest("tr").find("td:eq(3)").text(),
+                                Diff: $(this).find('td').attr('id'),
+                                MeasuedValue1: "",
+                                MeasuedValue2: "",
+                                MeasuedValue3: "",
+                                Average: "",
+                                Percent: "",
+                                ContentId: $(this).find("input[name = HiddenContentId]").val(),
+                                PermissibleLimit: ""
+                                //}
+                            }
+                            ObservationContentValues.push(ObservationContenValuesData);
+
+                        }
                     }
 
                 });
             });
 
         });
+    var filedataOBS = [];
+    var filenameOBS = [];
+    var filesizeOBS = [];
+    var fileSerialNoOBS = [];
+    $.each(FileData, function (key, value) {
+       
+        filesizeOBS.push(value.size);
+        filenameOBS.push(value.name.trim());
+        filedataOBS.push(value.data);
+        fileSerialNoOBS.push(value.slno);
+       
+    })
 
         var data = {
             Id: $('#Id').val(),
@@ -4976,9 +4993,14 @@ function SaveInternalObservation() {
             Units: $('#Units').val(),
             Condition: $('#VisualCheckCondition').val(),
             ObservationContentValuesList: ObservationContentValues,
-            ObservationContentMappingList: ObservationContenMapping
-            //PermissibleLimit: $('#PermissibleLimit').val()
-        }
+            ObservationContentMappingList: ObservationContenMapping,
+            FileName: filenameOBS,
+            FileData: filedataOBS,
+            FileSize: filesizeOBS,
+            Serialno: fileSerialNoOBS,
+            PermissibleLimit: $('#PermissibleLimit').val()
+    }
+
         console.log(data);
         $.ajax({
             url: '../Observation/InsertDynamicObservationContent',
@@ -4992,7 +5014,6 @@ function SaveInternalObservation() {
         });
 }
 
-
 function IfIdNoExist(idno) {
     var res;
     $.ajax({
@@ -5004,24 +5025,106 @@ function IfIdNoExist(idno) {
         //debugger;
         GlIDNo = resultObject;
         
-        //alert(resultObject);
-        //console.log('******************************************************************************************************************************');
-        //console.log(resultObject);
-        //console.log('******************************************************************************************************************************');
-        //var filterLine = $.grep(resultObject, function (element, index) {
-        //    return element.idNo == idno;
-        //});
-
-        //if (filterLine.length > 0) {
-        //    ///alert('true');
-        //    showWarning("Instrument IdNo Already Exists", lang);
-        //    return false;
-           
-        //}
-        //else {
-        //    //alert('false');
-        //    return true;
-           
-        //}
+     
     });    
 }
+function MailInsertInstrument() {
+
+    $.ajax({
+        url: '../Instrument/MailInsertInstrument',
+        type: 'POST',
+        data: { userViewModelList: Request },
+        dataType: "json",
+    }).done(function (resultObject) {
+       // showSuccess("Data Saved Successfully");
+    
+    });
+}
+function MasterFileDeleteAlert(MasterId, EquipFilename, ids)
+{
+            Swal.fire({
+            title: "Are you Sure You Want to Delete the File",
+            text: "Master Equipment File",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, Delete it!",
+            closeOnConfirm: false
+        }).then((result) => {
+            
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: '../Master/DeleteMasterFile',
+                    type: 'POST',
+                    data: { MasterId: MasterId, filename: EquipFilename }
+                }).done(function (resultObject) {
+                 
+                $("#" + ids).remove();
+                $("#" + ids).hide();
+                
+                });
+          }
+        });
+    }
+
+function ObservationFileDeleteAlert(ids,Filename) {
+    Swal.fire({
+        title: "Are you Sure You Want to Delete the File",
+        text: "Special Equipment File",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Delete it!",
+        closeOnConfirm: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '../Observation/DeleteObservationFile',
+                type: 'POST',
+                data: { Id: ids, filename: Filename }
+            }).done(function (resultObject) {
+             
+                $("#" + ids).remove();
+                $("#" + ids).hide();
+               // element.remove();
+                //showSuccess("Master Activated Successfully", lang);
+                //window.location.reload();
+                // }
+            });
+        }
+    });
+}
+
+function removeRequestFromControlCard(Row,Id) {
+    //alert(Id);
+        Swal.fire({
+            title: "Are you Sure You Want to Delete the Request,Will be Removed Permanently from the Tracker and Control Card / リクエストを削除してもよろしいですか。リクエストはトラッカーとコントロール カードから永久に削除されます",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, Delete it!",
+            closeOnConfirm: false
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: '../Instrument/removeRequestRowFromControlCard',
+                    type: 'POST',
+                    data: { RequestId: Id}
+                }).done(function (resultObject) {
+                    $(Row).closest('tr').remove();                  
+                    // element.remove();
+                    showSuccess("Master Activated Successfully", lang);
+                    window.location.reload();
+                   
+                });
+            }
+        });
+    }
+
+    

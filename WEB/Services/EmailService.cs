@@ -22,8 +22,7 @@ namespace WEB.Service
     private readonly SmtpSettings smtpSettings;
 
     private readonly SmtpClient client;
-
-    public EmailService(IOptions<SmtpSettings> smtpSetting)
+   public EmailService(IOptions<SmtpSettings> smtpSetting)
     {
       smtpSettings = smtpSetting.Value;
       client = new SmtpClient(smtpSettings.Server);
@@ -139,11 +138,12 @@ namespace WEB.Service
                 smtp.Credentials = new NetworkCredential(smtpvalue.UserId, smtpvalue.Pwd);
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
+            
             }
-      else
-      {
+      //else
+      //{
 
-      }
+      //}
     }
   }
 }

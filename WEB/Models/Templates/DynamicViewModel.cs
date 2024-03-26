@@ -1,4 +1,7 @@
-﻿namespace WEB.Models
+﻿using CMT.DATAMODELS;
+using NPOI.HPSF;
+
+namespace WEB.Models
 {
 	public class DynamicViewModel
 	{
@@ -54,11 +57,23 @@
 		public string? FormatNoTitle { get; set; }
 		public int? TemplateObservationId { get; set; }
 		public List<UserContentMappingView> UserContentMappingViewModel { get; set; }
+
+		//public List<fileuploadmapping> fileuploadmapping { get; set; }
 		public int? StatusId { get; set; }
 		public int? CalibFreq { get; set; }
 		public string? PermissibleLimit { get; set; }
 
 		public int ? istemplate { get; set; }
+
+		public string[] FileName { get; set; }
+
+		public string[] FileData { get; set; }
+
+
+		public string[] FileSize { get; set; }
+
+		public string[] Serialno { get; set; }
+
 	}
 	public class UserContentMappingView
 	{
@@ -67,4 +82,23 @@
 		
 
 	}
+
+	//public class fileuploadmapping
+	//{
+
+	//	public int Id { get; set; }
+	//	public string FileName { get; set; }
+
+	//	public string FileData { get; set; }
+
+
+	//	public string FileSize { get; set; }
+
+	//	public string Serialno { get; set; }
+	//	public string FileGuid { get; set; }
+	//	public string FilePath { get; set; }
+	//	public int ContentId { get; set; }
+
+	//	public int tempId { get; set; }
+	//}
 }

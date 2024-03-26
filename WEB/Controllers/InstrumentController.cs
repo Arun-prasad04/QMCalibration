@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
+using NPOI.SS.Formula.Functions;
 using WEB.Models;
 using WEB.Services;
 using WEB.Services.Interface;
+using Microsoft.AspNetCore.Http;
 using static iTextSharp.text.pdf.PdfDocument;
 
 namespace WEB.Controllers;
@@ -23,7 +25,8 @@ public class InstrumentController : BaseController
 	private IInstrumentService _instrumentService { get; set; }
 	private IRequestService _requestService { get; set; }
 	private IUnitOfWork _unitOfWork { get; set; }
-	private IQRCodeGeneratorService _qrCodeGeneratorService { get; set; }
+    private IHttpContextAccessor _contextAccessor { get; set; }
+    private IQRCodeGeneratorService _qrCodeGeneratorService { get; set; }
 	private IConfiguration _configuration;
 	public InstrumentController(IInstrumentService instrumentService, ILogger<BaseController> logger, IHttpContextAccessor contextAccessor, IRequestService requestService, IUnitOfWork unitOfWork, IQRCodeGeneratorService qrCodeGeneratorService, IConfiguration configuration) : base(logger, contextAccessor)
 	{
@@ -115,13 +118,12 @@ public class InstrumentController : BaseController
     }
     public IActionResult Create()
 	{
-		//ViewBag.Shared = "Instrument";
-		//ViewBag.PageTitle = "Instrument Create";
-		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.CreateNewInstrument(userId, userRoleId);
-		//ViewBag.ObservationType = response.ResponseData.ObservationType;
-		ViewBag.UserBaseDepartment = response.ResponseData.Departments;
+		
+		//ViewBag.UserBaseDepartment = response.ResponseData.Departments;
 		ViewBag.ShowDetails = true;
 		return View(response.ResponseData);
 	}
@@ -152,40 +154,32 @@ public class InstrumentController : BaseController
 			instrument.DateOfReceipt = DateTime.Now;
 			instrument.DueDate = DateTime.Now;
 			instrument.CalibDate = DateTime.Now;
-			//instrument.UserDept=Convert.ToInt32(base.SessionGetString("DepartmentId"));
-			//if(userRoleId != 2)
-			//{
-			//    instrument.UserDept = UserDeptId;
-			//}
+			
 			response = _instrumentService.InsertInstrument(instrument);
-		}
+         
+        }
 		TempData["ResponseCode"] = response.ResponseCode;
 		TempData["ResponseMessage"] = response.ResponseMessage;
-		if (response.ResponseMessage == "Success")
-		{
-			return RedirectToAction("Index", "Instrument");
-		}
-		else
-		{
-			return Json(response.ResponseData);
-		}
-	}
+		          
+   //         if (response.ResponseMessage == "Success")
+			//{
+            return RedirectToAction("Index", "Instrument");
+			//}
+			//else
+			//{
+			//return Json(response.ResponseMessage);
+			//}
+       	}
 
 	public ActionResult InstrumentEdit(int instrumentId)
 	{
-		//ViewBag.Shared = "Instrument";
 		ViewBag.PageTitle = "Instrument Edit";
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
-
-		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentById(instrumentId);
 		ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentsForId(instrumentId);
 		//ViewBag.ObservationType = response.ResponseData.ObservationType;
 		ViewBag.UserDept = response.ResponseData.UserDept;
-		//ViewBag.CertificationTemplate = response.ResponseData.CertificationTemplate;
 		ViewBag.CalibFreq = response.ResponseData.CalibFreq;
-		//ViewBag.MUTemplates = response.ResponseData.MUTemplate;
-		//ViewBag.Observation = response.ResponseData.ObservationTemplate;
-
+		
 		if (userRoleId == 1 || userRoleId == 3)
 		{
 			response.ResponseData.IsDisabled = "readonly";
@@ -275,6 +269,8 @@ public class InstrumentController : BaseController
 
 		return Json(true);
 	}
+
+
 	//For Tool Inventory Manager
 	public IActionResult ToolInventory(int UserDept, int DueMonth)
 	{
@@ -316,17 +312,9 @@ public class InstrumentController : BaseController
 		var TotalCount = 0;
 		string Reqtype = string.Empty;
 
-		//var RequestType = 0;
-		//RequestType = dparam.reqType;
 		int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		ResponseViewModel<InstrumentViewModel> response;
-		// string Search = string.Empty;
-
-		//string parameter = RouteData.Values["reqType"].ToString();
-
-		// string Reqtype = HttpContext.Request.Query["reqType"].ToString();
-
 		List<InstrumentViewModel> ins = new List<InstrumentViewModel>();
 		response = _instrumentService.ToolRoomDepartmentList(userRoleId, userId, dparam.iDisplayStart, dparam.iDisplayLength, dparam.sSearch,  sscode,  instrumentname,  labid,  typeOfEquipment,  serialno,  range,  department,  calibrationdate,  duedate);
 
@@ -363,16 +351,7 @@ public class InstrumentController : BaseController
 		//return Json(response.ResponseData);
 	}
 	
-	//public IActionResult GetInstrumentForById(int instrumentId)
-	//{
-	//	ViewBag.InstrumentId = instrumentId;
-	//	QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId);
-	//	ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
-	//	ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
-
-	//	return View(response.ResponseData);
-
-	//}
+	
 	#region Control Card
 	public IActionResult ControlCard(int instrumentId)
 	{
@@ -380,9 +359,12 @@ public class InstrumentController : BaseController
         ViewBag.InstrumentId = instrumentId;
 		QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(instrumentId,response.ResponseData.IdNo);
 		ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
-		//ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+        
+        ViewBag.IdNo = qrCodeFilesViewModel.InstrumentIdNo;
 
-		return View(response.ResponseData);
+        //ResponseViewModel<InstrumentViewModel> response = _instrumentService.GetInstrumentDetailById(instrumentId);
+
+        return View(response.ResponseData);
 		
 	}
 
@@ -421,10 +403,10 @@ public class InstrumentController : BaseController
 	}
 
     //public IActionResult ControlCardQRCodePrint(string instrumentId,string Idno)
-    public IActionResult ControlCardQRCodePrint(string instrumentId)
+    public IActionResult ControlCardQRCodePrint(string instrumentId,string IdNo)
     {
         //QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId), Idno);
-        QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId),"");
+        QRCodeFilesViewModel qrCodeFilesViewModel = GetQRCodeImageForInstru(int.Parse(instrumentId), IdNo);
         ViewBag.QRCodeImage = qrCodeFilesViewModel.QRImageUrl;
         ViewBag.QRDecodeText = "data:image/png;base64," +
                                 Convert.ToBase64String(qrCodeFilesViewModel.DecodeText, 0, qrCodeFilesViewModel.DecodeText.Length);
@@ -439,14 +421,7 @@ public class InstrumentController : BaseController
         
         return Json(response.ResponseDataList);
 	}
-	//public IActionResult GetToolRoomSubSectionList()
-	//{
-
-	//	ResponseViewModel<ToolRoomMasterViewModel> response = _instrumentService.GetToolRoomSubSectionList();
-	//	return View(response.ResponseDataList);
-	//	//return View();
-
-	//}
+	
 	public JsonResult GetToolRoomSubSectionList()
 	{
 		List<ToolRoomMasterViewModel> DepartmentList;
@@ -469,15 +444,7 @@ public class InstrumentController : BaseController
 		return Json(DepartTranslaterMaster);
 
 	}
-
-    //public JsonResult IfIdNoExist()
-    //{
-    //    ResponseViewModel<IdNoModel> response = _instrumentService.IfIdNoExist();
-
-    //    return Json(response.ResponseDataList);
-    //}
-
-    public class ToolRoomDepartmentlist
+	public class ToolRoomDepartmentlist
 	{
 		public int id { get; set; }
 		public string? Name { get; set; }
@@ -486,6 +453,46 @@ public class InstrumentController : BaseController
 		public int? DepartmentId { get; set; }
 
 
+	}
+    public async Task<IActionResult> MailInsertDueRequest(List<RequestAllView> userViewModelList)
+    {
+        //return Json(true);
+        //try
+        //{ 
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        await _requestService.MailInsertDueRequest(userViewModelList, userId);
+        //}
+        //catch (Exception ex)
+        //      {
+        //	return Json(true);
+        //}
+        //return true;
+        return Json(true);
+    }
+
+    public async Task<IActionResult> MailInsertInstrument(InstrumentViewModel instrument,string ReqestNo)
+    {
+    
+    //instrument: InstrumentName, ReqestNo: ReqestNo, CreatedOn: CreatedOn, IdNo: IdNo
+    var result = await _instrumentService.MailInsertInstrument();
+	
+    return Json(result);
+    }
+
+    public async Task<IActionResult> EmailForTracker()
+    {
+      
+        int userId = Convert.ToInt32(base.SessionGetString("LoggedId"));
+        await _requestService.EmailForTracker();
+       
+       return Json("");
+    }
+
+	public JsonResult removeRequestRowFromControlCard(int RequestId)
+	{
+		ResponseViewModel<InstrumentViewModel> response = _instrumentService.removeRequestRowFromControlCard(RequestId);
+
+		return Json(response.ResponseMessage);
 	}
 
 }

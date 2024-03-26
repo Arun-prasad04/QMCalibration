@@ -5,6 +5,7 @@ using AutoMapper;
 using WEB.Models;
 using System.Security.Cryptography;
 using System.Text;
+using NPOI.HPSF;
 
 
 namespace WEB.Services;
@@ -13,18 +14,16 @@ namespace WEB.Services;
 public class UtilityService : IUtilityService
 {
 
+	private IConfiguration _configuration;
 
+	private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment;
 
-    private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment;
-
-    public UtilityService(Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment)
+    public UtilityService(Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment, IConfiguration configuration)
     {
         Environment = _environment;
-    }
+		_configuration = configuration;
 
-
-
-
+	}
 
     public string Decrypt(string cipherText)
     {
@@ -68,8 +67,37 @@ public class UtilityService : IUtilityService
         }
         return clearText;
     }
+	public string SaveFiles(string FileData, string FileName, string Refno,int TemplateId,int ContentId)
+	{
+		string wwwPath = this.Environment.WebRootPath;
+		string contentPath = this.Environment.ContentRootPath;
 
-    public string UploadImage(IFormFile postedFile, string UploadFolder)
+		string filePath = Path.Combine(this.Environment.WebRootPath, "Observation");
+
+		//string filePath = Path.Combine(this.Environment.WebRootPath, "Observation");
+		//var filePath = "C:\\Users\\prasaar\\Desktop\\datas\\observation";// _configuration.GetSection("AppSettings")["UploadFile"];
+		//var filePath = _configuration.GetSection("AppSettings")["UploadFile"];
+		
+		var bytes = Convert.FromBase64String(FileData.Split(',')[1]);
+       
+		if (!Directory.Exists(filePath))
+		{
+			Directory.CreateDirectory(filePath);
+		}
+         //filePath = filePath + "\\" + Refno + "\\" + FileName;
+        using (var imageFile = new FileStream(Path.Combine(filePath, FileName), FileMode.Create))
+        {
+
+            imageFile.Write(bytes, 0, bytes.Length);
+            imageFile.Flush();
+        }
+        //using (FileStream stream = new FileStream(Path.Combine(filePath, FileName), FileMode.Create))
+        //{
+        //    postedFile.CopyTo(stream);
+        //}
+        return Path.Combine(filePath, FileName);// filePath + FileName;
+	}
+	public string UploadImage(IFormFile postedFile, string UploadFolder)
     {
         string wwwPath = this.Environment.WebRootPath;
         string contentPath = this.Environment.ContentRootPath;

@@ -188,7 +188,18 @@
 
 
 <script type="text/javascript">
-
+  
+    var RequestNo = '@HttpContextAccessor.HttpContext.Session.GetString("RequestNo")';
+    if (RequestNo.length > 1) {
+         $.ajax({
+            url: '../Instrument/EmailForTracker',
+            type: 'POST',
+            // data: { instrument: Instrument, Request: Request },
+            dataType: "json",
+        }).done(function (resultObject) {
+           // showSuccess("Data Saved Successfully");
+        });
+    }
 
     var filters = [];
     var actions = "pageload";

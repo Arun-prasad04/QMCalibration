@@ -1333,8 +1333,65 @@ namespace WEB.Services
 
 			return dsResults;
 		}
+        public List<MasterFileUploadViewModel> GetMasterFileUploadViewModel(int MasterId)
+        {
+            try
+            {// List<UserViewModel> userViewModelList = new List<UserViewModel>();
 
-		public List<ToolRoomMasterViewModel> GetToolRoomsSubSectionMasterList()
+
+                CMTDL _cmtdl = new CMTDL(_configuration);
+
+                List<MasterFileUploadViewModel> uv = new List<MasterFileUploadViewModel>();
+
+                DataSet ds = _cmtdl.GetMasterFileUpload(MasterId);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        MasterFileUploadViewModel Dept = new MasterFileUploadViewModel
+                        {
+
+                            UploadId = Convert.ToInt32(dr["UploadId"]),
+                            Filename = Convert.ToString(dr["Filename"]),
+                            MasterId = Convert.ToInt32(dr["MasterId"]),
+                           
+                        };
+                        uv.Add(Dept);
+
+                    }
+
+                }
+                return uv;
+
+
+            }
+            catch (Exception e)
+            {
+                ErrorViewModelTest.Log("MasterService - GetMasterFileUploadViewModel Method");
+                ErrorViewModelTest.Log("exception - " + e.Message);
+                return null;
+            }
+
+
+        }
+        public DataSet GetMasterFileUpload(int MasterId)
+        {
+            var connectionString = _configuration.GetConnectionString("CMTDatabase");
+            SqlCommand cmd = new SqlCommand("GetMasterFileUpload");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@MasterId", MasterId);
+            SqlConnection sqlConn = new SqlConnection(connectionString);
+            DataSet dsResults = new DataSet();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter();
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 2000;
+            sqlAdapter.SelectCommand = cmd;
+            sqlAdapter.Fill(dsResults);
+            return dsResults;
+            
+        }
+        public List<ToolRoomMasterViewModel> GetToolRoomsSubSectionMasterList()
 		{
 			try
 			{// List<UserViewModel> userViewModelList = new List<UserViewModel>();

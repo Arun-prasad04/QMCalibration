@@ -48,4 +48,7 @@ ResponseViewModel<InstrumentViewModel> SubmitLABAdminUpdates(int requestId, int 
     ResponseViewModel<RequestViewModel> SaveExternalObs(int requestId,int InstrumentID, int userId, string InstrumentIdNo, int CalibFreq);
 
     ResponseViewModel<RequestViewModel> ExternalCalibrationReject(int requestId, string RejectReason, int userId);
+    Task<bool> MailInsertDueRequest(List<RequestAllView> reqlist, int userId);
+    Task<bool> EmailForTracker();
+    
 }

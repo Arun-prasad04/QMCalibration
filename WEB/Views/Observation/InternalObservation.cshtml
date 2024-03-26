@@ -38,8 +38,79 @@
 		border: 1px solid black;
 		border-collapse: collapse;
 	}
+
+	.dynAttachmentfiles {
+		margin-left: -5px;
+		margin-top: 5px;
+	}
+
+
+	.col-xs-1 {
+		position: relative;
+		min-height: 1px;
+		padding-right: 15px;
+		padding-left: 15px;
+		float: left;
+	}
+
+	.btn-xs,
+	.btn-group-xs > .btn {
+		padding: 1px 5px;
+		font-size: 12px;
+		line-height: 1.5;
+		border-radius: 3px;
+	}
+
+	.doctabledesign {
+		padding-left: 0%;
+		margin-top: 12px;
+	}
+
+	.dfileuploadon {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		width: 101%;
+		margin-bottom: -3px;
+	}
+
+	.pull-right {
+		float: right !important;
+	}
+
+	/*.bootstrap-select.btn-group .btn .filter-option {*/
+	.btn-group {
+		margin-left: 3px !important;
+	}
+
+	.rejectbtns {
+		background: #71180C;
+		border-color: #71180C;
+		margin-left: 10px;
+		color: #fff;
+	}
+
+	.glyphicon-save:before {
+		content: "\e166";
+	}
+
+	.glyphicon {
+		position: relative;
+		top: 1px;
+		display: inline-block;
+		font-family: 'Glyphicons Halflings';
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	.glyphicon-remove:before {
+		content: "\e014";
+	}
 </style>
-@* <div class="row"> *@
+
 <div class="col-md-12" style="padding: 19px;border: 1px solid black; background-color: white;">
 
 
@@ -56,17 +127,19 @@
 		</td>
 
 		</tr> *@
-
+	
 		<tr class="">
+
 			<td class="" rowspan="2" style="font-weight: bolder;color: #2979cb ;width:150px;" height="20">
 				<img src="../image/Fuso.png" alt="" style="width: 40%;" />
+			
 			</td>
 
 			<td id="tdHeaderDepth" class="" rowspan="2" style="font-weight: bold;font-size: 15px;">
 				<span class="trn">
 					@Model.Title
 				</span>
-				@* <span class="trn">ディップスマイクロメータ／Depth micrometer </span> </br> <span class="trn">アナログ／Analog・デジタル／Digital</span> *@
+				
 			</td>
 
 			<td class="trn" height="10">
@@ -258,9 +331,18 @@
 					<input type="text" name="ReviewDate" id="ReviewDate"
 						   value=" @Model.CalibrationReviewedDate" class="Tables-AndTablesTextBox TblInHeader" disabled>
 				</td>
-
+				@*<td>
+				<button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip"
+						data-placement="top" title="" onclick="document.getElementById('files1').click();"
+						data-title="Add Attachments">
+					<span class="trn">Browse</span>
+				</button>
+				<input type="file" id="files1" name="files[]" multiple style="display: none;" />
+				<div class="col-lg-10 form-group dynAttachmentfiles" id="dfileattach"></div>
+				</td>*@
 			}
 		</tr>
+
 			@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "4")@*  && @Model.ReviewStatus == 0) *@
 			@*|| @Model.ReviewStatus == 0) @Model.ReviewStatus	 != null *@
 			{
@@ -273,9 +355,9 @@
 						<input type="radio" name="Approve" id="Approve" value="">
 						<label class="trn">不合格 /Fail</label>
 						<input type="radio" name="Reject" id="Reject">
+						
 					</div>
 				</td>
-
 			</tr>
 			}
 			@* <textarea name="VisualCheckCondition" id="VisualCheckCondition" style="width: 500px;" class="Tables-AndTablesTextBox" required="required">@Model.Condition</textarea> *@
@@ -313,27 +395,28 @@
 					<input type="button" class="btn btn-primary trn btnSaveReview" value="Submit Review" name="btnSaveReview" id="btnSaveReview" onclick="SubmitReview(language)">
 
 						@*  } *@
-					<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})'>Cancel</a>
+					<a class="btn btn-primary trn" href='@Url.Action("Request","Tracker",new {reqType=4})' >Cancel</a>
 				</td>
 			</tr>
 			}
 	</table>
 	 
-		<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
+	<input type="hidden" id="ReviewStatus" name="ReviewStatus" value="@Model.ReviewStatus">
 	<input type="hidden" id="InstrumentId" name="InstrumentId" value="@Model.Id">
 	<input type="hidden" id="RequestId" name="RequestId" value="@Model.RequestId">
 	<input type="hidden" id="TemplateObservationId" name="TemplateObservationId" value="@Model.TemplateObservationId">
 	<input type="hidden" id="InsCalibFreq" name="InsCalibFreq" value="@Model.CalibFreq">
 	
 	<input type="hidden" id="istemplate" name="istemplate" value="@Model.istemplate">
+	@*<input id="files1" name="files1" class="clsFile" type="file" multiple=""><button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data="" -="" placement="top" onclick="$(" #files1").find(".clsfile").click();"=""> <span class="trn">Browse</span></button>'*@
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+<script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
 
 <script type="text/javascript">
-	
-
+	//alert($("#Units").find('.clsunit').val());
+	//alert($document.getElementById('.clsunit').val());
 	var tableIN = "";
 	var tableCW = "";
 	var tableSW = "";
@@ -348,6 +431,9 @@
 
 	var tbLSWContentId;
 	var tbLSWSNo;
+
+	var tbLSEContentId;
+	var tbLSESNo;
 	
 	$(document).on('keyup', '.MeasuedValue , .Actual', function () {
 
@@ -474,12 +560,7 @@
 		// });
 
 	});
-	// $(document).on('click', '.btn-Generate', (e) => {
-	// 	GenerateInternalObservationContent();
-	// });
-	// $(document).on('click', '.btnSaveApproval', (e) => {
-	// 	SaveInternalObservation();
-	// });
+	
 	$(document).on('click', '.addSW', (e) => {
 		addSW();
 	});
@@ -489,7 +570,23 @@
 	$(document).on('click', '.addIN', (e) => {
 		addIN();
 	 });
-	
+	function checkFileSize(element, maxSize, event) {
+		var val = $(element).val(); //get file value
+		var fileSize = ($(element)[0].files[0].size / 1024 / 1024); //size in MB
+		if (fileSize > maxSize) {
+			AlertPopup("File Size Should Not Exceed More Than 5MB");// if Maxsize from Model > real file size alert this
+			$("#ImageUpload").val("");
+		}
+		var input = document.getElementById('ImageUpload')
+		var output = document.getElementById('FileList')
+		var result = "";
+		for (var i = 0; i < input.files.length; i++) {
+			result += input.files.item(i).name ;//+ '<br />';
+		}
+		
+		document.getElementById('FileList').value=result;
+		
+	}
 	
 </script>
 

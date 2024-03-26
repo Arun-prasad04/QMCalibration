@@ -334,7 +334,7 @@ public class UserService : IUserService
 			}
 
             User Userdata = _mapper.Map<User>(User);
-			Userdata.DepartmentId = 1;
+			//Userdata.DepartmentId = 1;
 			Userdata.UserRoleId = User.RoleSelect[0];
             _unitOfWork.Repository<User>().Insert(Userdata);
             _unitOfWork.SaveChanges();

@@ -640,15 +640,9 @@
 			$('#MasterInstrument').select2();
 		}
 			@*$('#MasterInstrument').val(@Model.MasterInstrument1).prop("selected", true);
-			$('#MasterInstrument').select2();*@
-			$('#CalibFreq').val(@Model.CalibFreq);
-			
-	@*if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreq))') != null) {
-			var CalibFreq = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreq))');
-			$("#CalibFreq1").select2().val(CalibFreq).trigger("change");
-
-		}*@
-
+			$('#MasterInstrument').select2(); $('#dropDownId :selected').text();			
+			$('#CalibFreq').val('@Model.CalibFreq').attr('selected', 'selected');;
+			$('#CalibFreq').val(@Model.CalibFreq);*@
 			$('#reservationdate1').datetimepicker({
 				format: 'DD/MM/YYYY'
 			});
@@ -1065,17 +1059,6 @@
 			}
 		}
 
-function validateFields() {
-		alert('test');
-		alert(ValidateCheckInstrument());
-		if (ValidateCheckInstrument() == 0) {
-			alert('ok test');
-		}
-		else
-		{
-			showWarning('Please Select Tentative Closing Date, Observation Templates, Standard Refered/Calibration Method, Calibration Frequency Values...!', lang);
-		return false;
-		}
-}
+
 </script>
 

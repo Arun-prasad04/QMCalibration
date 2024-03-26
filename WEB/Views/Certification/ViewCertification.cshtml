@@ -81,27 +81,29 @@
 					@if (@Model.TypeOfEquipment == "External")
 					{
 						<div>
-							<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUC)</p>
+							<p class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px; width: 600px;">I. Description of device under verification (DUV)</p>
 						</div>
 					}
 					<table>
 						<tbody>
                            
 							<tr>
-								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No.</td>
-                                @if (@Model.TempObservationData != null)
+								<td class="trn" style="width:325px; font-weight: 900;padding-bottom: 25px;">Certificate No. </td>
+                            @if (@Model.TempObservationData != null)
                                 {
-                                    @if (@Model.TempObservationData.CertificateNumber == null)
+                                  
+                                       @if (@Model.TempObservationData.CertificateNumber == null)
                                     {
-                                        <td style="width:400px;padding-bottom: 25px;">: string.Empty </td>
+                                        <td style="width:400px;padding-bottom: 25px;"><span>": -"  </span></td>
 
                                     }
                                     else
                                     {
-                                        <td style="width:400px;padding-bottom: 25px;">: @Model.TempObservationData.CertificateNumber </td>
+                                        <td style="width:400px;padding-bottom: 25px;">:@Model.TempObservationData.CertificateNumber </td>
 
                                     }
                                 }
+                                
                                 @*<td style="width:400px;padding-bottom: 25px;">: (@Model.TempObservationData.CertificateNumber == null) ? string.Empty : @Model.TempObservationData.CertificateNumber</td>*@
 								<td class="trn" style="width:340px; font-weight: 900;padding-bottom: 25px;">Report issue date</td>
 								<td style="width:400px;padding-bottom: 25px;">: @Model.CalibrationCloseDate.ToString("dd-MM-yyyy")</td>
@@ -185,16 +187,16 @@
                               @*  @if (@Model.TempObservationData != null)
                                 {*@
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.Range</p>
+                                     <p>@(String.IsNullOrEmpty(Model.Range) ? "-" : Model.Range)</p>
                                     </td>
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.LC</p>
+                                    <p>@(String.IsNullOrEmpty(Model.LC) ? "-" : Model.LC)</p>
                                     </td>
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.SlNo</p>
+                                    <p>@(String.IsNullOrEmpty(Model.SlNo) ? "-" : Model.SlNo)</p>
                                     </td>
                                     <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:825px">
-                                        <p>@Model.Make</p>
+                                    <p>@(String.IsNullOrEmpty(Model.Make) ? "-" : Model.Make)</p>
                                     </td>
                                 @*}*@
                             </tr>
@@ -256,20 +258,11 @@
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
                                             <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipmentMasterId</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
-                                            @if(@item.DueDate != null)
-                                            {
-                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.DueDate.ToString("dd-MM-yyyy")</td>
-                                        }
-                                        else
-                                        {
-                                                <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"></td>
-
-                                        }
-
-                                            </tr>
+                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"> @(String.IsNullOrEmpty(item.Make) ? "-" : item.Make)</td>
+                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"> @(String.IsNullOrEmpty(item.Traceability) ? "-" : item.Traceability)</td>
+                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@(String.IsNullOrEmpty(item.CertNo) ? "-" : item.CertNo)</td>
+                                            <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"> @(String.IsNullOrEmpty(item.Make) ? "-" : item.DueDate.ToString("dd-MM-yyyy"))</td>
+                                         </tr>
                                         i++;
                                     }
                                 
@@ -683,8 +676,7 @@
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@i</td>
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.EquipName</td>
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.LabId</td>
-													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Make</td>
-													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.Traceability</td>
+                                                   <td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px"> @(String.IsNullOrEmpty(item.Make) ? "-" : item.Make)</td>
 													<td style="border-collapse: collapse; border:1px solid #000; text-align: center; width:325px">@item.CertNo</td>
                                                 @if (@item.DueDate != null)
                                                 {
@@ -902,13 +894,13 @@
             dataType: 'json',
             data: { InstrumentId: $('#InstrumentId').val(), RequestId: $('#RequestId').val(), TemplateObservationId: $('#TemplateObservationId').val() },
         }).done(function (resultObject) {
-
+            console.log(resultObject);
             var rowhead = "";
             var rowContentCW = '';
             var rowContentIN = '';
             var rowContentSW = '';
-            console.log(" bind resultObject ");
-            console.log(resultObject);
+            var rowContentSE = '';
+            var Permissible = '';
             var InCount = 0;
             for (let i = 0; i < resultObject.length; i++) {
                 var IdName = resultObject[i].typeOfContent;
@@ -917,7 +909,8 @@
                 var tableIN = '<table id="IN' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';
                 var tableCW = '<table id="CW' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';
                 var tableSW = '<table id="SW' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
-                //if (resultObject[i].contentCount == 0) {
+                var tableSE = '<table id="SE' + tblId + '" style="text-align:center; border: 1px solid; width: 100%; border-collapse: collapse;">';//<td  colspan="6" class="Tables-AndTablesTextBox trn">' + resultObject[i].contentValue + '</td>
+                    console.log(IdName);          
                 if (IdName == 'CW') {                    
                     var rowheadCW = '<thead><tr height="50" ><td style="border: 1px solid; text-align:center">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle6 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle4 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle5 + '</td></tr></thead>';
 
@@ -929,16 +922,19 @@
                 else if (IdName == 'IN') {                    
                     var rowheadIN = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle2 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
                 }
-                
+                else if (IdName == 'SE') {
+                  //var rowheadSE = '<thead><tr><td height="50">説明/ Description</td><td>' + resultObject[i].contentSubTitle1 + '</td><td>' + resultObject[i].contentSubTitle2 + '</td><td>' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+                    var rowheadSE = '<thead><tr><td height="50">説明/ Description</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle1 + '</td><td style="border: 1px solid; text-align:center">' + resultObject[i].contentSubTitle3 + '</td></tr></thead>';
+                }
                 var rowBodyCW = '<tbody>';
                 var rowBodyIN = '<tbody>';
                 var rowBodySW = '<tbody>';
-               
+                var rowBodySE = '<tbody>';
                 var objcontentCount = resultObject[i].contentCount;
 
                 var title = "";
                 var contentsubheadingIN = "";
-
+                var contentsubheadingSE = "";
                 if (IdName == 'IN') {
 
                     if (InCount == 3) {
@@ -948,41 +944,42 @@
                         InCount = InCount + 1;
                         if (InCount == 2) {
                             title = resultObject[i].contentValue.trim();
-                            console.log("title 2");
-                            console.log(title);                            
+                                                   
                             contentsubheadingIN = '<td style="width: 70%;border:2px solid #ffffff;border-left:none;border-right:none;"  id = "IN1" > <label style="width:100%;text-align:center " id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
 
                         }
                         else {
-                            console.log(" else title");
-                            console.log(title);
-                            title = "";// resultObject[i].contentValue.trim();                            
+                       
+                            title = "";                          
                             contentsubheadingIN = '<td style="border:none;"  id = "IN2" > <label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
                         }
                     }
-                    else //if (InCount == 1)
+                    else 
                     {                       
                         title = resultObject[i].contentValue.trim();                        
                         contentsubheadingIN = '<td style="border:none;" id = "IN3"> <label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
                     }
 
                 }
-
+                if(IdName =='SE')
+                {
+                    title = resultObject[i].contentValue.trim();
+                    contentsubheadingSE = '<td style="border:none;" id = "SE" ><label style="width:100%; text-align:center" id="Head' + i + i + '" name = "Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + title + '</label>';
+                }
                 if (IdName == 'CW') {
-                    console.log('Check value 1')
-                    rowContentCW += '<tr><td style="width: 40%" id = "CW"><label id="Head' + i + i + '" name = "Head[' + i + '] class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label> <input type="hidden" id = "HiddenContentId" name = "HiddenContentId" value = "' + resultObject[i].id + '" /> <input type="hidden" id = "HiddenContentvalueId" name = "HiddenContentvalueId" value = "' + resultObject[i].obsContentValueId + '" /> </td>' +
-                        '<td id="CW"><label id="MeasuedValue" name="MeasuedValue[' + i + i + ']" class="Tables-AndTablesTextBox TblInHeader MeasuedValue">' + resultObject[i].measuedValue + '</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                    // '<tr><td style="width: 40%" id="CW"><label style="width: 100%" id="Head' + i + i + '" name="Head[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
-                    //    //'<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                        '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value1" name="Value1[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader Value1">' + resultObject[i].measuedValue1 + '</label> </td>' +
+                   
+                    rowContentCW += '<tr><td style="border: 1px solid; text-align:center; " id = "CW"><label id="Head' + i + i + '" name = "Head[' + i + '] class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label> <input type="hidden" id = "HiddenContentId" name = "HiddenContentId" value = "' + resultObject[i].id + '" /> <input type="hidden" id = "HiddenContentvalueId" name = "HiddenContentvalueId" value = "' + resultObject[i].obsContentValueId + '" /> </td>' +
+                        '<td id="CW" style="border: 1px solid; text-align:center"><label id="MeasuedValue" name="MeasuedValue[' + i + i + ']" class="Tables-AndTablesTextBox TblInHeader MeasuedValue">' + resultObject[i].measuedValue + '</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value1" name="Value1[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader Value1">' + resultObject[i].measuedValue1 + '</label> </td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value2" name="Value2[' + i + i + ']"  class="Tables-AndTablesTextBox TblInHeader Value2">' + resultObject[i].measuedValue2 + ' </label></td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Value3" name="Value3[' + i + i + ']"   class="Tables-AndTablesTextBox TblInHeader Value3">' + resultObject[i].measuedValue3 + '</label></td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Average" name="Average[' + i + i + ']"  class="Tables-AndTablesTextBox TblInHeader Average">' + resultObject[i].average + '</label></td>' +
                         '<td id="CW" style="border: 1px solid; text-align:center"><label style="width: 100%" id="Percentage" name = "Percentage[' + i + i + ']" class="Tables-AndTablesTextBox TblInHeader Percentage">' + resultObject[i].percent + '</label> </td></tr>';
-
+                    Permissible = '<tr><td> Note : Permissible Limit in % is        :</td><td style="border: 1px solid; text-align:center">    ' + resultObject[i].permissibleLimit + '</td></tr>';
+                    //'<tr><td> Note : Permissible Limit in % is :</td><td><input type="text" value="' + resultObject[i].permissibleLimit + '" id="PermissibleLimit" class="PermissibleLimit"></td></tr>';
                 }
                 else if (IdName == 'SW') {
-                    console.log('Check value 2')
+                    
                     rowContentSW += '<tr style="border: 1px solid;"><td style="width: 30%" id="SW"><label id="Head' + i + i + '" name="Head[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].contentValue.trim() + '</label><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>' +
                         //'<td id="SW" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
                         '<td id="SW" style="border: 1px solid; text-align:center"><label id="SWValue1" name="SWValue1[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].measuedValue + '</label> </td>' +
@@ -991,8 +988,7 @@
                         '<td id="SW" style="border: 1px solid; text-align:center"><label id="SWValue4" name="SWValue1[' + i + i + ']"  type="text" class="Tables-AndTablesTextBox TblInHeader"> ' + resultObject[i].measuedValue3 + '</label></td></tr > '
                 }
                 else if (IdName == 'IN') {
-                    console.log('Check value 3')
-
+                    
                     rowContentIN += '<tr style="border: 1px solid;">' + contentsubheadingIN + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/></td>'+ 
                         //'<td id="IN" style="border: 1px solid; text-align:center"><label id="SNO' + i + i + '" name="SNO[' + i + ']" class="Tables-AndTablesTextBox TblInHeader">' + resultObject[i].sno + '</label><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
                         '<td id="IN" style="border: 1px solid; text-align:center"><label id="MeasuedValue" name="MeasuedValue[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader MeasuedValue">' + resultObject[i].measuedValue + '</label><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
@@ -1000,6 +996,28 @@
                         '<td id="IN" style="border: 1px solid; text-align:center"><label id="Avg" name = "Avg[' + i + i + ']"  class="Tables-AndTablesTextBox TblInHeader Avg">' + resultObject[i].instrumentError + '</label> </td></tr>'
 
                 }
+                else if (IdName == 'SE') {
+                   
+                    var filedatamap = resultObject[i].fileuploadmapping;
+                    var filecount = filedatamap.length;
+                    var enable = "";
+                    var hideval = "";                    
+                    var html = "";
+                    for (var j = 0; j < filecount; j++) {
+                        var joinfilename = filedatamap[j].fileName;
+                        var ids = filedatamap[j].id;
+                        console.log(joinfilename);
+                        html += '<div id="' + ids + '" ><span class=""><img height="15" width="15" src="../image/' + CheckFileType(joinfilename) + '" />'
+                            + '<a id="pic" href="../Observation/' + joinfilename + '">' + joinfilename + '</a>'
+                            + '</div>';
+                    }
+                    
+                    rowContentSE += '<tr style="border: 1px solid;" id=SE_1>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
+                        '<td id="SE" style="border: 1px solid; text-align:center"><label id="MeasuedValue" name="MeasuedValue[' + i + i + '] " class="Tables-AndTablesTextBox TblInHeader MeasuedValue">"Refer attached file/添付ファイル参照"</label>' +//' + resultObject[i].measuedValue + '
+                       // <input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="Tables-AndTablesTextBox TblInHeader" value = "Refer attached file/添付ファイル参照" disabled/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
+                        //'<td id="SE"><input id="files_' + j + '" name="SE_' + j + '" class="clsFile btn btn-success btn-xs" type="file" multiple ' + enable + '/></td>' +
+                        '<td id="SE" style="border: 1px solid; text-align:center"><div class="form-group dynAttachmentfiles" id="dfileattach">' + html + '</div></td></td></tr>';
+                   }
 
             }
 
@@ -1007,10 +1025,12 @@
             rowBodyCW += rowContentCW;
             rowBodyIN += rowContentIN;
             rowBodySW += rowContentSW;
-
-            rowBodyCW += '</tbody></table><br/>';
+            rowBodySE += rowContentSE;
+            console.log(rowBodySE);
+            rowBodyCW += '</tbody><tfoot id="tblCW_footer" class="tblCW_footer" style="font-weight:900;">' + Permissible + '</tfoot></table><br/>';
             rowBodyIN += '</tbody></table><br/>';
             rowBodySW += '</tbody></table><br/>';
+            rowBodySE += '</tbody></table><br/>';
 
             tableCW += rowheadCW;
             tableCW += rowBodyCW;
@@ -1018,9 +1038,11 @@
             tableIN = tableIN + rowheadIN;
             tableIN += rowBodyIN;           
 
-
             tableSW += rowheadSW;
             tableSW += rowBodySW;
+            
+            tableSE += rowheadSE;
+            tableSE += rowBodySE;
 
             if (rowContentSW == "") {
 
@@ -1034,9 +1056,14 @@
 
                 tableCW = "";
             }
+
+            if (rowContentSE == "") {
+
+                tableSE = "";
+            }
             $("#dvTableCer").html("");
             $("#dvTableCer1").html("");
-            var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW;
+            var tables = tableCW + "<br/>" + tableIN + "<br/>" + tableSW + "<br/>" + tableSE;
             var dvTable = $("#dvTableCer");
             var dvTable1 = $("#dvTableCer1");
             dvTable.append(tables);

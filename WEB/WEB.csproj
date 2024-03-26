@@ -26,4 +26,8 @@
 		<ProjectReference Include="..\DATAMODELS\DATAMODELS.csproj" />
 		<ProjectReference Include="..\DAL\DAL.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\lib\jquery\NewFolder\" />
+	  <Folder Include="wwwroot\Observation\" />
+	</ItemGroup>
 </Project>

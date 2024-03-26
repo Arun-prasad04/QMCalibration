@@ -6,18 +6,6 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <script src="~/js/3.3.1Version/jquery.min.js"></script>
 
-
-@*<style>
-	/* .OverDue tr:nth-child(odd), tr:nth-child(even) {
-				background-color: lightsalmon;
-					tomato
-			} */
-	/* .table-striped tr:nth-child(even) {
-				background-color: #e8e7e6;
-			}
-
-			th:nth-child(even), td:nth-child(even) */
-</style>*@
 <style>
     .dataTables_filter{
         display:none;
@@ -55,7 +43,7 @@
                         {
                             <label class="trn">Due For Calibration</label>
                             @* <input type="checkbox" id="selectAll" value="selectAll" /> *@
-                            <input type="checkbox" name="DueTracker" id="checkdueonly" value="Due For Calibration" onclick="DueForCalibrationInstruments();">
+                            <input type="checkbox" name="DueTracker" id="checkdueonly" class="checkdueonlycls" value="Due For Calibration" onclick="DueForCalibrationInstruments();">
                         }
                     </div>
                 </div>
@@ -66,7 +54,8 @@
                         <thead>
                             <tr>
                                 <th class="trn">Instrument Name</th>
-                                <th class="trn">Serial Number</th>
+                               @* <th class="trn">Serial Number</th>*@
+                                <th class="trn">Method</th>
                                 <th class="trn">Lab ID Number</th>
                                 <th class="trn">Range</th>
                                 <th class="trn">Department</th>
@@ -109,95 +98,17 @@
 
 						</thead>
 						<tbody>
-                        @*
-							@foreach (var item in Model)
-							{
-								//@if ((@item.RequestStatus != 28 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 30 && @item.ToolInventoryStatus != 2) || (@item.RequestStatus != 31 && @item.ToolInventoryStatus != 2))
-								@if ((@item.RequestStatus != 28) || (@item.RequestStatus != 30) || (@item.RequestStatus != 31))
-                                {
-
-									<tr>
-										
-										<td class="one">@item.InstrumentName</td>
-										<td>@item.SlNo</td>
-										<td>@item.IdNo</td>
-										<td>@item.Range</td>
-										<td>@item.DepartmentName</td>
-										<td>@item.SubSecCode</td>
-										<td>@item.TypeOfEquipment</td>
-										<td>@item.CalibDate.ToString("dd-MM-yyyy")</td>
-										@if (item.DueDate == null)
-										{
-											<td> </td>
-										}
-										else
-										{
-											<td>@item.DueDate.ToString("dd-MM-yyyy")</td>
-										}
-										<td><a href='@Url.Action("InstrumentEdit","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-edit"></i></a></td>
-										<td><a href='@Url.Action("ControlCard","Instrument",new {instrumentId=@item.Id})'><i class="fas fa-id-badge"></i></a></td>
-										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
-										{
-											<td style="text-align:center;" class="chkpl">
-												@if (@item.DueDate != null)
-												{
-													
-													@if ((@item.DueDate.Month <= DateTime.Now.Month && DateTime.Now.Year >= @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-													{
-                                                        @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))// && @item.ToolInventory=="Yes" && @item.ToolInventoryStatus=="1")
-                                                        {
-
-                                                            <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                                                            <input id="typeId" name="typeId" type="hidden" value="2" />
-                                                            // to implement only regular cases for Dept User Listing above typeid=3 converted to typeid-->2-07-12-223
-                                                            <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                                                            <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                                                            <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                                                            <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-                                                        }
-                                                    }
-                                                    else if ((@item.DueDate.Month == DateTime.Now.AddMonths(1).Month && DateTime.Now.AddMonths(1).Year == @item.DueDate.Year) && (@item.RequestStatus == 30 || @item.RequestStatus == 31 || @item.RequestStatus == 28))
-                                                     {
-                                                        @if ((@item.ToolInventoryStatus == 1) || (@item.ToolInventory == "No") || (@item.TypeOfEquipment == "External"))
-                                                            {
-
-                                                                <input id="chkBox" name="chkBox" class="class1" type="checkbox" value='@item.Id' />
-                                                                <input id="typeId" name="typeId" type="hidden" value="2" />
-                                                                <input id="RequestId" name="RequestId" class="clsRequestId" type="hidden" value='@item.RequestId' />
-                                                                <input id="DueDate" name="DueDate" class="clsDueDate" type="hidden" value='@item.DueDate' />
-                                                                <input id="ReplacementStartDate" name="ReplacementStartDate" class="clsReplacementStartDate" type="hidden" value='@item.ReplacementStartDate' />
-                                                                <input id="ReqDueDate" name="ReqDueDate" class="clsReqDueDate" type="hidden" value='@item.ReqDueDate' />
-                                                            }
-                                                    }
-													
-												}
-											</td>
-										}
-										
-
-										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-										{
-											<td><i class="fas fa-arrow-alt-circle-right" style="cursor:pointer;" id='@item.Id' onclick="InstrumentQuarantineClick(this, language)"></i></td>
-										}
-										else
-										{
-											<td></td>
-										}
-
-									</tr>
-
-                            }
-                                
-                            }
-                            *@
+                      
                         </tbody>
                        
                     </table>
                 </div>
-
+              
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
                 {
                     <div class="form-group" style="text-align:right;">
+
+              
                         <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="btnSubmit" id="btnSubmit" value="Submit"
                                onclick="InsertRequestList();">
                         <a href='@Url.Action("Index","Instrument")'> <input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
@@ -211,24 +122,28 @@
     </div>
     <!-- /.row -->
 </section>
-@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-@*   
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
 <!--Data Table-->
-<script type="text/javascript" src=" https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>*@
-@*<script type="text/javascript" src="~/js/jquery.min.js"></script>
-
-
-<!--Data Table-->
-<script type="text/javascript" src="~/js/jquery.dataTables.min.js"></script>*@
 
 <script type="text/javascript">
+   
+    var RequestNo = '@HttpContextAccessor.HttpContext.Session.GetString("RequestNo")';
+   
+    if (RequestNo.length >0) {
+       
+        $.ajax({
+            url: '../Instrument/MailInsertInstrument',
+            type: 'POST',
+           // data: { instrument: Instrument, Request: Request },
+            dataType: "json",
+        }).done(function (resultObject) {
+           // showSuccess("Data Saved Successfully");
+        });
+    }
      $(function () {
-         $('#example1').dataTable({
-                  "bDestroy": true,
+       
+        $('#example1').dataTable({
+                "bDestroy": true,
                 "bProcessing": true,
-               // "scrollX": true,
                 "bServerSide": true,
                 "bSortCellsTop": true,
                 "sAjaxSource": '../Instrument/GetAllInstrumentList',
@@ -237,13 +152,15 @@
                     aoData.push({ "name": "instrumentname", "value": $('#txtsearch0').val() })
                     aoData.push({ "name": "labid", "value": $('#txtsearch2').val() })
                     aoData.push({ "name": "typeOfEquipment", "value": $('#drptypeOfEquipment').val() })
-                   
-                    aoData.push({ "name": "serialno", "value": $('#txtsearch1').val() })
+                    //ToolInventory--ToolInventory
+                    //aoData.push({ "name": "serialno", "value": $('#txtsearch1').val() })
+                //aoData.push({ "name": "method", "value": $('#txtsearch1').val() })
                     aoData.push({ "name": "range", "value": $('#txtsearch3').val() })
                     aoData.push({ "name": "department", "value": $('#txtsearch4').val() })
                     aoData.push({ "name": "calibrationdate", "value": $('#txtsearch7').val() })
+
                     aoData.push({ "name": "duedate", "value": $('#txtsearch8').val() })
-                            aoData.push({ "name": "chkDue", "value": $('#checkdueonly').is(":checked") })
+                    aoData.push({ "name": "chkDue", "value": $('#checkdueonly').is(":checked") })
                 },
                 "fnServerData": function (sSource, aoData, fnCallback) {// }, oSettings) {
                     $.ajax({
@@ -255,11 +172,28 @@
                 },
                  "columns":[
                      {"data":"instrumentName","name":"Instrument Name"},
-                     {"data":"slNo","name":"Serial Number"},
+                    {"render": function (data, type, row, meta) {
+                        if (row.toolInventory == "Yes")  {
+                            var linkdata = "Rotation";
+                            return linkdata;
+                         }
+                        else if (row.toolInventory == "No")
+                        {
+                            var linkdata = "Direct";
+                            return linkdata;
+                        }
+                        else // if (row.toolInventory == "null")
+                        {
+                            var linkdata = " ";
+                            return linkdata;
+                        }
+                     }
+                     },
+                     //{ "data": "toolInventory", "name": "Method" },
                      {"data":"idNo","name":"Lab ID Number"},
                      {"data":"range","name":"Range"},
                      {"data":"departmentName","name":"Department","search" : true},
-                         {"data":"subSecCode","name":"Sub section code"},
+                     {"data":"subSecCode","name":"Sub section code"},
                      {"data":"typeOfEquipment","name":"Scope"},
                      {"data":"sCalibDate","name":"Calibration Date"},
                      {"data":"sDueDate","name":"DueDate"},
@@ -269,46 +203,27 @@
                         }
                      },
                      {"render" : function(data, type, row, meta){
-                        //requestCount,inspectionCount
-                        if (row.requestCount == row.inspectionCount)
-                        {
-                          
-                            var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId=' + row.id + '"><i style="color:green" class="fas fa-id-badge"></i></a>';
+                        
+                        if (row.inspectionCount == 1) {
+                            var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId=' + row.id + '"><i class="fas fa-id-badge"></i></a>';
                         }
-                        else
+                       else
                         {
-                             var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId='+row.id+'"><i class="fas fa-id-badge"></i></a>';
+                            var linkControlCard = '<a href="@Url.Action("ControlCard","Instrument")?instrumentId=' + row.id + '"><i style="color:green" class="fas fa-id-badge"></i></a>';
                         }
                              return linkControlCard;
                         }
                     },
                     {"render": function(data, type, row, meta){
+                       
                         var linkCheckbox='';
                             if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
                             {
                                  //var linkCheckbox='';
                                  var d = new Date($.now());
-
                                  var date = new Date(row.dueDate);
-                           
-                            console.log("---duedate----");
-                            console.log(date);
-                            console.log(Date.parse(date));
-                            d.setMonth(d.getMonth()+1);
-                            console.log("----current date------");
-                            console.log(d);
-                            console.log(Date.parse(d));
-
-
-                                 //var CurrMonth=d.getMonth();
-                                 //var CurrYear=d.getFullYear();
-                                 //month = date.getMonth();
-                                 //yr = date.getFullYear();
+                                 d.setMonth(d.getMonth()+1);
                                 
-                                 // d.setMonth(d.getMonth() + 1);
-                                 //var NextMonth=d.getMonth();
-                                 //var NextYear=d.getFullYear();
-                            //requestCount,inspectionCount
                                      if (row.dueDate != null)
                                     {
                                         if ((Date.parse(date) <= Date.parse(d))  && (row.requestStatus == 30 || row.requestStatus == 31 || row.requestStatus == 28))
@@ -380,15 +295,17 @@
               
                  "columnDefs": [
                 {
-                'orderable': false,
+               'orderable': false,
                'targets': 11,
                'checkboxes': {
                'selectRow': true
                 }
             }
              ],
+
              'select': {
             'style': 'multi'
+           
           },
 
                  "order":[0,"asc"],
@@ -424,7 +341,7 @@
 
    })
     
-          $('body').on('change', '#selectAll', function() {
+        $('body').on('change', '#selectAll', function() {
         var rows, checked;
 
         //rows = $('#example1').find('tbody tr');
@@ -437,7 +354,7 @@
 
      });
 
-        function DrptypeOfEquipment(val) {
+     function DrptypeOfEquipment(val) {
          var table = $('#example1').DataTable();
           if (table.search() !== val) {
              table.search(val).draw();
@@ -474,46 +391,67 @@
                 }
             });
         });
+       
       })
 
 
-    function GetAllInstrument(){
-        $.ajax({
-            type: "GET",
-            url: "../Instrument/GetAllInstrumentList",            
-            //contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: OnSuccess,
-            failure: function (response) {
-                alert(response.d);
-            },
-            error: function (response) {
-                alert(response.d);
-            }
-        });
-    }
+    //function GetAllInstrument(){
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "../Instrument/GetAllInstrumentList",            
+    //        //contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: OnSuccess,
+    //        failure: function (response) {
+    //            alert(response.d);
+    //        },
+    //        error: function (response) {
+    //            alert(response.d);
+    //        }
+    //    });
+    //}
 
-    function OnSuccess(response) {
-        console.log('********************************** response ******************************************');
-        console.log(response);
-        $("#example1").DataTable(
-        {
-            bLengthChange: true,
-            lengthMenu: [[5, 10, -1], [5, 10, "All"]],
-            bFilter: true,
-            bSort: true,
-            bPaginate: true,
-            data: response,
-            columns: [
-                {"data":"instrumentName","name":"Instrument Name"},
-                 //{"data":"slNo","name":"Serial Number"},
-                 //{"data":"idNo","name":"Lab ID Number"},
-                 //{"data":"range","name":"Range"},
-                 //{"data":"departmentName","name":"Department"},                 
-                 //{"data":"typeOfEquipment","name":"Scope"},                     
-            ]
-        });
-    };
+    //function OnSuccess(response) {
+       
+    //    $("#example1").DataTable(
+    //    {
+    //        bLengthChange: true,
+    //        lengthMenu: [[5, 10, -1], [5, 10, "All"]],
+    //        bFilter: true,
+    //        bSort: true,
+    //        bPaginate: true,
+    //        data: response,
+    //        columns: [
+    //            {"data":"instrumentName","name":"Instrument Name"},
+    //             //{"data":"slNo","name":"Serial Number"},
+    //             //{"data":"idNo","name":"Lab ID Number"},
+    //             //{"data":"range","name":"Range"},
+    //             //{"data":"departmentName","name":"Department"},                 
+    //             //{"data":"typeOfEquipment","name":"Scope"},                     
+    //        ]
+    //    });
+    //};
 
+
+    //$(document).on('change', '.checkdueonlycls', function () {
+    //    if ($(this).is(':checked')) {
+    //        //if checked add to array
+    //        checkedArray[checkedArray.length] = $(this).val();
+    //    } else {
+    //        //If unchecked remove the value from the array
+    //        var index = checkedArray.indexOf($(this).val());
+    //        if (index > -1) {
+    //            checkedArray.splice(index, 1);
+    //        }
+    //    }
+    //});
+
+    //then you can use it in click event
+    //$('.button').click(function () {
+    //    var id = "";
+    //    //read checkedArray using for loop
+
+    //});
  
 </script>
+ 

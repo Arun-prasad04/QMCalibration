@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Collections.Generic;
 using System.Data;
 using NPOI.SS.Formula.Functions;
+using NPOI.HPSF;
 
 namespace WEB.Services;
 
@@ -30,9 +31,11 @@ public class MasterService : IMasterService
 	{
 		try
 		{
-			List<MasterViewModel> masterViewModelList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).Include(I => I.SupplierModel).Include(I => I.QuarantineModel).Include(L => L.Lovs).Include(I => I.FileUploadModel).Select(s => new MasterViewModel()
-			{
-				Id = s.Id,
+            //List<MasterViewModel> masterViewModelList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).Include(I => I.SupplierModel).Include(I => I.QuarantineModel).Include(L => L.Lovs).Include(I => I.FileUploadModel).Select(s => new MasterViewModel()
+            List<MasterViewModel> masterViewModelList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).Include(I => I.SupplierModel).Include(I => I.QuarantineModel).Include(L => L.Lovs).Include(I => I.FileUploadModel).Include(D=>D.DepartmentModel).Select(s => new MasterViewModel()
+            {
+				SubSectionCode = s.DepartmentModel.SubSectionCode,
+                Id = s.Id,
 				EquipName = s.EquipName,
 				LocationId = s.LocationId,
 				PONo = s.PONo,
@@ -45,7 +48,7 @@ public class MasterService : IMasterService
 				Supplier = s.SupplierModel.Name,
 				CalibFreqId = s.CalibFreqId,
 				CalibrationFrequency = s.Lovs.AttrValue,
-				CalibDate = s.CalibDate.Equals(DBNull.Value) ? null :s.CalibDate,
+				CalibDate = s.CalibDate.Equals(DBNull.Value) ? null : s.CalibDate,
 				DueDate = s.DueDate.Equals(DBNull.Value) ? null : s.DueDate,
 				Range = s.Range,
 				SerialNo = s.SerialNo,
@@ -56,8 +59,9 @@ public class MasterService : IMasterService
 				PhoneNo = s.SupplierModel.PhoneNo,
 				EmailId = s.SupplierModel.EmailId,
 				MobileNo = s.SupplierModel.MobileNo,
-				EquipmentMasterId= s.EquipmentMasterId,
-				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList()
+				EquipmentMasterId = s.EquipmentMasterId,
+
+				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString() + " " + s.Upload.Id).ToList()
 			}).ToList();
 			return new ResponseViewModel<MasterViewModel>
 			{
@@ -92,7 +96,7 @@ public class MasterService : IMasterService
 			.GetQueryAsNoTracking(Q => Q.Id == masterId)
 			.Include(I => I.SupplierModel)
 			.Include(I => I.QuarantineModel)
-			.Select(s => new MasterViewModel()
+            .Select(s => new MasterViewModel()
 			{
 				Id = s.Id,
 				EquipName = s.EquipName,
@@ -119,9 +123,8 @@ public class MasterService : IMasterService
 				EmailId = s.SupplierModel.EmailId,
 				MobileNo = s.SupplierModel.MobileNo,
 				EquipmentMasterId = s.EquipmentMasterId,
-				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),
-                //	TypeOfEquipment=s.TypeOfEquipment,
-                DepartId = s.DepartmentModel.Id
+				FileList = s.FileUploadModel.Select(s => s.Upload.FileName.ToString()).ToList(),//, s => s.Upload.Id
+				DepartId = s.DepartmentModel.Id
 				
 				}).FirstOrDefault();
 
@@ -130,10 +133,15 @@ public class MasterService : IMasterService
 			masterById.CurrencyList = lovsList.Where(W => W.AttrName == "Currency").ToList();
 			masterById.CalibrationSourceList = lovsList.Where(W => W.AttrName == "CalibrationSource").ToList();
 			masterById.CalibrationFreq = lovsList.Where(W => W.AttrName == "CalibrationFreq").ToList();
-			//List<DepartmentViewModel> DepartmentData =_mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());			
-           // var DepartmentData = GetMasterDepartmentSubSection();
-			CMTDL _cmtdl = new CMTDL(_configuration);
-			var DepartmentData = _cmtdl.GetMasterDepartmentSubSection();
+            //Id	MasterId	UploadId
+           // List<MasterFileUploadViewModel> MasterFileUploadList = _mapper.Map<List<MasterFileUploadViewModel>>(_unitOfWork.Repository<MasterFileUpload>().GetQueryAsNoTracking(Q => Q.MasterId == masterById.Id).Include(I=>I.UploadId).ToList());
+			//masterById.MasterFileUpload = MasterFileUploadList;
+            //List<DepartmentViewModel> DepartmentData =_mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());			
+            // var DepartmentData = GetMasterDepartmentSubSection();
+            CMTDL _cmtdl = new CMTDL(_configuration);
+			//var MasterFiledata = _cmtdl.GetMasterFileUploadViewModel(masterById.Id);
+			//masterById.MasterFileUploads = MasterFiledata;
+            var DepartmentData = _cmtdl.GetMasterDepartmentSubSection();
 			masterById.Departments = DepartmentData;
 			return new ResponseViewModel<MasterViewModel>
 			{
@@ -180,7 +188,8 @@ public class MasterService : IMasterService
 					EmailId = master.EmailId,
 					MobileNo = master.MobileNo,
 					CreatedOn = DateTime.Now,
-					ModifiedOn = DateTime.Now
+					ModifiedOn = DateTime.Now,
+					
 				};
 				_unitOfWork.Repository<Supplier>().Insert(supplierData);
 				_unitOfWork.SaveChanges();
@@ -189,6 +198,7 @@ public class MasterService : IMasterService
 
 			Master newMaster = new Master();
 			newMaster = _mapper.Map<Master>(master);
+			newMaster.DepartmentId = master.DepartId;
 			_unitOfWork.Repository<Master>().Insert(newMaster);
 			_unitOfWork.SaveChanges();
 			MasterQuarantine masterQuarantine = new MasterQuarantine()
@@ -212,8 +222,9 @@ public class MasterService : IMasterService
 						FileGuid = Guid.NewGuid(),
 						CreatedOn = DateTime.Now,
 						ModifiedOn = DateTime.Now,
-						FilePath = filePath
-					};
+						FilePath = filePath,
+                        MasterId = master.Id
+                    };
 					_unitOfWork.Repository<Uploads>().Insert(upload);
 					_unitOfWork.SaveChanges();
 					MasterFileUpload masterFileUpload = new MasterFileUpload();
@@ -339,10 +350,10 @@ public class MasterService : IMasterService
 			{
 				masterById.DepartmentId = master.DepartId;
 			}
-            if (master.Name != null)
-            {
-                masterById.EquipName = master.Name;
-            }
+            //if (master.Name != null)
+            //{
+            //    masterById.EquipName = master.Name;
+            //}
             Supplier supplierById = _unitOfWork.Repository<Supplier>().GetQueryAsNoTracking(Q => Q.Name == master.Supplier).SingleOrDefault();
 			if (supplierById != null)
 			{
@@ -372,9 +383,50 @@ public class MasterService : IMasterService
 				masterById.SupplierId = supplierData.Id;
 			}
 			_unitOfWork.Repository<Master>().Update(masterById);
-
 			_unitOfWork.SaveChanges();
-			_unitOfWork.Commit();
+
+			//if (master.FileList != null && master.FileList.Count() > 0)
+			//{
+				if (master.ImageUpload != null && master.ImageUpload.Count() > 0)
+				{
+				    
+                    foreach (IFormFile fileObj in master.ImageUpload)
+					{
+						string filePath = _utilityService.UploadImage(fileObj, "Master");
+						Uploads upload = new Uploads()
+						{
+							FileName = fileObj.FileName,
+							FileGuid = Guid.NewGuid(),
+							CreatedOn = DateTime.Now,
+							ModifiedOn = DateTime.Now,
+							FilePath = filePath,
+							MasterId = master.Id
+						};
+						_unitOfWork.Repository<Uploads>().Insert(upload);
+						_unitOfWork.SaveChanges();
+						MasterFileUpload masterFileUpload = new MasterFileUpload();
+						masterFileUpload.MasterId = masterById.Id;
+						masterFileUpload.UploadId = upload.Id;
+						_unitOfWork.Repository<MasterFileUpload>().Insert(masterFileUpload);
+						_unitOfWork.SaveChanges();
+
+
+
+					}
+				}
+    //            else
+    //            {
+				//if (master.FileList != null && master.FileList.Count() > 0)
+				//{
+				//	Uploads Uploaddata = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.MasterId == masterById.Id).SingleOrDefault();
+				//	_unitOfWork.Repository<Uploads>().Delete(Uploaddata);
+				//	MasterFileUpload MasterFile = _unitOfWork.Repository<MasterFileUpload>().GetQueryAsNoTracking(Q => Q.MasterId == masterById.Id).SingleOrDefault();
+				//	_unitOfWork.Repository<MasterFileUpload>().Delete(MasterFile);
+				//}
+            //}
+
+            // }
+            _unitOfWork.Commit();
 
 			return new ResponseViewModel<MasterViewModel>
 			{
@@ -400,6 +452,51 @@ public class MasterService : IMasterService
 				ResponseServiceMethod = "UpdateMaster"
 			};
 		}
+	}
+	public ResponseViewModel<MasterFileUploadViewModel> DeleteMasterFile(int MasterId, string filename)
+	{
+		try
+		{
+        _unitOfWork.BeginTransaction();
+        
+        Uploads Uploaddata = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.FileName == filename && Q.MasterId == MasterId).SingleOrDefault();
+			if(Uploaddata != null)
+			{ 
+			var uploadid = Uploaddata.Id;			
+            MasterFileUpload MasterFile = _unitOfWork.Repository<MasterFileUpload>().GetQueryAsNoTracking(Q => Q.MasterId == MasterId && Q.UploadId== uploadid).SingleOrDefault();
+			uploadid = MasterFile.UploadId;
+            _unitOfWork.Repository<MasterFileUpload>().Delete(MasterFile);
+
+            Uploads Uploaddata1 = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.Id==uploadid ).SingleOrDefault();
+           
+            _unitOfWork.Repository<Uploads>().Delete(Uploaddata1);
+            _unitOfWork.SaveChanges();
+			_unitOfWork.Commit();
+            }
+            return new ResponseViewModel<MasterFileUploadViewModel>
+			{
+				ResponseCode = 200,
+				ResponseMessage = "Success",
+				ResponseData = null,
+				ResponseDataList = null
+			};
+		}
+		catch (Exception e)
+		{
+    _unitOfWork.RollBack();
+    ErrorViewModelTest.Log("MasterService - DeleteMasterFile Method");
+    ErrorViewModelTest.Log("exception - " + e.Message);
+    return new ResponseViewModel<MasterFileUploadViewModel>
+    {
+        ResponseCode = 500,
+        ResponseMessage = "Failure",
+        ErrorMessage = e.Message,
+        ResponseData = null,
+        ResponseDataList = null,
+        ResponseService = "Master",
+        ResponseServiceMethod = "DeleteMasterFile"
+    };
+}
 	}
 	public ResponseViewModel<MasterViewModel> DeleteMaster(int masterId)
 	{
