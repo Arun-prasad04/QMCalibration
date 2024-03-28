@@ -395,75 +395,73 @@
 								<!-- /.card-header -->
 
 								<div class="card-body">
-
-									<div class="row" >
+									<div class="row">
 										@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" && (Model.TypeOfEquipment == "Internal" || Model.TypeOfEquipment == "内部"))
 										{
-											<div class="col-sm-3" >
-												<div class="form-group">
-													<label class="trn">Master Instrument Name</label>
-													<select id="MasterInstrument" name="MasterInstrument" class="form-control" @Model.IsDisabled>
-														@*<option>--Select Master--</option>
-														@foreach (var master in @Model.MasterData)
-														{
-
-															<option value="@master.Id">@master.EquipName</option>
-														}
-														}*@
-													</select>
-												</div>
-											</div>
-
-											<div class="col-sm-1" style="top: 36px;">
-												@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-												{*@
-												<input type="button" class="btn-primary" value="Add"
-												onclick="AddNewInstrumentMaster(language)">
-												@*}*@
-											</div>
-										}		
-										<div class="col-sm-2">
-											@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
-											{
-												<input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
-												value="@Model.MasterInstrument1">
-												<input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
-												value="@Model.MasterInstrument2">
-												<input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
-												value="@Model.MasterInstrument3">
-												<input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
-												value="@Model.MasterInstrument4">
-
-												<div id="masterEquipmentValue">
-													@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+											
+												<div class="col-sm-4">
+													<div class="form-group">
+														<label class="trn">Master Instrument Name</label>
+														<select id="MasterInstrument" name="MasterInstrument" class="form-control" style="width:100%; height:100%; padding:5px">
+															@*<option>--Select Master--</option>
+													@foreach (var master in @Model.MasterData) @Model.IsDisabled
 													{
-														int i = 1;
-														@foreach (var master in Model.MasterEqiupmentList)
-														{
 
-
-															string identifier = "masvalue" + @i;
-															<div id='@identifier'>
-
-																@master.EquipName <i class="fas fa-trash"
-																onclick="DeleteMasterEqiupment(@i)"></i><br>
-
-															</div>
-															;
-															i = i + 1;
-														}
+													<option value="@master.Id">@master.EquipName</option>
 													}
+													}*@
+														</select>
+													</div>
 												</div>
-											}
-										</div>
 
+												<div class="col-sm-1" style="top: 36px;">
+													<input type="button" class="btn-primary" value="Add"
+														   onclick="AddNewInstrumentMaster(language)">
+												</div>
+												@*}	*@
+												<div class="col-sm-2">
+													@*@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
+											{*@
+													<input type="hidden" id="MasterInstrument1" name="MasterInstrument1"
+														   value="@Model.MasterInstrument1">
+													<input type="hidden" id="MasterInstrument2" name="MasterInstrument2"
+														   value="@Model.MasterInstrument2">
+													<input type="hidden" id="MasterInstrument3" name="MasterInstrument3"
+														   value="@Model.MasterInstrument3">
+													<input type="hidden" id="MasterInstrument4" name="MasterInstrument4"
+														   value="@Model.MasterInstrument4">
+
+													<div id="masterEquipmentValue">
+														@if (Model.MasterEqiupmentList != null && Model.MasterEqiupmentList.Count > 0)
+														{
+															int i = 1;
+															@foreach (var master in Model.MasterEqiupmentList)
+															{
+
+
+																string identifier = "masvalue" + @i;
+																<div id='@identifier'>
+
+																	@master.EquipName <i class="fas fa-trash"
+																			onclick="DeleteMasterEqiupment(@i)"></i><br>
+
+																</div>
+																;
+																i = i + 1;
+															}
+														}
+													</div>
+													@*}*@
+												</div>
+											
+										}
 										<div class="col-sm-6">
 											<!-- text input -->
 											<div class="form-group" style="display: none;">
 												@if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2")
 												{
-												<label class="trn">Instrument Id Number</label>
-												
+													<label class="trn">Instrument Id Number</label>
+
 													<input type="text" id="IdNo" name="IdNo" value="@Model.IdNo" class="form-control" placeholder="Instrument Id Number"
 													@Model.IsDisabled>
 												}
@@ -475,7 +473,7 @@
 											</div>
 										</div>
 									</div>
-									
+
 									<div class="row">
 									
 										<div class="col-sm-6">
@@ -636,7 +634,7 @@
 			$('#UserDept').select2();
 			$('#UserDept1').select2();
 		if ($('#MasterInstrument').length) {   //please add this condition
-			$('#MasterInstrument').val().prop("selected", true);
+			@*//$('#MasterInstrument').val().prop("selected", true);*@
 			$('#MasterInstrument').select2();
 		}
 			@*$('#MasterInstrument').val(@Model.MasterInstrument1).prop("selected", true);

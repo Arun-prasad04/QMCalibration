@@ -15,7 +15,7 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-15">
+        <div class="col-12">
 
             <div class="card card-primary">
                 <div class="card-header">
@@ -50,17 +50,17 @@
 
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <div class="col-sm-9"></div>
                     <table id="example1" class="table table-bordered table-striped" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="trn">Instrument Name</th>
-                               @* <th class="trn">Serial Number</th>*@
-                                <th class="trn">Method</th>
                                 <th class="trn">Lab ID Number</th>
-                                <th class="trn">Range</th>
-                                <th class="trn">Department</th>
                                 <th class="trn">Sub section code</th>
+                                <th class="trn">Department</th>
                                 <th class="trn">Scope</th>
+                                <th class="trn">Method</th>                               
+                                <th class="trn">Range</th>                      
                                 <th class="trn">Calibration Date</th>
                                 <th class="DueDate trn">DueDate</th>
                                 <th class="trn">Edit</th>
@@ -102,8 +102,8 @@
                         </tbody>
                        
                     </table>
+                
                 </div>
-              
                 @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "1")
                 {
                     <div class="form-group" style="text-align:right;">
@@ -125,15 +125,19 @@
 <!--Data Table-->
 
 <script type="text/javascript">
-   
+    //if ($('#example1 >tbody >tr').length == 0) {
+
+    //    $(this).parent().hide();
+    //    // }
+    //    alert("empty");
+    //}
     var RequestNo = '@HttpContextAccessor.HttpContext.Session.GetString("RequestNo")';
    
     if (RequestNo.length >0) {
        
         $.ajax({
             url: '../Instrument/MailInsertInstrument',
-            type: 'POST',
-           // data: { instrument: Instrument, Request: Request },
+            type: 'POST',           
             dataType: "json",
         }).done(function (resultObject) {
            // showSuccess("Data Saved Successfully");
@@ -148,17 +152,14 @@
                 "bSortCellsTop": true,
                 "sAjaxSource": '../Instrument/GetAllInstrumentList',
                "fnServerParams": function (aoData) { 
-                    aoData.push({ "name": "sscode", "value": $('#txtsearch5').val() })
+                    aoData.push({ "name": "sscode", "value": $('#txtsearch2').val() })
                     aoData.push({ "name": "instrumentname", "value": $('#txtsearch0').val() })
-                    aoData.push({ "name": "labid", "value": $('#txtsearch2').val() })
+                    aoData.push({ "name": "labid", "value": $('#txtsearch1').val() })
                     aoData.push({ "name": "typeOfEquipment", "value": $('#drptypeOfEquipment').val() })
-                    //ToolInventory--ToolInventory
-                    //aoData.push({ "name": "serialno", "value": $('#txtsearch1').val() })
-                //aoData.push({ "name": "method", "value": $('#txtsearch1').val() })
-                    aoData.push({ "name": "range", "value": $('#txtsearch3').val() })
-                    aoData.push({ "name": "department", "value": $('#txtsearch4').val() })
+                    aoData.push({ "name": "serialno", "value": $('#drptypeOfScopeMethod').val() })
+                    aoData.push({ "name": "range", "value": $('#txtsearch6').val() })
+                    aoData.push({ "name": "department", "value": $('#txtsearch3').val() })
                     aoData.push({ "name": "calibrationdate", "value": $('#txtsearch7').val() })
-
                     aoData.push({ "name": "duedate", "value": $('#txtsearch8').val() })
                     aoData.push({ "name": "chkDue", "value": $('#checkdueonly').is(":checked") })
                 },
@@ -172,6 +173,10 @@
                 },
                  "columns":[
                      {"data":"instrumentName","name":"Instrument Name"},
+                { "data": "idNo", "name": "Lab ID Number" },
+                { "data": "subSecCode", "name": "Sub section code" },
+                { "data": "departmentName", "name": "Department", "search": true },
+                { "data": "typeOfEquipment", "name": "Scope" },
                     {"render": function (data, type, row, meta) {
                         if (row.toolInventory == "Yes")  {
                             var linkdata = "Rotation";
@@ -184,19 +189,15 @@
                         }
                         else // if (row.toolInventory == "null")
                         {
-                            var linkdata = " ";
+                            var linkdata = "-";
                             return linkdata;
                         }
                      }
                      },
-                     //{ "data": "toolInventory", "name": "Method" },
-                     {"data":"idNo","name":"Lab ID Number"},
-                     {"data":"range","name":"Range"},
-                     {"data":"departmentName","name":"Department","search" : true},
-                     {"data":"subSecCode","name":"Sub section code"},
-                     {"data":"typeOfEquipment","name":"Scope"},
-                     {"data":"sCalibDate","name":"Calibration Date"},
-                     {"data":"sDueDate","name":"DueDate"},
+                   
+                { "data": "range", "name": "Range" },
+                { "data": "sCalibDate", "name": "Calibration Date" },
+                { "data": "sDueDate", "name": "DueDate" },
                      {"render" : function(data,type,row,meta){
                             var linkedit = '<a href="@Url.Action("InstrumentEdit","Instrument")?instrumentId='+row.id+'"><i class="fas fa-edit"></i></a>';
                             return linkedit;
@@ -295,7 +296,7 @@
               
                  "columnDefs": [
                 {
-               'orderable': false,
+               'orderable': false, 
                'targets': 11,
                'checkboxes': {
                'selectRow': true
@@ -320,7 +321,7 @@
 
            "initComplete": function() {
          // Select the column whose header we need replaced using its index(0 based)
-         this.api().column(6).every(function() {
+         this.api().column(4).every(function() {
           var $table = $("#example1");
             var title = $(this).text();
         var column = this;
@@ -331,22 +332,38 @@
         column.data().unique().sort().each(function(d, j) {
             if(d !=null)
             {
+               
                   select.append("<option value='" + d + "'>" + d + "</option>")
             }
          
         });
       });
+
+    //    this.api().column(1).every(function () {
+    //    var $table = $("#example1");
+    //    var title = $(this).text();
+    //    var column = this;
+    //    var select = $('<select style="width: 100px;" id="drptypeOfScopeMethod"  onchange="drptypeOfScopeMethod(this.value)" class="form-control input-sm"><option selected value="">All</option></select>')
+
+    //        .appendTo($table.find('thead tr:eq(1) th:eq(' + this.index() + ')'))
+
+    //    column.data().unique().sort().each(function (d, j) {
+    //        if (d != null) {
+    //            select.append("<option value='" + d + "'>" + d + "</option>")
+    //        }
+
+    //    });
+    //});
+
+
     },
     });
 
    })
     
         $('body').on('change', '#selectAll', function() {
-        var rows, checked;
-
-        //rows = $('#example1').find('tbody tr');
+        var rows, checked;  
         rows = $('#example1').dataTable().fnGetNodes();
-
         checked = $(this).prop('checked');
         $.each(rows, function() {
            var checkbox = $($(this).find('td').eq(11)).find('input').prop('checked', checked);
@@ -361,30 +378,44 @@
                   
          }
      }
+    function drptypeOfScopeMethod(val) {
+        var table = $('#example1').DataTable();
+        if (table.search() !== val) {
+            table.search(val).draw();
 
+        }
+    }
+    
    $(document).ready(function() {
 
 
    $("#example1 thead tr:eq(1) th").each(function (i) {
         var title1 = $(this).text();
         var title = title1.trim();
-     if(i==0 ||i==1 ||i==2 || i==3|| i==4|| i==5|| i==7|| i==8)
+     if(i==0 ||i==1 || i==2|| i==3|| i==6|| i==7|| i==8)
      {
        $(this).html('<input id="txtsearch'+i+'" style="width: 100px;"  class="form-control filter" type="text" placeholder="Search" />');
 
      }
-  
+            else if (i == 5) {
+                $(this).html('<select style="width: 100px;" id="drptypeOfScopeMethod"  onchange="drptypeOfScopeMethod(this.value)" class="form-control input-sm"><option selected value="">All</option></select>');
+               // $(this).html('<select name=""  id="drpscope"  class="form-control" onchange="Drpscop(this.value)" </select>');
+
+            }
      else
      {
        $(this).html('<input  style="width: auto;display:none"  class="form-control filter" type="text" placeholder="Search" />');
 
      }
     });
-   
+        var optionscopemethod = [];
+        optionscopemethod.push('<option value="No">Direct</option>')
+        optionscopemethod.push('<option value="Yes">Rotation</option>')
+        $('#drptypeOfScopeMethod').append(optionscopemethod);
+
         var table = $('#example1').DataTable();
            table.columns().every(function () {
-         //var table = this;
-          $('input').on('keyup change', function () {
+           $('input').on('keyup change', function () {
                 if (table.search() !== this.value) {
                 	table.search(this.value).draw();
                   
@@ -393,65 +424,6 @@
         });
        
       })
-
-
-    //function GetAllInstrument(){
-    //    $.ajax({
-    //        type: "GET",
-    //        url: "../Instrument/GetAllInstrumentList",            
-    //        //contentType: "application/json; charset=utf-8",
-    //        dataType: "json",
-    //        success: OnSuccess,
-    //        failure: function (response) {
-    //            alert(response.d);
-    //        },
-    //        error: function (response) {
-    //            alert(response.d);
-    //        }
-    //    });
-    //}
-
-    //function OnSuccess(response) {
-       
-    //    $("#example1").DataTable(
-    //    {
-    //        bLengthChange: true,
-    //        lengthMenu: [[5, 10, -1], [5, 10, "All"]],
-    //        bFilter: true,
-    //        bSort: true,
-    //        bPaginate: true,
-    //        data: response,
-    //        columns: [
-    //            {"data":"instrumentName","name":"Instrument Name"},
-    //             //{"data":"slNo","name":"Serial Number"},
-    //             //{"data":"idNo","name":"Lab ID Number"},
-    //             //{"data":"range","name":"Range"},
-    //             //{"data":"departmentName","name":"Department"},                 
-    //             //{"data":"typeOfEquipment","name":"Scope"},                     
-    //        ]
-    //    });
-    //};
-
-
-    //$(document).on('change', '.checkdueonlycls', function () {
-    //    if ($(this).is(':checked')) {
-    //        //if checked add to array
-    //        checkedArray[checkedArray.length] = $(this).val();
-    //    } else {
-    //        //If unchecked remove the value from the array
-    //        var index = checkedArray.indexOf($(this).val());
-    //        if (index > -1) {
-    //            checkedArray.splice(index, 1);
-    //        }
-    //    }
-    //});
-
-    //then you can use it in click event
-    //$('.button').click(function () {
-    //    var id = "";
-    //    //read checkedArray using for loop
-
-    //});
- 
+             
 </script>
  

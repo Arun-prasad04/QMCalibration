@@ -313,7 +313,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Received Date</label>
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest" >@*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                        @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -344,7 +345,7 @@
                                 <!-- text input -->
                                 <div class="form-group">
                                     <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest(language)">
+                                           class="btn btn-primary trn" onclick="AcceptRejectReCalibrationRequest(language)">
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
@@ -363,8 +364,9 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Received Date</label>
-                                   @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
-                                  <div class="input-group date" id="reservationdate1" data-target-input="nearest"> @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
+                                    @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                        @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@DateTime.Now' />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -420,9 +422,10 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                   <label class="trn">Received Date</label>
-                                   @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
-                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest"> @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
+                                    <label class="trn">Received Date</label>
+                                    @* <input type="date" id="ReceivedDate" name="ReceivedDate">*@
+                                    <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                        @*onchange="$('#ReceivedDate').attr('value',$('#ReceivedDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate1"
                                                id="ReceivedDate" name="ReceivedDate" value='@Model.ReceivedDate' disabled />
                                         <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
@@ -431,12 +434,13 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Tentative Closing Date</label>
                                     @*<input type="date" id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate">*@
-                                  <div class="input-group date" id="reservationdate7" data-target-input="nearest"> @*onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">*@
+                                    <div class="input-group date" id="reservationdate7" data-target-input="nearest">
+                                        @*onchange="$('#TentativeCompletionDate').attr('value',$('#TentativeCompletionDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate7"
                                                id="TentativeCompletionDate" name="TentativeCompletionDate" value="@Model.TentativeCompletionDate" disabled>
                                         <div class="input-group-append" data-target="#reservationdate7" data-toggle="datetimepicker">
@@ -499,7 +503,7 @@
                                         <!-- text input -->
                                         <div class="form-group">
                                             <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                            class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                                   class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
                                             <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                         </div>
                                     </div>
@@ -555,14 +559,14 @@
                                     </div>
                                 </div>
                             </div>
-                             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                            @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
                             {
                                 <div class="row">
                                     <div class="col-sm-6" style="text-align:right;">
                                         <!-- text input -->
                                         <div class="form-group">
                                             <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                            class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
+                                                   class="btn btn-primary trn" onclick="AcceptRejectExternalRequest(language)">
                                             <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                         </div>
                                     </div>
@@ -629,7 +633,7 @@
                                         <textarea id="Newreason" style="width: 100%;"></textarea>
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>
                     }
@@ -698,14 +702,14 @@
                         { *@
                             @if (Model.ObservationTemplate <= 0 || Model.ObservationTemplate == null)
                             {
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <label class="trn">Observation Template</label><br>
-                                        <select id="NewObservation" class="form-control" style="width:100%; height:100%; padding:5px;position: absolute;">
-                                            @* <option>-- Select Observation Template --</option>*@
-                                            @*@foreach (var freq in @Model.ObservationTemplateList)
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="trn">Observation Template</label><br>
+                                            <select id="NewObservation" class="form-control" style="width:100%; height:100%; padding:5px;position: absolute;">
+                                                @* <option>-- Select Observation Template --</option>*@
+                                                @*@foreach (var freq in @Model.ObservationTemplateList)
                                         {
                                         if (freq.Id == Model.ObservationTemplate)
                                         {
@@ -716,15 +720,15 @@
                                         <option value="@freq.Id">@freq.AttrValue</option>
                                         }
                                         }*@
-                                        </select>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                  
-                              
 
-                            </div>
+
+
+                                </div>
                             }
-                            
+
                             <div class="row">
                             </div>
                         </div>
@@ -734,7 +738,7 @@
                                 <!-- text input -->
                                 <div class="form-group mt-4">
                                     <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                    class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
+                                           class="btn btn-primary trn" onclick="AcceptRejectNewRequest(language)">
                                     <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                 </div>
                             </div>
@@ -799,7 +803,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Closed Date</label>
-                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest"> @*onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                            @*onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
                                             <input type="text" id="newClosedDate" name="newClosedDate" value="@DateTime.Now"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
                                             <div class="input-group-append" data-target="#reservationdate2"
@@ -851,7 +856,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Calibration Date</label>
-                                    <div class="input-group date" id="reservationdate4" data-target-input="nearest" >@*onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
+                                    <div class="input-group date" id="reservationdate4" data-target-input="nearest">
+                                        @*onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                                                id="CalibDate" name="CalibDate" onloadeddata="" value="" />
                                         <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
@@ -863,7 +869,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="trn">Due Date</label>
-                                    <div class="input-group date" id="reservationdate5" data-target-input="nearest">@* onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
+                                    <div class="input-group date" id="reservationdate5" data-target-input="nearest">
+                                        @* onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
                                         <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                                                id="DueDate" name="DueDate" value="" />
                                         <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
@@ -901,7 +908,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Instument Returned On</label>
-                                        <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
+                                        <div class="input-group date" id="reservationdate3" data-target-input="nearest">
+                                            @* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                             <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate3" />
                                             <div class="input-group-append" data-target="#reservationdate3"
@@ -965,7 +973,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="trn">Instument Returned On</label>
-                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest">
+                                                @* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                 <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                        class="form-control datetimepicker-input" data-target="#reservationdate3" />
                                                 <div class="input-group-append" data-target="#reservationdate3"
@@ -999,15 +1008,15 @@
 
                             </div>
                             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "2" || @HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") == "3")
-                           {
-                            <div class="col-sm-3">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
-                                           value="Submit" onclick="newSubmitReqLABVisual(language)">
-                                    <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                            {
+                                <div class="col-sm-3">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-primary trn" name="newSubmitFMVisual" id="newSubmitFMVisual"
+                                               value="Submit" onclick="newSubmitReqLABVisual(language)">
+                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                    </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     }
@@ -1038,7 +1047,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Closed Date</label>
-                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest">@* onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
+                                        <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                            @* onchange="$('#newClosedDate').attr('value',$('#newClosedDate').val());">*@
                                             <input type="text" id="newClosedDate" name="newClosedDate" value="@Model.ClosedDate.ToShortDateString()"
                                                    class="form-control datetimepicker-input" data-target="#reservationdate2" disabled />
                                             <div class="input-group-append" data-target="#reservationdate2"
@@ -1072,7 +1082,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Calibration Date</label>
-                                        <div class="input-group date" id="reservationdate4" data-target-input="nearest" >@* onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
+                                        <div class="input-group date" id="reservationdate4" data-target-input="nearest">
+                                            @* onchange="$('#CalibDate').attr('value',$('#CalibDate').val());loaddate()  ">*@
                                             <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate4"
                                                    id="CalibDate" name="CalibDate" onloadeddata="" value="@Model.CalibDate" disabled />
                                             <div class="input-group-append" data-target="#reservationdate4" data-toggle="datetimepicker">
@@ -1084,7 +1095,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="trn">Due Date</label>
-                                        <div class="input-group date" id="reservationdate5" data-target-input="nearest"> @*onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
+                                        <div class="input-group date" id="reservationdate5" data-target-input="nearest">
+                                            @*onchange="$('#DueDate').attr('value',$('#DueDate').val());">*@
                                             <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate5"
                                                    id="DueDate" name="DueDate" value="@Model.DueDate" disabled />
                                             <div class="input-group-append" data-target="#reservationdate5" data-toggle="datetimepicker">
@@ -1165,7 +1177,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="trn">Instument Returned On</label>
-                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest"> @*onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
+                                            <div class="input-group date" id="reservationdate3" data-target-input="nearest">
+                                                @*onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                 <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@Model.InstrumentReturnedOn.ToShortDateString()"
                                                        class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
                                                 <div class="input-group-append" data-target="#reservationdate3"
@@ -1268,7 +1281,8 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="trn">Instument Returned On</label>
-                                                <div class="input-group date" id="reservationdate3" data-target-input="nearest">@* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
+                                                <div class="input-group date" id="reservationdate3" data-target-input="nearest">
+                                                    @* onchange="$('#newInstrumentReturnedDate').attr('value',$('#newInstrumentReturnedDate').val());">*@
                                                     <input type="text" id="newInstrumentReturnedDate" name="newInstrumentReturnedDate" value="@DateTime.Now"
                                                            class="form-control datetimepicker-input" data-target="#reservationdate3" disabled />
                                                     <div class="input-group-append" data-target="#reservationdate3"
@@ -1306,7 +1320,8 @@
                                     <div class="form-group">
                                         <label class="trn">Return Date</label>
 
-                                        <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest">@* onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">*@
+                                        <div class="input-group date" id="newReturnDatePicker" data-target-input="nearest">
+                                            @* onchange="$('#newReturnDate').attr('value',$('#newReturnDate').val());">*@
                                             <input type="text" id="newReturnDate" name="newReturnDate" value="@DateTime.Now.AddHours(3).AddMinutes(30).ToString("yyyy/MM/dd HH:mm:ss") JST"
                                                    class="form-control datetimepicker-input" data-target="#newReturnDatePicker" />
                                             <div class="input-group-append" data-target="#newReturnDatePicker"
@@ -1343,20 +1358,20 @@
                             </div>
                             @if ((Model.Status == 29) || ((Model.TypeOfRequest == 3) && (Model.InstrumentIdNo == null)))
                             {
-                                @if(@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
                                 {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <!-- text input -->
-                                        <div class="form-group" style="text-align:right;">
-                                            <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
-                                                   onclick="newSubmitReqDepVisual(language)">
-                                            <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <!-- text input -->
+                                            <div class="form-group" style="text-align:right;">
+                                                <input style="margin-top: 32px;" type="button" class="btn btn-primary trn" name="newSubmitDEPVisual" id="newSubmitDEPVisual" value="Submit"
+                                                       onclick="newSubmitReqDepVisual(language)">
+                                                <a href='@Url.Action("Request","Tracker")'><input type="button" style="margin-top: 32px;" class="btn btn-default trn" value="Cancel"></a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 }
                             }
                         </div>
@@ -1397,16 +1412,16 @@
                         {
                             @if (@HttpContextAccessor.HttpContext.Session.GetString("UserRoleId") != "1")
                             {
-                            <div class="row">
-                                <div class="col-sm-6" style="text-align:right;">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                               class="btn btn-primary trn" onclick="SaveExternalObs(language)">
-                                        <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                <div class="row">
+                                    <div class="col-sm-6" style="text-align:right;">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
+                                                   class="btn btn-primary trn" onclick="SaveExternalObs(language)">
+                                            <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         }
                     }
@@ -1426,7 +1441,7 @@
                                         <!-- text input -->
                                         <div class="form-group">
                                             <input type="button" id="submitReasonNewRequest" value="Submit" name="Submit"
-                                            class="btn btn-primary trn" onclick="ExternalCalibrationRequest(language)">
+                                                   class="btn btn-primary trn" onclick="ExternalCalibrationRequest(language)">
                                             <a href='@Url.Action("Request","Tracker")'><input type="button" class="btn btn-default trn" value="Cancel"></a>
                                         </div>
                                     </div>
@@ -1474,9 +1489,9 @@
         $('#NewCertificationEd').select2();
 
         if (JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))') != null) {
-            var CalibFreqExternal = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))');                      
+            var CalibFreqExternal = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.CalibFreqExternal))');
             $("#CalibFreq").select2().val(CalibFreqExternal).trigger("change");
-            
+
         }
 
 
@@ -1500,10 +1515,10 @@
             } *@
 
 
-                //IfIdNoExist($('#IdNo').val());
-        var GlIDNo = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.IdnoList))');
+                    //IfIdNoExist($('#IdNo').val());
+            var GlIDNo = JSON.parse('@Html.Raw(Json.Serialize(@ViewBag.IdnoList))');
 
-        $('#IdNo').change(function () {           
+        $('#IdNo').change(function () {
             if (GlIDNo.length > 0) {
                 var filterLine = $.grep(GlIDNo, function (element, index) {
                     return element.idNo == $('#IdNo').val();
@@ -1792,8 +1807,8 @@
             document.getElementById("DueDate").value = result3;
         }
     }
-     setTimeout(function () {
-      $('#reservationdate1').datetimepicker({
+    setTimeout(function () {
+        $('#reservationdate1').datetimepicker({
             format: 'DD/MM/YYYY'
         });
         $('#reservationdate2').datetimepicker({

@@ -4594,63 +4594,62 @@ public class ObservationTemplateService : IObservationTemplateService
 					}
 				}
 			//for Observation Content update
-		
-			if (dynamic.ObservationContentValuesList != null)
+			if (instrumentData.TypeOfEquipment == "Internal")
 			{
-				dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = observationId);
-				dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
-				var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
-										.Where(x => x.ParentId == observationId).ToList());
-				List<ObservationContentValues> ObsContentValuesById = _unitOfWork.Repository<ObservationContentValues>().GetQueryAsNoTracking(Q => Q.ParentId == observationId).ToList();
-
-				_unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
-				_unitOfWork.SaveChanges();
-
-				foreach (var lstdata in detailData)
+				if (dynamic.ObservationContentValuesList != null)
 				{
-					if (lstdata.Diff == "SE")
+					dynamic.ObservationContentValuesList.ForEach(x => x.ParentId = observationId);
+					dynamic.ObservationContentValuesList.ForEach(x => x.Id = null);
+					var detailData = _mapper.Map<ObservationContentValues[]>(dynamic.ObservationContentValuesList
+											.Where(x => x.ParentId == observationId).ToList());
+					List<ObservationContentValues> ObsContentValuesById = _unitOfWork.Repository<ObservationContentValues>().GetQueryAsNoTracking(Q => Q.ParentId == observationId).ToList();
+
+					_unitOfWork.Repository<ObservationContentValues>().DeleteRange(ObsContentValuesById.ToArray());
+					_unitOfWork.SaveChanges();
+
+					foreach (var lstdata in detailData)
 					{
-						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
-						_unitOfWork.SaveChanges();
-						if (dynamic.FileName != null && dynamic.FileName.Length > 0)
+						if (lstdata.Diff == "SE")
 						{
-							// _unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
-							//_unitOfWork.SaveChanges();
-							for (int i = 0; i < dynamic.FileName.Length; i++)
+							_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+							_unitOfWork.SaveChanges();
+							if (dynamic.FileName != null && dynamic.FileName.Length > 0)
 							{
-								//_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
-								//_unitOfWork.SaveChanges();								
-								int contentid = (Int32)lstdata.Id;
-								string refno = dynamic.RevNo.ToString();
-								//string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + dynamicId + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
-								string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
-								var filePath = _utilityService.SaveFiles(dynamic.FileData[i], FileName, dynamic.Serialno[i], observationId, contentid);
 
-								Uploads upload = new Uploads()
+								for (int i = 0; i < dynamic.FileName.Length; i++)
 								{
-									FileName = FileName,//dynamic.FileName[i],
-									FileGuid = Guid.NewGuid(),
-									CreatedOn = DateTime.Now,
-									ModifiedOn = DateTime.Now,
-									FilePath = filePath,
-									TemplateType = "OBS-" + lstdata.Diff,
-									RequestId = observationId,//Convert.ToInt32(dynamic.TemplateObservationId),
-									MasterId = Convert.ToInt32(lstdata.Id)
+									int contentid = (Int32)lstdata.Id;
+									string refno = dynamic.RevNo.ToString();
+									//string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + dynamicId + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+									string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] + Guid.NewGuid().ToString().Substring(1, 3) + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+									var filePath = _utilityService.SaveFiles(dynamic.FileData[i], FileName, dynamic.Serialno[i], observationId, contentid);
 
-								};
-								_unitOfWork.Repository<Uploads>().Insert(upload);
-								_unitOfWork.SaveChanges();
+									Uploads upload = new Uploads()
+									{
+										FileName = FileName,//dynamic.FileName[i],
+										FileGuid = Guid.NewGuid(),
+										CreatedOn = DateTime.Now,
+										ModifiedOn = DateTime.Now,
+										FilePath = filePath,
+										TemplateType = "OBS-" + lstdata.Diff,
+										RequestId = observationId,//Convert.ToInt32(dynamic.TemplateObservationId),
+										MasterId = Convert.ToInt32(lstdata.Id)
+
+									};
+									_unitOfWork.Repository<Uploads>().Insert(upload);
+									_unitOfWork.SaveChanges();
+								}
 							}
+
+						}
+						else
+						{
+							_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
+							_unitOfWork.SaveChanges();
+
 						}
 
 					}
-					else
-					{
-						_unitOfWork.Repository<ObservationContentValues>().Insert(lstdata);
-						_unitOfWork.SaveChanges();
-
-					}
-
 				}
 			}
 			//for Observation Content List update
@@ -4698,7 +4697,7 @@ public class ObservationTemplateService : IObservationTemplateService
 
                 _contextAccessor.HttpContext.Session.SetString("RequestNo", ReqstData.ReqestNo);
             }
-			
+			_contextAccessor.HttpContext.Session.SetString("IsStatus", ReqstData.StatusId.ToString());
 			_contextAccessor.HttpContext.Session.SetString("StatusId", ReqstData.StatusId.ToString());
 			_contextAccessor.HttpContext.Session.SetString("RequestId", ReqstData.Id.ToString());
 			_contextAccessor.HttpContext.Session.SetString("TypeOfEquipment", instrumentData.TypeOfEquipment);
@@ -5915,7 +5914,7 @@ public class ObservationTemplateService : IObservationTemplateService
 								int contentid = (Int32)lstdata.Id;
 								string refno = dynamic.RevNo.ToString();
 								//string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + dynamicId + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
-                                string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
+                                string FileName = dynamic.FileName[i].Substring(0, dynamic.FileName[i].LastIndexOf(".")) + "_" + contentid + "_" + dynamic.Serialno[i] +Guid.NewGuid().ToString().Substring(1, 3) + "." + dynamic.FileName[i].Substring(dynamic.FileName[i].LastIndexOf(".") + 1);
                                 var filePath =_utilityService.SaveFiles(dynamic.FileData[i], FileName, dynamic.Serialno[i], dynamicId, contentid);
 								
 								Uploads upload = new Uploads()
@@ -6599,8 +6598,14 @@ public class ObservationTemplateService : IObservationTemplateService
         try
         {
             _unitOfWork.BeginTransaction();
-           
-                Uploads Uploaddata = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.Id == Id).SingleOrDefault();
+
+            //string sTemp = path + "_" + DateTime.Now.ToString("dd_MM") + ".txt";
+            //FileStream Fs = new FileStream(sTemp, FileMode.OpenOrCreate | FileMode.Append);
+            //StreamWriter st = new StreamWriter(Fs);
+            //string dttemp = DateTime.Now.ToString("[dd:MM:yyyy] [HH:mm:ss:ffff]");
+            //st.WriteLine(dttemp + "\t" + message);
+            //st.Close();
+            Uploads Uploaddata = _unitOfWork.Repository<Uploads>().GetQueryAsNoTracking(Q => Q.Id == Id).SingleOrDefault();
 
                 _unitOfWork.Repository<Uploads>().Delete(Uploaddata);
                 _unitOfWork.SaveChanges();

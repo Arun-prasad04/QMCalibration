@@ -67,7 +67,7 @@ public class RequestService : IRequestService
             if (Search == null)
             { Search = string.Empty; }
             DataSet ds = _cmtdl.GetRequestList(userId, userRoleId, Startingrow, Endingrow, Search, ReqType, sscode, instrumentname,instrumentid, status, requestno, requestdate, range, typeofrequest, typeofequipment);
-            //List<InstrumentViewModel> Details = new List<InstrumentViewModel>();
+           
             var TotalCount = 0;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
