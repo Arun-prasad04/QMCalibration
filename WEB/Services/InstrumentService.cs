@@ -214,7 +214,7 @@ public class InstrumentService : IInstrumentService
     }
    
     public ResponseViewModel<InstrumentViewModel> GetAllInstrumentList(int userId, int userRoleId, int Startingrow, int Endingrow, string Search, string sscode, string instrumentname, string labid, string typeOfEquipment, string serialno, string range, string department, string calibrationdate, string duedate, string chkDue)
-    {
+  {
         try
         {
             //UserViewModel labUserById = _mapper.Map<UserViewModel>(_unitOfWork.Repository<User>().GetQueryAsNoTracking(Q => Q.Id == userId).SingleOrDefault());
@@ -446,6 +446,7 @@ public class InstrumentService : IInstrumentService
                     {
                         Id = Convert.ToInt32(dr["Id"]),
                         EquipName = Convert.ToString(dr["EquipName"]),
+                        EquipNameJP = Convert.ToString(dr["EquipNameJP"]),
                         EquipmentMasterId = Convert.ToString(dr["EquipmentMasterId"]),
 						Make = Convert.ToString(dr["Make"]),
 						Traceability = Convert.ToString(dr["Traceability"]),
@@ -902,15 +903,7 @@ public class InstrumentService : IInstrumentService
             {
                 instrumentById.ObservationTemplate = instrument.ObservationTemplate;
             }
-            //         if (instrument.ObservationType != null && instrument.ObservationType > 0)
-            //         {
-            //             instrumentById.ObservationType = instrument.ObservationType;
-            //         }
-            //         if (instrument.MUTemplate != null && instrument.MUTemplate > 0)
-            //         {
-            //             instrumentById.MUTemplate = instrument.MUTemplate;
-            //         }
-
+            
             if (instrument.MasterInstrument1 != null && instrument.MasterInstrument1 > 0)
             {
                 instrumentById.MasterInstrument1 = instrument.MasterInstrument1;

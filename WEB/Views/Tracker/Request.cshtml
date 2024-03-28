@@ -92,11 +92,10 @@
                             <tr>
                                 <th class="trn">Request No</th>
                                 <th class="trn">Request Date</th>
-                                <th class="trn">Sub Section Code</th>
                                 <th class="trn">Instrument Name</th>
                                 <th class="trn">Instrument Id</th>
+                                <th class="trn">Sub Section Code</th>
                                 <th class="trn">Range</th>
-                                
                                 <th class="trn">Request Type</th>
                                 <th class="trn">Status</th>
                                 <th class="trn">View</th>
@@ -194,7 +193,6 @@
          $.ajax({
             url: '../Instrument/EmailForTracker',
             type: 'POST',
-            // data: { instrument: Instrument, Request: Request },
             dataType: "json",
         }).done(function (resultObject) {
            // showSuccess("Data Saved Successfully");
@@ -220,9 +218,9 @@
                 "bSortCellsTop": true,
                 "sAjaxSource": '../Tracker/GetAllRequestList',
                 "fnServerParams": function (aoData) { aoData.push({ "name": "reqType", "value": reqType })
-                    aoData.push({ "name": "sscode", "value": $('#txtsearch2').val() })
-                    aoData.push({ "name": "instrumentname", "value": $('#txtsearch3').val() })
-                    aoData.push({ "name": "instrumentid", "value": $('#txtsearch4').val() })
+                    aoData.push({ "name": "sscode", "value": $('#txtsearch4').val() })
+                    aoData.push({ "name": "instrumentname", "value": $('#txtsearch2').val() })
+                    aoData.push({ "name": "instrumentid", "value": $('#txtsearch3').val() })
                     aoData.push({ "name": "status", "value": $('#drpstatus').val() })
                     aoData.push({ "name": "requestno", "value": $('#txtsearch0').val() })//$('#drptypeOfEquipment').val() 
                     aoData.push({ "name": "requestdate", "value": $('#txtsearch1').val() })
@@ -249,15 +247,13 @@
                 },
                  
                 "aoColumns": [
-                    //{ "orderSequence": ["desc", "asc", "asc"] },
+                   
                     { "data": "reqestNo", "name": "Request No"},
-                    { "data": "lc", "name": "Request Date"},// { "data": "reqDueDate", "name": "Request Date" },
-                    { "data": "subSectionCode", "name": "Sub Section Code"},
+                    { "data": "lc", "name": "Request Date"},                   
                     { "data": "instrumentName", "name": "Instrument Name"},
                     { "data": "instrumentIdNo", "name": "Instrument Id"},
+                    { "data": "subSectionCode", "name": "Sub Section Code" },
                     { "data": "range", "name": "Range"},
-                   // { "data": "statusname", "name": "Status"},
-
                     {
                         "render": function (data, type, row, meta) {
                             var tdTypeofRequest = '';
@@ -309,6 +305,7 @@
                             else if (row.status == 31 && row.typeOfEquipment == 'External') {
                                 tdStatus = "Verification Rejected"
                             }
+                            
                             return tdStatus;
                         }
                     },
@@ -332,26 +329,26 @@
                             if ((userRoleId == 2 || userRoleId == 3 || userRoleId == 4) && (row.status == 27 || row.status == 29 || row.status == 30 || row.status == 31) && row.typeOfEquipment != 'External') {
                                 if ((row.templateId > 0) && (row.status == 27))//&& row.
                                  { 
-                                    tdTest = '<span title="Approved!"><a style="color:orange" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                    tdTest = '<span title="Approved!"><a style="color:orange" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '&Statusid=' + row.status + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
                                  }
                                 else if  (row.status == 30) {
 
-                                    tdTest = '<span title="closed!"><a style="color:green" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                    tdTest = '<span title="closed!"><a style="color:green" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '&Statusid=' + row.status + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
                                  }
                                 else if (row.status == 31) {
 
-                                    tdTest = '<span title="Calibration Rejected!"><a style="color:red" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                    tdTest = '<span title="Calibration Rejected!"><a style="color:red" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '&Statusid=' + row.status + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
                                 }
                                  else if (row.status == 29) {
 
-                                    tdTest = '<span title="Calibration Done!"><a style="color:yellow" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                    tdTest = '<span title="Calibration Done!"><a style="color:yellow" href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '&Statusid=' + row.status + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
                                 }
                                 else  {
 
-                                    tdTest = '<span title="Requested!"><a href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
+                                    tdTest = '<span title="Requested!"><a href="@Url.Action("InternalObservation","Observation")?requestId=' + row.id + '&instrumentId=' + row.instrumentId + '&Statusid=' + row.status + '" ><i class="fas fa-check-circle" style = "cursor:pointer"></i></span>'
 
                                 }
                             }

@@ -1401,15 +1401,15 @@ public class ObservationController : BaseController
 		return View(response.ResponseData);
 	}
 	#region "Dynamic Observation"
-	public IActionResult InternalObservation(int instrumentId, int requestId)
+	public IActionResult InternalObservation(int instrumentId, int requestId,int Statusid)
 	{
 		ViewBag.UserRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		int userRoleId = Convert.ToInt32(base.SessionGetString("UserRoleId"));
 		string firstName = base.SessionGetString("FirstName");
 		string lastName = base.SessionGetString("LastName");
+        base.SessionSetString("IsStatus", Statusid.ToString());
 
-
-		ResponseViewModel<DynamicViewModel> response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
+        ResponseViewModel<DynamicViewModel> response = _ObservationTemplateService.GetObservationInstrumentById(instrumentId, requestId);
 		if ((response.ResponseData.TemplateObservationId == 0) || (response.ResponseData.TemplateObservationId == null) || (response.ResponseData.TemplateObservationId == 00))
 		 { 
 		response.ResponseData.CalibrationPerformedBy = firstName + " " + lastName;

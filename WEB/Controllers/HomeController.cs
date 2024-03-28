@@ -168,7 +168,7 @@ public class HomeController : BaseController
 	}
 	public IActionResult MasterTranslate()
 	{
-		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(g => g.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
+		List<Master> MasterList = _unitOfWork.Repository<Master>().GetQueryAsNoTracking(Q => Q.IsActive == true).Where(W => W.QuarantineModel.Select(s => s.StatusId).FirstOrDefault() == 2).ToList();
 		//MasterLangTranslate MStranslater = new MasterLangTranslate();
 		var MStranslater = new List<MasterLangTranslate>();
 		if(MasterList != null)

@@ -47,8 +47,9 @@ public class DepartmentService : IDepartmentService
 				             SectionJP = S.SectionJP,
 				             SubSectionJP = S.SubSectionJP,
                              PlantId =S.PlantId,
-                             CreatedOn=S.CreatedOn
-			 }).ToList();
+                             CreatedOn=S.CreatedOn,
+				             SubSectionCode =S.SubSectionCode
+			}).ToList();
 
 							
 			// List <DepartmentViewModel> departmentList= _mapper.Map<List<DepartmentViewModel>>(_unitOfWork.Repository<Department>().GetQueryAsNoTracking().ToList());

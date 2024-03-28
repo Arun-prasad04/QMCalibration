@@ -1868,11 +1868,12 @@
 						optionhtml = '';
 						if (lang == 'jp') {
 							//optionhtml = '<option value=""> -- Select -- </option>';
-							optionhtml = '<option value="' + item.id + '">' + item.nameJp + '-' + item.equipmentMasterId + '</option>';
+							//optionhtml = '<option value="' + item.id + '">' + item.nameJp + '-' + item.equipmentMasterId + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.equipmentMasterId + '-' + item.nameJp + '-' + item.nameEng + '< /option>';
 						}
 						else {
 							//optionhtml = '<option value=""> -- Select -- </option>';
-							optionhtml = '<option value="' + item.id + '">' + item.nameEng + '-' + item.equipmentMasterId + '</option>';
+							optionhtml = '<option value="' + item.id + '">' + item.equipmentMasterId + '-' + item.nameJp + '-' + item.nameEng + '</option>';
 						}
 
 						$("#MasterInstrument").append(optionhtml);

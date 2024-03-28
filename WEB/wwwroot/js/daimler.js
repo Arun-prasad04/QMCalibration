@@ -4094,6 +4094,8 @@ function BindInternalObservationTable(UserRole)
         var Permissible = "";
        
         for (let i = 0; i < resultObject.length; i++) {
+            console.log("resultObject");
+            console.log(resultObject);
             var IdName = resultObject[i].typeOfContent;
 
              tableIN = '<table id="INTblObservation" style="text-align:center;">';
@@ -4272,7 +4274,8 @@ function BindInternalObservationTable(UserRole)
                 var filecount = filedatamap.length;
                 var enable = "";
                 var hideval = "";
-                if (UserRole == 4) {
+                
+                if (IsStatus > 28) {
                    
                     enable = "disabled";
                     hideval = "hidden";
@@ -4284,19 +4287,18 @@ function BindInternalObservationTable(UserRole)
                     var ids = filedatamap[j].id;
                     html += '<div id="' + ids + '" ><span class=""><img height="15" width="15" src="../image/' + CheckFileType(joinfilename) + '" />'
                         + '<a id="pic" href="../Observation/' + joinfilename + '">' + joinfilename +'</a>'
-                        + ' <a onclick="ObservationFileDeleteAlert(\'' + ids + '\',\'' + joinfilename + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fa fa-fw fa-trash" ' + hideval +'><span class="glyphicon glyphicon-remove" ' + enable +'></span></a>'
+                        + ' <a onclick="ObservationFileDeleteAlert(\'' + ids + '\',\'' + joinfilename + '\');" data-container="body" data-toggle="tooltip" data-placement="top" title="Delete"  type="button" class="fa fa-fw fa-trash" ' + hideval +'></a>'
                         + '</div>';
                 }
                 tbLSEContentId = resultObject[i].id;
                 rowContentSE += '<tr id=SE_' + addsno + '>' + contentsubheadingSE + '<input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].obsContentValueId + '"/><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
                     // +btn btn-danger rejectbtn btn-xs '<td id="IN"><input id="SNO' + i + i + '" name="SNO[' + i + ']" type = "text" class="Tables-AndTablesTextBox TblInHeader order"  value = "' + resultObject[i].sno + '" disabled /><input type="hidden" id="HiddenContentId" name="HiddenContentId" value="' + resultObject[i].id + '"/><input type="hidden" id="HiddenContentvalueId" name="HiddenContentvalueId" value="' + resultObject[i].ObsContentValueId + '"/></td>' +
-                    '<td id="SE"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="" value = "Refer attached file/添付ファイル参照" disabled/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '"/></td>' +
-                    '<td id="SE"><input id="files_' + j + '" name="SE_' + j + '" class="clsFile" type="file" multiple ' + enable +' ContentEditable="false"/></td>' +
+                    '<td id="SE"><input id="MeasuedValue" name="MeasuedValue[' + i + i + '] " type="text" class="" value = "Refer attached file/添付ファイル参照" disabled/><input type="hidden" id="HiddenMappingId" name="HiddenMappingId" value="' + resultObject[i].contentMappingId + '" '+enable+'/></td>' +
+                    '<td id="SE"><input id="files_' + j + '" name="SE_' + j + '" class="clsFile" type="file" multiple ContentEditable="false" ' + enable +'/></td>' +
                     '<td id="SE"><div class="form-group dynAttachmentfiles" id="dfileattach">'+html+'</div></td></td></tr>';
                 addsno = sno + 1;
             }
-            console.log('data SE');
-            console.log(rowContentSE);
+           
             /*<button id="cbrowse" type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data - placement="top" onclick = "document.getElementById("files1").click();" > <span class="trn">Browse</span></button >*/
         }
         if (UserRole == 4) {
